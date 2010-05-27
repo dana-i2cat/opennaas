@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Export-Package: net.i2cat.mantychore.engine.model;version="1.0.0.SNAPS
+ HOT"
+Private-Package: net.i2cat.mantychore.engine.model.internal
+Ignore-Package: net.i2cat.mantychore.engine.model.internal
+Built-By: Pau
+Tool: Bnd-0.0.255
+Bundle-Name: net.i2cat.mantychore.engine.model
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.6.0_20
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1274969547635
+Bundle-ManifestVersion: 2
+Bundle-Activator: net.i2cat.mantychore.engine.model.internal.ExampleAc
+ tivator
+Bundle-Description: Generated using Pax-Construct
+Import-Package: net.i2cat.mantychore.engine.model;version="1.0.0.SNAPS
+ HOT",org.osgi.framework
+Bundle-SymbolicName: net.i2cat.mantychore.engine.model
+
