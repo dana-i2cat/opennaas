@@ -4,7 +4,7 @@ package net.i2cat.mantychore.engine.model;
 
 
 
-public class SubInterfaceType {
+public class SubInterface {
 
 
     protected String mtu;
@@ -13,7 +13,7 @@ public class SubInterfaceType {
     protected String speed;
     protected String encapsulation;
     protected String physicalInterfaceID;
-    protected IPConfigurationType iPconfiguration;
+    protected IPConfiguration iPconfiguration;
     protected String vlanID;
     protected String peerUnit;
 
@@ -77,12 +77,12 @@ public class SubInterfaceType {
     }
 
 
-    public IPConfigurationType getIPconfiguration() {
+    public IPConfiguration getIPconfiguration() {
         return iPconfiguration;
     }
 
 
-    public void setIPconfiguration(IPConfigurationType value) {
+    public void setIPconfiguration(IPConfiguration value) {
         this.iPconfiguration = value;
     }
 

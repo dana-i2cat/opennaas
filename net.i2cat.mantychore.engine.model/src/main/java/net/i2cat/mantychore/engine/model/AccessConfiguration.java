@@ -4,7 +4,7 @@ package net.i2cat.mantychore.engine.model;
 
 
 
-public class AccessConfigurationType {
+public class AccessConfiguration {
 
     protected String ipAccessAddress;
     protected int accessPort;

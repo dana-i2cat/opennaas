@@ -6,7 +6,7 @@ import java.util.List;
 
 
 
-public class PhysicalInterfaceType {
+public class PhysicalInterface {
 
     protected String status;
     protected String linkStatus;
@@ -15,8 +15,8 @@ public class PhysicalInterfaceType {
     protected String type;
     protected String location;
     protected String linkMode;
-    protected List<SubInterfaceType> subInterfaces;
-    protected PhysicalInterfaceType physicalInterfaceParent;
+    protected List<SubInterface> subInterfaces;
+    protected PhysicalInterface physicalInterfaceParent;
 
 
     public String getStatus() {
@@ -89,20 +89,20 @@ public class PhysicalInterfaceType {
     }
 
 
-    public List<SubInterfaceType> getSubInterfaces() {
+    public List<SubInterface> getSubInterfaces() {
         if (subInterfaces == null) {
-            subInterfaces = new ArrayList<SubInterfaceType>();
+            subInterfaces = new ArrayList<SubInterface>();
         }
         return this.subInterfaces;
     }
 
 
-    public PhysicalInterfaceType getPhysicalInterfaceParent() {
+    public PhysicalInterface getPhysicalInterfaceParent() {
         return physicalInterfaceParent;
     }
 
 
-    public void setPhysicalInterfaceParent(PhysicalInterfaceType value) {
+    public void setPhysicalInterfaceParent(PhysicalInterface value) {
         this.physicalInterfaceParent = value;
     }
 

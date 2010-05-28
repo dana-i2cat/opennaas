@@ -6,14 +6,14 @@ import java.util.List;
 
 
 
-public class ParametersType {
+public class Parameters {
 
 
-    protected List<ParametersType.Parameter> parameter;
+    protected List<Parameters.Parameter> parameter;
 
-    public List<ParametersType.Parameter> getParameter() {
+    public List<Parameters.Parameter> getParameter() {
         if (parameter == null) {
-            parameter = new ArrayList<ParametersType.Parameter>();
+            parameter = new ArrayList<Parameters.Parameter>();
         }
         return this.parameter;
     }

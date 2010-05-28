@@ -5,7 +5,7 @@ package net.i2cat.mantychore.engine.model;
 
 
 
-public class LocationType {
+public class Location {
 
     protected String city;
     protected String country;

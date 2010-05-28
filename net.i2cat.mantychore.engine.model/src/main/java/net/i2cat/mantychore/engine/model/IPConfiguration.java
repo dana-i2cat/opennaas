@@ -8,7 +8,7 @@ import java.util.List;
 
 
 
-public class IPConfigurationType {
+public class IPConfiguration {
 
     protected String ipSubNetwork;
     protected String broadcast;

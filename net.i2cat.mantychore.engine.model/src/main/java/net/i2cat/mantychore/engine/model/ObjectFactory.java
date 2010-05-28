@@ -8,43 +8,43 @@ public class ObjectFactory {
     public ObjectFactory() {
     }
 
-    public AccessConfigurationType createAccessConfigurationType() {
-        return new AccessConfigurationType();
+    public AccessConfiguration createAccessConfigurationType() {
+        return new AccessConfiguration();
     }
 
-    public ParametersType.Parameter createParametersTypeParameter() {
-        return new ParametersType.Parameter();
+    public Parameters.Parameter createParametersTypeParameter() {
+        return new Parameters.Parameter();
     }
 
-    public RouterType createRouterType() {
-        return new RouterType();
+    public RouterModel createRouterType() {
+        return new RouterModel();
     }
 
-    public UserAccountType createUserAccountType() {
-        return new UserAccountType();
-    }
-
-
-    public LocationType createLocationType() {
-        return new LocationType();
-    }
-
-    public SubInterfaceType createSubInterfaceType() {
-        return new SubInterfaceType();
-    }
-
-    public IPConfigurationType createIPConfigurationType() {
-        return new IPConfigurationType();
+    public UserAccount createUserAccountType() {
+        return new UserAccount();
     }
 
 
-    public ParametersType createParametersType() {
-        return new ParametersType();
+    public Location createLocationType() {
+        return new Location();
+    }
+
+    public SubInterface createSubInterfaceType() {
+        return new SubInterface();
+    }
+
+    public IPConfiguration createIPConfigurationType() {
+        return new IPConfiguration();
     }
 
 
-    public PhysicalInterfaceType createPhysicalInterfaceType() {
-        return new PhysicalInterfaceType();
+    public Parameters createParametersType() {
+        return new Parameters();
+    }
+
+
+    public PhysicalInterface createPhysicalInterfaceType() {
+        return new PhysicalInterface();
     }
 
 }

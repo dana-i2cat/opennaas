@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RouterType {
+public class RouterModel {
 
     protected String routerName;
     protected String hostName;
@@ -16,11 +16,11 @@ public class RouterType {
     protected boolean allowsRouterInstanceCreation;
     protected boolean isPhysical;
     protected String routerIDs;
-    protected LocationType location;
-    protected AccessConfigurationType accessConfiguration;
-    protected List<UserAccountType> userAccounts;
-    protected List<PhysicalInterfaceType> physicalInterfaces;
-    protected List<RouterType> children;
+    protected Location location;
+    protected AccessConfiguration accessConfiguration;
+    protected List<UserAccount> userAccounts;
+    protected List<PhysicalInterface> physicalInterfaces;
+    protected List<RouterModel> children;
     protected String parent;
 
 
@@ -114,45 +114,45 @@ public class RouterType {
     }
 
 
-    public LocationType getLocation() {
+    public Location getLocation() {
         return location;
     }
 
 
-    public void setLocation(LocationType value) {
+    public void setLocation(Location value) {
         this.location = value;
     }
 
 
-    public AccessConfigurationType getAccessConfiguration() {
+    public AccessConfiguration getAccessConfiguration() {
         return accessConfiguration;
     }
 
 
-    public void setAccessConfiguration(AccessConfigurationType value) {
+    public void setAccessConfiguration(AccessConfiguration value) {
         this.accessConfiguration = value;
     }
 
 
-    public List<UserAccountType> getUserAccounts() {
+    public List<UserAccount> getUserAccounts() {
         if (userAccounts == null) {
-            userAccounts = new ArrayList<UserAccountType>();
+            userAccounts = new ArrayList<UserAccount>();
         }
         return this.userAccounts;
     }
 
 
-    public List<PhysicalInterfaceType> getPhysicalInterfaces() {
+    public List<PhysicalInterface> getPhysicalInterfaces() {
         if (physicalInterfaces == null) {
-            physicalInterfaces = new ArrayList<PhysicalInterfaceType>();
+            physicalInterfaces = new ArrayList<PhysicalInterface>();
         }
         return this.physicalInterfaces;
     }
 
 
-    public List<RouterType> getChildren() {
+    public List<RouterModel> getChildren() {
         if (children == null) {
-            children = new ArrayList<RouterType>();
+            children = new ArrayList<RouterModel>();
         }
         return this.children;
     }
