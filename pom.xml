@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <!--
+   | put company details here
+  <organization>
+    <name>i2cat</name>
+    <url>http://...</url>
+  </organization>
+  -->
+
+  <!--
+   | put license details here
+  <licenses>
+    <license>
+      <name>...</name>
+      <url>http://...</url>
+      <comments>
+      </comments>
+    </license>
+  </licenses>
+  -->
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>net.i2cat.mantychore</groupId>
+  <artifactId>mantychore</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>net.i2cat.mantychore (OSGi project)</name>
+
+  <!--
+   | describe your project here
+  -->
+
+  <description>Generated using Pax-Construct</description>
+
+  <properties>
+    <!--
+     | some example OSGi runtime properties
+    -->
+    <org.osgi.service.http.port>8080</org.osgi.service.http.port>
+    <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
+  </properties>
+
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>poms</module>
+    <module>provision</module>
+    <module>engine.protocols.netconf</module>
+    <module>engine.transports.ssh</module>
+    <module>engine.model</module>
+  </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.ops4j</groupId>
+        <artifactId>maven-pax-plugin</artifactId>
+        <version>1.4</version>
+        <configuration>
+          <!--
+           | some example Pax-Runner settings
+          -->
+          <provision>
+            <param>--platform=equinox</param>
+          </provision>
+        </configuration>
+        <executions>
+          <execution>
+            <id>ide-support</id>
+            <goals>
+              <goal>eclipse</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
