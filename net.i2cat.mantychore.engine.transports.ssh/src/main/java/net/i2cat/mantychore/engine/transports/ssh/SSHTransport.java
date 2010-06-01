@@ -9,14 +9,16 @@ import java.io.PrintWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.iaasframework.engines.transports.IStreamTransport;
 import com.iaasframework.engines.transports.TransportException;
 
+import ch.ethz.ssh2.ChannelCondition;
 import ch.ethz.ssh2.Connection;
 import ch.ethz.ssh2.ConnectionMonitor;
 import ch.ethz.ssh2.Session;
 
 
-public class SSHTransport {
+public class SSHTransport implements IStreamTransport{
 	public static final String SSH = "SSH";
 	
 	public static final String NETCONF_PROTOCOL = "netconf";
@@ -25,19 +27,24 @@ public class SSHTransport {
 	/** number of rows with the pty terminal works **/
 	private final static int NUMROWS_FOR_TERMINAL = 10000;
 	/** buffer for a message **/
-	private final static int SIZE_BUFFER = 8129;
+	public final static int SIZE_BUFFER = 8129;
 
 	/**
 	 * Delimiter for the ssh connection. the method receives a message until to
 	 * read the DELIMITER
 	 **/
-	private static String DELIMITER = "]]>]]>";
+	public  static  String DELIMITER = "]]>]]>";
 
 	/**
 	 * Delimiter for EOF. If you don't want any delimiter, you have to specify
 	 * this
 	 **/
-	private static int TIMEOUT_MILISECS = 5000;
+	public  static int TIMEOUT_MILISECS = 5000;
+	
+	public final static int TIMEOUT = ChannelCondition.TIMEOUT;
+	public final static int EOF = ChannelCondition.EOF;
+	public final static int STDERR_DATA = ChannelCondition.STDERR_DATA;
+	public final static int STDOUT_DATA = ChannelCondition.STDOUT_DATA;
 	
 	
 	/** Username for the ssh connection **/	
@@ -60,6 +67,9 @@ public class SSHTransport {
 
 	/** Specificy which subsystem works **/
 	protected String subsystem;
+
+	/** Stream to get response messages */
+	private OutputStream stdIn;
 	
 	/** Stream to get response messages */
 	private InputStream stdOut;
@@ -133,7 +143,7 @@ public class SSHTransport {
 	 * @param port
 	 *            port to connect
 	 * @param subsystem
-	 *            specify the subssystem for the ssh connection
+	 *            specify the subsystem for the ssh connection
 	 * @param delimiter
 	 *            specify a delimiter in the messages, if it is necessary
 	 * @param timeout
@@ -161,23 +171,23 @@ public class SSHTransport {
 	public void connect() throws TransportException {
 
 		try {
-
-			log.debug("user: " + user);
-			log.debug("pass: " + pass);
-			log.debug("hostname: " + IP);
+			
+			System.out.println("user: " + user);
+			System.out.println("pass: " + pass);
+			System.out.println("hostname: " + IP);
 			
 			//Restore the configuration of SSH connection
 			isSubsystem = (subsystem != null);
 			isShell = withShell;
 			
-			log.debug("resetting configuration isShell, isSubsystem");
-			log.debug("Shell: " + withShell);
-			log.debug("Subsystem: " + withShell);
+			System.out.println("resetting configuration isShell, isSubsystem");
+			System.out.println("Shell: " + withShell);
+			System.out.println("Subsystem: " + withShell);
 
 			conn = new Connection(IP, port);
 			boolean isAuthenticated = false;
 			conn.connect();
-			log.debug("starting authentication...");
+			System.out.println("starting authentication...");
 
 			isAuthenticated = conn.authenticateWithPassword(user, pass);
 
@@ -185,11 +195,12 @@ public class SSHTransport {
 				throw new TransportException("it couldn't open the connection (Authentication Error)");
 
 			/* Opening session */
-			log.debug("Opening session...");
+			System.out.println("Opening session...");
 			sess = conn.openSession();
-			log.debug("Session opened...");	
+			System.out.println("Session opened...");	
 			stdOut  = sess.getStdout();
 			stdError = sess.getStderr();
+			stdIn = sess.getStdin();
 			
 			
 			/* Prepare the connection managing */
@@ -208,10 +219,10 @@ public class SSHTransport {
 	 */
 	public void disconnect() throws TransportException {
 
-		log.info("Closing session...");
-		log.info("ExitCode: " + sess.getExitStatus());
+		System.out.println("Closing session...");
+		System.out.println("ExitCode: " + sess.getExitStatus());
 		sess.close();
-		log.info("Session Closed");
+		System.out.println("Session Closed");
 		this.conn.close();
 		closed = true;
 
@@ -229,17 +240,16 @@ public class SSHTransport {
 	 *             This exception is thrown when it is impossible get send an
 	 *             operation
 	 */
-	public void send(Object object) throws TransportException {
-		StringBuilder operation = (StringBuilder) object;
+	private void send(StringBuilder operation) throws TransportException {
 
 		try {
 
 			/* activate flags */
-			log.debug("Session opened...");
+			System.out.println("Session opened...");
 
 			/* Create a shell */
 			if (isShell) {
-				log.debug("Starting a shell... ");
+				System.out.println("Starting a shell... ");
 				// I am using a large number of rows for get all the message
 				sess.requestPTY("vt100", 80, NUMROWS_FOR_TERMINAL, 640, 480,
 						null);
@@ -250,7 +260,7 @@ public class SSHTransport {
 
 			/* Create a subsystem */
 			if (this.isSubsystem) {
-				log.debug("Activating " + subsystem + "... ");
+				System.out.println("Activating " + subsystem + "... ");
 				
 				if (subsystem.equals(NETCONF_PROTOCOL)) {
 					sess.startSubSystem(NETCONF_PROTOCOL);
@@ -266,7 +276,7 @@ public class SSHTransport {
 			PrintWriter writer = new PrintWriter(out);
 			writer.println(operation.toString());
 			writer.flush();
-			log.debug("Operation sent");
+			System.out.println("Operation sent");
 
 		} catch (IOException e) {
 			//e.printStackTrace();
@@ -299,12 +309,9 @@ public class SSHTransport {
 		this.isSubsystem = true;
 	}
 
-	public InputStream getStdOut() {
-		return stdOut;
-	}
 
-	public InputStream getStdError() {
-		return stdError;
+	public Session getSess() {
+		return sess;
 	}
 
 	/* Get/Sets for configuration */
@@ -367,6 +374,39 @@ public class SSHTransport {
 			sshtransport.setClosed(true);
 
 		}
+	}
+
+	/**
+	 * Get response message stream
+	 */
+	public InputStream getInputStream() throws TransportException {
+		return stdOut;
+	}
+	
+	/**
+	 * Get error response message stream
+	 * @return
+	 * @throws TransportException
+	 */
+	public InputStream getInputStreamError() throws TransportException {
+		return stdError;
+	}
+	
+	@Override
+	public OutputStream getOutputStream() throws TransportException {
+		return stdIn;
+	}
+
+	@Override
+	public void send(byte[] rawInput) throws TransportException {
+		send(new StringBuilder(new String(rawInput)));
+		
+	}
+
+	@Override
+	public void send(char[] rawInput) throws TransportException {
+		send(new StringBuilder(new String(rawInput)));
+		
 	}
 	
 
