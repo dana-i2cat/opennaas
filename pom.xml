@@ -1,81 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <!--
-   | put company details here
-  <organization>
-    <name>i2cat</name>
-    <url>http://...</url>
-  </organization>
-  -->
-
-  <!--
-   | put license details here
-  <licenses>
-    <license>
-      <name>...</name>
-      <url>http://...</url>
-      <comments>
-      </comments>
-    </license>
-  </licenses>
-  -->
+  <parent>
+      <groupId>com.iaasframework</groupId>
+      <artifactId>community-settings</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+  </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.i2cat.mantychore</groupId>
   <artifactId>mantychore</artifactId>
-  <version>1.0-SNAPSHOT</version>
-
-  <name>net.i2cat.mantychore (OSGi project)</name>
-
-  <!--
-   | describe your project here
-  -->
-
-  <description>Generated using Pax-Construct</description>
-
-  <properties>
-    <!--
-     | some example OSGi runtime properties
-    -->
-    <org.osgi.service.http.port>8080</org.osgi.service.http.port>
-    <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>
-  </properties>
 
   <packaging>pom</packaging>
 
+  <name>Mantychore</name>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <url>http://www.i2cat.net/en</url>
+
+        <ciManagement>
+                <system>Hudson</system>
+                <url>http://dev.manticore.i2cat.net:8080/</url>
+                <notifiers>
+                        <notifier>
+                                <address>manticore2-devel@listas.i2cat.net</address>
+                        </notifier>
+                </notifiers>
+        </ciManagement>
+
+        <prerequisites>
+                <maven>2.0.9</maven>
+        </prerequisites>
+
+<!-- mvn build will only recurse on pom.xml inside this folders: -->
   <modules>
-    <module>poms</module>
-    <module>provision</module>
-    <module>engine.protocols.netconf</module>
-    <module>engine.transports.ssh</module>
-    <module>engine.model</module>
+    <module>bundles</module>
+    <module>examples</module>
+    <module>tests</module>
   </modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <version>1.4</version>
-        <configuration>
-          <!--
-           | some example Pax-Runner settings
-          -->
-          <provision>
-            <param>--platform=equinox</param>
-          </provision>
-        </configuration>
-        <executions>
-          <execution>
-            <id>ide-support</id>
-            <goals>
-              <goal>eclipse</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <properties>
+    <mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+    <iaas.version>1.0.0-SNAPSHOT</iaas.version>
+  </properties>
 
+  <dependencies>
+     <!-- IaaS Dependencies -->
+     <dependency>
+        <groupId>com.iaasframework.core</groupId>
+        <artifactId>com.iaasframework.core.resourcecore</artifactId>
+        <scope>provided</scope>
+     </dependency>
+        <dependency>
+                <groupId>com.iaasframework.core</groupId>
+                <artifactId>com.iaasframework.core.persistence</artifactId>
+                <scope>provided</scope>
+        </dependency>
+        <dependency>
+                <groupId>com.iaasframework.core</groupId>
+                <artifactId>com.iaasframework.core.hibernate</artifactId>
+                <scope>provided</scope>
+        </dependency>
+        <dependency>
+                <groupId>org.apache.geronimo.specs</groupId>
+                <artifactId>geronimo-jpa_1.0_spec</artifactId>
+                <scope>provided</scope>
+        </dependency>
+  </dependencies>
+
+  <dependencyManagement>
+     <dependencies>
+        <!-- IaaS Framework and Tools -->
+        <dependency>
+           <groupId>com.iaasframework.core</groupId>
+           <artifactId>com.iaasframework.core.resourcecore</artifactId>
+           <version>${iaas.version}</version>
+        </dependency>
+       <dependency>
+                <groupId>com.iaasframework.core</groupId>
+                <artifactId>com.iaasframework.core.persistence</artifactId>
+                <version>${iaas.version}</version>
+        </dependency>
+        <dependency>
+                <groupId>com.iaasframework.core</groupId>
+                <artifactId>com.iaasframework.core.hibernate</artifactId>
+                <version>${iaas.version}</version>
+        </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.protocol</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.commandset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.actionset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.model</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.eventset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.triggerset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.protocols</groupId>
+      <artifactId>com.iaasframework.protocols.tl1</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.core</groupId>
+      <artifactId>com.iaasframework.core.transports</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.transports</groupId>
+      <artifactId>com.iaasframework.transports.sockets</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.transports</groupId>
+      <artifactId>com.iaasframework.transports.telnet</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.transports</groupId>
+      <artifactId>com.iaasframework.transports.secureshell</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.transports</groupId>
+      <artifactId>com.iaasframework.transports.virtual</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+   </dependencies>
+  </dependencyManagement>
+
+  <repositories>
+    <repository>
+      <id>commercial</id>
+      <name>Commercial Repositories</name>
+      <url>http://repository.inocybe.ca/content/groups/commercial/</url>
+    </repository>
+    <repository>
+      <id>commercial-snapshots</id>
+      <name>Commercial Snapshot Reposities</name>
+      <url>http://repository.inocybe.ca/content/groups/commercial-snapshots/</url>
+    </repository>
+      <repository>
+         <id>public</id>
+                        <name>Inocybe Public Repository Group Proxy Releases</name>
+                        <url>http://repository.inocybe.ca/content/groups/public/</url>
+                </repository>
+                <repository>
+                        <id>public-snapshots</id>
+                        <name>Inocybe Public Repository Snapshot Proxy Releases</name>
+                        <url>http://repository.inocybe.ca/content/groups/public-snapshots/</url>
+                </repository>
+  </repositories>
 </project>
