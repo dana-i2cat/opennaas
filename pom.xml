@@ -148,27 +148,16 @@
     </dependency>
    </dependencies>
   </dependencyManagement>
-
-  <repositories>
-    <repository>
-      <id>commercial</id>
-      <name>Commercial Repositories</name>
-      <url>http://repository.inocybe.ca/content/groups/commercial/</url>
-    </repository>
-    <repository>
-      <id>commercial-snapshots</id>
-      <name>Commercial Snapshot Reposities</name>
-      <url>http://repository.inocybe.ca/content/groups/commercial-snapshots/</url>
-    </repository>
-      <repository>
-         <id>public</id>
-                        <name>Inocybe Public Repository Group Proxy Releases</name>
-                        <url>http://repository.inocybe.ca/content/groups/public/</url>
-                </repository>
-                <repository>
-                        <id>public-snapshots</id>
-                        <name>Inocybe Public Repository Snapshot Proxy Releases</name>
-                        <url>http://repository.inocybe.ca/content/groups/public-snapshots/</url>
-                </repository>
-  </repositories>
+	<repositories>
+		<repository>
+			<id>releases</id>
+			<name>IaaS Repository Group Proxy Releases</name>
+			<url>http://repository.inocybe.ca/content/groups/public/</url>
+		</repository>
+		<repository>
+			<id>snapshots</id>
+			<name>IaaS Repository Snapshot Proxy Releases</name>
+			<url>http://repository.inocybe.ca/content/groups/public-snapshots/</url>
+		</repository>
+	</repositories>
 </project>
