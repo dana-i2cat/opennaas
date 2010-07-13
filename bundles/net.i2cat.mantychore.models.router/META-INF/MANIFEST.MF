@@ -1,0 +1,7 @@
+Manifest-Version: 1
+Bundle-Name: Mantychore Router Mode
+Import-Package: org.osgi.framework,org.osgi.util.tracker
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: net.i2cat.mantychore.models.router
+Bundle-Version: 1.0.0.SNAPSHOT
+
