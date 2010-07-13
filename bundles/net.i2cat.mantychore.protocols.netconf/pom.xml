@@ -21,17 +21,17 @@
 	</properties>
 	<!--  dependencies  -->
 	<dependencies>
-                <dependency>
-                        <groupId>com.iaasframework.capabilities</groupId>
-                        <artifactId>com.iaasframework.capabilities.protocol</artifactId>
-                        <scope>provided</scope>
-                </dependency>
-                
-                 <dependency>
-                        <groupId>com.iaasframework.core</groupId>
-                        <artifactId>com.iaasframework.core.transports</artifactId>
-                        <scope>provided</scope>
-                </dependency>
+		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.transports</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>
@@ -70,7 +70,7 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-                                 <!-- avoid importing our own package -->
+						<!-- avoid importing our own package -->
 						<Import-Package>!${bundle.namespace}.*,
 							org.slf4j;version="1.5.6",
 							*</Import-Package>
