@@ -1,109 +1,87 @@
 package net.i2cat.mantychore.models;
 
-
-
-
-
 public class SubInterface {
 
+	protected String			mtu;
+	protected String			description;
+	protected String			identifier;
+	protected String			speed;
+	protected String			encapsulation;
+	protected String			physicalInterfaceID;
+	protected IPConfiguration	iPconfiguration;
+	protected String			vlanID;
+	protected String			peerUnit;
 
-    protected String mtu;
-    protected String description;
-    protected String identifier;
-    protected String speed;
-    protected String encapsulation;
-    protected String physicalInterfaceID;
-    protected IPConfiguration iPconfiguration;
-    protected String vlanID;
-    protected String peerUnit;
+	public String getMtu() {
+		return mtu;
+	}
 
-    public String getMtu() {
-        return mtu;
-    }
+	public void setMtu(String value) {
+		this.mtu = value;
+	}
 
+	public String getDescription() {
+		return description;
+	}
 
-    public void setMtu(String value) {
-        this.mtu = value;
-    }
+	public void setDescription(String value) {
+		this.description = value;
+	}
 
+	public String getIdentifier() {
+		return identifier;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setIdentifier(String value) {
+		this.identifier = value;
+	}
 
+	public String getSpeed() {
+		return speed;
+	}
 
-    public void setDescription(String value) {
-        this.description = value;
-    }
+	public void setSpeed(String value) {
+		this.speed = value;
+	}
 
+	public String getEncapsulation() {
+		return encapsulation;
+	}
 
-    public String getIdentifier() {
-        return identifier;
-    }
+	public void setEncapsulation(String value) {
+		this.encapsulation = value;
+	}
 
+	public String getPhysicalInterfaceID() {
+		return physicalInterfaceID;
+	}
 
-    public void setIdentifier(String value) {
-        this.identifier = value;
-    }
+	public void setPhysicalInterfaceID(String value) {
+		this.physicalInterfaceID = value;
+	}
 
+	public IPConfiguration getIPconfiguration() {
+		return iPconfiguration;
+	}
 
-    public String getSpeed() {
-        return speed;
-    }
+	public void setIPconfiguration(IPConfiguration value) {
+		this.iPconfiguration = value;
+	}
 
+	public String getVlanID() {
+		return vlanID;
+	}
 
-    public void setSpeed(String value) {
-        this.speed = value;
-    }
+	public void setVlanID(String value) {
+		this.vlanID = value;
+	}
 
+	public String getPeerUnit() {
+		return peerUnit;
+	}
 
-    public String getEncapsulation() {
-        return encapsulation;
-    }
-
-
-    public void setEncapsulation(String value) {
-        this.encapsulation = value;
-    }
-
-
-    public String getPhysicalInterfaceID() {
-        return physicalInterfaceID;
-    }
-
-
-    public void setPhysicalInterfaceID(String value) {
-        this.physicalInterfaceID = value;
-    }
-
-
-    public IPConfiguration getIPconfiguration() {
-        return iPconfiguration;
-    }
-
-
-    public void setIPconfiguration(IPConfiguration value) {
-        this.iPconfiguration = value;
-    }
-
-
-    public String getVlanID() {
-        return vlanID;
-    }
-
-
-    public void setVlanID(String value) {
-        this.vlanID = value;
-    }
-
-
-    public String getPeerUnit() {
-        return peerUnit;
-    }
-
-
-    public void setPeerUnit(String value) {
-        this.peerUnit = value;
-    }
+	public void setPeerUnit(String value) {
+		this.peerUnit = value;
+	}
 
 }
