@@ -148,7 +148,17 @@
     </dependency>
    </dependencies>
   </dependencyManagement>
-	<repositories>
+  <organization>
+  	<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
+  	<url>http://www.i2cat.net/en</url>
+  </organization>
+  <build>
+  	<pluginManagement>
+  		<plugins>
+  		</plugins>
+  	</pluginManagement>
+  </build>
+  <repositories>
 		<repository>
 			<id>releases</id>
 			<name>IaaS Repository Group Proxy Releases</name>

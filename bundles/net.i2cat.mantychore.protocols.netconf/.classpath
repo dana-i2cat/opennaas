@@ -9,6 +9,7 @@
   <classpathentry kind="var" path="M2_REPO/com/iaasframework/core/com.iaasframework.core.hibernate/1.0.0-SNAPSHOT/com.iaasframework.core.hibernate-1.0.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/iaasframework/core/com.iaasframework.core.persistence/1.0.0-SNAPSHOT/com.iaasframework.core.persistence-1.0.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/iaasframework/core/com.iaasframework.core.resourcecore/1.0.0-SNAPSHOT/com.iaasframework.core.resourcecore-1.0.0-SNAPSHOT.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/iaasframework/core/com.iaasframework.core.transports/1.0.0-SNAPSHOT/com.iaasframework.core.transports-1.0.0-SNAPSHOT.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/easymock/easymock/2.5.2/easymock-2.5.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/easymock/easymockclassextension/2.5.2/easymockclassextension-2.5.2.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-jpa_1.0_spec/1.1.2/geronimo-jpa_1.0_spec-1.1.2.jar"/>
