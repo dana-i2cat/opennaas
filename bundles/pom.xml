@@ -6,8 +6,8 @@
   <packaging>pom</packaging>
 
   <parent>
-    <groupId>net.i2cat.mantychore</groupId>
     <artifactId>mantychore</artifactId>
+    <groupId>net.i2cat.mantychore</groupId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 

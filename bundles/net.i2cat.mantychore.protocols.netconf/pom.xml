@@ -19,11 +19,17 @@
 	<properties>
 		<bundle.namespace>${pom.artifactId}</bundle.namespace>
 	</properties>
-
+	<!--  dependencies  -->
 	<dependencies>
                 <dependency>
                         <groupId>com.iaasframework.capabilities</groupId>
                         <artifactId>com.iaasframework.capabilities.protocol</artifactId>
+                        <scope>provided</scope>
+                </dependency>
+                
+                 <dependency>
+                        <groupId>com.iaasframework.core</groupId>
+                        <artifactId>com.iaasframework.core.transports</artifactId>
                         <scope>provided</scope>
                 </dependency>
 	</dependencies>
