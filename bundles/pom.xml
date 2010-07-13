@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <packaging>pom</packaging>
+	<packaging>pom</packaging>
 
-  <parent>
-    <artifactId>mantychore</artifactId>
-    <groupId>net.i2cat.mantychore</groupId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<artifactId>mantychore</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-  <name>Mantychore Bundles</name>
-  <artifactId>mantychore-bundles</artifactId>
-  <groupId>net.i2cat.mantychore</groupId>
-  <version>1.0.0-SNAPSHOT</version>
+	<name>Mantychore Bundles</name>
+	<artifactId>mantychore-bundles</artifactId>
+	<groupId>net.i2cat.mantychore</groupId>
+	<version>1.0.0-SNAPSHOT</version>
 
-  <!-- mvn build will only recurse on pom.xml inside this folders: -->
+	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 
-  <!-- include your project here -->
+	<!-- include your project here -->
 
-  <modules>
-    <module>net.i2cat.mantychore.protocols.netconf</module>
-    <module>net.i2cat.mantychore.transports.ssh</module>
-  </modules>
+	<modules>
+		<module>net.i2cat.mantychore.protocols.netconf</module>
+		<module>net.i2cat.mantychore.transports.ssh</module>
+	</modules>
 
 </project>

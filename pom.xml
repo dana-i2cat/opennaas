@@ -1,164 +1,166 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <parent>
-      <groupId>com.iaasframework</groupId>
-      <artifactId>community-settings</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>com.iaasframework</groupId>
+		<artifactId>community-settings</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.i2cat.mantychore</groupId>
-  <artifactId>mantychore</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.i2cat.mantychore</groupId>
+	<artifactId>mantychore</artifactId>
 
-  <packaging>pom</packaging>
+	<packaging>pom</packaging>
 
-  <name>Mantychore</name>
-  <version>1.0.0-SNAPSHOT</version>
+	<name>Mantychore</name>
+	<version>1.0.0-SNAPSHOT</version>
 
-  <url>http://www.i2cat.net/en</url>
+	<url>http://www.i2cat.net/en</url>
 
-        <ciManagement>
-                <system>Hudson</system>
-                <url>http://dev.manticore.i2cat.net:8080/</url>
-                <notifiers>
-                        <notifier>
-                                <address>manticore2-devel@listas.i2cat.net</address>
-                        </notifier>
-                </notifiers>
-        </ciManagement>
+	<ciManagement>
+		<system>Hudson</system>
+		<url>http://dev.manticore.i2cat.net:8080/</url>
+		<notifiers>
+			<notifier>
+				<address>manticore2-devel@listas.i2cat.net</address>
+			</notifier>
+		</notifiers>
+	</ciManagement>
 
-        <prerequisites>
-                <maven>2.0.9</maven>
-        </prerequisites>
+	<prerequisites>
+		<maven>2.0.9</maven>
+	</prerequisites>
 
-<!-- mvn build will only recurse on pom.xml inside this folders: -->
-  <modules>
-    <module>bundles</module>
-    <module>examples</module>
-    <module>tests</module>
-  </modules>
+	<!-- mvn build will only recurse on pom.xml inside this folders: -->
+	<modules>
+		<module>bundles</module>
+		<module>examples</module>
+		<module>tests</module>
+	</modules>
 
-  <properties>
-    <mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-    <iaas.version>1.0.0-SNAPSHOT</iaas.version>
-  </properties>
+	<properties>
+		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<iaas.version>1.0.0-SNAPSHOT</iaas.version>
+	</properties>
 
-  <dependencies>
-     <!-- IaaS Dependencies -->
-     <dependency>
-        <groupId>com.iaasframework.core</groupId>
-        <artifactId>com.iaasframework.core.resourcecore</artifactId>
-        <scope>provided</scope>
-     </dependency>
-        <dependency>
-                <groupId>com.iaasframework.core</groupId>
-                <artifactId>com.iaasframework.core.persistence</artifactId>
-                <scope>provided</scope>
-        </dependency>
-        <dependency>
-                <groupId>com.iaasframework.core</groupId>
-                <artifactId>com.iaasframework.core.hibernate</artifactId>
-                <scope>provided</scope>
-        </dependency>
-        <dependency>
-                <groupId>org.apache.geronimo.specs</groupId>
-                <artifactId>geronimo-jpa_1.0_spec</artifactId>
-                <scope>provided</scope>
-        </dependency>
-  </dependencies>
+	<dependencies>
+		<!-- IaaS Dependencies -->
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.resourcecore</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.persistence</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.hibernate</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jpa_1.0_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 
-  <dependencyManagement>
-     <dependencies>
-        <!-- IaaS Framework and Tools -->
-        <dependency>
-           <groupId>com.iaasframework.core</groupId>
-           <artifactId>com.iaasframework.core.resourcecore</artifactId>
-           <version>${iaas.version}</version>
-        </dependency>
-       <dependency>
-                <groupId>com.iaasframework.core</groupId>
-                <artifactId>com.iaasframework.core.persistence</artifactId>
-                <version>${iaas.version}</version>
-        </dependency>
-        <dependency>
-                <groupId>com.iaasframework.core</groupId>
-                <artifactId>com.iaasframework.core.hibernate</artifactId>
-                <version>${iaas.version}</version>
-        </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.protocol</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.commandset</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.actionset</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.model</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.eventset</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.triggerset</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.protocols</groupId>
-      <artifactId>com.iaasframework.protocols.tl1</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.core</groupId>
-      <artifactId>com.iaasframework.core.transports</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.transports</groupId>
-      <artifactId>com.iaasframework.transports.sockets</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.transports</groupId>
-      <artifactId>com.iaasframework.transports.telnet</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.transports</groupId>
-      <artifactId>com.iaasframework.transports.secureshell</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.transports</groupId>
-      <artifactId>com.iaasframework.transports.virtual</artifactId>
-      <version>${iaas.version}</version>
-    </dependency>
-   </dependencies>
-  </dependencyManagement>
-  <organization>
-  	<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
-  	<url>http://www.i2cat.net/en</url>
-  </organization>
-  <build>
-  	<pluginManagement>
-  		<plugins>
-  		</plugins>
-  	</pluginManagement>
-  </build>
-  <repositories>
+	<dependencyManagement>
+		<dependencies>
+			<!-- IaaS Framework and Tools -->
+			<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.resourcecore</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.persistence</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.hibernate</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.commandset</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.actionset</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.model</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.eventset</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.triggerset</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.protocols</groupId>
+				<artifactId>com.iaasframework.protocols.tl1</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.transports</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.transports</groupId>
+				<artifactId>com.iaasframework.transports.sockets</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.transports</groupId>
+				<artifactId>com.iaasframework.transports.telnet</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.transports</groupId>
+				<artifactId>com.iaasframework.transports.secureshell</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.transports</groupId>
+				<artifactId>com.iaasframework.transports.virtual</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<organization>
+		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
+		<url>http://www.i2cat.net/en</url>
+	</organization>
+	<build>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<repositories>
 		<repository>
 			<id>releases</id>
 			<name>IaaS Repository Group Proxy Releases</name>
@@ -180,5 +182,5 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-	
+
 </project>
