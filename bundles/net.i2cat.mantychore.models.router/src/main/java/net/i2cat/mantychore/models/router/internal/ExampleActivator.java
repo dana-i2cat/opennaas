@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.models.internal;
+package net.i2cat.mantychore.models.router.internal;
 
 import java.util.Dictionary;
 import java.util.Properties;
@@ -6,7 +6,7 @@ import java.util.Properties;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import net.i2cat.mantychore.models.ExampleService;
+import net.i2cat.mantychore.models.router.ExampleService;
 
 /**
  * Extension of the default OSGi bundle activator

@@ -1,10 +1,10 @@
-package net.i2cat.mantychore.models.internal;
+package net.i2cat.mantychore.models.router.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.i2cat.mantychore.models.ExampleService;
+import net.i2cat.mantychore.models.router.ExampleService;
 
 /**
  * Internal implementation of our example OSGi service

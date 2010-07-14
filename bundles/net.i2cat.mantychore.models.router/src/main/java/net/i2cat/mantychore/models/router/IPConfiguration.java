@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.models;
+package net.i2cat.mantychore.models.router;
 
 import java.util.ArrayList;
 import java.util.List;

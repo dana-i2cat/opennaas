@@ -1,9 +1,9 @@
-package net.i2cat.mantychore.models.internal.validator;
+package net.i2cat.mantychore.models.router.internal.validator;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import net.i2cat.mantychore.models.RouterModel;
+import net.i2cat.mantychore.models.router.RouterModel;
 
 public class RouterModelValidator implements Validator {
 
