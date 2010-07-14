@@ -9,7 +9,13 @@ public class UserAccount {
 	protected String	userName;
 	@NotBlank
 	protected String	password;
+	/**
+	 * Parameter NOT used
+	 */
 	protected String	privilegedUser;
+	/**
+	 * Parameter NOT used
+	 */
 	protected String	privilegedPassword;
 	@NotBlank
 	protected String	routerConfigured;

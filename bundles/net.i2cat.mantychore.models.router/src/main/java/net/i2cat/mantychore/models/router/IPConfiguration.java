@@ -10,36 +10,37 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank
  */
 public class IPConfiguration {
 	/**
-	 * Subnetwork address obtain from the ipaddress and the mask.
+	 * Subnetwork address obtain from the IP address and the mask.
 	 */
 	@NotBlank
 	protected String		ipSubNetwork;
 	/**
-	 * Add the funcionability of fastSwitching to the interface. NOT IMPLEMENTED
+	 * Add the functionality of fastSwitching to the interface. Parameter NOT
+	 * implemented
 	 */
 	protected String		fastSwitching;
 	/**
-	 * NOT IMPLEMENTED
+	 * Functionality NOT implemented
 	 */
 	protected String		nat;
 	/**
-	 * NOT IMPLEMENTED
+	 * Functionality NOT implemented
 	 */
 	protected List<String>	rule;
 	protected String		ipv4Address;
 	protected String		ipv4Mask;
 	/**
-	 * NOT USED
+	 * Parameter NOT used
 	 */
 	protected String		ipv4Broadcast;
 	protected String		ipv6Address;
 	protected String		ipv6Prefix;
 	/**
-	 * NOT USED
+	 * Parameter NOT used
 	 */
 	protected String		ipv6Broadcast;
 	/**
-	 * Representation of the IP protocol version. NOT USED
+	 * Representation of the IP protocol version. Parameter NOT used
 	 */
 	protected String		ipVersion;
 

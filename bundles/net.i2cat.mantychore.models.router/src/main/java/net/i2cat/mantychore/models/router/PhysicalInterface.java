@@ -3,14 +3,25 @@ package net.i2cat.mantychore.models.router;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhysicalInterface {
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
+public class PhysicalInterface {
+	@NotBlank
 	protected String				status;
+	@NotBlank
 	protected String				linkStatus;
+	@NotBlank
 	protected int					keepalive;
+	@NotBlank
 	protected String				macAddress;
+	@NotBlank
 	protected String				type;
+	/**
+	 * Indicate the name of the interface
+	 */
+	@NotBlank
 	protected String				location;
+	@NotBlank
 	protected String				linkMode;
 	protected List<SubInterface>	subInterfaces;
 	protected PhysicalInterface		physicalInterfaceParent;

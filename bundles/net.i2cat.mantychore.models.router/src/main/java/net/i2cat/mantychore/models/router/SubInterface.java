@@ -3,20 +3,29 @@ package net.i2cat.mantychore.models.router;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
 public class SubInterface {
-
+	@NotBlank
 	protected String			mtu;
+	/**
+	 * Parameter NOT used
+	 */
 	protected String			description;
 	@NotBlank
 	protected String			identifier;
+	@NotBlank
 	protected String			speed;
+	@NotBlank
 	protected String			encapsulation;
+	@NotBlank
 	protected String			physicalInterfaceID;
 	@NotBlank
 	protected IPConfiguration	iPconfiguration;
-
-	@NotBlank
+	/**
+	 * Must be configured when the interface is physical
+	 */
 	protected String			vlanID;
-
+	/**
+	 * Must be configured when the interface is logical
+	 */
 	protected String			peerUnit;
 
 	public String getMtu() {
