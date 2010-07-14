@@ -32,8 +32,8 @@ public class RouterModel implements IResourceModel {
 	protected Location					location;
 
 	/**
-	 * URL formed string (protocol://address:port/etc). The transport is in
-	 * charge of interpreting it
+	 * URL formed string (protocol://address:port/etc). The transport bundle is
+	 * in charge of interpreting it
 	 */
 	protected String					transportIdentifier;
 
