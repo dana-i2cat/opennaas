@@ -1,19 +1,25 @@
 package net.i2cat.mantychore.models;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 import org.springmodules.validation.bean.conf.loader.annotation.handler.Email;
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
 public class UserAccount {
 
+	@NotBlank
 	protected String	userName;
+	@NotBlank
 	protected String	password;
 	protected String	privilegedUser;
 	protected String	privilegedPassword;
+	@NotBlank
 	protected String	routerConfigured;
+	@NotBlank
 	protected String	smtpServer;
+	@NotBlank
 	protected String	smtpServerPort;
 	@Email
 	protected String	emailUser;
+	@NotBlank
 	protected String	emailPassword;
 
 	public String getUserName() {
