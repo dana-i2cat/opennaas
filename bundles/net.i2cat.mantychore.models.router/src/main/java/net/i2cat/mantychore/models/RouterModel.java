@@ -3,9 +3,15 @@ package net.i2cat.mantychore.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
-public class RouterModel {
+import com.iaasframework.capabilities.model.IResourceModel;
+import com.iaasframework.resources.core.ObjectSerializer;
+
+@XmlRootElement
+public class RouterModel implements IResourceModel {
 
 	@NotBlank
 	protected String					routerName;
@@ -24,6 +30,16 @@ public class RouterModel {
 	@NotBlank
 	protected String					routerIDs;
 	protected Location					location;
+
+	/**
+	 * URL formed string (protocol://address:port/etc). The transport is in
+	 * charge of interpreting it
+	 */
+	protected String					transportIdentifier;
+
+	/**
+	 * @deprecated transportIdentifier should be used instead.
+	 */
 	@NotBlank
 	protected AccessConfiguration		accessConfiguration;
 	@NotBlank
@@ -147,6 +163,10 @@ public class RouterModel {
 
 	public void setParent(String value) {
 		this.parent = value;
+	}
+
+	public String toXML() {
+		return ObjectSerializer.toXml(this);
 	}
 
 }

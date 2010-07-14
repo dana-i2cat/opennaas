@@ -8,7 +8,6 @@ import net.i2cat.mantychore.models.RouterModel;
 public class RouterModelValidator implements Validator {
 
 	public boolean supports(Class clazz) {
-
 		if (clazz.equals(RouterModel.class))
 			return true;
 
@@ -17,7 +16,5 @@ public class RouterModelValidator implements Validator {
 
 	public void validate(Object obj, Errors errors) {
 		// TODO Auto-generated method stub
-
 	}
-
 }
