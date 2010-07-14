@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import net.i2cat.mantychore.models.router.ExampleService;
+import net.i2cat.mantychore.models.router.RouterModelService;
 
 /**
  * Internal implementation of our example OSGi service
  */
-public final class ExampleServiceImpl implements ExampleService {
+public final class RouterModelServiceImpl implements RouterModelService {
 	// implementation methods go here...
 
 	public String scramble(String text) {

@@ -6,12 +6,12 @@ import java.util.Properties;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import net.i2cat.mantychore.models.router.ExampleService;
+import net.i2cat.mantychore.models.router.RouterModelService;
 
 /**
  * Extension of the default OSGi bundle activator
  */
-public final class ExampleActivator implements BundleActivator {
+public final class RouterModelActivator implements BundleActivator {
 	/**
 	 * Called whenever the OSGi framework starts our bundle
 	 */
@@ -26,8 +26,8 @@ public final class ExampleActivator implements BundleActivator {
 
 		// Register our example service implementation in the OSGi service
 		// registry
-		bc.registerService(ExampleService.class.getName(),
-				new ExampleServiceImpl(), props);
+		bc.registerService(RouterModelService.class.getName(),
+				new RouterModelServiceImpl(), props);
 	}
 
 	/**
