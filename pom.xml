@@ -3,22 +3,44 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
+	<!-- Maven configuration -->
 	<parent>
 		<groupId>com.iaasframework</groupId>
 		<artifactId>community-settings</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<iaas.version>1.0.0-SNAPSHOT</iaas.version>
+	</properties>
+
 	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<prerequisites>
+		<maven>2.0.9</maven>
+	</prerequisites>
+
 	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>mantychore</artifactId>
 
-	<packaging>pom</packaging>
+	<!-- Administrative information -->
+	<organization>
+		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
+		<url>http://www.i2cat.net/en</url>
+	</organization>
 
 	<name>Mantychore</name>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<url>http://www.i2cat.net/en</url>
+
+	<!-- Build information -->
+	<build>
+		<pluginManagement>
+			<plugins>
+			</plugins>
+		</pluginManagement>
+	</build>
 
 	<ciManagement>
 		<system>Hudson</system>
@@ -30,9 +52,28 @@
 		</notifiers>
 	</ciManagement>
 
-	<prerequisites>
-		<maven>2.0.9</maven>
-	</prerequisites>
+	<scm>
+		<connection>scm:svn:http://svn.i2cat.com/repos/manticore/</connection>
+		<developerConnection>scm:svn:http://svn.i2cat.com/repos/manticore/</developerConnection>
+		<url>scm:svn:http://svn.i2cat.com/repos/manticore</url>
+	</scm>
+
+	<reporting>
+		<plugins>
+			<!-- Javadoc -->
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jxr-maven-plugin</artifactId>
+			</plugin>
+			<!-- Unit Test Report -->
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
 
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
@@ -40,11 +81,6 @@
 		<module>examples</module>
 		<module>tests</module>
 	</modules>
-
-	<properties>
-		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<iaas.version>1.0.0-SNAPSHOT</iaas.version>
-	</properties>
 
 	<dependencies>
 		<!-- IaaS Dependencies -->
@@ -150,16 +186,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<organization>
-		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
-		<url>http://www.i2cat.net/en</url>
-	</organization>
-	<build>
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-	</build>
+
 	<repositories>
 		<repository>
 			<id>releases</id>
