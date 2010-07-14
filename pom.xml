@@ -210,4 +210,11 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<distributionManagement>
+		<site>
+			<id>dev.manticore.i2cat.net</id>
+			<url>file://var/www/site/</url>
+		</site>
+	</distributionManagement>
+
 </project>
