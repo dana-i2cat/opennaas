@@ -1,15 +1,22 @@
 package net.i2cat.mantychore.models;
 
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
+
 public class SubInterface {
 
 	protected String			mtu;
 	protected String			description;
+	@NotBlank
 	protected String			identifier;
 	protected String			speed;
 	protected String			encapsulation;
 	protected String			physicalInterfaceID;
+	@NotBlank
 	protected IPConfiguration	iPconfiguration;
+
+	@NotBlank
 	protected String			vlanID;
+
 	protected String			peerUnit;
 
 	public String getMtu() {
