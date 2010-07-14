@@ -3,6 +3,8 @@ package net.i2cat.mantychore.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
+
 public class RouterModel {
 
 	@NotBlank
