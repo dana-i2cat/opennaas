@@ -1,24 +1,46 @@
 package net.i2cat.mantychore.models;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class IPConfiguration {
+import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
+/**
+ * Contain parameters for the configuration of an network interface.
+ */
+public class IPConfiguration {
+	/**
+	 * Subnetwork address obtain from the ipaddress and the mask.
+	 */
 	@NotBlank
 	protected String		ipSubNetwork;
-	protected String		fastSwitching;	// not implemented
-	protected String		nat;			// not implemented
-	protected List<String>	rule;			// not implemented
+	/**
+	 * Add the funcionability of fastSwitching to the interface. NOT IMPLEMENTED
+	 */
+	protected String		fastSwitching;
+	/**
+	 * NOT IMPLEMENTED
+	 */
+	protected String		nat;
+	/**
+	 * NOT IMPLEMENTED
+	 */
+	protected List<String>	rule;
 	protected String		ipv4Address;
 	protected String		ipv4Mask;
-	protected String		ipv4Broadcast;	// not used
+	/**
+	 * NOT USED
+	 */
+	protected String		ipv4Broadcast;
 	protected String		ipv6Address;
 	protected String		ipv6Prefix;
-	protected String		ipv6Broadcast;	// not used
-	@NotBlank
+	/**
+	 * NOT USED
+	 */
+	protected String		ipv6Broadcast;
+	/**
+	 * Representation of the IP protocol version. NOT USED
+	 */
 	protected String		ipVersion;
 
 	public String getIpSubNetwork() {
