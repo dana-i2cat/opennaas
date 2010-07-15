@@ -1,0 +1,7 @@
+#set ($hola = "Hola Mundo")
+
+<h1>$hola</h1>
+	
+#d()
+
+<h2>$salida</h2>

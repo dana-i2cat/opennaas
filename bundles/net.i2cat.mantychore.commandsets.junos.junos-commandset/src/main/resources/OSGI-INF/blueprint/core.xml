@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<bean id="junosCommandFactory"
+		class="net.i2cat.mantychore.commandsets.junos.JunosCommandFactory">
+	</bean>
+	<!-- Register an OME6500 command factory as an OSGi Service -->
+	<service ref="junosCommandFactory"
+		interface="com.iaasframework.capabilities.commandset.ICommandFactory">
+		<service-properties>
+			<entry key="commandSet.name" value="junos" />
+			<entry key="commandSet.version" value="1.0.0" />
+		</service-properties>
+	</service>
+</blueprint>
