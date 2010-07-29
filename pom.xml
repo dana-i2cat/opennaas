@@ -35,6 +35,7 @@
 	<url>http://www.i2cat.net/en</url>
 
 	<!-- Build information -->
+	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
 	<build>
 		<pluginManagement>
 			<plugins>
