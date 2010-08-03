@@ -192,7 +192,33 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-					
+						<Import-Package>javax.jws;version="1.0",
+							javax.wsdl,
+							META-INF.cxf;version="[0.0.0,${cxf.version})",
+							META-INF.cxf.osgi;version="[0.0.0,${cxf.version})",
+							org.apache.cxf,
+							org.apache.cxf.binding,
+							org.apache.cxf.binding.soap,
+							org.apache.cxf.binding.soap.spring,
+							org.apache.cxf.bus,
+							org.apache.cxf.bus.spring,
+							org.apache.cxf.bus.resource,
+							org.apache.cxf.buslifecycle,
+							org.apache.cxf.catalog,
+							org.apache.cxf.configuration.spring,
+							org.apache.cxf.endpoint,
+							org.apache.cxf.headers,
+							org.apache.cxf.phase,
+							org.apache.cxf.resource,
+							org.apache.cxf.transport,
+							org.apache.cxf.transport.http,
+							org.apache.cxf.transport.http_osgi,
+							org.apache.cxf.transport.http.policy,
+							org.apache.cxf.workqueue,
+							org.apache.cxf.wsdl11,
+							org.springframework.beans.factory.config,
+							org.springmodules.*;version="0.8",
+							org.slf4j;version="1.5.6"</Import-Package>
 						<Export-Package>net.i2cat.mantychore.models.router.*;version="${pom.version}"</Export-Package>
 						<Private-Package>net.i2cat.mantychore.models.router.internal.*</Private-Package>
 						<Bundle-Activator>net.i2cat.mantychore.models.router.internal.RouterModelActivator</Bundle-Activator>
