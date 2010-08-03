@@ -3,6 +3,7 @@ package net.i2cat.mantychore.models.router;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
@@ -48,6 +49,7 @@ public class RouterModel implements IResourceModel {
 	protected List<RouterModel>			children;
 	protected String					parent;
 
+	@XmlElement(name = "routerName")
 	public String getRouterName() {
 		return routerName;
 	}
@@ -56,6 +58,7 @@ public class RouterModel implements IResourceModel {
 		this.routerName = value;
 	}
 
+	@XmlElement(name = "hostName")
 	public String getHostName() {
 		return hostName;
 	}
@@ -64,6 +67,7 @@ public class RouterModel implements IResourceModel {
 		this.hostName = value;
 	}
 
+	@XmlElement(name = "routerModel")
 	public String getRouterModel() {
 		return routerModel;
 	}
@@ -72,6 +76,7 @@ public class RouterModel implements IResourceModel {
 		this.routerModel = value;
 	}
 
+	@XmlElement(name = "versionOS")
 	public String getVersionOS() {
 		return versionOS;
 	}
@@ -80,6 +85,7 @@ public class RouterModel implements IResourceModel {
 		this.versionOS = value;
 	}
 
+	@XmlElement(name = "logicalName")
 	public String getLogicalName() {
 		return logicalName;
 	}
@@ -88,6 +94,7 @@ public class RouterModel implements IResourceModel {
 		this.logicalName = value;
 	}
 
+	@XmlElement(name = "isOperation")
 	public boolean isIsOperation() {
 		return isOperation;
 	}
@@ -96,6 +103,7 @@ public class RouterModel implements IResourceModel {
 		this.isOperation = value;
 	}
 
+	@XmlElement(name = "allowsRouterInstanceCreation")
 	public boolean isAllowsRouterInstanceCreation() {
 		return allowsRouterInstanceCreation;
 	}
@@ -104,6 +112,7 @@ public class RouterModel implements IResourceModel {
 		this.allowsRouterInstanceCreation = value;
 	}
 
+	@XmlElement(name = "isPhysical")
 	public boolean isIsPhysical() {
 		return isPhysical;
 	}
@@ -112,6 +121,7 @@ public class RouterModel implements IResourceModel {
 		this.isPhysical = value;
 	}
 
+	@XmlElement(name = "routerIDs")
 	public String getRouterIDs() {
 		return routerIDs;
 	}
@@ -120,6 +130,7 @@ public class RouterModel implements IResourceModel {
 		this.routerIDs = value;
 	}
 
+	@XmlElement(name = "location")
 	public Location getLocation() {
 		return location;
 	}
@@ -128,6 +139,7 @@ public class RouterModel implements IResourceModel {
 		this.location = value;
 	}
 
+	@XmlElement(name = "accessConfiguration")
 	public AccessConfiguration getAccessConfiguration() {
 		return accessConfiguration;
 	}
@@ -136,6 +148,7 @@ public class RouterModel implements IResourceModel {
 		this.accessConfiguration = value;
 	}
 
+	@XmlElement(name = "userAccounts")
 	public List<UserAccount> getUserAccounts() {
 		if (userAccounts == null) {
 			userAccounts = new ArrayList<UserAccount>();
@@ -143,6 +156,7 @@ public class RouterModel implements IResourceModel {
 		return this.userAccounts;
 	}
 
+	@XmlElement(name = "physicalInterfaces")
 	public List<PhysicalInterface> getPhysicalInterfaces() {
 		if (physicalInterfaces == null) {
 			physicalInterfaces = new ArrayList<PhysicalInterface>();
@@ -150,6 +164,7 @@ public class RouterModel implements IResourceModel {
 		return this.physicalInterfaces;
 	}
 
+	@XmlElement(name = "childrens")
 	public List<RouterModel> getChildren() {
 		if (children == null) {
 			children = new ArrayList<RouterModel>();
@@ -157,6 +172,7 @@ public class RouterModel implements IResourceModel {
 		return this.children;
 	}
 
+	@XmlElement(name = "parent")
 	public String getParent() {
 		return parent;
 	}

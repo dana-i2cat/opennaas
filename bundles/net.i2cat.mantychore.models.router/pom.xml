@@ -15,7 +15,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-		
+
 	<groupId>net.i2cat.mantychore.models</groupId>
 	<artifactId>net.i2cat.mantychore.models.router</artifactId>
 
@@ -33,19 +33,23 @@
 		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.model</artifactId>
-			<scope>provided</scope>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.springmodules</groupId>
+			<artifactId>com.springsource.org.springmodules.validation.validator</artifactId>
+			<version>0.9.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-validation</artifactId>
-			<version>0.8</version>			
-		</dependency>	
-<dependency>
-<groupId>org.osgi</groupId>
-<artifactId>osgi_R4_core</artifactId>
-<version>1.0</version>
-</dependency>
-		
+			<version>0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi_R4_core</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -74,6 +78,45 @@
 				<extensions>true</extensions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<version>${cxf.java2ws.plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-frontend-jaxws</artifactId>
+						<version>${cxf.java2ws.plugin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.cxf</groupId>
+						<artifactId>cxf-rt-frontend-simple</artifactId>
+						<version>${cxf.java2ws.plugin.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.iaasframework.tools</groupId>
+						<artifactId>com.iaasframework.tools.platformmanager</artifactId>
+						<version>1.0.0-SNAPSHOT</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>process-classes</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>com.iaasframework.tools.platformmanager.PlatformManagerWS</className>
+							<outputFile>${basedir}/target/generated/wsdl/platformManager.wsdl</outputFile>
+							<genWsdl>true</genWsdl>
+							<soap12>true</soap12>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.0.0</version>
@@ -89,11 +132,14 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!${bundle.namespace}.*,org.springmodules.validation.bean.conf.loader.annotation.handler;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
-						<Export-Package>${bundle.namespace}*;version="${pom.version}"</Export-Package>
+						<Import-Package>!${bundle.namespace}.*,
+							org.springmodules.*;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
+						<Export-Package>net.i2cat.mantychore.models.router;version="${pom.version}"</Export-Package>
 						<Bundle-Activator>net.i2cat.mantychore.models.router.internal.RouterModelActivator</Bundle-Activator>
 
-						
+
+
+
 						<!--
 							| each module can override these defaults in their osgi.bnd file
 						-->
@@ -103,7 +149,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
 
-                
+
+
 </project>

@@ -1,10 +1,15 @@
 package net.i2cat.mantychore.models.router;
 
-/**
- * Public API representing an example OSGi service
- */
-public interface RouterModelService {
-	// public methods go here...
+import javax.jws.WebMethod;
+import javax.jws.WebService;
 
-	String scramble(String text);
+/**
+ * Provides information about the model.
+ */
+
+@WebService
+public interface RouterModelService {
+
+	@WebMethod
+	public RouterModel getModel();
 }
