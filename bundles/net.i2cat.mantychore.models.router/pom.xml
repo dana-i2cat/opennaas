@@ -26,11 +26,6 @@
 	<!--  dependencies  -->
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
-			<version>${servicemix.specs.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -50,10 +45,22 @@
 			<artifactId>osgi_R4_core</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
-			<!--
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-minimal</artifactId>
+			<version>2.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit</groupId>
+			<artifactId>com.springsource.org.junit</artifactId>
+			<version>4.4.0</version>
+		</dependency>
+
+
+
+		<!--
 					Dependencies to create the web service
-				-->	
+				-->
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
 			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
@@ -75,10 +82,10 @@
 			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
-			<!--
+
+		<!--
 					Dependencies to test the web service
-				-->	
+				-->
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-core</artifactId>
@@ -137,10 +144,11 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-			
+
 			<!--
-					Plugin to make Maven generate the WSDL out of the annotated Java classes
-				-->		
+				Plugin to make Maven generate the WSDL out of the annotated Java
+				classes
+			-->
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-java2ws-plugin</artifactId>
@@ -217,8 +225,8 @@
 							org.apache.cxf.workqueue,
 							org.apache.cxf.wsdl11,
 							org.springframework.beans.factory.config,
-							org.springmodules.*;version="0.8",
-							org.slf4j;version="1.5.6"</Import-Package>
+							com.springsource.org.springmodules.validation.validator;version="[0.9.0,0.9.0]",
+							org.slf4j;version="1.5.6", *</Import-Package>
 						<Export-Package>net.i2cat.mantychore.models.router.*;version="${pom.version}"</Export-Package>
 						<Private-Package>net.i2cat.mantychore.models.router.internal.*</Private-Package>
 						<Bundle-Activator>net.i2cat.mantychore.models.router.internal.RouterModelActivator</Bundle-Activator>
