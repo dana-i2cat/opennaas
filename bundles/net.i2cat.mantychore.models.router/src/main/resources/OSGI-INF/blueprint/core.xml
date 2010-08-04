@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-<bean id="opticalSwitchModelFactory" 
+<bean id="routerModelFactory" 
 	class="net.i2cat.mantychore.models.router.RouterModelFactory"/>
 	<service ref="routerModelFactory"
 		interface="com.iaasframework.capabilities.model.IResourceModelFactory" >
