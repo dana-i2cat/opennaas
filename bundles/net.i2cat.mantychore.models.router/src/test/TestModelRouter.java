@@ -13,6 +13,13 @@ import com.iaasframework.capabilities.model.ModelException;
 import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 import com.iaasframework.resources.core.descriptor.CapabilityProperty;
 
+//TODO It is created a router correctly, a basic router with necessary parameters only.
+//TODO It is created a new router with missing parameters, a basic router with necessary parameters only.
+//TODO It is created a router. Also. it is added physical interfaces with correct parameters.
+//TODO It is created a router. Also. it is added physical interfaces with incorrect parameters.
+//TODO It is created a router. Also. it is added physical interfaces with a subinterface which has configured ip parameters
+//TODO It is created a router. Also. it is added physical interfaces with a subinterface which has configured incorrect ip parameters 
+
 public class TestModelRouter {
 	IResourceModelFactory			modelFactory					= null;
 
@@ -71,5 +78,7 @@ public class TestModelRouter {
 		}
 		Assert.assertNotNull(routerResource);
 	}
+
+	// TODO
 
 }

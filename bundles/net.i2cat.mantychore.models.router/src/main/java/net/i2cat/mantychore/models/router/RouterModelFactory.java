@@ -9,9 +9,10 @@ public class RouterModelFactory implements IResourceModelFactory {
 
 	public synchronized IResourceModel createResourceModelInstance(CapabilityDescriptor descriptor) throws ModelException {
 
-		if (descriptor.getPropertyValue("Transport Identifier") == null) {
-			throw new ModelException("The Transport Identifier property is required to create an router model instance");
-		}
+		// if (descriptor.getPropertyValue("Transport Identifier") == null) {
+		// throw new
+		// ModelException("The Transport Identifier property is required to create an router model instance");
+		// }
 
 		RouterModel router = new RouterModel();
 
