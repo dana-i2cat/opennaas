@@ -1,0 +1,3 @@
+#macro(d)
+<h1>Macro</h1>
+#end
