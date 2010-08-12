@@ -164,6 +164,16 @@ public class RouterModel implements IResourceModel {
 		return this.physicalInterfaces;
 	}
 
+	public void addPhysicalInterface(PhysicalInterface physicalInterface) {
+		for (PhysicalInterface buclePhyInterf : physicalInterfaces) {
+			if (buclePhyInterf.getLocation().equals(physicalInterface.getLocation())) {
+				return;
+			}
+		}
+		// not exist
+		physicalInterfaces.add(physicalInterface);
+	}
+
 	@XmlElement(name = "childrens")
 	public List<RouterModel> getChildren() {
 		if (children == null) {

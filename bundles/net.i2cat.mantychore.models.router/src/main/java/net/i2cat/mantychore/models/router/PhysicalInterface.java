@@ -89,6 +89,20 @@ public class PhysicalInterface {
 		return this.subInterfaces;
 	}
 
+	public void addSubInterface(SubInterface subInterface) {
+		// TODO it is necessary to specify which it is an identifier
+		// for (SubInterface bucleSubInterf : subInterfaces) {
+		// if
+		// (bucleSubInterf.getIdentifier().equals(subInterface.getIdentifier()))
+		// {
+		// return;
+		// }
+		// }
+		// not exist
+		subInterfaces.add(subInterface);
+
+	}
+
 	public PhysicalInterface getPhysicalInterfaceParent() {
 		return physicalInterfaceParent;
 	}
