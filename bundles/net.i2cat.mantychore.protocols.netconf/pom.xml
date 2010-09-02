@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<parent>
+		<artifactId>mantychore-bundles</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.i2cat.mantychore.protocols</groupId>
+	<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+	<packaging>bundle</packaging>
+
+
+	<name>Mantychore Netconf Protocol</name>
+	<version>1.0.0-SNAPSHOT</version>
+	<description>Mantychore Netconf Protocol Implementation</description>
+
+	<properties>
+		<bundle.namespace>${pom.artifactId}</bundle.namespace>
+	</properties>
+
+	<dependencies>
+	
+		<dependency>	
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf-netty</artifactId>
+			<version>0.0.1-SNAPSHOT</version>	
+			<scope>provided</scope>
+		</dependency>	
+		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.eventset</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.transports</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+				<!--
+					| enable improved OSGi compilation support for the bundle
+					life-cycle. | to switch back to the standard bundle life-cycle,
+					move this setting | down to the maven-bundle-plugin section
+				-->
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.0.0</version>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Import-Package>
+							!${pom.artifactId}.*,org.slf4j;version="1.5.6", com.iaasframework.resources.core;version="${pom.version}",
+							com.iaasframework.resources.core.message;version="${pom.version}",
+							com.iaasframework.resources.core.capability;version="${pom.version}",
+							com.iaasframework.capabilities.eventset;version="${pom.version}",
+							com.iaasframework.capabilities.protocol;version="${pom.version}",
+							com.iaasframework.core.transports;version="${pom.version}",*</Import-Package>
+						<Export-Package>
+							net.i2cat.mantychore.protocols.netconf.message;version="${pom.version}",net.i2cat.mantychore.protocols.netconf;version="${pom.version}"
+</Export-Package>
+						<Bundle-Activator>net.i2cat.mantychore.protocols.netconf.Activator</Bundle-Activator>
+					</instructions>
+				</configuration>
+
+			</plugin>
+		</plugins>
+	</build>
+</project>
