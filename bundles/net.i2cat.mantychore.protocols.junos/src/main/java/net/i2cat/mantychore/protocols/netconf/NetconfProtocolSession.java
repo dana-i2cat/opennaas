@@ -3,13 +3,12 @@ package net.i2cat.mantychore.protocols.netconf;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import net.i2cat.mantychore.protocols.serializer.SerializerHelper;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.errors.NetconfProtocolException;
 import net.i2cat.netconf.errors.TransportException;
 import net.i2cat.netconf.errors.TransportNotImplementedException;
 import net.i2cat.netconf.rpc.Query;
-import net.i2cat.netconf.rpc.Reply;
+import net.i2cat.netconf.rpc.RPCElement;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -18,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.iaasframework.capabilities.protocol.AbstractProtocolSession;
 import com.iaasframework.capabilities.protocol.ProtocolException;
+import com.iaasframework.capabilities.protocol.api.ProtocolErrorMessage;
 import com.iaasframework.capabilities.protocol.api.ProtocolRequestMessage;
 import com.iaasframework.capabilities.protocol.api.ProtocolResponseMessage;
 import com.iaasframework.core.transports.ITransport;
@@ -52,8 +52,7 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 
 	@Override
 	public void wireTransport(ITransport arg0) throws ProtocolException {
-		// TODO Auto-generated method stub
-
+		// the transport is hardcoded with the netconf library which we will use
 	}
 
 	@Override
@@ -63,13 +62,17 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 
 			while (!isDisposed()) {
 				try {
+
 					ProtocolRequestMessage currentProtocolMessage = incomingRequestsQueue.take();
 					if (!currentProtocolMessage.isLastMessage()) {
 						try {
+							// send message and wait a response
 							Object deviceResponse = sendWaitResponse(currentProtocolMessage.getMessage());
+
+							// send response to our protocol module
 							sendResponseToProtocolModule(deviceResponse, currentProtocolMessage.getMessageID());
 						} catch (ProtocolException ex) {
-							sendResponseToProtocolModule(ex,
+							sendErrorToProtocolModule(ex,
 									currentProtocolMessage.getMessageID());
 						}
 					} else {
@@ -106,22 +109,28 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 
 	}
 
-	private Object sendWaitResponse(String message) throws ProtocolException {
-
-		Query query = (Query) SerializerHelper.stringToObject(message);
-		Reply reply;
+	private Object sendWaitResponse(Object requestMessage) throws ProtocolException {
+		RPCElement rpcReply = null;
 		try {
-			reply = netconfSession.sendSyncQuery(query);
-		} catch (TransportException e) {
-			throw new ProtocolException(e);
+			Query rpcQuery = (Query) requestMessage;
+			rpcReply = netconfSession.sendSyncQuery(rpcQuery);
+		} catch (Exception ex) {
+			throw new ProtocolException(ex);
 		}
-		return SerializerHelper.objectToString(reply);
+		return rpcReply;
 	}
 
 	private void sendResponseToProtocolModule(Object responseMessage, String correlation) {
 		ProtocolResponseMessage protocolResponseMessage = new ProtocolResponseMessage();
 		protocolResponseMessage.setProtocolMessage(responseMessage);
 		protocolCapability.sendSessionResponse(protocolResponseMessage, correlation);
+	}
+
+	private void sendErrorToProtocolModule(ProtocolException ex, String messageID) {
+		ProtocolErrorMessage protocolErrorMessage = new ProtocolErrorMessage();
+		protocolErrorMessage.setException(ex);
+		protocolCapability.sendSessionErrorResponse(protocolErrorMessage, messageID);
+
 	}
 
 }
