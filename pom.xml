@@ -12,7 +12,7 @@
 
 	<properties>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<iaas.version>1.0.0-SNAPSHOT</iaas.version>
+		<iaas.version>1.0.0</iaas.version>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
