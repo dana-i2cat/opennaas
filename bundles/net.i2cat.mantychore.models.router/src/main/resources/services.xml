@@ -1,0 +1,34 @@
+<beans 	xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+							http://www.springframework.org/schema/beans/spring-beans.xsd
+							http://www.springframework.org/schema/tx
+							http://www.springframework.org/schema/tx/spring-tx.xsd">
+							
+	<bean 	id="entityManagerFactory"
+			class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="MANTYCHORE_PU" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="loadTimeWeaver"	class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		<property name="jpaVendorAdapter" ref="vendorAdapter" />
+	</bean>
+	
+	<bean 	id="transactionManager"
+			class="org.springframework.orm.jpa.JpaTransactionManager">
+       <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>	
+	
+	<bean 	id="dataSource"
+			class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@booksvr.org:1521:BOOKS" />
+		<property name="userName" value="scott" />
+		<property name="password" value="tiger" />
+	</bean>
+
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+   
+    <tx:annotation-driven/>
+
+</beans>

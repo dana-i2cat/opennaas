@@ -1,11 +1,17 @@
 package net.i2cat.mantychore.models.router;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.capabilities.model.IResourceModelFactory;
 import com.iaasframework.capabilities.model.ModelException;
 import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 
 public class RouterModelFactory implements IResourceModelFactory {
+
+	@PersistenceContext(unitName = "ResourceCore")
+	EntityManager	em;
 
 	public synchronized IResourceModel createResourceModelInstance(CapabilityDescriptor descriptor) throws ModelException {
 

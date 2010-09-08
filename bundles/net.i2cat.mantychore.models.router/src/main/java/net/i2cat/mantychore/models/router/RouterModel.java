@@ -3,6 +3,8 @@ package net.i2cat.mantychore.models.router;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,8 +13,13 @@ import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank
 import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.resources.core.ObjectSerializer;
 
+@Entity
 @XmlRootElement
 public class RouterModel implements IResourceModel {
+
+	@Id
+	@NotBlank
+	protected int						routerIDs;
 
 	@NotBlank
 	protected String					routerName;
@@ -29,7 +36,6 @@ public class RouterModel implements IResourceModel {
 	@NotBlank
 	protected boolean					isPhysical;
 	@NotBlank
-	protected String					routerIDs;
 	protected Location					location;
 
 	/**
@@ -122,11 +128,11 @@ public class RouterModel implements IResourceModel {
 	}
 
 	@XmlElement(name = "routerIDs")
-	public String getRouterIDs() {
+	public int getRouterIDs() {
 		return routerIDs;
 	}
 
-	public void setRouterIDs(String value) {
+	public void setRouterIDs(int value) {
 		this.routerIDs = value;
 	}
 
