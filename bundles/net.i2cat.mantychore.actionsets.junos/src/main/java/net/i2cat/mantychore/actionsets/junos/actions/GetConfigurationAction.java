@@ -3,6 +3,8 @@ package net.i2cat.mantychore.actionsets.junos.actions;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.ActionJunosConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,13 +14,13 @@ import com.iaasframework.capabilities.actionset.ActionState.State;
 import com.iaasframework.resources.core.capability.CapabilityException;
 
 public class GetConfigurationAction extends AbstractActionWithCommandSet {
-	public static final String	GET_CONFIGURATION	= "getConfiguration";
-	Logger						logger				= LoggerFactory.getLogger(GetConfigurationAction.class);
-	private List<String>		commandsList		= null;
-	int							index				= 0;
+
+	Logger					logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
+	private List<String>	commandsList	= null;
+	int						index			= 0;
 
 	public GetConfigurationAction() {
-		super(GET_CONFIGURATION);
+		super(ActionJunosConstants.GET_CONFIGURATION);
 		initializeCommandsList();
 	}
 
@@ -37,8 +39,8 @@ public class GetConfigurationAction extends AbstractActionWithCommandSet {
 			try {
 				sendMessageToCommand(nextCommand);
 			} catch (CapabilityException e) {
-				e.printStackTrace();
-				throw new ActionException("", e);
+				logger.error("ACTIONSET - It ocurred a problem to sending a command", e);
+				throw new ActionException("ACTIONSET - It ocurred a problem to sending a command", e);
 			}
 		}
 	}

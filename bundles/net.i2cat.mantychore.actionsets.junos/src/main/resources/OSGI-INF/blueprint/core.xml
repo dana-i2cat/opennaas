@@ -7,7 +7,8 @@
 	<service ref="junosActionFactory"
 		interface="com.iaasframework.capabilities.actionset.IActionFactory">
 		<service-properties>
-			<entry key="actionSet.name" value="junos" />
+		<!--  identify the junos actionset -->
+			<entry key="actionSet.name" value="junos" /> 
 			<entry key="actionSet.version" value="1.0.0" />
 		</service-properties>
 	</service>

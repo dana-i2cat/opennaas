@@ -5,6 +5,7 @@
 	<service ref="routerModelFactory"
 		interface="com.iaasframework.capabilities.model.IResourceModelFactory" >
 		<service-properties>
+			<!--  identify the model router. It is generic for any router -->
 			<entry key="model.name" value="router" />
 			<entry key="model.version" value="1.0.0" />
 		</service-properties>

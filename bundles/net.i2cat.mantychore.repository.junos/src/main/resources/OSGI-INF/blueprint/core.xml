@@ -46,7 +46,7 @@
 		interface="com.iaasframework.resources.core.capability.ICapabilityFactory"
 		filter="(&amp;(capability=TriggerSet)(capability.version=1.0.0))" />
     
-	<bean id="junosEngineRepository" 
+	<bean id="junosRepository" 
 			class="com.iaasframework.resources.core.ResourceRepository">
 			<argument value="Junos"/> <!-- TODO why it is created -->
 			
@@ -62,13 +62,13 @@
 			</property>
 			
 			<property name="resourceBootstrapperFactory" ref="junosBootstrapperFactory"/>
-			<property name="persistenceUnit" value="ResourceCore"/>
+			<property name="persistenceUnit" value="RouterInventory-test"/> <!-- specifies type of persistence -->
 	</bean>
 
 	<!-- Register the Repository as an OSGi Service -->
-	<service ref="ome6500EngineRepository" interface="com.iaasframework.resources.core.IResourceRepository">
+	<service ref="junosRepository" interface="com.iaasframework.resources.core.IResourceRepository">
 		<service-properties>
-		    <entry key="type" value="Junos"/>
+		    <entry key="type" value="junos"/> <!-- Specifies id router -->
 			<entry key="version" value="1.0.0"/>
 		</service-properties>
 	</service>

@@ -1,5 +1,7 @@
 package net.i2cat.mantychore.commandsets.commands;
 
+import net.i2cat.mantychore.CommandJunosConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,7 +9,7 @@ import com.iaasframework.capabilities.commandset.CommandException;
 import com.iaasframework.capabilities.model.IResourceModel;
 
 public class KeepAliveCommand extends JunosCommand {
-	public static final String	KEEP_ALIVE	= "keepAlive";
+
 	public static final String	TEMPLATE	= "/keepalive.vm";
 
 	/** The logger **/
@@ -15,7 +17,7 @@ public class KeepAliveCommand extends JunosCommand {
 													.getLogger(KeepAliveCommand.class);
 
 	public KeepAliveCommand() {
-		super(KeepAliveCommand.KEEP_ALIVE);
+		super(CommandJunosConstants.KEEP_ALIVE);
 		this.setTemplate(TEMPLATE);
 	}
 

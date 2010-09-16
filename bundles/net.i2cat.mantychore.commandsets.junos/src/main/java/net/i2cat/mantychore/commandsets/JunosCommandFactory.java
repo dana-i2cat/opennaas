@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.commandsets;
 
+import net.i2cat.mantychore.CommandJunosConstants;
 import net.i2cat.mantychore.commandsets.commands.KeepAliveCommand;
 
 import com.iaasframework.capabilities.commandset.CommandException;
@@ -10,7 +11,7 @@ public class JunosCommandFactory implements ICommandFactory {
 
 	public ICommand createCommand(String commandId) throws CommandException {
 
-		if (commandId.equals(KeepAliveCommand.KEEP_ALIVE)) {
+		if (commandId.equals(CommandJunosConstants.KEEP_ALIVE)) {
 			return new KeepAliveCommand();
 		} else {
 			throw new CommandException("Command " + commandId + " not found");

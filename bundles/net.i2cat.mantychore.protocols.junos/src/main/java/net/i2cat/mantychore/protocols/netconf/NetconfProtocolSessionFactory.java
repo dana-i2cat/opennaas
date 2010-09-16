@@ -21,21 +21,6 @@ public class NetconfProtocolSessionFactory implements IProtocolSessionFactory {
 	@Override
 	public IProtocolSession createProtocolSessionInstance(CapabilityDescriptor capabilityDescriptor) throws ProtocolException {
 
-		// TODO INCLUDE CHECK PROTOCOL CAPABILITIES
-		// if
-		// (capabilityDescriptor.getPropertyValue(IProtocolConstants.PROTOCOL_USERNAME)
-		// == null) {
-		// throw new ProtocolException("Netconf protocol session needs the " +
-		// IProtocolConstants.PROTOCOL_USERNAME + " parameter");
-		// }
-		//
-		// if
-		// (capabilityDescriptor.getPropertyValue(IProtocolConstants.PROTOCOL_PASSWORD)
-		// == null) {
-		// throw new ProtocolException("Netconf protocol session needs the " +
-		// IProtocolConstants.PROTOCOL_PASSWORD + " parameter");
-		// }
-
 		NetconfProtocolSession session = new NetconfProtocolSession(capabilityDescriptor);
 		return session;
 	}
