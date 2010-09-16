@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>com.iaasframework</groupId>
 		<artifactId>base-settings</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>1.0.0</version>
 	</parent>
 
 	<properties>
@@ -32,7 +32,7 @@
 
 	<name>Mantychore</name>
 	<version>1.0.0-SNAPSHOT</version>
-	<url>http://www.i2cat.net/en</url>
+	<url>http://www.mantychore.eu/</url>
 
 	<!-- Build information -->
 	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
@@ -81,6 +81,7 @@
 		<module>bundles</module>
 		<module>examples</module>
 		<module>tests</module>
+		<module>poms</module>
 	</modules>
 
 	<dependencies>
@@ -198,7 +199,7 @@
 			<id>snapshots</id>
 			<name>IaaS Repository Snapshot Proxy Releases</name>
 			<url>http://repository.inocybe.ca/content/groups/public-snapshots/</url>
-		</repository>
+		</repository>		
 	</repositories>
 
 	<pluginRepositories>
