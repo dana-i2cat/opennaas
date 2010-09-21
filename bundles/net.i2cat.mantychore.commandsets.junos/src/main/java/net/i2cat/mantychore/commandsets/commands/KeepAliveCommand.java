@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.commandsets.commands;
 
-import net.i2cat.mantychore.CommandJunosConstants;
+import net.i2cat.mantychore.constants.CommandJunosConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +17,7 @@ public class KeepAliveCommand extends JunosCommand {
 													.getLogger(KeepAliveCommand.class);
 
 	public KeepAliveCommand() {
-		super(CommandJunosConstants.KEEP_ALIVE);
+		super(CommandJunosConstants.KEEPALIVE);
 		this.setTemplate(TEMPLATE);
 	}
 

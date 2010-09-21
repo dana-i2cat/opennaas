@@ -3,7 +3,7 @@ package net.i2cat.mantychore.protocols.netconf;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import net.i2cat.mantychore.ProtocolConstants;
+import net.i2cat.mantychore.constants.ProtocolConstants;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.errors.NetconfProtocolException;
 import net.i2cat.netconf.errors.TransportException;

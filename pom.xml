@@ -41,6 +41,26 @@
 			<plugins>
 			</plugins>
 		</pluginManagement>
+		<!--  
+	<plugins>
+        <plugin>
+            <groupId>com.google.code.maven-license-plugin</groupId>
+            <artifactId>maven-license-plugin</artifactId>
+            <configuration>
+                <header>docs/HEADER.APACHE</header>
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>check</goal>
+                    </goals>
+                </execution>
+            </executions>            
+        </plugin>
+    </plugins> -->
+		
+		
+		
 	</build>
 
 	<ciManagement>

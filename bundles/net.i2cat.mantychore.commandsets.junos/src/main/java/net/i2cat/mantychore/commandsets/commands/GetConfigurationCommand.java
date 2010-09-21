@@ -6,6 +6,7 @@ import java.io.InputStream;
 
 import net.i2cat.mantychore.commandsets.digester.InterfaceParser;
 import net.i2cat.mantychore.commandsets.digester.RouterParser;
+import net.i2cat.mantychore.constants.CommandJunosConstants;
 import net.i2cat.mantychore.models.router.RouterModel;
 
 import org.slf4j.Logger;
@@ -17,7 +18,7 @@ import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.capabilities.protocol.api.ProtocolResponseMessage;
 
 public class GetConfigurationCommand extends JunosCommand {
-	public static final String	GETCONFIG	= "getConfiguration";
+
 	public static final String	TEMPLATE	= "/getconfiguration.vm";
 
 	/** The logger **/
@@ -25,7 +26,7 @@ public class GetConfigurationCommand extends JunosCommand {
 													.getLogger(KeepAliveCommand.class);
 
 	public GetConfigurationCommand() {
-		super(GetConfigurationCommand.GETCONFIG);
+		super(CommandJunosConstants.GETCONFIG);
 		log.debug("Preparing GetConfigurationCommand...");
 		this.setTemplate(TEMPLATE);
 	}

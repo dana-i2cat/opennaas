@@ -3,8 +3,9 @@ package net.i2cat.mantychore.actionsets.junos;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.ActionJunosConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.KeepAliveAction;
+import net.i2cat.mantychore.constants.ActionJunosConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +20,23 @@ public class JunosActionFactory implements IActionFactory {
 	public IAction createAction(String actionId) throws ActionException {
 		logger.info("ACTIONSET - Action id to send: " + actionId);
 
-		if (actionId.equals(ActionJunosConstants.GET_CONFIGURATION)) {
+		if (actionId.equals(ActionJunosConstants.GETCONFIG)) {
 			return new GetConfigurationAction();
-		} else {
+		} else
+
+		if (actionId.equals(ActionJunosConstants.KEEPALIVE)) {
+			return new KeepAliveAction();
+		}
+
+		else {
 			throw new ActionException("Action " + actionId + " not found");
 		}
 	}
 
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
-		actionNames.add(ActionJunosConstants.GET_CONFIGURATION);
+		actionNames.add(ActionJunosConstants.GETCONFIG);
+		actionNames.add(ActionJunosConstants.KEEPALIVE);
 		return actionNames;
 	}
 

@@ -9,6 +9,7 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRepositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
 import org.apache.felix.karaf.testing.Helper;
@@ -52,32 +53,6 @@ public class ConfigurerTestFactory {
 
 	public static final Option		OPT_MTCHORE_FEATURES		= scanFeatures(MTCHORE_FEATURES_REPO, IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES);
 
-	/* bundles to load */
-
-	public static final String[]	BNDL_IAAS_EXTRAS			= { "com.iaasframework.extras", "com.iaasframework.extras.itesthelper" };
-
-	public static final String[]	BNDL_JAVA_CLASSLOAD			= { "org.dynamicjava", "classloading-utils", "1.0.0" };
-
-	public static final String[]	BNDL_JAVA_BINDING_UTILS		= { "org.dynamicjava", "service-binding-utils", "1.0.0" };
-
-	public static final String[]	BNDL_JAVA_GERONIMO_JPA		= { "org.apache.geronimo.specs", "geronimo-jpa_1.0_spec" };
-
-	public static final String[]	BNDL_JAVA_SPRING_HSQLDB		= { "org.hsqldb", "com.springsource.org.hsqldb" };
-
-	public static final String[]	BNDL_SERVICE_MIX			= { "org.hsqldb", "com.springsource.org.hsqldb" };
-
-	public static final String[]	BNDL_MTCHORE_MODELS			= { "net.i2cat.mantychore.models", "net.i2cat.mantychore.models.router", "1.0.0-SNAPSHOT" };
-
-	private static final String[]	BNDL_IAAS_MODELS			= { "com.iaasframework.capabilities", "com.iaasframework.capabilities.model", "1.0.0" };
-
-	private static final String[]	BNDL_IAAS_SERVICEMIX_JAXB	= { "org.apache.servicemix.specs", "org.apache.servicemix.specs.jaxb-api-2.1" };
-
-	private static final String[]	BNDL_SPRING_VALIDATION		= { "org.springmodules", "spring-modules-validation", "0.8" };
-
-	private static final String[]	BNDL_SPRING_VALIDATOR		= { "net.java.dev.springmodules", "com.springsource.org.springmodules.validation.validator", "0.9.0" };
-
-	private static final String[]	BNDL_ORG_OSGI				= { "org.osgi", "osgi_R4_core", "1.0" };
-
 	/**
 	 * Bundle loader
 	 * 
@@ -95,6 +70,7 @@ public class ConfigurerTestFactory {
 
 	public static Option[] newServiceMixTest() {
 		Option[] opts_features = options(OPT_SERVICE_MIX_FEATURES, OPT_WORKING_DIRECTORY,
+				vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006"),
 				waitForFrameworkStartup(),
 				equinox());
 
@@ -190,7 +166,9 @@ public class ConfigurerTestFactory {
 				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
 				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
 				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
-				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore")
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore"),
+				/* mantichore dependencies */
+				mavenBundle().groupId("net.i2cat.mantychore.tests").artifactId("net.i2cat.mantychore.tests.utils")
 
 		);
 

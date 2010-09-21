@@ -9,21 +9,21 @@ import net.i2cat.mantychore.constants.CommandJunosConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GetConfigurationAction extends JunosAction {
+public class KeepAliveAction extends JunosAction {
 
-	Logger					logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
+	Logger					logger			= LoggerFactory.getLogger(KeepAliveAction.class);
 	private List<String>	commandsList	= null;
 	int						index			= 0;
 
-	public GetConfigurationAction() {
-		super(ActionJunosConstants.GETCONFIG);
+	public KeepAliveAction() {
+		super(ActionJunosConstants.KEEPALIVE);
 		initializeCommandsList();
 	}
 
 	protected void initializeCommandsList() {
 		commandsList = new ArrayList<String>();
 		/* commands */
-		commandsList.add(CommandJunosConstants.GETCONFIG);
+		commandsList.add(CommandJunosConstants.KEEPALIVE);
 		state.setSteps(commandsList);
 
 	}

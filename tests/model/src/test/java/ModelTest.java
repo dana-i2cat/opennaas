@@ -5,15 +5,21 @@ import org.apache.felix.karaf.testing.AbstractIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.BundleContext;
 
 import com.iaasframework.capabilities.model.IResourceModelFactory;
+import com.iaasframework.extras.itesthelper.IaaSIntegrationTestsHelper;
 
 @RunWith(JUnit4TestRunner.class)
 public class ModelTest extends AbstractIntegrationTest {
-	IResourceModelFactory	resourceModel	= null;
+
+	IResourceModelFactory	routerModelFactory	= null;
+	@Inject
+	BundleContext			bundleContext		= null;
 
 	@Configuration
 	public static Option[] configure() {
@@ -23,20 +29,21 @@ public class ModelTest extends AbstractIntegrationTest {
 
 	@Before
 	public void setup() {
-		// resourceModel = getOsgiService(IResourceModelFactory.class, "",
-		// 20000);
+		routerModelFactory = getOsgiService(IResourceModelFactory.class, "", 20000);
+
 	}
 
 	@Test
 	public void testAll() {
-		// IaaSIntegrationTestsHelper.listBundles(bundleContext);
-		// bundleContextShouldNotBeNull();
-		// testModelFactoryRegistered();
+		IaaSIntegrationTestsHelper.listBundles(bundleContext);
+		bundleContextShouldNotBeNull();
+		testModelFactoryRegistered();
 
 	}
 
 	private void testModelFactoryRegistered() {
-		assertNotNull(resourceModel);
+		assertNotNull(routerModelFactory);
+
 	}
 
 	public void bundleContextShouldNotBeNull() {

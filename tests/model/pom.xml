@@ -38,14 +38,7 @@
     </dependency>
     -->
 	
-	<!--  mantychore dependencies  -->
-	
-	<dependency>
-		<groupId>com.iaasframework.capabilities</groupId>
-		<artifactId>com.iaasframework.capabilities.model</artifactId>
-		<version>${iaas.version}</version>
-	</dependency>
-	
+
 	
 	<!--  iaas framework dependencies -->
 	<dependency>
@@ -60,7 +53,37 @@
 		<version>${iaas.version}</version>
 		<scope>provided</scope>
 	</dependency> 
+	
+	
+	
+	<dependency>
+		<groupId>com.iaasframework.capabilities</groupId>
+		<artifactId>com.iaasframework.capabilities.actionset</artifactId>
+		<version>${iaas.version}</version>
+		<scope>provided</scope>
+	</dependency> 
+	
+	
+	<dependency>
+		<groupId>com.iaasframework.capabilities</groupId>
+		<artifactId>com.iaasframework.capabilities.actionset</artifactId>
+		<version>${iaas.version}</version>
+		<scope>provided</scope>
+	</dependency> 
+	
+	
+	<dependency>
+		<groupId>com.iaasframework.capabilities</groupId>
+		<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+		<version>${iaas.version}</version>
+		<scope>provided</scope>
+	</dependency> 
 
+		<dependency>
+		<groupId>com.iaasframework.capabilities</groupId>
+		<artifactId>com.iaasframework.capabilities.model</artifactId>
+		<version>${iaas.version}</version>
+	</dependency>
 		
 	
     
@@ -70,6 +93,9 @@
   	<artifactId>com.iaasframework.extras.itesthelper</artifactId>
   	<version>${iaas.version}</version>
     </dependency>
+	
+
+	
 	
   </dependencies>
 

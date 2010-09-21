@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.i2cat.mantychore.ProtocolConstants;
+import net.i2cat.mantychore.constants.ProtocolConstants;
 
 import com.iaasframework.capabilities.actionset.IActionSetConstants;
 import com.iaasframework.capabilities.commandset.ICommandSetConstants;
@@ -35,7 +35,7 @@ public class ResourceDescriptorFactory {
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		return null;
+		return resourceDescriptor;
 
 	}
 

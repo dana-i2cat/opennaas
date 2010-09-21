@@ -105,29 +105,94 @@ public class ConfigurerTestFactory {
 	}
 
 	public static Option[] newModelTest() {
-		Option[] optServiceTest = newServiceMixTest();
-		return combine(optServiceTest,
 
-		addBundle(BNDL_IAAS_EXTRAS),
-				addBundle(BNDL_IAAS_MODELS),
-				addBundle(BNDL_IAAS_SERVICEMIX_JAXB),
-				addBundle(BNDL_SPRING_VALIDATOR),
-				addBundle(BNDL_SPRING_VALIDATION),
-				addBundle(BNDL_ORG_OSGI),
-				addBundle(BNDL_MTCHORE_MODELS)
+		return combine(
+				newServiceMixTest(),
+				// add the iaas bundles
+				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("classloading-utils").version("1.0.0"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("service-binding-utils").version("1.0.0"),
+				mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-jpa_1.0_spec"),
+				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.model.soapendpoint"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.model"));
+
+	}
+
+	public static Option[] newTransportTest() {
+
+		return combine(
+				newServiceMixTest(),
+				// add the iaas bundles
+				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("classloading-utils").version("1.0.0"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("service-binding-utils").version("1.0.0"),
+				mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-jpa_1.0_spec"),
+				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.transports"),
+				mavenBundle().groupId("com.iaasframework.transports").artifactId("com.iaasframework.transports.sockets"));
+
+	}
+
+	public static Option[] newActionTest() {
+		return combine(
+				newServiceMixTest(),
+				// add the iaas bundles
+				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("classloading-utils").version("1.0.0"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("service-binding-utils").version("1.0.0"),
+				mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-jpa_1.0_spec"),
+				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.transports"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.protocol"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.eventset"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.model"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.commandset"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.actionset"));
+	}
+
+	public static Option[] newCommandTest() {
+		return combine(
+				newServiceMixTest(),
+				// add the iaas bundles
+				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("classloading-utils").version("1.0.0"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("service-binding-utils").version("1.0.0"),
+				mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-jpa_1.0_spec"),
+				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.transports"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.protocol"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.eventset"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.model"),
+				mavenBundle().groupId("com.iaasframework.capabilities").artifactId("com.iaasframework.capabilities.commandset"));
+	}
+
+	public static Option[] newResourceManagerTest() {
+		return combine(
+				newServiceMixTest(),
+				// add the iaas bundles
+				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("classloading-utils").version("1.0.0"),
+				mavenBundle().groupId("org.dynamicjava").artifactId("service-binding-utils").version("1.0.0"),
+				mavenBundle().groupId("org.apache.geronimo.specs").artifactId("geronimo-jpa_1.0_spec"),
+				mavenBundle().groupId("org.hsqldb").artifactId("com.springsource.org.hsqldb"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.hibernate"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.persistence"),
+				mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.resourcecore")
 
 		);
 
 	}
-	// public static Option[] newModelTest() {
-	// Option[] opts_features = options(OPT_SERVICE_MIX_FEATURES,
-	// OPT_IAAS_FEATURES, OPT_MTCHORE_FEATURES, OPT_WORKING_DIRECTORY,
-	// waitForFrameworkStartup(), equinox());
-	// Option[] opts_with_repos = combine(REPOSITORIES, opts_features);
-	// Option[] options = combine(HELPER_DEFAULT_OPTIONS, opts_with_repos);
-	//
-	// return options;
-	//
-	// }
-
 }

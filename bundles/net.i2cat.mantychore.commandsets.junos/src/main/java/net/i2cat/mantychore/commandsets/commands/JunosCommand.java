@@ -29,6 +29,8 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	public JunosCommand(String commandID) {
 		super(commandID);
+		log.info("New command: " + commandID);
+
 		params = new HashMap<String, String>();
 	}
 
@@ -36,8 +38,10 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	public void executeCommand() throws CommandException {
 
 		try {
+
 			String command = prepareCommand();
 			sendCommandToProtocol(command);
+
 		} catch (CommandException ex) {
 			ex.printStackTrace();
 		} catch (ResourceNotFoundException e) {
@@ -70,17 +74,24 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	public void responseReceived(ICapabilityMessage responseMessage)
 			throws CommandException {
 		if (responseMessage instanceof ProtocolResponseMessage) {
+			log.info("Response is OK");
 			this.response = (ProtocolResponseMessage) responseMessage;
 			this.requestEngineModel(false);
+
 		} else if (responseMessage instanceof ProtocolErrorMessage) {
+			log.info("It ocurred an error");
+
 			this.errorMessage = (ProtocolErrorMessage) responseMessage;
 			CommandException commandException = new CommandException(
 					"Error executing command " + this.commandID,
 					((ProtocolErrorMessage) responseMessage)
 							.getProtocolException());
+
 			commandException.setName(this.commandID);
 			commandException.setCommand(this);
+
 			this.sendCommandErrorResponse(commandException);
+
 		}
 	}
 

@@ -1,16 +1,12 @@
-package net.i2cat.mantychore.tests;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Properties;
 
 import net.i2cat.mantychore.tests.utils.ConfigurerTestFactory;
-import net.i2cat.mantychore.tests.utils.ResourceDescriptorFactory;
 
 import org.apache.felix.karaf.testing.AbstractIntegrationTest;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,10 +17,8 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import com.iaasframework.extras.itesthelper.IaaSIntegrationTestsHelper;
-import com.iaasframework.resources.core.IResource;
 import com.iaasframework.resources.core.IResourceManager;
 import com.iaasframework.resources.core.IResourceRepository;
-import com.iaasframework.resources.core.ResourceException;
 import com.iaasframework.resources.core.ResourceManager;
 import com.iaasframework.resources.core.ResourceRepository;
 import com.iaasframework.resources.core.capability.CapabilityException;
@@ -43,14 +37,12 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 
 	@Inject
 	private BundleContext		bundleContext	= null;
+
 	/* The class under test */
 	private IResourceManager	resourceManager	= null;
 
-	private IResourceRepository	repository		= null;
-
-	private String				typeConfig		= "junos";
-
-	IResource					resource		= null;
+	private IResourceRepository	repository1		= null;
+	private IResourceRepository	repository2		= null;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -63,14 +55,14 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 		logger.debug("Setting up for the test");
 
 		// Register the mock ActionSet Service to the OSGI Registry
-		// registerResourceRepository(typeConfig);
+		// registerResourceRepository("Test01");
+		// registerResourceRepository("Test02");
 
 		// get the module factory from the registry;
 		resourceManager = getOsgiService(IResourceManager.class, 20000);
 
-		/* create a necessary repository */
-		// repository = getOsgiService(IResourceRepository.class, "type=" +
-		// typeConfig, 20000);
+		repository1 = getOsgiService(IResourceRepository.class, "type=Test01", 20000);
+		repository2 = getOsgiService(IResourceRepository.class, "type=Test02", 20000);
 
 	}
 
@@ -90,14 +82,6 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 		bundleContextShouldNotBeNull();
 		testServicesRegistered();
 		testRepositoriesAdded();
-		/* testing operations */
-		logger.info("Testing operations...");
-		testKeepAliveOperation();
-	}
-
-	private void testKeepAliveOperation() {
-		// TODO Auto-generated method stub
-
 	}
 
 	private void bundleContextShouldNotBeNull() {
@@ -106,12 +90,13 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 
 	private void testServicesRegistered() {
 		assertNotNull(resourceManager);
-		assertNotNull(repository);
+		assertNotNull(repository1);
+		assertNotNull(repository2);
 	}
 
 	private void testRepositoriesAdded() {
 		ResourceManager manager = (ResourceManager) resourceManager;
-		assertEquals(manager.getResourceRepositories().size(), 1);
+		assertEquals(manager.getResourceRepositories().size(), 2);
 
 		// System.out.println("Resource Repositories:");
 		// for(int i=0; i<manager.getResourceRepositories().size(); i++) {
@@ -120,14 +105,5 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 		// repo.getResourceType());
 		// }
 
-	}
-
-	private void testCreateResource() {
-		try {
-			resource = resourceManager.createResource((new ResourceDescriptorFactory()).newInstanceDescriptorJunOS());
-
-		} catch (ResourceException e) {
-			Assert.fail();
-		}
 	}
 }
