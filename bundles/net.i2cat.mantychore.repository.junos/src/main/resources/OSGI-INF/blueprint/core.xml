@@ -46,9 +46,9 @@
 		interface="com.iaasframework.resources.core.capability.ICapabilityFactory"
 		filter="(&amp;(capability=TriggerSet)(capability.version=1.0.0))" />
     
-	<bean id="junosRepository" 
+	<bean id="junosEngineRepository" 
 			class="com.iaasframework.resources.core.ResourceRepository">
-			<argument value="Junos"/> <!-- TODO why it is created -->
+			<argument value="junos"/> <!-- TODO why it is created -->
 			
 			<property name="capabilityFactories">
 				<map>
@@ -66,7 +66,7 @@
 	</bean>
 
 	<!-- Register the Repository as an OSGi Service -->
-	<service ref="junosRepository" interface="com.iaasframework.resources.core.IResourceRepository">
+	<service ref="junosEngineRepository" interface="com.iaasframework.resources.core.IResourceRepository">
 		<service-properties>
 		    <entry key="type" value="junos"/> <!-- Specifies id router -->
 			<entry key="version" value="1.0.0"/>

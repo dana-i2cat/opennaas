@@ -3,8 +3,8 @@ package net.i2cat.mantychore.protocols.netconf;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import net.i2cat.mantychore.constants.ProtocolConstants;
 import net.i2cat.netconf.NetconfSession;
+import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;
 import net.i2cat.netconf.errors.TransportException;
 import net.i2cat.netconf.errors.TransportNotImplementedException;
@@ -26,6 +26,7 @@ import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 
 public class NetconfProtocolSession extends AbstractProtocolSession {
 
+	public static final String	PROTOCOL_URI	= "URI";
 	public static final String	fileProperties	= "netconf-default.properties";
 	NetconfSession				netconfSession	= null;
 
@@ -35,8 +36,11 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 	public NetconfProtocolSession(CapabilityDescriptor capabilityDescriptor) {
 
 		try {
-			String uri = capabilityDescriptor.getPropertyValue(ProtocolConstants.PROTOCOL_URI);
-			netconfSession = new NetconfSession(new URI(uri));
+			String uri = capabilityDescriptor.getPropertyValue(PROTOCOL_URI);
+			SessionContext context = new SessionContext();
+			context.setURI(new URI(uri));
+
+			netconfSession = new NetconfSession(context);
 			netconfSession.loadConfiguration(new
 					PropertiesConfiguration(fileProperties));
 

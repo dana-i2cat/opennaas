@@ -18,11 +18,19 @@
 
   <dependencies>
 
-<dependency> 
-<groupId>com.iaasframework.capabilities</groupId>
- <artifactId>com.iaasframework.capabilities.actionset</artifactId> 
- <version>${iaas.version}</version>
-</dependency>  
+	<dependency> 
+		<groupId>com.iaasframework.capabilities</groupId>
+		 <artifactId>com.iaasframework.capabilities.actionset</artifactId> 
+		 <version>${iaas.version}</version>
+	</dependency>  
+	
+<!--  Mantychore dependencies  -->
+	<dependency> 
+		<groupId>net.i2cat.mantychore.actionsets</groupId>
+		<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</dependency>  
+	
 </dependencies>
 
   <build>

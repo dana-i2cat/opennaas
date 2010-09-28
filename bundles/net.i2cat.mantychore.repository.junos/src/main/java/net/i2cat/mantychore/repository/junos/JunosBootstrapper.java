@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.repository.junos;
 
-import net.i2cat.mantychore.constants.ActionJunosConstants;
+import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 
 import com.iaasframework.capabilities.actionset.ActionSetCapabilityClient;
 import com.iaasframework.resources.core.IResource;
@@ -14,7 +14,7 @@ public class JunosBootstrapper implements IResourceBootstrapper {
 		ActionSetCapabilityClient actionClient = new ActionSetCapabilityClient(
 				resource.getResourceIdentifier().getId().toString());
 
-		actionClient.executeAction(ActionJunosConstants.GETCONFIG, null);
+		actionClient.executeAction(GetConfigurationAction.GETCONFIG, null);
 	}
 
 }

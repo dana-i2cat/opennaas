@@ -12,11 +12,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.mantychore.protocols</groupId>
 	<artifactId>net.i2cat.mantychore.protocols.junos</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
 
 	<name>Mantychore Netconf Protocol</name>
-	<version>1.0.0-SNAPSHOT</version>
+
 	<description>Mantychore Netconf Protocol Implementation</description>
 
 	<properties>
@@ -26,9 +27,9 @@
 	<dependencies>
 	
 		<dependency>	
-			<groupId>net.i2cat.netconf</groupId>
-			<artifactId>netconf-netty</artifactId>
-			<version>0.0.1-SNAPSHOT</version>	
+	<groupId>net.i2cat.netconf</groupId>
+	<artifactId>netconf4j</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>	
 		<dependency>
