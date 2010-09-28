@@ -48,6 +48,13 @@
 		<artifactId>net.i2cat.mantychore.models.router</artifactId>
 		<version>${pom.version}</version>
    </dependency>
+   
+   <dependency>
+    <groupId>commons-digester</groupId>
+    <artifactId>commons-digester</artifactId>
+    <version>1.7</version>
+</dependency>
+   
 <!--   
     <dependency>
       <groupId>com.iaasframework.protocols</groupId>
