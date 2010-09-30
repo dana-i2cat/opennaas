@@ -25,13 +25,19 @@
 	</properties>
 
 	<dependencies>
-	
 		<dependency>	
-	<groupId>net.i2cat.netconf</groupId>
-	<artifactId>netconf4j</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>	
+		<dependency>	
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
@@ -46,7 +52,15 @@
 			<groupId>com.iaasframework.core</groupId>
 			<artifactId>com.iaasframework.core.transports</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency>	
+		<dependency>
+	      <groupId>org.apache.activemq</groupId>
+	      <artifactId>activemq-core</artifactId>
+	      <version>${activemq.version}</version>
+	      <scope>provided</scope>
+	    </dependency>	    
+	    
+	    
 	</dependencies>
 
 	<build>
@@ -67,6 +81,21 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
+	<!-- 	TOCHECK, IT INCLUDES PARAMETERS IN TESTS	
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-surefire-plugin</artifactId>
+		        <version>2.6</version>
+		        <configuration>
+		          <systemPropertyVariables>
+		            <propertyName>propertyValue</propertyName>
+		            <buildDirectory>${project.build.directory}</buildDirectory>
+		            [...]
+		          </systemPropertyVariables>
+	       	  </configuration>
+	      </plugin>
+		 -->	
+			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -84,10 +113,10 @@
 							com.iaasframework.core.transports;version="${pom.version}",*</Import-Package>
 						<Export-Package>
 							net.i2cat.mantychore.protocols.netconf.message;version="${pom.version}",net.i2cat.mantychore.protocols.netconf;version="${pom.version}"
-</Export-Package>
+						</Export-Package>
 						<Bundle-Activator>
 							net.i2cat.mantychore.protocols.netconf.Activator 
-</Bundle-Activator>
+					</Bundle-Activator>
 					</instructions>
 				</configuration>
 
