@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 public class RouterParser {
 	/** logger **/
 	Logger						log	= LoggerFactory
-													.getLogger(RouterParser.class);
+											.getLogger(RouterParser.class);
 
 	private static RouterModel	routerModel;
 
@@ -27,8 +27,9 @@ public class RouterParser {
 	}
 
 	public void addPhysicalInterface(InterfaceParser interfaceParser) {
-		log.debug("interface location: " + interfaceParser.getPhysicalInterface().getLocation());
-		routerModel.addPhysicalInterface(interfaceParser.getPhysicalInterface());
+		log.debug("interface location: "
+				+ interfaceParser.getPhysicalInterface().getLocation());
+		// routerModel.addPhysicalInterface(interfaceParser.getPhysicalInterface());
 
 	}
 

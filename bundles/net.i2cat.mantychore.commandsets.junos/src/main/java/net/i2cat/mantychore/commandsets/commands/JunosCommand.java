@@ -31,7 +31,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 		super(commandID);
 		log.info("New command: " + commandID);
 
-		params = new HashMap<String, String>();
+		// params = new HashMap<String, String>();
 	}
 
 	@Override
