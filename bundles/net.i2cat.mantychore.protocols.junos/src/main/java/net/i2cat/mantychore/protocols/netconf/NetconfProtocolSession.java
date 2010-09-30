@@ -3,6 +3,7 @@ package net.i2cat.mantychore.protocols.netconf;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import net.i2cat.mantychore.protocols.serializer.SerializerHelper;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;
@@ -12,7 +13,6 @@ import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +41,8 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 			context.setURI(new URI(uri));
 
 			netconfSession = new NetconfSession(context);
-			netconfSession.loadConfiguration(new
-					PropertiesConfiguration(fileProperties));
+			// netconfSession.loadConfiguration(new
+			// PropertiesConfiguration(fileProperties));
 
 			/* these errors can not happen */
 		} catch (URISyntaxException e) {
@@ -71,7 +71,12 @@ public class NetconfProtocolSession extends AbstractProtocolSession {
 					if (!currentProtocolMessage.isLastMessage()) {
 						try {
 							// send message and wait a response
-							Object deviceResponse = sendWaitResponse(currentProtocolMessage.getMessage());
+
+							// FIXME The request Message, it should be a Object
+							// not a String. It must be serialized...
+							Object objReqMessage = SerializerHelper.stringToObject(currentProtocolMessage.getMessage());
+
+							Object deviceResponse = sendWaitResponse(objReqMessage);
 
 							// send response to our protocol module
 							sendResponseToProtocolModule(deviceResponse, currentProtocolMessage.getMessageID());
