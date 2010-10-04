@@ -25,7 +25,7 @@
     <module>net.i2cat.mantychore.commandsets.junos</module>
     <module>net.i2cat.mantychore.actionsets.junos</module>
     <module>net.i2cat.mantychore.repository.junos</module>
-    <module>net.i2cat.mantychore.utils</module>
+<!--     <module>net.i2cat.mantychore.utils</module> -->
     <module>net.i2cat.mantychore.protocols.netconf</module>
   </modules>
 
