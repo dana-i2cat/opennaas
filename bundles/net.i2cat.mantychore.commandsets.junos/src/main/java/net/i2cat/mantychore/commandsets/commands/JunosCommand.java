@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.commandsets.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.velocity.VelocityEngine;
@@ -22,12 +23,19 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	private HashMap<String, String>	params		= new HashMap<String, String>();
 	protected Digester				digester	= new Digester();
-
+	private ArrayList				list		= new ArrayList();
 	/** logger **/
 	Logger							log			= LoggerFactory
 														.getLogger(JunosCommand.class);
 
 	public JunosCommand(String commandID) {
+		super(commandID);
+		log.info("New command: " + commandID);
+
+		// params = new HashMap<String, String>();
+	}
+
+	public JunosCommand(String commandID, ArrayList list) {
 		super(commandID);
 		log.info("New command: " + commandID);
 
@@ -64,7 +72,8 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	public String prepareCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
-		VelocityEngine velocityEngine = new VelocityEngine(template, params);
+		VelocityEngine velocityEngine = new VelocityEngine(template, params,
+				list);
 		String command = velocityEngine.mergeTemplate();
 		log.debug(command);
 		return command;
@@ -105,6 +114,10 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	public void addParam(String key, String value) {
 		this.params.put(key, value);
+	}
+
+	public void setList(ArrayList list) {
+		this.list = list;
 	}
 
 }

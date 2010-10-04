@@ -2,6 +2,7 @@ package net.i2cat.mantychore.commandsets.test;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,20 +62,22 @@ public class TestCommand {
 
 	@Test
 	public void AddStaticRouteCommand() {
-		// List<String> rutas = new ArrayList<String>();
-		// rutas.add("192.168.13.0/24");
-		// rutas.add("192.168.15.0/24");
 
-		HashMap<String, String> rutas = new HashMap<String, String>();
-		Map map = new HashMap();
-		// map.put("IpAddressDestinationSubNetwork", "192.168.13.0/24");
-		// map.put("IpAddressNextHop", "194.68.13.1");
+		ArrayList rutas = new ArrayList();
+		Map map1 = new HashMap();
+		map1.put("IpAddressDestinationSubNetwork", "192.168.13.0/24");
+		map1.put("IpAddressNextHop", "194.68.13.1");
+		rutas.add(map1);
 
-		map.put("IpAddressDestinationSubNetwork", "192.168.15.0/24");
-		map.put("IpAddressNextHop", "194.68.15.1");
-		rutas.putAll(map);
+		Map map2 = new HashMap();
+		map2.put("IpAddressDestinationSubNetwork", "192.168.15.0/24");
+		map2.put("IpAddressNextHop", "194.68.15.1");
+		rutas.add(map2);
 
-		System.out.println(rutas.values());
+		Map map3 = new HashMap();
+		map3.put("IpAddressDestinationSubNetwork", "192.168.16.0/24");
+		map3.put("IpAddressNextHop", "194.68.16.1");
+		rutas.add(map3);
 
 		AddStaticRouteCommand addStaticRouteCommand = new AddStaticRouteCommand(
 				"routerV1", rutas);

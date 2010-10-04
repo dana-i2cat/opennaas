@@ -3,6 +3,7 @@ package net.i2cat.mantychore.commandsets.velocity;
 import java.io.File;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Properties;
@@ -24,10 +25,13 @@ public class VelocityEngine {
 	private VelocityContext			ctx;
 	private String					template;
 	private HashMap<String, String>	params			= new HashMap<String, String>();
+	private ArrayList				list;
 
-	public VelocityEngine(String template, HashMap<String, String> params) {
+	public VelocityEngine(String template, HashMap<String, String> params,
+			ArrayList list) {
 		this.template = template;
 		this.params = params;
+		this.list = list;
 
 	}
 
@@ -59,6 +63,8 @@ public class VelocityEngine {
 			ctx.put(key, value);
 
 		}
+
+		ctx.put("list", list);
 
 		Writer writer = new StringWriter();
 

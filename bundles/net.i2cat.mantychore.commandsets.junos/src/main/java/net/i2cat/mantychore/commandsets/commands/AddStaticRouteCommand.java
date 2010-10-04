@@ -3,10 +3,12 @@ package net.i2cat.mantychore.commandsets.commands;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.digester.InterfaceParser;
 import net.i2cat.mantychore.commandsets.digester.RouterParser;
+import net.i2cat.mantychore.commandsets.digester.StaticRouteParser;
 import net.i2cat.mantychore.models.router.RouterModel;
 
 import org.slf4j.Logger;
@@ -30,16 +32,15 @@ public class AddStaticRouteCommand extends JunosCommand {
 															.getLogger(AddStaticRouteCommand.class);
 
 	public AddStaticRouteCommand(String logicalRouterName,
-			HashMap<String, String> listStaticRoutingProtocol) {
+			ArrayList<String> listStaticRoutingProtocol) {
 		super(ADDSTATICROUTE);
 		log.debug("Preparing GetConfigurationCommand...");
-
+		this.setList(listStaticRoutingProtocol);
 		this.setTemplate(TEMPLATE);
 
 		params.put("logicalRouterName", logicalRouterName);
-		// params.put("rutasSize", Integer.toString(listStaticRoutingProtocol
-		// .size()));
-		params.putAll(listStaticRoutingProtocol);
+
+		// params.putAll(listStaticRoutingProtocol);
 
 		this.setParams(params);
 
@@ -50,10 +51,16 @@ public class AddStaticRouteCommand extends JunosCommand {
 		log.debug("Debugging response from addStaticRoute...");
 		ProtocolResponseMessage message = (ProtocolResponseMessage) response;
 		// String message.getMessage();
+
 		RouterParser.setRouterModel((RouterModel) model);
 
+		// Digester digester = new Digester ();
+
 		/* fill first parameters */
-		digester.addObjectCreate("data/configuration", RouterParser.class);
+		digester
+				.addObjectCreate(
+						"data/configuration/logical-systems/routing-options/static/route",
+						StaticRouteParser.class);
 		digester
 				.addBeanPropertySetter("data/configuration/version", "hostname");
 		digester.addBeanPropertySetter("data/configuration/system/host-name",

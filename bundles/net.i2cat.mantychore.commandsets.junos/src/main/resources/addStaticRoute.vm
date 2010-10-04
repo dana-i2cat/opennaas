@@ -1,22 +1,14 @@
-
-
-##$rutasSize
-
-<edit-config><target><candidate/></target>
-<config>
 <configuration>
 <logical-systems><name> $logicalRouterName </name></logical-systems>
 <routing-options>
 <static>
 <route>
-#foreach( $ruta in $listStaticRoutingProtocol )
+#foreach( $ruta in $list )
 <name> $ruta.IpAddressDestinationSubNetwork </name>
 <next-hop> $ruta.IpAddressNextHop </next-hop>
-  #end
+#end
 </route>
 </static>
 </routing-options>
 </logical-systems>
 </configuration>
-</config>
-</edit-config>
