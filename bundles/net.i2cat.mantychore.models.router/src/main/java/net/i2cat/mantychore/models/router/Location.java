@@ -1,6 +1,5 @@
 package net.i2cat.mantychore.models.router;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.Email;
 
 public class Location {
 
@@ -8,7 +7,6 @@ public class Location {
 	protected String	country;
 	protected String	address;
 	protected String	telephone;
-	@Email
 	protected String	eMail;
 	protected double	latitude;
 	protected double	longitude;

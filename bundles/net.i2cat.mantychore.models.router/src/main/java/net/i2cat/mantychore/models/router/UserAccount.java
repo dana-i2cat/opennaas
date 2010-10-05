@@ -1,13 +1,9 @@
 package net.i2cat.mantychore.models.router;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.Email;
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
 public class UserAccount {
 
-	@NotBlank
 	protected String	userName;
-	@NotBlank
 	protected String	password;
 	/**
 	 * Parameter NOT used
@@ -17,15 +13,10 @@ public class UserAccount {
 	 * Parameter NOT used
 	 */
 	protected String	privilegedPassword;
-	@NotBlank
 	protected String	routerConfigured;
-	@NotBlank
 	protected String	smtpServer;
-	@NotBlank
 	protected String	smtpServerPort;
-	@Email
 	protected String	emailUser;
-	@NotBlank
 	protected String	emailPassword;
 
 	public String getUserName() {

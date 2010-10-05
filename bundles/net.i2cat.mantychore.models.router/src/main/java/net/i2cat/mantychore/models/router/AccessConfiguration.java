@@ -1,16 +1,11 @@
 package net.i2cat.mantychore.models.router;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
 
 public class AccessConfiguration {
 
-	@NotBlank
 	protected String	ipAccessAddress;
-	@NotBlank
 	protected int		accessPort;
-	@NotBlank
 	protected String	transportType;
-	@NotBlank
 	protected String	protocolType;
 
 	public String getIpAccessAddress() {

@@ -3,8 +3,6 @@ package net.i2cat.mantychore.models.router;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springmodules.validation.bean.conf.loader.annotation.handler.NotBlank;
-
 /**
  * Contain parameters for the configuration of an network interface.
  */
@@ -12,7 +10,6 @@ public class IPConfiguration {
 	/**
 	 * Subnetwork address obtain from the IP address and the mask.
 	 */
-	@NotBlank
 	protected String		ipSubNetwork;
 	/**
 	 * Add the functionality of fastSwitching to the interface. Parameter NOT
