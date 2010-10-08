@@ -29,7 +29,26 @@ public class RouterParser {
 	public void addPhysicalInterface(InterfaceParser interfaceParser) {
 		log.debug("interface location: "
 				+ interfaceParser.getPhysicalInterface().getLocation());
-		// routerModel.addPhysicalInterface(interfaceParser.getPhysicalInterface());
+		routerModel
+				.addPhysicalInterface(interfaceParser.getPhysicalInterface());
+
+	}
+
+	public void addStaticRoute(StaticRouteParser staticRouteParser) {
+		log.debug("interface is IPv6 type?: "
+				+ staticRouteParser.getStaticRoute().isIsIPv6());
+
+		routerModel.addStaticRoutes(staticRouteParser.getStaticRoute());
+
+		// StaticRoute staticRoute = new StaticRoute();
+		// // formating information
+		// staticRoute.setDestinationNetworkIPAddress(staticRouteParser
+		// .getIpAddressDestinationSubNetwork());
+		// staticRoute
+		// .setNextHopIPAddress(staticRouteParser.getIpAddressNextHop());
+		// staticRoute.setIsIPv6(false);
+		//
+		// routerModel.addStaticRoutes(staticRoute);
 
 	}
 

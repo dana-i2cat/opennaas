@@ -4,11 +4,12 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.commandsets.commands.AddStaticRouteCommand;
-import net.i2cat.mantychore.commandsets.commands.GetConfigurationCommand;
-import net.i2cat.mantychore.commandsets.commands.KeepAliveCommand;
+import net.i2cat.mantychore.models.router.RouterModel;
+import net.i2cat.mantychore.models.router.StaticRoute;
 
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -21,44 +22,44 @@ public class TestCommand {
 	/** The logger **/
 	Logger	log	= LoggerFactory.getLogger(TestCommand.class);
 
-	@Test
-	public void keepAliveCommand() {
-		KeepAliveCommand commandAlive = new KeepAliveCommand();
-		try {
-			String command = commandAlive.prepareCommand();
-			printCommand(command);
-			assertNotNull(command);
-		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
-	@Test
-	public void GetConfigurationCommand() {
-		GetConfigurationCommand commandGetConfig = new GetConfigurationCommand();
-		try {
-			String command = commandGetConfig.prepareCommand();
-			printCommand(command);
-			assertNotNull(command);
-		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	// @Test
+	// public void keepAliveCommand() {
+	// KeepAliveCommand commandAlive = new KeepAliveCommand();
+	// try {
+	// String command = commandAlive.prepareCommand();
+	// printCommand(command);
+	// assertNotNull(command);
+	// } catch (ResourceNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (ParseErrorException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// }
+	//
+	// @Test
+	// public void GetConfigurationCommand() {
+	// GetConfigurationCommand commandGetConfig = new GetConfigurationCommand();
+	// try {
+	// String command = commandGetConfig.prepareCommand();
+	// printCommand(command);
+	// assertNotNull(command);
+	// } catch (ResourceNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (ParseErrorException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
 
 	@Test
 	public void AddStaticRouteCommand() {
@@ -81,10 +82,27 @@ public class TestCommand {
 
 		AddStaticRouteCommand addStaticRouteCommand = new AddStaticRouteCommand(
 				"routerV1", rutas);
+
+		RouterModel model = new RouterModel();
+		model.setHostName("routerV1");
+
+		StaticRoute staticRoute = new StaticRoute();
+		staticRoute.setDestinationNetworkIPAddress("192.168.13.0/24");
+		staticRoute.setNextHopIPAddress("194.68.13.1");
+
+		model.addStaticRoutes(staticRoute);
+
 		try {
 			String command = addStaticRouteCommand.prepareCommand();
-			printCommand(command);
+			// printCommand(command);
 			assertNotNull(command);
+
+			log.debug("Mensaje de respuesta: " + addStaticRouteCommand.message);
+			addStaticRouteCommand.parseResponse(model);
+
+			List<StaticRoute> routes = model.getStaticRoutes();
+			assertNotNull(routes);
+
 		} catch (ResourceNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,11 +115,11 @@ public class TestCommand {
 		}
 	}
 
-	private void printCommand(String command) {
-		log.info("command tested");
-		log.info("--------------------------------------");
-		log.info(command);
-		log.info("--------------------------------------");
-	}
+	// private void printCommand(String command) {
+	// log.info("command tested");
+	// log.info("--------------------------------------");
+	// log.info(command);
+	// log.info("--------------------------------------");
+	// }
 
 }

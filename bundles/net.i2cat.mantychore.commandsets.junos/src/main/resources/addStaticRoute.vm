@@ -2,7 +2,7 @@
 <logical-systems><name> $logicalRouterName </name></logical-systems>
 <routing-options>
 <static>
-<route>
+<route operation="replace">
 #foreach( $ruta in $list )
 <name> $ruta.IpAddressDestinationSubNetwork </name>
 <next-hop> $ruta.IpAddressNextHop </next-hop>
