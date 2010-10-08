@@ -3,6 +3,9 @@ package net.i2cat.mantychore.models.router;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.resources.core.ObjectSerializer;
 
@@ -26,6 +29,8 @@ public class RouterModel implements IResourceModel {
 
 	protected Location					location;
 
+	Logger								log	= LoggerFactory
+													.getLogger(RouterModel.class);
 	/**
 	 * URL formed string (protocol://address:port/etc). The transport bundle is
 	 * in charge of interpreting it
@@ -44,6 +49,11 @@ public class RouterModel implements IResourceModel {
 
 	/* routing parameters */
 	protected List<StaticRoute>			staticRoutes;
+
+	public RouterModel() {
+		super();
+		staticRoutes = new ArrayList<StaticRoute>();
+	}
 
 	public String getRouterName() {
 		return routerName;
@@ -149,7 +159,8 @@ public class RouterModel implements IResourceModel {
 
 	public void addPhysicalInterface(PhysicalInterface physicalInterface) {
 		for (PhysicalInterface buclePhyInterf : physicalInterfaces) {
-			if (buclePhyInterf.getLocation().equals(physicalInterface.getLocation())) {
+			if (buclePhyInterf.getLocation().equals(
+					physicalInterface.getLocation())) {
 				return;
 			}
 		}
@@ -175,11 +186,27 @@ public class RouterModel implements IResourceModel {
 	/* routing options */
 
 	public List<StaticRoute> getStaticRoutes() {
+		if (staticRoutes == null) {
+			staticRoutes = new ArrayList<StaticRoute>();
+		}
 		return staticRoutes;
 	}
 
-	public void setStaticRoutes(List<StaticRoute> staticRoutes) {
-		this.staticRoutes = staticRoutes;
+	public void addStaticRoutes(StaticRoute staticRoute) {
+		for (StaticRoute bucleStatRoute : staticRoutes) {
+			if (bucleStatRoute.getDestinationNetworkIPAddress().equals(
+					staticRoute.getDestinationNetworkIPAddress())
+					&& bucleStatRoute.getNextHopIPAddress().equals(
+							staticRoute.getNextHopIPAddress())) {
+				return;
+			}
+		}
+		// not exist
+		log.debug("Añadiendo una ruta nueva: "
+				+ staticRoute.getDestinationNetworkIPAddress() + " "
+				+ staticRoute.getNextHopIPAddress());
+
+		staticRoutes.add(staticRoute);
 	}
 
 	public String toXML() {
