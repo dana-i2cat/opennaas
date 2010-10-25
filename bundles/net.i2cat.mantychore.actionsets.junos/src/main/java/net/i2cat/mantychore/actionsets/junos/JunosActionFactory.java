@@ -15,6 +15,10 @@ import com.iaasframework.capabilities.actionset.IAction;
 import com.iaasframework.capabilities.actionset.IActionFactory;
 
 public class JunosActionFactory implements IActionFactory {
+	
+	public static final String	GETCONFIG	= "getConfiguration";
+	public static final String	KEEPALIVE	= "keepAlive";
+	
 	Logger	logger	= LoggerFactory.getLogger(JunosActionFactory.class);
 
 	public IAction createAction(String actionId) throws ActionException {
