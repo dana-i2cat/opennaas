@@ -3,82 +3,89 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<!-- Maven configuration -->
+	<!-- Maven parent -->
 	<parent>
 		<groupId>com.iaasframework</groupId>
 		<artifactId>base-settings</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
-	<properties>
-		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<iaas.version>1.0.0</iaas.version>
-	</properties>
+	<!-- POM id -->
+	<groupId>net.i2cat.mantychore</groupId>
+	<artifactId>base-mantychore</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 
-	<modelVersion>4.0.0</modelVersion>
-	<packaging>pom</packaging>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion> <!-- pom.xml version -->
 	<prerequisites>
 		<maven>2.0.9</maven>
 	</prerequisites>
-
-	<groupId>net.i2cat.mantychore</groupId>
-	<artifactId>mantychore</artifactId>
+	<packaging>pom</packaging>
 
 	<!-- Administrative information -->
+	<name>Mantychore</name>
+	<url>http://www.mantychore.eu/</url>
+
 	<organization>
 		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
 		<url>http://www.i2cat.net/en</url>
 	</organization>
 
-	<name>Mantychore</name>
-	<version>1.0.0-SNAPSHOT</version>
-	<url>http://www.mantychore.eu/</url>
+	<!-- Custom Properties -->
+	<properties>
+		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<iaas.version>1.0.0</iaas.version>
+	</properties>
+
+	<!-- Modules configuration -->
+	<!-- mvn build will only recurse on pom.xml inside this folders: -->
+	<modules>
+		<module>bundles</module>
+		<module>tests</module>
+	</modules>
 
 	<!-- Build information -->
-	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
+	<!--
+		Enforce Java5 - See:
+		http://maven.apache.org/plugins/maven-enforcer-plugin/
+	-->
 	<build>
-		<pluginManagement>
-			<plugins>
-			</plugins>
-		</pluginManagement>
-		<!--  
-	<plugins>
-        <plugin>
-            <groupId>com.google.code.maven-license-plugin</groupId>
-            <artifactId>maven-license-plugin</artifactId>
-            <configuration>
-                <header>docs/HEADER.APACHE</header>
-            </configuration>
-            <executions>
-                <execution>
-                    <goals>
-                        <goal>check</goal>
-                    </goals>
-                </execution>
-            </executions>            
-        </plugin>
-    </plugins> -->
-		
-		
-		
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enforce-versions</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireJavaVersion>
+									<version>1.5</version>
+								</requireJavaVersion>
+								<!--
+									<requireOS> <family>unix</family> </requireOS>
+									<requireMavenVersion> <version>2.0.6</version>
+									</requireMavenVersion>
+								-->
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
-	<ciManagement>
-		<system>Hudson</system>
-		<url>http://dev.manticore.i2cat.net:8080/</url>
-		<notifiers>
-			<notifier>
-				<address>manticore2-devel@listas.i2cat.net</address>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-
+	<!-- SCM configuration -->
 	<scm>
 		<connection>scm:svn:http://svn.i2cat.com/repos/manticore/</connection>
 		<developerConnection>scm:svn:http://svn.i2cat.com/repos/manticore/</developerConnection>
 		<url>scm:svn:http://svn.i2cat.com/repos/manticore</url>
 	</scm>
 
+	<!-- Reporting configuration -->
 	<reporting>
 		<plugins>
 			<!-- Javadoc -->
@@ -95,14 +102,6 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
-	<!-- mvn build will only recurse on pom.xml inside this folders: -->
-	<modules>
-		<module>bundles</module>
-		<module>examples</module>
-		<module>tests</module>
-		<module>poms</module>
-	</modules>
 
 	<dependencies>
 		<!-- IaaS Dependencies -->
@@ -219,7 +218,7 @@
 			<id>snapshots</id>
 			<name>IaaS Repository Snapshot Proxy Releases</name>
 			<url>http://repository.inocybe.ca/content/groups/public-snapshots/</url>
-		</repository>		
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
