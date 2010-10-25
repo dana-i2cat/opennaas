@@ -1,10 +1,10 @@
-package net.i2cat.mantychore.tests.utils;
+package utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import net.i2cat.mantychore
+import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSession;
 
 import com.iaasframework.capabilities.actionset.IActionSetConstants;
 import com.iaasframework.capabilities.commandset.ICommandSetConstants;
@@ -54,7 +54,7 @@ public class ResourceDescriptorFactory {
 
 		properties.add(newProperty(IProtocolConstants.PROTOCOL, "Netconf"));
 		properties.add(newProperty(IProtocolConstants.PROTOCOL_VERSION, "1.0.0"));
-		properties.add(newProperty(ProtocolConstants.PROTOCOL_URI, "virtual://foouser:foopass@fooserver:22/okServer"));
+		properties.add(newProperty(NetconfProtocolSession.PROTOCOL_URI, "virtual://foouser:foopass@fooserver:22/okServer"));
 
 		/* netconf parameters */
 

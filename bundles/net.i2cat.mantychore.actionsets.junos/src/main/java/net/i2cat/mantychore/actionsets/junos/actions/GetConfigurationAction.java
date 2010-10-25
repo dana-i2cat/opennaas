@@ -3,27 +3,24 @@ package net.i2cat.mantychore.actionsets.junos.actions;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.constants.ActionJunosConstants;
-import net.i2cat.mantychore.constants.CommandJunosConstants;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GetConfigurationAction extends JunosAction {
-
-	Logger					logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
-	private List<String>	commandsList	= null;
-	int						index			= 0;
+	public static final String	GETCONFIG		= "getConfiguration";
+	Logger						logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
+	private List<String>		commandsList	= null;
+	int							index			= 0;
 
 	public GetConfigurationAction() {
-		super(ActionJunosConstants.GETCONFIG);
+		super(GETCONFIG);
 		initializeCommandsList();
 	}
 
 	protected void initializeCommandsList() {
 		commandsList = new ArrayList<String>();
 		/* commands */
-		commandsList.add(CommandJunosConstants.GETCONFIG);
+		commandsList.add(GETCONFIG);
 		state.setSteps(commandsList);
 
 	}

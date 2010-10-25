@@ -25,8 +25,7 @@
 <!-- <module>netconf-protocol</module>
     <module>model</module> -->
     <module>net.i2cat.mantychore.tests.repository</module>
-    <module>net.i2cat.mantychore.tests.utils</module>
-    <module>net.i2cat.mantychore.tests.actionset</module>
+ <!--   <module>net.i2cat.mantychore.tests.utils</module> -->
   </modules>
 
   <dependencies>
@@ -49,13 +48,56 @@
       <artifactId>geronimo-jpa_1.0_spec</artifactId>
       <scope>provided</scope>
     </dependency>
-    <dependency>  
+
     
-      <!--  export mantychore utils project -->
-	  <groupId>net.i2cat.mantychore</groupId>
-	  <artifactId>net.i2cat.mantychore.utils</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
-	 </dependency> 
-  </dependencies>
+      		<!-- iaas dependencies -->
+    
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.protocol</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.actionset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.commandset</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+    
+      <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.model</artifactId>
+      <version>${iaas.version}</version>
+    </dependency>
+  
+  
+    	<!-- necessary extras for testing -->
+    <dependency>  
+    <groupId>com.iaasframework.extras</groupId>
+  	<artifactId>com.iaasframework.extras.itesthelper</artifactId>
+  	<version>${iaas.version}</version>
+    </dependency>
+    
+    <!--  mantychore dependencies -->
+    <dependency>      
+	    <groupId>net.i2cat.mantychore.protocols</groupId>
+		<artifactId>net.i2cat.mantychore.protocols.junos</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+    </dependency>  
+ 
+    <dependency>  
+	    <groupId>net.i2cat.mantychore.actionsets</groupId>
+		<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+  	</dependency>    
+  	
+  </dependencies>    
 
 </project>

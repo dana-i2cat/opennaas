@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.KeepAliveAction;
-import net.i2cat.mantychore.constants.ActionJunosConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +23,11 @@ public class JunosActionFactory implements IActionFactory {
 	public IAction createAction(String actionId) throws ActionException {
 		logger.info("ACTIONSET - Action id to send: " + actionId);
 
-		if (actionId.equals(ActionJunosConstants.GETCONFIG)) {
+		if (actionId.equals(GetConfigurationAction.GETCONFIG)) {
 			return new GetConfigurationAction();
 		} else
 
-		if (actionId.equals(ActionJunosConstants.KEEPALIVE)) {
+		if (actionId.equals(KeepAliveAction.KEEPALIVE)) {
 			return new KeepAliveAction();
 		}
 
@@ -39,8 +38,8 @@ public class JunosActionFactory implements IActionFactory {
 
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
-		actionNames.add(ActionJunosConstants.GETCONFIG);
-		actionNames.add(ActionJunosConstants.KEEPALIVE);
+		actionNames.add(GetConfigurationAction.GETCONFIG);
+		actionNames.add(KeepAliveAction.KEEPALIVE);
 		return actionNames;
 	}
 

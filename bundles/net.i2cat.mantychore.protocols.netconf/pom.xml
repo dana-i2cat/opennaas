@@ -114,9 +114,6 @@
 						<Export-Package>
 							net.i2cat.mantychore.protocols.netconf.message;version="${pom.version}",net.i2cat.mantychore.protocols.netconf;version="${pom.version}"
 						</Export-Package>
-						<Bundle-Activator>
-							net.i2cat.mantychore.protocols.netconf.Activator 
-					</Bundle-Activator>
 					</instructions>
 				</configuration>
 

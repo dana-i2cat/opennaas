@@ -8,7 +8,7 @@ import com.iaasframework.capabilities.actionset.ActionException;
 import com.iaasframework.capabilities.actionset.ActionState.State;
 import com.iaasframework.resources.core.capability.CapabilityException;
 
-public abstract class JunosAction extends AbstractActionWithCommandSet {
+public class JunosAction extends AbstractActionWithCommandSet {
 	Logger	log	= LoggerFactory.getLogger(JunosAction.class);
 
 	public JunosAction(String idAction) {
@@ -17,7 +17,8 @@ public abstract class JunosAction extends AbstractActionWithCommandSet {
 		initializeCommandsList();
 	}
 
-	protected abstract void initializeCommandsList();
+	protected void initializeCommandsList() {
+	}
 
 	@Override
 	public void executeAction() throws ActionException {
