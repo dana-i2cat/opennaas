@@ -110,7 +110,6 @@
 						<Export-Package>
 							${pom.artifactId};version="${pom.version}"
 						</Export-Package>
-						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
 					</instructions>
 				</configuration>
 			</plugin>
