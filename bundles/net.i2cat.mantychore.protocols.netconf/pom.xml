@@ -3,34 +3,35 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
+
+<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<modelVersion>4.0.0</modelVersion>
+<!--  POM id -->
 	<groupId>net.i2cat.mantychore.protocols</groupId>
 	<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+	
+<!--  Maven configuration -->	
+	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-
-
 	<name>Mantychore Netconf Protocol</name>
-
 	<description>Mantychore Netconf Protocol Implementation</description>
 
-	<properties>
-		<bundle.namespace>${pom.artifactId}</bundle.namespace>
-	</properties>
 
 	<dependencies>
+	<!--  get binary of netconf4j -->
 		<dependency>	
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>	
+		<!--  get source of netconf4j -->
 		<dependency>	
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
@@ -38,21 +39,8 @@
 			<classifier>sources</classifier>
 		</dependency>
 		
-		<dependency>
-			<groupId>com.iaasframework.capabilities</groupId>
-			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.capabilities</groupId>
-			<artifactId>com.iaasframework.capabilities.eventset</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.core</groupId>
-			<artifactId>com.iaasframework.core.transports</artifactId>
-			<scope>provided</scope>
-		</dependency>	
+		
+			
 		<dependency>
 	      <groupId>org.apache.activemq</groupId>
 	      <artifactId>activemq-core</artifactId>
@@ -81,6 +69,7 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
+			
 	<!-- 	TOCHECK, IT INCLUDES PARAMETERS IN TESTS	
 			<plugin>
 		        <groupId>org.apache.maven.plugins</groupId>
@@ -112,7 +101,7 @@
 							com.iaasframework.capabilities.protocol;version="${pom.version}",
 							com.iaasframework.core.transports;version="${pom.version}",*</Import-Package>
 						<Export-Package>
-							net.i2cat.mantychore.protocols.netconf.message;version="${pom.version}",net.i2cat.mantychore.protocols.netconf;version="${pom.version}"
+							${pom.artifactId}.message;version="${pom.version}",${pom.artifactId};version="${pom.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

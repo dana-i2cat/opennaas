@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <parent>
-	<groupId>net.i2cat.mantychore</groupId>
-	<artifactId>shared-settings</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+  <groupId>net.i2cat.mantychore</groupId>
+  <artifactId>mantychore-tests</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   </parent>
 
 
   <artifactId>itests-bundle-settings</artifactId>
   <groupId>net.i2cat.mantychore</groupId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
    
 	<modelVersion>4.0.0</modelVersion>
    <name>Mantychore :: POMS :: Integration Test</name>
    <packaging>pom</packaging>
 
 
+ <!--  integration tests -->
+  <modules>
+    <module>net.i2cat.mantychore.tests.repository</module>
+  </modules>
 
+<!--  dependencies for integration tests -->
    <dependencies>
+   
+     <dependency>
+      <groupId>org.apache.activemq</groupId>
+      <artifactId>activemq-core</artifactId>
+	  <version>5.1.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JPA specs -->
+    <dependency>
+      <groupId>org.apache.geronimo.specs</groupId>
+      <artifactId>geronimo-jpa_1.0_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    
       <!-- OSGi -->
 	<dependency>
            <groupId>org.osgi</groupId>
