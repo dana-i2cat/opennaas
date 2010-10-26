@@ -23,6 +23,11 @@
 
 	<!--  dependencies  -->
 	<dependencies>
+	
+   		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.model</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
 			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>

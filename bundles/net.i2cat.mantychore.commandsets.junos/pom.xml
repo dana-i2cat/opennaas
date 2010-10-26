@@ -27,6 +27,21 @@
 
 
   <dependencies>
+  
+<!-- IaaS dependencies -->
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.commandset</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.iaasframework.capabilities</groupId>
+      <artifactId>com.iaasframework.capabilities.protocol</artifactId>
+    </dependency>
+    <dependency>
+		<groupId>com.iaasframework.capabilities</groupId>
+		<artifactId>com.iaasframework.capabilities.model</artifactId>
+	</dependency>
+   
 
    <!-- mantychore dependencies -->
    <dependency>

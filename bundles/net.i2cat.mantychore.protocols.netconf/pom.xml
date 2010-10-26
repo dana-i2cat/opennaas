@@ -40,19 +40,18 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
-		
-		
-		
-		<!-- testing dependencies  -->
-			
+
+	<!--  IaaS dependencies -->
 		<dependency>
-	      <groupId>org.apache.activemq</groupId>
-	      <artifactId>activemq-core</artifactId>
-	  		<version>5.1.0</version>
-	      <scope>provided</scope>
-	    </dependency>	    
-	    
-	    
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.transports</artifactId>
+		</dependency>
+	
+			    
 	</dependencies>
 
 	<build>
