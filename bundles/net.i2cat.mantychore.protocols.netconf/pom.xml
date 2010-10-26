@@ -24,6 +24,7 @@
 
 
 	<dependencies>
+	
 	<!--  get binary of netconf4j -->
 		<dependency>	
 			<groupId>net.i2cat.netconf</groupId>
@@ -31,6 +32,7 @@
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>	
+		
 		<!--  get source of netconf4j -->
 		<dependency>	
 			<groupId>net.i2cat.netconf</groupId>
@@ -40,11 +42,13 @@
 		</dependency>
 		
 		
+		
+		<!-- testing dependencies  -->
 			
 		<dependency>
 	      <groupId>org.apache.activemq</groupId>
 	      <artifactId>activemq-core</artifactId>
-	      <version>${activemq.version}</version>
+	  		<version>5.1.0</version>
 	      <scope>provided</scope>
 	    </dependency>	    
 	    

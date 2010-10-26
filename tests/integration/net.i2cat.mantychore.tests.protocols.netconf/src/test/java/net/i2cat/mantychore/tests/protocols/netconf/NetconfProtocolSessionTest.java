@@ -1,4 +1,5 @@
-package net.i2cat.mantychore.protocols.netconf.test;
+package net.i2cat.mantychore.test.protocols.netconf;
+
 
 import java.util.UUID;
 

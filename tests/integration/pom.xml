@@ -19,6 +19,7 @@
  <!--  integration tests -->
   <modules>
     <module>net.i2cat.mantychore.tests.repository</module>
+    <module>net.i2cat.mantychore.tests.protocols.netconf</module>
   </modules>
 
 <!--  dependencies for integration tests -->
