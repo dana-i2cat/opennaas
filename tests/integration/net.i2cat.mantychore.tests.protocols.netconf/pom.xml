@@ -1,43 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
- <!--  parent parameters  -->
-  <parent>
-  <artifactId>itests-bundle-settings</artifactId>
-  <groupId>net.i2cat.mantychore</groupId>
-  <version>1.0.0-SNAPSHOT</version>
-  </parent>
+	<!--  parent parameters  -->
+	<parent>
+		<artifactId>itests-bundle-settings</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 
 
-<!--  POM id -->
+	<!--  POM id -->
 
-  <groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
-  <artifactId>net.i2cat.mantychore.tests.protocols.netconf</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
+	<artifactId>net.i2cat.mantychore.tests.protocols.netconf</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 
-<!--  Maven configuration -->	
-  <modelVersion>4.0.0</modelVersion>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore Netconf Protocol test</name>
 	<description>Mantychore Netconf Protocol Implementation test</description>
 
-  <packaging>jar</packaging>
+	<packaging>jar</packaging>
+	<dependencies>
+		<!-- IaaS Dependencies -->
+		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>	
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>	
+	</dependencies>
 
-
-   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.servicemix.tooling</groupId>
-        <artifactId>depends-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>generate-depends-file</id>
-            <goals>
-              <goal>generate-depends-file</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>    
-   </plugins>
-  </build> 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
