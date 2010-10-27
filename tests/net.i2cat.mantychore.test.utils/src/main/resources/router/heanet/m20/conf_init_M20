@@ -1,0 +1,123 @@
+## Last changed: 2010-04-01 11:48:13 UTC
+version 9.4R4.5;
+system {
+    root-authentication {
+        encrypted-password "$1$/64W3f7P$eVLLveABz1yNaVgcbXTb1."; ## SECRET-DATA
+    }
+    login {
+        user i2cat {
+            full-name i2cat;
+            uid 2000;
+            class super-user;
+            authentication {
+                encrypted-password "$1$Ku27H8Av$uZ1/uACQJkndBHNBYBD38/"; ## SECRET-DATA
+            }
+        }
+        user lisset {
+            full-name Lisset_Diaz;
+            uid 2001;
+            class super-user;
+            authentication {
+                encrypted-password "$1$jK44vN4T$YIsdpnwRR8J4/MICVLEe.1"; ## SECRET-DATA
+            }
+        }
+    }
+    services {
+        ssh {
+            root-login allow;
+            protocol-version v2;
+        }
+        telnet;        
+        netconf {
+            ssh;
+        }     
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/2/0 {
+        vlan-tagging;
+        unit 39 {
+            vlan-id 39;
+            family inet {
+                address 193.1.244.66/30;
+            }
+            family inet6 {
+                address 2001:770:400:133::2/64;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 193.1.190.254/32;
+            }
+            family inet6 {
+                address 2001:770:ad:fffe::1/128;
+            }
+        }
+    }
+}
+routing-options {
+    rib inet6.0 {
+        static {
+            route 2001:770:ad::/48 {
+                discard;
+                tag 1000;
+            }
+        }
+    }
+    static {
+        route 193.1.190.0/24 {
+            discard;
+            tag 1000;
+        }
+    }
+    autonomous-system 65166;
+}
+protocols {
+    bgp {
+        group ebgp {
+            type external;
+            export originate;
+            neighbor 193.1.244.65 {
+                family inet {
+                    any;
+                }
+                peer-as 1213;
+            }
+        }
+        group ebgp6 {
+            type external;
+            export originate;
+            neighbor 2001:770:400:133::1 {
+                family inet6 {
+                    any;
+                }
+                peer-as 1213;
+            }
+        }
+    }
+}
+policy-options {
+    policy-statement originate {
+        term 1 {
+            from {
+                protocol static;
+                tag 1000;
+            }
+            then accept;
+        }
+    }
+}

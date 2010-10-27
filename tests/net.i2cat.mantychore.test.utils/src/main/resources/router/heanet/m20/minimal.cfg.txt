@@ -1,0 +1,95 @@
+## Last commit: 2010-03-29 11:13:47 UTC by root
+version 8.1R4.3;
+system {
+    root-authentication {
+        encrypted-password "$1$wDgg9R63$MZ89URZqAyrCRBYob74ID."; ## SECRET-DATA
+    }
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file interactive-commands {
+            interactive-commands any;
+        }
+    }
+}
+interfaces {
+    ge-0/2/0 {
+        vlan-tagging;
+        unit 39 {
+            vlan-id 39;
+            family inet {
+                address 193.1.244.66/30;
+            }
+            family inet6 {
+                address 2001:770:400:133::2/64;
+            }
+        }
+    }
+    lo0 {
+        unit 0 {
+            family inet {
+                address 193.1.190.254/32;
+            }
+            family inet6 {
+                address 2001:770:ad:fffe::1/128;
+            }
+        }
+    }
+}
+routing-options {
+    rib inet6.0 {
+        static {
+            route 2001:770:ad::/48 {
+                discard;
+                tag 1000;
+            }
+        }
+    }
+    static {
+        route 193.1.190.0/24 {
+            discard;
+            tag 1000;
+        }
+    }
+    autonomous-system 65166;
+}
+protocols {
+    bgp {
+        group ebgp {
+            type external;
+            export originate;
+            neighbor 193.1.244.65 {
+                family inet {
+                    any;
+                }
+                peer-as 1213;
+            }
+        }
+        group ebgp6 {
+            type external;
+            export originate;
+            neighbor 2001:770:400:133::1 {
+                family inet6 {
+                    any;
+                }
+                peer-as 1213;
+            }
+        }
+    }
+}
+policy-options {
+    policy-statement originate {
+        term 1 {
+            from {
+                protocol static;
+                tag 1000;
+            }
+            then accept;
+        }
+    }
+}
