@@ -68,17 +68,25 @@ public class ConfigurerTestFactory {
 	}
 
 	public static Option[] newServiceMixTest() {
+		/* prepare fuse container */
 		Option[] opts_features = options(OPT_SERVICE_MIX_FEATURES, OPT_WORKING_DIRECTORY,
 				// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006"),
 				waitForFrameworkStartup(),
-				equinox());
+				equinox()); // FIXME It is necessary to use a felix osgi
+							// container
 
+		/* prepare IaaS dependencies */
 		Option[] opts_features_iaas = { OPT_IAAS_FEATURES };
-		Option[] opts_features_mantychore = { OPT_MANTYCHORE_FEATURES };
+
+		/* specify repositories */
 		Option[] opts_without_iaas = combine(REPOSITORIES, opts_features);
 		Option[] opts_without_mantychore = combine(opts_features_iaas, opts_without_iaas);
 
+		/* prepare mantychore dependencies */
+		Option[] opts_features_mantychore = { OPT_MANTYCHORE_FEATURES };
+
 		Option[] opts_with_features = combine(opts_features_mantychore, opts_without_mantychore);
+
 		Option[] options = combine(HELPER_DEFAULT_OPTIONS, opts_with_features);
 		return options;
 
