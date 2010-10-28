@@ -45,13 +45,13 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 
 	IResource					resource		= null;
 
-	@Configuration
+//	@Configuration
 	public static Option[] configuration() {
 
 		return ConfigurerTestFactory.newResourceManagerTest();
 	}
 
-	@Before
+//	@Before
 	public void setup() {
 		logger.debug("Setting up for the test");
 
@@ -61,7 +61,7 @@ public class ResourceManagerTest extends AbstractIntegrationTest {
 
 	}
 
-	@Test
+//	@Test
 	public void testFirstOperation() throws ResourceException {
 		// registerResourceRepository(nameType);
 		/* check resource */
