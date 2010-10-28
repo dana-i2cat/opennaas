@@ -281,6 +281,14 @@
 		    <artifactId>org.apache.servicemix.naming</artifactId>
 		    <version>1.2.0-fuse-02-00</version>
 		</dependency>
+		
+		<!--  IaaS testing dependencies  -->
+		<dependency>
+			<groupId>com.iaasframework.extras</groupId>
+			<artifactId>com.iaasframework.extras.itesthelper</artifactId>			
+			<version>${iaas.version}</version>
+		</dependency>
+
 
 
 </dependencies>

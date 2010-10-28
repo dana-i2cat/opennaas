@@ -120,16 +120,20 @@
 			<artifactId>com.iaasframework.core.hibernate</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
+		<!-- database jpa dependency -->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_1.0_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
 			<!-- IaaS Framework and Tools -->
+				<!--  IaaS Core dependencies  -->
 			<dependency>
 				<groupId>com.iaasframework.core</groupId>
 				<artifactId>com.iaasframework.core.resourcecore</artifactId>
@@ -145,6 +149,13 @@
 				<artifactId>com.iaasframework.core.hibernate</artifactId>
 				<version>${iaas.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.iaasframework.core</groupId>
+				<artifactId>com.iaasframework.core.transports</artifactId>
+				<version>${iaas.version}</version>
+			</dependency>
+			
+				<!--  IaaS tools  -->			
 			<dependency>
 				<groupId>com.iaasframework.capabilities</groupId>
 				<artifactId>com.iaasframework.capabilities.protocol</artifactId>
@@ -175,29 +186,10 @@
 				<artifactId>com.iaasframework.capabilities.triggerset</artifactId>
 				<version>${iaas.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.protocols</groupId>
-				<artifactId>com.iaasframework.protocols.tl1</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.core</groupId>
-				<artifactId>com.iaasframework.core.transports</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
+				<!--  IaaS tools  -->						
 			<dependency>
 				<groupId>com.iaasframework.transports</groupId>
 				<artifactId>com.iaasframework.transports.sockets</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.transports</groupId>
-				<artifactId>com.iaasframework.transports.telnet</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.transports</groupId>
-				<artifactId>com.iaasframework.transports.secureshell</artifactId>
 				<version>${iaas.version}</version>
 			</dependency>
 			<dependency>

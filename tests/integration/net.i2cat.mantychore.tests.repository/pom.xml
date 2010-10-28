@@ -4,10 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<parent>
-		<groupId>net.i2cat.mantychore</groupId>
-		<artifactId>mantychore-tests</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</parent>
+  <artifactId>itests-bundle-settings</artifactId>
+  <groupId>net.i2cat.mantychore</groupId>
+  <version>1.0.0-SNAPSHOT</version>	
+  </parent>
 
 
 	<modelVersion>4.0.0</modelVersion>
@@ -58,10 +58,6 @@
 		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.commandset</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.extras</groupId>
-			<artifactId>com.iaasframework.extras.itesthelper</artifactId>
 		</dependency>
 
 		<!-- Apache Felix Karaf integration -->
