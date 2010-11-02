@@ -35,22 +35,19 @@
 		</dependency>
 
 		<!-- normal dependencies required at compile time -->
+			
+		<!--  TODO add osgi bundle specif. for karaf felix -->
 		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam</artifactId>
-			<version>1.2.2</version>
+		    <groupId>org.osgi</groupId>
+		    <artifactId>org.osgi.core</artifactId>
+		    <version>4.2.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-junit</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-container-default</artifactId>
-			<version>1.2.2</version>
-		</dependency>
-		<!-- IssA Framework dependencies -->
+
+
+
+		
+		
+		<!-- IaaS Framework dependencies -->
 		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.model</artifactId>
@@ -60,12 +57,6 @@
 			<artifactId>com.iaasframework.capabilities.commandset</artifactId>
 		</dependency>
 
-		<!-- Apache Felix Karaf integration -->
-		<dependency>
-			<groupId>org.apache.felix.karaf.tooling</groupId>
-			<artifactId>org.apache.felix.karaf.tooling.testing</artifactId>
-			<version>1.4.0-fuse-01-00</version>
-		</dependency>
 
 
 
@@ -73,32 +64,23 @@
 
 	<build>
 		<plugins>
-			<!-- use pax exam maven plugin -->
-			<plugin>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>maven-paxexam-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-config</id>
-						<goals>
-							<goal>generate-config</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<options>
-						<platform>${target-framework}</platform>
-						<profiles>log,url</profiles>
-					</options>
-					<settings>
-						<dependency_options>org.ops4j.pax.web:pax-web-service@7</dependency_options>
-					</settings>
-				</configuration>
-			</plugin>
+			
+	<!--  The depends-maven-plugin generates the file target/classes/META-INF/maven/dependencies.properties 
+	which Pax Exam can then use to resolve the version dependencies of groupId/artifactIds  
+	-->
+      <plugin>
+        <groupId>org.apache.servicemix.tooling</groupId>
+        <artifactId>depends-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>generate-depends-file</id>
+            <goals>
+              <goal>generate-depends-file</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>    
+
 		</plugins>
 	</build>
-
-
-
-
 </project>

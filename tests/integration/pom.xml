@@ -38,11 +38,20 @@
       <scope>provided</scope>
     </dependency>
     
+    		<!-- Apache Felix Karaf integration -->
+<!-- 		<dependency>
+			<groupId>org.apache.felix.karaf.tooling</groupId>
+			<artifactId>org.apache.felix.karaf.tooling.testing</artifactId>
+			<version>1.4.0-fuse-01-00</version>
+		</dependency>
+		 -->
+    
+    
       <!-- OSGi -->
 	<dependency>
            <groupId>org.osgi</groupId>
            <artifactId>osgi_R4_core</artifactId>
-	   <scope>provided</scope>
+	   		<scope>provided</scope>
          </dependency>
          <dependency>
           <groupId>org.osgi</groupId>

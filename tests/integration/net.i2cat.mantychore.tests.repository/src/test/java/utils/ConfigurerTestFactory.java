@@ -1,10 +1,8 @@
 package utils;
 
-import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
-import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRepositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
@@ -28,7 +26,7 @@ public class ConfigurerTestFactory {
 
 	public static final Option[]	HELPER_DEFAULT_OPTIONS		= Helper.getDefaultOptions(
 																		systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																				.value("WARN"));
+																				.value("INFO"));
 
 	public static final Option		OPT_WORKING_DIRECTORY		= workingDirectory(IaaSIntegrationTestsHelper.WORKING_DIRECTORY);
 
@@ -67,40 +65,39 @@ public class ConfigurerTestFactory {
 
 	}
 
-	public static Option[] newServiceMixTest() {
-		/* prepare fuse container */
-		Option[] opts_features = options(OPT_SERVICE_MIX_FEATURES, OPT_WORKING_DIRECTORY,
-				// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006"),
-				waitForFrameworkStartup(),
-				equinox()); // FIXME It is necessary to use a felix osgi
-							// container
-
-		/* prepare IaaS dependencies */
-		Option[] opts_features_iaas = { OPT_IAAS_FEATURES };
-
-		/* specify repositories */
-		Option[] opts_without_iaas = combine(REPOSITORIES, opts_features);
-		Option[] opts_without_mantychore = combine(opts_features_iaas, opts_without_iaas);
-
-		/* prepare mantychore dependencies */
-		Option[] opts_features_mantychore = { OPT_MANTYCHORE_FEATURES };
-
-		Option[] opts_with_features = combine(opts_features_mantychore, opts_without_mantychore);
-
-		Option[] options = combine(HELPER_DEFAULT_OPTIONS, opts_with_features);
-		return options;
+	public static Option[] newSimpleTest() {
+		return combine(HELPER_DEFAULT_OPTIONS
+				, OPT_WORKING_DIRECTORY
+		// ,
+		// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
+		// , waitForFrameworkStartup()
+		);
 
 	}
 
-	public static Option[] newResourceManagerTest() {
-		return combine(
-				newServiceMixTest(),
-				// add the iaas bundles
-				mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"), // for
+	public static Option[] newServiceMixTest() {
+		Option[] optssimpleTest = newSimpleTest();
+		Option[] opts_with_repos = combine(REPOSITORIES, optssimpleTest); // repositories
+		Option[] optsServiceMix = combine(opts_with_repos, OPT_SERVICE_MIX_FEATURES); // service
+		// mix
+		return optsServiceMix;
+
+	}
+
+	public static Option[] newMantychoreTest() {
+		Option[] optsServiceMix = newServiceMixTest();
+		Option[] opts_with_iaas = combine(optsServiceMix, OPT_IAAS_FEATURES); // add
+		// iaas
+		// features
+		Option[] opts_with_mantychore = combine(opts_with_iaas, OPT_MANTYCHORE_FEATURES); // add
+		// mantychore
+		// features
+		Option[] allOpts = combine(opts_with_mantychore
+				, mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper"), // for
 				// testing
 				mavenBundle().groupId("net.i2cat.mantychore.repository").artifactId("net.i2cat.mantychore.repository.junos")
+				);
 
-		);
-
+		return allOpts;
 	}
 }
