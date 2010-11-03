@@ -8,6 +8,10 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRe
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
+import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartupFor;
+import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
+import static org.ops4j.pax.exam.CoreOptions.equinox;
+
 
 import org.apache.felix.karaf.testing.Helper;
 import org.ops4j.pax.exam.Option;
@@ -16,17 +20,17 @@ import com.iaasframework.extras.itesthelper.IaaSIntegrationTestsHelper;
 
 public class ConfigurerTestFactory {
 
-	public static final Option[]	REPOSITORIES				= options(excludeDefaultRepositories(),
-																		repositories(
-																				"http://repository.inocybe.ca/content/groups/public/",
-																				"http://repository.inocybe.ca/content/groups/public-snapshots/",
-																				"http://repo.fusesource.com/maven2",
-																				"http://repo1.maven.org/maven2")
-																				);
+	public static final Option		MANTYCHORE_REPOS 			=repositories(
+																"http://repository.inocybe.ca/content/groups/public/",
+																"http://repository.inocybe.ca/content/groups/public-snapshots/",
+																"http://repo.fusesource.com/maven2",
+																"http://repo1.maven.org/maven2");
+	public static final Option[]	REPOSITORIES				= options(excludeDefaultRepositories(),MANTYCHORE_REPOS);
+																		
 
 	public static final Option[]	HELPER_DEFAULT_OPTIONS		= Helper.getDefaultOptions(
 																		systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																				.value("INFO"));
+																				.value("WARN"));
 
 	public static final Option		OPT_WORKING_DIRECTORY		= workingDirectory(IaaSIntegrationTestsHelper.WORKING_DIRECTORY);
 
@@ -65,23 +69,33 @@ public class ConfigurerTestFactory {
 
 	}
 
+	
+	public static long minInMillis = 60000; // 60 secs * 1000 (1 milli)
+	
 	public static Option[] newSimpleTest() {
+		long waitInMillis = minInMillis * 100;
 		return combine(HELPER_DEFAULT_OPTIONS
-				, OPT_WORKING_DIRECTORY
-		// ,
-		// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		// , waitForFrameworkStartup()
+				, OPT_WORKING_DIRECTORY //directory where pax-runner saves OSGi bundles
+		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
+		, waitForFrameworkStartup() //wait for a length of time
+		, equinox() 
 		);
 
 	}
 
 	public static Option[] newServiceMixTest() {
 		Option[] optssimpleTest = newSimpleTest();
-		Option[] opts_with_repos = combine(REPOSITORIES, optssimpleTest); // repositories
+		Option[] opts_with_repos = combine(optssimpleTest,MANTYCHORE_REPOS ); // repositories
 		Option[] optsServiceMix = combine(opts_with_repos, OPT_SERVICE_MIX_FEATURES); // service
 		// mix
-		return optsServiceMix;
+		Option[] allOpts = combine(optsServiceMix, mavenBundle().groupId("com.iaasframework.extras").artifactId(
+				"com.iaasframework.extras.itesthelper"));
+		return allOpts;
 
+	}
+
+	public static Option[] newExampleTest() {
+		return combine(HELPER_DEFAULT_OPTIONS, OPT_SERVICE_MIX_FEATURES);
 	}
 
 	public static Option[] newMantychoreTest() {

@@ -17,17 +17,48 @@ public class ServiceMixOsgiTest {
 
 	@Configuration
 	public static Option[] configure() {
-		return ConfigurerTestFactory.newServiceMixTest();
+		return ConfigurerTestFactory.newMantychoreTest();
 	}
 
 	@Test
 	public void ListBundles() {
 		System.out.println("This is running inside Felix. With all configuration set up like you specified. ");
-		// feel free to add breakpoints and debug.
-		for (Bundle b : bundleContext.getBundles()) {
-			System.out.println("Bundle " + b.getBundleId() + " : " + b.getSymbolicName());
+		try {
+			Thread.sleep(100000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listBundles(bundleContext);
+	}
+
+	public static void listBundles(BundleContext bundleContext) {
+		Bundle b = null;
+		for (int i = 0; i < bundleContext.getBundles().length; i++) {
+			b = bundleContext.getBundles()[i];
+			System.out.println(b.toString() + " : " + getStateString(b.getState()));
+			if (getStateString(b.getState()).equals("INSTALLED")) {
+				try {
+					b.start();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+	}
+
+	private static String getStateString(int value) {
+		if (value == Bundle.ACTIVE) {
+			return "ACTIVE";
+		} else if (value == Bundle.INSTALLED) {
+			return "INSTALLED";
+		} else if (value == Bundle.RESOLVED) {
+			return "RESOLVED";
+		} else if (value == Bundle.UNINSTALLED) {
+			return "UNINSTALLED";
 		}
 
+		return "UNKNOWN";
 	}
 
 }
