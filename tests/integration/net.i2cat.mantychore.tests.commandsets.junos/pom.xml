@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!--  parent parameters  -->
+	<parent>		
+		  <artifactId>itests-bundle-settings</artifactId>
+  			<groupId>net.i2cat.mantychore</groupId>
+  			<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+
+	<!--  POM id -->
+  <groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
+  <artifactId>net.i2cat.mantychore.tests.commandsets.junos</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<name>Mantychore Command test</name>
+	<description>Mantychore Command Implementation test</description>
+	<packaging>jar</packaging>
+
+	<dependencies>
+	
+		<!-- IaaS Dependencies -->
+		<dependency>
+				<groupId>com.iaasframework.capabilities</groupId>
+				<artifactId>com.iaasframework.capabilities.commandset</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.iaasframework.capabilities</groupId>
+			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
+		</dependency>
+		
+		<!--  Mantychore dependencies -->
+		<dependency>
+			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>	
+		<dependency>
+			<groupId>net.i2cat.mantychore.commandsets</groupId>
+			<artifactId>net.i2cat.mantychore.commandsets.junos</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+				
+	</dependencies>
+
+
+<!--  manage dependencies  -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
