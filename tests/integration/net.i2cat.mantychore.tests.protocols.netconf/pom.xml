@@ -21,14 +21,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore Netconf Protocol test</name>
 	<description>Mantychore Netconf Protocol Implementation test</description>
-
 	<packaging>jar</packaging>
+	
 	<dependencies>
 		<!-- IaaS Dependencies -->
 		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
 		</dependency>
+		
+			<!-- Mantychore Dependencies -->
 		<dependency>
 			<groupId>net.i2cat.mantychore.protocols</groupId>
 			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
@@ -41,6 +43,7 @@
 		</dependency>	
 	</dependencies>
 
+<!--  manage dependencies  -->
 	<build>
 		<plugins>
 			<plugin>
