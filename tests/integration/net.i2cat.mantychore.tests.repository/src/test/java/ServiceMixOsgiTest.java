@@ -17,7 +17,7 @@ public class ServiceMixOsgiTest {
 
 	@Configuration
 	public static Option[] configure() {
-		return ConfigurerTestFactory.newMantychoreTest();
+		return ConfigurerTestFactory.newServiceMixTest();
 	}
 
 	@Test

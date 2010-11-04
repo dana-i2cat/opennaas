@@ -97,6 +97,7 @@ public class ConfigurerTestFactory {
 	public static Option[] newExampleTest() {
 		return combine(HELPER_DEFAULT_OPTIONS, OPT_SERVICE_MIX_FEATURES);
 	}
+	
 
 	public static Option[] newMantychoreTest() {
 		Option[] optsServiceMix = newServiceMixTest();
