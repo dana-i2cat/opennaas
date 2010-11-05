@@ -97,6 +97,8 @@ public class ConfigurerTestFactory {
 
 	public static Option[]	bundlesMantychoreCommand	= options(
 																mavenBundle().groupId("net.i2cat.netconf").artifactId("netconf4j")
+																, mavenBundle().groupId("net.i2cat.mantychore.models").artifactId(
+																		"net.i2cat.mantychore.models.router")
 																, mavenBundle().groupId("net.i2cat.mantychore.protocols").artifactId(
 																		"net.i2cat.mantychore.protocols.netconf")
 																, mavenBundle().groupId("net.i2cat.mantychore.commandsets").artifactId(
@@ -115,8 +117,6 @@ public class ConfigurerTestFactory {
 		// features
 		Option[] allOpts = combine(opts_with_mantychore
 				, mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper") // for
-				// testing
-				, mavenBundle().groupId("net.i2cat.mantychore.repository").artifactId("net.i2cat.mantychore.repository.junos")
 				);
 
 		return allOpts;

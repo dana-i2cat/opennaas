@@ -17,7 +17,7 @@ public class CommandOsgiTest {
 
 	@Configuration
 	public static Option[] configure() {
-		return ConfigurerTestFactory.newServiceMixTest();
+		return ConfigurerTestFactory.newCommandMantychoreTest();
 	}
 
 	@Test
@@ -29,9 +29,7 @@ public class CommandOsgiTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		listBundles(bundleContext);
-		CommandSetCapabilityClient commandClient = 
-		
+		listBundles(bundleContext);		
 		
 		
 		/* initialize client */
