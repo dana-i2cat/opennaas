@@ -46,7 +46,7 @@ public class ConfigurerTestFactory {
 
 	/* mantychore features */
 
-	private static final String		MTCHORE_FEATURES_REPO		= "mvn:net.i2cat.mantychore/net-i2cat-mantychore/1.0.0-SNAPSHOT/xml/features";
+	private static final String		MTCHORE_FEATURES_REPO		= "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 
 	private static final String[]	MTCHORE_FEATURES			= { "i2cat-mantychore-core" };
 	private static final Option		OPT_MANTYCHORE_FEATURES		= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
