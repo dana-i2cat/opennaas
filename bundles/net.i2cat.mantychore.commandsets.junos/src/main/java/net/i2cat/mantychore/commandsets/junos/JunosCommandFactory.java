@@ -1,7 +1,7 @@
-package net.i2cat.mantychore.commandsets;
+package net.i2cat.mantychore.commandsets.junos;
 
-import net.i2cat.mantychore.commandsets.commands.GetConfigurationCommand;
-import net.i2cat.mantychore.commandsets.commands.KeepAliveCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.GetConfigurationCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.KeepAliveCommand;
 
 import com.iaasframework.capabilities.commandset.CommandException;
 import com.iaasframework.capabilities.commandset.ICommand;

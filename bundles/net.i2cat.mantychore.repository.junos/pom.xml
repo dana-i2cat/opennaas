@@ -58,7 +58,7 @@
         <configuration>
           <instructions>
 <Bundle-SymbolicName>${pom.artifactId} </Bundle-SymbolicName> <Bundle-Version>${pom.version}</Bundle-Version> <Import-Package>!${pom.artifactId}.*,
-org.slf4j;version="1.5.6", org.hibernate.proxy, javassist.util.proxy, org.hsqldb, com.iaasframework.reosurces.core, com.iaasframework.resources.core.descriptor,
+org.slf4j;version="1.5.6", org.hibernate.proxy, javassist.util.proxy, org.hsqldb, com.iaasframework.resources.core, com.iaasframework.resources.core.capability, com.iaasframework.resources.core.descriptor,
 *</Import-Package> <Export-Package>
 ${pom.artifactId};version="${pom.version}" </Export-Package>
           </instructions>

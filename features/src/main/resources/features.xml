@@ -17,29 +17,48 @@
 -->
 <features>
     <feature name="i2cat-mantychore-deps" version="1.0.0-SNAPSHOT">
-		<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>	
 <!--  		<bundle>mvn:org.hibernate/com.springsource.org.hibernate.validator/3.1.0.GA</bundle>	
 		<bundle>mvn:org.joda/com.springsource.org.joda.time/1.6.0</bundle>	
-		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.digester/1.8.1</bundle>	
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.validator/1.3.1</bundle>
 		<bundle>mvn:org.ognl/com.springsource.org.ognl/2.7.3</bundle>
 		<bundle>mvn:net.java.dev.springmodules/com.springsource.org.springmodules.validation.validator/0.9.0</bundle>  -->
-
-		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle>	
+		
+		<!--  general dependencies -->
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/1.8.0</bundle>	
-<!--  		<bundle>mvn:commons-jxpath/commons-jxpath/1.3</bundle> -->
-		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/1.6.2_3</bundle>
+		<!--  dependency for common configurations -->
+		
+		<!--  necessary dependency for digester library of netconf4j-->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
+		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/3.2.1_1-fuse</bundle>	
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.digester/1.8.0</bundle>	
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/2.4_3</bundle>
+
+
+		<!-- necessary dependencies for commandset  -->
+<!--   		<bundle>mvn:log4j/log4j/1.2.16</bundle> -->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.werken-xpath/0.9.4_3</bundle>
+		<bundle>mvn:commons-digester/commons-digester/2.1</bundle>
+
+
+		<bundle>mvn:commons-configuration/commons-configuration/1.6</bundle>
+		<bundle>mvn:commons-io/commons-io/1.4</bundle>
+		
+		<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>			
+
+		
+<!--  		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/1.6.2_3</bundle> -->
 		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.1-SNAPSHOT</bundle>
 
     </feature>
 
     <feature name="i2cat-mantychore-core" version="1.0.0-SNAPSHOT">
 		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-deps</feature>
-		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT</bundle>	
-<!--  		<bundle>mvn:net.i2cat.mantychore.commandsets/net.i2cat.mantychore.commandsets.junos/1.0.0-SNAPSHOT</bundle>	
-		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/1.0.0-SNAPSHOT</bundle>	
-		<bundle>mvn:net.i2cat.mantychore.models/net.i2cat.mantychore.models.router/1.0.0-SNAPSHOT</bundle>	
-		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository.junos/1.0.0-SNAPSHOT</bundle> -->	
+		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.models/net.i2cat.mantychore.models.router/1.0.0-SNAPSHOT</bundle>
+  		<bundle>mvn:net.i2cat.mantychore.commandsets/net.i2cat.mantychore.commandsets.junos/1.0.0-SNAPSHOT</bundle>	
+ 		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/1.0.0-SNAPSHOT</bundle>				
+		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository.junos/1.0.0-SNAPSHOT</bundle>
     </feature>
 	
 	<!--

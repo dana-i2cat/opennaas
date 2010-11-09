@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandsets.digester;
+package net.i2cat.mantychore.commandsets.junos.digester;
 
 import net.i2cat.mantychore.models.router.PhysicalInterface;
 

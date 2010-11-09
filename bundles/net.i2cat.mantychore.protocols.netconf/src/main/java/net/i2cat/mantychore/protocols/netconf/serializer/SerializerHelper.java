@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.protocols.serializer;
+package net.i2cat.mantychore.protocols.netconf.serializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

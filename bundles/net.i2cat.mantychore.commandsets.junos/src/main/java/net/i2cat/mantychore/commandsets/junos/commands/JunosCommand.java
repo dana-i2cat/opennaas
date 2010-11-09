@@ -1,9 +1,9 @@
-package net.i2cat.mantychore.commandsets.commands;
+package net.i2cat.mantychore.commandsets.junos.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.i2cat.mantychore.commandsets.velocity.VelocityEngine;
+import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
 
 import org.apache.commons.digester.Digester;
 import org.apache.velocity.exception.ParseErrorException;

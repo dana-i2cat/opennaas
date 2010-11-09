@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandsets.velocity;
+package net.i2cat.mantychore.commandsets.junos.velocity;
 
 import java.io.File;
 import java.io.StringWriter;

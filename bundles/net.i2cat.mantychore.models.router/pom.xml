@@ -24,10 +24,13 @@
 	<!--  dependencies  -->
 	<dependencies>
 	
+		<!--  IaaS dependencies -->
    		<dependency>
 			<groupId>com.iaasframework.capabilities</groupId>
 			<artifactId>com.iaasframework.capabilities.model</artifactId>
 		</dependency>
+		
+		<!--	
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
 			<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
@@ -43,13 +46,8 @@
 			<artifactId>spring-modules-validation</artifactId>
 			<version>0.8</version>
 		</dependency>
-		
-		<!--  libraries osgi -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi_R4_core</artifactId>
-			<version>1.0</version>
-		</dependency>
+	-->
+	
 	</dependencies>
 
 	<build>

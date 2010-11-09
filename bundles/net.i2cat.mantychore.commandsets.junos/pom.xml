@@ -57,11 +57,11 @@
 		<version>1.6.4_1</version>
 	</dependency>   
 	
-   <dependency>
-    <groupId>commons-digester</groupId>
-    <artifactId>commons-digester</artifactId>
-    <version>1.7</version>
-</dependency>
+	<dependency>
+	    <groupId>commons-digester</groupId>
+	    <artifactId>commons-digester</artifactId>
+	    <version>2.1</version>
+	</dependency>
    
 
   </dependencies>
@@ -102,23 +102,16 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!${pom.artifactId}.*,
-							org.slf4j;version="1.5.6",
+						<Import-Package>!${project.artifactId}.*,
+  							org.slf4j;version="1.5.6",
 							com.iaasframework.capabilities.commandset,
 							com.iaasframework.resources.core,
 							com.iaasframework.resources.core.capability,
 							*</Import-Package>
 						<Export-Package>
-							${pom.artifactId};version="${pom.version}"
+							${project.artifactId}.commands;version="${pom.version}",
+							${project.artifactId};version="${pom.version}"
 						</Export-Package>
-						
-						<Bundle-ClassPath>.,
-									lib/org.apache.servicemix.bundles.velocity-1.6.4_1.jar,
-									lib/commons-digester-1.7.jar
-						</Bundle-ClassPath>
-						
-    					<Embed-Directory>lib</Embed-Directory>
-						<Embed-Dependency>org.apache.servicemix.bundles.velocity,commons-digester;scope=compile|runtime</Embed-Dependency>
 					</instructions>
 				</configuration>
 			</plugin>

@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandsets.commands;
+package net.i2cat.mantychore.commandsets.junos.commands;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import net.i2cat.mantychore.commandsets.digester.RouterParser;
-import net.i2cat.mantychore.commandsets.digester.StaticRouteParser;
+import net.i2cat.mantychore.commandsets.junos.digester.RouterParser;
+import net.i2cat.mantychore.commandsets.junos.digester.StaticRouteParser;
 import net.i2cat.mantychore.models.router.RouterModel;
 
 import org.slf4j.Logger;

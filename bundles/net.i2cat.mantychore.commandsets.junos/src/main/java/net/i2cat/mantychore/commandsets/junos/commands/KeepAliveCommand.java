@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandsets.commands;
+package net.i2cat.mantychore.commandsets.junos.commands;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
