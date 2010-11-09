@@ -17,7 +17,7 @@ import org.ops4j.pax.exam.Option;
 import com.iaasframework.extras.itesthelper.IaaSIntegrationTestsHelper;
 
 public class ConfigurerTestFactory {
-
+	 
 	public static final Option		MANTYCHORE_REPOS			= repositories(
 																		"http://repository.inocybe.ca/content/groups/public/",
 																		"http://repository.inocybe.ca/content/groups/public-snapshots/",
@@ -33,7 +33,9 @@ public class ConfigurerTestFactory {
 
 	/* service mix features */
 
-	public static final Option		OPT_SERVICE_MIX_FEATURES	= scanFeatures(IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES_REPO,
+	public static final String		SERVICE_MIX_FEATURES_REPO_V4_3 = "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features" ;
+	
+	public static final Option		OPT_SERVICE_MIX_FEATURES	= scanFeatures(SERVICE_MIX_FEATURES_REPO_V4_3,
 																		IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES);
 
 	/* iaas features */
@@ -82,7 +84,7 @@ public class ConfigurerTestFactory {
 
 	public static Option[] newServiceMixTest() {
 		Option[] optssimpleTest = newSimpleTest();
-		Option[] opts_with_repos = combine(optssimpleTest, MANTYCHORE_REPOS); // repositories
+		Option[] opts_with_repos = combine(optssimpleTest, REPOSITORIES); // repositories
 		Option[] optsServiceMix = combine(opts_with_repos, OPT_SERVICE_MIX_FEATURES); // service
 		// mix
 		Option[] allOpts = combine(optsServiceMix, mavenBundle().groupId("com.iaasframework.extras").artifactId(
@@ -95,23 +97,13 @@ public class ConfigurerTestFactory {
 		return combine(HELPER_DEFAULT_OPTIONS, OPT_SERVICE_MIX_FEATURES);
 	}
 
-	public static Option[]	bundlesMantychoreCommand	= options(
-																mavenBundle().groupId("net.i2cat.netconf").artifactId("netconf4j")
-																, mavenBundle().groupId("net.i2cat.mantychore.models").artifactId(
-																		"net.i2cat.mantychore.models.router")
-																, mavenBundle().groupId("net.i2cat.mantychore.protocols").artifactId(
-																		"net.i2cat.mantychore.protocols.netconf")
-																, mavenBundle().groupId("net.i2cat.mantychore.commandsets").artifactId(
-																		"net.i2cat.mantychore.commandsets.junos")
-																);
-
 	public static Option[] newCommandMantychoreTest() {
 		Option[] optsServiceMix = newServiceMixTest();
 		Option[] opts_with_iaas = combine(optsServiceMix, OPT_IAAS_FEATURES); // add
 		// iaas
 		// features
 
-		Option[] opts_with_mantychore = combine(opts_with_iaas, bundlesMantychoreCommand);
+		Option[] opts_with_mantychore = combine(opts_with_iaas, OPT_MANTYCHORE_FEATURES);
 
 		// mantychore
 		// features
