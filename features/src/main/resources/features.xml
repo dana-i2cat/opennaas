@@ -29,7 +29,7 @@
 		
 		<!--  necessary dependency for digester library of netconf4j-->
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
-		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle>
+<!-- 		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle -->
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/3.2.1_1-fuse</bundle>	
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.digester/1.8.0</bundle>	
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/2.4_3</bundle>

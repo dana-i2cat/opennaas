@@ -20,6 +20,7 @@
   <modules>
     <module>net.i2cat.mantychore.tests.repository</module>
     <module>net.i2cat.mantychore.tests.protocols.netconf</module>
+    <module>net.i2cat.mantychore.tests.commandsets.junos</module>
   </modules>
 
 <!--  dependencies for integration tests -->
@@ -297,8 +298,95 @@
 			<artifactId>com.iaasframework.extras.itesthelper</artifactId>			
 			<version>${iaas.version}</version>
 		</dependency>
+		
+	
+		<!-- features dependencies --><!--
+		
+
+		<dependency>
+			<groupId>org.apache.karaf</groupId>
+			<artifactId>apache-karaf</artifactId>
+			<version>2.0.0</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>org.apache.servicemix.nmr</groupId>
+			<artifactId>apache-servicemix-nmr</artifactId>
+			<version>1.3.0-fuse-00-00</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+		
 
 
+		<dependency>
+			<groupId>org.apache.camel.karaf</groupId>
+			<artifactId>apache-camel</artifactId>
+			<version>2.4.0-fuse-00-00</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+
+		--><!-- 
+		<dependency>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>ode-jbi-karaf</artifactId>
+			<version>1.3.4</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency> --><!--
+
+
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-karaf</artifactId>
+			<version>5.4.0-fuse-00-00</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+
+		-->
+		
+		<!--  fuse 4.3 -->
+		<!-- 
+		<dependency>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>apache-servicemix</artifactId>
+			<version>4.3.0-fuse-01-00</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+		
+		
+		-->
+		<!--  fuse 4.2 -->
+		<dependency>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>apache-servicemix</artifactId>
+			<version>4.2.0-fuse-02-00</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.iaasframework</groupId>
+			<artifactId>iaas-framework</artifactId>
+			<version>1.0.0</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.i2cat.mantychore</groupId>
+			<artifactId>mantychore</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>xml</type>
+			<classifier>features</classifier>
+		</dependency>
+		
 
 </dependencies>
 

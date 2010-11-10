@@ -35,8 +35,9 @@ public class ConfigurerTestFactory {
 
 	public static final String		SERVICE_MIX_FEATURES_REPO_V4_3 = "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features" ;
 	
-	public static final Option		OPT_SERVICE_MIX_FEATURES	= scanFeatures(SERVICE_MIX_FEATURES_REPO_V4_3,
-																		IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES);
+	public static final String[] SERVICE_MIX_FEATURES_V4_3 = {"activemq-broker","servicemix-cxf-bc","camel","camel-cxf","camel-jms","camel-jaxb"};
+	
+	public static final Option		OPT_SERVICE_MIX_FEATURES	= scanFeatures(IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES_REPO,IaaSIntegrationTestsHelper.SERVICE_MIX_FEATURES);
 
 	/* iaas features */
 
