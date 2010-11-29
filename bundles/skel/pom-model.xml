@@ -8,13 +8,13 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore.models</groupId>
-	<artifactId>net.i2cat.mantychore.models.router</artifactId>
+	<groupId>net.i2cat.mantychore.model</groupId>
+	<artifactId>net.i2cat.mantychore.model</artifactId>
 	<packaging>bundle</packaging>
 
-	<name>Mantychore Router Model</name>
+	<name>Mantychore Model</name>
 	<version>1.0.0-SNAPSHOT</version>
-	<description>Mantychore Router Model Implementation</description>
+	<description>Mantychore Model Implementation</description>
 
 	<properties>
 		<bundle.namespace>${pom.artifactId}</bundle.namespace>
