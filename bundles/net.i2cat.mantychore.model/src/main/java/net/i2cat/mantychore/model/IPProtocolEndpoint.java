@@ -5,425 +5,442 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class IPProtocolEndpoint as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * IPProtocolEndpointBean Interface. The CIM class IPProtocolEndpoint is 
- * described as follows: 
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class IPProtocolEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * IPProtocolEndpointBean Interface. The CIM class IPProtocolEndpoint is
+ * described as follows:
  * 
  * A ProtocolEndpoint that is dedicated to running IP.
  */
-public class IPProtocolEndpoint extends ProtocolEndpoint implements 
-    Serializable {
+public class IPProtocolEndpoint extends ProtocolEndpoint implements
+		Serializable {
 
-    /**
-     * This constructor creates a IPProtocolEndpointBeanImpl Class which 
-     * implements the IPProtocolEndpointBean Interface, and encapsulates the 
-     * CIM class IPProtocolEndpoint in a Java Bean. The CIM class 
-     * IPProtocolEndpoint is described as follows: 
-     * 
-     * A ProtocolEndpoint that is dedicated to running IP.
-     */
-    public IPProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property IPv4Address. 
-     */
-    private String iPv4Address;
-    /**
-     * This method returns the IPProtocolEndpoint.IPv4Address property value. 
-     * This property is described as follows: 
-     * 
-     * The IPv4 address that this ProtocolEndpoint represents.
-     * 
-     * @return	String	current IPv4Address property value
-     * @exception	Exception	
-     */
-    public String getIPv4Address(){
+	/**
+	 * This constructor creates a IPProtocolEndpointBeanImpl Class which
+	 * implements the IPProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class IPProtocolEndpoint in a Java Bean. The CIM class IPProtocolEndpoint
+	 * is described as follows:
+	 * 
+	 * A ProtocolEndpoint that is dedicated to running IP.
+	 */
+	public IPProtocolEndpoint() {
+	};
 
-    return this.iPv4Address;
-    } // getIPv4Address
+	// FIXME Added manually
+	public void merge(IPProtocolEndpoint newIPProtocolEndpoint) {
+		if (this.iPv4Address == null) {
+			this.iPv4Address = newIPProtocolEndpoint.iPv4Address;
+		}
 
-    /**
-     * This method sets the IPProtocolEndpoint.IPv4Address property value. 
-     * This property is described as follows: 
-     * 
-     * The IPv4 address that this ProtocolEndpoint represents.
-     * 
-     * @param	String	new IPv4Address property value
-     * @exception	Exception	
-     */
-    public void setIPv4Address(String iPv4Address) {
+		if (this.iPv6Address == null) {
+			this.iPv6Address = newIPProtocolEndpoint.iPv6Address;
+		}
 
-    this.iPv4Address = iPv4Address;
-    } // setIPv4Address
+	}
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property IPv4Address.
+	 */
+	private String	iPv4Address;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property IPv6Address. 
-     */
-    private String iPv6Address;
-    /**
-     * This method returns the IPProtocolEndpoint.IPv6Address property value. 
-     * This property is described as follows: 
-     * 
-     * The IPv6 address that this ProtocolEndpoint represents.
-     * 
-     * @return	String	current IPv6Address property value
-     * @exception	Exception	
-     */
-    public String getIPv6Address(){
+	/**
+	 * This method returns the IPProtocolEndpoint.IPv4Address property value.
+	 * This property is described as follows:
+	 * 
+	 * The IPv4 address that this ProtocolEndpoint represents.
+	 * 
+	 * @return String current IPv4Address property value
+	 * @exception Exception
+	 */
+	public String getIPv4Address() {
 
-    return this.iPv6Address;
-    } // getIPv6Address
+		return this.iPv4Address;
+	} // getIPv4Address
 
-    /**
-     * This method sets the IPProtocolEndpoint.IPv6Address property value. 
-     * This property is described as follows: 
-     * 
-     * The IPv6 address that this ProtocolEndpoint represents.
-     * 
-     * @param	String	new IPv6Address property value
-     * @exception	Exception	
-     */
-    public void setIPv6Address(String iPv6Address) {
+	/**
+	 * This method sets the IPProtocolEndpoint.IPv4Address property value. This
+	 * property is described as follows:
+	 * 
+	 * The IPv4 address that this ProtocolEndpoint represents.
+	 * 
+	 * @param String
+	 *            new IPv4Address property value
+	 * @exception Exception
+	 */
+	public void setIPv4Address(String iPv4Address) {
 
-    this.iPv6Address = iPv6Address;
-    } // setIPv6Address
+		this.iPv4Address = iPv4Address;
+	} // setIPv4Address
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property IPv6Address.
+	 */
+	private String	iPv6Address;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property Address. 
-     */
-    @Deprecated    private String address;
-    /**
-     * This method returns the IPProtocolEndpoint.Address property value. This 
-     * property is described as follows: 
-     * 
-     * The IP address that this ProtocolEndpoint represents, formatted 
-     * according to the appropriate convention as defined in the AddressType 
-     * property of this class (e.g., 171.79.6.40). This single property is 
-     * deprecated to replace it by specific IPv4 and v6 addresses. 
-     * 
-     * @return	String	current Address property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public String getAddress(){
+	/**
+	 * This method returns the IPProtocolEndpoint.IPv6Address property value.
+	 * This property is described as follows:
+	 * 
+	 * The IPv6 address that this ProtocolEndpoint represents.
+	 * 
+	 * @return String current IPv6Address property value
+	 * @exception Exception
+	 */
+	public String getIPv6Address() {
 
-    return this.address;
-    } // getAddress
+		return this.iPv6Address;
+	} // getIPv6Address
 
-    /**
-     * This method sets the IPProtocolEndpoint.Address property value. This 
-     * property is described as follows: 
-     * 
-     * The IP address that this ProtocolEndpoint represents, formatted 
-     * according to the appropriate convention as defined in the AddressType 
-     * property of this class (e.g., 171.79.6.40). This single property is 
-     * deprecated to replace it by specific IPv4 and v6 addresses. 
-     * 
-     * @param	String	new Address property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setAddress(String address) {
+	/**
+	 * This method sets the IPProtocolEndpoint.IPv6Address property value. This
+	 * property is described as follows:
+	 * 
+	 * The IPv6 address that this ProtocolEndpoint represents.
+	 * 
+	 * @param String
+	 *            new IPv6Address property value
+	 * @exception Exception
+	 */
+	public void setIPv6Address(String iPv6Address) {
 
-    this.address = address;
-    } // setAddress
+		this.iPv6Address = iPv6Address;
+	} // setIPv6Address
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Address.
+	 */
+	@Deprecated
+	private String	address;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property SubnetMask. 
-     */
-    private String subnetMask;
-    /**
-     * This method returns the IPProtocolEndpoint.SubnetMask property value. 
-     * This property is described as follows: 
-     * 
-     * The mask for the IPv4 address of this ProtocolEndpoint, if one is 
-     * defined. 
-     * 
-     * @return	String	current SubnetMask property value
-     * @exception	Exception	
-     */
-    public String getSubnetMask(){
+	/**
+	 * This method returns the IPProtocolEndpoint.Address property value. This
+	 * property is described as follows:
+	 * 
+	 * The IP address that this ProtocolEndpoint represents, formatted according
+	 * to the appropriate convention as defined in the AddressType property of
+	 * this class (e.g., 171.79.6.40). This single property is deprecated to
+	 * replace it by specific IPv4 and v6 addresses.
+	 * 
+	 * @return String current Address property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getAddress() {
 
-    return this.subnetMask;
-    } // getSubnetMask
+		return this.address;
+	} // getAddress
 
-    /**
-     * This method sets the IPProtocolEndpoint.SubnetMask property value. This 
-     * property is described as follows: 
-     * 
-     * The mask for the IPv4 address of this ProtocolEndpoint, if one is 
-     * defined. 
-     * 
-     * @param	String	new SubnetMask property value
-     * @exception	Exception	
-     */
-    public void setSubnetMask(String subnetMask) {
+	/**
+	 * This method sets the IPProtocolEndpoint.Address property value. This
+	 * property is described as follows:
+	 * 
+	 * The IP address that this ProtocolEndpoint represents, formatted according
+	 * to the appropriate convention as defined in the AddressType property of
+	 * this class (e.g., 171.79.6.40). This single property is deprecated to
+	 * replace it by specific IPv4 and v6 addresses.
+	 * 
+	 * @param String
+	 *            new Address property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAddress(String address) {
 
-    this.subnetMask = subnetMask;
-    } // setSubnetMask
+		this.address = address;
+	} // setAddress
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property SubnetMask.
+	 */
+	private String	subnetMask;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property PrefixLength. 
-     */
-    private Byte prefixLength;
-    /**
-     * This method returns the IPProtocolEndpoint.PrefixLength property value. 
-     * This property is described as follows: 
-     * 
-     * The prefix length for the IPv6 address of this Protocol Endpoint, if 
-     * one is defined. 
-     * 
-     * @return	Byte	current PrefixLength property value
-     * @exception	Exception	
-     */
-    public Byte getPrefixLength(){
+	/**
+	 * This method returns the IPProtocolEndpoint.SubnetMask property value.
+	 * This property is described as follows:
+	 * 
+	 * The mask for the IPv4 address of this ProtocolEndpoint, if one is
+	 * defined.
+	 * 
+	 * @return String current SubnetMask property value
+	 * @exception Exception
+	 */
+	public String getSubnetMask() {
 
-    return this.prefixLength;
-    } // getPrefixLength
+		return this.subnetMask;
+	} // getSubnetMask
 
-    /**
-     * This method sets the IPProtocolEndpoint.PrefixLength property value. 
-     * This property is described as follows: 
-     * 
-     * The prefix length for the IPv6 address of this Protocol Endpoint, if 
-     * one is defined. 
-     * 
-     * @param	Byte	new PrefixLength property value
-     * @exception	Exception	
-     */
-    public void setPrefixLength(Byte prefixLength) {
+	/**
+	 * This method sets the IPProtocolEndpoint.SubnetMask property value. This
+	 * property is described as follows:
+	 * 
+	 * The mask for the IPv4 address of this ProtocolEndpoint, if one is
+	 * defined.
+	 * 
+	 * @param String
+	 *            new SubnetMask property value
+	 * @exception Exception
+	 */
+	public void setSubnetMask(String subnetMask) {
 
-    this.prefixLength = prefixLength;
-    } // setPrefixLength
+		this.subnetMask = subnetMask;
+	} // setSubnetMask
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property PrefixLength.
+	 */
+	private Byte	prefixLength;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property AddressType. 
-     */
-    @Deprecated
-    public enum AddressType{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
- public AddressType addressType;
-    /**
-     * This method returns the IPProtocolEndpoint.AddressType property value. 
-     * This property is described as follows: 
-     * 
-     * An enumeration that describes the format of the Address property. It is 
-     * deprecated since it is not needed, as the class contains both IPv4 and 
-     * v6 addresses). 
-     * 
-     * @return	short	current AddressType property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public AddressType getAddressType(){
+	/**
+	 * This method returns the IPProtocolEndpoint.PrefixLength property value.
+	 * This property is described as follows:
+	 * 
+	 * The prefix length for the IPv6 address of this Protocol Endpoint, if one
+	 * is defined.
+	 * 
+	 * @return Byte current PrefixLength property value
+	 * @exception Exception
+	 */
+	public Byte getPrefixLength() {
 
-    return this.addressType;
-    } // getAddressType
+		return this.prefixLength;
+	} // getPrefixLength
 
-    /**
-     * This method sets the IPProtocolEndpoint.AddressType property value. 
-     * This property is described as follows: 
-     * 
-     * An enumeration that describes the format of the Address property. It is 
-     * deprecated since it is not needed, as the class contains both IPv4 and 
-     * v6 addresses). 
-     * 
-     * @param	short	new AddressType property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setAddressType(AddressType addressType){
+	/**
+	 * This method sets the IPProtocolEndpoint.PrefixLength property value. This
+	 * property is described as follows:
+	 * 
+	 * The prefix length for the IPv6 address of this Protocol Endpoint, if one
+	 * is defined.
+	 * 
+	 * @param Byte
+	 *            new PrefixLength property value
+	 * @exception Exception
+	 */
+	public void setPrefixLength(Byte prefixLength) {
 
-    this.addressType = addressType;
-    } // setAddressType
+		this.prefixLength = prefixLength;
+	} // setPrefixLength
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property AddressType.
+	 */
+	@Deprecated
+	public enum AddressType {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property IPVersionSupport. 
-     */
-    @Deprecated
-    public enum IPVersionSupport{
-    UNKNOWN,
-    IPV4_ONLY,
-    IPV6_ONLY,
-    BOTH_IPV4_AND_IPV6
-    }
- public IPVersionSupport iPVersionSupport;
-    /**
-     * This method returns the IPProtocolEndpoint.IPVersionSupport property 
-     * value. This property is described as follows: 
-     * 
-     * This property explicitly defines support for different versions of the 
-     * IP protocol, for this Endpoint. It is deprecated since the 
-     * ProtocolIFType also provides this functionality by describing an 
-     * endpoint as IPv4 only (value=4096), IPv6 only (value=4097), or IPv4/v6 
-     * (value=4098). 
-     * 
-     * @return	short	current IPVersionSupport property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public IPVersionSupport getIPVersionSupport(){
+	public AddressType	addressType;
 
-    return this.iPVersionSupport;
-    } // getIPVersionSupport
+	/**
+	 * This method returns the IPProtocolEndpoint.AddressType property value.
+	 * This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the Address property. It is
+	 * deprecated since it is not needed, as the class contains both IPv4 and v6
+	 * addresses).
+	 * 
+	 * @return short current AddressType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public AddressType getAddressType() {
 
-    /**
-     * This method sets the IPProtocolEndpoint.IPVersionSupport property 
-     * value. This property is described as follows: 
-     * 
-     * This property explicitly defines support for different versions of the 
-     * IP protocol, for this Endpoint. It is deprecated since the 
-     * ProtocolIFType also provides this functionality by describing an 
-     * endpoint as IPv4 only (value=4096), IPv6 only (value=4097), or IPv4/v6 
-     * (value=4098). 
-     * 
-     * @param	short	new IPVersionSupport property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setIPVersionSupport(IPVersionSupport iPVersionSupport){
+		return this.addressType;
+	} // getAddressType
 
-    this.iPVersionSupport = iPVersionSupport;
-    } // setIPVersionSupport
+	/**
+	 * This method sets the IPProtocolEndpoint.AddressType property value. This
+	 * property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the Address property. It is
+	 * deprecated since it is not needed, as the class contains both IPv4 and v6
+	 * addresses).
+	 * 
+	 * @param short new AddressType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAddressType(AddressType addressType) {
 
+		this.addressType = addressType;
+	} // setAddressType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property ProtocolIFType. 
-     */
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property IPVersionSupport.
+	 */
+	@Deprecated
+	public enum IPVersionSupport {
+		UNKNOWN,
+		IPV4_ONLY,
+		IPV6_ONLY,
+		BOTH_IPV4_AND_IPV6
+	}
 
-    public enum ProtocolIFType{
-    OTHER,
-    IANA_RESERVED,
-    IPV4,
-    IPV6,
-    IPV4_V6,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
- public ProtocolIFType protocolIFType;
-    /**
-     * This method returns the IPProtocolEndpoint.ProtocolIFType property 
-     * value. This property is described as follows: 
-     * 
-     * ProtocolIFType's enumeration is limited to IP-related and reserved 
-     * values for this subclass of ProtocolEndpoint. 
-     * 
-     * @return	short	current ProtocolIFType property value
-     * @exception	Exception	
-     */
-    public ProtocolIFType getProtocolIFType(){
+	public IPVersionSupport	iPVersionSupport;
 
-    return this.protocolIFType;
-    } // getProtocolIFType
+	/**
+	 * This method returns the IPProtocolEndpoint.IPVersionSupport property
+	 * value. This property is described as follows:
+	 * 
+	 * This property explicitly defines support for different versions of the IP
+	 * protocol, for this Endpoint. It is deprecated since the ProtocolIFType
+	 * also provides this functionality by describing an endpoint as IPv4 only
+	 * (value=4096), IPv6 only (value=4097), or IPv4/v6 (value=4098).
+	 * 
+	 * @return short current IPVersionSupport property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public IPVersionSupport getIPVersionSupport() {
 
-    /**
-     * This method sets the IPProtocolEndpoint.ProtocolIFType property value. 
-     * This property is described as follows: 
-     * 
-     * ProtocolIFType's enumeration is limited to IP-related and reserved 
-     * values for this subclass of ProtocolEndpoint. 
-     * 
-     * @param	short	new ProtocolIFType property value
-     * @exception	Exception	
-     */
-    public void setProtocolIFType(ProtocolIFType protocolIFType){
+		return this.iPVersionSupport;
+	} // getIPVersionSupport
 
-    this.protocolIFType = protocolIFType;
-    } // setProtocolIFType
+	/**
+	 * This method sets the IPProtocolEndpoint.IPVersionSupport property value.
+	 * This property is described as follows:
+	 * 
+	 * This property explicitly defines support for different versions of the IP
+	 * protocol, for this Endpoint. It is deprecated since the ProtocolIFType
+	 * also provides this functionality by describing an endpoint as IPv4 only
+	 * (value=4096), IPv6 only (value=4097), or IPv4/v6 (value=4098).
+	 * 
+	 * @param short new IPVersionSupport property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setIPVersionSupport(IPVersionSupport iPVersionSupport) {
 
+		this.iPVersionSupport = iPVersionSupport;
+	} // setIPVersionSupport
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property AddressOrigin. 
-     */
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property ProtocolIFType.
+	 */
 
-    public enum AddressOrigin{
-    UNKNOWN,
-    OTHER,
-    NOT_APPLICABLE,
-    STATIC,
-    DHCP,
-    BOOTP,
-    IPV4_LINK_LOCAL,
-    DHCPV6,
-    IPV6AUTOCONFIG,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
- public AddressOrigin addressOrigin;
-    /**
-     * This method returns the IPProtocolEndpoint.AddressOrigin property 
-     * value. This property is described as follows: 
-     * 
-     * AddressOrigin identifies the method by which the IP Address, Subnet 
-     * Mask, and Gateway were assigned to the IPProtocolEndpoint.A value of 3 
-     * "Static" shall indicate the values were assigned manually. A value of 
-     * 4 "DHCP" shall indicate the values were assigned utilizing the Dynamic 
-     * Host Configuration Protocol. See RFC 2131 and related. A value of 5 
-     * "BOOTP" shall indicate the values were assigned utilizing BOOTP. See 
-     * RFC 951 and related. A value of 6 "IPv4 Link Local" shall indicate the 
-     * values were assigned using the IPv4 Link Local protocol. See RFC 3927. 
-     * A value of 7 "DHCPv6" shall indicate the values were assigned using 
-     * DHCPv6. See RFC 3315. A value of 8 "IPv6 AutoConfig" shall indicate 
-     * the values were assinged using the IPv6 AutoConfig Protocol. See RFC 
-     * 4862. 
-     * 
-     * @return	short	current AddressOrigin property value
-     * @exception	Exception	
-     */
-    public AddressOrigin getAddressOrigin(){
+	public enum ProtocolIFType {
+		OTHER,
+		IANA_RESERVED,
+		IPV4,
+		IPV6,
+		IPV4_V6,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    return this.addressOrigin;
-    } // getAddressOrigin
+	public ProtocolIFType	protocolIFType;
 
-    /**
-     * This method sets the IPProtocolEndpoint.AddressOrigin property value. 
-     * This property is described as follows: 
-     * 
-     * AddressOrigin identifies the method by which the IP Address, Subnet 
-     * Mask, and Gateway were assigned to the IPProtocolEndpoint.A value of 3 
-     * "Static" shall indicate the values were assigned manually. A value of 
-     * 4 "DHCP" shall indicate the values were assigned utilizing the Dynamic 
-     * Host Configuration Protocol. See RFC 2131 and related. A value of 5 
-     * "BOOTP" shall indicate the values were assigned utilizing BOOTP. See 
-     * RFC 951 and related. A value of 6 "IPv4 Link Local" shall indicate the 
-     * values were assigned using the IPv4 Link Local protocol. See RFC 3927. 
-     * A value of 7 "DHCPv6" shall indicate the values were assigned using 
-     * DHCPv6. See RFC 3315. A value of 8 "IPv6 AutoConfig" shall indicate 
-     * the values were assinged using the IPv6 AutoConfig Protocol. See RFC 
-     * 4862. 
-     * 
-     * @param	short	new AddressOrigin property value
-     * @exception	Exception	
-     */
-    public void setAddressOrigin(AddressOrigin addressOrigin){
+	/**
+	 * This method returns the IPProtocolEndpoint.ProtocolIFType property value.
+	 * This property is described as follows:
+	 * 
+	 * ProtocolIFType's enumeration is limited to IP-related and reserved values
+	 * for this subclass of ProtocolEndpoint.
+	 * 
+	 * @return short current ProtocolIFType property value
+	 * @exception Exception
+	 */
+	public ProtocolIFType getProtocolIFType() {
 
-    this.addressOrigin = addressOrigin;
-    } // setAddressOrigin
+		return this.protocolIFType;
+	} // getProtocolIFType
 
+	/**
+	 * This method sets the IPProtocolEndpoint.ProtocolIFType property value.
+	 * This property is described as follows:
+	 * 
+	 * ProtocolIFType's enumeration is limited to IP-related and reserved values
+	 * for this subclass of ProtocolEndpoint.
+	 * 
+	 * @param short new ProtocolIFType property value
+	 * @exception Exception
+	 */
+	public void setProtocolIFType(ProtocolIFType protocolIFType) {
 
+		this.protocolIFType = protocolIFType;
+	} // setProtocolIFType
+
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property AddressOrigin.
+	 */
+
+	public enum AddressOrigin {
+		UNKNOWN,
+		OTHER,
+		NOT_APPLICABLE,
+		STATIC,
+		DHCP,
+		BOOTP,
+		IPV4_LINK_LOCAL,
+		DHCPV6,
+		IPV6AUTOCONFIG,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
+
+	public AddressOrigin	addressOrigin;
+
+	/**
+	 * This method returns the IPProtocolEndpoint.AddressOrigin property value.
+	 * This property is described as follows:
+	 * 
+	 * AddressOrigin identifies the method by which the IP Address, Subnet Mask,
+	 * and Gateway were assigned to the IPProtocolEndpoint.A value of 3 "Static"
+	 * shall indicate the values were assigned manually. A value of 4 "DHCP"
+	 * shall indicate the values were assigned utilizing the Dynamic Host
+	 * Configuration Protocol. See RFC 2131 and related. A value of 5 "BOOTP"
+	 * shall indicate the values were assigned utilizing BOOTP. See RFC 951 and
+	 * related. A value of 6 "IPv4 Link Local" shall indicate the values were
+	 * assigned using the IPv4 Link Local protocol. See RFC 3927. A value of 7
+	 * "DHCPv6" shall indicate the values were assigned using DHCPv6. See RFC
+	 * 3315. A value of 8 "IPv6 AutoConfig" shall indicate the values were
+	 * assinged using the IPv6 AutoConfig Protocol. See RFC 4862.
+	 * 
+	 * @return short current AddressOrigin property value
+	 * @exception Exception
+	 */
+	public AddressOrigin getAddressOrigin() {
+
+		return this.addressOrigin;
+	} // getAddressOrigin
+
+	/**
+	 * This method sets the IPProtocolEndpoint.AddressOrigin property value.
+	 * This property is described as follows:
+	 * 
+	 * AddressOrigin identifies the method by which the IP Address, Subnet Mask,
+	 * and Gateway were assigned to the IPProtocolEndpoint.A value of 3 "Static"
+	 * shall indicate the values were assigned manually. A value of 4 "DHCP"
+	 * shall indicate the values were assigned utilizing the Dynamic Host
+	 * Configuration Protocol. See RFC 2131 and related. A value of 5 "BOOTP"
+	 * shall indicate the values were assigned utilizing BOOTP. See RFC 951 and
+	 * related. A value of 6 "IPv4 Link Local" shall indicate the values were
+	 * assigned using the IPv4 Link Local protocol. See RFC 3927. A value of 7
+	 * "DHCPv6" shall indicate the values were assigned using DHCPv6. See RFC
+	 * 3315. A value of 8 "IPv6 AutoConfig" shall indicate the values were
+	 * assinged using the IPv6 AutoConfig Protocol. See RFC 4862.
+	 * 
+	 * @param short new AddressOrigin property value
+	 * @exception Exception
+	 */
+	public void setAddressOrigin(AddressOrigin addressOrigin) {
+
+		this.addressOrigin = addressOrigin;
+	} // setAddressOrigin
 
 } // Class IPProtocolEndpoint

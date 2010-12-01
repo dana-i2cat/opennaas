@@ -6,33 +6,61 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalPort as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the LogicalPortBean Interface. The CIM class LogicalPort is described as follows:
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class LogicalPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * LogicalPortBean Interface. The CIM class LogicalPort is described as follows:
  * 
- * The abstraction of a port or connection point of a Device. This object should be instantiated when the Port has independent management
- * characteristics from the Device that includes it. Examples are a Fibre Channel Port and a USB Port.
+ * The abstraction of a port or connection point of a Device. This object should
+ * be instantiated when the Port has independent management characteristics from
+ * the Device that includes it. Examples are a Fibre Channel Port and a USB
+ * Port.
  */
 public class LogicalPort extends LogicalDevice implements Serializable {
 
+	private List<ProtocolEndpoint>	listProtocolEndpoints	= new ArrayList<ProtocolEndpoint>();
+
+	/* they are added manually */
+
+	public List<ProtocolEndpoint> getListProtocolEndpoints() {
+		return listProtocolEndpoints;
+	}
+
+	public void addProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
+		this.listProtocolEndpoints.add(protocolEndpoint);
+	}
+
+	// FIXME is it works? they have to share references...
+	public void removeProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
+		this.listProtocolEndpoints.remove(protocolEndpoint);
+	}
+
 	/**
-	 * This constructor creates a LogicalPortBeanImpl Class which implements the LogicalPortBean Interface, and encapsulates the CIM class LogicalPort
-	 * in a Java Bean. The CIM class LogicalPort is described as follows:
+	 * This constructor creates a LogicalPortBeanImpl Class which implements the
+	 * LogicalPortBean Interface, and encapsulates the CIM class LogicalPort in
+	 * a Java Bean. The CIM class LogicalPort is described as follows:
 	 * 
-	 * The abstraction of a port or connection point of a Device. This object should be instantiated when the Port has independent management
-	 * characteristics from the Device that includes it. Examples are a Fibre Channel Port and a USB Port.
+	 * The abstraction of a port or connection point of a Device. This object
+	 * should be instantiated when the Port has independent management
+	 * characteristics from the Device that includes it. Examples are a Fibre
+	 * Channel Port and a USB Port.
 	 */
 	public LogicalPort() {
 	};
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property Speed.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Speed.
 	 */
 	private long	speed;
 
 	/**
-	 * This method returns the LogicalPort.Speed property value. This property is described as follows:
+	 * This method returns the LogicalPort.Speed property value. This property
+	 * is described as follows:
 	 * 
 	 * The bandwidth of the Port in Bits per Second.
 	 * 
@@ -45,7 +73,8 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // getSpeed
 
 	/**
-	 * This method sets the LogicalPort.Speed property value. This property is described as follows:
+	 * This method sets the LogicalPort.Speed property value. This property is
+	 * described as follows:
 	 * 
 	 * The bandwidth of the Port in Bits per Second.
 	 * 
@@ -58,12 +87,14 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // setSpeed
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property MaxSpeed.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property MaxSpeed.
 	 */
 	private long	maxSpeed;
 
 	/**
-	 * This method returns the LogicalPort.MaxSpeed property value. This property is described as follows:
+	 * This method returns the LogicalPort.MaxSpeed property value. This
+	 * property is described as follows:
 	 * 
 	 * The maximum bandwidth of the Port in Bits per Second.
 	 * 
@@ -76,7 +107,8 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // getMaxSpeed
 
 	/**
-	 * This method sets the LogicalPort.MaxSpeed property value. This property is described as follows:
+	 * This method sets the LogicalPort.MaxSpeed property value. This property
+	 * is described as follows:
 	 * 
 	 * The maximum bandwidth of the Port in Bits per Second.
 	 * 
@@ -89,14 +121,17 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // setMaxSpeed
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property RequestedSpeed.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property RequestedSpeed.
 	 */
 	private long	requestedSpeed;
 
 	/**
-	 * This method returns the LogicalPort.RequestedSpeed property value. This property is described as follows:
+	 * This method returns the LogicalPort.RequestedSpeed property value. This
+	 * property is described as follows:
 	 * 
-	 * The requested bandwidth of the Port in Bits per Second. The actual bandwidth is reported in LogicalPort.Speed.
+	 * The requested bandwidth of the Port in Bits per Second. The actual
+	 * bandwidth is reported in LogicalPort.Speed.
 	 * 
 	 * @return long current RequestedSpeed property value
 	 * @exception Exception
@@ -107,9 +142,11 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // getRequestedSpeed
 
 	/**
-	 * This method sets the LogicalPort.RequestedSpeed property value. This property is described as follows:
+	 * This method sets the LogicalPort.RequestedSpeed property value. This
+	 * property is described as follows:
 	 * 
-	 * The requested bandwidth of the Port in Bits per Second. The actual bandwidth is reported in LogicalPort.Speed.
+	 * The requested bandwidth of the Port in Bits per Second. The actual
+	 * bandwidth is reported in LogicalPort.Speed.
 	 * 
 	 * @param long new RequestedSpeed property value
 	 * @exception Exception
@@ -120,7 +157,8 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // setRequestedSpeed
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property UsageRestriction.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property UsageRestriction.
 	 */
 
 	public enum UsageRestriction {
@@ -133,11 +171,14 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	public UsageRestriction	usageRestriction;
 
 	/**
-	 * This method returns the LogicalPort.UsageRestriction property value. This property is described as follows:
+	 * This method returns the LogicalPort.UsageRestriction property value. This
+	 * property is described as follows:
 	 * 
-	 * In some circumstances, a LogicalPort might be identifiable as a front end or back end port. An example of this situation would be a storage
-	 * array that might have back end ports to communicate with disk drives and front end ports to communicate with hosts. If there is no restriction
-	 * on the use of the port, then the value should be set to 'not restricted'.
+	 * In some circumstances, a LogicalPort might be identifiable as a front end
+	 * or back end port. An example of this situation would be a storage array
+	 * that might have back end ports to communicate with disk drives and front
+	 * end ports to communicate with hosts. If there is no restriction on the
+	 * use of the port, then the value should be set to 'not restricted'.
 	 * 
 	 * @return short current UsageRestriction property value
 	 * @exception Exception
@@ -148,11 +189,14 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // getUsageRestriction
 
 	/**
-	 * This method sets the LogicalPort.UsageRestriction property value. This property is described as follows:
+	 * This method sets the LogicalPort.UsageRestriction property value. This
+	 * property is described as follows:
 	 * 
-	 * In some circumstances, a LogicalPort might be identifiable as a front end or back end port. An example of this situation would be a storage
-	 * array that might have back end ports to communicate with disk drives and front end ports to communicate with hosts. If there is no restriction
-	 * on the use of the port, then the value should be set to 'not restricted'.
+	 * In some circumstances, a LogicalPort might be identifiable as a front end
+	 * or back end port. An example of this situation would be a storage array
+	 * that might have back end ports to communicate with disk drives and front
+	 * end ports to communicate with hosts. If there is no restriction on the
+	 * use of the port, then the value should be set to 'not restricted'.
 	 * 
 	 * @param short new UsageRestriction property value
 	 * @exception Exception
@@ -214,12 +258,14 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	// } // setPortType
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property OtherPortType.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property OtherPortType.
 	 */
 	private String	otherPortType;
 
 	/**
-	 * This method returns the LogicalPort.OtherPortType property value. This property is described as follows:
+	 * This method returns the LogicalPort.OtherPortType property value. This
+	 * property is described as follows:
 	 * 
 	 * Describes the type of module, when PortType is set to 1 ("Other").
 	 * 
@@ -232,7 +278,8 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	} // getOtherPortType
 
 	/**
-	 * This method sets the LogicalPort.OtherPortType property value. This property is described as follows:
+	 * This method sets the LogicalPort.OtherPortType property value. This
+	 * property is described as follows:
 	 * 
 	 * Describes the type of module, when PortType is set to 1 ("Other").
 	 * 

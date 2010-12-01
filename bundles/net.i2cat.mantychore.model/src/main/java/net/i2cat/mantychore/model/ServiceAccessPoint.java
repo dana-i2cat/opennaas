@@ -5,183 +5,195 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class ServiceAccessPoint as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * ServiceAccessPointBean Interface. The CIM class ServiceAccessPoint is 
- * described as follows: 
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class ServiceAccessPoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * ServiceAccessPointBean Interface. The CIM class ServiceAccessPoint is
+ * described as follows:
  * 
- * CIM_ServiceAccessPoint represents the ability to utilize or invoke a 
- * Service. Access points represent that a Service is made available for 
- * other entities to use. 
+ * CIM_ServiceAccessPoint represents the ability to utilize or invoke a Service.
+ * Access points represent that a Service is made available for other entities
+ * to use.
  */
-public class ServiceAccessPoint extends EnabledLogicalElement implements 
-    Serializable {
+public class ServiceAccessPoint extends EnabledLogicalElement implements
+		Serializable {
 
-    /**
-     * This constructor creates a ServiceAccessPointBeanImpl Class which 
-     * implements the ServiceAccessPointBean Interface, and encapsulates the 
-     * CIM class ServiceAccessPoint in a Java Bean. The CIM class 
-     * ServiceAccessPoint is described as follows: 
-     * 
-     * CIM_ServiceAccessPoint represents the ability to utilize or invoke a 
-     * Service. Access points represent that a Service is made available for 
-     * other entities to use. 
-     */
-    protected ServiceAccessPoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property SystemCreationClassName. 
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the ServiceAccessPoint.SystemCreationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * The CreationClassName of the scoping System.
-     * 
-     * @return	String	current SystemCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getSystemCreationClassName(){
+	private List<LANEndpoint>	listLANEndpoints	= new ArrayList<LANEndpoint>();
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	public void addLANEndpoint(LANEndpoint lANEndpoint) {
+		this.listLANEndpoints.add(lANEndpoint);
+	}
 
-    /**
-     * This method sets the ServiceAccessPoint.SystemCreationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * The CreationClassName of the scoping System.
-     * 
-     * @param	String	new SystemCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	public void removeLANEndpoint(LANEndpoint lANEndpoint) {
+		this.listLANEndpoints.remove(lANEndpoint);
+	}
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+	/**
+	 * This constructor creates a ServiceAccessPointBeanImpl Class which
+	 * implements the ServiceAccessPointBean Interface, and encapsulates the CIM
+	 * class ServiceAccessPoint in a Java Bean. The CIM class ServiceAccessPoint
+	 * is described as follows:
+	 * 
+	 * CIM_ServiceAccessPoint represents the ability to utilize or invoke a
+	 * Service. Access points represent that a Service is made available for
+	 * other entities to use.
+	 */
+	protected ServiceAccessPoint() {
+	};
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property SystemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property SystemName. 
-     */
-    private String systemName;
-    /**
-     * This method returns the ServiceAccessPoint.SystemName property value. 
-     * This property is described as follows: 
-     * 
-     * The Name of the scoping System.
-     * 
-     * @return	String	current SystemName property value
-     * @exception	Exception	
-     */
-    public String getSystemName(){
+	/**
+	 * This method returns the ServiceAccessPoint.SystemCreationClassName
+	 * property value. This property is described as follows:
+	 * 
+	 * The CreationClassName of the scoping System.
+	 * 
+	 * @return String current SystemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    return this.systemName;
-    } // getSystemName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
-    /**
-     * This method sets the ServiceAccessPoint.SystemName property value. This 
-     * property is described as follows: 
-     * 
-     * The Name of the scoping System.
-     * 
-     * @param	String	new SystemName property value
-     * @exception	Exception	
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method sets the ServiceAccessPoint.SystemCreationClassName property
+	 * value. This property is described as follows:
+	 * 
+	 * The CreationClassName of the scoping System.
+	 * 
+	 * @param String
+	 *            new SystemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    this.systemName = systemName;
-    } // setSystemName
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property SystemName.
+	 */
+	private String	systemName;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property CreationClassName. 
-     */
-    private String creationClassName;
-    /**
-     * This method returns the ServiceAccessPoint.CreationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current CreationClassName property value
-     * @exception	Exception	
-     */
-    public String getCreationClassName(){
+	/**
+	 * This method returns the ServiceAccessPoint.SystemName property value.
+	 * This property is described as follows:
+	 * 
+	 * The Name of the scoping System.
+	 * 
+	 * @return String current SystemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    return this.creationClassName;
-    } // getCreationClassName
+		return this.systemName;
+	} // getSystemName
 
-    /**
-     * This method sets the ServiceAccessPoint.CreationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new CreationClassName property value
-     * @exception	Exception	
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method sets the ServiceAccessPoint.SystemName property value. This
+	 * property is described as follows:
+	 * 
+	 * The Name of the scoping System.
+	 * 
+	 * @param String
+	 *            new SystemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		this.systemName = systemName;
+	} // setSystemName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property CreationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property Name. 
-     */
-    private String name;
-    /**
-     * This method returns the ServiceAccessPoint.Name property value. This 
-     * property is described as follows: 
-     * 
-     * The Name property uniquely identifies the ServiceAccessPoint and 
-     * provides an indication of the functionality that is managed. This 
-     * functionality is described in more detail in the Description property 
-     * of the object. 
-     * 
-     * @return	String	current Name property value
-     * @exception	Exception	
-     */
-    public String getName(){
+	/**
+	 * This method returns the ServiceAccessPoint.CreationClassName property
+	 * value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in
+	 * the creation of an instance. When used with the other key properties of
+	 * this class, this property allows all instances of this class and its
+	 * subclasses to be uniquely identified.
+	 * 
+	 * @return String current CreationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    return (String)name;
-    } // getName
+		return this.creationClassName;
+	} // getCreationClassName
 
-    /**
-     * This method sets the ServiceAccessPoint.Name property value. This 
-     * property is described as follows: 
-     * 
-     * The Name property uniquely identifies the ServiceAccessPoint and 
-     * provides an indication of the functionality that is managed. This 
-     * functionality is described in more detail in the Description property 
-     * of the object. 
-     * 
-     * @param	String	new Name property value
-     * @exception	Exception	
-     */
-    public void setName(String name) {
+	/**
+	 * This method sets the ServiceAccessPoint.CreationClassName property value.
+	 * This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in
+	 * the creation of an instance. When used with the other key properties of
+	 * this class, this property allows all instances of this class and its
+	 * subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new CreationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    this.name = name;
-    } // setName
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Name.
+	 */
+	private String	name;
 
+	/**
+	 * This method returns the ServiceAccessPoint.Name property value. This
+	 * property is described as follows:
+	 * 
+	 * The Name property uniquely identifies the ServiceAccessPoint and provides
+	 * an indication of the functionality that is managed. This functionality is
+	 * described in more detail in the Description property of the object.
+	 * 
+	 * @return String current Name property value
+	 * @exception Exception
+	 */
+	public String getName() {
+
+		return (String) name;
+	} // getName
+
+	/**
+	 * This method sets the ServiceAccessPoint.Name property value. This
+	 * property is described as follows:
+	 * 
+	 * The Name property uniquely identifies the ServiceAccessPoint and provides
+	 * an indication of the functionality that is managed. This functionality is
+	 * described in more detail in the Description property of the object.
+	 * 
+	 * @param String
+	 *            new Name property value
+	 * @exception Exception
+	 */
+	public void setName(String name) {
+
+		this.name = name;
+	} // setName
 
 } // Class ServiceAccessPoint
