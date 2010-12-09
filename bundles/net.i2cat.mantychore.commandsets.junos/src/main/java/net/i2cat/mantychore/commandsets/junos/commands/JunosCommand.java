@@ -1,8 +1,5 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
 
 import org.apache.commons.digester.Digester;
@@ -13,34 +10,28 @@ import org.slf4j.LoggerFactory;
 
 import com.iaasframework.capabilities.commandset.AbstractCommandWithProtocol;
 import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.capabilities.protocol.api.ProtocolErrorMessage;
 import com.iaasframework.capabilities.protocol.api.ProtocolResponseMessage;
 import com.iaasframework.resources.core.message.ICapabilityMessage;
 
 public abstract class JunosCommand extends AbstractCommandWithProtocol {
-	private String					template	= "";
+	private String		template	= "";
+	private String		rule		= "";
 
-	private HashMap<String, String>	params		= new HashMap<String, String>();
-	protected Digester				digester	= new Digester();
-	private ArrayList				list		= new ArrayList();
+	private Object		params		= "";
+
+	protected Digester	digester	= new Digester();
 	/** logger **/
-	Logger							log			= LoggerFactory
+	Logger				log			= LoggerFactory
 														.getLogger(JunosCommand.class);
 
 	public JunosCommand(String commandID) {
 		super(commandID);
 		log.info("New command: " + commandID);
 
-		// params = new HashMap<String, String>();
 	}
 
-	public JunosCommand(String commandID, ArrayList list) {
-		super(commandID);
-		log.info("New command: " + commandID);
-
-		// params = new HashMap<String, String>();
-	}
+	// initCommand will be used to pass arguments
 
 	@Override
 	public void executeCommand() throws CommandException {
@@ -50,6 +41,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 			String command = prepareCommand();
 			sendCommandToProtocol(command);
 
+			// FIXME fix a correct flow of exceptions
 		} catch (CommandException ex) {
 			ex.printStackTrace();
 		} catch (ResourceNotFoundException e) {
@@ -65,16 +57,12 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	}
 
-	@Override
-	public void initializeCommand(IResourceModel arg0) throws CommandException {
-		// It is not necessary to fill
-	}
-
-	public String prepareCommand() throws ResourceNotFoundException,
+	private String prepareCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
-		VelocityEngine velocityEngine = new VelocityEngine(template, params,
-				list);
+
+		VelocityEngine velocityEngine = new VelocityEngine(template, params);
 		String command = velocityEngine.mergeTemplate();
+
 		log.debug(command);
 		return command;
 
@@ -108,16 +96,8 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 		this.template = template;
 	}
 
-	public void setParams(HashMap<String, String> params) {
-		this.params = params;
-	}
-
-	public void addParam(String key, String value) {
-		this.params.put(key, value);
-	}
-
-	public void setList(ArrayList list) {
-		this.list = list;
+	public void setRule(String rule) {
+		this.rule = rule;
 	}
 
 }

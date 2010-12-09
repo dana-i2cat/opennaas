@@ -35,14 +35,13 @@ public class AddStaticRouteCommand extends JunosCommand {
 			ArrayList<String> listStaticRoutingProtocol) {
 		super(ADDSTATICROUTE);
 		log.debug("Preparing AddStaticRouteCommand...");
-		this.setList(listStaticRoutingProtocol);
 		this.setTemplate(TEMPLATE);
 
 		params.put("logicalRouterName", logicalRouterName);
 
 		// params.putAll(listStaticRoutingProtocol);
 
-		this.setParams(params);
+		// this.setParams(params);
 
 	}
 
@@ -115,6 +114,12 @@ public class AddStaticRouteCommand extends JunosCommand {
 			e.printStackTrace();
 			throw new CommandException(e.getMessage());
 		}
+
+	}
+
+	@Override
+	public void initializeCommand(IResourceModel modelInfo) throws CommandException {
+		// TODO Auto-generated method stub
 
 	}
 }

@@ -22,14 +22,24 @@ public class GetConfigurationCommand extends JunosCommand {
 
 	public static final String	TEMPLATE	= "/getconfiguration.vm";
 
+	public static final String	RULE		= "";
+
 	/** The logger **/
 	Logger						log			= LoggerFactory
 													.getLogger(KeepAliveCommand.class);
 
 	public GetConfigurationCommand() {
 		super(GETCONFIG);
-		log.debug("Preparing GetConfigurationCommand...");
+
 		this.setTemplate(TEMPLATE);
+
+		log.debug("Preparing GetConfigurationCommand...");
+
+	}
+
+	@Override
+	public void initializeCommand(IResourceModel modelInfo) throws CommandException {
+		// This command doesn t need to include any model
 	}
 
 	@Override
@@ -60,4 +70,5 @@ public class GetConfigurationCommand extends JunosCommand {
 		}
 
 	}
+
 }

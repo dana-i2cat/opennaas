@@ -26,4 +26,10 @@ public class KeepAliveCommand extends JunosCommand {
 
 	}
 
+	@Override
+	public void initializeCommand(IResourceModel modelInfo) throws CommandException {
+		// TODO Auto-generated method stub
+
+	}
+
 }
