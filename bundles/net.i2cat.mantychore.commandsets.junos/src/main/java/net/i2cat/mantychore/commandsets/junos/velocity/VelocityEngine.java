@@ -3,9 +3,6 @@ package net.i2cat.mantychore.commandsets.junos.velocity;
 import java.io.File;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Properties;
 
 import org.apache.velocity.Template;
@@ -18,20 +15,19 @@ import org.slf4j.LoggerFactory;
 
 public class VelocityEngine {
 
-	Logger							log				= LoggerFactory
+	public static final String	PARAMS			= "params";
+
+	Logger						log				= LoggerFactory
 															.getLogger(VelocityEngine.class);
 
-	private static String			VELOCITY_PROPS	= "/velocity.properties";
-	private VelocityContext			ctx;
-	private String					template;
-	private HashMap<String, String>	params			= new HashMap<String, String>();
-	private ArrayList				list;
+	private static String		VELOCITY_PROPS	= "/velocity.properties";
+	private VelocityContext		ctx;
+	private String				template;
+	private Object				params;
 
-	public VelocityEngine(String template, HashMap<String, String> params,
-			ArrayList list) {
+	public VelocityEngine(String template, Object params) {
 		this.template = template;
 		this.params = params;
-		this.list = list;
 
 	}
 
@@ -56,15 +52,7 @@ public class VelocityEngine {
 		log.info("Trying to open " + currentPath + File.separator + template);
 		Template tpl = Velocity.getTemplate(template);
 
-		Iterator<String> iterKeys = params.keySet().iterator();
-		while (iterKeys.hasNext()) {
-			String key = iterKeys.next();
-			String value = params.get(key);
-			ctx.put(key, value);
-
-		}
-
-		ctx.put("list", list);
+		ctx.put(PARAMS, params);
 
 		Writer writer = new StringWriter();
 
