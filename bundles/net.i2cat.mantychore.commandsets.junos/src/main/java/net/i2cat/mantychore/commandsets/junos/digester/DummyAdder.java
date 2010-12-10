@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.commandsets.junos.digester;
+
 import java.util.HashMap;
 
 import net.i2cat.mantychore.model.EthernetPort;

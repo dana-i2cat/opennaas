@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.commandsets.junos.digester;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,8 +27,6 @@ public abstract class DigesterEngine extends Digester {
 		addCallParam(pathRule, 0);
 
 	}
-
-	// FIXME IT IS NOT NECESSARY TO INCLUDE THE CONFIGURE METHOD
 
 	public Object parse(InputStream input) throws IOException, SAXException {
 

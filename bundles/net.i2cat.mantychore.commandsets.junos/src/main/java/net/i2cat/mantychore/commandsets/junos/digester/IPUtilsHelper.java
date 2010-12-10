@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.commandsets.junos.digester;
+
 import java.util.regex.Pattern;
 
 public class IPUtilsHelper {

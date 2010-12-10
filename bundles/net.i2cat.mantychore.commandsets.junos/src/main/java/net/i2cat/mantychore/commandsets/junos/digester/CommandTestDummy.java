@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.commandsets.junos.digester;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -21,7 +23,7 @@ public class CommandTestDummy {
 
 	private String	logicalRoutersConfig		= path + File.separator + "LRconfiguration.xml";
 
-	private String	rulesIPConfiguration		= "ipconfiguration.xml";
+	private String	rulesIPConfiguration		= path + File.separator + "ipconfiguration.xml";
 	private String	rulesChassisConfiguration	= "chassisconfiguration.xml";
 	private String	rulesRouterConfiguration	= "iprouterconfiguration.xml";
 	private String	rulesPoliciesConfiguration	= "policiesconfiguration.xml";
@@ -37,12 +39,19 @@ public class CommandTestDummy {
 
 	@Test
 	public void firstTestModel() {
-		PhysicalInterfaceParser engine = new PhysicalInterfaceParser();
-		engine.init();
 		try {
+			PhysicalInterfaceParser engineParser = new
+					PhysicalInterfaceParser();
+			engineParser.init();
 
-			engine.parse(interfaceConfig);
-			System.out.println(engine.toPrint());
+			/* get physical interfaces information */
+			engineParser.parse(interfaceConfig);
+			System.out.println(engineParser.toPrint());
+
+			// LogicalInterfaceParser logicalEngineParser = new
+			// LogicalInterfaceParser();
+			// logicalEngineParser.init();
+			// logicalEngineParser.parse(getConfig);
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

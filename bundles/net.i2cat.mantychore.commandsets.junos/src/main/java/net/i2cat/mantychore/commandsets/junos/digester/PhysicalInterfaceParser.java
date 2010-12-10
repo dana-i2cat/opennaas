@@ -1,13 +1,13 @@
+package net.i2cat.mantychore.commandsets.junos.digester;
+
 import java.util.HashMap;
 
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
-import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
 
 public class PhysicalInterfaceParser extends DigesterEngine {
 
-	int								index				= 0;
 	HashMap<String, EthernetPort>	hashMapInterfaces	= new HashMap<String, EthernetPort>();
 
 	@Override
@@ -24,11 +24,11 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 		/* Add physical interface to the parent */
 
-		addSetNext("*/interface-information/physical-interface", "addLogicalPort");
+		addSetNext("*/interface-information/physical-interface", "addInterface");
 
 	}
 
-	public void addLogicalPort(EthernetPort ethernetPort) {
+	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getOtherPortType();
 		if (hashMapInterfaces.containsKey(location)) {
 			EthernetPort hashEthernetPort = hashMapInterfaces.get(location);
@@ -48,30 +48,6 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 	}
 
 	/* Parser methods */
-
-	/* IP Protocol Endpoint */
-	public void setIPv4AddressParser(String ipv4) {
-		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
-		try {
-			String shortMask = ipv4.split("/")[1];
-			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
-			ipProtocolEndpoint.setIPv4Address(shortMask);
-			ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
-			ipProtocolEndpoint.setSubnetMask(maskIpv4);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-
-	}
-
-	public void setIPv6AddressParser(String ipv6) {
-		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
-		try {
-			ipProtocolEndpoint.setIPv6Address(ipv6);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-	}
 
 	/* IPHeadersFilter Parser */
 
