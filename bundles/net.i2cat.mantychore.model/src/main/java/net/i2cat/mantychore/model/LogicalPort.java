@@ -23,21 +23,26 @@ import java.lang.Exception;
  */
 public class LogicalPort extends LogicalDevice implements Serializable {
 	
-	private List<ProtocolEndpoint>	listProtocolEndpoints	= new ArrayList<ProtocolEndpoint>();
+	// FIXME IT DEVELOPS ASSOCIATIONS
+
+	/**
+	 * PortImplements Endpoint
+	 */
+	protected Associable<ProtocolEndpoint, LogicalPort>	toProtocolEndpoint	= new Associable<ProtocolEndpoint, LogicalPort>();
 
 	/* they are added manually */
 
 	public List<ProtocolEndpoint> getListProtocolEndpoints() {
-		return listProtocolEndpoints;
+		return toProtocolEndpoint.getLinks();
 	}
 
 	public void addProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
-		this.listProtocolEndpoints.add(protocolEndpoint);
+		toProtocolEndpoint.addLink(protocolEndpoint, this, protocolEndpoint.toLogicalPort);
 	}
 
-	// FIXME is it works? they have to share references...
+	// FIXME is it work? they have to share references...
 	public void removeProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
-		this.listProtocolEndpoints.remove(protocolEndpoint);
+		toProtocolEndpoint.removeLink(protocolEndpoint, this, protocolEndpoint.toLogicalPort);
 	}
 
     /**

@@ -21,6 +21,21 @@ import java.lang.Exception;
  */
 public class ProtocolEndpoint extends ServiceAccessPoint implements 
     Serializable {
+	
+		protected Associable<LogicalPort, ProtocolEndpoint>	toLogicalPort	= new Associable<LogicalPort, ProtocolEndpoint>();
+
+	public List<LogicalPort> getLogicalPorts() {
+		return toLogicalPort.getLinks();
+	}
+
+	public void addLogicalPort(LogicalPort logicalPort) {
+		toLogicalPort.addLink(logicalPort, this, logicalPort.toProtocolEndpoint);
+	}
+
+	// FIXME is it work? they have to share references...
+	public void removeLogicalPort(LogicalPort logicalPort) {
+		toLogicalPort.removeLink(logicalPort, this, logicalPort.toProtocolEndpoint);
+	}
 
     /**
      * This constructor creates a ProtocolEndpointBeanImpl Class which 

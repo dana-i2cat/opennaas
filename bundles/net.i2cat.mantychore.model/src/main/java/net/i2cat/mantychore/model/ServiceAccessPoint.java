@@ -22,6 +22,21 @@ import java.lang.Exception;
  */
 public class ServiceAccessPoint extends EnabledLogicalElement implements 
     Serializable {
+	
+		protected Associable<LANEndpoint, ServiceAccessPoint>	toLANEndpoint	= new Associable<LANEndpoint, ServiceAccessPoint>();
+
+	public List<LANEndpoint> getLANEndpoints() {
+		return toLANEndpoint.getLinks();
+	}
+
+	public void addLANEndpoint(LANEndpoint lanEndpoint) {
+		toLANEndpoint.addLink(lanEndpoint, this, lanEndpoint.toServiceAccessPoint);
+	}
+
+	// FIXME is it work? they have to share references...
+	public void removeLANEndpoint(LANEndpoint lanEndpoint) {
+		toLANEndpoint.removeLink(lanEndpoint, this, lanEndpoint.toServiceAccessPoint);
+	}
 
     /**
      * This constructor creates a ServiceAccessPointBeanImpl Class which 

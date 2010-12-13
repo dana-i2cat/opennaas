@@ -25,15 +25,22 @@ public class LANEndpoint extends ProtocolEndpoint implements Serializable {
 	
 
 	// FIXME Added manually
-	public List<ServiceAccessPoint>	listServiceAccessPoint	= new ArrayList<ServiceAccessPoint>();
+
+	protected Associable<ServiceAccessPoint, LANEndpoint>	toServiceAccessPoint	= new Associable<ServiceAccessPoint, LANEndpoint>();
+
+	public List<ServiceAccessPoint> getServiceAccessPoints() {
+		return toServiceAccessPoint.getLinks();
+	}
 
 	public void addServiceAccessPoint(ServiceAccessPoint serviceAccessPoint) {
-		this.listServiceAccessPoint.add(serviceAccessPoint);
+		toServiceAccessPoint.addLink(serviceAccessPoint, this, serviceAccessPoint.toLANEndpoint);
 	}
 
+	// FIXME is it work? they have to share references...
 	public void removeServiceAccessPoint(ServiceAccessPoint serviceAccessPoint) {
-		this.listServiceAccessPoint.remove(serviceAccessPoint);
+		toServiceAccessPoint.removeLink(serviceAccessPoint, this, serviceAccessPoint.toLANEndpoint);
 	}
+
 
     /**
      * This constructor creates a LANEndpointBeanImpl Class which implements 
