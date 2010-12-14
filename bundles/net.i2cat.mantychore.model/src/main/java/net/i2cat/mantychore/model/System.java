@@ -6,48 +6,93 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import net.i2cat.mantychore.model.utils.Associable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined in the CIM class System as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the SystemBean Interface. The CIM class System is described as follows:
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class System as well as methods comparable to the invokeMethods
+ * defined for this class. This Class implements the SystemBean Interface. The
+ * CIM class System is described as follows:
  * 
- * CIM_System represents an entity made up of component parts (defined by the SystemComponent relationship), that operates as a 'functional whole'.
- * Systems are top-level objects in the CIM hierarchy, requiring no scoping or weak relationships in order to exist and have context. It should be
- * reasonable to uniquely name and manage a System at an enterprise level. For example, a ComputerSystem is a kind of System that can be uniquely
- * named and independently managed in an enterprise. However, these qualities are not true for the power supply (or the power supply sub-'system')
- * within the computer. Although a System can be viewed as a Collection, this view is not the correct model. A Collection is simply a 'bag' that
- * 'holds' its members. A System is a higher-level abstraction, built out of its individual components. It is more than the sum of its parts. Note
- * that System is a subclass of EnabledLogicalElement which allows the entire abstraction to be functionally enabled or disabled at a higher level
- * than enabling or disabling its component parts.
+ * CIM_System represents an entity made up of component parts (defined by the
+ * SystemComponent relationship), that operates as a 'functional whole'. Systems
+ * are top-level objects in the CIM hierarchy, requiring no scoping or weak
+ * relationships in order to exist and have context. It should be reasonable to
+ * uniquely name and manage a System at an enterprise level. For example, a
+ * ComputerSystem is a kind of System that can be uniquely named and
+ * independently managed in an enterprise. However, these qualities are not true
+ * for the power supply (or the power supply sub-'system') within the computer.
+ * Although a System can be viewed as a Collection, this view is not the correct
+ * model. A Collection is simply a 'bag' that 'holds' its members. A System is a
+ * higher-level abstraction, built out of its individual components. It is more
+ * than the sum of its parts. Note that System is a subclass of
+ * EnabledLogicalElement which allows the entire abstraction to be functionally
+ * enabled or disabled at a higher level than enabling or disabling its
+ * component parts.
  */
 public class System extends EnabledLogicalElement implements Serializable {
 
+	protected Associable<ManagedSystemElement, System>	toManagedSystemElement	= new Associable<ManagedSystemElement, System>();
+
+	/* they are added manually */
+
+	public List<ManagedSystemElement> getManagedSystemElements() {
+		return toManagedSystemElement.getLinks();
+	}
+
+	public void setToManagedSystemElement(Associable<ManagedSystemElement, System> toManagedSystemElement) {
+		this.toManagedSystemElement = toManagedSystemElement;
+	}
+
+	public void addManagedSystemElement(ManagedSystemElement managedSystemElement) {
+		toManagedSystemElement.addLink(managedSystemElement, this, managedSystemElement.toSystem);
+	}
+
+	// FIXME is it work? they have to share references...
+	public void removeManagedSystemElement(ManagedSystemElement managedSystemElement) {
+		toManagedSystemElement.removeLink(managedSystemElement, this, managedSystemElement.toSystem);
+	}
+
 	/**
-	 * This constructor creates a SystemBeanImpl Class which implements the SystemBean Interface, and encapsulates the CIM class System in a Java
+	 * This constructor creates a SystemBeanImpl Class which implements the
+	 * SystemBean Interface, and encapsulates the CIM class System in a Java
 	 * Bean. The CIM class System is described as follows:
 	 * 
-	 * CIM_System represents an entity made up of component parts (defined by the SystemComponent relationship), that operates as a 'functional
-	 * whole'. Systems are top-level objects in the CIM hierarchy, requiring no scoping or weak relationships in order to exist and have context. It
-	 * should be reasonable to uniquely name and manage a System at an enterprise level. For example, a ComputerSystem is a kind of System that can be
-	 * uniquely named and independently managed in an enterprise. However, these qualities are not true for the power supply (or the power supply
-	 * sub-'system') within the computer. Although a System can be viewed as a Collection, this view is not the correct model. A Collection is simply
-	 * a 'bag' that 'holds' its members. A System is a higher-level abstraction, built out of its individual components. It is more than the sum of
-	 * its parts. Note that System is a subclass of EnabledLogicalElement which allows the entire abstraction to be functionally enabled or disabled
-	 * at a higher level than enabling or disabling its component parts.
+	 * CIM_System represents an entity made up of component parts (defined by
+	 * the SystemComponent relationship), that operates as a 'functional whole'.
+	 * Systems are top-level objects in the CIM hierarchy, requiring no scoping
+	 * or weak relationships in order to exist and have context. It should be
+	 * reasonable to uniquely name and manage a System at an enterprise level.
+	 * For example, a ComputerSystem is a kind of System that can be uniquely
+	 * named and independently managed in an enterprise. However, these
+	 * qualities are not true for the power supply (or the power supply
+	 * sub-'system') within the computer. Although a System can be viewed as a
+	 * Collection, this view is not the correct model. A Collection is simply a
+	 * 'bag' that 'holds' its members. A System is a higher-level abstraction,
+	 * built out of its individual components. It is more than the sum of its
+	 * parts. Note that System is a subclass of EnabledLogicalElement which
+	 * allows the entire abstraction to be functionally enabled or disabled at a
+	 * higher level than enabling or disabling its component parts.
 	 */
 	protected System() {
 	};
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property CreationClassName.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property CreationClassName.
 	 */
 	private String	creationClassName;
 
 	/**
-	 * This method returns the System.CreationClassName property value. This property is described as follows:
+	 * This method returns the System.CreationClassName property value. This
+	 * property is described as follows:
 	 * 
-	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
-	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * CreationClassName indicates the name of the class or the subclass used in
+	 * the creation of an instance. When used with the other key properties of
+	 * this class, this property allows all instances of this class and its
+	 * subclasses to be uniquely identified.
 	 * 
 	 * @return String current CreationClassName property value
 	 * @exception Exception
@@ -58,10 +103,13 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getCreationClassName
 
 	/**
-	 * This method sets the System.CreationClassName property value. This property is described as follows:
+	 * This method sets the System.CreationClassName property value. This
+	 * property is described as follows:
 	 * 
-	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
-	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * CreationClassName indicates the name of the class or the subclass used in
+	 * the creation of an instance. When used with the other key properties of
+	 * this class, this property allows all instances of this class and its
+	 * subclasses to be uniquely identified.
 	 * 
 	 * @param String
 	 *            new CreationClassName property value
@@ -73,14 +121,17 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // setCreationClassName
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property Name.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Name.
 	 */
 	private String	name;
 
 	/**
-	 * This method returns the System.Name property value. This property is described as follows:
+	 * This method returns the System.Name property value. This property is
+	 * described as follows:
 	 * 
-	 * The inherited Name serves as the key of a System instance in an enterprise environment.
+	 * The inherited Name serves as the key of a System instance in an
+	 * enterprise environment.
 	 * 
 	 * @return String current Name property value
 	 * @exception Exception
@@ -91,9 +142,11 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getName
 
 	/**
-	 * This method sets the System.Name property value. This property is described as follows:
+	 * This method sets the System.Name property value. This property is
+	 * described as follows:
 	 * 
-	 * The inherited Name serves as the key of a System instance in an enterprise environment.
+	 * The inherited Name serves as the key of a System instance in an
+	 * enterprise environment.
 	 * 
 	 * @param String
 	 *            new Name property value
@@ -148,14 +201,17 @@ public class System extends EnabledLogicalElement implements Serializable {
 	// } // setNameFormat
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property PrimaryOwnerName.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property PrimaryOwnerName.
 	 */
 	private String	primaryOwnerName;
 
 	/**
-	 * This method returns the System.PrimaryOwnerName property value. This property is described as follows:
+	 * This method returns the System.PrimaryOwnerName property value. This
+	 * property is described as follows:
 	 * 
-	 * The name of the primary system owner. The system owner is the primary user of the system.
+	 * The name of the primary system owner. The system owner is the primary
+	 * user of the system.
 	 * 
 	 * @return String current PrimaryOwnerName property value
 	 * @exception Exception
@@ -166,9 +222,11 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getPrimaryOwnerName
 
 	/**
-	 * This method sets the System.PrimaryOwnerName property value. This property is described as follows:
+	 * This method sets the System.PrimaryOwnerName property value. This
+	 * property is described as follows:
 	 * 
-	 * The name of the primary system owner. The system owner is the primary user of the system.
+	 * The name of the primary system owner. The system owner is the primary
+	 * user of the system.
 	 * 
 	 * @param String
 	 *            new PrimaryOwnerName property value
@@ -180,14 +238,17 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // setPrimaryOwnerName
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property PrimaryOwnerContact.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property PrimaryOwnerContact.
 	 */
 	private String	primaryOwnerContact;
 
 	/**
-	 * This method returns the System.PrimaryOwnerContact property value. This property is described as follows:
+	 * This method returns the System.PrimaryOwnerContact property value. This
+	 * property is described as follows:
 	 * 
-	 * A string that provides information on how the primary system owner can be reached (for example, phone number, e-mail address, and so on).
+	 * A string that provides information on how the primary system owner can be
+	 * reached (for example, phone number, e-mail address, and so on).
 	 * 
 	 * @return String current PrimaryOwnerContact property value
 	 * @exception Exception
@@ -198,9 +259,11 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getPrimaryOwnerContact
 
 	/**
-	 * This method sets the System.PrimaryOwnerContact property value. This property is described as follows:
+	 * This method sets the System.PrimaryOwnerContact property value. This
+	 * property is described as follows:
 	 * 
-	 * A string that provides information on how the primary system owner can be reached (for example, phone number, e-mail address, and so on).
+	 * A string that provides information on how the primary system owner can be
+	 * reached (for example, phone number, e-mail address, and so on).
 	 * 
 	 * @param String
 	 *            new PrimaryOwnerContact property value
@@ -212,17 +275,23 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // setPrimaryOwnerContact
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property Roles.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Roles.
 	 */
 	private String[]	roles;
 
 	/**
-	 * This method returns the System.Roles property value. This property is described as follows:
+	 * This method returns the System.Roles property value. This property is
+	 * described as follows:
 	 * 
-	 * An array (bag) of strings that specifies the administrator -defined roles this System plays in the managed environment. Examples might be
-	 * 'Building 8 print server' or 'Boise user directories'. A single system may perform multiple roles. Note that the instrumentation view of the
-	 * 'roles' of a System is defined by instantiating a specific subclass of System, or by properties in a subclass, or both. For example, the
-	 * purpose of a ComputerSystem is defined using the Dedicated and OtherDedicatedDescription properties.
+	 * An array (bag) of strings that specifies the administrator -defined roles
+	 * this System plays in the managed environment. Examples might be 'Building
+	 * 8 print server' or 'Boise user directories'. A single system may perform
+	 * multiple roles. Note that the instrumentation view of the 'roles' of a
+	 * System is defined by instantiating a specific subclass of System, or by
+	 * properties in a subclass, or both. For example, the purpose of a
+	 * ComputerSystem is defined using the Dedicated and
+	 * OtherDedicatedDescription properties.
 	 * 
 	 * @return String[] current Roles property value
 	 * @exception Exception
@@ -233,12 +302,17 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getRoles
 
 	/**
-	 * This method sets the System.Roles property value. This property is described as follows:
+	 * This method sets the System.Roles property value. This property is
+	 * described as follows:
 	 * 
-	 * An array (bag) of strings that specifies the administrator -defined roles this System plays in the managed environment. Examples might be
-	 * 'Building 8 print server' or 'Boise user directories'. A single system may perform multiple roles. Note that the instrumentation view of the
-	 * 'roles' of a System is defined by instantiating a specific subclass of System, or by properties in a subclass, or both. For example, the
-	 * purpose of a ComputerSystem is defined using the Dedicated and OtherDedicatedDescription properties.
+	 * An array (bag) of strings that specifies the administrator -defined roles
+	 * this System plays in the managed environment. Examples might be 'Building
+	 * 8 print server' or 'Boise user directories'. A single system may perform
+	 * multiple roles. Note that the instrumentation view of the 'roles' of a
+	 * System is defined by instantiating a specific subclass of System, or by
+	 * properties in a subclass, or both. For example, the purpose of a
+	 * ComputerSystem is defined using the Dedicated and
+	 * OtherDedicatedDescription properties.
 	 * 
 	 * @param String
 	 *            [] new Roles property value
@@ -250,16 +324,21 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // setRoles
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property OtherIdentifyingInfo.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property OtherIdentifyingInfo.
 	 */
 	private String[]	otherIdentifyingInfo;
 
 	/**
-	 * This method returns the System.OtherIdentifyingInfo property value. This property is described as follows:
+	 * This method returns the System.OtherIdentifyingInfo property value. This
+	 * property is described as follows:
 	 * 
-	 * OtherIdentifyingInfo captures additional data, beyond System Name information, that could be used to identify a ComputerSystem. One example
-	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note that if only the Fibre Channel name is available and is unique (able
-	 * to be used as the System key), then this property would be NULL and the WWN would become the System key, its data placed in the Name property.
+	 * OtherIdentifyingInfo captures additional data, beyond System Name
+	 * information, that could be used to identify a ComputerSystem. One example
+	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note
+	 * that if only the Fibre Channel name is available and is unique (able to
+	 * be used as the System key), then this property would be NULL and the WWN
+	 * would become the System key, its data placed in the Name property.
 	 * 
 	 * @return String[] current OtherIdentifyingInfo property value
 	 * @exception Exception
@@ -270,11 +349,15 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getOtherIdentifyingInfo
 
 	/**
-	 * This method sets the System.OtherIdentifyingInfo property value. This property is described as follows:
+	 * This method sets the System.OtherIdentifyingInfo property value. This
+	 * property is described as follows:
 	 * 
-	 * OtherIdentifyingInfo captures additional data, beyond System Name information, that could be used to identify a ComputerSystem. One example
-	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note that if only the Fibre Channel name is available and is unique (able
-	 * to be used as the System key), then this property would be NULL and the WWN would become the System key, its data placed in the Name property.
+	 * OtherIdentifyingInfo captures additional data, beyond System Name
+	 * information, that could be used to identify a ComputerSystem. One example
+	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note
+	 * that if only the Fibre Channel name is available and is unique (able to
+	 * be used as the System key), then this property would be NULL and the WWN
+	 * would become the System key, its data placed in the Name property.
 	 * 
 	 * @param String
 	 *            [] new OtherIdentifyingInfo property value
@@ -286,15 +369,19 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // setOtherIdentifyingInfo
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property IdentifyingDescriptions.
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property IdentifyingDescriptions.
 	 */
 	private String[]	identifyingDescriptions;
 
 	/**
-	 * This method returns the System.IdentifyingDescriptions property value. This property is described as follows:
+	 * This method returns the System.IdentifyingDescriptions property value.
+	 * This property is described as follows:
 	 * 
-	 * An array of free-form strings providing explanations and details behind the entries in the OtherIdentifying Info array. Note, each entry of
-	 * this array is related to the entry in OtherIdentifyingInfo that is located at the same index.
+	 * An array of free-form strings providing explanations and details behind
+	 * the entries in the OtherIdentifying Info array. Note, each entry of this
+	 * array is related to the entry in OtherIdentifyingInfo that is located at
+	 * the same index.
 	 * 
 	 * @return String[] current IdentifyingDescriptions property value
 	 * @exception Exception
@@ -305,10 +392,13 @@ public class System extends EnabledLogicalElement implements Serializable {
 	} // getIdentifyingDescriptions
 
 	/**
-	 * This method sets the System.IdentifyingDescriptions property value. This property is described as follows:
+	 * This method sets the System.IdentifyingDescriptions property value. This
+	 * property is described as follows:
 	 * 
-	 * An array of free-form strings providing explanations and details behind the entries in the OtherIdentifying Info array. Note, each entry of
-	 * this array is related to the entry in OtherIdentifyingInfo that is located at the same index.
+	 * An array of free-form strings providing explanations and details behind
+	 * the entries in the OtherIdentifying Info array. Note, each entry of this
+	 * array is related to the entry in OtherIdentifyingInfo that is located at
+	 * the same index.
 	 * 
 	 * @param String
 	 *            [] new IdentifyingDescriptions property value

@@ -32,7 +32,7 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 
 	/* they are added manually */
 
-	public List<ProtocolEndpoint> getListProtocolEndpoints() {
+	public List<ProtocolEndpoint> getProtocolEndpoints() {
 		return toProtocolEndpoint.getLinks();
 	}
 
