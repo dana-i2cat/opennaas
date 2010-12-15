@@ -52,6 +52,7 @@ public class CommandTestDummy {
 					LogicalInterfaceParser();
 			logicalEngineParser.init();
 			logicalEngineParser.configurableParse(getConfig);
+			System.out.println(logicalEngineParser.toPrint());
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

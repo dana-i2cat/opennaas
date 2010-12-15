@@ -15,10 +15,10 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 		/* IP Configuration */
 		addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
-		addSetNext("*/interfaces/interface/unit", "addLogicalPort");
+		addSetNext("*/interfaces/interface/unit", "addInterface");
 
 		addMyRule("*/interfaces/interface/unit/name", "setName", 0);
-		addObjectCreate("*/interfaces/interface/unit", IPProtocolEndpoint.class);
+		addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
 		addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
 		addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
 
@@ -48,7 +48,7 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 		assert !location.equals("") : "LogicalInterfaceParser: location have to be defined";
 		/* fill identifier parameters */
-		ethernetPort.setName(location + "." + name);
+		ethernetPort.setOtherPortType(location + "." + name);
 
 	}
 
@@ -62,8 +62,9 @@ public class LogicalInterfaceParser extends DigesterEngine {
 		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
 		try {
 			String shortMask = ipv4.split("/")[1];
+			String ip = ipv4.split("/")[0];
 			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
-			ipProtocolEndpoint.setIPv4Address(shortMask);
+			ipProtocolEndpoint.setIPv4Address(ip);
 			ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
 			ipProtocolEndpoint.setSubnetMask(maskIpv4);
 		} catch (Exception e) {
@@ -75,7 +76,12 @@ public class LogicalInterfaceParser extends DigesterEngine {
 	public void setIPv6Address(String ipv6) {
 		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
 		try {
-			ipProtocolEndpoint.setIPv6Address(ipv6);
+			String ip = ipv6.split("/")[0];
+			String shortMask = ipv6.split("/")[1];
+			ipProtocolEndpoint.setIPv6Address(ip);
+			// FIXME IT IS NOT POSSIBLE TO SPECIFY MASK?????
+			// ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
