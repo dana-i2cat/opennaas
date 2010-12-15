@@ -10,7 +10,7 @@ import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
 
 public abstract class DigesterEngine extends Digester {
-	protected HashMap<String, Object>	mapElements;
+	protected HashMap<String, Object>	mapElements	= new HashMap<String, Object>();	;
 
 	public abstract void addRules();
 
@@ -28,19 +28,26 @@ public abstract class DigesterEngine extends Digester {
 
 	}
 
-	public Object parse(InputStream input) throws IOException, SAXException {
+	public void configurableParse(InputStream input) throws IOException, SAXException {
 
 		addRules();
-		return (super.parse(input));
+		super.parse(input);
 
 	}
 
-	public Object parse(String uri) throws IOException, SAXException {
-		System.out.println("Trying to open " + System.getProperty("user.dir") +
-				"\\" + uri);
+	public void configurableParse(String uri) throws IOException, SAXException {
 
 		addRules();
-		return (super.parse(new File(uri)));
+		super.parse(new File(uri));
 
 	}
+
+	public HashMap<String, Object> getMapElements() {
+		return mapElements;
+	}
+
+	public void setMapElements(HashMap<String, Object> mapElements) {
+		this.mapElements = mapElements;
+	}
+
 }

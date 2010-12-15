@@ -1,15 +1,12 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
-import java.util.HashMap;
-
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LANEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 
 public class LogicalInterfaceParser extends DigesterEngine {
-	HashMap<String, EthernetPort>	hashMapInterfaces	= new HashMap<String, EthernetPort>();
-	String							location			= "";
+	String	location	= "";
 
 	@Override
 	public void addRules() {
@@ -36,12 +33,12 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getOtherPortType();
-		if (hashMapInterfaces.containsKey(location)) {
-			EthernetPort hashEthernetPort = hashMapInterfaces.get(location);
+		if (mapElements.containsKey(location)) {
+			EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
 			ethernetPort.merge(hashEthernetPort);
-			hashMapInterfaces.remove(location);
+			mapElements.remove(location);
 		}
-		hashMapInterfaces.put(location, ethernetPort);
+		mapElements.put(location, ethernetPort);
 
 	}
 
@@ -87,15 +84,15 @@ public class LogicalInterfaceParser extends DigesterEngine {
 	public String toPrint() {
 
 		String str = "" + '\n';
-		for (String key : this.hashMapInterfaces.keySet()) {
-			EthernetPort port = hashMapInterfaces.get(key);
+		for (String key : this.mapElements.keySet()) {
+			EthernetPort port = (EthernetPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';
 			str += port.getOtherPortType() + '\n';
 			str += port.getPermanentAddress() + '\n';
 			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';
-			for (ProtocolEndpoint protocolEndpoint : port.getListProtocolEndpoints()) {
+			for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoints()) {
 				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
 				str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
 				str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';

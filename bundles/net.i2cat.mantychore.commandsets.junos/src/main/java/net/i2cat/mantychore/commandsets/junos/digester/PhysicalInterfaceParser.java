@@ -1,14 +1,10 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
-import java.util.HashMap;
-
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
 import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
 
 public class PhysicalInterfaceParser extends DigesterEngine {
-
-	HashMap<String, EthernetPort>	hashMapInterfaces	= new HashMap<String, EthernetPort>();
 
 	@Override
 	public void addRules() {
@@ -30,24 +26,14 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getOtherPortType();
-		if (hashMapInterfaces.containsKey(location)) {
-			EthernetPort hashEthernetPort = hashMapInterfaces.get(location);
+		if (mapElements.containsKey(location)) {
+			EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
 			ethernetPort.merge(hashEthernetPort);
-			hashMapInterfaces.remove(location);
+			mapElements.remove(location);
 		}
-		hashMapInterfaces.put(location, ethernetPort);
+		mapElements.put(location, ethernetPort);
 
 	}
-
-	public HashMap<String, EthernetPort> getHashMapInterfaces() {
-		return hashMapInterfaces;
-	}
-
-	public void setHashMapInterfaces(HashMap<String, EthernetPort> hashMapInterfaces) {
-		this.hashMapInterfaces = hashMapInterfaces;
-	}
-
-	/* Parser methods */
 
 	/* IPHeadersFilter Parser */
 
@@ -136,8 +122,8 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 	public String toPrint() {
 
 		String str = "" + '\n';
-		for (String key : this.hashMapInterfaces.keySet()) {
-			EthernetPort port = hashMapInterfaces.get(key);
+		for (String key : mapElements.keySet()) {
+			EthernetPort port = (EthernetPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';
 			str += port.getOtherPortType() + '\n';
 			str += port.getPermanentAddress() + '\n';
@@ -148,4 +134,5 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 		return str;
 	}
+
 }

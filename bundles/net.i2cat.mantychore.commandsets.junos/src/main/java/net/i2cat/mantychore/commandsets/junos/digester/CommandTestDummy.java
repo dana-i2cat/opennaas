@@ -40,18 +40,18 @@ public class CommandTestDummy {
 	@Test
 	public void firstTestModel() {
 		try {
-			PhysicalInterfaceParser engineParser = new
-					PhysicalInterfaceParser();
-			engineParser.init();
+			// PhysicalInterfaceParser engineParser = new
+			// PhysicalInterfaceParser();
+			// engineParser.init();
+			//
+			// /* get physical interfaces information */
+			// engineParser.parse(interfaceConfig);
+			// System.out.println(engineParser.toPrint());
 
-			/* get physical interfaces information */
-			engineParser.parse(interfaceConfig);
-			System.out.println(engineParser.toPrint());
-
-			// LogicalInterfaceParser logicalEngineParser = new
-			// LogicalInterfaceParser();
-			// logicalEngineParser.init();
-			// logicalEngineParser.parse(getConfig);
+			LogicalInterfaceParser logicalEngineParser = new
+					LogicalInterfaceParser();
+			logicalEngineParser.init();
+			logicalEngineParser.configurableParse(getConfig);
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
