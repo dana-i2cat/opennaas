@@ -5,224 +5,236 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class NextHopIPRoute as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * NextHopIPRouteBean Interface. The CIM class NextHopIPRoute is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NextHopIPRoute as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the NextHopIPRouteBean Interface. The CIM class NextHopIPRoute is described as follows:
  * 
  * NextHopIPRoute specifies routing in an IP network.
  */
 public class NextHopIPRoute extends NextHopRoute implements Serializable {
 
-    /**
-     * This constructor creates a NextHopIPRouteBeanImpl Class which 
-     * implements the NextHopIPRouteBean Interface, and encapsulates the CIM 
-     * class NextHopIPRoute in a Java Bean. The CIM class NextHopIPRoute is 
-     * described as follows: 
-     * 
-     * NextHopIPRoute specifies routing in an IP network.
-     */
-    public NextHopIPRoute(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property RouteDerivation. 
-     */
+	/**
+	 * This constructor creates a NextHopIPRouteBeanImpl Class which implements the NextHopIPRouteBean Interface, and encapsulates the CIM class
+	 * NextHopIPRoute in a Java Bean. The CIM class NextHopIPRoute is described as follows:
+	 * 
+	 * NextHopIPRoute specifies routing in an IP network.
+	 */
+	public NextHopIPRoute() {
+	};
 
-    public enum RouteDerivation{
-    UNKNOWN,
-    OTHER,
-    CONNECTED,
-    USER_DEFINED,
-    IGRP,
-    EIGRP,
-    RIP,
-    HELLO,
-    EGP,
-    BGP,
-    ISIS,
-    OSPF
-    }
- public RouteDerivation routeDerivation;
-    /**
-     * This method returns the NextHopIPRoute.RouteDerivation property value. 
-     * This property is described as follows: 
-     * 
-     * An enumerated integer indicating how the route was derived. This is 
-     * useful for display and query purposes. 
-     * 
-     * @return	short	current RouteDerivation property value
-     * @exception	Exception	
-     */
-    public RouteDerivation getRouteDerivation(){
+	/**
+	 * Indicates ProtocolEndpoint(IP value) used to reach the destination address
+	 * 
+	 */
 
-    return this.routeDerivation;
-    } // getRouteDerivation
+	IPProtocolEndpoint	routeUsesEndPoint;
 
-    /**
-     * This method sets the NextHopIPRoute.RouteDerivation property value. 
-     * This property is described as follows: 
-     * 
-     * An enumerated integer indicating how the route was derived. This is 
-     * useful for display and query purposes. 
-     * 
-     * @param	short	new RouteDerivation property value
-     * @exception	Exception	
-     */
-    public void setRouteDerivation(RouteDerivation routeDerivation){
+	/**
+	 * This method returns the NextHopIPRoute.IPProtocolEndpoint. Added for Mantychore. This property is described as follows:
+	 * 
+	 * An IPProtocolEndpoint object indicating the the next hop IpAdress
+	 * 
+	 * @return IPProtocolEndpoint
+	 * @exception Exception
+	 */
+	public IPProtocolEndpoint getRouteUsesEndPoint() {
+		return routeUsesEndPoint;
+	}
 
-    this.routeDerivation = routeDerivation;
-    } // setRouteDerivation
+	/**
+	 * This method sets the the NextHopIPRoute.IPProtocolEndpoint. Added for Mantychore. This property is described as follows:
+	 * 
+	 * An IPProtocolEndpoint object indicating the the next hop IpAdress
+	 * 
+	 * @param IPProtocolEndpoint
+	 * @exception Exception
+	 */
 
+	public void setRouteUsesEndPoint(IPProtocolEndpoint routeUsesEndPoint) {
+		this.routeUsesEndPoint = routeUsesEndPoint;
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property OtherDerivation. 
-     */
-    private String otherDerivation;
-    /**
-     * This method returns the NextHopIPRoute.OtherDerivation property value. 
-     * This property is described as follows: 
-     * 
-     * A string describing how the route was derived when the RouteDerivation 
-     * property is 1 ("Other"). 
-     * 
-     * @return	String	current OtherDerivation property value
-     * @exception	Exception	
-     */
-    public String getOtherDerivation(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RouteDerivation.
+	 */
 
-    return this.otherDerivation;
-    } // getOtherDerivation
+	public enum RouteDerivation {
+		UNKNOWN,
+		OTHER,
+		CONNECTED,
+		USER_DEFINED,
+		IGRP,
+		EIGRP,
+		RIP,
+		HELLO,
+		EGP,
+		BGP,
+		ISIS,
+		OSPF
+	}
 
-    /**
-     * This method sets the NextHopIPRoute.OtherDerivation property value. 
-     * This property is described as follows: 
-     * 
-     * A string describing how the route was derived when the RouteDerivation 
-     * property is 1 ("Other"). 
-     * 
-     * @param	String	new OtherDerivation property value
-     * @exception	Exception	
-     */
-    public void setOtherDerivation(String otherDerivation) {
+	public RouteDerivation	routeDerivation;
 
-    this.otherDerivation = otherDerivation;
-    } // setOtherDerivation
+	/**
+	 * This method returns the NextHopIPRoute.RouteDerivation property value. This property is described as follows:
+	 * 
+	 * An enumerated integer indicating how the route was derived. This is useful for display and query purposes.
+	 * 
+	 * @return short current RouteDerivation property value
+	 * @exception Exception
+	 */
+	public RouteDerivation getRouteDerivation() {
 
+		return this.routeDerivation;
+	} // getRouteDerivation
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property DestinationMask. 
-     */
-    private String destinationMask;
-    /**
-     * This method returns the NextHopIPRoute.DestinationMask property value. 
-     * This property is described as follows: 
-     * 
-     * The mask for the Ipv4 destination address.
-     * 
-     * @return	String	current DestinationMask property value
-     * @exception	Exception	
-     */
-    public String getDestinationMask(){
+	/**
+	 * This method sets the NextHopIPRoute.RouteDerivation property value. This property is described as follows:
+	 * 
+	 * An enumerated integer indicating how the route was derived. This is useful for display and query purposes.
+	 * 
+	 * @param short new RouteDerivation property value
+	 * @exception Exception
+	 */
+	public void setRouteDerivation(RouteDerivation routeDerivation) {
 
-    return this.destinationMask;
-    } // getDestinationMask
+		this.routeDerivation = routeDerivation;
+	} // setRouteDerivation
 
-    /**
-     * This method sets the NextHopIPRoute.DestinationMask property value. 
-     * This property is described as follows: 
-     * 
-     * The mask for the Ipv4 destination address.
-     * 
-     * @param	String	new DestinationMask property value
-     * @exception	Exception	
-     */
-    public void setDestinationMask(String destinationMask) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OtherDerivation.
+	 */
+	private String	otherDerivation;
 
-    this.destinationMask = destinationMask;
-    } // setDestinationMask
+	/**
+	 * This method returns the NextHopIPRoute.OtherDerivation property value. This property is described as follows:
+	 * 
+	 * A string describing how the route was derived when the RouteDerivation property is 1 ("Other").
+	 * 
+	 * @return String current OtherDerivation property value
+	 * @exception Exception
+	 */
+	public String getOtherDerivation() {
 
+		return this.otherDerivation;
+	} // getOtherDerivation
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property PrefixLength. 
-     */
-    private Byte prefixLength;
-    /**
-     * This method returns the NextHopIPRoute.PrefixLength property value. 
-     * This property is described as follows: 
-     * 
-     * The prefix length for the IPv6 destination address.
-     * 
-     * @return	Byte	current PrefixLength property value
-     * @exception	Exception	
-     */
-    public Byte getPrefixLength(){
+	/**
+	 * This method sets the NextHopIPRoute.OtherDerivation property value. This property is described as follows:
+	 * 
+	 * A string describing how the route was derived when the RouteDerivation property is 1 ("Other").
+	 * 
+	 * @param String
+	 *            new OtherDerivation property value
+	 * @exception Exception
+	 */
+	public void setOtherDerivation(String otherDerivation) {
 
-    return this.prefixLength;
-    } // getPrefixLength
+		this.otherDerivation = otherDerivation;
+	} // setOtherDerivation
 
-    /**
-     * This method sets the NextHopIPRoute.PrefixLength property value. This 
-     * property is described as follows: 
-     * 
-     * The prefix length for the IPv6 destination address.
-     * 
-     * @param	Byte	new PrefixLength property value
-     * @exception	Exception	
-     */
-    public void setPrefixLength(Byte prefixLength) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DestinationMask.
+	 */
+	private String	destinationMask;
 
-    this.prefixLength = prefixLength;
-    } // setPrefixLength
+	/**
+	 * This method returns the NextHopIPRoute.DestinationMask property value. This property is described as follows:
+	 * 
+	 * The mask for the Ipv4 destination address.
+	 * 
+	 * @return String current DestinationMask property value
+	 * @exception Exception
+	 */
+	public String getDestinationMask() {
 
+		return this.destinationMask;
+	} // getDestinationMask
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property AddressType. 
-     */
+	/**
+	 * This method sets the NextHopIPRoute.DestinationMask property value. This property is described as follows:
+	 * 
+	 * The mask for the Ipv4 destination address.
+	 * 
+	 * @param String
+	 *            new DestinationMask property value
+	 * @exception Exception
+	 */
+	public void setDestinationMask(String destinationMask) {
 
-    public enum AddressType{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
- public AddressType addressType;
-    /**
-     * This method returns the NextHopIPRoute.AddressType property value. This 
-     * property is described as follows: 
-     * 
-     * An enumeration that describes the format of the address properties.
-     * 
-     * @return	short	current AddressType property value
-     * @exception	Exception	
-     */
-    public AddressType getAddressType(){
+		this.destinationMask = destinationMask;
+	} // setDestinationMask
 
-    return this.addressType;
-    } // getAddressType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property PrefixLength.
+	 */
+	private Byte	prefixLength;
 
-    /**
-     * This method sets the NextHopIPRoute.AddressType property value. This 
-     * property is described as follows: 
-     * 
-     * An enumeration that describes the format of the address properties.
-     * 
-     * @param	short	new AddressType property value
-     * @exception	Exception	
-     */
-    public void setAddressType(AddressType addressType){
+	/**
+	 * This method returns the NextHopIPRoute.PrefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for the IPv6 destination address.
+	 * 
+	 * @return Byte current PrefixLength property value
+	 * @exception Exception
+	 */
+	public Byte getPrefixLength() {
 
-    this.addressType = addressType;
-    } // setAddressType
+		return this.prefixLength;
+	} // getPrefixLength
 
+	/**
+	 * This method sets the NextHopIPRoute.PrefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for the IPv6 destination address.
+	 * 
+	 * @param Byte
+	 *            new PrefixLength property value
+	 * @exception Exception
+	 */
+	public void setPrefixLength(Byte prefixLength) {
 
+		this.prefixLength = prefixLength;
+	} // setPrefixLength
+
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
+	 */
+
+	public enum AddressType {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
+
+	public AddressType	addressType;
+
+	/**
+	 * This method returns the NextHopIPRoute.AddressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties.
+	 * 
+	 * @return short current AddressType property value
+	 * @exception Exception
+	 */
+	public AddressType getAddressType() {
+
+		return this.addressType;
+	} // getAddressType
+
+	/**
+	 * This method sets the NextHopIPRoute.AddressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties.
+	 * 
+	 * @param short new AddressType property value
+	 * @exception Exception
+	 */
+	public void setAddressType(AddressType addressType) {
+
+		this.addressType = addressType;
+	} // setAddressType
 
 } // Class NextHopIPRoute

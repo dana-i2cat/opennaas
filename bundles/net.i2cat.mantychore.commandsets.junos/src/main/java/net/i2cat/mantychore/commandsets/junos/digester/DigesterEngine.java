@@ -25,7 +25,6 @@ public abstract class DigesterEngine extends Digester {
 		// stack.
 		addRule(pathRule, new CallMethodRule(-1, nameMethod, numParam + 1));
 		addCallParam(pathRule, 0);
-
 	}
 
 	public void configurableParse(InputStream input) throws IOException, SAXException {

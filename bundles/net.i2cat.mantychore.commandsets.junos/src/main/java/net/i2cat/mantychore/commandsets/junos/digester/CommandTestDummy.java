@@ -40,6 +40,16 @@ public class CommandTestDummy {
 	@Test
 	public void firstTestModel() {
 		try {
+
+			// PhysicalInterfaceParser engineParser = new
+			// PhysicalInterfaceParser();
+			RoutingOptionsParser engineParser = new
+					RoutingOptionsParser();
+			// LogicalInterfaceParser engineParser = new
+			// LogicalInterfaceParser();
+
+			engineParser.init();
+
 			// PhysicalInterfaceParser engineParser = new
 			// PhysicalInterfaceParser();
 			// engineParser.init();
@@ -48,11 +58,16 @@ public class CommandTestDummy {
 			// engineParser.parse(interfaceConfig);
 			// System.out.println(engineParser.toPrint());
 
-			LogicalInterfaceParser logicalEngineParser = new
-					LogicalInterfaceParser();
-			logicalEngineParser.init();
-			logicalEngineParser.configurableParse(getConfig);
+			/* get physical interfaces information */
 			System.out.println(logicalEngineParser.toPrint());
+
+			engineParser.configurableParse(rulesIPConfiguration);
+			System.out.println(engineParser.toPrint());
+
+			// LogicalInterfaceParser logicalEngineParser = new
+			// LogicalInterfaceParser();
+			// logicalEngineParser.init();
+			// logicalEngineParser.configurableParse(getConfig);
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -63,5 +78,4 @@ public class CommandTestDummy {
 		}
 
 	}
-
 }
