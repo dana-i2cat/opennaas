@@ -59,7 +59,7 @@ public class CommandTestDummy {
 			// System.out.println(engineParser.toPrint());
 
 			/* get physical interfaces information */
-			System.out.println(logicalEngineParser.toPrint());
+			// System.out.println(logicalEngineParser.toPrint());
 
 			engineParser.configurableParse(rulesIPConfiguration);
 			System.out.println(engineParser.toPrint());
