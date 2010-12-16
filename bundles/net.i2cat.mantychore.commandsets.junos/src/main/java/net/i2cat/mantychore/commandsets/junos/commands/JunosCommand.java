@@ -1,7 +1,7 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
-import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
+import net.i2cat.netconf.rpc.Query;
 
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -10,25 +10,24 @@ import org.slf4j.LoggerFactory;
 
 import com.iaasframework.capabilities.commandset.AbstractCommandWithProtocol;
 import com.iaasframework.capabilities.commandset.CommandException;
+import com.iaasframework.capabilities.model.IResourceModel;
 import com.iaasframework.capabilities.protocol.api.ProtocolErrorMessage;
 import com.iaasframework.capabilities.protocol.api.ProtocolResponseMessage;
 import com.iaasframework.resources.core.message.ICapabilityMessage;
 
 public abstract class JunosCommand extends AbstractCommandWithProtocol {
-	protected String			template	= "";
+	protected String	template	= "";
 
-	private Object				params		= "";
-
-	protected DigesterEngine[]	digEngines;
+	private Object		params		= "";
 
 	/** logger **/
-	Logger						log			= LoggerFactory
+	Logger				log			= LoggerFactory
 														.getLogger(JunosCommand.class);
+	protected Query		command;
 
-	protected JunosCommand(String commandID, String template, DigesterEngine[] digEngines) {
+	protected JunosCommand(String commandID, String template) {
 		super(commandID);
 		this.template = template;
-		this.digEngines = digEngines;
 
 	}
 
@@ -38,12 +37,9 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	public void executeCommand() throws CommandException {
 
 		try {
-
-			String command = prepareCommand();
+			initializeCommand(null);
 			sendCommandToProtocol(command);
 
-		} catch (CommandException ex) {
-			log.error(ex.getMessage());
 		} catch (ResourceNotFoundException e) {
 			log.error(e.getMessage());
 		} catch (ParseErrorException e) {
@@ -54,7 +50,30 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	}
 
-	private String prepareCommand() throws ResourceNotFoundException,
+	public void sendCommandToProtocol(Object command) {
+		// TODO IN THE FUTURE IAAS, IT WILL USE OBJECTS AND NOT STRING AS A
+		// COMMAND
+	}
+
+	@Override
+	public void initializeCommand(IResourceModel arg0) throws
+			CommandException {
+		// the query does not need get config
+		try {
+
+			String netconfXML = prepareCommand();
+
+		} catch (ResourceNotFoundException e) {
+			log.error(e.getMessage());
+		} catch (ParseErrorException e) {
+			log.error(e.getMessage());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+	}
+
+	protected String prepareCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 
 		VelocityEngine velocityEngine = new VelocityEngine(template, params);

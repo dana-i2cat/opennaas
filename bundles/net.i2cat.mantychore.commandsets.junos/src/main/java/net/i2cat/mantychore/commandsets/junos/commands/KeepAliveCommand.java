@@ -1,9 +1,5 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
-import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
-import net.i2cat.mantychore.commandsets.junos.digester.LogicalInterfaceParser;
-import net.i2cat.mantychore.commandsets.junos.digester.PhysicalInterfaceParser;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,18 +8,16 @@ import com.iaasframework.capabilities.model.IResourceModel;
 
 public class KeepAliveCommand extends JunosCommand {
 
-	public static final String				KEEPALIVE	= "keepAlive";
+	public static final String	KEEPALIVE	= "keepAlive";
 
-	public static final String				TEMPLATE	= "/keepalive.vm";
-
-	public static final DigesterEngine[]	DIGENGINES	= { new PhysicalInterfaceParser(), new LogicalInterfaceParser() };
+	public static final String	TEMPLATE	= "/keepalive.vm";
 
 	/** The logger **/
-	Logger									log			= LoggerFactory
+	Logger						log			= LoggerFactory
 																.getLogger(KeepAliveCommand.class);
 
 	public KeepAliveCommand() {
-		super(KEEPALIVE, TEMPLATE, DIGENGINES);
+		super(KEEPALIVE, TEMPLATE);
 	}
 
 	@Override
