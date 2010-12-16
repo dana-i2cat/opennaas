@@ -10,10 +10,11 @@ import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
 
 public abstract class DigesterEngine extends Digester {
-	protected HashMap<String, Object>	mapElements	= new HashMap<String, Object>();	;
+	protected HashMap<String, Object>	mapElements;
 
 	public abstract void addRules();
 
+	// FIXME IS IT MUST BE ADDED THE PUSH IN THIS POINT
 	public void init() {
 		push(this);
 		mapElements = new HashMap<String, Object>();

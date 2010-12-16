@@ -8,6 +8,8 @@ import net.i2cat.mantychore.model.ProtocolEndpoint;
 public class LogicalInterfaceParser extends DigesterEngine {
 	String	location	= "";
 
+	/** vlan info **/
+
 	@Override
 	public void addRules() {
 		// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
@@ -16,7 +18,6 @@ public class LogicalInterfaceParser extends DigesterEngine {
 		/* IP Configuration */
 		addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
 		addSetNext("*/interfaces/interface/unit", "addInterface");
-
 		addMyRule("*/interfaces/interface/unit/name", "setName", 0);
 		addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
 		addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
@@ -25,9 +26,13 @@ public class LogicalInterfaceParser extends DigesterEngine {
 		addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
 
 		/* VLAN configuration */
-		addObjectCreate("*/interfaces/interface/unit/family/vlan-id", LANEndpoint.class);
-		addBeanPropertySetter("*/interfaces/interface/unit/family/vlan-id", "LANID");
-		addSetNext("*/interfaces/interface/unit/family/vlan-id", "addLANEndpoint");
+		// addObjectCreate("*/interfaces/interface/unit/vlan-id",
+		// LANEndpoint.class);
+		// addBeanPropertySetter("*/interfaces/interface/unit/vlan-id",
+		// "LANID");
+		// addSetNext("*/interfaces/interface/unit/vlan-id", "addLANEndpoint");
+		// TODO GET DESCRIPTION?
+		// FIXME IT DON'T GET LANID
 
 	}
 
@@ -39,6 +44,14 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			mapElements.remove(location);
 		}
 		mapElements.put(location, ethernetPort);
+
+	}
+
+	public void setLANID(String lANID) {
+		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
+		LANEndpoint lanEndpoint = new LANEndpoint();
+		lanEndpoint.setLANID(lANID);
+		ipProtocolEndpoint.addLANEndpoint(lanEndpoint);
 
 	}
 

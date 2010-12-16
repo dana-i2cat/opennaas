@@ -14,8 +14,8 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 		addCallMethod("*/interface-information/physical-interface/name", "setOtherPortType", 0);
 		addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
 
-		addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 1);
-		addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 1);
+		addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 0);
+		addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 0);
 		addBeanPropertySetter("*/interface-information/physical-interface/description", "description");
 
 		/* Add physical interface to the parent */
