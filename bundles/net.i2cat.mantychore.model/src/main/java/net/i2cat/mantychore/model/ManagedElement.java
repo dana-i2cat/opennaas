@@ -6,67 +6,68 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
+
+import net.i2cat.mantychore.model.utils.Associable;
 
 import com.iaasframework.capabilities.model.IResourceModel;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ManagedElement as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ManagedElementBean Interface. The CIM class ManagedElement is described as
- * follows:
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedElement as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ManagedElementBean Interface. The CIM class ManagedElement is described as follows:
  * 
- * ManagedElement is an abstract class that provides a common superclass (or top
- * of the inheritance tree) for the non-association classes in the CIM Schema.
+ * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the CIM
+ * Schema.
  */
 public class ManagedElement implements Serializable, IResourceModel {
 
+	protected Associable<System, ManagedElement>	toSystem	= new Associable<System, ManagedElement>();
+
+	/* they are added manually */
+
+	public List<System> getSystems() {
+		return toSystem.getLinks();
+	}
+
+	public void addSystem(System system) {
+		toSystem.addLink(system, this, system.toManagedElement);
+	}
+
+	// FIXME is it work? they have to share references...
+	public void removeSystem(System system) {
+		toSystem.removeLink(system, this, system.toManagedElement);
+	}
+
 	/**
-	 * This constructor creates a ManagedElementBeanImpl Class which implements
-	 * the ManagedElementBean Interface, and encapsulates the CIM class
-	 * ManagedElement in a Java Bean. The CIM class ManagedElement is described
-	 * as follows:
+	 * This constructor creates a ManagedElementBeanImpl Class which implements the ManagedElementBean Interface, and encapsulates the CIM class
+	 * ManagedElement in a Java Bean. The CIM class ManagedElement is described as follows:
 	 * 
-	 * ManagedElement is an abstract class that provides a common superclass (or
-	 * top of the inheritance tree) for the non-association classes in the CIM
-	 * Schema.
+	 * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the
+	 * CIM Schema.
 	 */
 	protected ManagedElement() {
 	};
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property InstanceID.
+	 * The following constants are defined for use with the ValueMap/Values qualified property InstanceID.
 	 */
 	private String	instanceID;
 
 	/**
-	 * This method returns the ManagedElement.InstanceID property value. This
-	 * property is described as follows:
+	 * This method returns the ManagedElement.InstanceID property value. This property is described as follows:
 	 * 
-	 * InstanceID is an optional property that may be used to opaquely and
-	 * uniquely identify an instance of this class within the scope of the
-	 * instantiating Namespace. Various subclasses of this class may override
-	 * this property to make it required, or a key. Such subclasses may also
-	 * modify the preferred algorithms for ensuring uniqueness that are defined
-	 * below. To ensure uniqueness within the NameSpace, the value of InstanceID
-	 * should be constructed using the following "preferred" algorithm:
-	 * <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a colon
-	 * (:), and where <OrgID> must include a copyrighted, trademarked, or
-	 * otherwise unique name that is owned by the business entity that is
-	 * creating or defining the InstanceID or that is a registered ID assigned
-	 * to the business entity by a recognized global authority. (This
-	 * requirement is similar to the <Schema Name>_<Class Name> structure of
-	 * Schema class names.) In addition, to ensure uniqueness, <OrgID> must not
-	 * contain a colon (:). When using this algorithm, the first colon to appear
-	 * in InstanceID must appear between <OrgID> and <LocalID>. <LocalID> is
-	 * chosen by the business entity and should not be reused to identify
-	 * different underlying (real-world) elements. If not null and the above
-	 * "preferred" algorithm is not used, the defining entity must assure that
-	 * the resulting InstanceID is not reused across any InstanceIDs produced by
-	 * this or other providers for the NameSpace of this instance. If not set to
-	 * null for DMTF-defined instances, the "preferred" algorithm must be used
-	 * with the <OrgID> set to CIM.
+	 * InstanceID is an optional property that may be used to opaquely and uniquely identify an instance of this class within the scope of the
+	 * instantiating Namespace. Various subclasses of this class may override this property to make it required, or a key. Such subclasses may also
+	 * modify the preferred algorithms for ensuring uniqueness that are defined below. To ensure uniqueness within the NameSpace, the value of
+	 * InstanceID should be constructed using the following "preferred" algorithm: <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a
+	 * colon (:), and where <OrgID> must include a copyrighted, trademarked, or otherwise unique name that is owned by the business entity that is
+	 * creating or defining the InstanceID or that is a registered ID assigned to the business entity by a recognized global authority. (This
+	 * requirement is similar to the <Schema Name>_<Class Name> structure of Schema class names.) In addition, to ensure uniqueness, <OrgID> must not
+	 * contain a colon (:). When using this algorithm, the first colon to appear in InstanceID must appear between <OrgID> and <LocalID>. <LocalID> is
+	 * chosen by the business entity and should not be reused to identify different underlying (real-world) elements. If not null and the above
+	 * "preferred" algorithm is not used, the defining entity must assure that the resulting InstanceID is not reused across any InstanceIDs produced
+	 * by this or other providers for the NameSpace of this instance. If not set to null for DMTF-defined instances, the "preferred" algorithm must be
+	 * used with the <OrgID> set to CIM.
 	 * 
 	 * @return String current InstanceID property value
 	 * @exception Exception
@@ -77,32 +78,20 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // getInstanceID
 
 	/**
-	 * This method sets the ManagedElement.InstanceID property value. This
-	 * property is described as follows:
+	 * This method sets the ManagedElement.InstanceID property value. This property is described as follows:
 	 * 
-	 * InstanceID is an optional property that may be used to opaquely and
-	 * uniquely identify an instance of this class within the scope of the
-	 * instantiating Namespace. Various subclasses of this class may override
-	 * this property to make it required, or a key. Such subclasses may also
-	 * modify the preferred algorithms for ensuring uniqueness that are defined
-	 * below. To ensure uniqueness within the NameSpace, the value of InstanceID
-	 * should be constructed using the following "preferred" algorithm:
-	 * <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a colon
-	 * (:), and where <OrgID> must include a copyrighted, trademarked, or
-	 * otherwise unique name that is owned by the business entity that is
-	 * creating or defining the InstanceID or that is a registered ID assigned
-	 * to the business entity by a recognized global authority. (This
-	 * requirement is similar to the <Schema Name>_<Class Name> structure of
-	 * Schema class names.) In addition, to ensure uniqueness, <OrgID> must not
-	 * contain a colon (:). When using this algorithm, the first colon to appear
-	 * in InstanceID must appear between <OrgID> and <LocalID>. <LocalID> is
-	 * chosen by the business entity and should not be reused to identify
-	 * different underlying (real-world) elements. If not null and the above
-	 * "preferred" algorithm is not used, the defining entity must assure that
-	 * the resulting InstanceID is not reused across any InstanceIDs produced by
-	 * this or other providers for the NameSpace of this instance. If not set to
-	 * null for DMTF-defined instances, the "preferred" algorithm must be used
-	 * with the <OrgID> set to CIM.
+	 * InstanceID is an optional property that may be used to opaquely and uniquely identify an instance of this class within the scope of the
+	 * instantiating Namespace. Various subclasses of this class may override this property to make it required, or a key. Such subclasses may also
+	 * modify the preferred algorithms for ensuring uniqueness that are defined below. To ensure uniqueness within the NameSpace, the value of
+	 * InstanceID should be constructed using the following "preferred" algorithm: <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a
+	 * colon (:), and where <OrgID> must include a copyrighted, trademarked, or otherwise unique name that is owned by the business entity that is
+	 * creating or defining the InstanceID or that is a registered ID assigned to the business entity by a recognized global authority. (This
+	 * requirement is similar to the <Schema Name>_<Class Name> structure of Schema class names.) In addition, to ensure uniqueness, <OrgID> must not
+	 * contain a colon (:). When using this algorithm, the first colon to appear in InstanceID must appear between <OrgID> and <LocalID>. <LocalID> is
+	 * chosen by the business entity and should not be reused to identify different underlying (real-world) elements. If not null and the above
+	 * "preferred" algorithm is not used, the defining entity must assure that the resulting InstanceID is not reused across any InstanceIDs produced
+	 * by this or other providers for the NameSpace of this instance. If not set to null for DMTF-defined instances, the "preferred" algorithm must be
+	 * used with the <OrgID> set to CIM.
 	 * 
 	 * @param String
 	 *            new InstanceID property value
@@ -114,17 +103,14 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // setInstanceID
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property Caption.
+	 * The following constants are defined for use with the ValueMap/Values qualified property Caption.
 	 */
 	private String	caption;
 
 	/**
-	 * This method returns the ManagedElement.Caption property value. This
-	 * property is described as follows:
+	 * This method returns the ManagedElement.Caption property value. This property is described as follows:
 	 * 
-	 * The Caption property is a short textual description (one- line string) of
-	 * the object.
+	 * The Caption property is a short textual description (one- line string) of the object.
 	 * 
 	 * @return String current Caption property value
 	 * @exception Exception
@@ -135,11 +121,9 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // getCaption
 
 	/**
-	 * This method sets the ManagedElement.Caption property value. This property
-	 * is described as follows:
+	 * This method sets the ManagedElement.Caption property value. This property is described as follows:
 	 * 
-	 * The Caption property is a short textual description (one- line string) of
-	 * the object.
+	 * The Caption property is a short textual description (one- line string) of the object.
 	 * 
 	 * @param String
 	 *            new Caption property value
@@ -151,14 +135,12 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // setCaption
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property Description.
+	 * The following constants are defined for use with the ValueMap/Values qualified property Description.
 	 */
 	private String	description;
 
 	/**
-	 * This method returns the ManagedElement.Description property value. This
-	 * property is described as follows:
+	 * This method returns the ManagedElement.Description property value. This property is described as follows:
 	 * 
 	 * The Description property provides a textual description of the object.
 	 * 
@@ -171,8 +153,7 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // getDescription
 
 	/**
-	 * This method sets the ManagedElement.Description property value. This
-	 * property is described as follows:
+	 * This method sets the ManagedElement.Description property value. This property is described as follows:
 	 * 
 	 * The Description property provides a textual description of the object.
 	 * 
@@ -186,27 +167,19 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // setDescription
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property ElementName.
+	 * The following constants are defined for use with the ValueMap/Values qualified property ElementName.
 	 */
 	private String	elementName;
 
 	/**
-	 * This method returns the ManagedElement.ElementName property value. This
-	 * property is described as follows:
+	 * This method returns the ManagedElement.ElementName property value. This property is described as follows:
 	 * 
-	 * A user-friendly name for the object. This property allows each instance
-	 * to define a user-friendly name in addition to its key properties,
-	 * identity data, and description information. Note that the Name property
-	 * of ManagedSystemElement is also defined as a user-friendly name. But, it
-	 * is often subclassed to be a Key. It is not reasonable that the same
-	 * property can convey both identity and a user-friendly name, without
-	 * inconsistencies. Where Name exists and is not a Key (such as for
-	 * instances of LogicalDevice), the same information can be present in both
-	 * the Name and ElementName properties. Note that if there is an associated
-	 * instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
-	 * properties may exist as defined in ElementNameMask and MaxElementNameLen
-	 * properties defined in that class.
+	 * A user-friendly name for the object. This property allows each instance to define a user-friendly name in addition to its key properties,
+	 * identity data, and description information. Note that the Name property of ManagedSystemElement is also defined as a user-friendly name. But,
+	 * it is often subclassed to be a Key. It is not reasonable that the same property can convey both identity and a user-friendly name, without
+	 * inconsistencies. Where Name exists and is not a Key (such as for instances of LogicalDevice), the same information can be present in both the
+	 * Name and ElementName properties. Note that if there is an associated instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
+	 * properties may exist as defined in ElementNameMask and MaxElementNameLen properties defined in that class.
 	 * 
 	 * @return String current ElementName property value
 	 * @exception Exception
@@ -217,21 +190,14 @@ public class ManagedElement implements Serializable, IResourceModel {
 	} // getElementName
 
 	/**
-	 * This method sets the ManagedElement.ElementName property value. This
-	 * property is described as follows:
+	 * This method sets the ManagedElement.ElementName property value. This property is described as follows:
 	 * 
-	 * A user-friendly name for the object. This property allows each instance
-	 * to define a user-friendly name in addition to its key properties,
-	 * identity data, and description information. Note that the Name property
-	 * of ManagedSystemElement is also defined as a user-friendly name. But, it
-	 * is often subclassed to be a Key. It is not reasonable that the same
-	 * property can convey both identity and a user-friendly name, without
-	 * inconsistencies. Where Name exists and is not a Key (such as for
-	 * instances of LogicalDevice), the same information can be present in both
-	 * the Name and ElementName properties. Note that if there is an associated
-	 * instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
-	 * properties may exist as defined in ElementNameMask and MaxElementNameLen
-	 * properties defined in that class.
+	 * A user-friendly name for the object. This property allows each instance to define a user-friendly name in addition to its key properties,
+	 * identity data, and description information. Note that the Name property of ManagedSystemElement is also defined as a user-friendly name. But,
+	 * it is often subclassed to be a Key. It is not reasonable that the same property can convey both identity and a user-friendly name, without
+	 * inconsistencies. Where Name exists and is not a Key (such as for instances of LogicalDevice), the same information can be present in both the
+	 * Name and ElementName properties. Note that if there is an associated instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
+	 * properties may exist as defined in ElementNameMask and MaxElementNameLen properties defined in that class.
 	 * 
 	 * @param String
 	 *            new ElementName property value

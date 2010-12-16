@@ -9,24 +9,18 @@ public class RoutingOptionsParser extends DigesterEngine {
 	public void addRules() {
 
 		// FIXME the path pattern can't be global , must distinguish between routers
-		addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
-		addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 1);
-		addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 1);
+		addObjectCreate("data/configuration/routing-options/static/route", NextHopIPRoute.class);
+		addMyRule("data/configuration/routing-options/static/route/name", "setDestinationAddress", 1);
+		addMyRule("data/configuration/routing-options/static/route/next-hop", "setNextHop", 1);
 		/* Add NesxtHopIpRoute to the parent */
-		addSetNext("*/routing-options/static/route", "addInterface");
+		addSetNext("data/configuration/routing-options/static/route", "addInterface");
 
 	}
 
 	public void addInterface(NextHopIPRoute ipRoute) {
 		String location = ipRoute.getDestinationAddress();
-		// TODO implements the case where is needed merge the clases if it is.
-		// if (mapElements.containsKey(location)) {
-		// NextHopIPRoute oldIpROute = (NextHopIPRoute) mapElements.get(location);
-		// // ipRoute.merge(hashEthernetPort);
-		// oldIpROute= ipRoute;
-		// mapElements.put(key, value)
-		// mapElements.remove(location);
-		// }
+		// TODO implements the case where is needed merge the classes, if it is.
+		// also, add merge method into the class
 		mapElements.put(location, ipRoute);
 
 	}
@@ -37,13 +31,18 @@ public class RoutingOptionsParser extends DigesterEngine {
 
 		NextHopIPRoute ipRoute = (NextHopIPRoute) peek();
 		try {
+
+			// Parsing ip/mask
 			String shortMask = ipv4.split("/")[1];
 			String ip = ipv4.split("/")[0];
 			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
+
+			// adding to the model
 			ipRoute.setDestinationAddress(ip);
 			ipRoute.setPrefixLength(Byte.parseByte(shortMask));
 			ipRoute.setDestinationMask(maskIpv4);
 			ipRoute.setIsStatic(true);
+
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -52,10 +51,12 @@ public class RoutingOptionsParser extends DigesterEngine {
 	public void setNextHop(String nextHop) {
 
 		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address(nextHop);
+		// creating IpEndPoint that will be the next hop
+		IPProtocolEndpoint ipNextHop = new IPProtocolEndpoint();
+		ipNextHop.setIPv4Address(nextHop);
 		try {
-			nextHopIPRoute.setRouteUsesEndPoint(ip);
+			// adding next hop to the destination address (NextHopIPRoute class)
+			nextHopIPRoute.setRouteUsesEndPoint(ipNextHop);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
