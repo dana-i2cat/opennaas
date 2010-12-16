@@ -14,7 +14,6 @@ public abstract class DigesterEngine extends Digester {
 
 	public abstract void addRules();
 
-	// FIXME IS IT MUST BE ADDED THE PUSH IN THIS POINT
 	public void init() {
 		push(this);
 		mapElements = new HashMap<String, Object>();
@@ -24,7 +23,7 @@ public abstract class DigesterEngine extends Digester {
 		// -1 specifies the position in the stack, in our case, in the bottom.
 		// nameMethod. What it is the name of the method to use of the bottom
 		// stack.
-		addRule(pathRule, new CallMethodRule(-1, nameMethod, numParam));
+		addRule(pathRule, new CallMethodRule(-1, nameMethod, numParam + 1));
 		addCallParam(pathRule, 0);
 	}
 
