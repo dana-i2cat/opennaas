@@ -3,13 +3,13 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NextHopIPRoute;
 
-public class RoutingOptionsParser extends DigesterEngine {
+public class ProtocolsParser extends DigesterEngine {
 
 	@Override
 	public void addRules() {
 
 		// FIXME the path pattern can't be global , must distinguish between routers
-		addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
+		addObjectCreate("*/protocols/ospf", NextHopIPRoute.class);
 		addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 1);
 		addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 1);
 		/* Add NesxtHopIpRoute to the parent */

@@ -79,7 +79,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 * its parts. Note that System is a subclass of EnabledLogicalElement which allows the entire abstraction to be functionally enabled or disabled
 	 * at a higher level than enabling or disabling its component parts.
 	 */
-	protected System() {
+	public System() {
 	};
 
 	/**
