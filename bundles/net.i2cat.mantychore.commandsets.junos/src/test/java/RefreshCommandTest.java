@@ -8,6 +8,7 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.ManagedSystemElement;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.rpc.Query;
@@ -23,9 +24,9 @@ import com.iaasframework.capabilities.commandset.CommandException;
 import com.iaasframework.resources.core.message.CapabilityMessage;
 import com.iaasframework.resources.core.message.ICapabilityMessage;
 
-public class CommandsTest {
+public class RefreshCommandTest {
 	Logger	log	= LoggerFactory
-						.getLogger(CommandsTest.class);
+						.getLogger(RefreshCommandTest.class);
 
 	public class RefreshMockCommand extends RefreshCommand {
 		SessionContext	sessionContext;
@@ -51,7 +52,7 @@ public class CommandsTest {
 		 */
 		public void sendCommandToProtocol(Object command) {
 			try {
-				sessionContext.setURI(new URI("mock://foo:bar@foo:22/okServer"));
+				sessionContext.setURI(new URI("mock://foo:bar@foo:22/foo"));
 
 				session = new NetconfSession(sessionContext);
 				session.connect();
@@ -69,7 +70,7 @@ public class CommandsTest {
 
 	}
 
-	public CommandsTest() {
+	public RefreshCommandTest() {
 
 	}
 
@@ -96,6 +97,11 @@ public class CommandsTest {
 						log.info("ipv6: " + ipProtocolEndpoint.getIPv6Address());
 
 					}
+
+				}
+				List<VLANEndpoint> listVLANs = ethernet.getVLANEndpoints();
+				for (VLANEndpoint vlanEndpoint : listVLANs) {
+					log.info("vlanID: " + vlanEndpoint.getVlanID());
 
 				}
 

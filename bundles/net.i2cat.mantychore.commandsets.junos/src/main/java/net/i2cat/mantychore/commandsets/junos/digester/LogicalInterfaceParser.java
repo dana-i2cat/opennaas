@@ -43,6 +43,7 @@ public class LogicalInterfaceParser extends DigesterEngine {
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getOtherPortType();
 
+		/* add new vlan endpoint */
 		if (vlanEndpoint != null) {
 			ethernetPort.addVLANEndpoint(vlanEndpoint);
 			vlanEndpoint = null;
@@ -79,7 +80,6 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			String ip = ipv4.split("/")[0];
 			String maskIpv4 = IPUtilsHelper.parseShortToLongIpv4NetMask(shortMask);
 			ipProtocolEndpoint.setIPv4Address(ip);
-			ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
 			ipProtocolEndpoint.setSubnetMask(maskIpv4);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -94,7 +94,8 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			String shortMask = ipv6.split("/")[1];
 			ipProtocolEndpoint.setIPv6Address(ip);
 			// FIXME IT IS NOT POSSIBLE TO SPECIFY MASK?????
-			// ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
+
+			ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
 
 		} catch (Exception e) {
 			log.error(e.getMessage());

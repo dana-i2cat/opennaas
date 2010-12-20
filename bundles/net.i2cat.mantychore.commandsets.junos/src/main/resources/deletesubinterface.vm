@@ -1,0 +1,10 @@
+<configuration>
+<interfaces>
+<interface>
+<name></name>
+<unit operation="delete">
+<name></name>
+</unit>
+</interface>
+</interfaces>
+</configuration>

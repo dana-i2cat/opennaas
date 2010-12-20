@@ -1,0 +1,25 @@
+package net.i2cat.mantychore.commandsets.junos.commands;
+
+import com.iaasframework.capabilities.commandset.CommandException;
+import com.iaasframework.capabilities.model.IResourceModel;
+
+public class CreateSubInterfaceCommand extends JunosCommand {
+
+	protected CreateSubInterfaceCommand(String commandID, String template) {
+		super(commandID, template);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void createCommand() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void parseResponse(IResourceModel arg0) throws CommandException {
+		// TODO Auto-generated method stub
+
+	}
+
+}

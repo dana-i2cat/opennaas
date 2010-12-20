@@ -33,8 +33,7 @@ public class KeepAliveCommand extends JunosCommand {
 
 	@Override
 	public void createCommand() {
-		// TODO Auto-generated method stub
-
+		// It is not necessary to create any command
 	}
 
 }

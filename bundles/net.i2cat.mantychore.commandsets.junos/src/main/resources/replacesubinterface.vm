@@ -1,0 +1,10 @@
+<configuration>
+<interfaces>
+<interface>
+<name></name>
+<unit operation="replace">
+<name></name>
+</unit>
+</interface>
+</interfaces>
+</configuration>

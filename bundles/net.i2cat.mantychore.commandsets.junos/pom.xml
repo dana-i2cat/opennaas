@@ -45,8 +45,8 @@
 
    <!-- mantychore dependencies -->
    <dependency>
-		<groupId>net.i2cat.mantychore.models</groupId>
-		<artifactId>net.i2cat.mantychore.models.router</artifactId>
+		<groupId>net.i2cat.mantychore.model</groupId>
+		<artifactId>net.i2cat.mantychore.model</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
    </dependency>
    
@@ -63,6 +63,12 @@
 	    <version>2.1</version>
 	</dependency>
    
+   <!--  auxiliar methods  -->
+   <dependency>
+		<groupId>net.i2cat.netconf</groupId>
+		<artifactId>netconf4j</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+   </dependency>
 
   </dependencies>
 
