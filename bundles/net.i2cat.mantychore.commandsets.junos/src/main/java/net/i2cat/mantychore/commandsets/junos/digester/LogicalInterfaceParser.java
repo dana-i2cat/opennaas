@@ -2,11 +2,13 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
-import net.i2cat.mantychore.model.LANEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.VLANEndpoint;
 
 public class LogicalInterfaceParser extends DigesterEngine {
-	String	location	= "";
+	String			location		= "";
+
+	VLANEndpoint	vlanEndpoint	= null;
 
 	/** vlan info **/
 
@@ -25,8 +27,10 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 		addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
 
+		addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
+
 		/* VLAN configuration */
-		// addObjectCreate("*/interfaces/interface/unit/vlan-id",
+		// addObjectCreate(,
 		// LANEndpoint.class);
 		// addBeanPropertySetter("*/interfaces/interface/unit/vlan-id",
 		// "LANID");
@@ -38,21 +42,18 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getOtherPortType();
+
+		if (vlanEndpoint != null) {
+			ethernetPort.addVLANEndpoint(vlanEndpoint);
+			vlanEndpoint = null;
+		}
+
 		if (mapElements.containsKey(location)) {
 			EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
 			ethernetPort.merge(hashEthernetPort);
 			mapElements.remove(location);
 		}
 		mapElements.put(location, ethernetPort);
-
-	}
-
-	public void setLANID(String lANID) {
-		IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) peek();
-		LANEndpoint lanEndpoint = new LANEndpoint();
-		lanEndpoint.setLANID(lANID);
-		ipProtocolEndpoint.addLANEndpoint(lanEndpoint);
-
 	}
 
 	/* Configure name */
@@ -100,6 +101,13 @@ public class LogicalInterfaceParser extends DigesterEngine {
 		}
 	}
 
+	/* get vlanID */
+	public void addVLAN(String vlanID) {
+		vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(Integer.parseInt(vlanID));
+
+	}
+
 	public String toPrint() {
 
 		String str = "" + '\n';
@@ -115,10 +123,6 @@ public class LogicalInterfaceParser extends DigesterEngine {
 				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
 				str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
 				str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
-				for (LANEndpoint lanEndpoint : ipProtocol.getLANEndpoints()) {
-					str += "lan id: " + lanEndpoint.getLANID() + '\n';
-				}
-
 			}
 		}
 

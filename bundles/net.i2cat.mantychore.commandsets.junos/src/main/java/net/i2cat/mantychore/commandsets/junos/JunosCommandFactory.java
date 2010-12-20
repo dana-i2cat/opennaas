@@ -14,7 +14,7 @@ public class JunosCommandFactory implements ICommandFactory {
 		if (commandId.equals(RefreshCommand.REFRESH)) {
 			return new RefreshCommand();
 		}
-		// FIXME IS IT NECESSARY THROW AN EXCEPTION IF IT CAN GET A COMMAND??
+		// If it doesn't find a command, it returns null
 		return command;
 
 	}

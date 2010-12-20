@@ -16,6 +16,7 @@ import com.iaasframework.capabilities.protocol.api.ProtocolResponseMessage;
 import com.iaasframework.resources.core.message.ICapabilityMessage;
 
 public abstract class JunosCommand extends AbstractCommandWithProtocol {
+
 	protected String	template	= "";
 
 	private Object		params		= "";
@@ -24,6 +25,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	Logger				log			= LoggerFactory
 														.getLogger(JunosCommand.class);
 	protected Query		command;
+	protected String	netconfXML;
 
 	protected JunosCommand(String commandID, String template) {
 		super(commandID);
@@ -31,13 +33,19 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	}
 
-	// initCommand will be used to pass arguments
+	@Override
+	public void initializeCommand(IResourceModel arg0) throws CommandException {
+		// FIXME DO WE WANT TO INITIALIZE OUR COMMAND WITH PARAMETERS FROM
+		// IRESOURCEMODEL??
+	}
 
 	@Override
 	public void executeCommand() throws CommandException {
 
 		try {
-			initializeCommand(null);
+			netconfXML = prepareVelocityCommand();
+			createCommand();
+			// THIS METHOD WILL RECEIVE AN OBJECT
 			sendCommandToProtocol(command);
 
 		} catch (ResourceNotFoundException e) {
@@ -51,29 +59,13 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	}
 
 	public void sendCommandToProtocol(Object command) {
-		// TODO IN THE FUTURE IAAS, IT WILL USE OBJECTS AND NOT STRING AS A
-		// COMMAND
-	}
-
-	@Override
-	public void initializeCommand(IResourceModel arg0) throws
-			CommandException {
-		// the query does not need get config
-		try {
-
-			String netconfXML = prepareCommand();
-
-		} catch (ResourceNotFoundException e) {
-			log.error(e.getMessage());
-		} catch (ParseErrorException e) {
-			log.error(e.getMessage());
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		// TODO Auto-generated method stub
 
 	}
 
-	protected String prepareCommand() throws ResourceNotFoundException,
+	public abstract void createCommand();
+
+	protected String prepareVelocityCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 
 		VelocityEngine velocityEngine = new VelocityEngine(template, params);

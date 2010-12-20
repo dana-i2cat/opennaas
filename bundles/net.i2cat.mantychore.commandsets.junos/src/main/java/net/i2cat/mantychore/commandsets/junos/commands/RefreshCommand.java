@@ -32,13 +32,10 @@ public class RefreshCommand extends JunosCommand {
 		super(REFRESH, TEMPLATE);
 	}
 
-	@Override
-	public void initializeCommand(IResourceModel arg0) throws
-			CommandException {
+	public void createCommand() {
 		// the query does not need get config
 		try {
 
-			String netconfXML = prepareCommand();
 			command = QueryFactory.newGet(netconfXML);
 
 		} catch (ResourceNotFoundException e) {

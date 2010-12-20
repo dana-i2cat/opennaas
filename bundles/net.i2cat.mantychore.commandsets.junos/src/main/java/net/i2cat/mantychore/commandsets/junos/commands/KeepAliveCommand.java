@@ -31,4 +31,10 @@ public class KeepAliveCommand extends JunosCommand {
 		// the command doesn t include query
 	}
 
+	@Override
+	public void createCommand() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
