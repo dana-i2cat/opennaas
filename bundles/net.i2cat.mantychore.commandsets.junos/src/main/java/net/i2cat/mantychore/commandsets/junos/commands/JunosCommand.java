@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.netconf.rpc.Query;
 
 import org.apache.velocity.exception.ParseErrorException;
@@ -19,7 +20,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	protected String	template	= "";
 
-	private Object		params		= "";
+	private Object		params;
 
 	/** logger **/
 	Logger				log			= LoggerFactory
@@ -33,10 +34,21 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	}
 
+	// FIXME IT IS TEMPORAL, THESE SET AND GETS MUST BE DELETED
+	public Object getParams() {
+		return params;
+	}
+
+	public void setParams(Object params) {
+		this.params = params;
+	}
+
 	@Override
 	public void initializeCommand(IResourceModel arg0) throws CommandException {
 		// FIXME DO WE WANT TO INITIALIZE OUR COMMAND WITH PARAMETERS FROM
 		// IRESOURCEMODEL??
+		ComputerSystem routerModel = (ComputerSystem) arg0;
+
 	}
 
 	@Override
@@ -44,7 +56,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 		try {
 			netconfXML = prepareVelocityCommand();
-			createCommand();
+			createCommand(params);
 			// THIS METHOD WILL RECEIVE AN OBJECT
 			sendCommandToProtocol(command);
 
@@ -63,7 +75,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	}
 
-	public abstract void createCommand();
+	public abstract void createCommand(Object params);
 
 	protected String prepareVelocityCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {

@@ -1,7 +1,6 @@
 import java.net.URI;
 import java.util.List;
 
-import net.i2cat.mantychore.commandsets.junos.JunosCommandFactory;
 import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -78,7 +77,6 @@ public class RefreshCommandTest {
 	public void refreshTest() {
 		log.info("Preparing refresh test....");
 
-		JunosCommandFactory factory = new JunosCommandFactory();
 		try {
 			RefreshMockCommand refreshCommand = new RefreshMockCommand();
 			refreshCommand.executeCommand();

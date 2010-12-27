@@ -1,10 +1,10 @@
 <configuration>
-<interfaces>
-<interface>
-<name></name>
-<unit operation="delete">
-<name></name>
-</unit>
-</interface>
-</interfaces>
+	<interfaces>
+		<interface>
+			<name>$name</name>
+			<unit operation="delete">
+				<name>$unit</name>
+			</unit>
+		</interface>
+	</interfaces>
 </configuration>

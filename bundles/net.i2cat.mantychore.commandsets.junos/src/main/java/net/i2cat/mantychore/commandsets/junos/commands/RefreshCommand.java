@@ -32,7 +32,7 @@ public class RefreshCommand extends JunosCommand {
 		super(REFRESH, TEMPLATE);
 	}
 
-	public void createCommand() {
+	public void createCommand(Object params) {
 		// the query does not need get config
 		try {
 

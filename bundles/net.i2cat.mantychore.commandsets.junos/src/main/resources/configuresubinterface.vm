@@ -1,0 +1,21 @@
+<configuration>
+	<interfaces>
+		<interface>
+			<name>$name</name>
+			<unit operation="replace">
+				<name>$unit</name>
+				#if ($isPeerUnit())
+					<peer-unit>$vlan</peer-unit>
+					#set ($setEncapsulation("vlan"))
+				#end
+				
+				#if ($getEncapsulation())
+					<encapsulation>$vlan</encapsulation>
+					#if ($getEncapsulation()=="vlan")
+						<vlan-id>$vlan</vlan-id>
+					#end
+				#end
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

@@ -32,7 +32,7 @@ public class KeepAliveCommand extends JunosCommand {
 	}
 
 	@Override
-	public void createCommand() {
+	public void createCommand(Object params) {
 		// It is not necessary to create any command
 	}
 

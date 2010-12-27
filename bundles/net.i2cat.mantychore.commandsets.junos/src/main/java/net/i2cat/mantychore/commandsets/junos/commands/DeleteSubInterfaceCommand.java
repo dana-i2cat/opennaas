@@ -5,13 +5,17 @@ import com.iaasframework.capabilities.model.IResourceModel;
 
 public class DeleteSubInterfaceCommand extends JunosCommand {
 
-	protected DeleteSubInterfaceCommand(String commandID, String template) {
-		super(commandID, template);
+	public static final String	DELETESUBINTERFACE	= "deleteSubinterface";
+
+	public static final String	TEMPLATE			= "/deletesubinterface.vm";
+
+	public DeleteSubInterfaceCommand() {
+		super(DELETESUBINTERFACE, TEMPLATE);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public void createCommand() {
+	public void createCommand(Object params) {
 		// TODO Auto-generated method stub
 
 	}
