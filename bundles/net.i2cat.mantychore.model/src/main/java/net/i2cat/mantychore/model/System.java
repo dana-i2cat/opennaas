@@ -132,48 +132,48 @@ public class System extends EnabledLogicalElement implements Serializable {
     } // setName
 
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property NameFormat. 
-     */
-    private String nameFormat;
-    /**
-     * This method returns the System.NameFormat property value. This property 
-     * is described as follows: 
-     * 
-     * The System object and its derivatives are top-level objects of CIM. 
-     * They provide the scope for numerous components. Having unique System 
-     * keys is required. A heuristic can be defined in individual System 
-     * subclasses to attempt to always generate the same System Name Key. The 
-     * NameFormat property identifies how the System name was generated, 
-     * using the heuristic of the subclass. 
-     * 
-     * @return	String	current NameFormat property value
-     * @exception	Exception	
-     */
-    public String getNameFormat(){
-
-    return this.nameFormat;
-    } // getNameFormat
-
-    /**
-     * This method sets the System.NameFormat property value. This property is 
-     * described as follows: 
-     * 
-     * The System object and its derivatives are top-level objects of CIM. 
-     * They provide the scope for numerous components. Having unique System 
-     * keys is required. A heuristic can be defined in individual System 
-     * subclasses to attempt to always generate the same System Name Key. The 
-     * NameFormat property identifies how the System name was generated, 
-     * using the heuristic of the subclass. 
-     * 
-     * @param	String	new NameFormat property value
-     * @exception	Exception	
-     */
-    public void setNameFormat(String nameFormat) {
-
-    this.nameFormat = nameFormat;
-    } // setNameFormat
+//    /**
+//     * The following constants are defined for use with the ValueMap/Values 
+//     * qualified property NameFormat. 
+//     */
+//    private String nameFormat;
+//    /**
+//     * This method returns the System.NameFormat property value. This property 
+//     * is described as follows: 
+//     * 
+//     * The System object and its derivatives are top-level objects of CIM. 
+//     * They provide the scope for numerous components. Having unique System 
+//     * keys is required. A heuristic can be defined in individual System 
+//     * subclasses to attempt to always generate the same System Name Key. The 
+//     * NameFormat property identifies how the System name was generated, 
+//     * using the heuristic of the subclass. 
+//     * 
+//     * @return	String	current NameFormat property value
+//     * @exception	Exception	
+//     */
+//    public String getNameFormat(){
+//
+//    return this.nameFormat;
+//    } // getNameFormat
+//
+//    /**
+//     * This method sets the System.NameFormat property value. This property is 
+//     * described as follows: 
+//     * 
+//     * The System object and its derivatives are top-level objects of CIM. 
+//     * They provide the scope for numerous components. Having unique System 
+//     * keys is required. A heuristic can be defined in individual System 
+//     * subclasses to attempt to always generate the same System Name Key. The 
+//     * NameFormat property identifies how the System name was generated, 
+//     * using the heuristic of the subclass. 
+//     * 
+//     * @param	String	new NameFormat property value
+//     * @exception	Exception	
+//     */
+//    public void setNameFormat(String nameFormat) {
+//
+//    this.nameFormat = nameFormat;
+//    } // setNameFormat
 
 
     /**
