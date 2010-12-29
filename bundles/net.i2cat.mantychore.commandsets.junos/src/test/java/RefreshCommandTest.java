@@ -35,7 +35,7 @@ public class RefreshCommandTest {
 			try {
 				sessionContext = new SessionContext();
 			} catch (ConfigurationException e) {
-				log.error(e.getMessage());
+				Assert.fail(e.getMessage());
 
 			}
 		}
@@ -62,7 +62,7 @@ public class RefreshCommandTest {
 				session.disconnect();
 
 			} catch (Exception e) {
-				log.error(e.getMessage());
+				Assert.fail(e.getMessage());
 			}
 
 		}

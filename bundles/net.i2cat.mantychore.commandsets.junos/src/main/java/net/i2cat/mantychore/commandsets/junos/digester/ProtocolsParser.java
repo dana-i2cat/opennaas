@@ -3,18 +3,40 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NextHopIPRoute;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
+
 public class ProtocolsParser extends DigesterEngine {
 
-	@Override
-	public void addRules() {
+	class ParserRuleSet extends RuleSetBase {
+		private String	prefix	= "";
 
-		// FIXME the path pattern can't be global , must distinguish between routers
-		addObjectCreate("*/protocols/ospf", NextHopIPRoute.class);
-		addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 1);
-		addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 1);
-		/* Add NesxtHopIpRoute to the parent */
-		addSetNext("*/routing-options/static/route", "addInterface");
+		protected ParserRuleSet() {
 
+		}
+
+		protected ParserRuleSet(String prefix) {
+			this.prefix = prefix;
+		}
+
+		@Override
+		public void addRuleInstances(Digester arg0) {
+			// FIXME the path pattern can't be global , must distinguish between
+			// routers
+			addObjectCreate("*/protocols/ospf", NextHopIPRoute.class);
+			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 1);
+			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 1);
+			/* Add NesxtHopIpRoute to the parent */
+			addSetNext("*/routing-options/static/route", "addInterface");
+		}
+	}
+
+	public ProtocolsParser() {
+		ruleSet = new ParserRuleSet();
+	}
+
+	public ProtocolsParser(String prefix) {
+		ruleSet = new ParserRuleSet(prefix);
 	}
 
 	public void addInterface(NextHopIPRoute ipRoute) {

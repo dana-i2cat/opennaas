@@ -1,36 +1,18 @@
-import java.net.URI;
+import net.i2cat.mantychore.commandsets.junos.commands.CreateSubInterfaceCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.DeleteSubInterfaceCommand;
 
-import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
-import net.i2cat.netconf.NetconfSession;
-import net.i2cat.netconf.SessionContext;
-import net.i2cat.netconf.rpc.Query;
-import net.i2cat.netconf.rpc.Reply;
-
-import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.resources.core.message.CapabilityMessage;
 import com.iaasframework.resources.core.message.ICapabilityMessage;
 
 public class SubInterfaceCommandTest {
 	Logger	log	= LoggerFactory
-						.getLogger(SubInterfaceMockCommand.class);
+						.getLogger(CreateSubInterfaceMock.class);
 
-	public class SubInterfaceMockCommand extends RefreshCommand {
-		SessionContext	sessionContext;
-		NetconfSession	session;
-
-		SubInterfaceMockCommand() {
-			try {
-				sessionContext = new SessionContext();
-			} catch (ConfigurationException e) {
-				log.error(e.getMessage());
-
-			}
-		}
+	public class CreateSubInterfaceMock extends CreateSubInterfaceCommand {
 
 		@Override
 		public void responseReceived(ICapabilityMessage responseMessage) throws CommandException {
@@ -43,16 +25,29 @@ public class SubInterfaceCommandTest {
 		 */
 		public void sendCommandToProtocol(Object command) {
 			try {
-				sessionContext.setURI(new URI("mock://foo:bar@foo:22/foo"));
+				response.setMessage(new DummyNetconfConnector("mock://foo:bar@foo:22/foo").sendAndReceive(command));
+			} catch (Exception e) {
+				log.error(e.getMessage());
+			}
 
-				session = new NetconfSession(sessionContext);
-				session.connect();
-				Reply reply = session.sendSyncQuery((Query) command);
-				response = new CapabilityMessage();
-				response.setMessage(reply.getContain());
+		}
 
-				session.disconnect();
+	}
 
+	public class DeleteSubInterfaceMock extends DeleteSubInterfaceCommand {
+
+		@Override
+		public void responseReceived(ICapabilityMessage responseMessage) throws CommandException {
+			// TODO Auto-generated method stub
+			super.responseReceived(responseMessage);
+		}
+
+		/**
+		 * Library netconf
+		 */
+		public void sendCommandToProtocol(Object command) {
+			try {
+				response.setMessage(new DummyNetconfConnector("mock://foo:bar@foo:22/foo").sendAndReceive(command));
 			} catch (Exception e) {
 				log.error(e.getMessage());
 			}
@@ -63,6 +58,16 @@ public class SubInterfaceCommandTest {
 
 	@Test
 	public void subInterfaceTest() {
+		try {
+			CreateSubInterfaceMock createSubInterface = new CreateSubInterfaceMock();
+			createSubInterface.executeCommand();
+
+			DeleteSubInterfaceCommand deleteSubInterface = new DeleteSubInterfaceCommand();
+			deleteSubInterface.executeCommand();
+
+		} catch (CommandException e) {
+			log.error(e.getMessage());
+		}
 
 	}
 }

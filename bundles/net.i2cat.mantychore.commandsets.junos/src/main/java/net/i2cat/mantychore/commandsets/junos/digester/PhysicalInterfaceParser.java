@@ -4,24 +4,42 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
 import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
+
 public class PhysicalInterfaceParser extends DigesterEngine {
 
-	@Override
-	public void addRules() {
+	class ParserRuleSet extends RuleSetBase {
+		private String	prefix	= "";
 
-		// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
-		addObjectCreate("*/interface-information/physical-interface", EthernetPort.class);
-		addCallMethod("*/interface-information/physical-interface/name", "setOtherPortType", 0);
-		addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
+		protected ParserRuleSet() {
 
-		addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 0);
-		addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 0);
-		addBeanPropertySetter("*/interface-information/physical-interface/description", "description");
+		}
 
-		/* Add physical interface to the parent */
+		protected ParserRuleSet(String prefix) {
+			this.prefix = prefix;
+		}
 
-		addSetNext("*/interface-information/physical-interface", "addInterface");
+		@Override
+		public void addRuleInstances(Digester arg0) {
+			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
+			addObjectCreate("*/interface-information/physical-interface", EthernetPort.class);
+			addCallMethod("*/interface-information/physical-interface/name", "setOtherPortType", 0);
+			addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
 
+			addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 0);
+			addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 0);
+			addBeanPropertySetter("*/interface-information/physical-interface/description", "description");
+
+			/* Add physical interface to the parent */
+			addSetNext("*/interface-information/physical-interface", "addInterface");
+
+		}
+
+	}
+
+	public PhysicalInterfaceParser() {
+		this.ruleSet = new ParserRuleSet();
 	}
 
 	public void addInterface(EthernetPort ethernetPort) {

@@ -7,12 +7,14 @@ import java.util.HashMap;
 
 import org.apache.commons.digester.CallMethodRule;
 import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSet;
 import org.xml.sax.SAXException;
 
-public abstract class DigesterEngine extends Digester {
+public class DigesterEngine extends Digester {
+
 	protected HashMap<String, Object>	mapElements;
 
-	public abstract void addRules();
+	protected RuleSet					ruleSet;
 
 	public void init() {
 		push(this);
@@ -29,14 +31,14 @@ public abstract class DigesterEngine extends Digester {
 
 	public void configurableParse(InputStream input) throws IOException, SAXException {
 
-		addRules();
+		this.addRuleSet(ruleSet);
 		super.parse(input);
 
 	}
 
 	public void configurableParse(String uri) throws IOException, SAXException {
 
-		addRules();
+		this.addRuleSet(ruleSet);
 		super.parse(new File(uri));
 
 	}

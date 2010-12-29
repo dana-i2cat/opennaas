@@ -1,0 +1,3 @@
+public class Ipv6Test {
+	// TODO IT WILL FILL WHEN THE MODEL WILL BE REFACTORIZED
+}

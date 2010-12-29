@@ -5,6 +5,9 @@ import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
+
 public class LogicalInterfaceParser extends DigesterEngine {
 	String			location		= "";
 
@@ -12,32 +15,52 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 	/** vlan info **/
 
-	@Override
-	public void addRules() {
-		// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
-		addMyRule("*/interfaces/interface/name", "setLocation", 0);
+	class ParserRuleSet extends RuleSetBase {
+		private String	prefix	= "";
 
-		/* IP Configuration */
-		addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
-		addSetNext("*/interfaces/interface/unit", "addInterface");
-		addMyRule("*/interfaces/interface/unit/name", "setName", 0);
-		addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
-		addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
-		addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
+		protected ParserRuleSet() {
 
-		addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+		}
 
-		addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
+		protected ParserRuleSet(String prefix) {
+			this.prefix = prefix;
+		}
 
-		/* VLAN configuration */
-		// addObjectCreate(,
-		// LANEndpoint.class);
-		// addBeanPropertySetter("*/interfaces/interface/unit/vlan-id",
-		// "LANID");
-		// addSetNext("*/interfaces/interface/unit/vlan-id", "addLANEndpoint");
-		// TODO GET DESCRIPTION?
-		// FIXME IT DON'T GET LANID
+		@Override
+		public void addRuleInstances(Digester arg0) {
+			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
+			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
+			/* IP Configuration */
+			addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
+			addSetNext("*/interfaces/interface/unit", "addInterface");
+			addMyRule("*/interfaces/interface/unit/name", "setName", 0);
+			addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
+			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
+			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
+
+			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+
+			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
+
+			/* VLAN configuration */
+			// addObjectCreate(,
+			// LANEndpoint.class);
+			// addBeanPropertySetter("*/interfaces/interface/unit/vlan-id",
+			// "LANID");
+			// addSetNext("*/interfaces/interface/unit/vlan-id",
+			// "addLANEndpoint");
+			// TODO GET DESCRIPTION?
+			// FIXME IT DON'T GET LANID
+		}
+	}
+
+	public LogicalInterfaceParser() {
+		ruleSet = new ParserRuleSet();
+	}
+
+	public LogicalInterfaceParser(String prefix) {
+		ruleSet = new ParserRuleSet(prefix);
 	}
 
 	public void addInterface(EthernetPort ethernetPort) {
