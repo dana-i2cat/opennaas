@@ -30,7 +30,7 @@
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-			<scope>provided</scope>
+			<!-- <scope>provided</scope> -->
 		</dependency>	
 		
 		<!--  get source of netconf4j -->
@@ -41,11 +41,18 @@
 			<classifier>sources</classifier>
 		</dependency>
 
+		<dependency>
+		    <groupId>commons-configuration</groupId>
+		    <artifactId>commons-configuration</artifactId>
+		    <version>1.2</version>
+		</dependency>
+
 	<!--  IaaS dependencies -->
 		<dependency>
 				<groupId>com.iaasframework.capabilities</groupId>
 				<artifactId>com.iaasframework.capabilities.protocol</artifactId>
 		</dependency>
+		
 		<dependency>
 				<groupId>com.iaasframework.core</groupId>
 				<artifactId>com.iaasframework.core.transports</artifactId>
@@ -95,7 +102,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId} </Bundle-SymbolicName>
+						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${pom.version}</Bundle-Version>
 						<Import-Package>
 							!${pom.artifactId}.*,org.slf4j;version="1.5.6", com.iaasframework.resources.core;version="${iaas.version}",
