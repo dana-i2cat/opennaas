@@ -1,0 +1,18 @@
+<projectDescription>
+  <name>net.i2cat.mantychore.tests.commandsets.junos</name>
+  <comment>Mantychore Command Implementation test</comment>
+  <projects>
+    <project>mantychore</project>
+    <project>net.i2cat.mantychore.commandsets.junos</project>
+    <project>net.i2cat.mantychore.model</project>
+    <project>net.i2cat.mantychore.protocols.netconf</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+  </natures>
+</projectDescription>
