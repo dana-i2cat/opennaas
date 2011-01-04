@@ -55,9 +55,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-			</resource>
+			
 			<!--
 				| example additional resource entries, useful when building Eclipse
 				RCP applications
