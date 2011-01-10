@@ -89,6 +89,12 @@ public class NetconfProtocolSessionTest {
 		log.debug(queryGetConfig.toXML());
 
 		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryGetConfig);
+
+		// System.out.println(reply.getContain());
+
+		if (reply.getContain() == null) {
+			fail("The response received is null");
+		}
 		if (reply.containsErrors()) {
 			printErrors(reply.getErrors());
 			fail("The response received errors");
