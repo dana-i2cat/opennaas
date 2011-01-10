@@ -5,300 +5,322 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Entity;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class NextHopRoute as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * NextHopRouteBean Interface. The CIM class NextHopRoute is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class NextHopRoute as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * NextHopRouteBean Interface. The CIM class NextHopRoute is described as
+ * follows:
  * 
- * NextHopRoute represents one of a series of 'hops' to reach a network 
- * destination. A route is administratively defined, or calculated/learned by 
- * a particular routing process. A ConcreteDependency associaton may be 
- * instantiated between a route and its routing service to indicate this. (In 
- * this scenario, the route is dependent on the service.) 
+ * NextHopRoute represents one of a series of 'hops' to reach a network
+ * destination. A route is administratively defined, or calculated/learned by a
+ * particular routing process. A ConcreteDependency associaton may be
+ * instantiated between a route and its routing service to indicate this. (In
+ * this scenario, the route is dependent on the service.)
  */
-    @Entity
+@Entity
 public class NextHopRoute extends ManagedElement implements Serializable {
 
-    /**
-     * This constructor creates a NextHopRouteBeanImpl Class which implements 
-     * the NextHopRouteBean Interface, and encapsulates the CIM class 
-     * NextHopRoute in a Java Bean. The CIM class NextHopRoute is described 
-     * as follows: 
-     * 
-     * NextHopRoute represents one of a series of 'hops' to reach a network 
-     * destination. A route is administratively defined, or 
-     * calculated/learned by a particular routing process. A 
-     * ConcreteDependency associaton may be instantiated between a route and 
-     * its routing service to indicate this. (In this scenario, the route is 
-     * dependent on the service.) 
-     */
-    public NextHopRoute(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property instanceID. 
-     */
-    private String instanceID;
-    /**
-     * This method returns the NextHopRoute.instanceID property value. This 
-     * property is described as follows: 
-     * 
-     * Within the scope of the instantiating Namespace, InstanceID opaquely 
-     * and uniquely identifies an instance of this class. In order to ensure 
-     * uniqueness within the NameSpace, the value of InstanceID SHOULD be 
-     * constructed using the following 'preferred' algorithm: 
-     * <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a colon 
-     * ':', and where <OrgID> MUST include a copyrighted, trademarked or 
-     * otherwise unique name that is owned by the business entity 
-     * creating/defining the InstanceID, or is a registered ID that is 
-     * assigned to the business entity by a recognized global authority. 
-     * (This is similar to the <Schema Name>_<Class Name> structure of Schema 
-     * class names.) In addition, to ensure uniqueness <OrgID> MUST NOT 
-     * contain a colon (':'). When using this algorithm, the first colon to 
-     * appear in InstanceID MUST appear between <OrgID> and <LocalID>. 
-     * <LocalID> is chosen by the business entity and SHOULD not be re-used 
-     * to identify different underlying (real-world) elements. If the above 
-     * 'preferred' algorithm is not used, the defining entity MUST assure 
-     * that the resultant InstanceID is not re-used across any InstanceIDs 
-     * produced by this or other providers for this instance's NameSpace. For 
-     * DMTF defined instances, the 'preferred' algorithm MUST be used with 
-     * the <OrgID> set to 'CIM'. 
-     * 
-     * @return	String	current instanceID property value
-     * @exception	Exception	
-     */
-    public String getInstanceID(){
+	// FIXME It is modified
 
-    return this.instanceID;
-    } // getInstanceID
+	public void setRouteUsesEndpoint(ProtocolEndpoint protocolEndpoint) {
+		this.link(RouteUsesEndpoint.class, this, protocolEndpoint);
+	}
 
-    /**
-     * This method sets the NextHopRoute.instanceID property value. This 
-     * property is described as follows: 
-     * 
-     * Within the scope of the instantiating Namespace, InstanceID opaquely 
-     * and uniquely identifies an instance of this class. In order to ensure 
-     * uniqueness within the NameSpace, the value of InstanceID SHOULD be 
-     * constructed using the following 'preferred' algorithm: 
-     * <OrgID>:<LocalID> Where <OrgID> and <LocalID> are separated by a colon 
-     * ':', and where <OrgID> MUST include a copyrighted, trademarked or 
-     * otherwise unique name that is owned by the business entity 
-     * creating/defining the InstanceID, or is a registered ID that is 
-     * assigned to the business entity by a recognized global authority. 
-     * (This is similar to the <Schema Name>_<Class Name> structure of Schema 
-     * class names.) In addition, to ensure uniqueness <OrgID> MUST NOT 
-     * contain a colon (':'). When using this algorithm, the first colon to 
-     * appear in InstanceID MUST appear between <OrgID> and <LocalID>. 
-     * <LocalID> is chosen by the business entity and SHOULD not be re-used 
-     * to identify different underlying (real-world) elements. If the above 
-     * 'preferred' algorithm is not used, the defining entity MUST assure 
-     * that the resultant InstanceID is not re-used across any InstanceIDs 
-     * produced by this or other providers for this instance's NameSpace. For 
-     * DMTF defined instances, the 'preferred' algorithm MUST be used with 
-     * the <OrgID> set to 'CIM'. 
-     * 
-     * @param	String	new instanceID property value
-     * @exception	Exception	
-     */
-    public void setInstanceID(String instanceID) {
+	public ProtocolEndpoint getRouteUsesEndpoint() {
+		List<ProtocolEndpoint> protocolEndpoints = (List<ProtocolEndpoint>) this.getToAssociatedElementsByType(RouteUsesEndpoint.class);
+		if (protocolEndpoints == null)
+			return null;
+		return (ProtocolEndpoint) protocolEndpoints.get(0);
 
-    this.instanceID = instanceID;
-    } // setInstanceID
+	}
 
+	public boolean removeRouteUsesEndpoint() {
+		Association assoc = this.getToAssociationByElement(this);
+		if (assoc == null)
+			return false;
+		return assoc.unlink();
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property destinationAddress. 
-     */
-    private String destinationAddress;
-    /**
-     * This method returns the NextHopRoute.destinationAddress property value. 
-     * This property is described as follows: 
-     * 
-     * The address which serves as the destination to be reached.
-     * 
-     * @return	String	current destinationAddress property value
-     * @exception	Exception	
-     */
-    public String getDestinationAddress(){
+	/**
+	 * This constructor creates a NextHopRouteBeanImpl Class which implements
+	 * the NextHopRouteBean Interface, and encapsulates the CIM class
+	 * NextHopRoute in a Java Bean. The CIM class NextHopRoute is described as
+	 * follows:
+	 * 
+	 * NextHopRoute represents one of a series of 'hops' to reach a network
+	 * destination. A route is administratively defined, or calculated/learned
+	 * by a particular routing process. A ConcreteDependency associaton may be
+	 * instantiated between a route and its routing service to indicate this.
+	 * (In this scenario, the route is dependent on the service.)
+	 */
+	public NextHopRoute() {
+	};
 
-    return this.destinationAddress;
-    } // getDestinationAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property instanceID.
+	 */
+	private String	instanceID;
 
-    /**
-     * This method sets the NextHopRoute.destinationAddress property value. 
-     * This property is described as follows: 
-     * 
-     * The address which serves as the destination to be reached.
-     * 
-     * @param	String	new destinationAddress property value
-     * @exception	Exception	
-     */
-    public void setDestinationAddress(String destinationAddress) {
+	/**
+	 * This method returns the NextHopRoute.instanceID property value. This
+	 * property is described as follows:
+	 * 
+	 * Within the scope of the instantiating Namespace, InstanceID opaquely and
+	 * uniquely identifies an instance of this class. In order to ensure
+	 * uniqueness within the NameSpace, the value of InstanceID SHOULD be
+	 * constructed using the following 'preferred' algorithm: <OrgID>:<LocalID>
+	 * Where <OrgID> and <LocalID> are separated by a colon ':', and where
+	 * <OrgID> MUST include a copyrighted, trademarked or otherwise unique name
+	 * that is owned by the business entity creating/defining the InstanceID, or
+	 * is a registered ID that is assigned to the business entity by a
+	 * recognized global authority. (This is similar to the <Schema Name>_<Class
+	 * Name> structure of Schema class names.) In addition, to ensure uniqueness
+	 * <OrgID> MUST NOT contain a colon (':'). When using this algorithm, the
+	 * first colon to appear in InstanceID MUST appear between <OrgID> and
+	 * <LocalID>. <LocalID> is chosen by the business entity and SHOULD not be
+	 * re-used to identify different underlying (real-world) elements. If the
+	 * above 'preferred' algorithm is not used, the defining entity MUST assure
+	 * that the resultant InstanceID is not re-used across any InstanceIDs
+	 * produced by this or other providers for this instance's NameSpace. For
+	 * DMTF defined instances, the 'preferred' algorithm MUST be used with the
+	 * <OrgID> set to 'CIM'.
+	 * 
+	 * @return String current instanceID property value
+	 * @exception Exception
+	 */
+	public String getInstanceID() {
 
-    this.destinationAddress = destinationAddress;
-    } // setDestinationAddress
+		return this.instanceID;
+	} // getInstanceID
 
+	/**
+	 * This method sets the NextHopRoute.instanceID property value. This
+	 * property is described as follows:
+	 * 
+	 * Within the scope of the instantiating Namespace, InstanceID opaquely and
+	 * uniquely identifies an instance of this class. In order to ensure
+	 * uniqueness within the NameSpace, the value of InstanceID SHOULD be
+	 * constructed using the following 'preferred' algorithm: <OrgID>:<LocalID>
+	 * Where <OrgID> and <LocalID> are separated by a colon ':', and where
+	 * <OrgID> MUST include a copyrighted, trademarked or otherwise unique name
+	 * that is owned by the business entity creating/defining the InstanceID, or
+	 * is a registered ID that is assigned to the business entity by a
+	 * recognized global authority. (This is similar to the <Schema Name>_<Class
+	 * Name> structure of Schema class names.) In addition, to ensure uniqueness
+	 * <OrgID> MUST NOT contain a colon (':'). When using this algorithm, the
+	 * first colon to appear in InstanceID MUST appear between <OrgID> and
+	 * <LocalID>. <LocalID> is chosen by the business entity and SHOULD not be
+	 * re-used to identify different underlying (real-world) elements. If the
+	 * above 'preferred' algorithm is not used, the defining entity MUST assure
+	 * that the resultant InstanceID is not re-used across any InstanceIDs
+	 * produced by this or other providers for this instance's NameSpace. For
+	 * DMTF defined instances, the 'preferred' algorithm MUST be used with the
+	 * <OrgID> set to 'CIM'.
+	 * 
+	 * @param String
+	 *            new instanceID property value
+	 * @exception Exception
+	 */
+	public void setInstanceID(String instanceID) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property adminDistance. 
-     */
-    private int adminDistance;
-    /**
-     * This method returns the NextHopRoute.adminDistance property value. This 
-     * property is described as follows: 
-     * 
-     * The specific administrative distance of this route, overriding any 
-     * default distances specified by the system or routing service. 
-     * 
-     * @return	int	current adminDistance property value
-     * @exception	Exception	
-     */
-    public int getAdminDistance(){
+		this.instanceID = instanceID;
+	} // setInstanceID
 
-    return this.adminDistance;
-    } // getAdminDistance
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property destinationAddress.
+	 */
+	private String	destinationAddress;
 
-    /**
-     * This method sets the NextHopRoute.adminDistance property value. This 
-     * property is described as follows: 
-     * 
-     * The specific administrative distance of this route, overriding any 
-     * default distances specified by the system or routing service. 
-     * 
-     * @param	int	new adminDistance property value
-     * @exception	Exception	
-     */
-    public void setAdminDistance(int adminDistance) {
+	/**
+	 * This method returns the NextHopRoute.destinationAddress property value.
+	 * This property is described as follows:
+	 * 
+	 * The address which serves as the destination to be reached.
+	 * 
+	 * @return String current destinationAddress property value
+	 * @exception Exception
+	 */
+	public String getDestinationAddress() {
 
-    this.adminDistance = adminDistance;
-    } // setAdminDistance
+		return this.destinationAddress;
+	} // getDestinationAddress
 
+	/**
+	 * This method sets the NextHopRoute.destinationAddress property value. This
+	 * property is described as follows:
+	 * 
+	 * The address which serves as the destination to be reached.
+	 * 
+	 * @param String
+	 *            new destinationAddress property value
+	 * @exception Exception
+	 */
+	public void setDestinationAddress(String destinationAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property routeMetric. 
-     */
-    private int routeMetric;
-    /**
-     * This method returns the NextHopRoute.routeMetric property value. This 
-     * property is described as follows: 
-     * 
-     * RouteMetric provides a numeric indication as to the preference of this 
-     * route, compared to other routes that reach the same destination. 
-     * 
-     * @return	int	current routeMetric property value
-     * @exception	Exception	
-     */
-    public int getRouteMetric(){
+		this.destinationAddress = destinationAddress;
+	} // setDestinationAddress
 
-    return this.routeMetric;
-    } // getRouteMetric
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property adminDistance.
+	 */
+	private int	adminDistance;
 
-    /**
-     * This method sets the NextHopRoute.routeMetric property value. This 
-     * property is described as follows: 
-     * 
-     * RouteMetric provides a numeric indication as to the preference of this 
-     * route, compared to other routes that reach the same destination. 
-     * 
-     * @param	int	new routeMetric property value
-     * @exception	Exception	
-     */
-    public void setRouteMetric(int routeMetric) {
+	/**
+	 * This method returns the NextHopRoute.adminDistance property value. This
+	 * property is described as follows:
+	 * 
+	 * The specific administrative distance of this route, overriding any
+	 * default distances specified by the system or routing service.
+	 * 
+	 * @return int current adminDistance property value
+	 * @exception Exception
+	 */
+	public int getAdminDistance() {
 
-    this.routeMetric = routeMetric;
-    } // setRouteMetric
+		return this.adminDistance;
+	} // getAdminDistance
 
+	/**
+	 * This method sets the NextHopRoute.adminDistance property value. This
+	 * property is described as follows:
+	 * 
+	 * The specific administrative distance of this route, overriding any
+	 * default distances specified by the system or routing service.
+	 * 
+	 * @param int new adminDistance property value
+	 * @exception Exception
+	 */
+	public void setAdminDistance(int adminDistance) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property isStatic. 
-     */
-    private boolean isStatic;
-    /**
-     * This method returns the NextHopRoute.isStatic property value. This 
-     * property is described as follows: 
-     * 
-     * TRUE indicates that this is a static route, and FALSE indicates a 
-     * dynamically-learned route. 
-     * 
-     * @return	boolean	current isStatic property value
-     * @exception	Exception	
-     */
-    public boolean isIsStatic(){
+		this.adminDistance = adminDistance;
+	} // setAdminDistance
 
-    return this.isStatic;
-    } // getIsStatic
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property routeMetric.
+	 */
+	private int	routeMetric;
 
-    /**
-     * This method sets the NextHopRoute.isStatic property value. This 
-     * property is described as follows: 
-     * 
-     * TRUE indicates that this is a static route, and FALSE indicates a 
-     * dynamically-learned route. 
-     * 
-     * @param	boolean	new isStatic property value
-     * @exception	Exception	
-     */
-    public void setIsStatic(boolean isStatic) {
+	/**
+	 * This method returns the NextHopRoute.routeMetric property value. This
+	 * property is described as follows:
+	 * 
+	 * RouteMetric provides a numeric indication as to the preference of this
+	 * route, compared to other routes that reach the same destination.
+	 * 
+	 * @return int current routeMetric property value
+	 * @exception Exception
+	 */
+	public int getRouteMetric() {
 
-    this.isStatic = isStatic;
-    } // setIsStatic
+		return this.routeMetric;
+	} // getRouteMetric
 
+	/**
+	 * This method sets the NextHopRoute.routeMetric property value. This
+	 * property is described as follows:
+	 * 
+	 * RouteMetric provides a numeric indication as to the preference of this
+	 * route, compared to other routes that reach the same destination.
+	 * 
+	 * @param int new routeMetric property value
+	 * @exception Exception
+	 */
+	public void setRouteMetric(int routeMetric) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property TypeOfRoute. 
-     */
+		this.routeMetric = routeMetric;
+	} // setRouteMetric
 
-    public enum TypeOfRoute{
-    ADMINISTRATOR_DEFINED_ROUTE,
-    COMPUTED_ROUTE,
-    ACTUAL_ROUTE
-    }
-    private TypeOfRoute typeOfRoute;
-    /**
-     * This method returns the NextHopRoute.typeOfRoute property value. This 
-     * property is described as follows: 
-     * 
-     * An enumerated integer indicating whether the route is 
-     * administrator-defined (value=2), computed (via a routing 
-     * protocol/algorithm, value=3) or the actual route implemented in the 
-     * network (value=4). The default is a computed route. 
-     * 
-     * @return	int	current typeOfRoute property value
-     * @exception	Exception	
-     */
-    public TypeOfRoute getTypeOfRoute(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property isStatic.
+	 */
+	private boolean	isStatic;
 
-    return this.typeOfRoute;
-    } // getTypeOfRoute
+	/**
+	 * This method returns the NextHopRoute.isStatic property value. This
+	 * property is described as follows:
+	 * 
+	 * TRUE indicates that this is a static route, and FALSE indicates a
+	 * dynamically-learned route.
+	 * 
+	 * @return boolean current isStatic property value
+	 * @exception Exception
+	 */
+	public boolean isIsStatic() {
 
-    /**
-     * This method sets the NextHopRoute.typeOfRoute property value. This 
-     * property is described as follows: 
-     * 
-     * An enumerated integer indicating whether the route is 
-     * administrator-defined (value=2), computed (via a routing 
-     * protocol/algorithm, value=3) or the actual route implemented in the 
-     * network (value=4). The default is a computed route. 
-     * 
-     * @param	int	new typeOfRoute property value
-     * @exception	Exception	
-     */
-    public void setTypeOfRoute(TypeOfRoute typeOfRoute){
+		return this.isStatic;
+	} // getIsStatic
 
-    this.typeOfRoute = typeOfRoute;
-    } // setTypeOfRoute
+	/**
+	 * This method sets the NextHopRoute.isStatic property value. This property
+	 * is described as follows:
+	 * 
+	 * TRUE indicates that this is a static route, and FALSE indicates a
+	 * dynamically-learned route.
+	 * 
+	 * @param boolean new isStatic property value
+	 * @exception Exception
+	 */
+	public void setIsStatic(boolean isStatic) {
 
+		this.isStatic = isStatic;
+	} // setIsStatic
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property TypeOfRoute.
+	 */
+
+	public enum TypeOfRoute {
+		ADMINISTRATOR_DEFINED_ROUTE,
+		COMPUTED_ROUTE,
+		ACTUAL_ROUTE
+	}
+
+	private TypeOfRoute	typeOfRoute;
+
+	/**
+	 * This method returns the NextHopRoute.typeOfRoute property value. This
+	 * property is described as follows:
+	 * 
+	 * An enumerated integer indicating whether the route is
+	 * administrator-defined (value=2), computed (via a routing
+	 * protocol/algorithm, value=3) or the actual route implemented in the
+	 * network (value=4). The default is a computed route.
+	 * 
+	 * @return int current typeOfRoute property value
+	 * @exception Exception
+	 */
+	public TypeOfRoute getTypeOfRoute() {
+
+		return this.typeOfRoute;
+	} // getTypeOfRoute
+
+	/**
+	 * This method sets the NextHopRoute.typeOfRoute property value. This
+	 * property is described as follows:
+	 * 
+	 * An enumerated integer indicating whether the route is
+	 * administrator-defined (value=2), computed (via a routing
+	 * protocol/algorithm, value=3) or the actual route implemented in the
+	 * network (value=4). The default is a computed route.
+	 * 
+	 * @param int new typeOfRoute property value
+	 * @exception Exception
+	 */
+	public void setTypeOfRoute(TypeOfRoute typeOfRoute) {
+
+		this.typeOfRoute = typeOfRoute;
+	} // setTypeOfRoute
 
 } // Class NextHopRoute

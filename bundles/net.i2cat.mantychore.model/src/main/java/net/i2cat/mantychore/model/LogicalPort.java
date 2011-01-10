@@ -5,278 +5,294 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Entity;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class LogicalPort as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * LogicalPortBean Interface. The CIM class LogicalPort is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class LogicalPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * LogicalPortBean Interface. The CIM class LogicalPort is described as follows:
  * 
- * The abstraction of a port or connection point of a Device. This object 
- * should be instantiated when the Port has independent management 
- * characteristics from the Device that includes it. Examples are a Fibre 
- * Channel Port and a USB Port. 
+ * The abstraction of a port or connection point of a Device. This object should
+ * be instantiated when the Port has independent management characteristics from
+ * the Device that includes it. Examples are a Fibre Channel Port and a USB
+ * Port.
  */
-    @Entity
+@Entity
 public class LogicalPort extends LogicalDevice implements Serializable {
 
-    /**
-     * This constructor creates a LogicalPortBeanImpl Class which implements 
-     * the LogicalPortBean Interface, and encapsulates the CIM class 
-     * LogicalPort in a Java Bean. The CIM class LogicalPort is described as 
-     * follows: 
-     * 
-     * The abstraction of a port or connection point of a Device. This object 
-     * should be instantiated when the Port has independent management 
-     * characteristics from the Device that includes it. Examples are a Fibre 
-     * Channel Port and a USB Port. 
-     */
-    public LogicalPort(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property speed. 
-     */
-    private long speed;
-    /**
-     * This method returns the LogicalPort.speed property value. This property 
-     * is described as follows: 
-     * 
-     * The bandwidth of the Port in Bits per Second.
-     * 
-     * @return	long	current speed property value
-     * @exception	Exception	
-     */
-    public long getSpeed(){
+	// FIXME
+	public void setPortImplementsEndpoint(LogicalPort logicalPort) {
+		this.link(PortImplementsEndpoint.class, this, logicalPort);
+	}
 
-    return this.speed;
-    } // getSpeed
+	public List<ProtocolEndpoint> getPortImplementsEndpoints() {
+		return (List<ProtocolEndpoint>) this.getFromAssociatedElementsByType(PortImplementsEndpoint.class);
+	}
 
-    /**
-     * This method sets the LogicalPort.speed property value. This property is 
-     * described as follows: 
-     * 
-     * The bandwidth of the Port in Bits per Second.
-     * 
-     * @param	long	new speed property value
-     * @exception	Exception	
-     */
-    public void setSpeed(long speed) {
+	public boolean removePortImplementsEndpoint() {
+		Association assoc = this.getToAssociationByElement(this);
+		if (assoc == null)
+			return false;
+		return assoc.unlink();
+	}
 
-    this.speed = speed;
-    } // setSpeed
+	/**
+	 * This constructor creates a LogicalPortBeanImpl Class which implements the
+	 * LogicalPortBean Interface, and encapsulates the CIM class LogicalPort in
+	 * a Java Bean. The CIM class LogicalPort is described as follows:
+	 * 
+	 * The abstraction of a port or connection point of a Device. This object
+	 * should be instantiated when the Port has independent management
+	 * characteristics from the Device that includes it. Examples are a Fibre
+	 * Channel Port and a USB Port.
+	 */
+	public LogicalPort() {
+	};
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property speed.
+	 */
+	private long	speed;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property maxSpeed. 
-     */
-    private long maxSpeed;
-    /**
-     * This method returns the LogicalPort.maxSpeed property value. This 
-     * property is described as follows: 
-     * 
-     * The maximum bandwidth of the Port in Bits per Second.
-     * 
-     * @return	long	current maxSpeed property value
-     * @exception	Exception	
-     */
-    public long getMaxSpeed(){
+	/**
+	 * This method returns the LogicalPort.speed property value. This property
+	 * is described as follows:
+	 * 
+	 * The bandwidth of the Port in Bits per Second.
+	 * 
+	 * @return long current speed property value
+	 * @exception Exception
+	 */
+	public long getSpeed() {
 
-    return this.maxSpeed;
-    } // getMaxSpeed
+		return this.speed;
+	} // getSpeed
 
-    /**
-     * This method sets the LogicalPort.maxSpeed property value. This property 
-     * is described as follows: 
-     * 
-     * The maximum bandwidth of the Port in Bits per Second.
-     * 
-     * @param	long	new maxSpeed property value
-     * @exception	Exception	
-     */
-    public void setMaxSpeed(long maxSpeed) {
+	/**
+	 * This method sets the LogicalPort.speed property value. This property is
+	 * described as follows:
+	 * 
+	 * The bandwidth of the Port in Bits per Second.
+	 * 
+	 * @param long new speed property value
+	 * @exception Exception
+	 */
+	public void setSpeed(long speed) {
 
-    this.maxSpeed = maxSpeed;
-    } // setMaxSpeed
+		this.speed = speed;
+	} // setSpeed
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property maxSpeed.
+	 */
+	private long	maxSpeed;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property requestedSpeed. 
-     */
-    private long requestedSpeed;
-    /**
-     * This method returns the LogicalPort.requestedSpeed property value. This 
-     * property is described as follows: 
-     * 
-     * The requested bandwidth of the Port in Bits per Second. The actual 
-     * bandwidth is reported in LogicalPort.Speed. 
-     * 
-     * @return	long	current requestedSpeed property value
-     * @exception	Exception	
-     */
-    public long getRequestedSpeed(){
+	/**
+	 * This method returns the LogicalPort.maxSpeed property value. This
+	 * property is described as follows:
+	 * 
+	 * The maximum bandwidth of the Port in Bits per Second.
+	 * 
+	 * @return long current maxSpeed property value
+	 * @exception Exception
+	 */
+	public long getMaxSpeed() {
 
-    return this.requestedSpeed;
-    } // getRequestedSpeed
+		return this.maxSpeed;
+	} // getMaxSpeed
 
-    /**
-     * This method sets the LogicalPort.requestedSpeed property value. This 
-     * property is described as follows: 
-     * 
-     * The requested bandwidth of the Port in Bits per Second. The actual 
-     * bandwidth is reported in LogicalPort.Speed. 
-     * 
-     * @param	long	new requestedSpeed property value
-     * @exception	Exception	
-     */
-    public void setRequestedSpeed(long requestedSpeed) {
+	/**
+	 * This method sets the LogicalPort.maxSpeed property value. This property
+	 * is described as follows:
+	 * 
+	 * The maximum bandwidth of the Port in Bits per Second.
+	 * 
+	 * @param long new maxSpeed property value
+	 * @exception Exception
+	 */
+	public void setMaxSpeed(long maxSpeed) {
 
-    this.requestedSpeed = requestedSpeed;
-    } // setRequestedSpeed
+		this.maxSpeed = maxSpeed;
+	} // setMaxSpeed
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property requestedSpeed.
+	 */
+	private long	requestedSpeed;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property UsageRestriction. 
-     */
+	/**
+	 * This method returns the LogicalPort.requestedSpeed property value. This
+	 * property is described as follows:
+	 * 
+	 * The requested bandwidth of the Port in Bits per Second. The actual
+	 * bandwidth is reported in LogicalPort.Speed.
+	 * 
+	 * @return long current requestedSpeed property value
+	 * @exception Exception
+	 */
+	public long getRequestedSpeed() {
 
-    public enum UsageRestriction{
-    UNKNOWN,
-    FRONT_END_ONLY,
-    BACK_END_ONLY,
-    NOT_RESTRICTED
-    }
-    private UsageRestriction usageRestriction;
-    /**
-     * This method returns the LogicalPort.usageRestriction property value. 
-     * This property is described as follows: 
-     * 
-     * In some circumstances, a LogicalPort might be identifiable as a front 
-     * end or back end port. An example of this situation would be a storage 
-     * array that might have back end ports to communicate with disk drives 
-     * and front end ports to communicate with hosts. If there is no 
-     * restriction on the use of the port, then the value should be set to 
-     * 'not restricted'. 
-     * 
-     * @return	int	current usageRestriction property value
-     * @exception	Exception	
-     */
-    public UsageRestriction getUsageRestriction(){
+		return this.requestedSpeed;
+	} // getRequestedSpeed
 
-    return this.usageRestriction;
-    } // getUsageRestriction
+	/**
+	 * This method sets the LogicalPort.requestedSpeed property value. This
+	 * property is described as follows:
+	 * 
+	 * The requested bandwidth of the Port in Bits per Second. The actual
+	 * bandwidth is reported in LogicalPort.Speed.
+	 * 
+	 * @param long new requestedSpeed property value
+	 * @exception Exception
+	 */
+	public void setRequestedSpeed(long requestedSpeed) {
 
-    /**
-     * This method sets the LogicalPort.usageRestriction property value. This 
-     * property is described as follows: 
-     * 
-     * In some circumstances, a LogicalPort might be identifiable as a front 
-     * end or back end port. An example of this situation would be a storage 
-     * array that might have back end ports to communicate with disk drives 
-     * and front end ports to communicate with hosts. If there is no 
-     * restriction on the use of the port, then the value should be set to 
-     * 'not restricted'. 
-     * 
-     * @param	int	new usageRestriction property value
-     * @exception	Exception	
-     */
-    public void setUsageRestriction(UsageRestriction usageRestriction){
+		this.requestedSpeed = requestedSpeed;
+	} // setRequestedSpeed
 
-    this.usageRestriction = usageRestriction;
-    } // setUsageRestriction
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property UsageRestriction.
+	 */
 
+	public enum UsageRestriction {
+		UNKNOWN,
+		FRONT_END_ONLY,
+		BACK_END_ONLY,
+		NOT_RESTRICTED
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property PortType. 
-     */
+	private UsageRestriction	usageRestriction;
 
-    public enum PortType{
-    UNKNOWN,
-    OTHER,
-    NOT_APPLICABLE,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private PortType portType;
-    /**
-     * This method returns the LogicalPort.portType property value. This 
-     * property is described as follows: 
-     * 
-     * PortType is defined to force consistent naming of the 'type' property 
-     * in subclasses and to guarantee unique enum values for all instances of 
-     * NetworkPort. When set to 1 ("Other"), related property OtherPortType 
-     * contains a string description of the type of port. A range of values, 
-     * DMTF_Reserved, has been defined that allows subclasses to override and 
-     * define their specific types of ports. 
-     * 
-     * @return	int	current portType property value
-     * @exception	Exception	
-     */
-    public PortType getPortType(){
+	/**
+	 * This method returns the LogicalPort.usageRestriction property value. This
+	 * property is described as follows:
+	 * 
+	 * In some circumstances, a LogicalPort might be identifiable as a front end
+	 * or back end port. An example of this situation would be a storage array
+	 * that might have back end ports to communicate with disk drives and front
+	 * end ports to communicate with hosts. If there is no restriction on the
+	 * use of the port, then the value should be set to 'not restricted'.
+	 * 
+	 * @return int current usageRestriction property value
+	 * @exception Exception
+	 */
+	public UsageRestriction getUsageRestriction() {
 
-    return this.portType;
-    } // getPortType
+		return this.usageRestriction;
+	} // getUsageRestriction
 
-    /**
-     * This method sets the LogicalPort.portType property value. This property 
-     * is described as follows: 
-     * 
-     * PortType is defined to force consistent naming of the 'type' property 
-     * in subclasses and to guarantee unique enum values for all instances of 
-     * NetworkPort. When set to 1 ("Other"), related property OtherPortType 
-     * contains a string description of the type of port. A range of values, 
-     * DMTF_Reserved, has been defined that allows subclasses to override and 
-     * define their specific types of ports. 
-     * 
-     * @param	int	new portType property value
-     * @exception	Exception	
-     */
-    public void setPortType(PortType portType){
+	/**
+	 * This method sets the LogicalPort.usageRestriction property value. This
+	 * property is described as follows:
+	 * 
+	 * In some circumstances, a LogicalPort might be identifiable as a front end
+	 * or back end port. An example of this situation would be a storage array
+	 * that might have back end ports to communicate with disk drives and front
+	 * end ports to communicate with hosts. If there is no restriction on the
+	 * use of the port, then the value should be set to 'not restricted'.
+	 * 
+	 * @param int new usageRestriction property value
+	 * @exception Exception
+	 */
+	public void setUsageRestriction(UsageRestriction usageRestriction) {
 
-    this.portType = portType;
-    } // setPortType
+		this.usageRestriction = usageRestriction;
+	} // setUsageRestriction
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property PortType.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property otherPortType. 
-     */
-    private String otherPortType;
-    /**
-     * This method returns the LogicalPort.otherPortType property value. This 
-     * property is described as follows: 
-     * 
-     * Describes the type of module, when PortType is set to 1 ("Other").
-     * 
-     * @return	String	current otherPortType property value
-     * @exception	Exception	
-     */
-    public String getOtherPortType(){
+	public enum PortType {
+		UNKNOWN,
+		OTHER,
+		NOT_APPLICABLE,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    return this.otherPortType;
-    } // getOtherPortType
+	private PortType	portType;
 
-    /**
-     * This method sets the LogicalPort.otherPortType property value. This 
-     * property is described as follows: 
-     * 
-     * Describes the type of module, when PortType is set to 1 ("Other").
-     * 
-     * @param	String	new otherPortType property value
-     * @exception	Exception	
-     */
-    public void setOtherPortType(String otherPortType) {
+	/**
+	 * This method returns the LogicalPort.portType property value. This
+	 * property is described as follows:
+	 * 
+	 * PortType is defined to force consistent naming of the 'type' property in
+	 * subclasses and to guarantee unique enum values for all instances of
+	 * NetworkPort. When set to 1 ("Other"), related property OtherPortType
+	 * contains a string description of the type of port. A range of values,
+	 * DMTF_Reserved, has been defined that allows subclasses to override and
+	 * define their specific types of ports.
+	 * 
+	 * @return int current portType property value
+	 * @exception Exception
+	 */
+	public PortType getPortType() {
 
-    this.otherPortType = otherPortType;
-    } // setOtherPortType
+		return this.portType;
+	} // getPortType
 
+	/**
+	 * This method sets the LogicalPort.portType property value. This property
+	 * is described as follows:
+	 * 
+	 * PortType is defined to force consistent naming of the 'type' property in
+	 * subclasses and to guarantee unique enum values for all instances of
+	 * NetworkPort. When set to 1 ("Other"), related property OtherPortType
+	 * contains a string description of the type of port. A range of values,
+	 * DMTF_Reserved, has been defined that allows subclasses to override and
+	 * define their specific types of ports.
+	 * 
+	 * @param int new portType property value
+	 * @exception Exception
+	 */
+	public void setPortType(PortType portType) {
 
+		this.portType = portType;
+	} // setPortType
+
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property otherPortType.
+	 */
+	private String	otherPortType;
+
+	/**
+	 * This method returns the LogicalPort.otherPortType property value. This
+	 * property is described as follows:
+	 * 
+	 * Describes the type of module, when PortType is set to 1 ("Other").
+	 * 
+	 * @return String current otherPortType property value
+	 * @exception Exception
+	 */
+	public String getOtherPortType() {
+
+		return this.otherPortType;
+	} // getOtherPortType
+
+	/**
+	 * This method sets the LogicalPort.otherPortType property value. This
+	 * property is described as follows:
+	 * 
+	 * Describes the type of module, when PortType is set to 1 ("Other").
+	 * 
+	 * @param String
+	 *            new otherPortType property value
+	 * @exception Exception
+	 */
+	public void setOtherPortType(String otherPortType) {
+
+		this.otherPortType = otherPortType;
+	} // setOtherPortType
 
 } // Class LogicalPort

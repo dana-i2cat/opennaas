@@ -5,287 +5,299 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.persistence.Entity;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class EthernetPort as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * EthernetPortBean Interface. The CIM class EthernetPort is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined
+ * in the CIM class EthernetPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the
+ * EthernetPortBean Interface. The CIM class EthernetPort is described as
+ * follows:
  * 
  * Capabilities and management of an EthernetPort.
  */
-    @Entity
+@Entity
 public class EthernetPort extends NetworkPort implements Serializable {
 
-    /**
-     * This constructor creates a EthernetPortBeanImpl Class which implements 
-     * the EthernetPortBean Interface, and encapsulates the CIM class 
-     * EthernetPort in a Java Bean. The CIM class EthernetPort is described 
-     * as follows: 
-     * 
-     * Capabilities and management of an EthernetPort.
-     */
-    public EthernetPort(){};
+	public void merge(EthernetPort hashEthernetPort) {
+		// FIXME FILL WITH ETHERNETPORT ELEMENTS
+		if (this.getOtherPortType() == null) {
+			this.setOtherPortType(hashEthernetPort.getOtherPortType());
+		}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property networkAddresses. 
-     */
-    private String[] networkAddresses;
-    /**
-     * This method returns the EthernetPort.networkAddresses property value. 
-     * This property is described as follows: 
-     * 
-     * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits 
-     * (for example, "010203040506"), with each pair representing one of the 
-     * six octets of the MAC address in "canonical" bit order. (Therefore, 
-     * the Group address bit is found in the low order bit of the first 
-     * character of the string.) 
-     * 
-     * @return	String[]	current networkAddresses property value
-     * @exception	Exception	
-     */
-    public String[] getNetworkAddresses(){
+		if (this.getMaxSpeed() != 0) {
+			this.setMaxSpeed(hashEthernetPort.getMaxSpeed());
+		}
 
-    return this.networkAddresses;
-    } // getNetworkAddresses
+	}
 
-    /**
-     * This method sets the EthernetPort.networkAddresses property value. This 
-     * property is described as follows: 
-     * 
-     * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits 
-     * (for example, "010203040506"), with each pair representing one of the 
-     * six octets of the MAC address in "canonical" bit order. (Therefore, 
-     * the Group address bit is found in the low order bit of the first 
-     * character of the string.) 
-     * 
-     * @param	String[]	new networkAddresses property value
-     * @exception	Exception	
-     */
-    public void setNetworkAddresses(String[] networkAddresses) {
+	/**
+	 * This constructor creates a EthernetPortBeanImpl Class which implements
+	 * the EthernetPortBean Interface, and encapsulates the CIM class
+	 * EthernetPort in a Java Bean. The CIM class EthernetPort is described as
+	 * follows:
+	 * 
+	 * Capabilities and management of an EthernetPort.
+	 */
+	public EthernetPort() {
+	};
 
-    this.networkAddresses = networkAddresses;
-    } // setNetworkAddresses
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property networkAddresses.
+	 */
+	private String[]	networkAddresses;
 
+	/**
+	 * This method returns the EthernetPort.networkAddresses property value.
+	 * This property is described as follows:
+	 * 
+	 * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits (for
+	 * example, "010203040506"), with each pair representing one of the six
+	 * octets of the MAC address in "canonical" bit order. (Therefore, the Group
+	 * address bit is found in the low order bit of the first character of the
+	 * string.)
+	 * 
+	 * @return String[] current networkAddresses property value
+	 * @exception Exception
+	 */
+	public String[] getNetworkAddresses() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property maxDataSize. 
-     */
-    private long maxDataSize;
-    /**
-     * This method returns the EthernetPort.maxDataSize property value. This 
-     * property is described as follows: 
-     * 
-     * The maximum size of the INFO (non-MAC) field that will be received or 
-     * transmitted. 
-     * 
-     * @return	long	current maxDataSize property value
-     * @exception	Exception	
-     */
-    public long getMaxDataSize(){
+		return this.networkAddresses;
+	} // getNetworkAddresses
 
-    return this.maxDataSize;
-    } // getMaxDataSize
+	/**
+	 * This method sets the EthernetPort.networkAddresses property value. This
+	 * property is described as follows:
+	 * 
+	 * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits (for
+	 * example, "010203040506"), with each pair representing one of the six
+	 * octets of the MAC address in "canonical" bit order. (Therefore, the Group
+	 * address bit is found in the low order bit of the first character of the
+	 * string.)
+	 * 
+	 * @param String
+	 *            [] new networkAddresses property value
+	 * @exception Exception
+	 */
+	public void setNetworkAddresses(String[] networkAddresses) {
 
-    /**
-     * This method sets the EthernetPort.maxDataSize property value. This 
-     * property is described as follows: 
-     * 
-     * The maximum size of the INFO (non-MAC) field that will be received or 
-     * transmitted. 
-     * 
-     * @param	long	new maxDataSize property value
-     * @exception	Exception	
-     */
-    public void setMaxDataSize(long maxDataSize) {
+		this.networkAddresses = networkAddresses;
+	} // setNetworkAddresses
 
-    this.maxDataSize = maxDataSize;
-    } // setMaxDataSize
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property maxDataSize.
+	 */
+	private long	maxDataSize;
 
+	/**
+	 * This method returns the EthernetPort.maxDataSize property value. This
+	 * property is described as follows:
+	 * 
+	 * The maximum size of the INFO (non-MAC) field that will be received or
+	 * transmitted.
+	 * 
+	 * @return long current maxDataSize property value
+	 * @exception Exception
+	 */
+	public long getMaxDataSize() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property Capabilities. 
-     */
+		return this.maxDataSize;
+	} // getMaxDataSize
 
-    public enum Capabilities{
-    UNKNOWN,
-    OTHER,
-    ALERTONLAN,
-    WAKEONLAN,
-    FAILOVER,
-    LOADBALANCING
-    }
-    private Capabilities capabilities;
-    /**
-     * This method returns the EthernetPort.capabilities property value. This 
-     * property is described as follows: 
-     * 
-     * Capabilities of the EthernetPort. For example, the Device might support 
-     * AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or 
-     * load balancing capabilities are listed, a SpareGroup (failover) or 
-     * ExtraCapacityGroup (load balancing) should also be defined to 
-     * completely describe the capability. 
-     * 
-     * @return	int	current capabilities property value
-     * @exception	Exception	
-     */
-    public Capabilities getCapabilities(){
+	/**
+	 * This method sets the EthernetPort.maxDataSize property value. This
+	 * property is described as follows:
+	 * 
+	 * The maximum size of the INFO (non-MAC) field that will be received or
+	 * transmitted.
+	 * 
+	 * @param long new maxDataSize property value
+	 * @exception Exception
+	 */
+	public void setMaxDataSize(long maxDataSize) {
 
-    return this.capabilities;
-    } // getCapabilities
+		this.maxDataSize = maxDataSize;
+	} // setMaxDataSize
 
-    /**
-     * This method sets the EthernetPort.capabilities property value. This 
-     * property is described as follows: 
-     * 
-     * Capabilities of the EthernetPort. For example, the Device might support 
-     * AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or 
-     * load balancing capabilities are listed, a SpareGroup (failover) or 
-     * ExtraCapacityGroup (load balancing) should also be defined to 
-     * completely describe the capability. 
-     * 
-     * @param	int	new capabilities property value
-     * @exception	Exception	
-     */
-    public void setCapabilities(Capabilities capabilities){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property Capabilities.
+	 */
 
-    this.capabilities = capabilities;
-    } // setCapabilities
+	public enum Capabilities {
+		UNKNOWN,
+		OTHER,
+		ALERTONLAN,
+		WAKEONLAN,
+		FAILOVER,
+		LOADBALANCING
+	}
 
+	private Capabilities	capabilities;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property capabilityDescriptions. 
-     */
-    private String[] capabilityDescriptions;
-    /**
-     * This method returns the EthernetPort.capabilityDescriptions property 
-     * value. This property is described as follows: 
-     * 
-     * An array of free-form strings that provides more detailed explanations 
-     * for any of the EthernetPort features that are indicated in the 
-     * Capabilities array. Note, each entry of this array is related to the 
-     * entry in the Capabilities array that is located at the same index. 
-     * 
-     * @return	String[]	current capabilityDescriptions property 
-     * value 
-     * @exception	Exception	
-     */
-    public String[] getCapabilityDescriptions(){
+	/**
+	 * This method returns the EthernetPort.capabilities property value. This
+	 * property is described as follows:
+	 * 
+	 * Capabilities of the EthernetPort. For example, the Device might support
+	 * AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or load
+	 * balancing capabilities are listed, a SpareGroup (failover) or
+	 * ExtraCapacityGroup (load balancing) should also be defined to completely
+	 * describe the capability.
+	 * 
+	 * @return int current capabilities property value
+	 * @exception Exception
+	 */
+	public Capabilities getCapabilities() {
 
-    return this.capabilityDescriptions;
-    } // getCapabilityDescriptions
+		return this.capabilities;
+	} // getCapabilities
 
-    /**
-     * This method sets the EthernetPort.capabilityDescriptions property 
-     * value. This property is described as follows: 
-     * 
-     * An array of free-form strings that provides more detailed explanations 
-     * for any of the EthernetPort features that are indicated in the 
-     * Capabilities array. Note, each entry of this array is related to the 
-     * entry in the Capabilities array that is located at the same index. 
-     * 
-     * @param	String[]	new capabilityDescriptions property value
-     * @exception	Exception	
-     */
-    public void setCapabilityDescriptions(String[] capabilityDescriptions) {
+	/**
+	 * This method sets the EthernetPort.capabilities property value. This
+	 * property is described as follows:
+	 * 
+	 * Capabilities of the EthernetPort. For example, the Device might support
+	 * AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or load
+	 * balancing capabilities are listed, a SpareGroup (failover) or
+	 * ExtraCapacityGroup (load balancing) should also be defined to completely
+	 * describe the capability.
+	 * 
+	 * @param int new capabilities property value
+	 * @exception Exception
+	 */
+	public void setCapabilities(Capabilities capabilities) {
 
-    this.capabilityDescriptions = capabilityDescriptions;
-    } // setCapabilityDescriptions
+		this.capabilities = capabilities;
+	} // setCapabilities
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property capabilityDescriptions.
+	 */
+	private String[]	capabilityDescriptions;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property EnabledCapabilities. 
-     */
+	/**
+	 * This method returns the EthernetPort.capabilityDescriptions property
+	 * value. This property is described as follows:
+	 * 
+	 * An array of free-form strings that provides more detailed explanations
+	 * for any of the EthernetPort features that are indicated in the
+	 * Capabilities array. Note, each entry of this array is related to the
+	 * entry in the Capabilities array that is located at the same index.
+	 * 
+	 * @return String[] current capabilityDescriptions property value
+	 * @exception Exception
+	 */
+	public String[] getCapabilityDescriptions() {
 
-    public enum EnabledCapabilities{
-    UNKNOWN,
-    OTHER,
-    ALERTONLAN,
-    WAKEONLAN,
-    FAILOVER,
-    LOADBALANCING
-    }
-    private EnabledCapabilities enabledCapabilities;
-    /**
-     * This method returns the EthernetPort.enabledCapabilities property 
-     * value. This property is described as follows: 
-     * 
-     * Specifies which capabilities are enabled from the list of all supported 
-     * ones, which are defined in the Capabilities array. 
-     * 
-     * @return	int	current enabledCapabilities property value
-     * @exception	Exception	
-     */
-    public EnabledCapabilities getEnabledCapabilities(){
+		return this.capabilityDescriptions;
+	} // getCapabilityDescriptions
 
-    return this.enabledCapabilities;
-    } // getEnabledCapabilities
+	/**
+	 * This method sets the EthernetPort.capabilityDescriptions property value.
+	 * This property is described as follows:
+	 * 
+	 * An array of free-form strings that provides more detailed explanations
+	 * for any of the EthernetPort features that are indicated in the
+	 * Capabilities array. Note, each entry of this array is related to the
+	 * entry in the Capabilities array that is located at the same index.
+	 * 
+	 * @param String
+	 *            [] new capabilityDescriptions property value
+	 * @exception Exception
+	 */
+	public void setCapabilityDescriptions(String[] capabilityDescriptions) {
 
-    /**
-     * This method sets the EthernetPort.enabledCapabilities property value. 
-     * This property is described as follows: 
-     * 
-     * Specifies which capabilities are enabled from the list of all supported 
-     * ones, which are defined in the Capabilities array. 
-     * 
-     * @param	int	new enabledCapabilities property value
-     * @exception	Exception	
-     */
-    public void setEnabledCapabilities(EnabledCapabilities 
-	enabledCapabilities){
+		this.capabilityDescriptions = capabilityDescriptions;
+	} // setCapabilityDescriptions
 
-    this.enabledCapabilities = enabledCapabilities;
-    } // setEnabledCapabilities
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property EnabledCapabilities.
+	 */
 
+	public enum EnabledCapabilities {
+		UNKNOWN,
+		OTHER,
+		ALERTONLAN,
+		WAKEONLAN,
+		FAILOVER,
+		LOADBALANCING
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property otherEnabledCapabilities. 
-     */
-    private String[] otherEnabledCapabilities;
-    /**
-     * This method returns the EthernetPort.otherEnabledCapabilities property 
-     * value. This property is described as follows: 
-     * 
-     * An array of free-form strings that provides more detailed explanations 
-     * for any of the enabled capabilities that are specified as 'Other'. 
-     * 
-     * @return	String[]	current otherEnabledCapabilities 
-     * property value 
-     * @exception	Exception	
-     */
-    public String[] getOtherEnabledCapabilities(){
+	private EnabledCapabilities	enabledCapabilities;
 
-    return this.otherEnabledCapabilities;
-    } // getOtherEnabledCapabilities
+	/**
+	 * This method returns the EthernetPort.enabledCapabilities property value.
+	 * This property is described as follows:
+	 * 
+	 * Specifies which capabilities are enabled from the list of all supported
+	 * ones, which are defined in the Capabilities array.
+	 * 
+	 * @return int current enabledCapabilities property value
+	 * @exception Exception
+	 */
+	public EnabledCapabilities getEnabledCapabilities() {
 
-    /**
-     * This method sets the EthernetPort.otherEnabledCapabilities property 
-     * value. This property is described as follows: 
-     * 
-     * An array of free-form strings that provides more detailed explanations 
-     * for any of the enabled capabilities that are specified as 'Other'. 
-     * 
-     * @param	String[]	new otherEnabledCapabilities property 
-     * value 
-     * @exception	Exception	
-     */
-    public void setOtherEnabledCapabilities(String[] otherEnabledCapabilities) 
-	{
+		return this.enabledCapabilities;
+	} // getEnabledCapabilities
 
-    this.otherEnabledCapabilities = otherEnabledCapabilities;
-    } // setOtherEnabledCapabilities
+	/**
+	 * This method sets the EthernetPort.enabledCapabilities property value.
+	 * This property is described as follows:
+	 * 
+	 * Specifies which capabilities are enabled from the list of all supported
+	 * ones, which are defined in the Capabilities array.
+	 * 
+	 * @param int new enabledCapabilities property value
+	 * @exception Exception
+	 */
+	public void setEnabledCapabilities(EnabledCapabilities
+			enabledCapabilities) {
 
+		this.enabledCapabilities = enabledCapabilities;
+	} // setEnabledCapabilities
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values
+	 * qualified property otherEnabledCapabilities.
+	 */
+	private String[]	otherEnabledCapabilities;
+
+	/**
+	 * This method returns the EthernetPort.otherEnabledCapabilities property
+	 * value. This property is described as follows:
+	 * 
+	 * An array of free-form strings that provides more detailed explanations
+	 * for any of the enabled capabilities that are specified as 'Other'.
+	 * 
+	 * @return String[] current otherEnabledCapabilities property value
+	 * @exception Exception
+	 */
+	public String[] getOtherEnabledCapabilities() {
+
+		return this.otherEnabledCapabilities;
+	} // getOtherEnabledCapabilities
+
+	/**
+	 * This method sets the EthernetPort.otherEnabledCapabilities property
+	 * value. This property is described as follows:
+	 * 
+	 * An array of free-form strings that provides more detailed explanations
+	 * for any of the enabled capabilities that are specified as 'Other'.
+	 * 
+	 * @param String
+	 *            [] new otherEnabledCapabilities property value
+	 * @exception Exception
+	 */
+	public void setOtherEnabledCapabilities(String[] otherEnabledCapabilities) {
+
+		this.otherEnabledCapabilities = otherEnabledCapabilities;
+	} // setOtherEnabledCapabilities
 
 } // Class EthernetPort
