@@ -3,10 +3,10 @@ package net.i2cat.mantychore.protocols.netconf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.capabilities.protocol.IProtocolSession;
-import com.iaasframework.capabilities.protocol.IProtocolSessionFactory;
-import com.iaasframework.capabilities.protocol.ProtocolException;
-import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
+import com.iaasframework.protocolsessionmanager.IProtocolSession;
+import com.iaasframework.protocolsessionmanager.IProtocolSessionFactory;
+import com.iaasframework.protocolsessionmanager.ProtocolException;
+import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 
 public class NetconfProtocolSessionFactory implements IProtocolSessionFactory {
 
@@ -19,10 +19,11 @@ public class NetconfProtocolSessionFactory implements IProtocolSessionFactory {
 	}
 
 	@Override
-	public IProtocolSession createProtocolSessionInstance(CapabilityDescriptor capabilityDescriptor) throws ProtocolException {
+	public IProtocolSession createProtocolSession(String sessionID, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+		// TODO Auto-generated method stub
 
-		NetconfProtocolSession session = new NetconfProtocolSession(capabilityDescriptor);
+		NetconfProtocolSession session = new NetconfProtocolSession(protocolSessionContext, sessionID);
+
 		return session;
 	}
-
 }

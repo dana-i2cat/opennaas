@@ -1,11 +1,12 @@
+import static org.junit.Assert.fail;
 
-import java.util.UUID;
+import java.util.Vector;
 
-import net.i2cat.mantychore.protocols.netconf.NetconfProtocolHelper;
-import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
-import net.i2cat.mantychore.protocols.netconf.serializer.SerializerHelper;
+import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSession;
+import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
+import net.i2cat.netconf.rpc.Reply;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,57 +14,48 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.capabilities.protocol.IProtocolSession;
-import com.iaasframework.capabilities.protocol.ProtocolCapability;
-import com.iaasframework.capabilities.protocol.ProtocolCapabilityClient;
-import com.iaasframework.capabilities.protocol.ProtocolException;
-import com.iaasframework.capabilities.protocol.api.ProtocolRequestMessage;
-import com.iaasframework.resources.core.capability.CapabilityException;
+import com.iaasframework.protocolsessionmanager.IProtocolSession;
+import com.iaasframework.protocolsessionmanager.ProtocolException;
+import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 
 public class NetconfProtocolSessionTest {
 	/** The logger **/
-	Logger							log						= LoggerFactory.getLogger(NetconfProtocolSessionTest.class);
+	Logger									log						= LoggerFactory.getLogger(NetconfProtocolSessionTest.class);
 
-	private CapabilityDescriptor	capabilityDescriptor	= null;
-	int								counter					= 0;
-	IProtocolSession				protocolSession			= null;
-	ProtocolCapability				protocolCapability		= null;
-	String							resourceId				= "testNetconf";
-	ProtocolCapabilityClient		protocolClient			= null;
+	private CapabilityDescriptor			capabilityDescriptor	= null;
+	int										counter					= 0;
+	IProtocolSession						protocolSession			= null;
+	// ProtocolCapability protocolCapability = null;
+	String									resourceId				= "testNetconf";
+
+	// ProtocolCapabilityClient protocolClient = null;
+	private static NetconfProtocolSession	netconfProtocolSession	= null;
 
 	@Before
 	public void setup() throws ProtocolException {
-		capabilityDescriptor = NetconfProtocolHelper.newProtocolDescriptor(1,
-				System.getProperty("net.i2cat.mantychore.protocols.netconf.test.transporturi"
-						, "mock://foo:bar@foo:22/okServer")
-						);
 
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
 		try {
-			protocolCapability = new ProtocolCapability(capabilityDescriptor, resourceId);
-			protocolCapability.setProtocolSessionFactory(new NetconfProtocolSessionFactory());
-			protocolCapability.initialize();
-			protocolCapability.activate();
+			netconfProtocolSession = new NetconfProtocolSession(protocolSessionContext, "1");
+			netconfProtocolSession.connect();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 
-			protocolClient = new ProtocolCapabilityClient(resourceId);
-
-		} catch (CapabilityException e) {
-			log.error(e.getMessage(), e);
 		}
 
 	}
 
 	@After
 	public void close() {
+
 		try {
-
-			protocolClient.dispose();
-
-			protocolCapability.deactivate();
-			protocolCapability.shutdown();
-
-		} catch (CapabilityException e) {
-			log.error(e.getMessage(), e);
+			netconfProtocolSession.disconnect();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -71,14 +63,43 @@ public class NetconfProtocolSessionTest {
 	@Test
 	public void KeepAliveTest() throws ProtocolException {
 
-		ProtocolRequestMessage requestMessage = new ProtocolRequestMessage();
+		// Object protocolResponse = netconfProtocolSession.sendReceive(queryKeepAlive);
+		// netconfProtocolSession.asyncSend(queryKeepAlive);
+
 		Query queryKeepAlive = QueryFactory.newKeepAlive();
-		String message = SerializerHelper.objectToString(queryKeepAlive);
 
-		requestMessage.setMessage(message);
-		requestMessage.setMessageID(UUID.randomUUID().toString());
+		queryKeepAlive.setMessageId("1");
 
-		Object protocolResponse = protocolClient.sendReceiveMessage(message);
+		log.debug(queryKeepAlive.toXML());
+
+		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryKeepAlive);
+		if (reply.containsErrors()) {
+			printErrors(reply.getErrors());
+			fail("The response received errors");
+		}
+
+		// Assert.assertNotNull(protocolResponse);
+	}
+
+	@Test
+	public void getConfigTest() throws ProtocolException {
+
+		Query queryGetConfig = QueryFactory.newGetConfig("running", null, null);
+
+		log.debug(queryGetConfig.toXML());
+
+		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryGetConfig);
+		if (reply.containsErrors()) {
+			printErrors(reply.getErrors());
+			fail("The response received errors");
+		}
+
+	}
+
+	private void printErrors(Vector<Error> errors) {
+		for (Error error : errors) {
+			log.error("Error: " + error.getMessage());
+		}
 
 	}
 
