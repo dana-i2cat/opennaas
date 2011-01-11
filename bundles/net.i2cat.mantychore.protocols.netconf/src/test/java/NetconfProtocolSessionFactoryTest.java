@@ -33,40 +33,58 @@ public class NetconfProtocolSessionFactoryTest {
 	public static void setup() {
 		netconfProtocolSessionFactory = new NetconfProtocolSessionFactory();
 		protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
+		protocolSessionContext.addParameter("protocol.uri", "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
+		// "mock://foo:boo@testing.default.net:22"
 	}
 
 	@Test
-	public void testCorrectprotocolSession() throws ProtocolException {
+	public void testCorrectprotocolSession() {
 
-		protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
+		try {
+			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		Assert.assertNotNull(protocolSession);
 	}
 
 	@Test
-	public void testConnection() throws ProtocolException {
-		protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
-		// String exit = (String) protocolSession.getSessionContext().getSessionParameters().get("protocol.uri");
-		String s = protocolSession.getStatus().toString();
-		log.debug(s);
-		protocolSession.connect();
-		s = protocolSession.getStatus().toString();
-		log.debug(s);
+	public void testConnection() {
+		try {
+			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
+			// String exit = (String) protocolSession.getSessionContext().getSessionParameters().get("protocol.uri");
+			String s = protocolSession.getStatus().toString();
+			log.debug(s);
+			protocolSession.connect();
+			s = protocolSession.getStatus().toString();
+			log.debug(s);
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	@Test
-	public void testKeepalive() throws ProtocolException {
+	public void testKeepalive() {
 
-		protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
-		protocolSession.connect();
-		Query queryKeepAlive = QueryFactory.newKeepAlive();
-		queryKeepAlive.setMessageId("1");
-		Reply reply = (Reply) protocolSession.sendReceive(queryKeepAlive);
-		if (reply.containsErrors()) {
-			printErrors(reply.getErrors());
-			fail("The response received errors");
+		try {
+			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
+			protocolSession.connect();
+			Query queryKeepAlive = QueryFactory.newKeepAlive();
+			queryKeepAlive.setMessageId("1");
+			Reply reply = (Reply) protocolSession.sendReceive(queryKeepAlive);
+			if (reply.containsErrors()) {
+				printErrors(reply.getErrors());
+				fail("The response received errors");
+			}
+			protocolSession.disconnect();
+		} catch (ProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		protocolSession.disconnect();
+
 	}
 
 	private void printErrors(Vector<Error> errors) {

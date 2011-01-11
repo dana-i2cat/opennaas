@@ -8,8 +8,9 @@ import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 import net.i2cat.netconf.rpc.Reply;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,24 +33,23 @@ public class NetconfProtocolSessionTest {
 	// ProtocolCapabilityClient protocolClient = null;
 	private static NetconfProtocolSession	netconfProtocolSession	= null;
 
-	@Before
-	public void setup() throws ProtocolException {
+	@BeforeClass
+	public static void setup() throws ProtocolException {
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
+		protocolSessionContext.addParameter("protocol.uri", "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
 		try {
 			netconfProtocolSession = new NetconfProtocolSession(protocolSessionContext, "1");
 			netconfProtocolSession.connect();
 		} catch (ProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-
 		}
 
 	}
 
-	@After
-	public void close() {
+	@AfterClass
+	public static void close() {
 
 		try {
 			netconfProtocolSession.disconnect();
@@ -67,18 +67,13 @@ public class NetconfProtocolSessionTest {
 		// netconfProtocolSession.asyncSend(queryKeepAlive);
 
 		Query queryKeepAlive = QueryFactory.newKeepAlive();
-
 		queryKeepAlive.setMessageId("1");
-
-		log.debug(queryKeepAlive.toXML());
-
 		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryKeepAlive);
 		if (reply.containsErrors()) {
 			printErrors(reply.getErrors());
 			fail("The response received errors");
 		}
-
-		// Assert.assertNotNull(protocolResponse);
+		Assert.assertNotNull(reply.getContain());
 	}
 
 	@Test
@@ -86,12 +81,11 @@ public class NetconfProtocolSessionTest {
 
 		Query queryGetConfig = QueryFactory.newGetConfig("running", null, null);
 
-		log.debug(queryGetConfig.toXML());
+		log.debug(queryGetConfig.getOperation().getName());
 
 		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryGetConfig);
 
-		// System.out.println(reply.getContain());
-
+		System.out.println(reply.getContain());
 		if (reply.getContain() == null) {
 			fail("The response received is null");
 		}
@@ -99,7 +93,6 @@ public class NetconfProtocolSessionTest {
 			printErrors(reply.getErrors());
 			fail("The response received errors");
 		}
-
 	}
 
 	private void printErrors(Vector<Error> errors) {

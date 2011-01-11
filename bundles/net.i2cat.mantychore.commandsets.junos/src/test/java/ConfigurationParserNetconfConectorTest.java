@@ -8,7 +8,6 @@ import java.util.HashMap;
 import net.i2cat.mantychore.commandsets.junos.commands.JunosCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRouterParser;
-import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 import net.i2cat.netconf.rpc.Reply;
@@ -33,19 +32,20 @@ public class ConfigurationParserNetconfConectorTest {
 	Logger											log				= LoggerFactory
 																			.getLogger(JunosCommand.class);
 
-	public void setup() {
+	public void setupConnection() {
 		netconfProtocolSessionFactory = new NetconfProtocolSessionFactory();
 		protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
+		protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
+		protocolSession.connect();
 	}
 
 	@Test
-	public void getConfiguretionTest() throws ProtocolException {
-		setup();
-		protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
-		protocolSession.connect();
+	public void getConfigurationCommandTest() throws ProtocolException {
+
 		Query queryGetConfig = QueryFactory.newGetConfig("running", null, null);
 		queryGetConfig.setMessageId("1");
+
 		Reply reply = (Reply) protocolSession.sendReceive(queryGetConfig);
 
 		HashMap<String, Object> interfs = new HashMap<String, Object>();

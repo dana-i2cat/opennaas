@@ -212,9 +212,14 @@ public class NetconfProtocolSession implements IProtocolSession {
 			status = Status.CONNECTED;
 			// log.info("Status " + status.toString());
 		} catch (TransportException e) {
-			new ProtocolException("Could not connect to the managed device", e);
+			ProtocolException te = new ProtocolException("TransportException: " + e.getMessage());
+			te.initCause(e);
+			throw te;
+			// new ProtocolException("Could not connect to the managed device; transport error", e);
 		} catch (NetconfProtocolException e) {
-			new ProtocolException(e);
+			ProtocolException te = new ProtocolException("NetconfProtocolException: " + e.getMessage());
+			te.initCause(e);
+			throw te;
 		}
 	}
 
