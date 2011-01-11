@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <properties>
+	<bundle.namespace>com.iaasframework.capabilities.protocol</bundle.namespace>
+  </properties>
+
+  <parent>
+	<artifactId>capabilities</artifactId>
+	<groupId>com.iaasframework</groupId>
+	<version>1.0.1-SNAPSHOT</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.iaasframework.capabilities</groupId>
+  <artifactId>com.iaasframework.capabilities.protocol</artifactId>
+  <version>1.0.1-SNAPSHOT</version>
+
+  <name>IaaS Framework :: Capabilities :: Protocol Capability</name>
+  <description>IaaS Protocol Capability</description>
+
+  <packaging>bundle</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.iaasframework.core</groupId>
+			<artifactId>com.iaasframework.core.transports</artifactId>
+			<scope>provided</scope>
+			<version>1.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+  <build>
+	<resources>
+		<resource>
+			<directory>src/main/resources</directory>
+		</resource>
+		<resource>
+			<directory>src/test/resources</directory>
+		</resource>
+	</resources>
+	<plugins>
+		<plugin>
+			<groupId>org.ops4j</groupId>
+			<artifactId>maven-pax-plugin</artifactId>
+			<version>1.4</version>
+			<!--
+				| enable improved OSGi compilation support for the bundle
+				life-cycle. | to switch back to the standard bundle life-cycle,
+				move this setting | down to the maven-bundle-plugin section
+			-->
+			<extensions>true</extensions>
+		</plugin>
+		<plugin>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>maven-bundle-plugin</artifactId>
+			<version>2.0.0</version>
+			<!--
+				| the following instructions build a simple set of public/private
+				classes into an OSGi bundle
+			-->
+			<configuration>
+				<instructions>
+					<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+					<Bundle-Version>${pom.version}</Bundle-Version>
+					<Bundle-Activator>com.iaasframework.capabilities.protocol.Activator</Bundle-Activator>
+					<!--
+						| assume public classes are in the top package, and private
+						classes are under ".internal"
+					-->
+					<Export-Package>com.iaasframework.capabilities.protocol*;version="${pom.version}"</Export-Package>
+					<Import-Package>!${bundle.namespace}.*,
+						org.slf4j;version="1.5.6",
+						javax.jms,
+						org.osgi.service.command,
+						com.iaasframework.resources.core*;version=${pom.version},
+						com.iaasframework.core.transports*;version=${pom.version},
+						*</Import-Package>
+					<DynamicImport-Package>*</DynamicImport-Package>
+				</instructions>
+			</configuration>
+		</plugin>
+	</plugins>
+  </build>
+
+</project>
