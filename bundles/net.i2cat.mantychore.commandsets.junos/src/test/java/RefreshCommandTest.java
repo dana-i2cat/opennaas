@@ -1,4 +1,6 @@
 import java.net.URI;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.List;
 
 import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
@@ -27,6 +29,31 @@ public class RefreshCommandTest {
 	Logger	log	= LoggerFactory
 						.getLogger(RefreshCommandTest.class);
 
+	private void printCLASSPATH() {
+		// Get the System Classloader
+		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+
+		// Get the URLs
+		URL[] urls = ((URLClassLoader) sysClassLoader).getURLs();
+
+		for (int i = 0; i < urls.length; i++) {
+			log.info(urls[i].getFile());
+		}
+
+		final String surefireClassPathPropertyName = "surefire.test.class.path";
+		final String javaClassPathPropertyName = "java.class.path";
+
+		final String surefireClassPath = System
+						.getProperty(surefireClassPathPropertyName);
+		final String javaClassPath = System
+						.getProperty(javaClassPathPropertyName);
+
+		log.info(surefireClassPathPropertyName + "="
+						+ surefireClassPath);
+		log.info(javaClassPathPropertyName + "=" + javaClassPath);
+
+	}
+
 	public class RefreshMockCommand extends RefreshCommand {
 		SessionContext	sessionContext;
 		NetconfSession	session;
@@ -51,6 +78,9 @@ public class RefreshCommandTest {
 		 */
 		public void sendCommandToProtocol(Object command) {
 			try {
+
+				printCLASSPATH();
+
 				sessionContext.setURI(new URI("mock://foo:bar@foo:22/foo"));
 
 				session = new NetconfSession(sessionContext);
@@ -84,20 +114,22 @@ public class RefreshCommandTest {
 
 			refreshCommand.parseResponse(routerModel);
 
-			List<ManagedSystemElement> listManagedSystemElems = routerModel.getManagedSystemElements();
+			List<ManagedSystemElement> listManagedSystemElems = routerModel.getSystemComponents();
 			for (ManagedSystemElement elem : listManagedSystemElems) {
 				EthernetPort ethernet = (EthernetPort) elem;
 				log.info(ethernet.getOtherPortType());
-				for (ProtocolEndpoint protocolEndpoint : ethernet.getProtocolEndpoints()) {
+				for (ProtocolEndpoint protocolEndpoint : ethernet.getPortImplementsEndpoints()) {
 					if (protocolEndpoint instanceof IPProtocolEndpoint) {
-						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) protocolEndpoint;
+						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint)
+								protocolEndpoint;
 						log.info("ipv4: " + ipProtocolEndpoint.getIPv4Address());
 						log.info("ipv6: " + ipProtocolEndpoint.getIPv6Address());
 
 					}
 
 				}
-				List<VLANEndpoint> listVLANs = ethernet.getVLANEndpoints();
+				List<VLANEndpoint> listVLANs = ethernet.getPortImplementsVlans();
+				log.info("size: " + listVLANs.size());
 				for (VLANEndpoint vlanEndpoint : listVLANs) {
 					log.info("vlanID: " + vlanEndpoint.getVlanID());
 

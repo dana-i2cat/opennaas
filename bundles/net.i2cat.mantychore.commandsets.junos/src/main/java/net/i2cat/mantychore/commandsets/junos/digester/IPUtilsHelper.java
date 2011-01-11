@@ -4,14 +4,14 @@ import java.util.regex.Pattern;
 
 public class IPUtilsHelper {
 
-	public static Byte[] parseStrIPToBytesIP(String IP) {
-		Byte[] newIP = new Byte[4];
+	public static short[] parseStrIPToBytesIP(String IP) {
+		short[] newIP = new short[4];
 		String[] splittedIP = IP.split("\\.");
 
-		newIP[0] = new Byte(splittedIP[0]);
-		newIP[1] = new Byte(splittedIP[1]);
-		newIP[2] = new Byte(splittedIP[2]);
-		newIP[3] = new Byte(splittedIP[3]);
+		newIP[0] = Short.parseShort(splittedIP[0]);
+		newIP[1] = Short.parseShort(splittedIP[1]);
+		newIP[2] = Short.parseShort(splittedIP[2]);
+		newIP[3] = Short.parseShort(splittedIP[3]);
 
 		return newIP;
 
@@ -86,16 +86,6 @@ public class IPUtilsHelper {
 					Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
 										+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
 		return IP_PATTERN.matcher(iPaddress).matches();
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String ipAddress = "192.168.1.1";
-		System.out.println("IP to parse: " + ipAddress);
-		int num = parseAddressToInt(ipAddress);
-		System.out.println("IP to parse: " + num);
 	}
 
 }

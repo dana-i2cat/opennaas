@@ -72,8 +72,7 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			ipHeadersFilter.setHdrSrcAddress(IPUtilsHelper.parseStrIPToBytesIP(srcAddress));
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 

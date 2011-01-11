@@ -5,7 +5,7 @@
     <system>
         <host-name>m5c</host-name>
         <root-authentication>
-            <encrypted-password>$1$Ione8UBl$0jTPTIs2w4tzDGtOk1EXN1</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
         </root-authentication>
         <name-server>
             <name>193.10.252.10</name>
@@ -24,7 +24,7 @@
                 <uid>2000</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$mZXyRzP4$a.NsNT0YzDQHwzFuSNvmy/</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -33,7 +33,7 @@
                 <uid>2003</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$y7Trl12p$BgDstcGGkJBria3X/9AZG0</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -41,7 +41,7 @@
                 <uid>2001</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$z2l0BLRM$NrGfmFVRjcS9xIya1TFFT/</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -50,7 +50,7 @@
                 <uid>2004</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$.vVpGhwe$K3fTySI7Pao6AShstwg6.1</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -58,7 +58,7 @@
                 <uid>2006</uid>
                 <class>lrtest</class>
                 <authentication>
-                    <encrypted-password>$1$R4wMaurc$COpv6iu3tVtwZwoktFFP6.</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -67,7 +67,7 @@
                 <uid>2002</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$/tGzc742$jDl.oAY3TbhX.w9EF14XK/</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
             <user>
@@ -76,7 +76,7 @@
                 <uid>2005</uid>
                 <class>super-user</class>
                 <authentication>
-                    <encrypted-password>$1$bWGQ.exp$TRtP1flkWjHNNbgbqKM1L/</encrypted-password>
+                    <encrypted-password>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</encrypted-password>
                 </authentication>
             </user>
         </login>

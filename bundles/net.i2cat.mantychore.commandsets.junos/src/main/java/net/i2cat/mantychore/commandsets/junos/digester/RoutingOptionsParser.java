@@ -78,7 +78,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 		ipNextHop.setIPv4Address(nextHop);
 		try {
 			// adding next hop to the destination address (NextHopIPRoute class)
-			nextHopIPRoute.setRouteUsesEndPoint(ipNextHop);
+			nextHopIPRoute.setRouteUsesEndpoint(ipNextHop);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -93,7 +93,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 			str += "IP adress " + port.getDestinationAddress() + '\n';
 			str += "Mask " + port.getDestinationMask() + '\n';
 			str += "is Static " + String.valueOf(port.isIsStatic()) + '\n';
-			str += "Next hop " + port.getRouteUsesEndPoint().getIPv4Address() + '\n';
+			str += "Next hop " + ((IPProtocolEndpoint) port.getRouteUsesEndpoint()).getIPv4Address() + '\n';
 		}
 		return str;
 	}

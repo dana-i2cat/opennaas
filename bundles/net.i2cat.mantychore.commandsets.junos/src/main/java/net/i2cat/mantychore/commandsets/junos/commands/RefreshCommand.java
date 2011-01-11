@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
-import net.i2cat.mantychore.commandsets.junos.digester.LogicalInterfaceParser;
+import net.i2cat.mantychore.commandsets.junos.digester.IPConfigurationInterfaceParser;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.netconf.rpc.QueryFactory;
 
@@ -21,7 +21,6 @@ import com.iaasframework.capabilities.model.IResourceModel;
 public class RefreshCommand extends JunosCommand {
 
 	public static final String	REFRESH		= "refresh";
-
 	public static final String	TEMPLATE	= "/getconfiguration.vm";
 
 	/** logger **/
@@ -61,9 +60,9 @@ public class RefreshCommand extends JunosCommand {
 
 			HashMap<String, Object> interfs = new HashMap<String, Object>();
 			/* Parse logical interface info */
-			DigesterEngine logicalInterfParser = new LogicalInterfaceParser();
+			DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
 			logicalInterfParser.init();
-			logicalInterfParser.setMapElements(interfs);
+
 			/*
 			 * parse a string to byte array, and it is sent to the
 			 * logicalInterfaceParser
@@ -71,10 +70,12 @@ public class RefreshCommand extends JunosCommand {
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
 
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
+			HashMap<String, Object> interfaces = logicalInterfParser.getMapElements();
 
 			// add to the router model
+
 			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
-				routerModel.addManagedSystemElement((EthernetPort) logicalInterfParser.getMapElements().get(keyInterf));
+				routerModel.setSystemComponent((EthernetPort) logicalInterfParser.getMapElements().get(keyInterf));
 			}
 
 		} catch (IOException e) {
@@ -84,5 +85,4 @@ public class RefreshCommand extends JunosCommand {
 		}
 
 	}
-
 }

@@ -8,7 +8,7 @@ import net.i2cat.mantychore.model.VLANEndpoint;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 
-public class LogicalInterfaceParser extends DigesterEngine {
+public class IPConfigurationInterfaceParser extends DigesterEngine {
 	String			location		= "";
 
 	VLANEndpoint	vlanEndpoint	= null;
@@ -39,27 +39,18 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
 
-			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+			addSetNext("*/interfaces/interface/unit/family", "setPortImplementsEndpoint");
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
 
-			/* VLAN configuration */
-			// addObjectCreate(,
-			// LANEndpoint.class);
-			// addBeanPropertySetter("*/interfaces/interface/unit/vlan-id",
-			// "LANID");
-			// addSetNext("*/interfaces/interface/unit/vlan-id",
-			// "addLANEndpoint");
-			// TODO GET DESCRIPTION?
-			// FIXME IT DON'T GET LANID
 		}
 	}
 
-	public LogicalInterfaceParser() {
+	public IPConfigurationInterfaceParser() {
 		ruleSet = new ParserRuleSet();
 	}
 
-	public LogicalInterfaceParser(String prefix) {
+	public IPConfigurationInterfaceParser(String prefix) {
 		ruleSet = new ParserRuleSet(prefix);
 	}
 
@@ -68,7 +59,7 @@ public class LogicalInterfaceParser extends DigesterEngine {
 
 		/* add new vlan endpoint */
 		if (vlanEndpoint != null) {
-			ethernetPort.addVLANEndpoint(vlanEndpoint);
+			ethernetPort.setPortImplementsVlan(vlanEndpoint);
 			vlanEndpoint = null;
 		}
 
@@ -87,7 +78,6 @@ public class LogicalInterfaceParser extends DigesterEngine {
 		assert !location.equals("") : "LogicalInterfaceParser: location have to be defined";
 		/* fill identifier parameters */
 		ethernetPort.setOtherPortType(location + "." + name);
-
 	}
 
 	public void setLocation(String location) {
@@ -116,8 +106,6 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			String ip = ipv6.split("/")[0];
 			String shortMask = ipv6.split("/")[1];
 			ipProtocolEndpoint.setIPv6Address(ip);
-			// FIXME IT IS NOT POSSIBLE TO SPECIFY MASK?????
-
 			ipProtocolEndpoint.setPrefixLength(Byte.parseByte(shortMask));
 
 		} catch (Exception e) {
@@ -143,8 +131,9 @@ public class LogicalInterfaceParser extends DigesterEngine {
 			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';
-			for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoints()) {
-				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint) protocolEndpoint;
+			for (ProtocolEndpoint protocolEndpoint : port.getPortImplementsEndpoints()) {
+				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+						protocolEndpoint;
 				str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
 				str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
 			}
