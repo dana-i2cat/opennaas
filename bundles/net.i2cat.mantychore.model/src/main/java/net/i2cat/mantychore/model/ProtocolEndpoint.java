@@ -27,7 +27,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	// FIXME
 	public void setPortImplementsEndpoint(LogicalPort logicalPort) {
-		this.link(RouteUsesEndpoint.class, this, logicalPort);
+		this.link(RouteUsesEndpoint.class, logicalPort, this);
 	}
 
 	public List<LogicalPort> getPortImplementsEndpoints() {
@@ -43,7 +43,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	// FIXME
 	public void setRouteUsesEndpoint(NextHopRoute nextHopRoute) {
-		this.link(RouteUsesEndpoint.class, this, nextHopRoute);
+		this.link(RouteUsesEndpoint.class, nextHopRoute, this);
 	}
 
 	public List<NextHopRoute> getRouteUsesEndpoints() {

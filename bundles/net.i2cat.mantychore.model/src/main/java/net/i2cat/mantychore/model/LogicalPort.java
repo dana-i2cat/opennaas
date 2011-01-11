@@ -25,16 +25,32 @@ import javax.persistence.Entity;
 public class LogicalPort extends LogicalDevice implements Serializable {
 
 	// FIXME
-	public void setPortImplementsEndpoint(LogicalPort logicalPort) {
-		this.link(PortImplementsEndpoint.class, this, logicalPort);
+	public void setPortImplementsEndpoint(ProtocolEndpoint protocolEndpoint) {
+		this.link(PortImplementsEndpoint.class, this, protocolEndpoint);
 	}
 
 	public List<ProtocolEndpoint> getPortImplementsEndpoints() {
-		return (List<ProtocolEndpoint>) this.getFromAssociatedElementsByType(PortImplementsEndpoint.class);
+		return (List<ProtocolEndpoint>) this.getToAssociatedElementsByType(PortImplementsEndpoint.class);
 	}
 
 	public boolean removePortImplementsEndpoint() {
-		Association assoc = this.getToAssociationByElement(this);
+		Association assoc = this.getFromAssociationByElement(this);
+		if (assoc == null)
+			return false;
+		return assoc.unlink();
+	}
+
+	// FIXME
+	public void setPortImplementsVlan(VLANEndpoint vlanEndpoint) {
+		this.link(PortImplementsVlan.class, this, vlanEndpoint);
+	}
+
+	public List<VLANEndpoint> getPortImplementsVlans() {
+		return (List<VLANEndpoint>) this.getToAssociatedElementsByType(PortImplementsVlan.class);
+	}
+
+	public boolean removePortImplementsVlan() {
+		Association assoc = this.getFromAssociationByElement(this);
 		if (assoc == null)
 			return false;
 		return assoc.unlink();

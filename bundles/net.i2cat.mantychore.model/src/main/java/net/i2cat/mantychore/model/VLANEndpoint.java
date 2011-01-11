@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 
@@ -27,6 +28,22 @@ import javax.persistence.Entity;
  */
 @Entity
 public class VLANEndpoint extends ProtocolEndpoint implements Serializable {
+
+	// FIXME
+	public void setPortImplementsVlan(LogicalPort logicalPort) {
+		this.link(PortImplementsVlan.class, logicalPort, this);
+	}
+
+	public List<LogicalPort> getPortImplementsVlans() {
+		return (List<LogicalPort>) this.getFromAssociatedElementsByType(PortImplementsVlan.class);
+	}
+
+	public boolean removePortImplementsVlan() {
+		Association assoc = this.getToAssociationByElement(this);
+		if (assoc == null)
+			return false;
+		return assoc.unlink();
+	}
 
 	private int	vlanID;
 

@@ -30,6 +30,7 @@
 			<artifactId>com.iaasframework.capabilities.model</artifactId>
 		</dependency>
 		
+		
 		<!--	
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
@@ -55,13 +56,30 @@
 			<resource>
 				<directory>src/main/resources</directory>
 			</resource>
-			
+			<resource>
+				<directory>src/test/resources</directory>
+			</resource>
 			<!--
 				| example additional resource entries, useful when building Eclipse
 				RCP applications
 			-->
 		</resources>
 		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>						
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>

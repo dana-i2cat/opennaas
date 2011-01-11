@@ -41,7 +41,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	}
 
 	public boolean removeRouteUsesEndpoint() {
-		Association assoc = this.getToAssociationByElement(this);
+		Association assoc = this.getFromAssociationByElement(this);
 		if (assoc == null)
 			return false;
 		return assoc.unlink();
