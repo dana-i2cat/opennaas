@@ -83,7 +83,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 		VelocityEngine velocityEngine = new VelocityEngine(template, params);
 		String command = velocityEngine.mergeTemplate();
 
-		log.debug(command);
+		//log.debug(command);
 		return command;
 
 	}

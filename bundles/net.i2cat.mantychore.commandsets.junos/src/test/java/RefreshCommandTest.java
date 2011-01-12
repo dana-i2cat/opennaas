@@ -79,9 +79,9 @@ public class RefreshCommandTest {
 		public void sendCommandToProtocol(Object command) {
 			try {
 
-				printCLASSPATH();
+				// printCLASSPATH();
 
-				sessionContext.setURI(new URI("mock://foo:bar@foo:22/foo"));
+				sessionContext.setURI(new URI("mock://foo:boo@testing.default.net:22"));
 
 				session = new NetconfSession(sessionContext);
 				session.connect();
@@ -114,11 +114,12 @@ public class RefreshCommandTest {
 
 			refreshCommand.parseResponse(routerModel);
 
-			List<ManagedSystemElement> listManagedSystemElems = routerModel.getSystemComponents();
+			List<ManagedSystemElement> listManagedSystemElems = routerModel.getManagedSystemElements();
 			for (ManagedSystemElement elem : listManagedSystemElems) {
 				EthernetPort ethernet = (EthernetPort) elem;
 				log.info(ethernet.getOtherPortType());
-				for (ProtocolEndpoint protocolEndpoint : ethernet.getPortImplementsEndpoints()) {
+
+				for (ProtocolEndpoint protocolEndpoint : ethernet.getProtocolEndpoint()) {
 					if (protocolEndpoint instanceof IPProtocolEndpoint) {
 						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint)
 								protocolEndpoint;
@@ -126,15 +127,12 @@ public class RefreshCommandTest {
 						log.info("ipv6: " + ipProtocolEndpoint.getIPv6Address());
 
 					}
+					if (protocolEndpoint instanceof VLANEndpoint) {
+						VLANEndpoint vlanEndpoint = (VLANEndpoint) protocolEndpoint;
+						log.info("vlanID: " + vlanEndpoint.getVlanID());
+					}
 
 				}
-				List<VLANEndpoint> listVLANs = ethernet.getPortImplementsVlans();
-				log.info("size: " + listVLANs.size());
-				for (VLANEndpoint vlanEndpoint : listVLANs) {
-					log.info("vlanID: " + vlanEndpoint.getVlanID());
-
-				}
-
 			}
 
 		} catch (CommandException e) {

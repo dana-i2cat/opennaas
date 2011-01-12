@@ -39,7 +39,7 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
 
-			addSetNext("*/interfaces/interface/unit/family", "setPortImplementsEndpoint");
+			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
 
@@ -59,7 +59,9 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 
 		/* add new vlan endpoint */
 		if (vlanEndpoint != null) {
-			ethernetPort.setPortImplementsVlan(vlanEndpoint);
+			ethernetPort.addProtocolEndpoint(vlanEndpoint);
+
+			// setPortImplementsVlan(vlanEndpoint);
 			vlanEndpoint = null;
 		}
 
@@ -131,7 +133,7 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';
-			for (ProtocolEndpoint protocolEndpoint : port.getPortImplementsEndpoints()) {
+			for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
 				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
 						protocolEndpoint;
 				str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
