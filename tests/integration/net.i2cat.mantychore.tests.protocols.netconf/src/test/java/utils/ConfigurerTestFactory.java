@@ -116,12 +116,14 @@ public class ConfigurerTestFactory {
 
 	public static Option[] newProtocolSessionManagerTest() {
 
-//		Option[] optsSimpleTest = newSimpleTest();
-//		Option[] opts_with_repos = combine(optsSimpleTest, REPOSITORIES); // repositories
+		// Option[] optsSimpleTest = newSimpleTest();
+		// Option[] opts_with_repos = combine(optsSimpleTest, REPOSITORIES); //
+		// repositories
 
 		Option[] allOpts = combine(newServiceMixTest()
-				, mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.protocolsessionmanager") // for
-		);
+				, mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.protocolsessionmanager").versionAsInProject()
+				// for
+				);
 		return allOpts;
 	}
 }
