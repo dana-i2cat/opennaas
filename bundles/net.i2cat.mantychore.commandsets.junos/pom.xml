@@ -26,7 +26,14 @@
 
 
 
+<!--  specify the last version from xerces-impl to work with the digester parser -->
   <dependencies>
+  		<dependency>
+		    <groupId>org.bluestemsoftware.open.maven.tparty</groupId>
+		    <artifactId>xerces-impl</artifactId>
+		    <version>2.9.0</version>
+		</dependency>
+  
   
 <!-- IaaS dependencies -->
     <dependency>
@@ -80,7 +87,6 @@
 		<groupId>net.i2cat.netconf</groupId>
 		<artifactId>netconf4j</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<scope>test</scope>
    </dependency>
 
   </dependencies>
