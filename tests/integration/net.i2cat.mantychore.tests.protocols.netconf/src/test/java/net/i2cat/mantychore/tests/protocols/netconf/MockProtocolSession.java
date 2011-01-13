@@ -58,8 +58,9 @@ public class MockProtocolSession implements IProtocolSession {
 	@Override
 	public Object sendReceive(Object inputMessage) throws ProtocolException {
 		String message = (String) inputMessage;
-		log.info(message);
-		log.info("It was sent");
+		System.out.println("---------------------------------------");
+		System.out.println(message);
+		System.out.println("---------------------------> It was sent");
 		return new Boolean(true);
 	}
 

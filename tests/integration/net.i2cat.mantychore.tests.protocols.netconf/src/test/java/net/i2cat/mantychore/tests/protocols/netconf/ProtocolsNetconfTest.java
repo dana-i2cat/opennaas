@@ -1,5 +1,9 @@
 package net.i2cat.mantychore.tests.protocols.netconf;
 
+import java.util.Properties;
+
+import junit.framework.Assert;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -8,12 +12,18 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import utils.ConfigurerTestFactory;
 
+import com.iaasframework.protocolsessionmanager.IProtocolManager;
+import com.iaasframework.protocolsessionmanager.IProtocolSession;
+import com.iaasframework.protocolsessionmanager.IProtocolSessionFactory;
+import com.iaasframework.protocolsessionmanager.IProtocolSessionManager;
 import com.iaasframework.protocolsessionmanager.ProtocolException;
+import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 
 @RunWith(JUnit4TestRunner.class)
 public class ProtocolsNetconfTest {
@@ -35,7 +45,7 @@ public class ProtocolsNetconfTest {
 	public void ListBundles() {
 		log.debug("This is running inside Felix. With all configuration set up like you specified. ");
 		try {
-			Thread.sleep(200000);
+			Thread.sleep(300000);
 			ProtocolException exception = new ProtocolException("");
 		} catch (InterruptedException e) {
 			log.debug(e.getMessage());
@@ -46,57 +56,57 @@ public class ProtocolsNetconfTest {
 
 	}
 
-	//
-	// @Test
-	// public void TestProtocolSessionManager() {
-	//
-	// try {
-	// registerProtocolService(bundleContext);
-	// } catch (InterruptedException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// listBundles(bundleContext);
-	// CapabilityDescriptor descriptor = createProtocolDescriptor();
-	// try {
-	// // IProtocolSessionFactory protocolFactory =
-	// getProtocolFactoryFromOSGiRegistry(descriptor);
-	//
-	// // get the protocol Manager
-	// IProtocolManager protocolManager = (IProtocolManager)
-	// RegistryUtil.getServiceFromRegistry(bundleContext, "IProtocolManager");
-	// try {
-	// // new protocol session manager
-	// protocolManager.createProtocolSessionManager(deviceID);
-	// IProtocolSessionManager protocolSessionManager =
-	// protocolManager.getProtocolSessionManager(deviceID);
-	//
-	// // get the protocolSession for netconf
-	// protocolSessionManager.createProtocolSession(newSessionContextNetconf());
-	//
-	// // the value of PROTOCOL, an identifier. Also it includes a
-	// // boolean
-	// // to blocking or that protocolsession inside the SessionManager
-	// IProtocolSession protocolSession =
-	// protocolSessionManager.getProtocolSession("netconf", false);
-	// Boolean itWasReceived = (Boolean)
-	// protocolSession.sendReceive("I am sending a message");
-	//
-	// Assert.assertTrue(itWasReceived);
-	//
-	// } catch (ProtocolException e) {
-	// log.error(e.getMessage());
-	// Assert.fail();
-	// }
-	//
-	// } catch (CapabilityException e) {
-	// log.error(e.getMessage());
-	// } catch (InvalidSyntaxException e) {
-	// log.error(e.getMessage());
-	// } catch (InterruptedException e) {
-	// log.error(e.getMessage());
-	// }
-	// }
+	@Test
+	public void TestProtocolSessionManager() {
+
+		try {
+			registerProtocolService(bundleContext);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listBundles(bundleContext);
+		try {
+			System.out.println("Starting the test");
+
+			System.out.println("It get our protocolManager");
+			// get the protocol Manager
+
+			ServiceReference serviceReference = bundleContext.getServiceReference(IProtocolManager.class.getName());
+			IProtocolManager protocolManager = (IProtocolManager) bundleContext.getService(serviceReference);
+
+			try {
+				System.out.println("it is creating our protocol Session Manager");
+				// new protocol session manager
+				protocolManager.createProtocolSessionManager(deviceID);
+				IProtocolSessionManager protocolSessionManager =
+						protocolManager.getProtocolSessionManager(deviceID);
+
+				// get the protocolSession for netconf
+				protocolSessionManager.createProtocolSession(newSessionContextNetconf());
+
+				// the value of PROTOCOL, an identifier. Also it includes a
+				// boolean
+				// to blocking or that protocolsession inside the SessionManager
+				IProtocolSession protocolSession =
+						protocolSessionManager.getProtocolSession("netconf", false);
+
+				Boolean itWasReceived = (Boolean)
+						protocolSession.sendReceive("I am sending a message");
+				System.out.println("it received: " + itWasReceived);
+
+				Assert.assertTrue(itWasReceived);
+
+			} catch (ProtocolException e) {
+				e.printStackTrace();
+				System.out.println(e.getMessage());
+				Assert.fail();
+			}
+
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+	}
 
 	private void listBundles(BundleContext bundleContext) {
 		Bundle b = null;
@@ -113,97 +123,31 @@ public class ProtocolsNetconfTest {
 		}
 	}
 
-	//
-	// private void registerProtocolService(BundleContext bundleContext) throws
-	// InterruptedException {
-	//
-	// // IT IS HARDCODED, IT MUST REPLACED FOR THE PROTOCOL NETCONF PROJECT
-	// IProtocolSessionFactory protocolFactory = new MockProtocolFactory();
-	// Properties serviceProperties = new Properties();
-	//
-	// // FIXME TO BE EQUALS WHAT THE PROTOCOL NETCONF PROJECT
-	// serviceProperties.put(ProtocolSessionContext.PROTOCOL, "netconf");
-	// serviceProperties.put(ProtocolSessionContext.PROTOCOL_VERSION, "1.0.0");
-	// bundleContext.registerService(IProtocolSessionFactory.class.getName(),
-	// protocolFactory, serviceProperties);
-	//
-	// }
-	//
-	// private static String PROTOCOL_URI = "protocol.uri";
-	//
-	// private ProtocolSessionContext newSessionContextNetconf() {
-	// ProtocolSessionContext protocolSessionContext = new
-	// ProtocolSessionContext();
-	// protocolSessionContext.addParameter(PROTOCOL_URI, "");
-	// return protocolSessionContext;
-	//
-	// }
-	//
-	// private IProtocolSessionFactory
-	// getProtocolFactoryFromOSGiRegistry(CapabilityDescriptor
-	// capabilityDescriptor)
-	// throws CapabilityException, InvalidSyntaxException, InterruptedException
-	// {
-	// IProtocolSessionFactory protocolFactory = null;
-	// Properties properties =
-	// createProtocolFilterToQueryOSGiRegistry(capabilityDescriptor);
-	// Filter filter =
-	// RegistryUtil.createServiceFilter(IProtocolSessionFactory.class.getName(),
-	// properties);
-	// protocolFactory = (IProtocolSessionFactory)
-	// RegistryUtil.getServiceFromRegistry(
-	// bundleContext, filter);
-	//
-	// return protocolFactory;
-	// }
-	//
-	// private Properties
-	// createProtocolFilterToQueryOSGiRegistry(CapabilityDescriptor
-	// capabilityDescriptor) {
-	// Properties properties = new Properties();
-	// properties.put(ProtocolSessionContext.PROTOCOL,
-	// capabilityDescriptor.getPropertyValue(ProtocolSessionContext.PROTOCOL));
-	// properties.put(ProtocolSessionContext.PROTOCOL_VERSION,
-	// capabilityDescriptor.getPropertyValue(ProtocolSessionContext.PROTOCOL_VERSION));
-	//
-	// return properties;
-	// }
-	//
-	// private CapabilityDescriptor createProtocolDescriptor() {
-	// CapabilityDescriptor capabDescriptor = new CapabilityDescriptor();
-	// /* protocol info */
-	// // Information information = new Information();
-	// // information.setDescription("junos protocol");
-	// // information.setName("junos protocol");
-	// // information.setType(IProtocolConstants.PROTOCOL);
-	// // information.setVersion("1.0.0");
-	// // capabDescriptor.setCapabilityInformation(information);
-	//
-	// List<CapabilityProperty> properties = new
-	// ArrayList<CapabilityProperty>();
-	//
-	// properties.add(newProperty(ProtocolSessionContext.PROTOCOL, "netconf"));
-	// properties.add(newProperty(ProtocolSessionContext.PROTOCOL_VERSION,
-	// "1.0.0"));
-	//
-	// /* netconf parameters */
-	//
-	// capabDescriptor.setCapabilityProperties(properties);
-	//
-	// // capabDescriptor.setId(id);
-	//
-	// return capabDescriptor;
-	//
-	// }
-	//
-	// private CapabilityProperty newProperty(String name, String value) {
-	//
-	// CapabilityProperty property = new CapabilityProperty();
-	// property.setName(name);
-	// property.setValue(value);
-	// return property;
-	// }
-	//
+	private void registerProtocolService(BundleContext bundleContext) throws
+			InterruptedException {
+
+		// IT IS HARDCODED, IT MUST REPLACED FOR THE PROTOCOL NETCONF PROJECT
+		IProtocolSessionFactory protocolFactory = new MockProtocolFactory();
+		Properties serviceProperties = new Properties();
+
+		// FIXME TO BE EQUALS WHAT THE PROTOCOL NETCONF PROJECT
+		serviceProperties.put(ProtocolSessionContext.PROTOCOL, "netconf");
+		serviceProperties.put(ProtocolSessionContext.PROTOCOL_VERSION, "1.0.0");
+		bundleContext.registerService(IProtocolSessionFactory.class.getName(),
+				protocolFactory, serviceProperties);
+
+	}
+
+	private static String	PROTOCOL_URI	= "protocol.uri";
+
+	private ProtocolSessionContext newSessionContextNetconf() {
+		ProtocolSessionContext protocolSessionContext = new
+				ProtocolSessionContext();
+		protocolSessionContext.addParameter(PROTOCOL_URI, "");
+		return protocolSessionContext;
+
+	}
+
 	private static String getStateString(int value) {
 		if (value == Bundle.ACTIVE) {
 			return "ACTIVE";

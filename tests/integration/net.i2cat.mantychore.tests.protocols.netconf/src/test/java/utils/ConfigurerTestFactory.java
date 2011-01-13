@@ -120,10 +120,17 @@ public class ConfigurerTestFactory {
 		// Option[] opts_with_repos = combine(optsSimpleTest, REPOSITORIES); //
 		// repositories
 
-		Option[] allOpts = combine(newServiceMixTest()
-				, mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.protocolsessionmanager").versionAsInProject()
+		Option[] allOpts = newServiceMixTest();
+
+		allOpts = combine(allOpts
+				, mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper") // for
+		);
+
+		allOpts = combine(allOpts
+				, mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.protocolsessionmanager")
 				// for
 				);
+
 		return allOpts;
 	}
 }
