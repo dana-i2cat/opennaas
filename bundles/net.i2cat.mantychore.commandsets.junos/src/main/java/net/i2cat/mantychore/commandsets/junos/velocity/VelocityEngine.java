@@ -1,6 +1,5 @@
 package net.i2cat.mantychore.commandsets.junos.velocity;
 
-import java.io.File;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Properties;
@@ -49,7 +48,6 @@ public class VelocityEngine {
 
 		init();
 		String currentPath = System.getProperty("user.dir");
-		log.info("Trying to open " + currentPath + File.separator + template);
 		Template tpl = Velocity.getTemplate(template);
 
 		ctx.put(PARAMS, params);
