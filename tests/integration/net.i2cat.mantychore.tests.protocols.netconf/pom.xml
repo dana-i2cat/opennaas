@@ -29,7 +29,6 @@
 			<groupId>com.iaasframework.core</groupId>
 			<artifactId>com.iaasframework.core.protocolsessionmanager</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
-			<scope>test</scope>
 		</dependency> 
 		
 		
