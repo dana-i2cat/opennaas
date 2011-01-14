@@ -6,8 +6,10 @@ import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPConfigurationInterfaceParser;
+import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.ManagedSystemElement;
+import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.QueryFactory;
 
 import org.apache.velocity.exception.ParseErrorException;
@@ -35,8 +37,8 @@ public class RefreshCommand extends JunosCommand {
 	public void createCommand(Object params) {
 		// the query does not need get config
 		try {
-
-			command = QueryFactory.newGet(netconfXML);
+			command = QueryFactory.newGetConfig("running", null, null);
+			// command = QueryFactory.newGet(netconfXML);
 
 		} catch (ResourceNotFoundException e) {
 			log.error(e.getMessage());
@@ -57,27 +59,43 @@ public class RefreshCommand extends JunosCommand {
 			// physicalInterfParser.configurableParse(response.getMessage());
 			// HashMap<String, Object> interfs =
 			// physicalInterfParser.getMapElements();
+			/* Parse logical interface info */
 
 			HashMap<String, Object> interfs = new HashMap<String, Object>();
-			/* Parse logical interface info */
 			DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
 			logicalInterfParser.init();
-
 			/*
 			 * parse a string to byte array, and it is sent to the logicalInterfaceParser
 			 */
-			log.debug(response.getMessage());
-			ByteArrayInputStream bis = new ByteArrayInputStream(response.getMessage().getBytes("UTF-8"));
-			System.out.println(response.getMessage());
-			logicalInterfParser.configurableParse(bis);
-
+			if (response.getMessage() != null) {
+				logicalInterfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
+			} else {
+				System.out.println("ERROR message NULL");
+			}
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
 			HashMap<String, Object> interfaces = logicalInterfParser.getMapElements();
 
 			// add to the router model
-
 			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
 				routerModel.addManagedSystemElement((ManagedSystemElement) logicalInterfParser.getMapElements().get(keyInterf));
+			}
+
+			/* Parse routing options info */
+			HashMap<String, Object> interfs1 = new HashMap<String, Object>();
+			DigesterEngine routingOptionsfParser = new RoutingOptionsParser();
+			routingOptionsfParser.init();
+
+			if (response.getMessage() != null) {
+				routingOptionsfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
+			} else {
+				System.out.println("ERROR message NULL");
+			}
+
+			HashMap<String, Object> interfaces1 = routingOptionsfParser.getMapElements();
+
+			// add to the router model
+			for (String keyInterf : routingOptionsfParser.getMapElements().keySet()) {
+				routerModel.addNextHopRoute((NextHopRoute) routingOptionsfParser.getMapElements().get(keyInterf));
 			}
 
 		} catch (IOException e) {

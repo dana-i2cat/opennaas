@@ -18,8 +18,39 @@ import java.io.Serializable;
 public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
+	 *This method sets the System into the the Association of the type HostedRoute System will be the "from" and this class will be the "to" If the
+	 * param is null the method will delete the existing Association and don't add a new one.
+	 * 
+	 * Is required to have one, and only one, System
+	 * 
+	 * @param The
+	 *            System to set into the association as a from
+	 * 
+	 */
+	public void setSystem(System system) {
+		Association a = this.getFirstFromAssociationsByType(HostedRoute.class);
+
+		if (a != null)
+			a.unlink();
+
+		if (system != null)
+			HostedRoute.link(system, this);
+	}
+
+	/**
+	 *This method return the firsts System in the HostedRoute association
+	 * 
+	 * @return The System element
+	 */
+	public System getSystem() {
+		return (System) this.getFisrtsFromAssociatedElementByType(HostedRoute.class);
+	}
+
+	/**
 	 *This method sets the ProtocolEndpoint p into the the Association of the type RouteUsesEndpoint ProtocolEndpoint will be the "from" and this
 	 * class will be the "to" If the param is null the method will delete the existing Association and don't add a new one.
+	 * 
+	 * Can have 0 or 1 related protoclEndpoint
 	 * 
 	 * @param The
 	 *            ProtocolEndpoint to set into the association as a from

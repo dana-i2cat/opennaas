@@ -24,8 +24,8 @@ public class RoutingOptionsParser extends DigesterEngine {
 			// FIXME the path pattern can't be global , must distinguish between
 			// routers
 			addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
-			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 1);
-			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 1);
+			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
+			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
 			/* Add NesxtHopIpRoute to the parent */
 			addSetNext("*/routing-options/static/route", "addInterface");
 		}
@@ -77,7 +77,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 		IPProtocolEndpoint ipNextHop = new IPProtocolEndpoint();
 		ipNextHop.setIPv4Address(nextHop);
 		try {
-			// adding next hop to the destination address (NextHopIPRoute class)
+			// adding association to IPProtocolEndpoint
 			nextHopIPRoute.setProtocolEndpoint(ipNextHop);
 		} catch (Exception e) {
 			log.error(e.getMessage());

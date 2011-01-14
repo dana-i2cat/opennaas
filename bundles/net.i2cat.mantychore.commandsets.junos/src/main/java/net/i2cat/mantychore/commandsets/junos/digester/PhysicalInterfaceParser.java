@@ -50,7 +50,6 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			mapElements.remove(location);
 		}
 		mapElements.put(location, ethernetPort);
-
 	}
 
 	/* IPHeadersFilter Parser */

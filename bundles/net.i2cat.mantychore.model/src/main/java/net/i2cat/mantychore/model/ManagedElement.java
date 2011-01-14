@@ -242,7 +242,7 @@ public class ManagedElement implements Serializable {
 
 		for (Association assoc : fromAssociations) {
 			if (clazz.isInstance(assoc))
-				return assoc.getTo();
+				return assoc.getFrom();
 		}
 
 		return element;

@@ -8,6 +8,8 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.ManagedSystemElement;
+import net.i2cat.mantychore.model.NextHopIPRoute;
+import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.netconf.NetconfSession;
@@ -82,10 +84,12 @@ public class RefreshCommandTest {
 				// printCLASSPATH();
 
 				sessionContext.setURI(new URI("mock://foo:boo@testing.default.net:22"));
+				// sessionContext.setURI(new URI("ssh://i2cat:mant6WWe@lola.hea.net:22/netconf"));
 
 				session = new NetconfSession(sessionContext);
 				session.connect();
 				Reply reply = session.sendSyncQuery((Query) command);
+
 				response = new CapabilityMessage();
 				response.setMessage(reply.getContain());
 
@@ -117,29 +121,49 @@ public class RefreshCommandTest {
 			List<ManagedSystemElement> listManagedSystemElems = routerModel.getManagedSystemElements();
 			for (ManagedSystemElement elem : listManagedSystemElems) {
 				EthernetPort ethernet = (EthernetPort) elem;
-				log.info(ethernet.getOtherPortType());
+
+				log.info("Eth interface " + ethernet.getOtherPortType());
 
 				for (ProtocolEndpoint protocolEndpoint : ethernet.getProtocolEndpoint()) {
 					if (protocolEndpoint instanceof IPProtocolEndpoint) {
 						IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint)
 								protocolEndpoint;
-						log.info("ipv4: " + ipProtocolEndpoint.getIPv4Address());
-						log.info("ipv6: " + ipProtocolEndpoint.getIPv6Address());
+						log.info("		ipv4: " + ipProtocolEndpoint.getIPv4Address());
+						log.info("		mask: " + ipProtocolEndpoint.getSubnetMask());
+						log.info("		ipv6: " + ipProtocolEndpoint.getIPv6Address());
 
-					}
-					if (protocolEndpoint instanceof VLANEndpoint) {
+					} else if (protocolEndpoint instanceof VLANEndpoint) {
 						VLANEndpoint vlanEndpoint = (VLANEndpoint) protocolEndpoint;
-						log.info("vlanID: " + vlanEndpoint.getVlanID());
+						log.info("			vlanID: " + vlanEndpoint.getVlanID());
 					}
 
 				}
 			}
 
+			List<NextHopRoute> nexthopList = routerModel.getNextHopRoute();
+			for (NextHopRoute elem : nexthopList) {
+				NextHopIPRoute nexthop = (NextHopIPRoute) elem;
+				log.info("---------------->Routing options");
+				log.info("Destination address   " + nexthop.getDestinationAddress());
+				log.info("Prefix length   " + nexthop.getPrefixLength());
+
+				log.info("Destination Mask   " + nexthop.getDestinationMask());
+				log.info("Is static   " + nexthop.isIsStatic());
+
+				ProtocolEndpoint prot = nexthop.getProtocolEndpoint();
+				Assert.assertNotNull(prot);
+				if (prot instanceof IPProtocolEndpoint) {
+					IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) prot;
+					log.info("					Next hop   " + ipProtocolEndpoint.getIPv4Address());
+				} else {
+					log.info("Error in  nexthop.getProtocolEndpoint(): no IPProtocolEndpoint");
+				}
+
+			}
 		} catch (CommandException e) {
 			Assert.fail(e.getMessage());
 		}
 		log.info("Finished!!!");
 
 	}
-
 }

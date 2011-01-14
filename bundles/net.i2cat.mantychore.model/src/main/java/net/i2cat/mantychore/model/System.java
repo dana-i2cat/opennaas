@@ -24,6 +24,48 @@ import java.util.List;
 public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
+	 * Add a new HostedRoute association between NexthopRoute and this element
+	 * 
+	 * @param NextHopRoute
+	 * @return
+	 */
+	public boolean addNextHopRoute(NextHopRoute nextHopRoute) {
+		if (nextHopRoute == null)
+			return false;
+		return (HostedRoute.link(this, nextHopRoute) != null);
+	}
+
+	/**
+	 * Remove the HostedRoute association (will be deleted) between the NextHopRoute and this element
+	 * 
+	 * @param protocolEndpoint
+	 * @return
+	 */
+	public boolean removeNextHopRoute(NextHopRoute nextHopRoute) {
+
+		if (nextHopRoute == null)
+			return false;
+		Association a = this.getToAssociationByElement(nextHopRoute);
+		if (a == null)
+			return false;
+		else {
+			a.unlink();
+			return true;
+		}
+	}
+
+	/**
+	 * This method returns the list of NextHopRoute from the toAssociation vector that match with the type HostedRoute the association wouldn't be
+	 * deleted
+	 * 
+	 * @return List<NextHopRoute>
+	 */
+	@SuppressWarnings("unchecked")
+	public List<NextHopRoute> getNextHopRoute() {
+		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
+	}
+
+	/**
 	 * Add a new SystemComponent association between managedSystemElement and this element
 	 * 
 	 * @param protocolEndpoint
