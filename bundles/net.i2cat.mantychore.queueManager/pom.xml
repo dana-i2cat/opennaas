@@ -11,8 +11,8 @@
 	</parent>
 
 	<!--  POM id -->
-	<groupId>net.i2cat.mantychore.queueManager</groupId>
-	<artifactId>net.i2cat.mantychore.queueManager</artifactId>
+	<groupId>net.i2cat.mantychore.queuemanager</groupId>
+	<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<!--  Maven configuration -->
@@ -23,28 +23,11 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.iaasframework.capabilities</groupId>
-			<artifactId>com.iaasframework.capabilities.protocol</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.capabilities</groupId>
-			<artifactId>com.iaasframework.capabilities.commandset</artifactId>
-			<version>1.0.1-SNAPSHOT</version>
-		</dependency>
-<!-- 	
-		<dependency>
 			<groupId>com.iaasframework.core</groupId>
-			<artifactId>com.iaasframework.core.transports</artifactId>
-			<scope>provided</scope>
+			<artifactId>com.iaasframework.core.protocolsessionmanager</artifactId>
 			<version>1.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.shell</groupId>
-			<artifactId>org.apache.karaf.shell.console</artifactId>
-			<scope>provided</scope>
-		</dependency>
--->
+		</dependency> 
+
 	</dependencies>
 
 	<build>
