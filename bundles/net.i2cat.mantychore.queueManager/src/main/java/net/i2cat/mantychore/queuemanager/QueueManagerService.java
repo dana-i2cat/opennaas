@@ -2,9 +2,11 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.List;
 
+import com.iaasframework.protocolsessionmanager.ProtocolException;
+
 public interface QueueManagerService {
 
-	public void execute();
+	public void execute() throws ProtocolException;
 
 	public void empty();
 

@@ -19,59 +19,41 @@ public class Action {
 	private String			protocolId;
 	private String			resourceId;
 	private List<Command>	commands	= new ArrayList<Command>();
-	private Command			prepare, commit;
+
+	private Object			modelToUpdate;
 
 	public Action() {
 
 	}
 
-	public void execute() {
+	public void execute() throws ProtocolException {
 
 		MockProtocolWrapper protocolWrapper = new MockProtocolWrapper();
 		IProtocolSession protocol = protocolWrapper.getProtocolSession(resourceId, protocolId);
-
-		try {
-			sendCommandToProtocol(prepare, protocol);
-		} catch (ProtocolException e1) {
-			e1.printStackTrace();
-			log.error(e1.getMessage());
-
-		}
 
 		for (Command command : commands) {
 			command.initialize();
 			try {
 				sendCommandToProtocol(command, protocol);
 			} catch (ProtocolException e) {
-				// TODO IT CAN NOT WORK
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				log.error(e.getMessage());
+				throw e;
 
 			}
 		}
-
-		try {
-			sendCommandToProtocol(commit, protocol);
-		} catch (ProtocolException e) {
-			// TODO IT CAN NOT WORK
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			log.error(e.getMessage());
-		}
-
 	}
 
 	public void sendCommandToProtocol(Command command, IProtocolSession protocol) throws ProtocolException {
-		command.parseResponse(protocol.sendReceive(command.message()));
+		command.parseResponse(protocol.sendReceive(command.message()), modelToUpdate);
 	}
 
-	public String getNetconfId() {
+	public String getProtocolId() {
 		return protocolId;
 	}
 
-	public void setNetconfId(String netconfId) {
-		this.protocolId = netconfId;
+	public void setProtocolId(String protocolId) {
+		this.protocolId = protocolId;
 	}
 
 	public String getResourceId() {
@@ -90,20 +72,12 @@ public class Action {
 		this.commands = commands;
 	}
 
-	public Command getPrepare() {
-		return prepare;
+	public Object getModelToUpdate() {
+		return modelToUpdate;
 	}
 
-	public void setPrepare(Command prepare) {
-		this.prepare = prepare;
-	}
-
-	public Command getCommit() {
-		return commit;
-	}
-
-	public void setCommit(Command commit) {
-		this.commit = commit;
+	public void setModelToUpdate(Object modelToUpdate) {
+		this.modelToUpdate = modelToUpdate;
 	}
 
 }

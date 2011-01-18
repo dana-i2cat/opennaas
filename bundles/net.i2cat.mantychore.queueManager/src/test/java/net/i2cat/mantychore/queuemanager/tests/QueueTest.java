@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.iaasframework.protocolsessionmanager.ProtocolException;
+
 public class QueueTest {
 
 	static Logger	log	= LoggerFactory
@@ -43,7 +45,7 @@ public class QueueTest {
 		log.info("Creating commands");
 		Command command1 = new MockCommand();
 		command1.setCommandId("prepare");
-		action.setPrepare(command1);
+		commands.add(command1);
 
 		Command command2 = new MockCommand();
 		command2.setCommandId("command1");
@@ -56,7 +58,7 @@ public class QueueTest {
 
 		Command command4 = new MockCommand();
 		command4.setCommandId("commit");
-		action.setCommit(command4);
+		commands.add(command4);
 
 		log.info("executing...");
 		queueManager.queueAction(action);
@@ -69,7 +71,13 @@ public class QueueTest {
 			Assert.fail("Ups, the commands disappeared");
 		}
 
-		queueManager.execute();
+		try {
+			queueManager.execute();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
+		}
 
 		for (Interface interf : interfaces) {
 			log.info("interface");
