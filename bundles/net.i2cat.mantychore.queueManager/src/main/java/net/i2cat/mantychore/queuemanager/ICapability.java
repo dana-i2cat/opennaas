@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.queuemanager;
 
-public interface Capability {
+public interface ICapability {
 	public void handleMessage(String message);
 
 }

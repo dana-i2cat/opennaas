@@ -6,7 +6,7 @@ import java.util.List;
 import net.i2cat.mantychore.queuemanager.Action;
 import net.i2cat.mantychore.queuemanager.Command;
 import net.i2cat.mantychore.queuemanager.QueueManagerFactory;
-import net.i2cat.mantychore.queuemanager.QueueManagerService;
+import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.mantychore.queuemanager.mock.Interface;
 import net.i2cat.mantychore.queuemanager.mock.MockCommand;
 
@@ -29,7 +29,7 @@ public class QueueTest {
 
 		log.info("Calling queue factory");
 		QueueManagerFactory queueFactory = new QueueManagerFactory();
-		QueueManagerService queueManager = queueFactory.createQueueManager(resourceId);
+		IQueueManagerService queueManager = queueFactory.createQueueManager(resourceId);
 
 		log.info("Creating action");
 

@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import com.iaasframework.protocolsessionmanager.ProtocolException;
 
-public class QueueManager implements Capability, QueueManagerService {
+public class QueueManager implements ICapability, IQueueManagerService {
 
 	private String	resourceId	= "";
 

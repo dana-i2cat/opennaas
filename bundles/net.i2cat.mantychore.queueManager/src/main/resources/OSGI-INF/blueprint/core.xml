@@ -18,32 +18,17 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
 	<!-- Factory that creates protocol capabilities -->
-	<bean  id="queueManagerCapabilityFactory"
-		class="net.i2cat.mantychore.queueManager.QueueManagerCapabilityFactory" />
+	<bean  id="queueManagerFactory"
+		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" />
 
-	<!-- Register the factory as an OSGi Service -->
-	<service ref="queueManagerCapabilityFactory"
-		interface="com.iaasframework.resources.core.capability.ICapabilityFactory">
-	 	<service-properties>
-			<entry key="capability" value="queue" />
-			<entry key="capability.version" value="1.0.0" />
-		</service-properties>
-	</service>
 	
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="queueManagerService"
-		interface="net.i2cat.mantychore.queueManager.IQueueManagerService">
+	<service ref="queueManagerFactory"
+		interface="net.i2cat.mantychore.queuemanager.IQueueManagerFactory">
 	 	<service-properties>
 			<entry key="capability" value="queue" />
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
 	</service>
 
-	<!-- Provide commands to the Karaf shell - ->
-	<command-bundle xmlns="http://felix.apache.org/karaf/xmlns/shell/v1.0.0">
-		<command name="iaas/protocol">
-			<action	class="com.iaasframework.capabilities.protocol.shell.SendMessageToProtocolCommand" />
-		</command>
-	</command-bundle>
-	-->
 </blueprint>

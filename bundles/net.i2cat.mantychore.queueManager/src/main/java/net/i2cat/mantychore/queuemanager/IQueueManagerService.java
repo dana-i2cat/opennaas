@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.iaasframework.protocolsessionmanager.ProtocolException;
 
-public interface QueueManagerService {
+public interface IQueueManagerService {
 
 	public void execute() throws ProtocolException;
 
