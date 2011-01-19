@@ -3,6 +3,9 @@ import static org.junit.Assert.fail;
 import java.util.Vector;
 
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
@@ -14,9 +17,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.protocolsessionmanager.IProtocolSession;
-import com.iaasframework.protocolsessionmanager.ProtocolException;
-import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 
 public class NetconfProtocolSessionFactoryTest {
@@ -53,7 +53,8 @@ public class NetconfProtocolSessionFactoryTest {
 	public void testConnection() {
 		try {
 			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
-			// String exit = (String) protocolSession.getSessionContext().getSessionParameters().get("protocol.uri");
+			// String exit = (String)
+			// protocolSession.getSessionContext().getSessionParameters().get("protocol.uri");
 			String s = protocolSession.getStatus().toString();
 			log.debug(s);
 			protocolSession.connect();

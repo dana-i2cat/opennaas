@@ -3,6 +3,9 @@ import static org.junit.Assert.fail;
 import java.util.Vector;
 
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
@@ -15,9 +18,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.protocolsessionmanager.IProtocolSession;
-import com.iaasframework.protocolsessionmanager.ProtocolException;
-import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
 
 public class NetconfProtocolSessionTest {
@@ -63,7 +63,8 @@ public class NetconfProtocolSessionTest {
 	@Test
 	public void KeepAliveTest() throws ProtocolException {
 
-		// Object protocolResponse = netconfProtocolSession.sendReceive(queryKeepAlive);
+		// Object protocolResponse =
+		// netconfProtocolSession.sendReceive(queryKeepAlive);
 		// netconfProtocolSession.asyncSend(queryKeepAlive);
 
 		Query queryKeepAlive = QueryFactory.newKeepAlive();
