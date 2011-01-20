@@ -2,12 +2,18 @@ package net.i2cat.mantychore.queuemanager;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.iaasframework.protocolsessionmanager.IProtocolManager;
+import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 
 public class ProtocolNetconfWrapper {
 	IProtocolManager	protocolManager;
 	BundleContext		bundleContext;
+
+	static Logger		log	= LoggerFactory
+									.getLogger(ProtocolNetconfWrapper.class);
 
 	public ProtocolNetconfWrapper(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
@@ -25,8 +31,7 @@ public class ProtocolNetconfWrapper {
 	// try {
 	// protocolManager.createProtocolSessionManager(resourceID);
 	// } catch (ProtocolException e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
+	// log.error(e.getMessage());
 	// }
 	// IProtocolSessionManager protocolSessionManager =
 	// protocolManager.getProtocolSessionManager(resourceID);
@@ -41,10 +46,10 @@ public class ProtocolNetconfWrapper {
 	// protocolSessionManager.getProtocolSession(protocolID, false);
 	//
 	// }
-	//
-	// private ProtocolSessionContext newSessionContextNetconf() {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
+
+	private ProtocolSessionContext newSessionContextNetconf() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
