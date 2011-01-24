@@ -72,4 +72,10 @@ public interface IProtocolSessionManager {
 	 */
 	public Set<String> getAllProtocolSessions();
 
+	/* Operations for pool pattern */
+
+	public String checkOut(ProtocolSessionContext protocolSessionContext) throws ProtocolException;
+
+	public void checkIn(String sessionID) throws ProtocolException;
+
 }

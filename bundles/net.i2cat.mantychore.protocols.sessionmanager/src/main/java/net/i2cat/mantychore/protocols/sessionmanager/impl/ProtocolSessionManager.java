@@ -53,10 +53,10 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		/* Active listener */
 		protocolSession.registerProtocolSessionListener(this, this, sessionID);
-
 		protocolSessions.put(sessionID, new ProtocolPooled(protocolSession, now));
-
 		protocolSessionContexts.put(sessionID, protocolSessionContext);
+		protocolSession.connect();
+
 		return sessionID;
 	}
 
@@ -75,6 +75,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 			}
 		}
 
+		// FIXME EXIST A BETTER OPTION??
 		return null;
 	}
 
@@ -96,6 +97,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		IProtocolSession protocolSession = protocolSessions.get(sessionID).getProtocolSession();
 
+		/* disconnect the session */
 		if (protocolSession.getStatus().equals(Status.CONNECTED)) {
 			protocolSession.disconnect();
 		}
@@ -183,7 +185,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	private static long	expirationTime	= 300 * 1000;	// 1000 (1 milisec)
 
-	public synchronized IProtocolSession checkOut(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+	public synchronized String checkOut(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		long now = System.currentTimeMillis();
 		if (protocolSessions.size() > 0) {
 			Iterator<String> sessionIDs = protocolSessions.keySet().iterator();
@@ -195,14 +197,14 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 				} else {
 					if (validateProtocolSession(protocolPooled, protocolSessionContext, sessionID)) {
 						protocolPooled.setTimeToExpire(now);
-						return getProtocolSession(sessionID, true);
+						return sessionID;
 					}
 				}
 			}
 		}
+
 		// no objects available, create a new one
-		String sessionID = createProtocolSession(protocolSessionContext);
-		return getProtocolSession(sessionID, true);
+		return createProtocolSession(protocolSessionContext);
 
 	}
 
