@@ -27,9 +27,7 @@ public class SessionManagerTest {
 	public void prepareFactory() {
 		try {
 			ProtocolManager protocolManager = new ProtocolManager();
-			String idProtocolSessionManager;
-
-			idProtocolSessionManager = protocolManager.createProtocolSessionManager(deviceID);
+			String idProtocolSessionManager = protocolManager.createProtocolSessionManager(deviceID);
 			protocolSessionManager = protocolManager.getProtocolSessionManager(idProtocolSessionManager);
 
 			/*

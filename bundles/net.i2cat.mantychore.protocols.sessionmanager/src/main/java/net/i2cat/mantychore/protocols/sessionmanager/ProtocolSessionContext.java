@@ -15,6 +15,7 @@ import java.util.Map.Entry;
  */
 public class ProtocolSessionContext {
 
+	public static final String	PROTOCOL_URI		= "protocol.uri";
 	public static final String	PROTOCOL			= "protocol";
 	public static final String	PROTOCOL_VERSION	= "protocol.version";
 	public static final String	KEEP_ALIVE			= "protocol.keepAlive";
