@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.queuemanager.mock;
 
-import com.iaasframework.protocolsessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
 
 public class MockProtocolWrapper {
 

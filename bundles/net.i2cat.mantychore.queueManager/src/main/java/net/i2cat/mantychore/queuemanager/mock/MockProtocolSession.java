@@ -1,13 +1,13 @@
 package net.i2cat.mantychore.queuemanager.mock;
 
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolMessageFilter;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSessionListener;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.iaasframework.protocolsessionmanager.IProtocolMessageFilter;
-import com.iaasframework.protocolsessionmanager.IProtocolSession;
-import com.iaasframework.protocolsessionmanager.IProtocolSessionListener;
-import com.iaasframework.protocolsessionmanager.ProtocolException;
-import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
 
 public class MockProtocolSession implements IProtocolSession {
 	static Logger	log	= LoggerFactory
@@ -49,12 +49,6 @@ public class MockProtocolSession implements IProtocolSession {
 	}
 
 	@Override
-	public void registerProtocolSessionListener(IProtocolSessionListener arg0, IProtocolMessageFilter arg1) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Object sendReceive(Object inputMessage) throws ProtocolException {
 		String message = (String) inputMessage;
 		log.info("---------------------------------------");
@@ -64,7 +58,13 @@ public class MockProtocolSession implements IProtocolSession {
 	}
 
 	@Override
-	public void unregisterProtocolSessionListener(IProtocolSessionListener arg0) {
+	public void registerProtocolSessionListener(IProtocolSessionListener arg0, IProtocolMessageFilter arg1, String arg2) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void unregisterProtocolSessionListener(IProtocolSessionListener arg0, String arg1) {
 		// TODO Auto-generated method stub
 
 	}

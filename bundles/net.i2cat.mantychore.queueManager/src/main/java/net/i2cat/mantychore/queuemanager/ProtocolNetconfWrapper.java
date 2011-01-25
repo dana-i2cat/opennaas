@@ -1,55 +1,47 @@
 package net.i2cat.mantychore.queuemanager;
 
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolManager;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSessionManager;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.iaasframework.protocolsessionmanager.IProtocolManager;
-import com.iaasframework.protocolsessionmanager.ProtocolSessionContext;
+import com.iaasframework.core.internal.persistence.Activator;
 
 public class ProtocolNetconfWrapper {
-	IProtocolManager	protocolManager;
-	BundleContext		bundleContext;
+	IProtocolSessionManager	protocolSessionManager;
 
-	static Logger		log	= LoggerFactory
-									.getLogger(ProtocolNetconfWrapper.class);
+	public String createProtocolSession(String resourceId, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
-	public ProtocolNetconfWrapper(BundleContext bundleContext) {
-		this.bundleContext = bundleContext;
+		IProtocolManager protocolManager = getOSGiServiceProtocolManager();
+		protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+
+		if (protocolSessionManager == null) {
+			protocolManager.createProtocolSessionManager(resourceId);
+			protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		}
+
+		String sessionId = protocolSessionManager.checkOut(protocolSessionContext);
+
+		return sessionId;
+
 	}
 
-	public void init() {
+	public IProtocolSession getProtocolSession(String sessionId) throws ProtocolException {
+		return protocolSessionManager.getProtocolSession(sessionId, true);
+	}
+
+	public void releaseProtocolSession(String sessionId) throws ProtocolException {
+		protocolSessionManager.checkIn(sessionId);
+	}
+
+	private IProtocolManager getOSGiServiceProtocolManager() {
+		BundleContext bundleContext = Activator.getBundleContext();
 		ServiceReference serviceReference = bundleContext.getServiceReference(IProtocolManager.class.getName());
-		protocolManager = (IProtocolManager) bundleContext.getService(serviceReference);
-
-	}
-
-	// public IProtocolSession getProtocol(String resourceID, String protocolID)
-	// {
-	//
-	// try {
-	// protocolManager.createProtocolSessionManager(resourceID);
-	// } catch (ProtocolException e) {
-	// log.error(e.getMessage());
-	// }
-	// IProtocolSessionManager protocolSessionManager =
-	// protocolManager.getProtocolSessionManager(resourceID);
-	//
-	// // get the protocolSession for netconf
-	// protocolSessionManager.createProtocolSession(newSessionContextNetconf());
-	//
-	// // the value of PROTOCOL, an identifier. Also it includes a
-	// // boolean
-	// // to blocking or that protocolsession inside the SessionManager
-	// IProtocolSession protocolSession =
-	// protocolSessionManager.getProtocolSession(protocolID, false);
-	//
-	// }
-
-	private ProtocolSessionContext newSessionContextNetconf() {
-		// TODO Auto-generated method stub
-		return null;
+		return (IProtocolManager) bundleContext.getService(serviceReference);
 	}
 
 }

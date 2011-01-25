@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.iaasframework.protocolsessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 
 public class QueueManager implements ICapability, IQueueManagerService {
 

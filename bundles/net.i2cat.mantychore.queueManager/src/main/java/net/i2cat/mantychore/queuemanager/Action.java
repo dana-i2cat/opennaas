@@ -3,33 +3,37 @@ package net.i2cat.mantychore.queuemanager;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.queuemanager.mock.MockProtocolWrapper;
+import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.protocolsessionmanager.IProtocolSession;
-import com.iaasframework.protocolsessionmanager.ProtocolException;
-
 public class Action {
 
-	Logger					log			= LoggerFactory
-												.getLogger(Action.class);
+	Logger							log			= LoggerFactory
+														.getLogger(Action.class);
 
-	private String			protocolId;
-	private String			resourceId;
-	private List<Command>	commands	= new ArrayList<Command>();
+	private String					protocolId;
+	private String					resourceId;
+	private List<Command>			commands	= new ArrayList<Command>();
 
-	private Object			modelToUpdate;
+	private Object					modelToUpdate;
 
-	public Action() {
+	private ProtocolSessionContext	protocolSessionContext;
 
+	public Action(ProtocolSessionContext protocolSessionContext) {
+		this.protocolSessionContext = protocolSessionContext;
 	}
 
 	public void execute() throws ProtocolException {
 
-		MockProtocolWrapper protocolWrapper = new MockProtocolWrapper();
-		IProtocolSession protocol = protocolWrapper.getProtocolSession(resourceId, protocolId);
+		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
+
+		/* use pool for get protocol session */
+		String sessionId = protocolWrapper.createProtocolSession(resourceId, protocolSessionContext);
+		IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
 
 		for (Command command : commands) {
 			command.initialize();
@@ -42,6 +46,8 @@ public class Action {
 
 			}
 		}
+		/* restore the connection */
+		protocolWrapper.releaseProtocolSession(sessionId);
 	}
 
 	public void sendCommandToProtocol(Command command, IProtocolSession protocol) throws ProtocolException {

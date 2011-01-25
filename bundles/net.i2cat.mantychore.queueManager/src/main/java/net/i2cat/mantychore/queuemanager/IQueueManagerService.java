@@ -2,7 +2,7 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.List;
 
-import com.iaasframework.protocolsessionmanager.ProtocolException;
+import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 
 public interface IQueueManagerService {
 
