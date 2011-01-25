@@ -17,14 +17,11 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
-
 public class NetconfProtocolSessionFactoryTest {
 	/** The logger **/
 	Logger											log								= LoggerFactory.getLogger(NetconfProtocolSessionTest.class);
 
 	private static NetconfProtocolSessionFactory	netconfProtocolSessionFactory	= null;
-	private CapabilityDescriptor					capabilityDescriptor			= null;
 	private static ProtocolSessionContext			protocolSessionContext			= null;
 	int												counter							= 0;
 	IProtocolSession								protocolSession					= null;
@@ -33,7 +30,7 @@ public class NetconfProtocolSessionFactoryTest {
 	public static void setup() {
 		netconfProtocolSessionFactory = new NetconfProtocolSessionFactory();
 		protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.uri", "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
+		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
 		// "mock://foo:boo@testing.default.net:22"
 	}
 
@@ -43,8 +40,9 @@ public class NetconfProtocolSessionFactoryTest {
 		try {
 			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 		Assert.assertNotNull(protocolSession);
 	}
@@ -61,14 +59,15 @@ public class NetconfProtocolSessionFactoryTest {
 			s = protocolSession.getStatus().toString();
 			log.debug(s);
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 
 	}
 
 	@Test
-	public void testKeepalive() {
+	public void testKeepAlive() {
 
 		try {
 			protocolSession = netconfProtocolSessionFactory.createProtocolSession("1", protocolSessionContext);
@@ -82,8 +81,9 @@ public class NetconfProtocolSessionFactoryTest {
 			}
 			protocolSession.disconnect();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 
 	}

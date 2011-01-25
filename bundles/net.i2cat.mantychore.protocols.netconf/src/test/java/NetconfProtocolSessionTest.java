@@ -18,32 +18,30 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.resources.core.descriptor.CapabilityDescriptor;
-
 public class NetconfProtocolSessionTest {
 	/** The logger **/
-	Logger									log						= LoggerFactory.getLogger(NetconfProtocolSessionTest.class);
+	static Logger							log						= LoggerFactory.getLogger(NetconfProtocolSessionTest.class);
 
-	private CapabilityDescriptor			capabilityDescriptor	= null;
 	int										counter					= 0;
 	IProtocolSession						protocolSession			= null;
-	// ProtocolCapability protocolCapability = null;
+
 	String									resourceId				= "testNetconf";
 
-	// ProtocolCapabilityClient protocolClient = null;
 	private static NetconfProtocolSession	netconfProtocolSession	= null;
 
 	@BeforeClass
 	public static void setup() throws ProtocolException {
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.uri", "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
+		protocolSessionContext.addParameter("protocol.uri", "mock://foo:boo@testing.default.net:22");
 		try {
 			netconfProtocolSession = new NetconfProtocolSession(protocolSessionContext, "1");
 			netconfProtocolSession.connect();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
+
 		}
 
 	}
@@ -54,8 +52,10 @@ public class NetconfProtocolSessionTest {
 		try {
 			netconfProtocolSession.disconnect();
 		} catch (ProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
+
 		}
 	}
 
@@ -86,7 +86,7 @@ public class NetconfProtocolSessionTest {
 
 		Reply reply = (Reply) netconfProtocolSession.sendReceive(queryGetConfig);
 
-		System.out.println(reply.getContain());
+		log.debug(reply.getContain());
 		if (reply.getContain() == null) {
 			fail("The response received is null");
 		}

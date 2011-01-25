@@ -56,9 +56,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);
-			// log.info("netconfSession created");
-			// netconfSession.loadConfiguration(new
-			// PropertiesConfiguration(fileProperties));
 			/* these errors can not happen */
 		} catch (URISyntaxException e) {
 			log.error("Error with a syntaxis");
@@ -71,7 +68,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 	@Override
 	public void asyncSend(Object requestMessage) throws ProtocolException {
-		// TODO Auto-generated method stub
 		// Send a message to the device, and don't wait for the response
 		RPCElement rpcReply = null;
 		try {
@@ -113,9 +109,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 			ProtocolException te = new ProtocolException("TransportException: " + e.getMessage());
 			te.initCause(e);
 			throw te;
-			// new
-			// ProtocolException("Could not connect to the managed device; transport error",
-			// e);
 		} catch (NetconfProtocolException e) {
 			ProtocolException te = new ProtocolException("NetconfProtocolException: " + e.getMessage());
 			te.initCause(e);
