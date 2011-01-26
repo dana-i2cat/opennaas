@@ -70,10 +70,10 @@ public class ConfigurerTestFactory {
 
 	}
 
-	public static long	minInMillis	= 120000;	// 60 secs * 1000 (1 milli)
+	public static long	minInMillis	= 120;	// 120 secs * 1000 (1 milli)
 
 	public static Option[] newSimpleTest() {
-		long waitInMillis = minInMillis * 100;
+		long waitInMillis = minInMillis * 1000;
 		return combine(HELPER_DEFAULT_OPTIONS
 				, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				// bundles
@@ -120,11 +120,7 @@ public class ConfigurerTestFactory {
 		// Option[] opts_with_repos = combine(optsSimpleTest, REPOSITORIES); //
 		// repositories
 
-		Option[] allOpts = newServiceMixTest();
-
-		allOpts = combine(allOpts
-				, mavenBundle().groupId("com.iaasframework.extras").artifactId("com.iaasframework.extras.itesthelper") // for
-		);
+		Option[] allOpts = newSimpleTest();
 
 		allOpts = combine(allOpts
 				, mavenBundle().groupId("com.iaasframework.core").artifactId("com.iaasframework.core.protocolsessionmanager")

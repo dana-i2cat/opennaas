@@ -45,10 +45,10 @@ public class ProtocolsNetconfTest {
 	public void ListBundles() {
 		log.debug("This is running inside Felix. With all configuration set up like you specified. ");
 		try {
-			Thread.sleep(300000);
-			ProtocolException exception = new ProtocolException("");
+			Thread.sleep(30000);
 		} catch (InterruptedException e) {
-			log.debug(e.getMessage());
+			log.error(e.getMessage());
+			Assert.fail();
 		}
 		listBundles(bundleContext);
 
@@ -61,6 +61,7 @@ public class ProtocolsNetconfTest {
 
 		try {
 			registerProtocolService(bundleContext);
+			listBundles(bundleContext);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -104,7 +105,10 @@ public class ProtocolsNetconfTest {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 			log.error(e.getMessage());
+			Assert.fail();
 		}
 	}
 
