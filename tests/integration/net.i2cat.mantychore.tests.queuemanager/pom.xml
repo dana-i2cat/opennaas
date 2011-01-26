@@ -35,6 +35,7 @@
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+			<scope>provided</scope>
 		</dependency> 
 
 	</dependencies>
