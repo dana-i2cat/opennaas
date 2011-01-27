@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.Command;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
-import net.i2cat.mantychore.queuemanager.Action;
-import net.i2cat.mantychore.queuemanager.Command;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.netconf.rpc.Query;
@@ -93,7 +93,7 @@ public class PAXTest extends AbstractIntegrationTest {
 
 	@Test
 	public void testListAction() {
-		log.info("This is running inside Felix. With all configuration set up like you specified. ");
+		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 		try {
 			Thread.sleep(100000);
 		} catch (InterruptedException e) {
@@ -101,20 +101,22 @@ public class PAXTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 		}
 
+		/* list bundles */
 		listBundles();
 
+		/* prepare queue manager test */
 		prepareQueueManagerTest();
 
 		Action action = newAction();
-		queueManager.queueAction(action);
+		queueManager.queueAction(action, newSessionContextNetconf());
 		Action action2 = newAction();
-		queueManager.queueAction(action2);
+		queueManager.queueAction(action2, newSessionContextNetconf());
 		Action action3 = newAction();
-		queueManager.queueAction(action3);
+		queueManager.queueAction(action3, newSessionContextNetconf());
 		Action action4 = newAction();
-		queueManager.queueAction(action4);
+		queueManager.queueAction(action4, newSessionContextNetconf());
 		Action action5 = newAction();
-		queueManager.queueAction(action5);
+		queueManager.queueAction(action5, newSessionContextNetconf());
 
 		/* ------------------------ */
 
@@ -138,7 +140,7 @@ public class PAXTest extends AbstractIntegrationTest {
 	}
 
 	private Action newAction() {
-		Action action = new Action(newSessionContextNetconf());
+		Action action = new Action();
 
 		Command command = new MockCommand();
 
@@ -151,7 +153,7 @@ public class PAXTest extends AbstractIntegrationTest {
 
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://foo:bar@foo:22/netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		// ADDED
 		return protocolSessionContext;

@@ -26,16 +26,19 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>net.i2cat.mantychore.commons</groupId>
+			<artifactId>net.i2cat.mantychore.commons</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>net.i2cat.mantychore.protocols</groupId>
 			<artifactId>net.i2cat.mantychore.protocols.sessionmanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency> 
-		
 		<dependency> 		
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-			<scope>provided</scope>
 		</dependency> 
 
 	</dependencies>
