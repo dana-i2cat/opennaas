@@ -1,4 +1,3 @@
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
@@ -14,10 +13,7 @@ import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
-import net.i2cat.netconf.rpc.Query;
-import net.i2cat.netconf.rpc.Reply;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -60,14 +56,14 @@ public class RefreshCommandTest {
 		SessionContext	sessionContext;
 		NetconfSession	session;
 
-		RefreshMockCommand() {
-			try {
-				sessionContext = new SessionContext();
-			} catch (ConfigurationException e) {
-				Assert.fail(e.getMessage());
-
-			}
-		}
+		// RefreshMockCommand() {
+		// try {
+		// sessionContext = new SessionContext();
+		// } catch (ConfigurationException e) {
+		// Assert.fail(e.getMessage());
+		//
+		// }
+		// }
 
 		@Override
 		public void responseReceived(ICapabilityMessage responseMessage) throws CommandException {
@@ -79,24 +75,23 @@ public class RefreshCommandTest {
 		 * Library netconf
 		 */
 		public void sendCommandToProtocol(Object command) {
+
 			try {
 
-				// printCLASSPATH();
-
-				sessionContext.setURI(new URI("mock://foo:boo@testing.default.net:22"));
-				// sessionContext.setURI(new URI("ssh://i2cat:mant6WWe@lola.hea.net:22/netconf"));
-
-				session = new NetconfSession(sessionContext);
-				session.connect();
-				Reply reply = session.sendSyncQuery((Query) command);
+				DummyNetconfConnector dummy = new DummyNetconfConnector("ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
+				String resp = dummy.sendAndReceive(command);
+				log.error("Response " + resp);
 
 				response = new CapabilityMessage();
-				response.setMessage(reply.getContain());
+				response.setMessage(resp);
+				responseReceived(response);
 
-				session.disconnect();
+				Assert.assertNotNull(resp);
+				Assert.assertNotNull(response);
 
 			} catch (Exception e) {
-				Assert.fail(e.getMessage());
+				Assert.fail("Error revicing message " + e.getMessage());
+				log.error("Error reciving message " + e.getMessage());
 			}
 
 		}
@@ -113,6 +108,7 @@ public class RefreshCommandTest {
 
 		try {
 			RefreshMockCommand refreshCommand = new RefreshMockCommand();
+			refreshCommand.initializeCommand("candidate", null, null);
 			refreshCommand.executeCommand();
 			ComputerSystem routerModel = new ComputerSystem();
 

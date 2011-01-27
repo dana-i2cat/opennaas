@@ -7,7 +7,7 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 
 	public static final String	DELETESUBINTERFACE	= "deleteSubinterface";
 
-	public static final String	TEMPLATE			= "/deletesubinterface.vm";
+	public static final String	TEMPLATE			= "/VM_files/deletesubinterface.vm";
 
 	public DeleteSubInterfaceCommand() {
 		super(DELETESUBINTERFACE, TEMPLATE);
@@ -15,9 +15,9 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 	}
 
 	@Override
-	public void createCommand(Object params) {
+	public void createCommand() {
 		// TODO Auto-generated method stub
-
+		// QueryFactory.newDeleteConfig();
 	}
 
 	@Override
@@ -25,5 +25,11 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 		// TODO Auto-generated method stub
 
 	}
+
+	// @Override
+	// public void createCommand(HashMap<String, Object> params) {
+	// // TODO Auto-generated method stub
+	//
+	// }
 
 }

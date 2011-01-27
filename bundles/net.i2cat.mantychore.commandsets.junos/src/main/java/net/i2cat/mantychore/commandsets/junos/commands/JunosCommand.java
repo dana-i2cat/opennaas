@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
-import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.netconf.rpc.Query;
 
 import org.apache.velocity.exception.ParseErrorException;
@@ -24,7 +23,7 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	/** logger **/
 	Logger				log			= LoggerFactory
-														.getLogger(JunosCommand.class);
+																.getLogger(JunosCommand.class);
 	protected Query		command;
 	protected String	netconfXML;
 
@@ -47,19 +46,16 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 	public void initializeCommand(IResourceModel arg0) throws CommandException {
 		// FIXME DO WE WANT TO INITIALIZE OUR COMMAND WITH PARAMETERS FROM
 		// IRESOURCEMODEL??
-		ComputerSystem routerModel = (ComputerSystem) arg0;
-
 	}
 
 	@Override
 	public void executeCommand() throws CommandException {
-
 		try {
 			netconfXML = prepareVelocityCommand();
-			createCommand(params);
-			// THIS METHOD WILL RECEIVE AN OBJECT
+			createCommand();
+			// TODO THIS METHOD WILL RECEIVE AN OBJECT
+			// the commands no implement this method yet (depends on queue)
 			sendCommandToProtocol(command);
-
 		} catch (ResourceNotFoundException e) {
 			log.error(e.getMessage());
 		} catch (ParseErrorException e) {
@@ -72,18 +68,16 @@ public abstract class JunosCommand extends AbstractCommandWithProtocol {
 
 	public void sendCommandToProtocol(Object command) {
 		// TODO Auto-generated method stub
-
 	}
 
-	public abstract void createCommand(Object params);
+	public abstract void createCommand();
 
 	protected String prepareVelocityCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 
 		VelocityEngine velocityEngine = new VelocityEngine(template, params);
 		String command = velocityEngine.mergeTemplate();
-
-		//log.debug(command);
+		log.debug("Command from velocity (netconfXML)" + command);
 		return command;
 
 	}

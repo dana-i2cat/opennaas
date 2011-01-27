@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 
 public class VelocityEngine {
 
-	public static final String	PARAMS			= "params";
+	public static final String	PARAMS			= "param";
 
 	Logger						log				= LoggerFactory
-															.getLogger(VelocityEngine.class);
+																	.getLogger(VelocityEngine.class);
 
 	private static String		VELOCITY_PROPS	= "/velocity.properties";
 	private VelocityContext		ctx;
@@ -27,7 +27,6 @@ public class VelocityEngine {
 	public VelocityEngine(String template, Object params) {
 		this.template = template;
 		this.params = params;
-
 	}
 
 	private void init() throws Exception {
@@ -45,7 +44,6 @@ public class VelocityEngine {
 
 	public String mergeTemplate() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
-
 		init();
 		String currentPath = System.getProperty("user.dir");
 		Template tpl = Velocity.getTemplate(template);

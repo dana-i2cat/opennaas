@@ -1,0 +1,14 @@
+<configuration>
+	<interfaces>
+	#foreach($element in $param)## for each interface in logical router
+		#if("Ethernetport"==$element.getClass().getSimpleName())		
+		<interface>
+		<name>$element.ElementName</name>
+			<unit operation="delete">
+				<name>$element.PortNumber</name>
+			</unit>
+		</interface>
+		#end
+	#end
+	</interfaces>
+</configuration>

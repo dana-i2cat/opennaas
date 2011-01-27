@@ -5,462 +5,403 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class NetworkPort as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * NetworkPortBean Interface. The CIM class NetworkPort is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the NetworkPortBean Interface. The CIM class NetworkPort is described as follows:
  * 
- * NetworkPort is the logical representation of network communications 
- * hardware such as a physical connector and the setup or operation of the 
- * network chips, at the lowest layers of a network stack. 
+ * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the network
+ * chips, at the lowest layers of a network stack.
  */
 public class NetworkPort extends LogicalPort implements Serializable {
 
-    /**
-     * This constructor creates a NetworkPortBeanImpl Class which implements 
-     * the NetworkPortBean Interface, and encapsulates the CIM class 
-     * NetworkPort in a Java Bean. The CIM class NetworkPort is described as 
-     * follows: 
-     * 
-     * NetworkPort is the logical representation of network communications 
-     * hardware such as a physical connector and the setup or operation of 
-     * the network chips, at the lowest layers of a network stack. 
-     */
-    public NetworkPort(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property speed. 
-     */
-    private long speed;
-    /**
-     * This method returns the NetworkPort.speed property value. This property 
-     * is described as follows: 
-     * 
-     * The current bandwidth of the Port in Bits per Second. For ports that 
-     * vary in bandwidth or for those where no accurate estimation can be 
-     * made, this property should contain the nominal bandwidth. 
-     * 
-     * @return	long	current speed property value
-     * @exception	Exception	
-     */
-    public long getSpeed(){
+	/**
+	 * This constructor creates a NetworkPortBeanImpl Class which implements the NetworkPortBean Interface, and encapsulates the CIM class NetworkPort
+	 * in a Java Bean. The CIM class NetworkPort is described as follows:
+	 * 
+	 * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the
+	 * network chips, at the lowest layers of a network stack.
+	 */
+	public NetworkPort() {
+	};
 
-    return this.speed;
-    } // getSpeed
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property speed.
+	 */
+	private long	speed;
 
-    /**
-     * This method sets the NetworkPort.speed property value. This property is 
-     * described as follows: 
-     * 
-     * The current bandwidth of the Port in Bits per Second. For ports that 
-     * vary in bandwidth or for those where no accurate estimation can be 
-     * made, this property should contain the nominal bandwidth. 
-     * 
-     * @param	long	new speed property value
-     * @exception	Exception	
-     */
-    public void setSpeed(long speed) {
+	/**
+	 * This method returns the NetworkPort.speed property value. This property is described as follows:
+	 * 
+	 * The current bandwidth of the Port in Bits per Second. For ports that vary in bandwidth or for those where no accurate estimation can be made,
+	 * this property should contain the nominal bandwidth.
+	 * 
+	 * @return long current speed property value
+	 * @exception Exception
+	 */
+	public long getSpeed() {
 
-    this.speed = speed;
-    } // setSpeed
+		return this.speed;
+	} // getSpeed
 
+	/**
+	 * This method sets the NetworkPort.speed property value. This property is described as follows:
+	 * 
+	 * The current bandwidth of the Port in Bits per Second. For ports that vary in bandwidth or for those where no accurate estimation can be made,
+	 * this property should contain the nominal bandwidth.
+	 * 
+	 * @param long new speed property value
+	 * @exception Exception
+	 */
+	public void setSpeed(long speed) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property otherNetworkPortType. 
-     */
-    @Deprecated    private String otherNetworkPortType;
-    /**
-     * This method returns the NetworkPort.otherNetworkPortType property 
-     * value. This property is described as follows: 
-     * 
-     * Note: The use of this property is deprecated in lieu of 
-     * CIM_LogicalPort.PortType. Deprecated description: The type of module, 
-     * when PortType is set to 1 ("Other".) 
-     * 
-     * @return	String	current otherNetworkPortType property 
-     * value 
-     * @exception	Exception	
-     */
-    @Deprecated
-    public String getOtherNetworkPortType(){
+		this.speed = speed;
+	} // setSpeed
 
-    return this.otherNetworkPortType;
-    } // getOtherNetworkPortType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherNetworkPortType.
+	 */
+	@Deprecated
+	private String	otherNetworkPortType;
 
-    /**
-     * This method sets the NetworkPort.otherNetworkPortType property value. 
-     * This property is described as follows: 
-     * 
-     * Note: The use of this property is deprecated in lieu of 
-     * CIM_LogicalPort.PortType. Deprecated description: The type of module, 
-     * when PortType is set to 1 ("Other".) 
-     * 
-     * @param	String	new otherNetworkPortType property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setOtherNetworkPortType(String otherNetworkPortType) {
+	/**
+	 * This method returns the NetworkPort.otherNetworkPortType property value. This property is described as follows:
+	 * 
+	 * Note: The use of this property is deprecated in lieu of CIM_LogicalPort.PortType. Deprecated description: The type of module, when PortType is
+	 * set to 1 ("Other".)
+	 * 
+	 * @return String current otherNetworkPortType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getOtherNetworkPortType() {
 
-    this.otherNetworkPortType = otherNetworkPortType;
-    } // setOtherNetworkPortType
+		return this.otherNetworkPortType;
+	} // getOtherNetworkPortType
 
+	/**
+	 * This method sets the NetworkPort.otherNetworkPortType property value. This property is described as follows:
+	 * 
+	 * Note: The use of this property is deprecated in lieu of CIM_LogicalPort.PortType. Deprecated description: The type of module, when PortType is
+	 * set to 1 ("Other".)
+	 * 
+	 * @param String
+	 *            new otherNetworkPortType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setOtherNetworkPortType(String otherNetworkPortType) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property portNumber. 
-     */
-    private int portNumber;
-    /**
-     * This method returns the NetworkPort.portNumber property value. This 
-     * property is described as follows: 
-     * 
-     * NetworkPorts are often numbered relative to either a logical module or 
-     * a network element. 
-     * 
-     * @return	int	current portNumber property value
-     * @exception	Exception	
-     */
-    public int getPortNumber(){
+		this.otherNetworkPortType = otherNetworkPortType;
+	} // setOtherNetworkPortType
 
-    return this.portNumber;
-    } // getPortNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property portNumber.
+	 */
+	private int	portNumber;
 
-    /**
-     * This method sets the NetworkPort.portNumber property value. This 
-     * property is described as follows: 
-     * 
-     * NetworkPorts are often numbered relative to either a logical module or 
-     * a network element. 
-     * 
-     * @param	int	new portNumber property value
-     * @exception	Exception	
-     */
-    public void setPortNumber(int portNumber) {
+	/**
+	 * This method returns the NetworkPort.portNumber property value. This property is described as follows:
+	 * 
+	 * NetworkPorts are often numbered relative to either a logical module or a network element.
+	 * 
+	 * @return int current portNumber property value
+	 * @exception Exception
+	 */
+	public int getPortNumber() {
 
-    this.portNumber = portNumber;
-    } // setPortNumber
+		return this.portNumber;
+	} // getPortNumber
 
+	/**
+	 * This method sets the NetworkPort.portNumber property value. This property is described as follows:
+	 * 
+	 * NetworkPorts are often numbered relative to either a logical module or a network element.
+	 * 
+	 * @param int new portNumber property value
+	 * @exception Exception
+	 */
+	public void setPortNumber(int portNumber) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property LinkTechnology. 
-     */
+		this.portNumber = portNumber;
+	} // setPortNumber
 
-    public enum LinkTechnology{
-    UNKNOWN,
-    OTHER,
-    ETHERNET,
-    IB,
-    FC,
-    FDDI,
-    ATM,
-    TOKEN_RING,
-    FRAME_RELAY,
-    INFRARED,
-    BLUETOOTH,
-    WIRELESS_LAN
-    }
-    private LinkTechnology linkTechnology;
-    /**
-     * This method returns the NetworkPort.linkTechnology property value. This 
-     * property is described as follows: 
-     * 
-     * An enumeration of the types of links. When set to 1 ("Other"), the 
-     * related property OtherLinkTechnology contains a string description of 
-     * the type of link. 
-     * 
-     * @return	int	current linkTechnology property value
-     * @exception	Exception	
-     */
-    public LinkTechnology getLinkTechnology(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LinkTechnology.
+	 */
 
-    return this.linkTechnology;
-    } // getLinkTechnology
+	public enum LinkTechnology {
+		UNKNOWN,
+		OTHER,
+		ETHERNET,
+		IB,
+		FC,
+		FDDI,
+		ATM,
+		TOKEN_RING,
+		FRAME_RELAY,
+		INFRARED,
+		BLUETOOTH,
+		WIRELESS_LAN
+	}
 
-    /**
-     * This method sets the NetworkPort.linkTechnology property value. This 
-     * property is described as follows: 
-     * 
-     * An enumeration of the types of links. When set to 1 ("Other"), the 
-     * related property OtherLinkTechnology contains a string description of 
-     * the type of link. 
-     * 
-     * @param	int	new linkTechnology property value
-     * @exception	Exception	
-     */
-    public void setLinkTechnology(LinkTechnology linkTechnology){
+	private LinkTechnology	linkTechnology;
 
-    this.linkTechnology = linkTechnology;
-    } // setLinkTechnology
+	/**
+	 * This method returns the NetworkPort.linkTechnology property value. This property is described as follows:
+	 * 
+	 * An enumeration of the types of links. When set to 1 ("Other"), the related property OtherLinkTechnology contains a string description of the
+	 * type of link.
+	 * 
+	 * @return int current linkTechnology property value
+	 * @exception Exception
+	 */
+	public LinkTechnology getLinkTechnology() {
 
+		return this.linkTechnology;
+	} // getLinkTechnology
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property otherLinkTechnology. 
-     */
-    private String otherLinkTechnology;
-    /**
-     * This method returns the NetworkPort.otherLinkTechnology property value. 
-     * This property is described as follows: 
-     * 
-     * A string value that describes LinkTechnology when it is set to 1, 
-     * "Other". 
-     * 
-     * @return	String	current otherLinkTechnology property value
-     * @exception	Exception	
-     */
-    public String getOtherLinkTechnology(){
+	/**
+	 * This method sets the NetworkPort.linkTechnology property value. This property is described as follows:
+	 * 
+	 * An enumeration of the types of links. When set to 1 ("Other"), the related property OtherLinkTechnology contains a string description of the
+	 * type of link.
+	 * 
+	 * @param int new linkTechnology property value
+	 * @exception Exception
+	 */
+	public void setLinkTechnology(LinkTechnology linkTechnology) {
 
-    return this.otherLinkTechnology;
-    } // getOtherLinkTechnology
+		this.linkTechnology = linkTechnology;
+	} // setLinkTechnology
 
-    /**
-     * This method sets the NetworkPort.otherLinkTechnology property value. 
-     * This property is described as follows: 
-     * 
-     * A string value that describes LinkTechnology when it is set to 1, 
-     * "Other". 
-     * 
-     * @param	String	new otherLinkTechnology property value
-     * @exception	Exception	
-     */
-    public void setOtherLinkTechnology(String otherLinkTechnology) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherLinkTechnology.
+	 */
+	private String	otherLinkTechnology;
 
-    this.otherLinkTechnology = otherLinkTechnology;
-    } // setOtherLinkTechnology
+	/**
+	 * This method returns the NetworkPort.otherLinkTechnology property value. This property is described as follows:
+	 * 
+	 * A string value that describes LinkTechnology when it is set to 1, "Other".
+	 * 
+	 * @return String current otherLinkTechnology property value
+	 * @exception Exception
+	 */
+	public String getOtherLinkTechnology() {
 
+		return this.otherLinkTechnology;
+	} // getOtherLinkTechnology
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property permanentAddress. 
-     */
-    private String permanentAddress;
-    /**
-     * This method returns the NetworkPort.permanentAddress property value. 
-     * This property is described as follows: 
-     * 
-     * PermanentAddress defines the network address that is hardcoded into a 
-     * port. This 'hardcoded' address can be changed using a firmware upgrade 
-     * or a software configuration. When this change is made, the field 
-     * should be updated at the same time. PermanentAddress should be left 
-     * blank if no 'hardcoded' address exists for the NetworkAdapter. 
-     * 
-     * @return	String	current permanentAddress property value
-     * @exception	Exception	
-     */
-    public String getPermanentAddress(){
+	/**
+	 * This method sets the NetworkPort.otherLinkTechnology property value. This property is described as follows:
+	 * 
+	 * A string value that describes LinkTechnology when it is set to 1, "Other".
+	 * 
+	 * @param String
+	 *            new otherLinkTechnology property value
+	 * @exception Exception
+	 */
+	public void setOtherLinkTechnology(String otherLinkTechnology) {
 
-    return this.permanentAddress;
-    } // getPermanentAddress
+		this.otherLinkTechnology = otherLinkTechnology;
+	} // setOtherLinkTechnology
 
-    /**
-     * This method sets the NetworkPort.permanentAddress property value. This 
-     * property is described as follows: 
-     * 
-     * PermanentAddress defines the network address that is hardcoded into a 
-     * port. This 'hardcoded' address can be changed using a firmware upgrade 
-     * or a software configuration. When this change is made, the field 
-     * should be updated at the same time. PermanentAddress should be left 
-     * blank if no 'hardcoded' address exists for the NetworkAdapter. 
-     * 
-     * @param	String	new permanentAddress property value
-     * @exception	Exception	
-     */
-    public void setPermanentAddress(String permanentAddress) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property permanentAddress.
+	 */
+	private String	permanentAddress;
 
-    this.permanentAddress = permanentAddress;
-    } // setPermanentAddress
+	/**
+	 * This method returns the NetworkPort.permanentAddress property value. This property is described as follows:
+	 * 
+	 * PermanentAddress defines the network address that is hardcoded into a port. This 'hardcoded' address can be changed using a firmware upgrade or
+	 * a software configuration. When this change is made, the field should be updated at the same time. PermanentAddress should be left blank if no
+	 * 'hardcoded' address exists for the NetworkAdapter.
+	 * 
+	 * @return String current permanentAddress property value
+	 * @exception Exception
+	 */
+	public String getPermanentAddress() {
 
+		return this.permanentAddress;
+	} // getPermanentAddress
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property networkAddresses. 
-     */
-    private String[] networkAddresses;
-    /**
-     * This method returns the NetworkPort.networkAddresses property value. 
-     * This property is described as follows: 
-     * 
-     * An array of strings that indicates the network addresses for the port.
-     * 
-     * @return	String[]	current networkAddresses property value
-     * @exception	Exception	
-     */
-    public String[] getNetworkAddresses(){
+	/**
+	 * This method sets the NetworkPort.permanentAddress property value. This property is described as follows:
+	 * 
+	 * PermanentAddress defines the network address that is hardcoded into a port. This 'hardcoded' address can be changed using a firmware upgrade or
+	 * a software configuration. When this change is made, the field should be updated at the same time. PermanentAddress should be left blank if no
+	 * 'hardcoded' address exists for the NetworkAdapter.
+	 * 
+	 * @param String
+	 *            new permanentAddress property value
+	 * @exception Exception
+	 */
+	public void setPermanentAddress(String permanentAddress) {
 
-    return this.networkAddresses;
-    } // getNetworkAddresses
+		this.permanentAddress = permanentAddress;
+	} // setPermanentAddress
 
-    /**
-     * This method sets the NetworkPort.networkAddresses property value. This 
-     * property is described as follows: 
-     * 
-     * An array of strings that indicates the network addresses for the port.
-     * 
-     * @param	String[]	new networkAddresses property value
-     * @exception	Exception	
-     */
-    public void setNetworkAddresses(String[] networkAddresses) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property networkAddresses.
+	 */
+	private String[]	networkAddresses;
 
-    this.networkAddresses = networkAddresses;
-    } // setNetworkAddresses
+	/**
+	 * This method returns the NetworkPort.networkAddresses property value. This property is described as follows:
+	 * 
+	 * An array of strings that indicates the network addresses for the port.
+	 * 
+	 * @return String[] current networkAddresses property value
+	 * @exception Exception
+	 */
+	public String[] getNetworkAddresses() {
 
+		return this.networkAddresses;
+	} // getNetworkAddresses
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property fullDuplex. 
-     */
-    private boolean fullDuplex;
-    /**
-     * This method returns the NetworkPort.fullDuplex property value. This 
-     * property is described as follows: 
-     * 
-     * Boolean that indicates that the port is operating in full duplex mode.
-     * 
-     * @return	boolean	current fullDuplex property value
-     * @exception	Exception	
-     */
-    public boolean isFullDuplex(){
+	/**
+	 * This method sets the NetworkPort.networkAddresses property value. This property is described as follows:
+	 * 
+	 * An array of strings that indicates the network addresses for the port.
+	 * 
+	 * @param String
+	 *            [] new networkAddresses property value
+	 * @exception Exception
+	 */
+	public void setNetworkAddresses(String networkAddresses) {
 
-    return this.fullDuplex;
-    } // getFullDuplex
+		this.networkAddresses[this.networkAddresses.length] = networkAddresses;
+	} // setNetworkAddresses
 
-    /**
-     * This method sets the NetworkPort.fullDuplex property value. This 
-     * property is described as follows: 
-     * 
-     * Boolean that indicates that the port is operating in full duplex mode.
-     * 
-     * @param	boolean	new fullDuplex property value
-     * @exception	Exception	
-     */
-    public void setFullDuplex(boolean fullDuplex) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property fullDuplex.
+	 */
+	private boolean	fullDuplex;
 
-    this.fullDuplex = fullDuplex;
-    } // setFullDuplex
+	/**
+	 * This method returns the NetworkPort.fullDuplex property value. This property is described as follows:
+	 * 
+	 * Boolean that indicates that the port is operating in full duplex mode.
+	 * 
+	 * @return boolean current fullDuplex property value
+	 * @exception Exception
+	 */
+	public boolean isFullDuplex() {
 
+		return this.fullDuplex;
+	} // getFullDuplex
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property autoSense. 
-     */
-    private boolean autoSense;
-    /**
-     * This method returns the NetworkPort.autoSense property value. This 
-     * property is described as follows: 
-     * 
-     * A Boolean that indicates whether the NetworkPort is capable of 
-     * automatically determining the speed or other communications 
-     * characteristics of the attached network media. 
-     * 
-     * @return	boolean	current autoSense property value
-     * @exception	Exception	
-     */
-    public boolean isAutoSense(){
+	/**
+	 * This method sets the NetworkPort.fullDuplex property value. This property is described as follows:
+	 * 
+	 * Boolean that indicates that the port is operating in full duplex mode.
+	 * 
+	 * @param boolean new fullDuplex property value
+	 * @exception Exception
+	 */
+	public void setFullDuplex(boolean fullDuplex) {
 
-    return this.autoSense;
-    } // getAutoSense
+		this.fullDuplex = fullDuplex;
+	} // setFullDuplex
 
-    /**
-     * This method sets the NetworkPort.autoSense property value. This 
-     * property is described as follows: 
-     * 
-     * A Boolean that indicates whether the NetworkPort is capable of 
-     * automatically determining the speed or other communications 
-     * characteristics of the attached network media. 
-     * 
-     * @param	boolean	new autoSense property value
-     * @exception	Exception	
-     */
-    public void setAutoSense(boolean autoSense) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property autoSense.
+	 */
+	private boolean	autoSense;
 
-    this.autoSense = autoSense;
-    } // setAutoSense
+	/**
+	 * This method returns the NetworkPort.autoSense property value. This property is described as follows:
+	 * 
+	 * A Boolean that indicates whether the NetworkPort is capable of automatically determining the speed or other communications characteristics of
+	 * the attached network media.
+	 * 
+	 * @return boolean current autoSense property value
+	 * @exception Exception
+	 */
+	public boolean isAutoSense() {
 
+		return this.autoSense;
+	} // getAutoSense
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property supportedMaximumTransmissionUnit. 
-     */
-    private long supportedMaximumTransmissionUnit;
-    /**
-     * This method returns the NetworkPort.supportedMaximumTransmissionUnit 
-     * property value. This property is described as follows: 
-     * 
-     * The maximum transmission unit (MTU) that can be supported.
-     * 
-     * @return	long	current supportedMaximumTransmissionUnit 
-     * property value 
-     * @exception	Exception	
-     */
-    public long getSupportedMaximumTransmissionUnit(){
+	/**
+	 * This method sets the NetworkPort.autoSense property value. This property is described as follows:
+	 * 
+	 * A Boolean that indicates whether the NetworkPort is capable of automatically determining the speed or other communications characteristics of
+	 * the attached network media.
+	 * 
+	 * @param boolean new autoSense property value
+	 * @exception Exception
+	 */
+	public void setAutoSense(boolean autoSense) {
 
-    return this.supportedMaximumTransmissionUnit;
-    } // getSupportedMaximumTransmissionUnit
+		this.autoSense = autoSense;
+	} // setAutoSense
 
-    /**
-     * This method sets the NetworkPort.supportedMaximumTransmissionUnit 
-     * property value. This property is described as follows: 
-     * 
-     * The maximum transmission unit (MTU) that can be supported.
-     * 
-     * @param	long	new supportedMaximumTransmissionUnit property 
-     * value 
-     * @exception	Exception	
-     */
-    public void setSupportedMaximumTransmissionUnit(long 
-	supportedMaximumTransmissionUnit) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property supportedMaximumTransmissionUnit.
+	 */
+	private long	supportedMaximumTransmissionUnit;
 
-    this.supportedMaximumTransmissionUnit = supportedMaximumTransmissionUnit;
-    } // setSupportedMaximumTransmissionUnit
+	/**
+	 * This method returns the NetworkPort.supportedMaximumTransmissionUnit property value. This property is described as follows:
+	 * 
+	 * The maximum transmission unit (MTU) that can be supported.
+	 * 
+	 * @return long current supportedMaximumTransmissionUnit property value
+	 * @exception Exception
+	 */
+	public long getSupportedMaximumTransmissionUnit() {
 
+		return this.supportedMaximumTransmissionUnit;
+	} // getSupportedMaximumTransmissionUnit
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property activeMaximumTransmissionUnit. 
-     */
-    private long activeMaximumTransmissionUnit;
-    /**
-     * This method returns the NetworkPort.activeMaximumTransmissionUnit 
-     * property value. This property is described as follows: 
-     * 
-     * The active or negotiated maximum transmission unit (MTU) that can be 
-     * supported. 
-     * 
-     * @return	long	current activeMaximumTransmissionUnit 
-     * property value 
-     * @exception	Exception	
-     */
-    public long getActiveMaximumTransmissionUnit(){
+	/**
+	 * This method sets the NetworkPort.supportedMaximumTransmissionUnit property value. This property is described as follows:
+	 * 
+	 * The maximum transmission unit (MTU) that can be supported.
+	 * 
+	 * @param long new supportedMaximumTransmissionUnit property value
+	 * @exception Exception
+	 */
+	public void setSupportedMaximumTransmissionUnit(long
+			supportedMaximumTransmissionUnit) {
 
-    return this.activeMaximumTransmissionUnit;
-    } // getActiveMaximumTransmissionUnit
+		this.supportedMaximumTransmissionUnit = supportedMaximumTransmissionUnit;
+	} // setSupportedMaximumTransmissionUnit
 
-    /**
-     * This method sets the NetworkPort.activeMaximumTransmissionUnit property 
-     * value. This property is described as follows: 
-     * 
-     * The active or negotiated maximum transmission unit (MTU) that can be 
-     * supported. 
-     * 
-     * @param	long	new activeMaximumTransmissionUnit property 
-     * value 
-     * @exception	Exception	
-     */
-    public void setActiveMaximumTransmissionUnit(long 
-	activeMaximumTransmissionUnit) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property activeMaximumTransmissionUnit.
+	 */
+	private long	activeMaximumTransmissionUnit;
 
-    this.activeMaximumTransmissionUnit = activeMaximumTransmissionUnit;
-    } // setActiveMaximumTransmissionUnit
+	/**
+	 * This method returns the NetworkPort.activeMaximumTransmissionUnit property value. This property is described as follows:
+	 * 
+	 * The active or negotiated maximum transmission unit (MTU) that can be supported.
+	 * 
+	 * @return long current activeMaximumTransmissionUnit property value
+	 * @exception Exception
+	 */
+	public long getActiveMaximumTransmissionUnit() {
 
+		return this.activeMaximumTransmissionUnit;
+	} // getActiveMaximumTransmissionUnit
 
+	/**
+	 * This method sets the NetworkPort.activeMaximumTransmissionUnit property value. This property is described as follows:
+	 * 
+	 * The active or negotiated maximum transmission unit (MTU) that can be supported.
+	 * 
+	 * @param long new activeMaximumTransmissionUnit property value
+	 * @exception Exception
+	 */
+	public void setActiveMaximumTransmissionUnit(long
+			activeMaximumTransmissionUnit) {
+
+		this.activeMaximumTransmissionUnit = activeMaximumTransmissionUnit;
+	} // setActiveMaximumTransmissionUnit
 
 } // Class NetworkPort

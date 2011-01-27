@@ -3,6 +3,7 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
 import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
+import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
@@ -25,7 +26,10 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
 			addObjectCreate("*/interface-information/physical-interface", EthernetPort.class);
 			addCallMethod("*/interface-information/physical-interface/name", "setOtherPortType", 0);
-			addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
+			// addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
+
+			addMyRule("*/interface-information/physical-interface/link-level-type", "setLinkTechnologyParser", 0);
+			addCallMethod("*/interface-information/physical-interface/mtu", "setSupportedMaximumTransmissionUnit", 0);
 
 			addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 0);
 			addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 0);
@@ -77,6 +81,19 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 	/* Ethernet port Parser */
 	public final static String	FULLDUPLEX	= "Full-duplex";
+
+	public void setLinkTechnologyParser(String linkTechnology) {
+
+		try {
+			EthernetPort ethernetPort = (EthernetPort) peek();
+
+			ethernetPort.setLinkTechnology(LinkTechnology.valueOf(linkTechnology));
+
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+	}
 
 	public void setFullDuplexParser(String fullDuplex) {
 

@@ -11,7 +11,7 @@ public class SetVLANTaggingCommand extends JunosCommand {
 	}
 
 	@Override
-	public void createCommand(Object params) {
+	public void createCommand() {
 		// TODO Auto-generated method stub
 
 	}

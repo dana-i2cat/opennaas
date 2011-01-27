@@ -79,7 +79,10 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 
 		assert !location.equals("") : "LogicalInterfaceParser: location have to be defined";
 		/* fill identifier parameters */
-		ethernetPort.setOtherPortType(location + "." + name);
+		// ethernetPort.setOtherPortType(location + "." + name);
+		ethernetPort.setElementName(location);
+		ethernetPort.setPortNumber(Integer.parseInt(name));
+
 	}
 
 	public void setLocation(String location) {

@@ -10,7 +10,7 @@ public class KeepAliveCommand extends JunosCommand {
 
 	public static final String	KEEPALIVE	= "keepAlive";
 
-	public static final String	TEMPLATE	= "/keepalive.vm";
+	public static final String	TEMPLATE	= "/VM_files/keepalive.vm";
 
 	/** The logger **/
 	Logger						log			= LoggerFactory
@@ -32,7 +32,7 @@ public class KeepAliveCommand extends JunosCommand {
 	}
 
 	@Override
-	public void createCommand(Object params) {
+	public void createCommand() {
 		// It is not necessary to create any command
 	}
 

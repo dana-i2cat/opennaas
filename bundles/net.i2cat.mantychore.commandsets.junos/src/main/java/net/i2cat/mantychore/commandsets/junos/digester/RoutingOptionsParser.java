@@ -27,7 +27,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
 			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
 			/* Add NesxtHopIpRoute to the parent */
-			addSetNext("*/routing-options/static/route", "addInterface");
+			addSetNext("*/routing-options/static/route/next-hop", "addInterface");
 		}
 	}
 

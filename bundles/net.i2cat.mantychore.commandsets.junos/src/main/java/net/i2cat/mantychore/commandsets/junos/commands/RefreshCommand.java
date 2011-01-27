@@ -2,7 +2,6 @@ package net.i2cat.mantychore.commandsets.junos.commands;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPConfigurationInterfaceParser;
@@ -24,7 +23,11 @@ import com.iaasframework.capabilities.model.IResourceModel;
 public class RefreshCommand extends JunosCommand {
 
 	public static final String	REFRESH		= "refresh";
-	public static final String	TEMPLATE	= "/getconfiguration.vm";
+	public static final String	TEMPLATE	= "/VM_files/getconfiguration.vm";
+
+	private String				source		= "running";
+	private String				filter		= null;
+	private String				attrFilter	= null;
 
 	/** logger **/
 	Logger						log			= LoggerFactory
@@ -34,12 +37,19 @@ public class RefreshCommand extends JunosCommand {
 		super(REFRESH, TEMPLATE);
 	}
 
-	public void createCommand(Object params) {
+	public void initializeCommand(String source, String filter, String attrFilter) {
+
+		// Default configuration to refresh is running
+		this.source = (source == null) ? "running" : source;
+		this.filter = filter;
+		this.attrFilter = attrFilter;
+
+	}
+
+	public void createCommand() {
 		// the query does not need get config
 		try {
-			command = QueryFactory.newGetConfig("running", null, null);
-			// command = QueryFactory.newGet(netconfXML);
-
+			command = QueryFactory.newGetConfig(source, filter, attrFilter);
 		} catch (ResourceNotFoundException e) {
 			log.error(e.getMessage());
 		} catch (ParseErrorException e) {
@@ -50,18 +60,10 @@ public class RefreshCommand extends JunosCommand {
 
 	}
 
-	public void parseResponse(ManagedElement model) throws CommandException {
+	public void parseResponse(ManagedElement routermodel) throws CommandException {
 
 		try {
-			/* Parse Physical interface info */
-			// DigesterEngine physicalInterfParser = new
-			// PhysicalInterfaceParser();
-			// physicalInterfParser.configurableParse(response.getMessage());
-			// HashMap<String, Object> interfs =
-			// physicalInterfParser.getMapElements();
-			/* Parse logical interface info */
-
-			HashMap<String, Object> interfs = new HashMap<String, Object>();
+			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) routermodel;
 			DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
 			logicalInterfParser.init();
 			/*
@@ -69,33 +71,23 @@ public class RefreshCommand extends JunosCommand {
 			 */
 			if (response.getMessage() != null) {
 				logicalInterfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
-			} else {
-				System.out.println("ERROR message NULL");
-			}
-			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
-			HashMap<String, Object> interfaces = logicalInterfParser.getMapElements();
-
-			// add to the router model
-			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
-				routerModel.addManagedSystemElement((ManagedSystemElement) logicalInterfParser.getMapElements().get(keyInterf));
+				// add to the router model
+				for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
+					routerModel.addManagedSystemElement((ManagedSystemElement) logicalInterfParser.getMapElements().get(keyInterf));
+				}
 			}
 
 			/* Parse routing options info */
-			HashMap<String, Object> interfs1 = new HashMap<String, Object>();
 			DigesterEngine routingOptionsfParser = new RoutingOptionsParser();
 			routingOptionsfParser.init();
 
 			if (response.getMessage() != null) {
 				routingOptionsfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
-			} else {
-				System.out.println("ERROR message NULL");
-			}
-
-			HashMap<String, Object> interfaces1 = routingOptionsfParser.getMapElements();
-
-			// add to the router model
-			for (String keyInterf : routingOptionsfParser.getMapElements().keySet()) {
-				routerModel.addNextHopRoute((NextHopRoute) routingOptionsfParser.getMapElements().get(keyInterf));
+				// add to the router model
+				for (String keyInterf : routingOptionsfParser.getMapElements().keySet()) {
+					NextHopRoute nh = (NextHopRoute) routingOptionsfParser.getMapElements().get(keyInterf);
+					routerModel.addNextHopRoute(nh);
+				}
 			}
 
 		} catch (IOException e) {
