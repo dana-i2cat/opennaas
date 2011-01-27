@@ -8,19 +8,26 @@ import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
-
-import com.iaasframework.core.internal.persistence.Activator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProtocolNetconfWrapper {
+
+	private Logger			logger	= LoggerFactory.getLogger(ProtocolNetconfWrapper.class);
+
 	IProtocolSessionManager	protocolSessionManager;
 
 	public String createProtocolSession(String resourceId, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		IProtocolManager protocolManager = getOSGiServiceProtocolManager();
-		protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
-
-		if (protocolSessionManager == null) {
+		try {
+			protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			logger.warn("the protocol session is not created...");
 			protocolManager.createProtocolSessionManager(resourceId);
+			protocolSessionManager = null;
+		}
+		if (protocolSessionManager == null) {
 			protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
 		}
 
@@ -39,7 +46,9 @@ public class ProtocolNetconfWrapper {
 	}
 
 	private IProtocolManager getOSGiServiceProtocolManager() {
-		BundleContext bundleContext = Activator.getBundleContext();
+		BundleContext bundleContext = Activator.getContext();
+
+		logger.info("getting service: " + IProtocolManager.class.getName());
 		ServiceReference serviceReference = bundleContext.getServiceReference(IProtocolManager.class.getName());
 		return (IProtocolManager) bundleContext.getService(serviceReference);
 	}

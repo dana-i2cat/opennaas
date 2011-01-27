@@ -48,6 +48,7 @@ public class QueueManager implements ICapability, IQueueManagerService {
 
 	@Override
 	public void queueAction(Action action) {
+		action.setResourceId(resourceId);
 		queue.add(action);
 
 	}

@@ -25,6 +25,7 @@ public class Action {
 
 	public Action(ProtocolSessionContext protocolSessionContext) {
 		this.protocolSessionContext = protocolSessionContext;
+
 	}
 
 	public void execute() throws ProtocolException {
@@ -32,12 +33,19 @@ public class Action {
 		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
 
 		/* use pool for get protocol session */
+		log.info("getting protocol session...");
+
+		// TODO BUG, IT HAVE TO SPECIFY THE RESOURCE ID
 		String sessionId = protocolWrapper.createProtocolSession(resourceId, protocolSessionContext);
+
 		IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
 
+		log.info("executing commands for an action");
 		for (Command command : commands) {
+			log.info("initializing");
 			command.initialize();
 			try {
+				log.info("sending...");
 				sendCommandToProtocol(command, protocol);
 			} catch (ProtocolException e) {
 				e.printStackTrace();
@@ -51,6 +59,7 @@ public class Action {
 	}
 
 	public void sendCommandToProtocol(Command command, IProtocolSession protocol) throws ProtocolException {
+		log.info("sending and parsing message");
 		command.parseResponse(protocol.sendReceive(command.message()), modelToUpdate);
 	}
 
