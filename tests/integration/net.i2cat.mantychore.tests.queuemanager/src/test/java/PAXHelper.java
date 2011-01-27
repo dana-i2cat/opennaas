@@ -7,7 +7,6 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRepositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
 import org.apache.felix.karaf.testing.Helper;
@@ -15,7 +14,9 @@ import org.ops4j.pax.exam.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+//import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 public class PAXHelper {
+
 	public static final String		WORKING_DIRECTORY				= "target/paxrunner/features/";
 
 	public static final Option		MANTYCHORE_REPOS				= repositories(
@@ -25,9 +26,10 @@ public class PAXHelper {
 																			"http://repo1.maven.org/maven2");
 	public static final Option[]	REPOSITORIES					= options(excludeDefaultRepositories(), MANTYCHORE_REPOS);
 
+	/* specify log level */
 	public static final Option[]	HELPER_DEFAULT_OPTIONS			= Helper.getDefaultOptions(
 																			systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																					.value("WARN"));
+																					.value("INFO"));
 
 	public static final Option		OPT_WORKING_DIRECTORY			= workingDirectory(WORKING_DIRECTORY);
 
@@ -77,7 +79,8 @@ public class PAXHelper {
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 				, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				// bundles
-				, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
+				// ,
+				// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
 				, waitForFrameworkStartup() // wait for a length of time
 				, equinox());
 		Option[] opts_with_repos = combine(optssimpleTest, REPOSITORIES); // repositories
@@ -105,21 +108,5 @@ public class PAXHelper {
 
 		return opts_with_Mantychore;
 	}
-
-	// public static void listBundles(BundleContext bundleContext) {
-	// Bundle b = null;
-	// for (int i = 0; i < bundleContext.getBundles().length; i++) {
-	// b = bundleContext.getBundles()[i];
-	// log.info(b.toString() + " : " + getStateString(b.getState()));
-	// if (getStateString(b.getState()).equals("INSTALLED")) {
-	// try {
-	// b.start();
-	// } catch (Exception e) {
-	// log.error(e.getMessage());
-	// e.printStackTrace();
-	// }
-	// }
-	// }
-	// }
 
 }

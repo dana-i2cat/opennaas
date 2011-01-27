@@ -10,6 +10,7 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 
+import org.apache.felix.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,17 +20,14 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import utils.PAXHelper;
-
 @RunWith(JUnit4TestRunner.class)
-public class CommandOsgiTest extends AbstractIntegrationTest {
+public class PAXTest extends AbstractIntegrationTest {
 
 	static Logger			log				= LoggerFactory
-													.getLogger(CommandOsgiTest.class);
+													.getLogger(PAXTest.class);
 
 	IQueueManagerService	queueManager;
 	String					deviceID		= "junos";
@@ -42,35 +40,22 @@ public class CommandOsgiTest extends AbstractIntegrationTest {
 		return PAXHelper.newQueueManagerTest();
 	}
 
-	@Test
-	public void ListBundles() {
-		log.info("This is running inside Felix. With all configuration set up like you specified. ");
-		try {
-			Thread.sleep(100000);
-		} catch (InterruptedException e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		listBundles(bundleContext);
-
-		/* initialize client */
-
-	}
-
-	public static void listBundles(BundleContext bundleContext) {
+	private void listBundles() {
 		Bundle b = null;
+		String listBundles = "";
 		for (int i = 0; i < bundleContext.getBundles().length; i++) {
 			b = bundleContext.getBundles()[i];
-			System.out.println(b.toString() + " : " + getStateString(b.getState()));
+			listBundles += b.toString() + " : " + getStateString(b.getState()) + '\n';
 			if (getStateString(b.getState()).equals("INSTALLED")) {
 				try {
 					b.start();
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
+					listBundles += "ERROR: " + e.getMessage() + '\n';
 					e.printStackTrace();
 				}
 			}
 		}
+		log.info(listBundles);
 	}
 
 	private static String getStateString(int value) {
@@ -94,13 +79,10 @@ public class CommandOsgiTest extends AbstractIntegrationTest {
 			log.info("Starting the test");
 
 			/* get queueManager as a service */
-			ServiceReference serviceReference = bundleContext.getServiceReference(IQueueManagerFactory.class.getName());
 			log.info("Getting queue manager factory...");
-			IQueueManagerFactory queueManagerFactory = (IQueueManagerFactory) bundleContext.getService(serviceReference);
-
-			log.info("Getting queue manager factory...");
+			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class);
+			log.info("Getting queue manager...");
 			queueManager = queueManagerFactory.createQueueManager(deviceID);
-			log.info("Getting queue manager factory...");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,34 +91,18 @@ public class CommandOsgiTest extends AbstractIntegrationTest {
 		}
 	}
 
-	public void TestFirstAction() {
-
-		prepareQueueManagerTest();
-
-		Action action = newAction();
-
-		queueManager.queueAction(action);
-
-		List<Action> actions = queueManager.getActions();
-		if (actions == null || actions.size() != 1)
-			Assert.fail("the queuemanager does not include any action");
-
+	@Test
+	public void testListAction() {
+		log.info("This is running inside Felix. With all configuration set up like you specified. ");
 		try {
-			queueManager.execute();
-		} catch (ProtocolException e) {
-			e.printStackTrace();
+			Thread.sleep(100000);
+		} catch (InterruptedException e) {
 			log.error(e.getMessage());
-			Assert.fail(e.getMessage());
+			e.printStackTrace();
 		}
 
-		queueManager.empty();
+		listBundles();
 
-		if (actions == null || actions.size() != 0)
-			Assert.fail("the queuemanager does not empty fine");
-
-	}
-
-	public void testListAction() {
 		prepareQueueManagerTest();
 
 		Action action = newAction();
@@ -165,10 +131,10 @@ public class CommandOsgiTest extends AbstractIntegrationTest {
 		}
 
 		queueManager.empty();
+		actions = queueManager.getActions();
 
-		if (actions == null || actions.size() != 0)
-			Assert.fail("the queuemanager does not empty fine");
-
+		if (actions != null && actions.size() != 0)
+			Assert.fail("the queuemanager is not empty");
 	}
 
 	private Action newAction() {
@@ -186,6 +152,7 @@ public class CommandOsgiTest extends AbstractIntegrationTest {
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://foo:bar@foo:22/netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		// ADDED
 		return protocolSessionContext;
 
