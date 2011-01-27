@@ -1,5 +1,3 @@
-package utils;
-
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -9,6 +7,7 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRepositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
 import org.apache.felix.karaf.testing.Helper;
@@ -16,7 +15,7 @@ import org.ops4j.pax.exam.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PaxHelper {
+public class PAXHelper {
 	public static final String		WORKING_DIRECTORY				= "target/paxrunner/features/";
 
 	public static final Option		MANTYCHORE_REPOS				= repositories(
@@ -71,15 +70,14 @@ public class PaxHelper {
 
 	}
 
-	public static long	minInMillis	= 60000;	// 60 secs * 1000 (1 milli)
+	public static long	minInMillis	= 60;	// 60 secs * 1000 (1 milli)
 
 	public static Option[] newSimpleTest() {
-		long waitInMillis = minInMillis * 100;
+		long waitInMillis = minInMillis * 1000;
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 				, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				// bundles
-				// ,
-				// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
+				, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
 				, waitForFrameworkStartup() // wait for a length of time
 				, equinox());
 		Option[] opts_with_repos = combine(optssimpleTest, REPOSITORIES); // repositories
@@ -103,9 +101,9 @@ public class PaxHelper {
 	public static Option[] newQueueManagerTest() {
 
 		Option[] optsServiceMix = newServiceMixTest();
-		Option[] opts_withMantychore = combine(optsServiceMix, OPT_MANTYCHORE_FEATURES); // service
+		Option[] opts_with_Mantychore = combine(optsServiceMix, OPT_MANTYCHORE_FEATURES); // service
 
-		return opts_withMantychore;
+		return opts_with_Mantychore;
 	}
 
 	// public static void listBundles(BundleContext bundleContext) {
@@ -123,6 +121,5 @@ public class PaxHelper {
 	// }
 	// }
 	// }
-
 
 }

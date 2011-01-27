@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import utils.PAXHelper;
 
 @RunWith(JUnit4TestRunner.class)
-public class CommandOsgiTest {
+public class CommandOsgiTest extends AbstractIntegrationTest {
 
 	static Logger			log				= LoggerFactory
 													.getLogger(CommandOsgiTest.class);
