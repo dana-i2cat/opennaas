@@ -2,7 +2,7 @@ package net.i2cat.mantychore.queuemanager.mock;
 
 import java.util.List;
 
-import net.i2cat.mantychore.queuemanager.Command;
+import net.i2cat.mantychore.commons.Command;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
