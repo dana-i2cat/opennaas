@@ -4,6 +4,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
 	<!-- Maven parent -->
+ 	
 	<parent>
 		<groupId>com.iaasframework</groupId>
 		<artifactId>base-settings</artifactId>
@@ -99,9 +100,16 @@
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>
 			<!-- Unit Test Report -->
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-			</plugin>
+			<plugin>			
+				    <groupId>org.apache.maven.plugins</groupId>
+				    <artifactId>maven-surefire-plugin</artifactId>
+			    	<version>2.7.1</version>
+	    	        <configuration>
+	    	        	<!-- IT SPECIFIES THE PROCESS TO LOAD DIFFERENT CLASSPATHS-->
+		    	        <useSystemClassLoader>true</useSystemClassLoader>
+	    	        	<useManifestOnlyJar>false</useManifestOnlyJar>
+ 					</configuration>
+			</plugin>			
 		</plugins>
 	</reporting>
 
