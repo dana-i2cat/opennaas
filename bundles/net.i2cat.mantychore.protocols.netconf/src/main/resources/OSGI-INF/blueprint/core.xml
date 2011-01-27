@@ -3,10 +3,10 @@
 <bean id="netconfProtocolSessionFactory" 
 	class="net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory"/>
 	<service ref="netconfProtocolSessionFactory"
-		interface="com.iaasframework.capabilities.protocol.IProtocolSessionFactory" >
+		interface="net.i2cat.mantychore.protocols.sessionmanager.IProtocolSessionFactory" >
 		<service-properties>
 				<!--  identify the model router. It is generic for any router -->
-			<entry key="protocol" value="Netconf" />
+			<entry key="protocol" value="netconf" />
 			<entry key="protocol.version" value="1.0.0" />
 		</service-properties>
 	</service>
