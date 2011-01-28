@@ -2,37 +2,36 @@ package net.i2cat.mantychore.commandsets.junos.commands;
 
 import net.i2cat.netconf.rpc.QueryFactory;
 
-public class DeleteSubInterfaceCommand extends JunosCommand {
+public class CreateLogicalRouterCommand extends JunosCommand {
+	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
 
-	public static final String	DELETESUBINTERFACE	= "deleteSubinterface";
-
-	public static final String	TEMPLATE			= "/VM_files/deletesubinterface.vm";
+	public static final String	TEMPLATE			= "/VM_files/createLogicalRouter.vm";
 
 	private String				target				= null;
 	private String				defaultOperation	= null;
 	private String				testOption			= null;
 	private String				errorOption			= null;
 
-	public DeleteSubInterfaceCommand() {
-		super(DELETESUBINTERFACE, TEMPLATE);
+	protected CreateLogicalRouterCommand() {
+		super(CREATELOGICALROUTER, TEMPLATE);
 		// TODO Auto-generated constructor stub
 	}
 
 	public void initializeCommand(String target) {
 		this.target = target;
-		this.defaultOperation = "none";
+
 	}
 
 	@Override
 	public Object message() {
-		// TODO Auto-generated method stub
+		// returns the Query with the corresponding command
 		return QueryFactory.newEditConfig(target, defaultOperation, testOption, errorOption, netconfXML);
 	}
 
 	@Override
 	public void parseResponse(Object response, Object model) {
 		// TODO Auto-generated method stub
-
+		// response is an RPCElement -->Reply
 	}
 
 }

@@ -1,15 +1,14 @@
 package net.i2cat.mantychore.commandsets.junos;
 
 import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
+import net.i2cat.mantychore.commons.Command;
 
 import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.capabilities.commandset.ICommand;
-import com.iaasframework.capabilities.commandset.ICommandFactory;
 
-public class JunosCommandFactory implements ICommandFactory {
+public class JunosCommandFactory {
 
-	public ICommand createCommand(String commandId) throws CommandException {
-		ICommand command = null;
+	public Command createCommand(String commandId) throws CommandException {
+		Command command = null;
 
 		if (commandId.equals(RefreshCommand.REFRESH)) {
 			return new RefreshCommand();

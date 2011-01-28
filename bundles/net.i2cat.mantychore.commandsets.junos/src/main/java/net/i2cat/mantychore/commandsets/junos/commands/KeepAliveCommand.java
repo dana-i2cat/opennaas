@@ -3,9 +3,6 @@ package net.i2cat.mantychore.commandsets.junos.commands;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.capabilities.model.IResourceModel;
-
 public class KeepAliveCommand extends JunosCommand {
 
 	public static final String	KEEPALIVE	= "keepAlive";
@@ -21,19 +18,15 @@ public class KeepAliveCommand extends JunosCommand {
 	}
 
 	@Override
-	public void parseResponse(IResourceModel arg0) throws CommandException {
-		// the response doesn t include information
+	public Object message() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void initializeCommand(IResourceModel modelInfo) throws
-			CommandException {
-		// the command doesn t include query
-	}
+	public void parseResponse(Object response, Object model) {
+		// TODO Auto-generated method stub
 
-	@Override
-	public void createCommand() {
-		// It is not necessary to create any command
 	}
 
 }

@@ -2,16 +2,13 @@ package net.i2cat.mantychore.commandsets.junos.commands;
 
 import net.i2cat.netconf.rpc.QueryFactory;
 
-import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.capabilities.model.IResourceModel;
-
 public class CreateSubInterfaceCommand extends JunosCommand {
 
 	public static final String	CREATESUBINTERFACE	= "CreateSubinterface";
 
-	public static final String	TEMPLATE			= "/VM_files/configuresubinterface.vm";
+	public static final String	TEMPLATE			= "/VM_files/replacesubinterface.vm";
 
-	private String				target				= "candidate";
+	private String				target				= null;
 	private String				defaultOperation	= null;
 	private String				testOption			= null;
 	private String				errorOption			= null;
@@ -21,21 +18,22 @@ public class CreateSubInterfaceCommand extends JunosCommand {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void initializeCommand(String target, String defaultOperation, String testOption, String errorOption) {
-		this.target = (target == null) ? "candidate" : target;
-		this.defaultOperation = defaultOperation;
-		this.testOption = testOption;
-		this.errorOption = errorOption;
+	// TODO how it is defined the target configuration to be configured
+
+	public void initializeCommand(String target) {
+		this.target = target;
 	}
 
 	@Override
-	public void createCommand() {
-		command = QueryFactory.newEditConfig(target, defaultOperation, testOption, errorOption, netconfXML);
+	public Object message() {
+		// returns the Query with the corresponding command
+		return QueryFactory.newEditConfig(target, defaultOperation, testOption, errorOption, netconfXML);
 	}
 
 	@Override
-	public void parseResponse(IResourceModel arg0) throws CommandException {
+	public void parseResponse(Object response, Object model) {
 		// TODO Auto-generated method stub
+		// response is an RPCElement -->Reply
 	}
 
 }

@@ -1,7 +1,5 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
-import com.iaasframework.capabilities.commandset.CommandException;
-import com.iaasframework.capabilities.model.IResourceModel;
 
 public class SetVLANTaggingCommand extends JunosCommand {
 
@@ -11,13 +9,13 @@ public class SetVLANTaggingCommand extends JunosCommand {
 	}
 
 	@Override
-	public void createCommand() {
+	public Object message() {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
-	public void parseResponse(IResourceModel arg0) throws CommandException {
+	public void parseResponse(Object response, Object model) {
 		// TODO Auto-generated method stub
 
 	}

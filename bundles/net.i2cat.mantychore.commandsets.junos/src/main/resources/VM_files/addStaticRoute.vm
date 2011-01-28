@@ -2,7 +2,7 @@
 <logical-systems><name>cpe1 </name></logical-systems>
 <routing-options>
 <static>
-<route operation="replace">
+<route>
 #foreach( $ruta in $param )
 <name> $ruta.DestinationAddress/$ruta.PrefixLength</name> 
 <next-hop>$ruta.ProtocolEndpoint.getIPv4Address() </next-hop>
@@ -12,26 +12,3 @@
 </routing-options>
 </logical-systems>
 </configuration>
-
-#* complete query
-<edit-config>
-<target><candidate/></target>
-<config>
-						<configuration>
-						<logical-systems>
-						<name>+logicalRouterName+</name>
-						<routing-options>
-						<static>
-						<route operation="replace">
-						#foreach( $ruta in $param )
-						<name> $ruta.DestinationAddress/$ruta.PrefixLength</name> 
-						<next-hop>$ruta.ProtocolEndpoint.getIPv4Address() </next-hop>
-						#end
-						</route>
-						</static>
-						</routing-options>
-						</logical-systems>
-						</configuration>
-</config>
-</edit-config>
-*#

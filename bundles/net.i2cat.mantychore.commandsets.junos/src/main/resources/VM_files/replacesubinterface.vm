@@ -1,10 +1,23 @@
 <configuration>
 <interfaces>
-<interface>
-<name></name>
-<unit operation="replace">
-<name></name>
-</unit>
-</interface>
+	#foreach($element in $param)
+	#if("EthernetPort"==($element.getClass().getSimpleName()))		
+	<interface>
+		<name>$element.ElementName</name>
+		<unit operation="replace">
+		<name>$element.PortNumber</name>
+		#if(!$element.ProtocolEndpoint.Empty && "IPProtocolEndpoint"==$element.ProtocolEndpoint.get(0).getClass().getSimpleName())		
+		<family>
+			<inet>
+			<address>
+			<name>$element.ProtocolEndpoint.get(0).getIPv4Address()</name>
+			</address>
+			</inet>
+		</family>	
+		#end
+		</unit>
+	</interface>
+	#end
+	#end
 </interfaces>
 </configuration>
