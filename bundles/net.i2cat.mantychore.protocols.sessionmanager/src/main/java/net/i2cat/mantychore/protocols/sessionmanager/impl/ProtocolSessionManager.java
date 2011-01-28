@@ -183,7 +183,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	}
 
-	private static long	expirationTime	= 300 * 1000;	// 1000 (1 milisec)
+	private static long	expirationTime	= 3000 * 1000;	// 1000 (1 milisec)
 
 	public synchronized String checkOut(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		long now = System.currentTimeMillis();
