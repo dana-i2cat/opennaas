@@ -3,6 +3,7 @@ package net.i2cat.mantychore.queuemanager.mock;
 import java.util.List;
 
 import net.i2cat.mantychore.commons.Command;
+import net.i2cat.mantychore.commons.Response;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,11 @@ public class MockCommand extends Command {
 		interf2.setIpv6("ff:ff::22");
 		interfaces.add(interf2);
 
+	}
+
+	@Override
+	public Response checkResponse(Object arg0) {
+		return Response.okResponse("mock command execute");
 	}
 
 }

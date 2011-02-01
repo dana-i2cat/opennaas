@@ -2,10 +2,13 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.ActionResponse;
+import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.commons.ICapability;
 import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
@@ -39,7 +42,9 @@ public class QueueManager implements ICapability, IQueueManagerService {
 	}
 
 	@Override
-	public void execute() throws ProtocolException {
+	public List<ActionResponse> execute() throws ProtocolException, CommandException {
+
+		List<ActionResponse> responses = new Vector<ActionResponse>();
 
 		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
 		for (ActionInQueue actionInQueue : queue) {
@@ -51,11 +56,13 @@ public class QueueManager implements ICapability, IQueueManagerService {
 			String sessionId = protocolWrapper.createProtocolSession(resourceId, actionInQueue.getProtocolSessionContext());
 
 			IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
-			actionInQueue.getAction().execute(protocol);
+
+			responses.add(actionInQueue.getAction().execute(protocol));
 
 			/* restore the connection */
 			protocolWrapper.releaseProtocolSession(sessionId);
 		}
+		return responses;
 
 	}
 

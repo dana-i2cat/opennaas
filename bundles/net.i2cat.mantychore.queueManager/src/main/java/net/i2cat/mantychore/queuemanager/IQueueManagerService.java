@@ -3,12 +3,14 @@ package net.i2cat.mantychore.queuemanager;
 import java.util.List;
 
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.ActionResponse;
+import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 
 public interface IQueueManagerService {
 
-	public void execute() throws ProtocolException;
+	public List<ActionResponse> execute() throws ProtocolException, CommandException;
 
 	public void empty();
 
