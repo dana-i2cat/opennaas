@@ -20,12 +20,11 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 
-
- <properties>
-  <target-platform.path>target/mantychore</target-platform.path>
-  <iaas.path>iaas-framework-1.0.0</iaas.path> 
- </properties>
-
+	<!--  properties to use fuse  -->
+	<properties>
+		<target-platform.path>target/mantychore</target-platform.path>
+		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
+	</properties>
 
 
  <!--
@@ -34,17 +33,6 @@
   <optional>true</optional>
  -->
 
- <dependencies>
- 	<dependency>
-  	<groupId>com.iaasframework</groupId>
-  	<artifactId>iaas-framework</artifactId>
- 	 <version>1.0.0</version>
-	<type>xml</type>
-<classifier>features</classifier>
-</dependency>
- </dependencies>
- 
- 
  <build>
   <resources>
    <resource>
@@ -62,24 +50,22 @@
     <artifactId>maven-dependency-plugin</artifactId>
     <executions>
      <execution>
-      <id>unpack-iaas-framework</id>
+	  <id>unpack-apache-servicemix</id>
       <phase>package</phase>
       <goals>
        <goal>unpack</goal>
       </goals>
       <configuration>
-       <artifactItems>
-        <artifactItem>
-		  <groupId>com.iaasframework</groupId>
-		  <artifactId>assembly</artifactId>
-		  <version>1.0.0</version>
-		  <type>zip</type>
-		  <classifier>bin</classifier>
-        </artifactItem>
-       </artifactItems>
+			<artifactItems>
+				<artifactItem>
+					<groupId>org.apache.servicemix</groupId>
+					<artifactId>apache-servicemix</artifactId>
+					<version>${fuse.version}</version>
+				</artifactItem>
+			</artifactItems>
        <outputDirectory>${target-platform.path}</outputDirectory>
        <overWriteIfNewer>true</overWriteIfNewer>
-       <excludes>**\/bin\/iaas,**\/bin\/iaas.bat</excludes>
+	   <excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
       </configuration>
      </execution>
      <execution>
@@ -98,12 +84,13 @@
          <classifier>features</classifier>
         </artifactItem>
        </artifactItems>
-       <outputDirectory>${target-platform.path}/${iaas.path}/system/net/i2cat/mantychore/mantychore</outputDirectory>
+       <outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/mantychore</outputDirectory>
        <overWriteIfNewer>true</overWriteIfNewer>
       </configuration>
      </execution>
     </executions>
    </plugin>
+   
    <plugin>
     <groupId>org.apache.felix.karaf.tooling</groupId>
     <artifactId>features-maven-plugin</artifactId>
@@ -122,7 +109,7 @@
         <feature>i2cat-mantychore-deps</feature>
         <feature>i2cat-mantychore-core</feature>
        </features>
-       <repository>${target-platform.path}/${iaas.path}/system</repository>
+       <repository>${target-platform.path}/${servicemix.path}/system</repository>
       </configuration>
      </execution>
     </executions>
@@ -146,14 +133,14 @@
      </execution>
 
      <execution>
-      <id>install-iaas-configs</id>
+      <id>install-mantychore-configs</id>
       <phase>package</phase>
       <goals>
        <goal>copy-resources</goal>
       </goals>
       <configuration>
        <overwrite>true</overwrite>
-       <outputDirectory>${target-platform.path}/${iaas.path}</outputDirectory>
+       <outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
        <resources>
         <resource>
          <directory>target/classes</directory>
