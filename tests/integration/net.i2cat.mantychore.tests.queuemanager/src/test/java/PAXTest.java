@@ -2,7 +2,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.Command;
+import net.i2cat.mantychore.commons.CommandException;
+import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
@@ -125,8 +128,22 @@ public class PAXTest extends AbstractIntegrationTest {
 			Assert.fail("the queuemanager does not include any action");
 
 		try {
-			queueManager.execute();
+			List<ActionResponse> responses = queueManager.execute();
+			for (ActionResponse actionResponse : responses) {
+				for (Response response : actionResponse.getResponses()) {
+					log.info("Response messages" + '\n');
+					log.info("MESSAGE: " + response.getSentMessage() + '\n');
+					log.info("STATUS: " + response.getStatus().name() + '\n');
+					log.info("ERRORS" + '\n');
+					for (String error : response.getErrors())
+						log.info("error: " + error + '\n');
+				}
+			}
 		} catch (ProtocolException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
+		} catch (CommandException e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
 			Assert.fail(e.getMessage());
@@ -154,7 +171,7 @@ public class PAXTest extends AbstractIntegrationTest {
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
-		
+
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		// ADDED
 		return protocolSessionContext;
@@ -162,6 +179,7 @@ public class PAXTest extends AbstractIntegrationTest {
 	}
 
 	class MockCommand extends Command {
+		Query	query	= QueryFactory.newKeepAlive();
 
 		@Override
 		public void initialize() {
@@ -172,7 +190,7 @@ public class PAXTest extends AbstractIntegrationTest {
 		@Override
 		public Object message() {
 			log.info("sending a message");
-			Query query = QueryFactory.newKeepAlive();
+
 			return query;
 		}
 
@@ -180,6 +198,12 @@ public class PAXTest extends AbstractIntegrationTest {
 		public void parseResponse(Object arg0, Object arg1) {
 			log.info("It is parsed the message");
 
+		}
+
+		@Override
+		public Response checkResponse(Object arg0) {
+			// TODO Auto-generated method stub
+			return Response.okResponse(query.toXML());
 		}
 	}
 
