@@ -20,7 +20,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Mantychore Commons </name>
-	<description>Mantychore Commons Clasess</description>
+	<description>Mantychore Commons Classes</description>
 	<dependencies>
 		<dependency>
 			<groupId>net.i2cat.mantychore.protocols</groupId>
