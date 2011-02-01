@@ -35,6 +35,7 @@
 	<!-- Custom Properties -->
 	<properties>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
 		<iaas.version>1.0.0</iaas.version>
 	</properties>
 
