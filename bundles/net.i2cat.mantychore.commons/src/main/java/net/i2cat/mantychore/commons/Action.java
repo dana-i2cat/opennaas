@@ -3,6 +3,7 @@ package net.i2cat.mantychore.commons;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.commons.Response.Status;
 import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 
@@ -20,28 +21,49 @@ public class Action {
 
 	private Object			modelToUpdate;
 
-	public void execute(IProtocolSession protocol) throws ProtocolException {
+	public ActionResponse execute(IProtocolSession protocol) throws ProtocolException, CommandException {
+		ActionResponse actionResponse = new ActionResponse();
 
 		log.info("executing commands for an action");
+
 		for (Command command : commands) {
 			log.info("initializing");
 			command.initialize();
 			try {
 				log.info("sending...");
-				sendCommandToProtocol(command, protocol);
+				Response response = sendCommandToProtocol(command, protocol);
+				actionResponse.addResponse(response);
+
+				if (response.getStatus().equals(Status.ERROR)) {
+					// exit from the bucle, it is necessary
+					break;
+				}
+
 			} catch (ProtocolException e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
 				throw e;
 
+			} catch (CommandException e) {
+				e.printStackTrace();
+				log.error(e.getMessage());
+				throw e;
 			}
 		}
 
+		return actionResponse;
+
 	}
 
-	private void sendCommandToProtocol(Command command, IProtocolSession protocol) throws ProtocolException {
+	private Response sendCommandToProtocol(Command command, IProtocolSession protocol) throws ProtocolException, CommandException {
 		log.info("sending and parsing message");
-		command.parseResponse(protocol.sendReceive(command.message()), modelToUpdate);
+		Object messageResp = protocol.sendReceive(command.message());
+		Response response = command.checkResponse(messageResp);
+		// If it was not problems with the operation, we can update the model
+		if (response.getStatus().equals(Response.Status.OK)) {
+			command.parseResponse(messageResp, modelToUpdate);
+		}
+		return response;
 	}
 
 	public String getProtocolId() {

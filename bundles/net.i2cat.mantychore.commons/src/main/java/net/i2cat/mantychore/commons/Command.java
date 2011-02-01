@@ -11,10 +11,12 @@ public abstract class Command {
 		this.commandId = commandId;
 	}
 
-	public abstract void initialize();
+	public abstract void initialize() throws CommandException;
 
 	public abstract Object message();
 
-	public abstract void parseResponse(Object response, Object model);
+	public abstract void parseResponse(Object response, Object model) throws CommandException;
+
+	public abstract Response checkResponse(Object response);
 
 }
