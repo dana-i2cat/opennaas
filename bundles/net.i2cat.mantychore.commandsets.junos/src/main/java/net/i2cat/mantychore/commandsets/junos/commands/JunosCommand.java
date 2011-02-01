@@ -1,8 +1,14 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
+import java.util.Vector;
+
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
 import net.i2cat.mantychore.commons.Command;
+import net.i2cat.mantychore.commons.CommandException;
+import net.i2cat.mantychore.commons.Response;
+import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
+import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
@@ -11,77 +17,41 @@ import org.slf4j.LoggerFactory;
 
 public abstract class JunosCommand extends Command {
 
-	protected String	template	= "";
+	protected String template = "";
 
-	private Object		params;
+	private Object params;
 
 	/** logger **/
-	Logger				log			= LoggerFactory
-																.getLogger(JunosCommand.class);
-	protected Query		command;
-	protected String	netconfXML;
-
-	// protected Reply response;
+	Logger log = LoggerFactory.getLogger(JunosCommand.class);
+	protected Query command;
+	protected String netconfXML;
 
 	protected JunosCommand(String commandID, String template) {
 		this.setCommandId(commandID);
 		this.template = template;
 	}
 
-	// // FIXME IT IS TEMPORAL, THESE SET AND GETS MUST BE DELETED
-	// public Object getParams() {
-	// return params;
-	// }
-	//
-	// public void setParams(Object params) {
-	// this.params = params;
-	// }
-	//
-	// @Override
-	// public void initializeCommand(IResourceModel arg0) throws CommandException {
-	// // FIXME DO WE WANT TO INITIALIZE OUR COMMAND WITH PARAMETERS FROM
-	// // IRESOURCEMODEL??
-	// }
-	//
-	// @Override
-	// public void executeCommand() throws CommandException {
-	// try {
-	// netconfXML = prepareVelocityCommand();
-	// createCommand();
-	// // TODO THIS METHOD WILL RECEIVE AN OBJECT
-	// // the commands no implement this method yet (depends on queue)
-	// // sendCommandToProtocol(command);
-	// } catch (ResourceNotFoundException e) {
-	// log.error(e.getMessage());
-	// } catch (ParseErrorException e) {
-	// log.error(e.getMessage());
-	// } catch (Exception e) {
-	// log.error(e.getMessage());
-	// }
-	//
-	// }
-	//
-	// public void sendCommandToProtocol(Object command) {
-	// // TODO Auto-generated method stub
-	// }
-	//
-	// public abstract void createCommand();
-
 	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
+	public void initialize() throws CommandException {
+
 		try {
 			netconfXML = prepareVelocityCommand();
 		} catch (ResourceNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw createCommandException(e);
 		} catch (ParseErrorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw createCommandException(e);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw createCommandException(e);
 		}
+	}
+
+	private CommandException createCommandException(Exception e) {
+		CommandException commandException = new CommandException();
+		commandException.setStackTrace(e.getStackTrace());
+		return commandException;
 	}
 
 	protected String prepareVelocityCommand() throws ResourceNotFoundException,
@@ -92,29 +62,26 @@ public abstract class JunosCommand extends Command {
 		return command;
 	}
 
-	// public void responseReceived(ICapabilityMessage responseMessage)
-	// throws CommandException {
-	// if (responseMessage instanceof ProtocolResponseMessage) {
-	//
-	// log.info("Response is OK");
-	// this.response = (ProtocolResponseMessage) responseMessage;
-	// this.requestEngineModel(false);
-	//
-	// } else if (responseMessage instanceof ProtocolErrorMessage) {
-	// log.info("It ocurred an error");
-	//
-	// this.errorMessage = (ProtocolErrorMessage) responseMessage;
-	// CommandException commandException = new CommandException(
-	// "Error executing command " + this.commandID,
-	// ((ProtocolErrorMessage) responseMessage)
-	// .getProtocolException());
-	//
-	// commandException.setName(this.commandID);
-	// commandException.setCommand(this);
-	//
-	// this.sendCommandErrorResponse(commandException);
-	//
-	// }
-	// }
+	public Response checkResponse(Object resp) {
+
+		Reply reply = (Reply) resp;
+
+		// extra control, it checks if is not null the error list
+		if (reply.isOk()
+				&& (reply.getErrors() == null || reply.getErrors().size() == 0)) {
+			// BUILD OK RESPONSE
+
+			return Response.okResponse(command.toXML());
+		} else {
+			// BUILD ERROR MESSAGE
+
+			Vector<String> errors = new Vector<String>();
+			for (Error error : reply.getErrors())
+				errors.add(error.getMessage() + " : " + error.getInfo());
+
+			return Response.errorResponse(command.toXML(), errors);
+		}
+
+	}
 
 }

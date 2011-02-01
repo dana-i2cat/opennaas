@@ -3,29 +3,25 @@ package net.i2cat.mantychore.commandsets.junos.commands;
 import net.i2cat.netconf.rpc.QueryFactory;
 
 public class CreateLogicalRouterCommand extends JunosCommand {
-	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
+	public static final String CREATELOGICALROUTER = "createLogicalRouter";
 
-	public static final String	TEMPLATE			= "/VM_files/createLogicalRouter.vm";
+	public static final String TEMPLATE = "/VM_files/createLogicalRouter.vm";
 
-	private String				target				= null;
-	private String				defaultOperation	= null;
-	private String				testOption			= null;
-	private String				errorOption			= null;
+	private String target = null;
+	private String defaultOperation = null;
+	private String testOption = null;
+	private String errorOption = null;
 
-	protected CreateLogicalRouterCommand() {
+	protected CreateLogicalRouterCommand(String target) {
 		super(CREATELOGICALROUTER, TEMPLATE);
-		// TODO Auto-generated constructor stub
-	}
-
-	public void initializeCommand(String target) {
 		this.target = target;
-
 	}
 
 	@Override
 	public Object message() {
 		// returns the Query with the corresponding command
-		return QueryFactory.newEditConfig(target, defaultOperation, testOption, errorOption, netconfXML);
+		return QueryFactory.newEditConfig(target, defaultOperation, testOption,
+				errorOption, netconfXML);
 	}
 
 	@Override

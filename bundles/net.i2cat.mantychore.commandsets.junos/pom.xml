@@ -33,22 +33,6 @@
 		    <artifactId>xerces-impl</artifactId>
 		    <version>2.9.0</version>
 		</dependency>
-  
-  
-<!-- IaaS dependencies -->
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.commandset</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.iaasframework.capabilities</groupId>
-      <artifactId>com.iaasframework.capabilities.protocol</artifactId>
-    </dependency>
-    <dependency>
-		<groupId>com.iaasframework.capabilities</groupId>
-		<artifactId>com.iaasframework.capabilities.model</artifactId>
-	</dependency>
-   
 
    <!-- mantychore dependencies -->
    <dependency>
@@ -62,6 +46,12 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<classifier>sources</classifier>
    </dependency>
+   	<dependency>
+		<groupId>net.i2cat.mantychore.commons</groupId>
+		<artifactId>net.i2cat.mantychore.commons</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</dependency>
+   
    
    <!--  library to build commands -->
 	<dependency>
@@ -89,11 +79,6 @@
 		<version>0.0.1-SNAPSHOT</version>
    </dependency>
    
-   	<dependency>
-				<groupId>net.i2cat.mantychore.commons</groupId>
-	<artifactId>net.i2cat.mantychore.commons</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 
   </dependencies>
 
@@ -135,9 +120,6 @@
 						-->
 						<Import-Package>!${project.artifactId}.*,
   							org.slf4j;version="1.5.6",
-							com.iaasframework.capabilities.commandset,
-							com.iaasframework.resources.core,
-							com.iaasframework.resources.core.capability,
 							*</Import-Package>
 						<Export-Package>
 							${project.artifactId}.commands;version="${pom.version}",
@@ -148,6 +130,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>

@@ -2,8 +2,7 @@ package net.i2cat.mantychore.commandsets.junos;
 
 import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
 import net.i2cat.mantychore.commons.Command;
-
-import com.iaasframework.capabilities.commandset.CommandException;
+import net.i2cat.mantychore.commons.CommandException;
 
 public class JunosCommandFactory {
 
@@ -13,6 +12,7 @@ public class JunosCommandFactory {
 		if (commandId.equals(RefreshCommand.REFRESH)) {
 			return new RefreshCommand();
 		}
+
 		// If it doesn't find a command, it returns null
 		return command;
 

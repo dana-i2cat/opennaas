@@ -4,14 +4,14 @@ import net.i2cat.netconf.rpc.QueryFactory;
 
 public class DeleteSubInterfaceCommand extends JunosCommand {
 
-	public static final String	DELETESUBINTERFACE	= "deleteSubinterface";
+	public static final String DELETESUBINTERFACE = "deleteSubinterface";
 
-	public static final String	TEMPLATE			= "/VM_files/deletesubinterface.vm";
+	public static final String TEMPLATE = "/VM_files/deletesubinterface.vm";
 
-	private String				target				= null;
-	private String				defaultOperation	= null;
-	private String				testOption			= null;
-	private String				errorOption			= null;
+	private String target = null;
+	private String defaultOperation = null;
+	private String testOption = null;
+	private String errorOption = null;
 
 	public DeleteSubInterfaceCommand() {
 		super(DELETESUBINTERFACE, TEMPLATE);
@@ -26,12 +26,12 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 	@Override
 	public Object message() {
 		// TODO Auto-generated method stub
-		return QueryFactory.newEditConfig(target, defaultOperation, testOption, errorOption, netconfXML);
+		return QueryFactory.newEditConfig(target, defaultOperation, testOption,
+				errorOption, netconfXML);
 	}
 
 	@Override
 	public void parseResponse(Object response, Object model) {
-		// TODO Auto-generated method stub
 
 	}
 
