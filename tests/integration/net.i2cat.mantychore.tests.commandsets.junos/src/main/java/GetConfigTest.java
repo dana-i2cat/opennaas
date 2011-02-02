@@ -3,6 +3,8 @@ import java.util.List;
 
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.Command;
+import net.i2cat.mantychore.commons.CommandException;
+import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
 import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
@@ -24,10 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4TestRunner.class)
-public class PAXTest extends AbstractIntegrationTest {
+public class GetConfigTest extends AbstractIntegrationTest {
 
 	static Logger			log				= LoggerFactory
-													.getLogger(PAXTest.class);
+													.getLogger(GetConfigTest.class);
 
 	IQueueManagerService	queueManager;
 	String					deviceID		= "junos";
@@ -130,6 +132,10 @@ public class PAXTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			log.error(e.getMessage());
 			Assert.fail(e.getMessage());
+		} catch (CommandException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 
 		queueManager.empty();
@@ -161,6 +167,7 @@ public class PAXTest extends AbstractIntegrationTest {
 	}
 
 	class MockCommand extends Command {
+		Query	query;
 
 		@Override
 		public void initialize() {
@@ -171,7 +178,7 @@ public class PAXTest extends AbstractIntegrationTest {
 		@Override
 		public Object message() {
 			log.info("sending a message");
-			Query query = QueryFactory.newKeepAlive();
+			query = QueryFactory.newKeepAlive();
 			return query;
 		}
 
@@ -179,6 +186,12 @@ public class PAXTest extends AbstractIntegrationTest {
 		public void parseResponse(Object arg0, Object arg1) {
 			log.info("It is parsed the message");
 
+		}
+
+		@Override
+		public Response checkResponse(Object arg0) {
+			// TODO Auto-generated method stub
+			return Response.okResponse(query.toXML());
 		}
 	}
 
