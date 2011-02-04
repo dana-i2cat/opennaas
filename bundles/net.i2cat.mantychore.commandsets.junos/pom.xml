@@ -29,9 +29,8 @@
 <!--  specify the last version from xerces-impl to work with the digester parser -->
   <dependencies>
   		<dependency>
-		    <groupId>org.bluestemsoftware.open.maven.tparty</groupId>
-		    <artifactId>xerces-impl</artifactId>
-		    <version>2.9.0</version>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
 		</dependency>
 
    <!-- mantychore dependencies -->
@@ -57,26 +56,22 @@
 	<dependency>
 		<groupId>org.apache.servicemix.bundles</groupId>
 		<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
-		<version>1.6.4_1</version>
 	</dependency>   
 	
 	<dependency>
 	    <groupId>commons-digester</groupId>
 	    <artifactId>commons-digester</artifactId>
-	    <version>2.1</version>
 	</dependency>
 	
 	<dependency>
 	    <groupId>commons-configuration</groupId>
 	    <artifactId>commons-configuration</artifactId>
-	    <version>1.2</version>
 	</dependency>
    
    <!--  auxiliar methods  -->
    <dependency>
 		<groupId>net.i2cat.netconf</groupId>
 		<artifactId>netconf4j</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
    </dependency>
    
 

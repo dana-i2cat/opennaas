@@ -24,8 +24,7 @@
     <!-- | uncomment to add all imported (non-local) bundles to your compilation classpath -->
     <dependency>
 		<groupId>net.i2cat.netconf</groupId>
-		<artifactId>netconf4j</artifactId>
-		<version>0.0.1-SNAPSHOT</version>    
+		<artifactId>netconf4j</artifactId>   
 	</dependency>
   </dependencies>
 

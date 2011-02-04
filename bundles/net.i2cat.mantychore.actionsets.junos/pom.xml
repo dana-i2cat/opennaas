@@ -22,10 +22,6 @@
 	<description>Mantychore ActionSet Junos Implementation</description>
 
 	<dependencies>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.actionset</artifactId>
-			</dependency>
 	</dependencies>
 
 	<build>
