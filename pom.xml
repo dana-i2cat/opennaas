@@ -3,21 +3,15 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-	<!-- Maven parent -->
- 	
-	<parent>
-		<groupId>com.iaasframework</groupId>
-		<artifactId>base-settings</artifactId>
-		<version>1.0.0</version>
-	</parent>
+	<modelVersion>4.0.0</modelVersion> <!-- pom.xml version -->
 
 	<!-- POM id -->
 	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>base-mantychore</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<!--  Maven configuration -->
-	<modelVersion>4.0.0</modelVersion> <!-- pom.xml version -->
+	<!-- Maven configuration -->
+
 	<prerequisites>
 		<maven>2.0.9</maven>
 	</prerequisites>
@@ -34,10 +28,404 @@
 
 	<!-- Custom Properties -->
 	<properties>
+		<activemq.version>5.4.1-fuse-01-00</activemq.version>
+		<axiom.version>1.2.8</axiom.version>
+		<commons.logging.version>1.1.1</commons.logging.version>
+		<cxf.version>2.2.11-fuse-00-00</cxf.version>
+		<dynamicjava.version>1.0.0</dynamicjava.version>
+		<easymock.version>2.5.2</easymock.version>
+		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
+		<hibernate.version>3.4.0.GA</hibernate.version>
+		<hsqldb.version>1.8.0.9</hsqldb.version>
+		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
+		<junit.version>4.5</junit.version>
+		<karaf.version>2.0.0-fuse-02-00</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<osgi.api>1.0</osgi.api>
+		<pax.exam.version>1.2.0</pax.exam.version>
+		<pax.logging.version>1.5.3</pax.logging.version>
+		<plexus.api.version>1.0-alpha-32</plexus.api.version>
+		<plexus.utils.version>1.5.5</plexus.utils.version>
 		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
-		<iaas.version>1.0.0</iaas.version>
+		<slf4j.version>1.5.6</slf4j.version>
+		<spring.osgi.version>1.2.0</spring.osgi.version>
+		<spring.version>3.0.3.RELEASE</spring.version>
+		<xbean.version>3.7</xbean.version>
+		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
+			<dependency>
+				<groupId>org.dynamicjava</groupId>
+				<artifactId>classloading-utils</artifactId>
+				<version>${dynamicjava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dynamicjava</groupId>
+				<artifactId>service-binding-utils</artifactId>
+				<version>${dynamicjava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>com.springsource.org.hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jpa_1.0_spec</artifactId>
+				<version>${geronimo.jpa.version}</version>
+			</dependency>
+
+			<!-- OSGI API -->
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>osgi_R4_core</artifactId>
+				<version>${osgi.api}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>osgi_R4_compendium</artifactId>
+				<version>${osgi.api}</version>
+			</dependency>
+
+			<!-- Karaf -->
+			<dependency>
+				<groupId>org.apache.karaf.shell</groupId>
+				<artifactId>org.apache.karaf.shell.console</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.boot</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.config</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.modules</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+
+			<!-- Spring Framework -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jms</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
+			<!-- Spring DM -->
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-extender</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-annotation</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-core</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-mock</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-test</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-io</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+
+			<!-- Active MQ -->
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-core</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>kahadb</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-ra</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-pool</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-console</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+
+			<!-- Logging -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${commons.logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.logging</groupId>
+				<artifactId>pax-logging-api</artifactId>
+				<version>${pax.logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.logging</groupId>
+				<artifactId>pax-logging-service</artifactId>
+				<version>${pax.logging.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<!-- Web services support -->
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+				<version>${jaxb.impl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.schema</groupId>
+				<artifactId>XmlSchema</artifactId>
+				<version>${xmlschema.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-impl</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-api</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>${cxf.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>bouncycastle</groupId>
+						<artifactId>bcprov-jdk14</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>net.java.dev.stax-utils</groupId>
+						<artifactId>stax-utils</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.codehaus.jra</groupId>
+						<artifactId>jra</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jaxen</groupId>
+						<artifactId>jaxen</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>opensaml</groupId>
+						<artifactId>opensaml</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-component-api</artifactId>
+				<version>${plexus.api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-utils</artifactId>
+				<version>${plexus.utils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.xbean</groupId>
+				<artifactId>xbean-spring</artifactId>
+				<version>${xbean.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+
+			<!-- Unit tests -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>${easymock.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymockclassextension</artifactId>
+				<version>${easymock.version}</version>
+			</dependency>
+
+			<!-- Integration tests -->
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-junit</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-container-default</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-junit-extender-impl</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>org.apache.karaf.tooling.testing</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+
+			<!-- Features -->
+			<dependency>
+				<groupId>org.apache.servicemix</groupId>
+				<artifactId>apache-servicemix</artifactId>
+				<type>pom</type>
+				<version>${servicemix.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- OSGI API -->
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi_R4_core</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi_R4_compendium</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
+		<!-- Unit tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.logging</groupId>
+			<artifactId>pax-logging-api</artifactId>
+		</dependency>
+	</dependencies>
 
 	<!-- Modules configuration -->
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
@@ -49,10 +437,7 @@
 	</modules>
 
 	<!-- Build information -->
-	<!--
-		Enforce Java5 - See:
-		http://maven.apache.org/plugins/maven-enforcer-plugin/
-	-->
+	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
 	<build>
 		<plugins>
 			<plugin>
@@ -69,15 +454,21 @@
 								<requireJavaVersion>
 									<version>1.5</version>
 								</requireJavaVersion>
-								<!--
-									<requireOS> <family>unix</family> </requireOS>
-									<requireMavenVersion> <version>2.0.6</version>
-									</requireMavenVersion>
-								-->
+								<!-- <requireOS> <family>unix</family> </requireOS> <requireMavenVersion> 
+									<version>2.0.6</version> </requireMavenVersion> -->
 							</rules>
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
@@ -101,115 +492,18 @@
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>
 			<!-- Unit Test Report -->
-			<plugin>			
-				    <groupId>org.apache.maven.plugins</groupId>
-				    <artifactId>maven-surefire-plugin</artifactId>
-			    	<version>2.7.1</version>
-	    	        <configuration>
-	    	        	<!-- IT SPECIFIES THE PROCESS TO LOAD DIFFERENT CLASSPATHS-->
-		    	        <useSystemClassLoader>true</useSystemClassLoader>
-	    	        	<useManifestOnlyJar>false</useManifestOnlyJar>
- 					</configuration>
-			</plugin>			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<!-- IT SPECIFIES THE PROCESS TO LOAD DIFFERENT CLASSPATHS -->
+					<useSystemClassLoader>true</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+				</configuration>
+			</plugin>
 		</plugins>
 	</reporting>
-
-	<dependencies>
-		<!-- IaaS Dependencies -->
-		<dependency>
-			<groupId>com.iaasframework.core</groupId>
-			<artifactId>com.iaasframework.core.resourcecore</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.core</groupId>
-			<artifactId>com.iaasframework.core.persistence</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.iaasframework.core</groupId>
-			<artifactId>com.iaasframework.core.hibernate</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- database jpa dependency -->
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_1.0_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
-	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-			<!-- IaaS Framework and Tools -->
-				<!--  IaaS Core dependencies  -->
-			<dependency>
-				<groupId>com.iaasframework.core</groupId>
-				<artifactId>com.iaasframework.core.resourcecore</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.core</groupId>
-				<artifactId>com.iaasframework.core.persistence</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.core</groupId>
-				<artifactId>com.iaasframework.core.hibernate</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.core</groupId>
-				<artifactId>com.iaasframework.core.transports</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			
-				<!--  IaaS tools  -->			
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.protocol</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.commandset</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.actionset</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.model</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.eventset</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.capabilities</groupId>
-				<artifactId>com.iaasframework.capabilities.triggerset</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-				<!--  IaaS tools  -->						
-			<dependency>
-				<groupId>com.iaasframework.transports</groupId>
-				<artifactId>com.iaasframework.transports.sockets</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.iaasframework.transports</groupId>
-				<artifactId>com.iaasframework.transports.virtual</artifactId>
-				<version>${iaas.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<repositories>
 		<repository>
