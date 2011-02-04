@@ -32,11 +32,13 @@
 		<axiom.version>1.2.8</axiom.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.configuration.version>1.2</commons.configuration.version>
+		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
 		<cxf.version>2.2.11-fuse-00-00</cxf.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<easymock.version>2.5.2</easymock.version>
 		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
+		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<hibernate.version>3.4.0.GA</hibernate.version>
 		<hsqldb.version>1.8.0.9</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
@@ -50,6 +52,7 @@
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>1.5.5</plexus.utils.version>
 		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
+		<servicemix.specs.version>1.6.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
 		<slf4j.version>1.5.6</slf4j.version>
@@ -89,6 +92,11 @@
 				<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
 				<version>${servicemix.velocity.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jta_1.1_spec</artifactId>
+				<version>${geronimo.jta.version}</version>
+			</dependency>
 
 			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
 			<dependency>
@@ -115,6 +123,11 @@
 				<groupId>org.apache.geronimo.specs</groupId>
 				<artifactId>geronimo-jpa_1.0_spec</artifactId>
 				<version>${geronimo.jpa.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+				<version>${commons.dbcp.version}</version>
 			</dependency>
 
 			<!-- OSGI API -->
@@ -296,6 +309,11 @@
 			</dependency>
 
 			<!-- Web services support -->
+			<dependency>
+				<groupId>org.apache.servicemix.specs</groupId>
+				<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+				<version>${servicemix.specs.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
@@ -546,11 +564,6 @@
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
 		<repository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
-		</repository>
-		<repository>
 			<id>osp4j</id>
 			<name>OSP4J releases</name>
 			<url>http://repository.ops4j.org/maven2</url>
@@ -564,6 +577,16 @@
 			<id>springsource-releases</id>
 			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>inocybe-thirdparty</id>
+			<name>Third party bundles not available anywhere else</name>
+			<url>http://repository.inocybe.ca/content/repositories/thirdparty/</url>
+		</repository>
+		<repository>
+			<id>fusesource</id>
+			<name>Fuse Source releases</name>
+			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
 	</repositories>
 
