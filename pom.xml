@@ -35,10 +35,13 @@
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
 		<cxf.version>2.2.11-fuse-00-00</cxf.version>
+		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<easymock.version>2.5.2</easymock.version>
+		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
+		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<hibernate.version>3.4.0.GA</hibernate.version>
 		<hsqldb.version>1.8.0.9</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
@@ -325,9 +328,19 @@
 				<version>${jaxb.impl.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+				<version>${geronimo.jaxws.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.ws.commons.schema</groupId>
 				<artifactId>XmlSchema</artifactId>
 				<version>${xmlschema.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+				<version>${geronimo.wsmetadata.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.ws.commons.axiom</groupId>
@@ -369,6 +382,31 @@
 						<artifactId>opensaml</artifactId>
 					</exclusion>
 				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-databinding-aegis</artifactId>
+				<version>${cxf.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>

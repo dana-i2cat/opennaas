@@ -13,7 +13,7 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 
-import org.apache.felix.karaf.testing.AbstractIntegrationTest;
+import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
