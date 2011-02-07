@@ -8,9 +8,9 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore.core.resources</groupId>
-	<artifactId>net.i2cat.mantychore</artifactId>
-	<version>1.0.0</version>
+	<groupId>net.i2cat.mantychore</groupId>
+	<artifactId>net.i2cat.mantychore.core.resources</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 
 	<name>Mantychore :: Core :: Resources</name>
 	<description> Mantychore Resource's Core Component </description>
