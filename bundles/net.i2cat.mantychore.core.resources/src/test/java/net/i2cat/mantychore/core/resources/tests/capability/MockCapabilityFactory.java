@@ -1,0 +1,34 @@
+package net.i2cat.mantychore.core.resources.tests.capability;
+
+import net.i2cat.mantychore.core.resources.capability.AbstractCapabilityFactory;
+import net.i2cat.mantychore.core.resources.capability.CapabilityException;
+import net.i2cat.mantychore.core.resources.capability.ICapability;
+import net.i2cat.mantychore.core.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.mantychore.core.resources.descriptor.Information;
+
+/**
+ * A mock CapabilityFactory for testing
+ * @author Scott Campbell (CRC)
+ *
+ */
+public class MockCapabilityFactory extends AbstractCapabilityFactory
+{
+	@Override
+	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
+		MockCapability capability = new MockCapability(getMockCapabilityDescriptor());
+		capability.setCapabilityDescriptor(capabilityDescriptor);
+		capability.initialize();
+		
+		return capability;
+	}
+	
+	private CapabilityDescriptor getMockCapabilityDescriptor(){
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		Information information = new Information();
+		information.setName("Mock capability");
+		information.setType("Mock");
+		information.setVersion("0.0.1");
+		capabilityDescriptor.setCapabilityInformation(information);
+		return capabilityDescriptor;
+	}
+}
