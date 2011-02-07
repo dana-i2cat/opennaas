@@ -14,7 +14,7 @@
 	<modelVersion>4.0.0</modelVersion>
    <name>Mantychore :: POMS :: Integration Test</name>
    <packaging>pom</packaging>
-
+ 
 
  <!--  integration tests -->
   <modules>
@@ -118,14 +118,6 @@
           <scope>provided</scope>
        </dependency>
 		
-		<!--  IaaS testing dependencies  -->
-		<dependency>
-			<groupId>com.iaasframework.extras</groupId>
-			<artifactId>com.iaasframework.extras.itesthelper</artifactId>			
-			<version>${iaas.version}</version>
-		</dependency>
-		
-	
 		<!-- features dependencies -->
 		
 
