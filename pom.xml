@@ -110,6 +110,11 @@
 				<version>${dynamicjava.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.dynamicjava</groupId>
+				<artifactId>dynamic-jpa</artifactId>
+				<version>${dynamicjava.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
 				<version>${hibernate.version}</version>
