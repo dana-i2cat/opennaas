@@ -30,56 +30,9 @@
     <dependency>
       <groupId>org.apache.geronimo.specs</groupId>
       <artifactId>geronimo-jpa_1.0_spec</artifactId>
-      <scope>provided</scope>
     </dependency>		
     
-    
-      <!-- OSGi -->
-	<dependency>
-           <groupId>org.osgi</groupId>
-           <artifactId>osgi_R4_core</artifactId>
-	   		<scope>provided</scope>
-         </dependency>
-         <dependency>
-          <groupId>org.osgi</groupId>
-          <artifactId>osgi_R4_compendium</artifactId>
-	  <scope>provided</scope>
-       </dependency>
-      <dependency>
-         <groupId>org.ops4j.pax.logging</groupId>
-         <artifactId>pax-logging-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.ops4j.pax.logging</groupId>
-         <artifactId>pax-logging-service</artifactId>
-         <scope>provided</scope>
-      </dependency>
-      <dependency>
-         <groupId>junit</groupId>
-         <artifactId>junit</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-api</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>slf4j-log4j12</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.slf4j</groupId>
-         <artifactId>log4j-over-slf4j</artifactId>
-         <scope>test</scope>
-      </dependency>
-      <dependency>
-         <groupId>org.easymock</groupId>
-         <artifactId>easymock</artifactId>
-         <scope>test</scope>
-      </dependency>
+      <!-- Integration tests -->
       <dependency>
 	<groupId>org.ops4j.pax.exam</groupId>
 	<artifactId>pax-exam</artifactId>

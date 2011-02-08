@@ -40,7 +40,10 @@
   <modules>
    	<module>net.i2cat.mantychore.core.hibernate</module>
 	<module>net.i2cat.mantychore.core.hsqldb</module>
-	<module>net.i2cat.mantychore.core.persistence</module>  
+	<module>net.i2cat.mantychore.core.persistence</module>
+	<module>net.i2cat.mantychore.core.platformmanager</module>
+	<module>net.i2cat.mantychore.core.resources</module>   
+	<module>net.i2cat.mantychore.core.resourcemanager.soapendpoint</module>  
 	<module>net.i2cat.mantychore.model</module> 
     <module>net.i2cat.mantychore.commons</module>
     <module>net.i2cat.mantychore.commandsets.junos</module>
@@ -48,8 +51,6 @@
     <module>net.i2cat.mantychore.protocols.sessionmanager</module>
     <module>net.i2cat.mantychore.protocols.netconf</module>
     <module>net.i2cat.mantychore.queuemanager</module>
-    <module>net.i2cat.mantychore.core.hibernate</module>
-    <module>net.i2cat.mantychore.core.hsqldb</module>
   </modules>
 
 </project>

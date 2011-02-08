@@ -2,6 +2,7 @@ package net.i2cat.mantychore.core.resourcemanager.soapendpoint.tests;
 
 import javax.jms.JMSException;
 
+import net.i2cat.mantychore.core.resources.IResource;
 import net.i2cat.mantychore.core.resources.capability.AbstractJMSCapability;
 import net.i2cat.mantychore.core.resources.capability.CapabilityException;
 import net.i2cat.mantychore.core.resources.descriptor.CapabilityDescriptor;
@@ -41,6 +42,11 @@ public class MockCapability extends AbstractJMSCapability{
 	protected void shutdownCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void setResource(IResource resource){
+			// TODO Auto-generated method stub
 	}
 
 }
