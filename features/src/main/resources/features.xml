@@ -43,11 +43,23 @@
 		
 <!--  		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.velocity/1.6.2_3</bundle> -->
 		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.1-SNAPSHOT</bundle>
-
+		
+		<!-- Dynamic JPA and persistence-->
+		<bundle>mvn:org.dynamicjava/classloading-utils/${dynamicjava.version}</bundle>
+		<bundle>mvn:org.dynamicjava/service-binding-utils/${dynamicjava.version}</bundle>
+		<bundle>mvn:org.dynamicjava/dynamic-jpa/${dynamicjava.version}</bundle>
+		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/${geronimo.jpa.version}</bundle> 
+        	<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle> 
     </feature>
 
     <feature name="i2cat-mantychore-core" version="1.0.0-SNAPSHOT">
 		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-deps</feature>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.hibernate/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.hsqldb/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.persistence/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.platformmanager/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.resources/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore/net.i2cat.mantychore.core.resourcemanager.soapendpoint/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.commons/net.i2cat.mantychore.commons/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.sessionmanager/1.0.0-SNAPSHOT</bundle>
