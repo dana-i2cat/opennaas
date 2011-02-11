@@ -7,10 +7,10 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore</groupId>
-	<artifactId>net.i2cat.mantychore.core.hibernate</artifactId>
+	<groupId>net.i2cat.nexus</groupId>
+	<artifactId>net.i2cat.nexus.hibernate</artifactId>
 	<packaging>bundle</packaging>
-	<name>Mantychore :: Core :: Hibernate</name>
+	<name>Nexus :: Hibernate</name>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<dependencies>

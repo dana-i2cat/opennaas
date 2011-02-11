@@ -38,7 +38,7 @@
   <!-- include your project here -->
 
   <modules>
-   	<module>net.i2cat.mantychore.core.hibernate</module>
+   	<module>net.i2cat.nexus.hibernate</module>
 	<module>net.i2cat.mantychore.core.hsqldb</module>
 	<module>net.i2cat.mantychore.core.persistence</module>
 	<module>net.i2cat.mantychore.core.platformmanager</module>
