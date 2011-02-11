@@ -6,12 +6,12 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore</groupId>
-	<artifactId>net.i2cat.mantychore.core.persistence</artifactId>
+	<groupId>net.i2cat.nexus</groupId>
+	<artifactId>net.i2cat.nexus.persistence</artifactId>
 	<packaging>bundle</packaging>
-	<name>Mantychore :: Core :: JPA Persistence</name>
+	<name>Nexus :: JPA Persistence</name>
 	<version>1.0.0-SNAPSHOT</version>
-	<description>Dynamic JPA Persistence tools for Mantychore</description>
+	<description>Dynamic JPA Persistence tools for Nexus</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
@@ -30,8 +30,8 @@
 			<artifactId>dynamic-jpa</artifactId>
 		</dependency>
         	<dependency>
-			<groupId>net.i2cat.mantychore</groupId>
-			<artifactId>net.i2cat.mantychore.core.hibernate</artifactId>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.hibernate</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -87,11 +87,11 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Bundle-Activator>net.i2cat.mantychore.core.persistence.Activator</Bundle-Activator>
+						<Bundle-Activator>net.i2cat.nexus.persistence.Activator</Bundle-Activator>
 						<Import-Package>!${bundle.namespace}.*,org.osgi.framework, javax.persistence, org.dynamicjava.osgi.service_binding_utils, org.dynamicjava.osgi.class
 loading_utils, org.w3c.dom, javax.xml.parsers, org.slf4j;version="1.5.6", *</Import-Package>>
 						<Export-Package>
-						net.i2cat.mantychore.core.persistence.*;version="${pom.version}"
+						net.i2cat.nexus.persistence.*;version="${pom.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

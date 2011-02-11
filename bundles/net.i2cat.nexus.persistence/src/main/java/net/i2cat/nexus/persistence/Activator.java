@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.core.persistence;
+package net.i2cat.nexus.persistence;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

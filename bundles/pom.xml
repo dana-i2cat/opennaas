@@ -39,8 +39,8 @@
 
   <modules>
    	<module>net.i2cat.nexus.hibernate</module>
-	<module>net.i2cat.mantychore.core.hsqldb</module>
-	<module>net.i2cat.mantychore.core.persistence</module>
+	<module>net.i2cat.nexus.hsqldb</module>
+	<module>net.i2cat.nexus.persistence</module>
 	<module>net.i2cat.mantychore.core.platformmanager</module>
 	<module>net.i2cat.mantychore.core.resources</module>   
 	<module>net.i2cat.mantychore.core.resourcemanager.soapendpoint</module>  
