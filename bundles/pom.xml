@@ -42,8 +42,8 @@
 	<module>net.i2cat.nexus.hsqldb</module>
 	<module>net.i2cat.nexus.persistence</module>
 	<module>net.i2cat.nexus.platformmanager</module>
-	<module>net.i2cat.mantychore.core.resources</module>   
-	<module>net.i2cat.mantychore.core.resourcemanager.soapendpoint</module>  
+	<module>net.i2cat.nexus.resources</module>   
+	<module>net.i2cat.nexus.resourcemanager.soapendpoint</module>  
 	<module>net.i2cat.mantychore.model</module> 
     <module>net.i2cat.mantychore.commons</module>
     <module>net.i2cat.mantychore.commandsets.junos</module>
