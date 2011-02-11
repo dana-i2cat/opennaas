@@ -15,7 +15,7 @@
 		<property name="password" value="" />
 	</bean>
 
-	<bean id="dataBase" class="net.i2cat.mantychore.core.hsqldb.internal.HSQLDBServer"
+	<bean id="dataBase" class="net.i2cat.nexus.hsqldb.internal.HSQLDBServer"
 		lazy-init="false">
 		<property name="dataSource">
 			<ref local="dataSource" />

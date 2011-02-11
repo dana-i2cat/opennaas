@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.i2cat.mantychore.core.hsqldb.internal.HSQLDBServer;
+import net.i2cat.nexus.hsqldb.internal.HSQLDBServer;
 
 
 public class HSQLDBServerTest {

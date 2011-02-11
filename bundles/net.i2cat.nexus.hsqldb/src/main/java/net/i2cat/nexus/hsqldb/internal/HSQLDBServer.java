@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.core.hsqldb.internal;
+package net.i2cat.nexus.hsqldb.internal;
 
 import java.sql.Connection;
 import java.sql.SQLException;

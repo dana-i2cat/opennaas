@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
-import net.i2cat.mantychore.core.hsqldb.internal.HSQLDBServer;
+import net.i2cat.nexus.hsqldb.internal.HSQLDBServer;
 
 public class HSQLDBServerIntegrationTest extends
 AbstractDependencyInjectionSpringContextTests {
