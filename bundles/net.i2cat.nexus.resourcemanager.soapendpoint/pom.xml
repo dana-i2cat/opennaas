@@ -169,9 +169,9 @@
         					org.apache.cxf.wsdl11,
         					org.springframework.beans.factory.config,
     						javax.jms,
-    						com.iaasframework.resources.core,
-    						com.iaasframework.resources.core.descriptor,
-    						com.iaasframework.resources.core.capability,
+    						net.i2cat.nexus.resources,
+    						net.i2cat.nexus.resources.descriptor,
+    						net.i2cat.nexus.resources.capability,
     						org.apache.activemq,
     						*</Import-Package>
     					<Export-Package>
