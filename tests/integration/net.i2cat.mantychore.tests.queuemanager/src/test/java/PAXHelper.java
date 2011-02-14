@@ -34,11 +34,17 @@ public class PAXHelper {
 	
 	/* service mix features */
 	
-	public static final String		SERVICE_MIX_FEATURES_REPO_V4_3	= "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features";
+	public static final String		SERVICE_MIX_FEATURES_REPO	= "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features";
+	public static final String		KARAF_FEATURES_REPO	= "mvn:org.apache.karaf/apache-karaf/2.0.0/xml/features";
+	public static final String		ACTIVEMQ_FEATURES_REPO	= "mvn:org.apache.activemq/activemq-karaf/5.4.0-fuse-00-00/xml/features";
 	
-	public static final String[]	SERVICE_MIX_FEATURES_V4_3		= { "servicemix-cxf-bc", "camel", "camel-cxf", "camel-jms", "camel-jaxb" };
+	public static final String[]	SERVICE_MIX_FEATURES		= { "servicemix-cxf-bc"};
+	public static final String[]	KARAF_FEATURES		= { "spring-dm" };
+	public static final String[]	ACTIVEMQ_FEATURES		= { "activemq-blueprint"};
 	
-	public static final Option		OPT_SERVICE_MIX_FEATURES		= scanFeatures(SERVICE_MIX_FEATURES_REPO_V4_3, SERVICE_MIX_FEATURES_V4_3);
+	public static final Option		OPT_SERVICE_MIX_FEATURES		= scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
+	public static final Option		OPT_KARAF_FEATURES		= scanFeatures(KARAF_FEATURES_REPO, KARAF_FEATURES);
+	public static final Option		OPT_ACTIVEMQ_FEATURES		= scanFeatures(ACTIVEMQ_FEATURES_REPO, ACTIVEMQ_FEATURES);
 
 	
 	/* mantychore features */
@@ -84,7 +90,9 @@ public class PAXHelper {
 	public static Option[] newServiceMixTest() {
 		Option[] optssimpleTest = newSimpleTest();
 		
-		Option[] optsServiceMix = combine(optssimpleTest, OPT_SERVICE_MIX_FEATURES); // service
+		Option[] optsKaraf = combine(optssimpleTest, OPT_KARAF_FEATURES);
+		Option[] optsActiveMQ = combine(optsKaraf, OPT_SERVICE_MIX_FEATURES);
+		Option[] optsServiceMix = combine(optsActiveMQ, OPT_SERVICE_MIX_FEATURES); // service
 		
 		return optsServiceMix;
 		
