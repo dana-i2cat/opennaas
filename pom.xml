@@ -28,13 +28,13 @@
 
 	<!-- Custom Properties -->
 	<properties>
-		<activemq.version>5.4.1-fuse-01-00</activemq.version>
+		<activemq.version>5.4.0-fuse-00-00</activemq.version>
 		<axiom.version>1.2.8</axiom.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.configuration.version>1.2</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cxf.version>2.2.11-fuse-00-00</cxf.version>
+		<cxf.version>2.2.9-fuse-01-00</cxf.version>
 		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<easymock.version>2.5.2</easymock.version>
