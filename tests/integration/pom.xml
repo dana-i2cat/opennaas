@@ -89,19 +89,6 @@
 			<type>xml</type>
 			<classifier>features</classifier>
 		</dependency>
-	
-		<!--  fuse 4.3 -->
-
-		<dependency>
-			<groupId>org.apache.servicemix</groupId>
-			<artifactId>apache-servicemix</artifactId>
-			<version>4.3.0-fuse-01-00</version>
-			<type>xml</type>
-			<classifier>features</classifier>
-		</dependency>
-		
-		
-		
 
 		<dependency>
 			<groupId>net.i2cat.mantychore</groupId>
@@ -110,9 +97,7 @@
 			<type>xml</type>
 			<classifier>features</classifier>
 		</dependency>
-		
-
-</dependencies>
+	</dependencies>
 
    <build>
       <resources>
