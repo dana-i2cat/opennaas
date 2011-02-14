@@ -48,7 +48,7 @@ public class ResourceManagerSOAPEndpointTest {
 		server.setServiceClass(ResourceManagerSOAPEndpoint.class); 
 		ResourceManagerSOAPEndpoint managerService = new ResourceManagerSOAPEndpoint(resourceManager);
 		server.setServiceBean(managerService);
-		server.setAddress("http://localhost:8080/resourceManagerSOAPEndpoint");
+		server.setAddress("http://localhost:9080/resourceManagerSOAPEndpoint");
 		server.create();
 	
 	}
@@ -78,7 +78,7 @@ public class ResourceManagerSOAPEndpointTest {
 	private void createWebServiceClient() {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(IResourceManagerSOAPEndpoint.class);
-		factory.setAddress("http://localhost:8080/resourceManagerSOAPEndpoint");
+		factory.setAddress("http://localhost:9080/resourceManagerSOAPEndpoint");
 	    client = (IResourceManagerSOAPEndpoint) factory.create();
 	}
 	

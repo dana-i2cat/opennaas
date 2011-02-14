@@ -25,7 +25,7 @@ public class PlatformManagerWSTest {
 		server.setServiceClass(PlatformManagerWS.class);
 		PlatformManagerWS platformManageService = new PlatformManagerWS();
 		server.setServiceBean(platformManageService);
-		server.setAddress("http://localhost:8080/platformManagerWS");
+		server.setAddress("http://localhost:9080/platformManagerWS");
 		server.create();
 	}
 	
@@ -38,7 +38,7 @@ public class PlatformManagerWSTest {
 	private void createWebServiceClient() {
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();
 		factory.setServiceClass(IPlatformManagerWS.class);
-		factory.setAddress("http://localhost:8080/platformManagerWS");
+		factory.setAddress("http://localhost:9080/platformManagerWS");
 	    client = (IPlatformManagerWS) factory.create();
 	}
 	
