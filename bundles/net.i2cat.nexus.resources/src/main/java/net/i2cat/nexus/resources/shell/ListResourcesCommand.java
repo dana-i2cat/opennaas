@@ -15,7 +15,7 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "iaas", name = "list", description = "List the resources in the platform")
+@Command(scope = "nexus", name = "list", description = "List the resources in the platform")
 public class ListResourcesCommand extends OsgiCommandSupport {
 
 	@Override

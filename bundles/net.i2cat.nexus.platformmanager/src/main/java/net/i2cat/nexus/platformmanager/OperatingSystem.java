@@ -51,7 +51,7 @@ public class OperatingSystem {
 	}
 	
 	public String toString(){
-		String result = "Operating System \n";
+		String result = Platform.BOLD + "Operating System \n" + Platform.NORMAL;
 		result = result + "   Name: " + getName() + "\n";
 		result = result + "   Version: " + getVersion() + "\n";
 		result = result + "   Architecture: " + getArchitecture() + "\n";

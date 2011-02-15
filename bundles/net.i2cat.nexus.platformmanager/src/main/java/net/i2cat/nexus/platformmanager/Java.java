@@ -85,14 +85,14 @@ public class Java {
 	}
 	
 	public String toString(){
-		String result = "Java Virtual Machine Information \n";
+		String result = Platform.BOLD + "Java Virtual Machine Information \n" + Platform.NORMAL;
 		result = result + "   JRE Version: " + getJreVersion() + "\n";
 		result = result + "   JRE Vendor: " + getJreVendor() + "\n";
 		result = result + "   JVM Name: " + getJvmName() + "\n";
 		result = result + "   JVM Version: " + getJvmVersion() + "\n";
 		result = result + "   JVM Vendor: " + getJvmVendor() + "\n";
-		result = result + "   Non heap memory: \n" + nonHeapMemory.toString();
-		result = result + "   Heap memory: \n" + heapMemory.toString();
+		result = result + "   Non heap memory (in MB): \n" + nonHeapMemory.toString();
+		result = result + "   Heap memory (in MB): \n" + heapMemory.toString();
 		
 		return result;
 	}

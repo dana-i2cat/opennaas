@@ -3,8 +3,11 @@ package net.i2cat.nexus.platformmanager;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
-import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -18,7 +21,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Platform {
 	
-	public static final String RESOURCES = "net.i2cat.mantychore.resources";
+	public static final String NORMAL     = "\u001b[0m";
+	public static final String BOLD       = "\u001b[1m";
+	public static final String RESOURCES = "net.i2cat.nexus.resources";
 	
 	private OperatingSystem operatingSystem = null;
 	private Java java = null;
@@ -106,10 +111,10 @@ public class Platform {
 	
 	private Memory loadMemoryInformation(MemoryUsage memoryUsage){
 		Memory memory = new Memory();
-		memory.setCommitted(""+memoryUsage.getCommitted());
-		memory.setInit(""+memoryUsage.getInit());
-		memory.setMax(""+memoryUsage.getMax());
-		memory.setUsage(""+memoryUsage.getUsed());
+		memory.setCommitted(""+memoryUsage.getCommitted()/1048576);
+		memory.setInit(""+memoryUsage.getInit()/1048576);
+		memory.setMax(""+memoryUsage.getMax()/1048576);
+		memory.setUsage(""+memoryUsage.getUsed()/1048576);
 		return memory;
 	}
 	
@@ -127,25 +132,56 @@ public class Platform {
 	private Root loadRootInformation(File fileRoot){
 		Root root = new Root();
 		root.setAbsolutePath(fileRoot.getAbsolutePath());
-		root.setFreeSpace(""+fileRoot.getFreeSpace());
-		root.setTotalSpace(""+fileRoot.getTotalSpace());
-		root.setUsableSpace(""+fileRoot.getUsableSpace());
+		root.setFreeSpace(""+fileRoot.getFreeSpace()/1048576);
+		root.setTotalSpace(""+fileRoot.getTotalSpace()/1048576);
+		root.setUsableSpace(""+fileRoot.getUsableSpace()/1048576);
 		
 		return root;
 	}
 	
 	private Network loadNetworkInformation(){
-		Network network = new Network();
-		try{
-			InetAddress addr = InetAddress.getLocalHost();
-			network.setIpAddress(addr.getHostAddress());
-			network.setHostname(addr.getHostName());
-		}catch(Exception ex){
-			network.setHostname("unknown");
-			network.setIpAddress("unknown");
+		List<NetInf> networkInterfaces = new ArrayList<NetInf>();
+		Enumeration<NetworkInterface> nets = null;
+		try {
+			nets = NetworkInterface.getNetworkInterfaces();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+        for (NetworkInterface netint : Collections.list(nets))
+            networkInterfaces.add(createNetworkInterface(netint));
+		
+        Network network = new Network();
+        network.setNeworkInterfaces(networkInterfaces);
 		
 		return network;
+	}
+	
+	private NetInf createNetworkInterface(NetworkInterface networkInterface){
+		NetInf netInf = new NetInf();
+		
+		netInf.setDisplayName(networkInterface.getDisplayName());
+		netInf.setName(networkInterface.getName());
+
+		try{
+			netInf.setMtu(""+networkInterface.getMTU());
+			netInf.setIpAddress(networkInterface.getInterfaceAddresses().toString());
+			byte[] macAddress = networkInterface.getHardwareAddress();
+			String printableMacAddress = "";
+			for(int i=0; i<macAddress.length; i++){
+				printableMacAddress = printableMacAddress + String.format("%02X ", macAddress[i]);
+			}
+			netInf.setMacAddress(printableMacAddress);
+			netInf.setLoopback(networkInterface.isLoopback());
+			netInf.setPointToPoint(networkInterface.isPointToPoint());
+			netInf.setUp(networkInterface.isUp());
+			netInf.setSupportsMulticast(networkInterface.supportsMulticast());
+			netInf.setVirtual(networkInterface.isVirtual());
+			netInf.setHostname(networkInterface.getInetAddresses().nextElement().getCanonicalHostName());
+		}catch(Exception ex){
+		}
+		
+		return netInf;
 	}
 	
 	private void loadIaaSComponentsInformation(){

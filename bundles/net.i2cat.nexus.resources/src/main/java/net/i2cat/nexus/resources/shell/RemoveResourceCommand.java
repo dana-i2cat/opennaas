@@ -16,7 +16,7 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "iaas", name = "remove", description = "Remove one or more resources from the platform")
+@Command(scope = "nexus", name = "remove", description = "Remove one or more resources from the platform")
 public class RemoveResourceCommand extends OsgiCommandSupport {
 
 	@Argument(index = 0, name = "resource ids", description = "A space delimited list of resource ids to be deleted", required = true, multiValued = true)

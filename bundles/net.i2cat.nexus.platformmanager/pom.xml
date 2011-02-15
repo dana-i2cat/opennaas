@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <parent>
-	<artifactId>mantychore-bundles</artifactId>
-	<groupId>net.i2cat.mantychore</groupId>
+	<parent>
+		<artifactId>mantychore-bundles</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.i2cat.nexus</groupId>
+	<artifactId>net.i2cat.nexus.platformmanager</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-  </parent>
 
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.i2cat.nexus</groupId>
-  <artifactId>net.i2cat.nexus.platformmanager</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+	<name>Nexus :: Platform Manager</name>
 
-  <name>Nexus :: Platform Manager</name>
-
-  <packaging>bundle</packaging>
-  <description>Nexus Platform Manager</description>
+	<packaging>bundle</packaging>
+	<description>Nexus Platform Manager</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
@@ -36,6 +37,10 @@
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>com.springsource.org.hsqldb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
@@ -78,11 +83,9 @@
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
 				<version>1.4</version>
-				<!--
-					| enable improved OSGi compilation support for the bundle
-					life-cycle. | to switch back to the standard bundle life-cycle,
-					move this setting | down to the maven-bundle-plugin section
-				-->
+				<!-- | enable improved OSGi compilation support for the bundle life-cycle. 
+					| to switch back to the standard bundle life-cycle, move this setting | down 
+					to the maven-bundle-plugin section -->
 				<extensions>true</extensions>
 			</plugin>
 
@@ -131,38 +134,39 @@
 						</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>!${bundle.namespace}.*,
-    							org.slf4j;version="1.5.6",
-    							javax.jws;version="1.0",
-    							javax.wsdl,
-    							META-INF.cxf;version="[0.0.0,${cxf.version})",
-    							META-INF.cxf.osgi;version="[0.0.0,${cxf.version})",
-    							org.apache.cxf,
-    							org.apache.cxf.binding,
-    							org.apache.cxf.binding.soap,
-    							org.apache.cxf.binding.soap.spring,
-    							org.apache.cxf.bus,
-    							org.apache.cxf.bus.spring,
-    							org.apache.cxf.bus.resource,
-    							org.apache.cxf.buslifecycle,
-    							org.apache.cxf.catalog, 
-    							org.apache.cxf.configuration.spring,
-    							org.apache.cxf.endpoint,
-    							org.apache.cxf.headers,
-    							org.apache.cxf.phase,
-    							org.apache.cxf.resource,
-   							org.apache.cxf.transport,
-    							org.apache.cxf.transport.http,
-    							org.apache.cxf.transport.http_osgi,
-    							org.apache.cxf.transport.http.policy,
-    							org.apache.cxf.workqueue,
-    							org.apache.cxf.wsdl11,
-    							org.springframework.beans.factory.config,
-    							*</Import-Package>
-    						<Export-Package>
-    							net.i2cat.nexus.platformmanager*;version="${project.version}", 
+							org.slf4j;version="1.5.6",
+							javax.jws;version="1.0",
+							javax.wsdl,
+							META-INF.cxf;version="[0.0.0,${cxf.version})",
+							META-INF.cxf.osgi;version="[0.0.0,${cxf.version})",
+							org.apache.cxf,
+							org.apache.cxf.binding,
+							org.apache.cxf.binding.soap,
+							org.apache.cxf.binding.soap.spring,
+							org.apache.cxf.bus,
+							org.apache.cxf.bus.spring,
+							org.apache.cxf.bus.resource,
+							org.apache.cxf.buslifecycle,
+							org.apache.cxf.catalog,
+							org.apache.cxf.configuration.spring,
+							org.apache.cxf.endpoint,
+							org.apache.cxf.headers,
+							org.apache.cxf.phase,
+							org.apache.cxf.resource,
+							org.apache.cxf.transport,
+							org.apache.cxf.transport.http,
+							org.apache.cxf.transport.http_osgi,
+							org.apache.cxf.transport.http.policy,
+							org.apache.cxf.workqueue,
+							org.apache.cxf.wsdl11,
+							org.springframework.beans.factory.config,
+							org.osgi.service.command,
+							*</Import-Package>
+						<Export-Package>
+							net.i2cat.nexus.platformmanager*;version="${project.version}", 
     						</Export-Package>
-    						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
-    						<DynamicImport-Package>org.apache.cxf.*</DynamicImport-Package>
+						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
+						<DynamicImport-Package>org.apache.cxf.*</DynamicImport-Package>
 					</instructions>
 				</configuration>
 			</plugin>

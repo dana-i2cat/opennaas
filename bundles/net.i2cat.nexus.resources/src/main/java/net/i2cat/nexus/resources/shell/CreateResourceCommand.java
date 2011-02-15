@@ -24,7 +24,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "iaas", name = "create", description = "Create one or more IaaS resources")
+@Command(scope = "nexus", name = "create", description = "Create one or more resources")
 public class CreateResourceCommand extends OsgiCommandSupport {
 
 	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to the resource descriptors for the resources to create", required = true, multiValued = true)

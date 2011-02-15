@@ -50,7 +50,7 @@ public class Hardware {
 	}
 	
 	public String toString(){
-		String result = "Hardware \n";
+		String result = Platform.BOLD + "Hardware \n" + Platform.NORMAL;
 		result = result + "   Number of cpus: " + getCpus() + "\n";
 		result = result + "   CPU load: " + getCpuLoad() + "\n";
 		result = result + hardDisk.toString() + network.toString();

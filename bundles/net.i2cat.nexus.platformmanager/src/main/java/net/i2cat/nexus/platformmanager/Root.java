@@ -51,9 +51,9 @@ public class Root {
 	public String toString(){
 		String result = "      Root  \n";
 		result = result + "         Absolute Path: " + getAbsolutePath() + "\n";
-		result = result + "         Total Space: " + getTotalSpace() + "\n";
-		result = result + "         Free Space: " + getFreeSpace() + "\n";
-		result = result + "         Usable Space: " + getUsableSpace() + "\n";
+		result = result + "         Total Space (in MB): " + getTotalSpace() + "\n";
+		result = result + "         Free Space (in MB): " + getFreeSpace() + "\n";
+		result = result + "         Usable Space (in MB): " + getUsableSpace() + "\n";
 		return result;
 	}
 }

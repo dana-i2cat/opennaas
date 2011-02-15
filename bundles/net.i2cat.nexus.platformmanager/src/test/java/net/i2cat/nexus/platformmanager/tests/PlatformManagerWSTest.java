@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.core.platformmanager.tests;
+package net.i2cat.nexus.platformmanager.tests;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
@@ -58,8 +58,6 @@ public class PlatformManagerWSTest {
 			Assert.assertNotNull(java.getJvmName());
 			Assert.assertNotNull(java.getJvmVendor());
 			Assert.assertNotNull(platform.getHardware().getCpus());
-			Assert.assertNotNull(platform.getHardware().getNetwork().getIpAddress());
-			Assert.assertNotNull(platform.getHardware().getNetwork().getHostname());
 		}catch(Exception ex){
 			ex.printStackTrace();
 			Assert.assertTrue(false);

@@ -1,36 +1,33 @@
 package net.i2cat.nexus.platformmanager;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
 
 public class Network {
-	private String ipAddress = null;
-	private String hostname = null;
+	
+	private List<NetInf> networkInterfaces = null;
 	
 	public Network(){
 	}
 
-	@XmlAttribute(name = "ipAddress")
-	public String getIpAddress() {
-		return ipAddress;
+	public void setNeworkInterfaces(List<NetInf> networkInterfaces) {
+		this.networkInterfaces = networkInterfaces;
 	}
 
-	public void setIpAddress(String ipAddress) {
-		this.ipAddress = ipAddress;
-	}
-
-	@XmlAttribute(name = "hostname")
-	public String getHostname() {
-		return hostname;
-	}
-
-	public void setHostname(String hostname) {
-		this.hostname = hostname;
+	@XmlElement(name = "networkInterfaces")
+	public List<NetInf> getNeworkInterfaces() {
+		return networkInterfaces;
 	}
 	
 	public String toString(){
-		String result = "   Network \n";
-		result = result + "      IP Address: " + getIpAddress() + "\n";
-		result = result + "      Hostname: " + getHostname() + "\n";
+		String result = "   Network Interfaces \n";
+		if (networkInterfaces != null){
+			for(int i=0; i<networkInterfaces.size(); i++){
+				result = result + networkInterfaces.get(i).toString();
+			}
+		}
+		
 		return result;
 	}
 	
