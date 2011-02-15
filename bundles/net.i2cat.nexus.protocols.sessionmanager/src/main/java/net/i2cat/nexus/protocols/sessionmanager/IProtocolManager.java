@@ -1,5 +1,7 @@
 package net.i2cat.nexus.protocols.sessionmanager;
 
+import java.util.List;
+
 /**
  * The manager of the protocol session managers. There's one per IaaS container,
  * and handles the creation and deletion of individual protocol session
@@ -46,5 +48,17 @@ public interface IProtocolManager {
 	 *             protocol session manager
 	 */
 	public void destroyProtocolSessionManager(String deviceID) throws ProtocolException;
+	
+	/**
+	 * Return all the device ids of the protocol manager
+	 * @return
+	 */
+	public List<String> getAllDeviceIds();
+	
+	/**
+	 * Return all the protocol factories registered to the protocol manager
+	 * @return
+	 */
+	public List<String> getAllProtocolFactories();
 
 }

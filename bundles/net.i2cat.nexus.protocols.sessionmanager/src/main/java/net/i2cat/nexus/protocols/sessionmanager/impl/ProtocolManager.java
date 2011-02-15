@@ -1,7 +1,9 @@
 package net.i2cat.nexus.protocols.sessionmanager.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -79,6 +81,28 @@ public class ProtocolManager implements IProtocolManager {
 		}
 
 		return sessionManagers.get(deviceID);
+	}
+	
+	@Override
+	public List<String> getAllDeviceIds(){
+		Iterator<String> iterator = sessionManagers.keySet().iterator();
+		List<String> result = new ArrayList<String>();
+		while(iterator.hasNext()){
+			result.add(iterator.next());
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public List<String> getAllProtocolFactories(){
+		Iterator<String> iterator = protocolFactories.keySet().iterator();
+		List<String> result = new ArrayList<String>();
+		while(iterator.hasNext()){
+			result.add(iterator.next());
+		}
+		
+		return result;
 	}
 
 	/**
