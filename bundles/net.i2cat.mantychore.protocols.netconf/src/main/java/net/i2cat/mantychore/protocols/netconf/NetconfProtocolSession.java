@@ -5,11 +5,11 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolMessageFilter;
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSessionListener;
-import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
-import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;

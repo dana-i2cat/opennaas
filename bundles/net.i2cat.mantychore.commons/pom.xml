@@ -21,10 +21,11 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Commons </name>
 	<description>Mantychore Commons Classes</description>
+	
 	<dependencies>
 		<dependency>
-			<groupId>net.i2cat.mantychore.protocols</groupId>
-			<artifactId>net.i2cat.mantychore.protocols.sessionmanager</artifactId>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

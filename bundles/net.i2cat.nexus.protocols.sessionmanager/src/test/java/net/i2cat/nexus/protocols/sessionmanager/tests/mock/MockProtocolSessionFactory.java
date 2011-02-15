@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.protocols.netconf;
+package net.i2cat.nexus.protocols.sessionmanager.tests.mock;
 
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
@@ -8,22 +8,18 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NetconfProtocolSessionFactory implements IProtocolSessionFactory {
+public class MockProtocolSessionFactory implements IProtocolSessionFactory {
 
 	/** The logger **/
-	Logger	logger	= LoggerFactory.getLogger(NetconfProtocolSessionFactory.class);
+	Logger	logger	= LoggerFactory.getLogger(MockProtocolSessionFactory.class);
 
-	public NetconfProtocolSessionFactory() {
+	public MockProtocolSessionFactory() {
 		super();
-		logger.info("Netconf Protocol Session Factory created");
+		logger.info("Mock Protocol Session Factory created");
 	}
 
 	@Override
 	public IProtocolSession createProtocolSession(String sessionID, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
-		// TODO Auto-generated method stub
-
-		NetconfProtocolSession session = new NetconfProtocolSession(protocolSessionContext, sessionID);
-
-		return session;
+		return new MockProtocolSession();
 	}
 }

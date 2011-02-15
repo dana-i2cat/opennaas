@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.commons.Response.Status;
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

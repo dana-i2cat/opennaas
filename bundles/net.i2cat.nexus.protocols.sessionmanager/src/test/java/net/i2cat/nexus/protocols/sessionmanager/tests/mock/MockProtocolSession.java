@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.queuemanager.mock;
+package net.i2cat.nexus.protocols.sessionmanager.tests.mock;
 
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
@@ -10,8 +10,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MockProtocolSession implements IProtocolSession {
-	static Logger	log	= LoggerFactory
-								.getLogger(MockProtocolSession.class);
+	static Logger					log	= LoggerFactory
+												.getLogger(MockProtocolSession.class);
+
+	private ProtocolSessionContext	protocolSessionContext;
+
+	public MockProtocolSession() {
+		protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "mock");
+		protocolSessionContext.addParameter("protocol.uri", "mock://foo:bar@foo:22/mock");
+	}
 
 	@Override
 	public void asyncSend(Object arg0) throws ProtocolException {
@@ -32,14 +40,18 @@ public class MockProtocolSession implements IProtocolSession {
 
 	@Override
 	public ProtocolSessionContext getSessionContext() {
-		// TODO Auto-generated method stub
-		return null;
+		return protocolSessionContext;
+	}
+
+	public void setSessionContext(ProtocolSessionContext protocolSessionContext) {
+		this.protocolSessionContext = protocolSessionContext;
+
 	}
 
 	@Override
 	public String getSessionID() {
 		// TODO Auto-generated method stub
-		return null;
+		return "mockID";
 	}
 
 	@Override
@@ -50,11 +62,7 @@ public class MockProtocolSession implements IProtocolSession {
 
 	@Override
 	public Object sendReceive(Object inputMessage) throws ProtocolException {
-		String message = (String) inputMessage;
-		log.info("---------------------------------------");
-		log.info(message);
-		log.info("---------------------------> It was sent");
-		return new Boolean(true);
+		return "fake reply";
 	}
 
 	@Override
@@ -68,5 +76,4 @@ public class MockProtocolSession implements IProtocolSession {
 		// TODO Auto-generated method stub
 
 	}
-
 }

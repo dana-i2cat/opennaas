@@ -1,10 +1,10 @@
 package net.i2cat.mantychore.queuemanager;
 
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolManager;
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.mantychore.protocols.sessionmanager.IProtocolSessionManager;
-import net.i2cat.mantychore.protocols.sessionmanager.ProtocolException;
-import net.i2cat.mantychore.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolManager;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
