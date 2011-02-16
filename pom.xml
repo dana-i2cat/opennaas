@@ -604,14 +604,9 @@
 
 	<repositories>
 		<repository>
-			<id>Maven-central</id>
-			<name>Maven central</name>
-			<url>http://repo1.maven.org/maven2</url>
-		</repository>
-		<repository>
-			<id>osp4j</id>
-			<name>OSP4J releases</name>
-			<url>http://repository.ops4j.org/maven2</url>
+			<id>fusesource</id>
+			<name>Fuse Source releases</name>
+			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
 		<repository>
 			<id>springsource-external</id>
@@ -624,14 +619,19 @@
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
 		<repository>
+			<id>Maven-central</id>
+			<name>Maven central</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>osp4j</id>
+			<name>OSP4J releases</name>
+			<url>http://repository.ops4j.org/maven2</url>
+		</repository>
+		<repository>
 			<id>inocybe-thirdparty</id>
 			<name>Third party bundles not available anywhere else</name>
 			<url>http://repository.inocybe.ca/content/repositories/thirdparty/</url>
-		</repository>
-		<repository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
 	</repositories>
 
