@@ -5,9 +5,9 @@ import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.RegistryUtil;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +49,14 @@ public class ProtocolNetconfWrapper {
 		BundleContext bundleContext = Activator.getContext();
 
 		logger.info("getting service: " + IProtocolManager.class.getName());
-		ServiceReference serviceReference = bundleContext.getServiceReference(IProtocolManager.class.getName());
-		return (IProtocolManager) bundleContext.getService(serviceReference);
+		IProtocolManager protocolManager = null;
+		try {
+			protocolManager = (IProtocolManager) RegistryUtil.getServiceFromRegistry(bundleContext, IProtocolManager.class.getName());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		return protocolManager;
 	}
 
 }

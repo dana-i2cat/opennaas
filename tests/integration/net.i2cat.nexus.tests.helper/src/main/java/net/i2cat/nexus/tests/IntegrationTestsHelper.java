@@ -111,6 +111,14 @@ public class IntegrationTestsHelper {
 		}
 		
 		listBundles(bundleContext);
+		
+		log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+		
+		try{
+			Thread.sleep(15000);
+		}catch(InterruptedException ex){
+			ex.printStackTrace();
+		}
 	}
 		
 	

@@ -59,7 +59,7 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 
 			/* get queueManager as a service */
 			log.info("Getting queue manager factory...");
-			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class);
+			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class, 5000);
 			log.info("Getting queue manager...");
 			queueManager = queueManagerFactory.createQueueManager(deviceID);
 
