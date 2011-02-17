@@ -1,5 +1,8 @@
 package net.i2cat.mantychore.queuemanager.tests;
 
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.OptionUtils.combine;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +45,10 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-		return IntegrationTestsHelper.getMantychoreTestOptions();
+		return combine(
+					   IntegrationTestsHelper.getMantychoreTestOptions(),
+					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+		);
 	}
 
 	/* initialize client */
@@ -67,8 +73,11 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 	@Test
 	public void testListAction() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
+		/* list bundles */
+		IntegrationTestsHelper.listBundles(bundleContext);
+		
 		try {
-			Thread.sleep(100000);
+			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			log.error(e.getMessage());
 			e.printStackTrace();
