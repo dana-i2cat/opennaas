@@ -56,6 +56,7 @@
 							org.slf4j,
 							org.ops4j.pax.exam, 
 							org.apache.karaf.testing,
+							org.osgi.framework,
 						*</Import-Package>
 						<Export-Package>
 							net.i2cat.nexus.tests;version="${pom.version}",

@@ -13,6 +13,8 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory
 
 import org.apache.karaf.testing.Helper;
 import org.ops4j.pax.exam.Option;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,6 +108,38 @@ public class IntegrationTestsHelper {
 		Option[] opts_with_Mantychore = combine(optsFuse, OPT_MANTYCHORE_FEATURES); // service
 
 		return opts_with_Mantychore;
+	}
+	
+	public static void listBundles(BundleContext bundleContext) {
+		Bundle b = null;
+		String listBundles = "";
+		for (int i = 0; i < bundleContext.getBundles().length; i++) {
+			b = bundleContext.getBundles()[i];
+			listBundles += b.toString() + " : " + getStateString(b.getState()) + '\n';
+			if (getStateString(b.getState()).equals("INSTALLED")) {
+				try {
+					b.start();
+				} catch (Exception e) {
+					listBundles += "ERROR: " + e.getMessage() + '\n';
+					e.printStackTrace();
+				}
+			}
+		}
+		log.info(listBundles);
+	}
+	
+	private static String getStateString(int value) {
+		if (value == Bundle.ACTIVE) {
+			return "ACTIVE";
+		} else if (value == Bundle.INSTALLED) {
+			return "INSTALLED";
+		} else if (value == Bundle.RESOLVED) {
+			return "RESOLVED";
+		} else if (value == Bundle.UNINSTALLED) {
+			return "UNINSTALLED";
+		}
+
+		return "UNKNOWN";
 	}
 
 }
