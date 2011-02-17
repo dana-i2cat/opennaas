@@ -50,6 +50,18 @@
 <!--  manage dependencies  -->
 	<build>
 		<plugins>
+		<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+				<!--
+					| enable improved OSGi compilation support for the bundle
+					life-cycle. | to switch back to the standard bundle life-cycle,
+					move this setting | down to the maven-bundle-plugin section
+				-->
+				<extensions>true</extensions>
+			</plugin>
+		
 			<plugin>
 				<groupId>org.apache.servicemix.tooling</groupId>
 				<artifactId>depends-maven-plugin</artifactId>
