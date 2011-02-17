@@ -73,18 +73,8 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 	@Test
 	public void testListAction() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-		/* list bundles */
-		IntegrationTestsHelper.listBundles(bundleContext);
-		
-		try {
-			Thread.sleep(15000);
-		} catch (InterruptedException e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-
-		/* list bundles */
-		IntegrationTestsHelper.listBundles(bundleContext);
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		/* prepare queue manager test */
 		prepareQueueManagerTest();

@@ -11,6 +11,9 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.karaf.testing.Helper;
 import org.ops4j.pax.exam.Option;
 import org.osgi.framework.Bundle;
@@ -69,6 +72,47 @@ public class IntegrationTestsHelper {
 		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
+	
+	public static void waitForAllBundlesActive(BundleContext bundleContext){
+		int MAX_RETRIES = 100;
+		Bundle b = null;
+		boolean active = true;
+		List<Integer> fragments = new ArrayList<Integer>();
+		
+		for(int i=0; i<MAX_RETRIES; i++){
+			active = true;
+			for(int j=0; j<bundleContext.getBundles().length; j++){
+				if (!fragments.contains(new Integer(j))){
+					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED){
+						active = false;
+						try{
+							bundleContext.getBundles()[j].start();
+						}catch(Exception ex){
+							ex.printStackTrace();
+							if (ex.getMessage().indexOf("fragment") != -1){
+								fragments.add(new Integer(j));
+							}
+						}
+					}
+				}
+			}
+			
+			if (active == true){
+				break;
+			}
+			
+			listBundles(bundleContext);
+			log.info("Waiting for the activation of all the bundles, this is the "+i+" try. Sleeping for 1 second");
+			try{
+				Thread.sleep(1000);
+			}catch(InterruptedException ex){
+				ex.printStackTrace();
+			}
+		}
+		
+		listBundles(bundleContext);
+	}
+		
 	
 	public static void listBundles(BundleContext bundleContext) {
 		Bundle b = null;
