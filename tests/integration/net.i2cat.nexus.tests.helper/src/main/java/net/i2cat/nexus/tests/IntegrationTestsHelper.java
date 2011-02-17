@@ -1,3 +1,5 @@
+package net.i2cat.nexus.tests;
+
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -14,16 +16,17 @@ import org.ops4j.pax.exam.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PAXHelper {
+public class IntegrationTestsHelper {
 	
 	public static final String		WORKING_DIRECTORY				= "target/paxrunner/features/";
 	
-	public static final Option		MANTYCHORE_REPOS				= repositories(
-																				   "http://repository.inocybe.ca/content/groups/public/",
-																				   "http://repository.inocybe.ca/content/groups/public-snapshots/",
-																				   "http://repo.fusesource.com/maven2",
-																				   "http://repo1.maven.org/maven2");
-	public static final Option[]	REPOSITORIES					= options(excludeDefaultRepositories(), MANTYCHORE_REPOS);
+	public static final Option		REPOS				= repositories("http://repo.fusesource.com/maven2",
+																	   "http://repository.springsource.com/maven/bundles/external",
+																	   "http://repository.springsource.com/maven/bundles/release",
+																	   "http://repo1.maven.org/maven2", 
+																	   "http://repository.ops4j.org/maven2",
+																	   "http://repository.inocybe.ca/content/repositories/thirdparty");
+	public static final Option[]	REPOSITORIES					= options(excludeDefaultRepositories(), REPOS);
 	
 	/* specify log level */
 	public static final Option[]	HELPER_DEFAULT_OPTIONS			= Helper.getDefaultOptions(
@@ -32,8 +35,7 @@ public class PAXHelper {
 	
 	public static final Option		OPT_WORKING_DIRECTORY			= workingDirectory(WORKING_DIRECTORY);
 	
-	/* service mix features */
-	
+	/* fuse features */
 	public static final String		SERVICE_MIX_FEATURES_REPO	= "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features";
 	public static final String		KARAF_FEATURES_REPO	= "mvn:org.apache.karaf/apache-karaf/2.0.0/xml/features";
 	public static final String		ACTIVEMQ_FEATURES_REPO	= "mvn:org.apache.activemq/activemq-karaf/5.4.0-fuse-00-00/xml/features";
@@ -54,7 +56,7 @@ public class PAXHelper {
 	private static final String[]	MTCHORE_FEATURES				= { "i2cat-mantychore-core" };
 	private static final Option		OPT_MANTYCHORE_FEATURES			= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 	
-	static Logger					log								= LoggerFactory.getLogger(PAXHelper.class);
+	static Logger					log								= LoggerFactory.getLogger(IntegrationTestsHelper.class);
 	
 	/**
 	 * Bundle loader
@@ -77,9 +79,6 @@ public class PAXHelper {
 		long waitInMillis = minInMillis * 1000;
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 										  , OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
-										  // bundles
-										  // ,
-										  // vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
 										  , waitForFrameworkStartup() // wait for a length of time
 										  , equinox());
 		Option[] opts_with_repos = combine(optssimpleTest, REPOSITORIES); // repositories
@@ -87,7 +86,7 @@ public class PAXHelper {
 		
 	}
 	
-	public static Option[] newServiceMixTest() {
+	public static Option[] getFuseTestOptions() {
 		Option[] optssimpleTest = newSimpleTest();
 		
 		Option[] optsKaraf = combine(optssimpleTest, OPT_KARAF_FEATURES);
@@ -98,14 +97,13 @@ public class PAXHelper {
 		
 	}
 	
-	public static Option[] newExampleTest() {
+	public static Option[] getExampleTestOptions() {
 		return combine(HELPER_DEFAULT_OPTIONS, OPT_SERVICE_MIX_FEATURES);
 	}
 	
-	public static Option[] newQueueManagerTest() {
-		
-		Option[] optsServiceMix = newServiceMixTest();
-		Option[] opts_with_Mantychore = combine(optsServiceMix, OPT_MANTYCHORE_FEATURES); // service
+	public static Option[] getMantychoreTestOptions() {
+		Option[] optsFuse = getFuseTestOptions();
+		Option[] opts_with_Mantychore = combine(optsFuse, OPT_MANTYCHORE_FEATURES); // service
 
 		return opts_with_Mantychore;
 	}

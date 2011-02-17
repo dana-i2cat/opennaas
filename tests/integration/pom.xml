@@ -16,6 +16,7 @@
 
  <!--  integration tests -->
   <modules>
+    <module>net.i2cat.nexus.tests.helper</module>	
     <module>net.i2cat.mantychore.tests.queuemanager</module>
     <module>net.i2cat.mantychore.tests.protocols.netconf</module>
     <module>net.i2cat.mantychore.tests.commandsets.junos</module>
@@ -34,29 +35,24 @@
       <dependency>
 	<groupId>org.ops4j.pax.exam</groupId>
 	<artifactId>pax-exam</artifactId>
-	<scope>test</scope>
       </dependency>
       <dependency>
 	<groupId>org.ops4j.pax.exam</groupId>
 	<artifactId>pax-exam-container-default</artifactId>
-	<scope>test</scope>
       </dependency>
       <dependency>
 	<groupId>org.ops4j.pax.exam</groupId>
 	<artifactId>pax-exam-junit</artifactId>
-	<scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.apache.karaf.tooling</groupId>
         <artifactId>org.apache.karaf.tooling.testing</artifactId>
-        <scope>test</scope>
-       </dependency>
-       <dependency>
+      </dependency>
+      <dependency>
          <groupId>org.apache.servicemix</groupId>
   	 <artifactId>apache-servicemix</artifactId>
 	 <type>pom</type>
-	 <scope>test</scope>
-       </dependency>
+      </dependency>
       
 
        <!-- Service Mix Features -->
@@ -92,42 +88,4 @@
 		</dependency>
 	</dependencies>
 
-   <build>
-      <resources>
-         <resource>
-            <directory>src/main/resources</directory>
-         </resource>
-         <!--
-				| example additional resource entries, useful when building Eclipse
-				RCP applications
-			-->
-         <resource>
-            <directory>.</directory>
-            <includes>
-               <include>plugin.xml</include>
-               <include>plugin.properties</include>
-               <include>icons/**</include>
-            </includes>
-         </resource>
-      </resources>
-      <plugins>
-         <plugin>
-            <!--
-					| the following instructions build a simple set of public/private
-					classes into an OSGi bundle
-				-->
-            <groupId>org.apache.felix</groupId>
-            <artifactId>maven-bundle-plugin</artifactId>
-            <configuration>
-               <instructions>
-                  <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                  <Bundle-Version>${pom.version}</Bundle-Version>
-               </instructions>
-            </configuration>
-         </plugin>
-      </plugins>
-   </build>
-
-
-   
 </project>

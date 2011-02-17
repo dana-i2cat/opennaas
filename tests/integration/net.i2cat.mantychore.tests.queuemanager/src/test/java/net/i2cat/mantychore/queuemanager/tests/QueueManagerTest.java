@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.queuemanager.tests;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
@@ -27,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4TestRunner.class)
-public class PAXTest extends AbstractIntegrationTest {
+public class QueueManagerTest extends AbstractIntegrationTest {
 
 	static Logger			log				= LoggerFactory
-													.getLogger(PAXTest.class);
+													.getLogger(QueueManagerTest.class);
 
 	IQueueManagerService	queueManager;
 	String					deviceID		= "junos";
@@ -40,7 +43,7 @@ public class PAXTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-		return PAXHelper.newQueueManagerTest();
+		return IntegrationTestsHelper.getMantychoreTestOptions();
 	}
 
 	private void listBundles() {
