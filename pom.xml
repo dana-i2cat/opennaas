@@ -53,7 +53,7 @@
 		<pax.exam.version>1.2.0</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
-		<plexus.utils.version>1.5.5</plexus.utils.version>
+		<plexus.utils.version>2.0.5</plexus.utils.version>
 		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
 		<servicemix.specs.version>1.6.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
@@ -595,7 +595,7 @@
 				<version>2.7.1</version>
 				<configuration>
 					<!-- IT SPECIFIES THE PROCESS TO LOAD DIFFERENT CLASSPATHS -->
-					<useSystemClassLoader>true</useSystemClassLoader>
+					<useSystemClassLoader>false</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 				</configuration>
 			</plugin>
