@@ -155,7 +155,7 @@
       <id>install-mantychore-configs</id>
       <phase>package</phase>
       <goals>
-       <goal>resources:copy-resources</goal>
+       <goal>copy-resources</goal>
       </goals>
       <configuration>
        <overwrite>true</overwrite>
