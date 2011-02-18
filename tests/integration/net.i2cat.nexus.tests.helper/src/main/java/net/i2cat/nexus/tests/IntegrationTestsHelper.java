@@ -1,12 +1,9 @@
 package net.i2cat.nexus.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.equinox;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.excludeDefaultRepositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
@@ -48,21 +45,11 @@ public class IntegrationTestsHelper {
 	
 	public static Option[] getFuseTestOptions() {
 		/* fuse features */
-		String	SERVICE_MIX_FEATURES_REPO	= "mvn:org.apache.servicemix/apache-servicemix/4.3.0-fuse-01-00/xml/features";
-		String	KARAF_FEATURES_REPO	= "mvn:org.apache.karaf/apache-karaf/2.0.0/xml/features";
-		String	ACTIVEMQ_FEATURES_REPO	= "mvn:org.apache.activemq/activemq-karaf/5.4.0-fuse-00-00/xml/features";
+		String	FUSE_FEATURES_REPO	= "mvn:net.i2cat.nexus/nexus-fuse/1.0.0-SNAPSHOT/xml/features";
+		String[] FUSE_FEATURES	= { "i2cat-nexus-fuse"};
+		Option	OPT_FUSE_FEATURES = scanFeatures(FUSE_FEATURES_REPO, FUSE_FEATURES);
 		
-		String[] SERVICE_MIX_FEATURES = { "servicemix-cxf-bc"};
-		String[] KARAF_FEATURES	= { "spring-dm" };
-		String[] ACTIVEMQ_FEATURES	= { "activemq-blueprint"};
-		
-		Option	OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
-		Option	OPT_KARAF_FEATURES = scanFeatures(KARAF_FEATURES_REPO, KARAF_FEATURES);
-		Option	OPT_ACTIVEMQ_FEATURES = scanFeatures(ACTIVEMQ_FEATURES_REPO, ACTIVEMQ_FEATURES);
-		
-		Option[] optsKaraf = combine(getSimpleTestOptions(), OPT_KARAF_FEATURES);
-		Option[] optsActiveMQ = combine(optsKaraf, OPT_ACTIVEMQ_FEATURES);
-		return combine(optsActiveMQ, OPT_SERVICE_MIX_FEATURES);
+		return combine(getSimpleTestOptions(), OPT_FUSE_FEATURES);
 	}
 	
 	public static Option[] getMantychoreTestOptions() {
