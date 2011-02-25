@@ -151,6 +151,36 @@
        <encoding>UTF-8</encoding>
       </configuration>
      </execution>
+     <execution>
+      <id>install-mantychore-configs</id>
+      <phase>package</phase>
+      <goals>
+       <goal>copy-resources</goal>
+      </goals>
+      <configuration>
+      <outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+	<!--  
+      <resources>
+		  <resource>
+		    <directory>src/main/java</directory>
+		    <includes>
+		      <include>**/*.xml</include>
+		    </includes>
+		  </resource>
+	  </resources>
+      -->
+       <overwrite>true</overwrite>
+       <outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+       <resources>
+        <resource>
+         <directory>target/classes</directory>
+        </resource>
+       </resources>
+      
+      </configuration>
+     </execution>
+    
+    
     
      <!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
      maven clean plugin... -->
