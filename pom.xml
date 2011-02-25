@@ -528,6 +528,7 @@
 	<!-- Modules configuration -->
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
+		<module>install</module>
 		<module>bundles</module>
 		<module>features</module>
 		<module>tests</module>
