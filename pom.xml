@@ -538,6 +538,12 @@
 	<build>
 		<plugins>
 			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>2.4</version>
+			</plugin>
+		
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<executions>
@@ -588,6 +594,12 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-resources-plugin</artifactId>
+			    <version>2.4</version>
+			</plugin>	
+			
 			<!-- Unit Test Report -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -618,6 +630,12 @@
 			<name>Maven central</name>
 			<url>http://repo1.maven.org/maven2</url>
 		</repository>
+		<repository>
+			<id>fusesource</id>
+			<name>Fuse Source releases</name>
+			<url>http://repo.fusesource.com/maven2/</url>
+		</repository>
+		
 		<repository>
 			<id>osp4j</id>
 			<name>OSP4J releases</name>
