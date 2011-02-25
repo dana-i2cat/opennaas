@@ -18,15 +18,15 @@
 			<artifactId>geronimo-jpa_1.0_spec</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.dynamicjava</groupId>
+			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>classloading-utils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.dynamicjava</groupId>
+			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>service-binding-utils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.dynamicjava</groupId>
+			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>dynamic-jpa</artifactId>
 		</dependency>
         	<dependency>

@@ -37,6 +37,7 @@
 		<cxf.version>2.2.9-fuse-01-00</cxf.version>
 		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
+		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
 		<easymock.version>2.5.2</easymock.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
@@ -103,17 +104,17 @@
 
 			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
 			<dependency>
-				<groupId>org.dynamicjava</groupId>
+				<groupId>org.dynamicjava.osgi</groupId>
 				<artifactId>classloading-utils</artifactId>
-				<version>${dynamicjava.version}</version>
+				<version>${dynamicjava.classloading.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.dynamicjava</groupId>
+				<groupId>org.dynamicjava.osgi</groupId>
 				<artifactId>service-binding-utils</artifactId>
 				<version>${dynamicjava.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.dynamicjava</groupId>
+				<groupId>org.dynamicjava.osgi</groupId>
 				<artifactId>dynamic-jpa</artifactId>
 				<version>${dynamicjava.version}</version>
 			</dependency>
@@ -635,21 +636,25 @@
 			<name>Fuse Source releases</name>
 			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
-		
 		<repository>
 			<id>osp4j</id>
 			<name>OSP4J releases</name>
 			<url>http://repository.ops4j.org/maven2</url>
 		</repository>
 		<repository>
-			<id>inocybe-thirdparty</id>
-			<name>Third party bundles not available anywhere else</name>
-			<url>http://repository.inocybe.ca/content/repositories/thirdparty/</url>
-		</repository>
+            		<id>DyanmicJava</id>
+            		<name>DynamicJava Repository</name>
+            		<url>http://maven.dynamicjava.org/</url>
+        	</repository>
 		<repository>
 			<id>fusesource</id>
 			<name>Fuse Source releases</name>
 			<url>http://repo.fusesource.com/maven2/</url>
+		</repository>
+		<repository>
+			<id>java</id>
+			<name>Java.net releases</name>
+			<url>http://download.java.net/maven/2/</url>
 		</repository>
 	</repositories>
 
