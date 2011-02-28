@@ -528,7 +528,6 @@
 	<!-- Modules configuration -->
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
-		<module>install</module>
 		<module>bundles</module>
 		<module>features</module>
 		<module>tests</module>
@@ -617,6 +616,11 @@
 	</reporting>
 
 	<repositories>
+		<repository>
+			<id>i2cat</id>
+			<name>i2cat maven repository</name>
+			<url>http://maven.i2cat.net/</url>
+		</repository
 		<repository>
 			<id>springsource-external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
