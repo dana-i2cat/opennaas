@@ -620,7 +620,7 @@
 			<id>i2cat</id>
 			<name>i2cat maven repository</name>
 			<url>http://maven.i2cat.net/</url>
-		</repository
+		</repository>
 		<repository>
 			<id>springsource-external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
