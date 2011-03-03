@@ -23,7 +23,8 @@ public class KeepAliveAction extends JunosAction {
 		commandsList = new ArrayList<String>();
 		/* commands */
 		commandsList.add(KEEPALIVE);
-		state.setSteps(commandsList);
+
+		// state.setSteps(commandsList);
 
 	}
 

@@ -7,12 +7,12 @@ package net.i2cat.mantychore.capability.chassis;
 
 public class ChassisCapabilityFactory implements IChassisCapabilityFactory {
 
-//	public ICapability create(CapabilityDescriptor moduleDescriptor, String resourceId) throws CapabilityException {
-//		// TODO Auto-generated method stub
-//		ChassisCapability chassiscapability = new ChassisCapability(resourceId);
-//		chassiscapability.setCapabilityDescriptor(moduleDescriptor);
-//		return chassiscapability;
-//	}
+	// public ICapability create(CapabilityDescriptor moduleDescriptor, String resourceId) throws CapabilityException {
+	// // TODO Auto-generated method stub
+	// ChassisCapability chassiscapability = new ChassisCapability(resourceId);
+	// chassiscapability.setCapabilityDescriptor(moduleDescriptor);
+	// return chassiscapability;
+	// }
 
 	public ChassisCapability createChassisCapability(String resourceId) {
 		// TODO Auto-generated method stub

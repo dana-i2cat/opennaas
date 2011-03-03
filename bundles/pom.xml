@@ -49,6 +49,7 @@
     	<module>net.i2cat.mantychore.commons</module>
     	<module>net.i2cat.mantychore.commandsets.junos</module>
 	<!--<module>net.i2cat.mantychore.actionsets.junos</module>-->
+	<module>net.i2cat.mantychore.cabability.chassis</module>
    	<module>net.i2cat.mantychore.protocols.netconf</module>
     	<module>net.i2cat.mantychore.queuemanager</module>
   </modules>

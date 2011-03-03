@@ -21,7 +21,7 @@ public class GetConfigurationAction extends JunosAction {
 		commandsList = new ArrayList<String>();
 		/* commands */
 		commandsList.add(GETCONFIG);
-		state.setSteps(commandsList);
+		// state.setSteps(commandsList);
 
 	}
 
