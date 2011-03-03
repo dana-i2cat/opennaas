@@ -19,16 +19,16 @@ public class QueueManagerWrapper {
 
 	IProtocolSessionManager	protocolSessionManager;
 
-	public IQueueManagerService createQueueManager(String resourceId) {
+	public IQueueManagerService getQueueManager(String resourceId) {
 
-		IQueueManagerService queueManager = getOSGiServiceProtocolManager();
+		IQueueManagerService queueManager = getOSGiQueueManager();
 
 		return queueManager;
 
 	}
 
 
-	private IQueueManagerService getOSGiServiceProtocolManager() {
+	private IQueueManagerService getOSGiQueueManager() {
 		BundleContext bundleContext = Activator.getContext();
 
 		logger.info("getting service: " + IProtocolManager.class.getName());

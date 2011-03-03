@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory;
+import net.i2cat.mantychore.commons.ICapability;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.QueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
@@ -28,11 +29,11 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 													.getLogger(SimpleClientTest.class);
 	IQueueManagerService	queueManager;
 
-	//TODO TO FIX
-	ChassisCapability chassisCapability;
+
 	String					deviceID		= "junos";
 	String					queueID			= "queue";
 	ProtocolSessionContext	protocolSessionContext;
+	ICapability chassisCapability;
 	
 	
 	
@@ -75,10 +76,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 			/* get queueManager as a service */
 			log.info("Getting queue manager factory...");
 			
-//			ChassisCapabilityFactory chassisFactory = getOsgiService(ChassisCapabilityFactory.class, 5000);
+			ChassisCapabilityFactory chassisFactory = getOsgiService(ChassisCapabilityFactory.class, 5000);
 //			log.info("Getting queue manager...");
 //			//TO FIX
-//			queueManager = chassisFactory.create(null, deviceID);
+//			chassisCapability = (ICapability)chassisFactory.createChassisCapability(newSessionContextNetconf() , deviceID);
 
 		} catch (Exception e) {
 			e.printStackTrace();
