@@ -22,7 +22,6 @@ public class GetConfigurationAction extends JunosAction {
 		/* commands */
 		commandsList.add(GETCONFIG);
 		// state.setSteps(commandsList);
-
 	}
 
 }

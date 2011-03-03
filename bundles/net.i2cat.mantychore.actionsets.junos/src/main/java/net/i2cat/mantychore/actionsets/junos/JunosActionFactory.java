@@ -11,7 +11,7 @@ import net.i2cat.mantychore.commons.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JunosActionFactory /* implements IActionFactory */{
+public class JunosActionFactory implements IActionSetFactory {
 
 	public static final String	GETCONFIG		= "getConfiguration";
 	public static final String	KEEPALIVE		= "keepAlive";

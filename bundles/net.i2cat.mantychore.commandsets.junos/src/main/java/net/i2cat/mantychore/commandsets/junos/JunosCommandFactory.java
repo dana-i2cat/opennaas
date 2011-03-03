@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.commandsets.junos;
 
+import net.i2cat.mantychore.commandsets.junos.commands.CreateSubInterfaceCommand;
 import net.i2cat.mantychore.commandsets.junos.commands.RefreshCommand;
 import net.i2cat.mantychore.commons.Command;
 import net.i2cat.mantychore.commons.CommandException;
@@ -12,10 +13,12 @@ public class JunosCommandFactory {
 		if (commandId.equals(RefreshCommand.REFRESH)) {
 			return new RefreshCommand();
 		}
+		if (commandId.equals(CreateSubInterfaceCommand.CREATESUBINTERFACE)) {
+			return new CreateSubInterfaceCommand();
+		}
 
 		// If it doesn't find a command, it returns null
 		return command;
 
 	}
-
 }
