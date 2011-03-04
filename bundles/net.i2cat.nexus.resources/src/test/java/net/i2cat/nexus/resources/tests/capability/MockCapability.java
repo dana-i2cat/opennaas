@@ -1,18 +1,16 @@
 package net.i2cat.nexus.resources.tests.capability;
 
-import javax.jms.JMSException;
-
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.capability.AbstractJMSCapability;
+import net.i2cat.nexus.resources.capability.AbstractCapability;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.message.ICapabilityMessage;
 
-public class MockCapability extends AbstractJMSCapability{
+public class MockCapability extends AbstractCapability{
 
 	public MockCapability(CapabilityDescriptor capabilityDescriptor) {
-		super(capabilityDescriptor, "engine123");	
+		super(capabilityDescriptor);	
 	}
+	
 	public String internalCall = null;
 	
 	public String getInternalCall(){
@@ -37,12 +35,6 @@ public class MockCapability extends AbstractJMSCapability{
 	@Override
 	protected void shutdownCapability() throws CapabilityException {
 		internalCall = "shutdown";
-	}
-
-	@Override
-	protected void handleMessage(ICapabilityMessage msg) throws JMSException {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override

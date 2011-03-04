@@ -1,12 +1,9 @@
 package net.i2cat.nexus.resources.capability;
 
-import java.util.Properties;
-
 import net.i2cat.nexus.resources.ILifecycle;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.message.ICapabilityMessage;
 
 /**
  * Basic interface all resource capabilities must implement
@@ -43,47 +40,4 @@ public interface ICapability extends ILifecycle{
 	 * @param resource
 	 */
 	public void setResource(IResource resource);
-
-	/**
-	 * Send a message to another capability in the same resource
-	 * 
-	 * @param message
-	 * @param capabilityId
-	 * @throws CapabilityException
-	 */
-	public void sendMessage(ICapabilityMessage message, String capabilityId) throws CapabilityException;
-
-	/**
-	 * Send a message to another capability in the same resource. The properties are
-	 * name/value pairs that give more specific details about the destination
-	 * module. How the properties are used depends on the method of sending
-	 * messages between modules.
-	 * 
-	 * @param message
-	 * @param properties
-	 * @throws CapabilityException
-	 */
-	public void sendMessage(ICapabilityMessage message, Properties properties) throws CapabilityException;
-	
-	/**
-	 * Before sending a message to another capability, store the object in the
-	 * table of active outgoing messages so the response message can be properly
-	 * correlated with the request when it comes in. 
-	 * 
-	 * @param message
-	 * @param capability
-	 * @param command
-	 * @throws CapabilityException
-	 */
-	public void sendMessage(ICapabilityMessage message, String capabilityId, Object obj) throws CapabilityException;
-
-	/**
-	 * Send a response message back to a capability that sent a request message. The correlation string is used
-	 * to get the original message from the table of incoming requests so it can address and correlate the 
-	 * response message correctly
-	 * @param responseMessage
-	 * @param correlation
-	 * @throws CapabilityException
-	 */
-	public void sendResponse(ICapabilityMessage responseMessage, String correlation) throws CapabilityException;
 }

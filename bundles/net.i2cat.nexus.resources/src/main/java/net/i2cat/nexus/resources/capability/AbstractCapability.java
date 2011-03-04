@@ -1,12 +1,9 @@
 package net.i2cat.nexus.resources.capability;
 
-import java.util.Hashtable;
-import java.util.Properties;
-
+import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.message.ICapabilityMessage;
 
 /**
  * This class provides an abstract implementation for the ICapability
@@ -22,27 +19,12 @@ public abstract class AbstractCapability implements ICapability{
 	
 	/** The descriptor for this capability **/
 	protected CapabilityDescriptor descriptor;
-
-	/** The current state of the capability **/
-	protected State state;
-
+	protected State state = null;
 	protected String capabilityId = null;
-	protected String resourceId = null;
-
-	/**
-	 * Hashtable to store incoming requests with the correlation tag as the key
-	 */
-	protected Hashtable<String, ICapabilityMessage> incommingRequests = new Hashtable<String, ICapabilityMessage>();
+	protected IResource resource = null;
 	
-	/**
-	 * A tables to store outgoing requests with the correlation tag as the key. The type of Object in the value depends
-	 * on the type of object that sent the request and expects to get a response.
-	 */
-	protected Hashtable<String, Object> outgoingRequests = new Hashtable<String, Object>();
-
-	public AbstractCapability(CapabilityDescriptor descriptor, String resourceId) {
+	public AbstractCapability(CapabilityDescriptor descriptor) {
 		this.descriptor = descriptor;
-		this.resourceId = resourceId;
 		this.capabilityId = descriptor.getCapabilityInformation().getType();
 		setState(State.INSTANTIATED);
 	}
@@ -53,6 +35,14 @@ public abstract class AbstractCapability implements ICapability{
 
 	public Information getCapabilityInformation() {
 		return descriptor.getCapabilityInformation();
+	}
+	
+	/**
+	 * The resource where this capability belongs
+	 * @param resource
+	 */
+	public void setResource(IResource resource){
+		this.resource = resource;
 	}
 
 	/**
@@ -125,35 +115,6 @@ public abstract class AbstractCapability implements ICapability{
 
 	public void setCapabilityDescriptor(CapabilityDescriptor descriptor) {
 		this.descriptor = descriptor;
-	}
-
-	public void sendMessage(ICapabilityMessage message, String moduleID, Object obj)
-			throws CapabilityException {
-		outgoingRequests.put(message.getMessageID(), obj);
-		sendMessage(message, moduleID);
-	}
-	
-
-	public void sendMessage(ICapabilityMessage payload, String capability) throws CapabilityException {
-		Properties properties = new Properties();
-		properties.setProperty("CAPABILITY", capability+"-"+resourceId);
-		sendMessage(payload, properties);
-	}
-
-	public abstract void sendMessage(ICapabilityMessage payload, Properties properties) throws CapabilityException;
-
-	public void sendResponse(ICapabilityMessage responseMessage, String correlation)
-			throws CapabilityException {
-		Properties properties = new Properties();
-		ICapabilityMessage request = incommingRequests.remove(correlation);
-		if (request != null) {
-			if (request.getRequestor() != null) {
-				properties.setProperty("CAPABILITY", request.getRequestor());
-			}
-			responseMessage.setMessageID(request.getMessageID());
-		}
-
-		sendMessage(responseMessage, properties);
 	}
 	
 	protected abstract void initializeCapability() throws CapabilityException;
