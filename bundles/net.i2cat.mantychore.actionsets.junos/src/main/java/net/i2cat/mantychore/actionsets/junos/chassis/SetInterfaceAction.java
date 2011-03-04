@@ -16,9 +16,10 @@ public class SetInterfaceAction extends Action {
 
 	int							index				= 0;
 
-	public SetInterfaceAction() {
+	public SetInterfaceAction(Object params) {
 		// super(SETINTERFACE);
 		// log.info("New action: " + idAction);
+		this.params = params;
 		initialize();
 
 	}

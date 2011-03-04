@@ -17,14 +17,14 @@ import org.slf4j.LoggerFactory;
 
 public abstract class JunosCommand extends Command {
 
-	protected String template = "";
+	protected String	template	= "";
 
-	private Object params;
+	private Object		params;
 
 	/** logger **/
-	Logger log = LoggerFactory.getLogger(JunosCommand.class);
-	protected Query command;
-	protected String netconfXML;
+	Logger				log			= LoggerFactory.getLogger(JunosCommand.class);
+	protected Query		command;
+	protected String	netconfXML;
 
 	protected JunosCommand(String commandID, String template) {
 		this.setCommandId(commandID);
@@ -32,8 +32,9 @@ public abstract class JunosCommand extends Command {
 	}
 
 	@Override
-	public void initialize() throws CommandException {
+	public void initialize(Object params) throws CommandException {
 
+		this.params = params;
 		try {
 			netconfXML = prepareVelocityCommand();
 		} catch (ResourceNotFoundException e) {

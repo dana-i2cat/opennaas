@@ -4,14 +4,14 @@ import net.i2cat.netconf.rpc.QueryFactory;
 
 public class CreateSubInterfaceCommand extends JunosCommand {
 
-	public static final String CREATESUBINTERFACE = "CreateSubinterface";
+	public static final String	CREATESUBINTERFACE	= "CreateSubinterface";
 
-	public static final String TEMPLATE = "/VM_files/replacesubinterface.vm";
-
-	private String target = null;
-	private String defaultOperation = null;
-	private String testOption = null;
-	private String errorOption = null;
+	public static final String	TEMPLATE			= "/VM_files/replacesubinterface.vm";
+	// TODO must target be defined here??? or it is a configuration parameter.
+	private String				target				= "candidate";
+	private String				defaultOperation	= null;
+	private String				testOption			= null;
+	private String				errorOption			= null;
 
 	public CreateSubInterfaceCommand() {
 		super(CREATESUBINTERFACE, TEMPLATE);

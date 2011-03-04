@@ -11,7 +11,7 @@ public abstract class Command {
 		this.commandId = commandId;
 	}
 
-	public abstract void initialize() throws CommandException;
+	public abstract void initialize(Object params) throws CommandException;
 
 	public abstract Object message();
 

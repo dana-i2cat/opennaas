@@ -18,7 +18,7 @@ public class Action {
 	private String			protocolId;
 	private String			resourceId;
 	protected List<Command>	commands	= new ArrayList<Command>();
-
+	protected Object		params;
 	private Object			modelToUpdate;
 
 	public ActionResponse execute(IProtocolSession protocol) throws ProtocolException, CommandException {
@@ -28,7 +28,7 @@ public class Action {
 
 		for (Command command : commands) {
 			log.info("initializing");
-			command.initialize();
+			command.initialize(params);
 			try {
 				log.info("sending...");
 				Response response = sendCommandToProtocol(command, protocol);
