@@ -17,7 +17,7 @@ public class Action {
 
 	private String			protocolId;
 	private String			resourceId;
-	private List<Command>	commands	= new ArrayList<Command>();
+	protected List<Command>	commands	= new ArrayList<Command>();
 
 	private Object			modelToUpdate;
 

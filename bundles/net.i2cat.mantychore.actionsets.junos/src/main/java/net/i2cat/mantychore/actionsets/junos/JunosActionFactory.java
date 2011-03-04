@@ -15,21 +15,21 @@ public class JunosActionFactory implements IActionSetFactory {
 
 	public static final String	GETCONFIG		= "getConfiguration";
 	public static final String	KEEPALIVE		= "keepAlive";
-	public static final String	setinterface	= "setInterface";
+	public static final String	SETINTERFACE	= "setInterface";
 
 	Logger						logger			= LoggerFactory.getLogger(JunosActionFactory.class);
 
 	public Action createAction(String actionId) /* throws ActionException */{
 		logger.info("ACTIONSET - Action id to send: " + actionId);
 		// TODO add exceptions, not return null
-		if (actionId.equals(GetConfigurationAction.GETCONFIG)) {
+		if (actionId.equals(GETCONFIG)) {
 			return new GetConfigurationAction();
 		} else
 
-		if (actionId.equals(KeepAliveAction.KEEPALIVE)) {
+		if (actionId.equals(KEEPALIVE)) {
 			return new KeepAliveAction();
 		}
-		if (actionId.equals(SetInterfaceAction.SETINTERFACE)) {
+		if (actionId.equals(SETINTERFACE)) {
 			return new SetInterfaceAction();
 		} else {
 			return null;
@@ -41,9 +41,9 @@ public class JunosActionFactory implements IActionSetFactory {
 
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
-		actionNames.add(GetConfigurationAction.GETCONFIG);
-		actionNames.add(KeepAliveAction.KEEPALIVE);
-		actionNames.add(SetInterfaceAction.SETINTERFACE);
+		actionNames.add(GETCONFIG);
+		actionNames.add(KEEPALIVE);
+		actionNames.add(SETINTERFACE);
 		return actionNames;
 	}
 
