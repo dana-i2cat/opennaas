@@ -24,14 +24,17 @@ public class IntegrationTestsHelper {
 	
 	public static Option[] getSimpleTestOptions() {
 		String	WORKING_DIRECTORY = "target/paxrunner/features/";
-		Option	REPOS = repositories("http://repo.fusesource.com/maven2",
-												"http://repository.springsource.com/maven/bundles/external",
-												"http://repository.springsource.com/maven/bundles/release",
-												"http://repo1.maven.org/maven2", 
-												"http://repository.ops4j.org/maven2",
-												"http://repository.inocybe.ca/content/groups/public");
+//		Option	REPOS = repositories("http://repo.fusesource.com/maven2",
+//												"http://repository.springsource.com/maven/bundles/external",
+//												"http://repository.springsource.com/maven/bundles/release",
+//												"http://repo1.maven.org/maven2", 
+//												"http://repository.ops4j.org/maven2",
+//												"http://repository.inocybe.ca/content/groups/public");
+		
+		Option	REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo","http://repo1.maven.org/maven2");
 		
 		/* specify log level */
+		
 		Option[] HELPER_DEFAULT_OPTIONS	= Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
 																						   .value("INFO"));
 		Option	 OPT_WORKING_DIRECTORY	= workingDirectory(WORKING_DIRECTORY);

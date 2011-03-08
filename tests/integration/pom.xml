@@ -18,8 +18,11 @@
   <modules>
     <module>net.i2cat.nexus.tests.helper</module>	
     <module>net.i2cat.mantychore.tests.queuemanager</module>
-    <module>net.i2cat.mantychore.tests.protocols.netconf</module>
-    <module>net.i2cat.mantychore.tests.commandsets.junos</module>
+    <module>net.i2cat.mantychore.tests.simpleclient</module>
+    
+    <!--  IT IS NOT USED -->
+<!--    <module>net.i2cat.mantychore.tests.protocols.netconf</module>
+    <module>net.i2cat.mantychore.tests.commandsets.junos</module> -->
   </modules>
 
 <!--  dependencies for integration tests -->
