@@ -42,10 +42,6 @@ public class MockCommand extends Command {
 		return Response.okResponse("mock command execute");
 	}
 
-	@Override
-	public void initialize(Object params) throws CommandException {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }
