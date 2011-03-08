@@ -30,11 +30,13 @@ public abstract class JunosCommand extends Command {
 		this.setCommandId(commandID);
 		this.template = template;
 	}
-
-	@Override
-	public void initialize(Object params) throws CommandException {
-
+	
+	public void setParams (Object params) {
 		this.params = params;
+	}
+
+	public void initialize() throws CommandException {
+
 		try {
 			netconfXML = prepareVelocityCommand();
 		} catch (ResourceNotFoundException e) {
