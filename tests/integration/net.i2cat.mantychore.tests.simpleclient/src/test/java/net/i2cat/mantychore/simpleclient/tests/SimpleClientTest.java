@@ -4,6 +4,9 @@ package net.i2cat.mantychore.simpleclient.tests;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -14,14 +17,19 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory;
-import net.i2cat.mantychore.commons.ICapability;
+import net.i2cat.mantychore.commons.ActionResponse;
+import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.QueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.System;
 
 public class SimpleClientTest extends AbstractIntegrationTest {
 
@@ -33,7 +41,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	String					deviceID		= "junos";
 	String					queueID			= "queue";
 	ProtocolSessionContext	protocolSessionContext;
-	ICapability chassisCapability;
+	ChassisCapability chassisCapability;
+	
+	JunosActionFactory actionFactory = new JunosActionFactory();
 	
 	
 	
@@ -45,7 +55,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	public static Option[] configure() {
 		return combine(
 					   IntegrationTestsHelper.getMantychoreTestOptions(),
+					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
 					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+					   
 		);
 	}
 
@@ -78,8 +90,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 			
 			ChassisCapabilityFactory chassisFactory = getOsgiService(ChassisCapabilityFactory.class, 5000);
 //			log.info("Getting queue manager...");
-//			//TO FIX
-//			chassisCapability = (ICapability)chassisFactory.createChassisCapability(newSessionContextNetconf() , deviceID);
+
+//			//TODO ADD ALL ACTIONS AVALIABLE FOR ACTIONSET	
+			chassisCapability = chassisFactory.createChassisCapability(actionFactory.getActionNames(),newSessionContextNetconf() , deviceID);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -89,17 +102,44 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	}
 	
 	
-
-	@Test
-	public void testListAction() {
+//@Test
+	public void testActions() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 		
 		prepareQueueManagerTest();
 		
 		prepareChassisCapability();
 		
-		String actionID = "actionID";
-		chassisCapability.handleMessage(actionID);
+//		IActionSetFactory junosActionFactory = JunosActionFactory();
+		
+		
+		//chassisCapability.initialize();
+		String actionId =JunosActionFactory.SETINTERFACE;
+		ComputerSystem model = new ComputerSystem();
+		chassisCapability.setResource(model);
+		
+		ComputerSystem params = new ComputerSystem();
+		chassisCapability.sendMessage(actionId,params);
+		
+		//check if it is added
+		Assert.assertTrue(queueManager.getActions().size()!=1);
+		
+		try {
+			List<ActionResponse> responses = queueManager.execute();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		} catch (CommandException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		}
+		
+		//check if it is added
+		Assert.assertTrue(queueManager.getActions().size()!=0);
+				
+		//CHECK MODEL
 		
 		
 		
