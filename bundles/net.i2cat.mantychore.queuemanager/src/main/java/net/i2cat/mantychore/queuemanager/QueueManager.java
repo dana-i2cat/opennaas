@@ -17,7 +17,7 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QueueManager implements ICapability, IQueueManagerService {
+public class QueueManager implements IQueueManagerService {
 
 	Logger			log			= LoggerFactory
 										.getLogger(QueueManager.class);
@@ -30,18 +30,13 @@ public class QueueManager implements ICapability, IQueueManagerService {
 
 	private BlockingQueue<ActionInQueue>	queue	= new LinkedBlockingQueue<ActionInQueue>();
 
-	@Override
-	public void handleMessage(String message) {
-		// TODO Auto-generated method stub
-	}
 
-	@Override
 	public void empty() {
 		queue.clear();
 
 	}
 
-	@Override
+
 	public List<ActionResponse> execute() throws ProtocolException, CommandException {
 
 		List<ActionResponse> responses = new Vector<ActionResponse>();
@@ -57,7 +52,7 @@ public class QueueManager implements ICapability, IQueueManagerService {
 
 			IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
 
-			responses.add(actionInQueue.getAction().execute(protocol));
+			responses.add(actionInQueue.getAction().execute(protocol,actionInQueue.getParams()));
 
 			/* restore the connection */
 			protocolWrapper.releaseProtocolSession(sessionId);
@@ -66,7 +61,6 @@ public class QueueManager implements ICapability, IQueueManagerService {
 
 	}
 
-	@Override
 	public List<Action> getActions() {
 		List<Action> actions = new ArrayList<Action>();
 		for (ActionInQueue action : queue) {
@@ -75,9 +69,8 @@ public class QueueManager implements ICapability, IQueueManagerService {
 		return actions;
 	}
 
-	@Override
-	public void queueAction(Action action, ProtocolSessionContext protocolSessionContext) {
-		ActionInQueue actionInQueue = new ActionInQueue(action, protocolSessionContext);
+	public void queueAction(Action action, ProtocolSessionContext protocolSessionContext, Object params) {
+		ActionInQueue actionInQueue = new ActionInQueue(action, protocolSessionContext,params);
 		queue.add(actionInQueue);
 
 	}
@@ -85,10 +78,13 @@ public class QueueManager implements ICapability, IQueueManagerService {
 	class ActionInQueue {
 		private Action					action;
 		private ProtocolSessionContext	protocolSessionContext;
+		private Object					params;
 
-		public ActionInQueue(Action action, ProtocolSessionContext protocolSessionContext) {
+
+		public ActionInQueue(Action action, ProtocolSessionContext protocolSessionContext, Object params) {
 			this.action = action;
 			this.protocolSessionContext = protocolSessionContext;
+			this.params = params;
 		}
 
 		public Action getAction() {
@@ -98,6 +94,12 @@ public class QueueManager implements ICapability, IQueueManagerService {
 		public ProtocolSessionContext getProtocolSessionContext() {
 			return protocolSessionContext;
 		}
+		
+
+		public Object getParams() {
+			return params;
+		}
 	}
+
 
 }

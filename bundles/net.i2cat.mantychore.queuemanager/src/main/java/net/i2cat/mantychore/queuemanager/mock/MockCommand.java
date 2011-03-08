@@ -3,6 +3,7 @@ package net.i2cat.mantychore.queuemanager.mock;
 import java.util.List;
 
 import net.i2cat.mantychore.commons.Command;
+import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.commons.Response;
 
 import org.slf4j.Logger;
@@ -39,6 +40,12 @@ public class MockCommand extends Command {
 	@Override
 	public Response checkResponse(Object arg0) {
 		return Response.okResponse("mock command execute");
+	}
+
+	@Override
+	public void initialize(Object params) throws CommandException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

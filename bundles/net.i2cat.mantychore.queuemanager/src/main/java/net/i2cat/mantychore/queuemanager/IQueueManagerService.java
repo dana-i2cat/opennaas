@@ -14,7 +14,7 @@ public interface IQueueManagerService {
 
 	public void empty();
 
-	public void queueAction(Action action, ProtocolSessionContext protocol);
+	public void queueAction(Action action, ProtocolSessionContext protocol, Object params);
 
 	public List<Action> getActions();
 
