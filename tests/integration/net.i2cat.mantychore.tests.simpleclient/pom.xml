@@ -61,7 +61,9 @@
 
 <!--  manage dependencies  -->
 	<build>
+		
 		<plugins>
+		
 		<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>

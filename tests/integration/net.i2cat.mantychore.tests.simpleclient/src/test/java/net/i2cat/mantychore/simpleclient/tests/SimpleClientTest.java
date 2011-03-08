@@ -29,6 +29,8 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.System;
 
 public class SimpleClientTest extends AbstractIntegrationTest {
@@ -118,7 +120,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		ComputerSystem model = new ComputerSystem();
 		chassisCapability.setResource(model);
 		
-		ComputerSystem params = new ComputerSystem();
+		Object params = newParamsInterface();
 		chassisCapability.sendMessage(actionId,params);
 		
 		//check if it is added
@@ -138,7 +140,8 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		
 		//check if it is added
 		Assert.assertTrue(queueManager.getActions().size()!=0);
-				
+
+		
 		//CHECK MODEL
 		
 		
@@ -154,6 +157,20 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		// ADDED
 		return protocolSessionContext;
 
+	}
+
+	private Object newParamsInterface() {
+		 EthernetPort eth = new EthernetPort();
+		 eth.setElementName("ge-0/1/0");
+		 eth.setPortNumber(30);
+		 IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		 ip.setIPv4Address("193.1.24.88");
+		 ip.setSubnetMask("255.255.255.0");
+		 eth.addProtocolEndpoint(ip);
+		 ArrayList params = new ArrayList();
+		 params.add(eth);
+		 return params;
+		 
 	}
 
 
