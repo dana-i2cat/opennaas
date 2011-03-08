@@ -19,7 +19,7 @@ public class JunosActionFactory implements IActionSetFactory {
 
 	Logger						logger			= LoggerFactory.getLogger(JunosActionFactory.class);
 
-	public Action createAction(String actionId, Object params) /* throws ActionException */{
+	public Action createAction(String actionId) /* throws ActionException */{
 		logger.info("ACTIONSET - Action id to send: " + actionId);
 		// TODO add exceptions, not return null
 		if (actionId.equals(GETCONFIG)) {
