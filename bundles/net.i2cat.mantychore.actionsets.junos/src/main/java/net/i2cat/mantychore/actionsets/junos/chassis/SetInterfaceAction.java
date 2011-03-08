@@ -16,10 +16,9 @@ public class SetInterfaceAction extends Action {
 
 	int							index				= 0;
 
-	public SetInterfaceAction(Object params) {
+	public SetInterfaceAction() {
 		// super(SETINTERFACE);
 		// log.info("New action: " + idAction);
-		this.params = params;
 		initialize();
 
 	}
@@ -29,6 +28,8 @@ public class SetInterfaceAction extends Action {
 	}
 
 	protected Command getCommand(String commandID) {
+		
+		//TODO NOT RETURN NULL IN OPERATIONS, the exception must be managed.
 		try {
 			JunosCommandFactory commandFactory = new JunosCommandFactory();
 			return commandFactory.createCommand(commandID);
