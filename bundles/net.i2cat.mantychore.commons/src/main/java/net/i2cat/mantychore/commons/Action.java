@@ -27,7 +27,8 @@ public class Action {
 
 		for (Command command : commands) {
 			log.info("initializing");
-			command.initialize(params);
+			command.initialize();
+			command.setParams(params);
 			try {
 				log.info("sending...");
 				Response response = sendCommandToProtocol(command, protocol);

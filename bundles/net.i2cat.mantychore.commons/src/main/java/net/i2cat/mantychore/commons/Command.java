@@ -2,6 +2,7 @@ package net.i2cat.mantychore.commons;
 
 public abstract class Command {
 	protected String	commandId;
+	protected Object	params;
 
 	public String getCommandId() {
 		return commandId;
@@ -11,7 +12,11 @@ public abstract class Command {
 		this.commandId = commandId;
 	}
 
-	public abstract void initialize(Object params) throws CommandException;
+	public void setParams(Object params)  {
+		this.params = params;
+	}
+	
+	public abstract void initialize() throws CommandException;
 
 	public abstract Object message();
 
@@ -19,4 +24,5 @@ public abstract class Command {
 
 	public abstract Response checkResponse(Object response);
 
+	
 }
