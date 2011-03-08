@@ -7,6 +7,7 @@ import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.KeepAliveAction;
 import net.i2cat.mantychore.actionsets.junos.chassis.SetInterfaceAction;
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.IActionSetFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

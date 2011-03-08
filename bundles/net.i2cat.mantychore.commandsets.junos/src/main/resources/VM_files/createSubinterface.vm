@@ -1,3 +1,4 @@
+<configuration>
 <interfaces>
 ## for each interface in logical router. TODO change param por logicalROuter.interfaces
 	#foreach($element in $param)
@@ -20,3 +21,4 @@
 	#end
 	#end
 </interfaces>
+</configuration>
