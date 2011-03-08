@@ -18,10 +18,9 @@ public class Action {
 	private String			protocolId;
 	private String			resourceId;
 	protected List<Command>	commands	= new ArrayList<Command>();
-	protected Object		params;
 	private Object			modelToUpdate;
 
-	public ActionResponse execute(IProtocolSession protocol) throws ProtocolException, CommandException {
+	public ActionResponse execute(IProtocolSession protocol, Object params) throws ProtocolException, CommandException {
 		ActionResponse actionResponse = new ActionResponse();
 
 		log.info("executing commands for an action");
