@@ -30,7 +30,7 @@ public class JunosActionFactory implements IActionSetFactory {
 			return new KeepAliveAction();
 		}
 		if (actionId.equals(SETINTERFACE)) {
-			return new SetInterfaceAction(params);
+			return new SetInterfaceAction();
 		} else {
 			return null;
 		}
