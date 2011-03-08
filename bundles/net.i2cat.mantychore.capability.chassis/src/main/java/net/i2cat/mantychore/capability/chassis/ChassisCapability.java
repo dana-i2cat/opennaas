@@ -1,8 +1,15 @@
 package net.i2cat.mantychore.capability.chassis;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Vector;
 
+import net.i2cat.mantychore.actionsets.junos.IActionSetFactory;
+import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
+import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ICapability;
+import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
@@ -17,33 +24,61 @@ public class ChassisCapability implements ICapability {
 												.getLogger(ChassisCapability.class);
 
 	private String			resourceId	= "";
-	private List<String>	actionNames	= null;
 	private QueueManagerWrapper queueManagerWrapper = new QueueManagerWrapper();
-	private ActionSetWrapper actionSetWrapper = new ActionSetWrapper();
-//	private IActionSetservice actionSet ;
+    private List<String> actionIds = new ArrayList<String>();
+    private HashMap<String,Action> availableActions = new HashMap<String,Action>();
 	private IQueueManagerService queueManager ;
+	private Object model;
 	
 
 	private ProtocolSessionContext protocolSessionContext;
 	
 
-	public ChassisCapability(ProtocolSessionContext protocolSessionContext,
-			String resourceId2) {
+	public ChassisCapability(List<String> actionIds, ProtocolSessionContext protocolSessionContext,
+			String resourceId) {
 		this.protocolSessionContext = protocolSessionContext;
 		this.resourceId = resourceId;
+		this.actionIds = actionIds;
 	}
 	
 	public void initialize () {
-		IQueueManagerService queueManager = queueManagerWrapper.getQueueManager(resourceId);
-//		actionSet = actionSetWrapper.getActionSet(CHASSIS+"+"+resourceId);
+		queueManager = queueManagerWrapper.getQueueManager(resourceId);
+		//TODO HARDCODED AVAILABLE ACTIONS
+		IActionSetFactory actionFactory = new JunosActionFactory();
+		for (String actionId: actionIds) {
+			availableActions.put(actionId,actionFactory.createAction(actionId));
+			
+		}
+		
 		
 	}
+	
+	
 
-	public void handleMessage(String message) {
-		String[] paramsAction = message.split("|");
-//		String idAction = paramsAction
-		
+	public Response sendMessage(String idOperation, Object params) {
+		//Check if it is an available operation 
+		if (actionIds.contains(idOperation)) {
+			Vector<String> errorMsgs = new Vector<String>();
+			errorMsgs.add(ICapability.ERROR_CAPABILITY);
+			Response.errorResponse(idOperation,errorMsgs);
+		}
 
+		Action action = availableActions.get(idOperation);
+		action.setModelToUpdate(model);
+		queueManager.queueAction(action,protocolSessionContext,params);
+		return Response.okResponse(idOperation);
+	}
+
+	public void setResource(Object model) {
+		this.model = model;
+	}
+	
+	public Object getResource() {
+		return model;
+	}
+	
+	public List<String> getIdMessages () {
+		return actionIds;
 		
 	}
 	
