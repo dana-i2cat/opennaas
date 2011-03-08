@@ -31,9 +31,6 @@ public abstract class JunosCommand extends Command {
 		this.template = template;
 	}
 	
-	public void setParams (Object params) {
-		this.params = params;
-	}
 
 	public void initialize() throws CommandException {
 
