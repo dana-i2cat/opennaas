@@ -64,6 +64,13 @@ public abstract class JunosCommand extends Command {
 
 	public Response checkResponse(Object resp) {
 
+		//Check if is it a wellformed reply message
+		if (!(resp instanceof Reply)) {
+			Vector<String> errors = new Vector<String>();
+			errors.add("The response message is badformed. It is not a reply message");
+			return Response.errorResponse(command.toXML(), errors );			
+		}
+		
 		Reply reply = (Reply) resp;
 
 		// extra control, it checks if is not null the error list

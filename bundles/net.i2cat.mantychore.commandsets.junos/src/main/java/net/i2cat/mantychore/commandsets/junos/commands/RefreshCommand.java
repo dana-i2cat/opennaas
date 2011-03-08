@@ -1,9 +1,18 @@
 package net.i2cat.mantychore.commandsets.junos.commands;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringReader;
+
+import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
+import net.i2cat.mantychore.commandsets.junos.digester.IPConfigurationInterfaceParser;
 import net.i2cat.netconf.rpc.QueryFactory;
+import net.i2cat.netconf.rpc.RPCElement;
+import net.i2cat.netconf.rpc.Reply;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
 public class RefreshCommand extends JunosCommand {
 
@@ -33,7 +42,53 @@ public class RefreshCommand extends JunosCommand {
 	}
 
 	@Override
-	public void parseResponse(Object response, Object model) {
+	public void parseResponse(Object response, Object routermodel) {
+		
+		 try {
+		 net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) routermodel;
+		 DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
+		 logicalInterfParser.init();
+		 
+		 //IT MUST TO RECEIVE A REPLY, THIS ASSERT CAN NOT HAPPEN
 
+		 Reply rpcReply = (Reply)response;
+		 String message = rpcReply.getContain();
+		 logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		 
+		 for (String keyInterf: logicalInterfParser.getMapElements().keySet()) {
+			 //TODO ADD LINK BETWEEN COMPUTER SYSTEM AND ETHERNET PORT
+		 }
+		
+				
+//		 /*
+//		 * parse a string to byte array, and it is sent to the logicalInterfaceParser
+//		 */
+//		 if (response.getMessage() != null) {
+//		 logicalInterfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
+//		 // add to the router model
+//		 for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
+//		 routerModel.addManagedSystemElement((ManagedSystemElement) logicalInterfParser.getMapElements().get(keyInterf));
+//		 }
+//		 }
+//		
+//		 /* Parse routing options info */
+//		 DigesterEngine routingOptionsfParser = new RoutingOptionsParser();
+//		 routingOptionsfParser.init();
+//		
+//		 if (response.getMessage() != null) {
+//		 routingOptionsfParser.configurableParse(new ByteArrayInputStream(response.getMessage().getBytes("UTF-8")));
+//		 // add to the router model
+//		 for (String keyInterf : routingOptionsfParser.getMapElements().keySet()) {
+//		 NextHopRoute nh = (NextHopRoute) routingOptionsfParser.getMapElements().get(keyInterf);
+//		 routerModel.addNextHopRoute(nh);
+//		 }
+//		 }
+		
+		 } catch (IOException e) {
+		 log.error(e.getMessage());
+		 } catch (SAXException e) {
+		 log.error(e.getMessage());
+		 }
+		
 	}
 }
