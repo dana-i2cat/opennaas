@@ -102,7 +102,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	}
 	
 	
-//@Test
+@Test
 	public void testActions() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 		
