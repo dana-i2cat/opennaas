@@ -67,36 +67,4 @@ public class ManagedElementTest {
 		log.debug("Tested");
 	}
 
-	@Test
-	public void dependencyAddOrRemoveTest() {
-		// FIXME, IS IT NECESSARY USE THIS TEST
-		// ManagedElement leader = students; // this person is a leader, crowd
-		// depends on leader
-		// Dependency leadership = (Dependency)
-		// Association.link(Dependency.class,leader, school); // crowd depends
-		// on leader
-		//		
-		// assertTrue("LEADER is depended by CROWD",
-		// leader.getToAssociationByElement(school).equals(leadership));
-		// assertTrue("CROWD depends on LEADER",
-		// school.getFromAssociationByElement(leader).equals(leadership));
-		//		
-		// assertTrue("CROWD depends on LEADER",
-		// school.getFromAssociationsByType(Dependency.class).contains(leader));
-		// assertTrue("LEADER is depended by CROWD",
-		// leader.getToAssociationsByType(Dependency.class).contains(school) );
-		//		
-		// // remove by dependency reference
-		// leadership.unlink();
-		//		
-		// assertTrue("LEADER is depended by CROWD",
-		// leader.getToAssociationByElement(school) == null);
-		// assertTrue("CROWD depends on LEADER",
-		// school.getFromAssociationByElement(leader) == null);
-		//		
-		// assertTrue("CROWD depends on LEADER",
-		// !school.getFromAssociationsByType(Dependency.class).contains(leader));
-		// assertTrue("LEADER is depended by CROWD",
-		// !leader.getToAssociationsByType(Dependency.class).contains(school) );
-	}
 }

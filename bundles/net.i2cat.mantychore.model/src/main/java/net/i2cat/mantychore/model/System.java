@@ -54,17 +54,38 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
-	/**
-	 * This method returns the list of NextHopRoute from the toAssociation vector that match with the type HostedRoute the association wouldn't be
-	 * deleted
-	 * 
-	 * @return List<NextHopRoute>
-	 */
-	@SuppressWarnings("unchecked")
 	public List<NextHopRoute> getNextHopRoute() {
 		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
 	}
 
+
+	
+	
+	public boolean addLogicalDevice(LogicalDevice logicalDevice) {
+		if (logicalDevice == null) return false;
+		return (SystemDevice.link(this, logicalDevice) != null);
+	}
+
+
+	public boolean removeLogicalDevice(LogicalDevice logicalDevice) {
+
+		if (logicalDevice == null)
+			return false;
+		Association a = this.getToAssociationByElement(logicalDevice);
+		if (a == null)
+			return false;
+		else {
+			a.unlink();
+			return true;
+		}
+	}
+
+	public List<LogicalDevice> getLogicalDevices() {
+		return (List<LogicalDevice>) this.getToAssociatedElementsByType(SystemDevice.class);
+	}
+	
+	
+	
 	/**
 	 * Add a new SystemComponent association between managedSystemElement and this element
 	 * 
