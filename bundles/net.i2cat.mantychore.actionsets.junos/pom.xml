@@ -73,16 +73,13 @@
 							classes are under ".internal"
 						-->
 						<!-- avoid importing our own package -->
-						<Import-Package>!${pom.artifactId}.*,
-							org.slf4j;version="1.5.6", com.iaasframework.capabilities.actionset
-							, com.iaasframework.resources.core
-							, com.iaasframework.resources.core.capability,
-						*</Import-Package>
+						<Import-Package>
+							!${pom.artifactId}.*,org.slf4j;version="1.5.6",*
+						</Import-Package>	
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
 						<Export-Package>
-							${pom.artifactId}.actions;version="${pom.version}",
 							${pom.artifactId};version="${pom.version}"
-						</Export-Package>					
+						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>

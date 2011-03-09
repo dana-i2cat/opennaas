@@ -5,11 +5,11 @@
 
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="junosActionFactory"
-		interface="com.iaasframework.capabilities.actionset.IActionFactory">
+		interface="net.i2cat.mantychore.actionsets.junos.IActionSetFactory">
 		<service-properties>
 		<!--  identify the junos actionset -->
-			<entry key="actionSet.name" value="junos" /> 
-			<entry key="actionSet.version" value="1.0.0" />
+			<entry key="actionset.name" value="junos" /> 
+			<entry key="actionset.version" value="1.0.0" />
 		</service-properties>
 	</service>
 </blueprint>

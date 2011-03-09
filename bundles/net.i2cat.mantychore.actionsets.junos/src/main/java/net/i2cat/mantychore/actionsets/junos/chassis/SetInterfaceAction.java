@@ -29,7 +29,7 @@ public class SetInterfaceAction extends Action {
 
 	protected Command getCommand(String commandID) {
 		
-		//TODO NOT RETURN NULL IN OPERATIONS, the exception must be managed.
+		//FIXME NOT RETURN NULL IN OPERATIONS, the exception must be managed.
 		try {
 			JunosCommandFactory commandFactory = new JunosCommandFactory();
 			return commandFactory.createCommand(commandID);

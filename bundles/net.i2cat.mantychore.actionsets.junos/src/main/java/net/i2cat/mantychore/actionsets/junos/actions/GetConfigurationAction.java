@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 public class GetConfigurationAction extends Action {
 	public static final String	GETCONFIG		= "getConfiguration";
 	Logger						logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
-	private List<String>		commandsList	= null;
 	int							index			= 0;
 
 	public GetConfigurationAction() {
@@ -22,7 +21,8 @@ public class GetConfigurationAction extends Action {
 	}
 
 	protected void initialize() {
-		commands.add(getCommand(GETCONFIG));
+		//FIXME IT IS NECESSARY TO PUT THE REFRESH NAME IN ANOTHER CLASS..
+		commands.add(getCommand("refresh"));
 	}
 
 	protected Command getCommand(String commandID) {
