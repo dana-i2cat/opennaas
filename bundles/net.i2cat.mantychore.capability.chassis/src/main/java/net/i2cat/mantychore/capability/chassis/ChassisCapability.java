@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
-import net.i2cat.mantychore.actionsets.junos.IActionSetFactory;
+import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ICapability;
