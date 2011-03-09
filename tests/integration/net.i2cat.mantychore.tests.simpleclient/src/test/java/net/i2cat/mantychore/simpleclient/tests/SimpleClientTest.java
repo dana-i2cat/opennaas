@@ -20,7 +20,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import net.i2cat.mantychore.actionsets.junos.IActionSetFactory;
+import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory;
