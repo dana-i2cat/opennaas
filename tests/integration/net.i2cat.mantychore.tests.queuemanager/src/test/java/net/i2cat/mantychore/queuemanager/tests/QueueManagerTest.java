@@ -2,6 +2,7 @@ package net.i2cat.mantychore.queuemanager.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 		return combine(
 					   IntegrationTestsHelper.getMantychoreTestOptions(),
 					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+
 		);
 	}
 
