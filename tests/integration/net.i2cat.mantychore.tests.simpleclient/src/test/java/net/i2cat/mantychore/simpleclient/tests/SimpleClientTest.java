@@ -3,6 +3,7 @@ package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,16 +11,20 @@ import java.util.List;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import net.i2cat.mantychore.actionsets.junos.IActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory;
+import net.i2cat.mantychore.capability.chassis.IChassisCapabilityFactory;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
@@ -33,6 +38,7 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.System;
 
+@RunWith(JUnit4TestRunner.class)
 public class SimpleClientTest extends AbstractIntegrationTest {
 
 	static Logger			log				= LoggerFactory
@@ -58,7 +64,8 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		return combine(
 					   IntegrationTestsHelper.getMantychoreTestOptions(),
 					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
-					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
+					   vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
 					   
 		);
 	}
@@ -88,14 +95,17 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 			log.info("Starting the test");
 
 			/* get queueManager as a service */
-			log.info("Getting queue manager factory...");
+			log.info("Getting chassis capability factory...");
 			
-			ChassisCapabilityFactory chassisFactory = getOsgiService(ChassisCapabilityFactory.class, 5000);
-//			log.info("Getting queue manager...");
+			IChassisCapabilityFactory chassisFactory = getOsgiService(IChassisCapabilityFactory.class, 5000);
+			
+			log.info("Getting chassis capability...");
 
-//			//TODO ADD ALL ACTIONS AVALIABLE FOR ACTIONSET	
+			//FIXME ADD ALL ACTIONS AVALIABLE FOR ACTIONSET	
 			chassisCapability = chassisFactory.createChassisCapability(actionFactory.getActionNames(),newSessionContextNetconf() , deviceID);
-
+			//FIXME IT IS A PATCH TO GET THE QUEUE MANAGER SERVICE
+			chassisCapability.setQueueManager(queueManager);
+			chassisCapability.initialize();
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -104,15 +114,17 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	}
 	
 	
-@Test
-	public void testActions() {
+//@Test
+	public void testActions() {	
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);		
 		
 		prepareQueueManagerTest();
 		
 		prepareChassisCapability();
 		
-//		IActionSetFactory junosActionFactory = JunosActionFactory();
+		IActionSetFactory junosActionFactory = JunosActionFactory();
 		
 		
 		//chassisCapability.initialize();
@@ -149,6 +161,11 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		
 	}
 	
+	private IActionSetFactory JunosActionFactory() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
