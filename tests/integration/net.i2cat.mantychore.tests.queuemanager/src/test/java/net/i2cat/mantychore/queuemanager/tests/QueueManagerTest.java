@@ -80,15 +80,18 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 		prepareQueueManagerTest();
 
 		Action action = newAction();
-		queueManager.queueAction(action, newSessionContextNetconf());
+		
+		Object params = new Object(); //void params to queue actions.
+		
+		queueManager.queueAction(action, newSessionContextNetconf(),params);
 		Action action2 = newAction();
-		queueManager.queueAction(action2, newSessionContextNetconf());
+		queueManager.queueAction(action2, newSessionContextNetconf(),params);
 		Action action3 = newAction();
-		queueManager.queueAction(action3, newSessionContextNetconf());
+		queueManager.queueAction(action3, newSessionContextNetconf(),params);
 		Action action4 = newAction();
-		queueManager.queueAction(action4, newSessionContextNetconf());
+		queueManager.queueAction(action4, newSessionContextNetconf(),params);
 		Action action5 = newAction();
-		queueManager.queueAction(action5, newSessionContextNetconf());
+		queueManager.queueAction(action5, newSessionContextNetconf(),params);
 
 		/* ------------------------ */
 
