@@ -8,6 +8,7 @@ import net.i2cat.mantychore.commons.CommandException;
 public class JunosCommandFactory {
 
 	public Command createCommand(String commandId) throws CommandException {
+		//FIXME IT IS NOT INITIALIZED
 		Command command = null;
 
 		if (commandId.equals(RefreshCommand.REFRESH)) {
