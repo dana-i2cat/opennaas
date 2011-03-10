@@ -40,149 +40,149 @@ import net.i2cat.mantychore.model.System;
 
 @RunWith(JUnit4TestRunner.class)
 public class SimpleClientTest extends AbstractIntegrationTest {
-
-	static Logger			log				= LoggerFactory
-													.getLogger(SimpleClientTest.class);
-	IQueueManagerService	queueManager;
-
-
-	String					deviceID		= "junos";
-	String					queueID			= "queue";
-	ProtocolSessionContext	protocolSessionContext;
-	ChassisCapability chassisCapability;
-	
-	JunosActionFactory actionFactory = new JunosActionFactory();
-	
-	
-	
-	
-	@Inject
-	BundleContext			bundleContext	= null;
-
+//
+//	static Logger			log				= LoggerFactory
+//													.getLogger(SimpleClientTest.class);
+//	IQueueManagerService	queueManager;
+//
+//
+//	String					deviceID		= "junos";
+//	String					queueID			= "queue";
+//	ProtocolSessionContext	protocolSessionContext;
+//	ChassisCapability chassisCapability;
+//	
+//	JunosActionFactory actionFactory = new JunosActionFactory();
+//	
+//	
+//	
+//	
+//	@Inject
+//	BundleContext			bundleContext	= null;
+//
 //	@Configuration
-	public static Option[] configure() {
-		return combine(
-					   IntegrationTestsHelper.getMantychoreTestOptions(),
-					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
-					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+//	public static Option[] configure() {
+//		return combine(
+//					   IntegrationTestsHelper.getMantychoreTestOptions(),
+//					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
+//					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
 //					  ,vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
-					   
-		);
-	}
-
-	/* initialize client */
-
-	private void prepareQueueManagerTest() {
-		try {
-			log.info("Starting the test");
-
-			/* get queueManager as a service */
-			log.info("Getting queue manager factory...");
-			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class, 5000);
-			log.info("Getting queue manager...");
-			queueManager = queueManagerFactory.createQueueManager(deviceID);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		}
-	}
-	
-
-	private void prepareChassisCapability() {
-		try {
-			log.info("Starting the test");
-
-			/* get queueManager as a service */
-			log.info("Getting chassis capability factory...");
-			
-			IChassisCapabilityFactory chassisFactory = getOsgiService(IChassisCapabilityFactory.class, 5000);
-			
-			log.info("Getting chassis capability...");
-
-			//FIXME ADD ALL ACTIONS AVALIABLE FOR ACTIONSET	
-			chassisCapability = chassisFactory.createChassisCapability(actionFactory.getActionNames(),newSessionContextNetconf() , deviceID);
-			//FIXME IT IS A PATCH TO GET THE QUEUE MANAGER SERVICE
-			chassisCapability.setQueueManager(queueManager);
-			chassisCapability.initialize();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		}
-	}
-	
-	
+//					   
+//		);
+//	}
+//
+//	/* initialize client */
+//
+//	private void prepareQueueManagerTest() {
+//		try {
+//			log.info("Starting the test");
+//
+//			/* get queueManager as a service */
+//			log.info("Getting queue manager factory...");
+//			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class, 5000);
+//			log.info("Getting queue manager...");
+//			queueManager = queueManagerFactory.createQueueManager(deviceID);
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			log.error(e.getMessage());
+//			Assert.fail();
+//		}
+//	}
+//	
+//
+//	private void prepareChassisCapability() {
+//		try {
+//			log.info("Starting the test");
+//
+//			/* get queueManager as a service */
+//			log.info("Getting chassis capability factory...");
+//			
+//			IChassisCapabilityFactory chassisFactory = getOsgiService(IChassisCapabilityFactory.class, 5000);
+//			
+//			log.info("Getting chassis capability...");
+//
+//			//FIXME ADD ALL ACTIONS AVALIABLE FOR ACTIONSET	
+//			chassisCapability = chassisFactory.createChassisCapability(actionFactory.getActionNames(),newSessionContextNetconf() , deviceID);
+//			//FIXME IT IS A PATCH TO GET THE QUEUE MANAGER SERVICE
+//			chassisCapability.setQueueManager(queueManager);
+//			chassisCapability.initialize();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			log.error(e.getMessage());
+//			Assert.fail();
+//		}
+//	}
+//	
+//	
 //@Test
-	public void testActions() {	
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);		
-		
-		prepareQueueManagerTest();
-		
-		prepareChassisCapability();
-		
-		IActionSetFactory junosActionFactory = new JunosActionFactory();
-		
-		
-		//chassisCapability.initialize();
-		String actionId =JunosActionFactory.SETINTERFACE;
-		ComputerSystem model = new ComputerSystem();
-		chassisCapability.setResource(model);
-		
-		Object params = newParamsInterface();
-		chassisCapability.sendMessage(actionId,params);
-		
-		//check if it is added
-		Assert.assertTrue(queueManager.getActions().size()!=1);
-		
-		try {
-			List<ActionResponse> responses = queueManager.execute();
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		} catch (CommandException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		}
-		
-		//check if it is added
-		Assert.assertTrue(queueManager.getActions().size()!=0);
-
-		
-		//CHECK MODEL
-		
-	
-
-	}
-
-	private ProtocolSessionContext newSessionContextNetconf() {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
-		// ADDED
-		return protocolSessionContext;
-
-	}
-
-	private Object newParamsInterface() {
-		 EthernetPort eth = new EthernetPort();
-		 eth.setElementName("ge-0/1/0");
-		 eth.setPortNumber(30);
-		 IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		 ip.setIPv4Address("193.1.24.88");
-		 ip.setSubnetMask("255.255.255.0");
-		 eth.addProtocolEndpoint(ip);
-		 ArrayList params = new ArrayList();
-		 params.add(eth);
-		 return params;
-		 
-	}
+//	public void testActions() {	
+//		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
+//		/* Wait for the activation of all the bundles */
+//		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);		
+//		
+//		prepareQueueManagerTest();
+//		
+//		prepareChassisCapability();
+//		
+//		IActionSetFactory junosActionFactory = new JunosActionFactory();
+//		
+//		
+//		//chassisCapability.initialize();
+//		String actionId =JunosActionFactory.SETINTERFACE;
+//		ComputerSystem model = new ComputerSystem();
+//		chassisCapability.setResource(model);
+//		
+//		Object params = newParamsInterface();
+//		chassisCapability.sendMessage(actionId,params);
+//		
+//		//check if it is added
+//		Assert.assertTrue(queueManager.getActions().size()!=1);
+//		
+//		try {
+//			List<ActionResponse> responses = queueManager.execute();
+//		} catch (ProtocolException e) {
+//			e.printStackTrace();
+//			log.error(e.getMessage());
+//			Assert.fail();
+//		} catch (CommandException e) {
+//			e.printStackTrace();
+//			log.error(e.getMessage());
+//			Assert.fail();
+//		}
+//		
+//		//check if it is added
+//		Assert.assertTrue(queueManager.getActions().size()!=0);
+//
+//		
+//		//CHECK MODEL
+//		
+//	
+//
+//	}
+//
+//	private ProtocolSessionContext newSessionContextNetconf() {
+//		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+//		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
+//
+//		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
+//		// ADDED
+//		return protocolSessionContext;
+//
+//	}
+//
+//	private Object newParamsInterface() {
+//		 EthernetPort eth = new EthernetPort();
+//		 eth.setElementName("ge-0/1/0");
+//		 eth.setPortNumber(30);
+//		 IPProtocolEndpoint ip = new IPProtocolEndpoint();
+//		 ip.setIPv4Address("193.1.24.88");
+//		 ip.setSubnetMask("255.255.255.0");
+//		 eth.addProtocolEndpoint(ip);
+//		 ArrayList params = new ArrayList();
+//		 params.add(eth);
+//		 return params;
+//		 
+//	}
 
 
 
