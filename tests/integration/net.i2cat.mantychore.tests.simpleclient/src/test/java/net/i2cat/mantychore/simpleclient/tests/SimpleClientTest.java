@@ -59,13 +59,13 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	@Inject
 	BundleContext			bundleContext	= null;
 
-	@Configuration
+//	@Configuration
 	public static Option[] configure() {
 		return combine(
 					   IntegrationTestsHelper.getMantychoreTestOptions(),
 					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
 					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-	//				  ,vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
+//					  ,vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
 					   
 		);
 	}
@@ -124,7 +124,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		
 		prepareChassisCapability();
 		
-		IActionSetFactory junosActionFactory = JunosActionFactory();
+		IActionSetFactory junosActionFactory = new JunosActionFactory();
 		
 		
 		//chassisCapability.initialize();
@@ -156,15 +156,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		
 		//CHECK MODEL
 		
-		
-		
-		
-	}
 	
-	private IActionSetFactory JunosActionFactory() {
-	// TODO Auto-generated method stub
-	return null;
-}
+
+	}
 
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
