@@ -31,7 +31,8 @@ public class IntegrationTestsHelper {
 //												"http://repository.ops4j.org/maven2",
 //												"http://repository.inocybe.ca/content/groups/public");
 		
-		Option	REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo","http://repo1.maven.org/maven2");
+		//TODO DELETE INOCYBE REPOSITORY
+		Option	REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo","http://repo1.maven.org/maven2","http://repository.inocybe.ca/content/groups/public");
 		
 		/* specify log level */
 		

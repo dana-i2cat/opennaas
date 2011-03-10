@@ -30,9 +30,10 @@ public class GetConfigurationAction extends Action {
 			JunosCommandFactory commandFactory = new JunosCommandFactory();
 			return commandFactory.createCommand(commandID);
 		} catch (CommandException e) {
-			// TODO Auto-generated catch block
+			// FIXME IT CAN NOT TRHOW PRINTSTACKTRACE
 			e.printStackTrace();
 		}
+		//FIXME IT CAN NOT RETURN NULL PARAMS
 		return null;
 	}
 }

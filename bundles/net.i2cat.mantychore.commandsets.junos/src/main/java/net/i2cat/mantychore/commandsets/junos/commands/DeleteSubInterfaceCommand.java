@@ -24,7 +24,7 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 	}
 
 	@Override
-	public Object message() {
+	public Object sendQuery() {
 		// TODO Auto-generated method stub
 		return QueryFactory.newEditConfig(target, defaultOperation, testOption,
 				errorOption, netconfXML);
@@ -34,5 +34,6 @@ public class DeleteSubInterfaceCommand extends JunosCommand {
 	public void parseResponse(Object response, Object model) {
 
 	}
+
 
 }

@@ -18,7 +18,7 @@ public class CreateLogicalRouterCommand extends JunosCommand {
 	}
 
 	@Override
-	public Object message() {
+	public Object sendQuery() {
 		// returns the Query with the corresponding command
 		return QueryFactory.newEditConfig(target, defaultOperation, testOption,
 				errorOption, netconfXML);

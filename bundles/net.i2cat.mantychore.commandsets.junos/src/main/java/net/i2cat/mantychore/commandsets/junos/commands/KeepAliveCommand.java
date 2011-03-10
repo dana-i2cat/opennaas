@@ -19,7 +19,7 @@ public class KeepAliveCommand extends JunosCommand {
 	}
 
 	@Override
-	public Object message() {
+	public Object sendQuery() {
 		// TODO Auto-generated method stub
 		return QueryFactory.newKeepAlive();
 	}

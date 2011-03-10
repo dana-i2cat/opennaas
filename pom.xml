@@ -533,11 +533,50 @@
 		<module>tests</module>
 		<module>platform</module>
 	</modules>
+	
+<!-- 	
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+		</license>
+	</licenses>
+ -->
+
+
 
 	<!-- Build information -->
 	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
 	<build>
+	
+	<!--
+	<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.google.code.maven-license-plugin</groupId>
+					<artifactId>maven-license-plugin</artifactId>
+					<version>1.4.0</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+-->
 		<plugins>
+<!--   			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin> -->
+		
+		
 			<plugin>
 			    <groupId>org.apache.maven.plugins</groupId>
 			    <artifactId>maven-resources-plugin</artifactId>
@@ -587,6 +626,8 @@
 	<!-- Reporting configuration -->
 	<reporting>
 		<plugins>
+
+				
 			<!-- Javadoc -->
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -615,68 +656,42 @@
 		</plugins>
 	</reporting>
 
-	<repositories>
-	    <repository>
-		<id>maven.i2cat.net</id>
-		<name>maven.i2cat.net-releases</name>
-		<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
-	    </repository>
-		<repository>
-			<id>i2cat</id>
-			<name>i2cat maven repository</name>
-			<url>http://maven.i2cat.net:8081/artifactory</url>
-		</repository>
-		<repository>
-			<id>springsource-external</id>
-			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
-			<url>http://repository.springsource.com/maven/bundles/external</url>
-		</repository>
-		<repository>
-			<id>springsource-releases</id>
-			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
-			<url>http://repository.springsource.com/maven/bundles/release</url>
-		</repository>
-		<repository>
-			<id>Maven-central</id>
-			<name>Maven central</name>
-			<url>http://repo1.maven.org/maven2</url>
-		</repository>
-		<repository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
-		</repository>
-		<repository>
-			<id>osp4j</id>
-			<name>OSP4J releases</name>
-			<url>http://repository.ops4j.org/maven2</url>
-		</repository>
-		<repository>
-            		<id>DyanmicJava</id>
-            		<name>DynamicJava Repository</name>
-            		<url>http://maven.dynamicjava.org/</url>
-        	</repository>
-		<repository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
-		</repository>
-		<repository>
-			<id>java</id>
-			<name>Java.net releases</name>
-			<url>http://download.java.net/maven/2/</url>
-		</repository>
-	</repositories>
+<repositories>
+    <repository>
+        <id>central</id>
+        <url>http://maven.i2cat.net:8081/artifactory/repo/</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+    <repository>
+        <id>snapshots</id>
+        <url>http://maven.i2cat.net:8081/artifactory/repo/</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+    </repository>    
+</repositories>
 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>ops4j.snapshots</id>
-			<url>http://repository.ops4j.org/mvn-snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</pluginRepository>
-	</pluginRepositories>
+
+
+<pluginRepositories>
+    <pluginRepository>
+        <id>central</id>
+        <url>http://maven.i2cat.net:8081/artifactory/plugins-release</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+        <id>snapshots</id>
+        <url>http://maven.i2cat.net:8081/artifactory/plugins-snapshot</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+    </pluginRepository>
+</pluginRepositories>
+
 
 	<distributionManagement>
 		<site>

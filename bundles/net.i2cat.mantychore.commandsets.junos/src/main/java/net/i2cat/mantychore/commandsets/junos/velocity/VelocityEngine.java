@@ -1,7 +1,14 @@
 package net.i2cat.mantychore.commandsets.junos.velocity;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 
 import org.apache.velocity.Template;
@@ -31,21 +38,49 @@ public class VelocityEngine {
 
 	private void init() throws Exception {
 		Properties prop = new Properties();
-
-		// load configure file
-		log.info("Trying to open " + VELOCITY_PROPS);
 		prop.load(getClass().getResourceAsStream(VELOCITY_PROPS));
+		
+		//FIXME IT HAVE TO NECESSARY TO IMPLEMENT A RESOURCELOADER
+		addJarProperties(prop);
 
-		// Initialize velocity
 		Velocity.init(prop);
 
 		ctx = new VelocityContext();
+		
+		
+	}
+
+	/*
+	 * It must exist other method to implements this method to get resources
+	 */
+	private void addJarProperties(Properties prop) {
+		Properties oldProps = (Properties)prop.clone();
+		prop.setProperty("resource.loader", "jar");
+		prop.setProperty("jar.resource.loader.class","org.apache.velocity.runtime.resource.loader.JarResourceLoader");
+		prop.setProperty("jar.resource.loader.cache", "true");
+		String absolutPath = "";
+		try {
+			absolutPath = "jar:file:" +	(new File (".")).getCanonicalPath();
+		} catch (IOException e) {
+			log.error("It was impossible to get the canonical path");
+			//Restore propeties file
+			prop = oldProps;
+			return;
+		}
+		log.info("absoluthPath="+absolutPath);
+		prop.setProperty("jar.resource.loader.path", absolutPath +"/bundles/net.i2cat.mantychore.commandsets.junos_1.0.0.SNAPSHOT.jar");
+		//where there are templates
+		prop.setProperty("template.root","VM_files");
+		
 	}
 
 	public String mergeTemplate() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 		init();
-		String currentPath = System.getProperty("user.dir");
+		String currentPath = (new File (".")).getCanonicalPath();
+    	System.out.println(currentPath);
+    	log.info(currentPath);
+		
 		Template tpl = Velocity.getTemplate(template);
 
 		ctx.put(PARAMS, params);
@@ -56,4 +91,19 @@ public class VelocityEngine {
 
 		return writer.toString();
 	}
+
+
+//	public static String inputStreamAsString(InputStream stream)
+//	throws IOException {
+//	BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+//	StringBuilder sb = new StringBuilder();
+//	String line = null;
+//
+//	while ((line = br.readLine()) != null) {
+//	sb.append(line + "\n");
+//	}
+//
+//	br.close();
+//	return sb.toString();
+//	}
 }

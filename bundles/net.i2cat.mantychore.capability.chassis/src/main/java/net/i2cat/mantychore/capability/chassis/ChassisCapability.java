@@ -49,7 +49,7 @@ public class ChassisCapability implements ICapability {
 			queueManager = queueManagerWrapper.getQueueManager(resourceId);
 		//initialize actions
 		IActionSetFactory actionFactory = new JunosActionFactory();
-		for (String actionId: actionIds) {
+		for (String actionId: actionIds) { //FIXME, YOU ONLY NEED TO CREATE ACTION IN THE MOMENT WHERE YOU WILL NEED IT
 			availableActions.put(actionId,actionFactory.createAction(actionId));
 			
 		}

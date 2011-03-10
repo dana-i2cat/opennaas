@@ -66,7 +66,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 		}
 	}
 
-	@Override
 	public void asyncSend(Object requestMessage) throws ProtocolException {
 		// Send a message to the device, and don't wait for the response
 		RPCElement rpcReply = null;
@@ -79,7 +78,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 	}
 
-	@Override
 	public Object sendReceive(Object requestMessage) throws ProtocolException {
 		// Send a message to the device, and wait for the response
 		RPCElement rpcReply = null;
@@ -92,7 +90,6 @@ public class NetconfProtocolSession implements IProtocolSession {
 		return rpcReply;
 	}
 
-	@Override
 	public void connect() throws ProtocolException {
 
 		if (status.equals(Status.CONNECTED)) {
@@ -116,7 +113,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 		}
 	}
 
-	@Override
+
 	public void disconnect() throws ProtocolException {
 
 		if (!status.equals(Status.CONNECTED)) {
@@ -131,24 +128,23 @@ public class NetconfProtocolSession implements IProtocolSession {
 		log.info("Protocol session stopped");
 	}
 
-	@Override
 	public ProtocolSessionContext getSessionContext() {
 
 		return protocolSessionContext;
 	}
 
-	@Override
+
 	public String getSessionID() {
 		return sessionID;
 	}
 
-	@Override
+
 	public Status getStatus() {
 
 		return status;
 	}
 
-	@Override
+
 	public void registerProtocolSessionListener(IProtocolSessionListener protocolSessionListener, IProtocolMessageFilter protocolMessageFilter,
 			String idListener) {
 		protocolMessageFilters.put(idListener, protocolMessageFilter);
@@ -156,7 +152,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 	}
 
-	@Override
+
 	public void unregisterProtocolSessionListener(IProtocolSessionListener protocolSessionListener, String idListener) {
 		protocolMessageFilters.remove(idListener);
 		protocolListeners.remove(idListener);

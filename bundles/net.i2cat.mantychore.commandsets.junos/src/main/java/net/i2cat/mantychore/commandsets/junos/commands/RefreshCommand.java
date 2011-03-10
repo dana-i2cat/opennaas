@@ -36,7 +36,7 @@ public class RefreshCommand extends JunosCommand {
 	}
 
 	@Override
-	public Object message() {
+	public Object sendQuery() {
 		// TODO Auto-generated method stub
 		return QueryFactory.newGetConfig(source, netconfXML, attrFilter);
 

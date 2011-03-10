@@ -23,7 +23,7 @@ public abstract class JunosCommand extends Command {
 
 	/** logger **/
 	Logger				log			= LoggerFactory.getLogger(JunosCommand.class);
-	protected Query		command;
+	protected Query		query;
 	protected String	netconfXML;
 
 	protected JunosCommand(String commandID, String template) {
@@ -68,17 +68,16 @@ public abstract class JunosCommand extends Command {
 		if (!(resp instanceof Reply)) {
 			Vector<String> errors = new Vector<String>();
 			errors.add("The response message is badformed. It is not a reply message");
-			return Response.errorResponse(command.toXML(), errors );			
+			return Response.errorResponse(query.toXML(), errors );			
 		}
 		
 		Reply reply = (Reply) resp;
 
 		// extra control, it checks if is not null the error list
-		if (reply.isOk()
-				&& (reply.getErrors() == null || reply.getErrors().size() == 0)) {
+		if (reply.isOk() || reply.getErrors() == null || reply.getErrors().size() == 0) {
 			// BUILD OK RESPONSE
 
-			return Response.okResponse(command.toXML());
+			return Response.okResponse(query.toXML());
 		} else {
 			// BUILD ERROR MESSAGE
 
@@ -86,9 +85,19 @@ public abstract class JunosCommand extends Command {
 			for (Error error : reply.getErrors())
 				errors.add(error.getMessage() + " : " + error.getInfo());
 
-			return Response.errorResponse(command.toXML(), errors);
+			return Response.errorResponse(query.toXML(), errors);
 		}
 
 	}
+	public abstract Object sendQuery();
+	
+	public Object message () {
+		query = (Query)sendQuery();
+		return query;
+		
+	}
+	
+	
+	
 
 }

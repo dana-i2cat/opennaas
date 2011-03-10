@@ -5,7 +5,7 @@
 
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="junosActionFactory"
-		interface="net.i2cat.mantychore.actionsets.junos.IActionSetFactory">
+		interface="net.i2cat.mantychore.commons.IActionSetFactory">
 		<service-properties>
 		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos" /> 

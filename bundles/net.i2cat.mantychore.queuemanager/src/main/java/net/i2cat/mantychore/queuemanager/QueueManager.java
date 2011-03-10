@@ -56,6 +56,7 @@ public class QueueManager implements IQueueManagerService {
 
 			/* restore the connection */
 			protocolWrapper.releaseProtocolSession(sessionId);
+			queue.remove(actionInQueue);
 		}
 		return responses;
 
