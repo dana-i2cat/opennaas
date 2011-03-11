@@ -36,6 +36,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.System;
 
 @RunWith(JUnit4TestRunner.class)
@@ -153,26 +154,36 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		//check if it is added
 		Assert.assertFalse(queueManager.getActions().size()!=0);
 
-//		
-//		chassisCapability.sendMessage(JunosActionFactory.GETCONFIG,null);
-//		//check if it is added
-//		Assert.assertFalse(queueManager.getActions().size()!=1);
-//		
-//		try {
-//			List<ActionResponse> responses = queueManager.execute();
-//		} catch (ProtocolException e) {
-//			e.printStackTrace();
-//			log.error(e.getMessage());
-//			Assert.fail();
-//		} catch (CommandException e) {
-//			e.printStackTrace();
-//			log.error(e.getMessage());
-//			Assert.fail();
-//		}
-//		
-//		//check if it is added
-//		Assert.assertFalse(queueManager.getActions().size()!=0);
+		
+		chassisCapability.sendMessage(JunosActionFactory.GETCONFIG,null);
+		//check if it is added
+		Assert.assertFalse(queueManager.getActions().size()!=1);
+		
+		try {
+			List<ActionResponse> responses = queueManager.execute();
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		} catch (CommandException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		}
+		
+		//check if it is added
+		Assert.assertFalse(queueManager.getActions().size()!=0);
+		//We only can test it if we are working with real routers
 //		Assert.assertFalse(checkPort(model));
+	
+		
+		Assert.assertNotNull(model.getLogicalDevices());
+		for (LogicalDevice logicalDevice: model.getLogicalDevices()) {
+			EthernetPort ethernetPort = (EthernetPort)logicalDevice;
+			log.info("ethernetPort name: "+ethernetPort.getElementName());	
+		}
+		
+		Assert.assertFalse(model.getLogicalDevices().size()==0);
 		
 		
 	
