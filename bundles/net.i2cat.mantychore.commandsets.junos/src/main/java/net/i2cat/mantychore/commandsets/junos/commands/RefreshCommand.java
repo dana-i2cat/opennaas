@@ -20,7 +20,7 @@ public class RefreshCommand extends JunosCommand {
 	public static final String REFRESH = "refresh";
 	public static final String TEMPLATE = "/VM_files/getconfiguration.vm";
 
-	private String source = null;
+	private String source = "running";
 	private String filter = null;
 	private String attrFilter = null;
 
@@ -30,10 +30,8 @@ public class RefreshCommand extends JunosCommand {
 	public RefreshCommand() {
 		super(REFRESH, TEMPLATE);
 	}
+	
 
-	public void initializeCommand(String source) {
-		this.source = source;
-	}
 
 	@Override
 	public Object sendQuery() {
@@ -81,5 +79,17 @@ public class RefreshCommand extends JunosCommand {
 		 log.error(e.getMessage());
 		 }
 		
+	}
+
+
+
+	public String getSource() {
+		return source;
+	}
+
+
+
+	public void setSource(String source) {
+		this.source = source;
 	}
 }

@@ -55,7 +55,7 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 	}
 
 	public void addInterface(EthernetPort ethernetPort) {
-		String location = ethernetPort.getOtherPortType();
+		String location = ethernetPort.getElementName();
 
 		/* add new vlan endpoint */
 		if (vlanEndpoint != null) {
