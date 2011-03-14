@@ -12,13 +12,13 @@ import net.i2cat.mantychore.commons.IActionSetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JunosActionFactory implements IActionSetFactory {
+public class ChassisActionSetFactory implements IActionSetFactory {
 
 	public static final String	GETCONFIG		= "getConfiguration";
 	public static final String	KEEPALIVE		= "keepAlive";
 	public static final String	SETINTERFACE	= "setInterface";
 
-	Logger						logger			= LoggerFactory.getLogger(JunosActionFactory.class);
+	Logger						logger			= LoggerFactory.getLogger(ChassisActionSetFactory.class);
 
 	public Action createAction(String actionId) /* throws ActionException */{
 		logger.info("ACTIONSET - Action id to send: " + actionId);
@@ -46,14 +46,6 @@ public class JunosActionFactory implements IActionSetFactory {
 		actionNames.add(KEEPALIVE);
 		actionNames.add(SETINTERFACE);
 		return actionNames;
-	}
-
-	public Action getCommitAction() {
-		return null;
-	}
-
-	public Action getRollbackAction() {
-		return null;
 	}
 
 }
