@@ -18,16 +18,15 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
 	<!-- Factory that creates protocol capabilities -->
-	<bean  id="chassisCapabilityFactory"
-		class="net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory" />
+	<bean  id="queueManagerFactory"
+		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" />
 
 	
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="chassisCapabilityFactory"
-		interface="net.i2cat.mantychore.capability.chassis.IChassisCapabilityFactory">
+	<service ref="queueManagerFactory"
+		interface="net.i2cat.mantychore.queuemanager.IQueueManagerFactory">
 	 	<service-properties>
-	 		<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="chassis-junos" />
+			<entry key="capability" value="queue" />
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
 	</service>
