@@ -15,7 +15,7 @@ public class KeepAliveCommand extends JunosCommand {
 	Logger log = LoggerFactory.getLogger(KeepAliveCommand.class);
 
 	public KeepAliveCommand() {
-		super(KEEPALIVE, TEMPLATE);
+		super(KEEPALIVE);
 	}
 
 	@Override

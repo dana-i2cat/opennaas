@@ -12,7 +12,7 @@ public class CreateLogicalRouterCommand extends JunosCommand {
 	private String testOption = null;
 	private String errorOption = null;
 
-	protected CreateLogicalRouterCommand(String target) {
+	public CreateLogicalRouterCommand(String target) {
 		super(CREATELOGICALROUTER, TEMPLATE);
 		this.target = target;
 	}

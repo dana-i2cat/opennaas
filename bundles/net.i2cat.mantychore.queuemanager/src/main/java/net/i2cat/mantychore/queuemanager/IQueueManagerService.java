@@ -10,7 +10,7 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 public interface IQueueManagerService {
 
-	public List<ActionResponse> execute() throws ProtocolException, CommandException;
+	public List<ActionResponse> execute(Action commit, Action rollback, ProtocolSessionContext protocolSessionContext) throws ProtocolException, CommandException;
 
 	public void empty();
 

@@ -31,10 +31,15 @@ public abstract class JunosCommand extends Command {
 		this.template = template;
 	}
 	
-
+	protected JunosCommand(String commandID) {
+		this.setCommandId(commandID);
+	}
+	
 	public void initialize() throws CommandException {
 
 		try {
+			//finish initialize if it does not exist template
+			if (template==null || template.equals("")) return;
 			netconfXML = prepareVelocityCommand();
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();

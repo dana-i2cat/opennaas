@@ -20,6 +20,7 @@ public class RefreshCommand extends JunosCommand {
 	public static final String REFRESH = "refresh";
 	public static final String TEMPLATE = "/VM_files/getconfiguration.vm";
 
+	//FIXME HOW WE SEND THE REFRESH COMMAND?
 	private String source = "running";
 	private String filter = null;
 	private String attrFilter = null;

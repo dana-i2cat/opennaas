@@ -39,9 +39,6 @@ public class VelocityEngine {
 	private void init() throws Exception {
 		Properties prop = new Properties();
 		prop.load(getClass().getResourceAsStream(VELOCITY_PROPS));
-		
-		//FIXME IT HAVE TO NECESSARY TO IMPLEMENT A RESOURCELOADER
-		addJarProperties(prop);
 
 		Velocity.init(prop);
 
@@ -52,7 +49,9 @@ public class VelocityEngine {
 
 	/*
 	 * It must exist other method to implements this method to get resources
+	 * It was used to get the velocity template from a jar. In old versions, it was problems to use 
 	 */
+	@Deprecated
 	private void addJarProperties(Properties prop) {
 		Properties oldProps = (Properties)prop.clone();
 		prop.setProperty("resource.loader", "jar");
@@ -74,6 +73,8 @@ public class VelocityEngine {
 		
 	}
 
+
+	
 	public String mergeTemplate() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 		init();

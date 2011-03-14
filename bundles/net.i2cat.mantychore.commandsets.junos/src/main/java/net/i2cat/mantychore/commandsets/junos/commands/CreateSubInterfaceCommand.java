@@ -6,6 +6,7 @@ public class CreateSubInterfaceCommand extends JunosCommand {
 
 	public static final String	CREATESUBINTERFACE	= "CreateSubinterface";
 
+	//FIXME TEST THIS TEMPLATE, IT HAS TO USED FOR CREATING OR SETTING INTERFACES
 	public static final String	TEMPLATE			= "/VM_files/replacesubinterface.vm";
 	// TODO must target be defined here??? or it is a configuration parameter.
 	private String				target				= "candidate";

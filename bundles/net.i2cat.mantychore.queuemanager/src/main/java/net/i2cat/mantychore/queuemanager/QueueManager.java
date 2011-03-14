@@ -30,35 +30,49 @@ public class QueueManager implements IQueueManagerService {
 
 	private BlockingQueue<ActionInQueue>	queue	= new LinkedBlockingQueue<ActionInQueue>();
 
-
 	public void empty() {
 		queue.clear();
 
 	}
 
-
-	public List<ActionResponse> execute() throws ProtocolException, CommandException {
+	/*
+	 * This execute uses two params: commit and rollback. These actions use THE SAME PROTOCOL SESSION CONTEXT. It will not be able to do a commit or rollback
+	 * with different  protocols
+	 */
+	public List<ActionResponse> execute(Action commit, Action rollback, ProtocolSessionContext protocolSessionContext) throws ProtocolException, CommandException {
 
 		List<ActionResponse> responses = new Vector<ActionResponse>();
 
-		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
+
 		for (ActionInQueue actionInQueue : queue) {
 
 			/* use pool for get protocol session */
 			log.info("getting protocol session...");
+			responses.add(executeActionWithProtocol(actionInQueue.getAction(),actionInQueue.getProtocolSessionContext(),actionInQueue.getParams()));
 
-			// TODO BUG, IT HAVE TO SPECIFY THE RESOURCE ID
-			String sessionId = protocolWrapper.createProtocolSession(resourceId, actionInQueue.getProtocolSessionContext());
-
-			IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
-
-			responses.add(actionInQueue.getAction().execute(protocol,actionInQueue.getParams()));
-
-			/* restore the connection */
-			protocolWrapper.releaseProtocolSession(sessionId);
 			queue.remove(actionInQueue);
 		}
+		
+		//FIXME It is necessary to send params in a commit
+		executeActionWithProtocol(commit,protocolSessionContext,null);
+		
 		return responses;
+
+	}
+	
+	public ActionResponse executeActionWithProtocol(Action action, ProtocolSessionContext protocolSessionContext, Object params) throws ProtocolException, CommandException  {
+		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
+		/* create a protocol session for resource id*/
+		String sessionId = protocolWrapper.createProtocolSession(resourceId, protocolSessionContext);
+
+		IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
+		ActionResponse response = action.execute(protocol,params);
+		
+		/* restore the connection */
+		protocolWrapper.releaseProtocolSession(sessionId);
+
+
+		return response;
 
 	}
 
@@ -75,7 +89,7 @@ public class QueueManager implements IQueueManagerService {
 		queue.add(actionInQueue);
 
 	}
-
+	
 	class ActionInQueue {
 		private Action					action;
 		private ProtocolSessionContext	protocolSessionContext;

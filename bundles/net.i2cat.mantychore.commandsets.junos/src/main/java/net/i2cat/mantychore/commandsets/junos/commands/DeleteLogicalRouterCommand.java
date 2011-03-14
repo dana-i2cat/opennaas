@@ -12,7 +12,7 @@ public class DeleteLogicalRouterCommand extends JunosCommand {
 	private String				testOption			= null;
 	private String				errorOption			= null;
 
-	protected DeleteLogicalRouterCommand() {
+	public DeleteLogicalRouterCommand() {
 		super(DELETELOGICALROUTER, TEMPLATE);
 		// TODO Auto-generated constructor stub
 	}

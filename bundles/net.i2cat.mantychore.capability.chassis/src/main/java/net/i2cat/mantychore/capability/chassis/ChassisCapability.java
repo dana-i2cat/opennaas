@@ -1,12 +1,12 @@
 package net.i2cat.mantychore.capability.chassis;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.mantychore.commons.IActionSetFactory;
-import net.i2cat.mantychore.actionsets.junos.JunosActionFactory;
+import net.i2cat.mantychore.actionsets.junos.BasicActionSetFactory;
+import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ICapability;
 import net.i2cat.mantychore.commons.Response;
@@ -26,7 +26,8 @@ public class ChassisCapability implements ICapability {
 	private String			resourceId	= "";
 	private QueueManagerWrapper queueManagerWrapper = new QueueManagerWrapper();
     private List<String> actionIds = new ArrayList<String>();
-    private HashMap<String,Action> availableActions = new HashMap<String,Action>();
+    private List<String> basicActionIds = new ArrayList<String>();
+    
 	private IQueueManagerService queueManager ;
 
 
@@ -46,15 +47,8 @@ public class ChassisCapability implements ICapability {
 	public void initialize () {
 		//FIXME GIX THIS NULL IF WE GET THE QUEUEMANAGER WITH OTHER OPERATION
 		if (queueManager==null)
-			queueManager = queueManagerWrapper.getQueueManager(resourceId);
-		//initialize actions
-		IActionSetFactory actionFactory = new JunosActionFactory();
-		for (String actionId: actionIds) { //FIXME, YOU ONLY NEED TO CREATE ACTION IN THE MOMENT WHERE YOU WILL NEED IT
-			availableActions.put(actionId,actionFactory.createAction(actionId));
-			
-		}
-		
-		
+			queueManager = queueManagerWrapper.getQueueManager(resourceId);		
+		//FIXME use actionWrapper for basic actions and chassis actions
 	}
 	
 	
@@ -66,9 +60,17 @@ public class ChassisCapability implements ICapability {
 			errorMsgs.add(ICapability.ERROR_CAPABILITY);
 			Response.errorResponse(idOperation,errorMsgs);
 		}
-
-		Action action = availableActions.get(idOperation);
+		
+		//FIXME IT HAS TO BE CALLED THROUGH OSGI SERVICE
+		IActionSetFactory actionFactory =  new ChassisActionSetFactory();
+		Action action = actionFactory.createAction(idOperation);
+		//IT IS HARDCODED!!
+		if (action==null) {
+			IActionSetFactory basicActionFactory =  new BasicActionSetFactory();
+			action = basicActionFactory.createAction(idOperation);
+		}
 		action.setModelToUpdate(model);
+
 		queueManager.queueAction(action,protocolSessionContext,params);
 		return Response.okResponse(idOperation);
 	}
