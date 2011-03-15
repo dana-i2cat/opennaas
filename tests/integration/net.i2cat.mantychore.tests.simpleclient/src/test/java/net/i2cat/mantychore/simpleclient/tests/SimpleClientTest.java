@@ -67,7 +67,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 					   IntegrationTestsHelper.getMantychoreTestOptions(),
 					   mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),					   
 					   mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-//					   ,vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
+					   ,vmOption( "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005" )
 					   
 		);
 	}
@@ -199,7 +199,6 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 }
 
 	private Action newActionCommit() {
-	// TODO Auto-generated method stub
 		return	basicActionFactory.createAction("commit");
 	 
 }
@@ -217,7 +216,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	private Object newParamsInterface() {
 		 EthernetPort eth = new EthernetPort();
-		 eth.setElementName("ge-0/1/0");
+		 eth.setElementName("fe-0/3/1");
 		 eth.setPortNumber(30);
 		 IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		 ip.setIPv4Address("193.1.24.88");

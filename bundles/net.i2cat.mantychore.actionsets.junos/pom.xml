@@ -74,7 +74,7 @@
 						-->
 						<!-- avoid importing our own package -->
 						<Import-Package>
-							!${pom.artifactId}.*,org.slf4j;version="1.5.6",*
+							!${pom.artifactId}.*;version="${pom.version}",org.slf4j;version="1.5.6",*
 						</Import-Package>	
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
 						<Export-Package>

@@ -19,7 +19,7 @@ public abstract class JunosCommand extends Command {
 
 	protected String	template	= "";
 
-	private Object		params;
+	
 
 	/** logger **/
 	Logger				log			= LoggerFactory.getLogger(JunosCommand.class);

@@ -30,6 +30,7 @@ import java.lang.Exception;
 public class LogicalDevice extends EnabledLogicalElement implements 
     Serializable {
 
+	//FIXME, IT HAS TO INCLUDE ASSOCIATION (COMPOSITION) TO SYSTEM
     /**
      * This constructor creates a LogicalDeviceBeanImpl Class which implements 
      * the LogicalDeviceBean Interface, and encapsulates the CIM class 

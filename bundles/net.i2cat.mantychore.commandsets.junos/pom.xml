@@ -116,8 +116,11 @@
 							!${pom.artifactId}.*,org.slf4j;version="1.5.6",*
 						</Import-Package>	
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
+						<!--  USE PARAMS -->
 						<Export-Package>
-							${pom.artifactId};version="${pom.version}"
+							${pom.artifactId};version="${pom.version}",
+							${pom.artifactId}.*;version="${pom.version}",
+							${pom.artifactId}.commands;version="${pom.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

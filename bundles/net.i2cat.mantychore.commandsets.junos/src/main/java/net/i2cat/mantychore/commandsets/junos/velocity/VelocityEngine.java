@@ -39,7 +39,7 @@ public class VelocityEngine {
 	private void init() throws Exception {
 		Properties prop = new Properties();
 		prop.load(getClass().getResourceAsStream(VELOCITY_PROPS));
-
+		addJarProperties(prop);
 		Velocity.init(prop);
 
 		ctx = new VelocityContext();
