@@ -11,6 +11,7 @@ import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.Command;
 import net.i2cat.mantychore.commons.CommandException;
+import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.commons.Response;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
@@ -102,7 +103,7 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 			Assert.fail("the queuemanager does not include any action");
 
 		try {
-			List<ActionResponse> responses = queueManager.execute();
+			List<ActionResponse> responses = queueManager.execute(newAction(),newAction(), newSessionContextNetconf());
 			for (ActionResponse actionResponse : responses) {
 				for (Response response : actionResponse.getResponses()) {
 					log.info("Response messages" + '\n');
@@ -180,5 +181,6 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 			return Response.okResponse(query.toXML());
 		}
 	}
+	
 
 }
