@@ -1,6 +1,5 @@
-package net.i2cat.mantychore.actionsets.junos.chassis;
+package net.i2cat.mantychore.actionsets.junos.actions;
 
-import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.commandsets.junos.commands.CreateSubInterfaceCommand;
 import net.i2cat.mantychore.commons.Action;
 
@@ -9,19 +8,17 @@ import org.slf4j.LoggerFactory;
 
 public class SetInterfaceAction extends Action {
 
-	public static final String	CREATESUBINTERFACE	= "CreateSubinterface";									// command to set an Interface
-	Logger						logger				= LoggerFactory.getLogger(GetConfigurationAction.class);
+	// public static final String CREATESUBINTERFACE = "CreateSubinterface"; // command to set an Interface
+	Logger	logger	= LoggerFactory.getLogger(GetConfigurationAction.class);
 
-	int							index				= 0;
+	int		index	= 0;
 
 	public SetInterfaceAction() {
 		initialize();
-
 	}
 
 	protected void initialize() {
 		commands.add(new CreateSubInterfaceCommand());
 	}
-
 
 }

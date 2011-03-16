@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GetConfigurationAction extends Action {
-	public static final String	GETCONFIG		= "getConfiguration";
-	Logger						logger			= LoggerFactory.getLogger(GetConfigurationAction.class);
-	int							index			= 0;
+	// public static final String GETCONFIG = "getConfiguration";
+	Logger	logger	= LoggerFactory.getLogger(GetConfigurationAction.class);
+	int		index	= 0;
 
 	public GetConfigurationAction() {
 		// super(GETCONFIG);
@@ -17,7 +17,7 @@ public class GetConfigurationAction extends Action {
 	}
 
 	protected void initialize() {
-		//FIXME IT IS NECESSARY TO PUT THE REFRESH NAME IN ANOTHER CLASS..
+		// FIXME IT IS NECESSARY TO PUT THE REFRESH NAME IN ANOTHER CLASS..
 		commands.add(new RefreshCommand());
 	}
 

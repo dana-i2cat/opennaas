@@ -2,11 +2,11 @@ package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.BasicActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
@@ -62,7 +62,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 						IntegrationTestsHelper.getMantychoreTestOptions(),
 						mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),
 						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-						//, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
 	}
@@ -97,10 +97,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 			log.info("Getting chassis capability...");
 
-			List<String> list = actionFactory.getActionNames();
-
-			list.addAll(basicActionFactory.getActionNames());
 			// FIXME ADD ALL ACTIONS AVALIABLE FOR ACTIONSET
+			List<String> list = actionFactory.getActionNames();
+			list.addAll(basicActionFactory.getActionNames());
 
 			chassisCapability = chassisFactory.createChassisCapability(list, newSessionContextNetconf(), deviceID);
 			// FIXME IT IS A PATCH TO GET THE QUEUE MANAGER SERVICE
@@ -124,7 +123,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		prepareChassisCapability();
 
 		// chassisCapability.initialize();
-		String actionId = ChassisActionSetFactory.SETINTERFACE;
+		String actionId = ActionConstants.SETINTERFACE;
 		ComputerSystem model = new ComputerSystem();
 		chassisCapability.setResource(model);
 
@@ -149,7 +148,9 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		// check if it is added
 		Assert.assertFalse(queueManager.getActions().size() != 0);
 
-		chassisCapability.sendMessage(ChassisActionSetFactory.GETCONFIG, null);
+		chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+
+		// chassisCapability.sendMessage(ChassisActionSetFactory.GETCONFIG, null);
 		// check if it is added
 		Assert.assertFalse(queueManager.getActions().size() != 1);
 
@@ -192,13 +193,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		// protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "ssh://i2cat:mant6WWe@lola.hea.net:22/netconf");
-
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		// ADDED
 		return protocolSessionContext;
-
 	}
 
 	private Object newParamsInterface() {

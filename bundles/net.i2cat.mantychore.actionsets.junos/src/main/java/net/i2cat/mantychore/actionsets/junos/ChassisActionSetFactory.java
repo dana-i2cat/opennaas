@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.KeepAliveAction;
-import net.i2cat.mantychore.actionsets.junos.chassis.SetInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceAction;
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.IActionSetFactory;
 
@@ -14,23 +14,23 @@ import org.slf4j.LoggerFactory;
 
 public class ChassisActionSetFactory implements IActionSetFactory {
 
-	public static final String	GETCONFIG		= "getConfiguration";
-	public static final String	KEEPALIVE		= "keepAlive";
-	public static final String	SETINTERFACE	= "setInterface";
+	// public static final String GETCONFIG = "getConfiguration";
+	// public static final String KEEPALIVE = "keepAlive";
+	// public static final String SETINTERFACE = "setInterface";
 
-	Logger						logger			= LoggerFactory.getLogger(ChassisActionSetFactory.class);
+	Logger	logger	= LoggerFactory.getLogger(ChassisActionSetFactory.class);
 
 	public Action createAction(String actionId) /* throws ActionException */{
 		logger.info("ACTIONSET - Action id to send: " + actionId);
 		// TODO add exceptions, not return null
-		if (actionId.equals(GETCONFIG)) {
+		if (actionId.equals(ActionConstants.GETCONFIG)) {
 			return new GetConfigurationAction();
 		} else
 
-		if (actionId.equals(KEEPALIVE)) {
+		if (actionId.equals(ActionConstants.KEEPALIVE)) {
 			return new KeepAliveAction();
 		}
-		if (actionId.equals(SETINTERFACE)) {
+		if (actionId.equals(ActionConstants.SETINTERFACE)) {
 			return new SetInterfaceAction();
 		} else {
 			return null;
@@ -42,9 +42,9 @@ public class ChassisActionSetFactory implements IActionSetFactory {
 
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
-		actionNames.add(GETCONFIG);
-		actionNames.add(KEEPALIVE);
-		actionNames.add(SETINTERFACE);
+		actionNames.add(ActionConstants.GETCONFIG);
+		actionNames.add(ActionConstants.KEEPALIVE);
+		actionNames.add(ActionConstants.SETINTERFACE);
 		return actionNames;
 	}
 
