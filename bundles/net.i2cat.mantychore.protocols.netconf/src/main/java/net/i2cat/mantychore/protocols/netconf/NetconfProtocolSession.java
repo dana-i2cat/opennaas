@@ -121,7 +121,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 		}
 		try {
 			netconfSession.disconnect();
-			status.equals(Status.DISCONNECTED_BY_USER);
+			status = Status.DISCONNECTED_BY_USER;
 		} catch (TransportException e) {
 			throw new ProtocolException(e);
 		}

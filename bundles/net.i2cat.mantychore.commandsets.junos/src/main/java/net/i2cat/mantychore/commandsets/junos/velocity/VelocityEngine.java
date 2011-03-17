@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.Properties;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -39,7 +42,8 @@ public class VelocityEngine {
 	private void init() throws Exception {
 		Properties prop = new Properties();
 		prop.load(getClass().getResourceAsStream(VELOCITY_PROPS));
-		addJarProperties(prop);
+		
+		
 		Velocity.init(prop);
 
 		ctx = new VelocityContext();
@@ -75,6 +79,7 @@ public class VelocityEngine {
 
 
 	
+	
 	public String mergeTemplate() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 		init();
@@ -93,18 +98,4 @@ public class VelocityEngine {
 		return writer.toString();
 	}
 
-
-//	public static String inputStreamAsString(InputStream stream)
-//	throws IOException {
-//	BufferedReader br = new BufferedReader(new InputStreamReader(stream));
-//	StringBuilder sb = new StringBuilder();
-//	String line = null;
-//
-//	while ((line = br.readLine()) != null) {
-//	sb.append(line + "\n");
-//	}
-//
-//	br.close();
-//	return sb.toString();
-//	}
 }

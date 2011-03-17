@@ -21,7 +21,6 @@ public class RefreshCommand extends JunosCommand {
 
 	// FIXME HOW WE SEND THE REFRESH COMMAND?
 	private String				source		= "running";
-	private String				filter		= null;
 	private String				attrFilter	= null;
 
 	/** logger **/
