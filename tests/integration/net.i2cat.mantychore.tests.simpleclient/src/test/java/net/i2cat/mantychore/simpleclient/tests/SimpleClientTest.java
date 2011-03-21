@@ -2,6 +2,10 @@ package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
+//import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +23,7 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
@@ -46,13 +51,18 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	String					deviceID			= "junos";
 	String					queueID				= "queue";
+	String					ethernetName		= "fe-0/3/2";
+	String					ipConfigured		= "192.168.33.2";
+	
+	
 	ProtocolSessionContext	protocolSessionContext;
 	ChassisCapability		chassisCapability;
 
 	IActionSetFactory		basicActionFactory	= new BasicActionSetFactory();
 
 	IActionSetFactory		actionFactory		= new ChassisActionSetFactory();
-
+	
+	
 	@Inject
 	BundleContext			bundleContext		= null;
 
@@ -62,12 +72,13 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 						IntegrationTestsHelper.getMantychoreTestOptions(),
 						mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),
 						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//		 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
 	}
 
 	/* initialize client */
+
 
 	private void prepareQueueManagerTest() {
 		try {
@@ -175,9 +186,21 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
 			EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 			log.info("ethernetPort name: " + ethernetPort.getElementName());
-		}
+			if (ethernetPort.getElementName().equals(ethernetName)) {
+				Assert.assertFalse(ethernetPort.getProtocolEndpoint()==null);
+				Assert.assertFalse(ethernetPort.getProtocolEndpoint().size()==0);			
+				for (ProtocolEndpoint endpoint: ethernetPort.getProtocolEndpoint()) {
+					if (endpoint instanceof IPProtocolEndpoint) {
+						log.info("IP: "+((IPProtocolEndpoint)endpoint).getIPv4Address());
+						Assert.assertTrue("IP is not configured", ((IPProtocolEndpoint) endpoint).getIPv4Address().equals(ipConfigured));						
+					}
+				}
+					
+			}
+			//ethernetPort.getProtocolEndpoint()
+	}
 
-		Assert.assertFalse(model.getLogicalDevices().size() == 0);
+		//Assert.assertFalse(model.getLogicalDevices().size() == 0);
 
 	}
 
@@ -194,6 +217,8 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
+
+
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		// ADDED
 		return protocolSessionContext;
@@ -201,10 +226,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	private Object newParamsInterface() {
 		EthernetPort eth = new EthernetPort();
-		eth.setElementName("fe-0/3/2");
+		eth.setElementName(ethernetName);
 		eth.setPortNumber(30);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address("192.168.33.2");
+		ip.setIPv4Address(ipConfigured);
 		ip.setSubnetMask("255.255.255.0");
 		eth.addProtocolEndpoint(ip);
 		ArrayList params = new ArrayList();
@@ -213,20 +238,20 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	}
 
-	private boolean checkPort(ComputerSystem model) {
-		if (model.getLogicalDevices() == null || model.getLogicalDevices().size() == 0)
-			return false;
-		EthernetPort ethernetPort = (EthernetPort) model.getLogicalDevices();
-		boolean resultEquals = ethernetPort.getElementName().equals("ge-0/1/0");
-		resultEquals = resultEquals && ethernetPort.getPortNumber() == 30;
-		if (ethernetPort.getProtocolEndpoint() == null || ethernetPort.getProtocolEndpoint().size() == 0)
-			return false;
-		IPProtocolEndpoint ip = (IPProtocolEndpoint) ethernetPort.getProtocolEndpoint().get(0);
-		resultEquals = resultEquals && ip.getIPv4Address().equals("193.1.24.88");
-		resultEquals = resultEquals && ip.getSubnetMask().equals("255.255.255.0");
-
-		return resultEquals;
-
-	}
+//	private boolean checkPort(ComputerSystem model) {
+//		if (model.getLogicalDevices() == null || model.getLogicalDevices().size() == 0)
+//			return false;
+//		EthernetPort ethernetPort = (EthernetPort) model.getLogicalDevices();
+//		boolean resultEquals = ethernetPort.getElementName().equals("ge-0/1/0");
+//		resultEquals = resultEquals && ethernetPort.getPortNumber() == 30;
+//		if (ethernetPort.getProtocolEndpoint() == null || ethernetPort.getProtocolEndpoint().size() == 0)
+//			return false;
+//		IPProtocolEndpoint ip = (IPProtocolEndpoint) ethernetPort.getProtocolEndpoint().get(0);
+//		resultEquals = resultEquals && ip.getIPv4Address().equals("193.1.24.88");
+//		resultEquals = resultEquals && ip.getSubnetMask().equals("255.255.255.0");
+//
+//		return resultEquals;
+//
+//	}
 
 }
