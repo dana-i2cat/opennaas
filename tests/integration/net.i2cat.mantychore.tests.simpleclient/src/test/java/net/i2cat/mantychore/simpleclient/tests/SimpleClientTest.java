@@ -2,20 +2,17 @@ package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
-//import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.*;
-
-
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.BasicActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.IChassisCapabilityFactory;
-import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.mantychore.commons.IActionSetFactory;
@@ -28,6 +25,8 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
@@ -53,74 +52,29 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	String					queueID				= "queue";
 	String					ethernetName		= "fe-0/3/2";
 	String					ipConfigured		= "192.168.33.2";
-	
-	
+
 	ProtocolSessionContext	protocolSessionContext;
 	ChassisCapability		chassisCapability;
 
 	IActionSetFactory		basicActionFactory	= new BasicActionSetFactory();
 
 	IActionSetFactory		actionFactory		= new ChassisActionSetFactory();
-	
-	
+
 	@Inject
 	BundleContext			bundleContext		= null;
 
 	@Configuration
 	public static Option[] configure() {
 		return combine(
-						IntegrationTestsHelper.getMantychoreTestOptions(),
-						mavenBundle().groupId("net.i2cat.mantychore.capability").artifactId("net.i2cat.mantychore.capability.chassis"),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-//		 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				IntegrationTestsHelper.getMantychoreTestOptions(),
+				mavenBundle().groupId("net.i2cat.mantychore.capability")
+						.artifactId("net.i2cat.mantychore.capability.chassis"),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.tests.helper")
+		// ,
+		// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
-	}
-
-	/* initialize client */
-
-
-	private void prepareQueueManagerTest() {
-		try {
-			log.info("Starting the test");
-
-			/* get queueManager as a service */
-			log.info("Getting queue manager factory...");
-			IQueueManagerFactory queueManagerFactory = getOsgiService(IQueueManagerFactory.class, 5000);
-			log.info("Getting queue manager...");
-			queueManager = queueManagerFactory.createQueueManager(deviceID);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		}
-	}
-
-	private void prepareChassisCapability() {
-		try {
-			log.info("Starting the test");
-
-			/* get queueManager as a service */
-			log.info("Getting chassis capability factory...");
-
-			IChassisCapabilityFactory chassisFactory = getOsgiService(IChassisCapabilityFactory.class, 5000);
-
-			log.info("Getting chassis capability...");
-
-			// FIXME ADD ALL ACTIONS AVALIABLE FOR ACTIONSET
-			List<String> list = actionFactory.getActionNames();
-			list.addAll(basicActionFactory.getActionNames());
-
-			chassisCapability = chassisFactory.createChassisCapability(list, newSessionContextNetconf(), deviceID);
-			// FIXME IT IS A PATCH TO GET THE QUEUE MANAGER SERVICE
-			chassisCapability.setQueueManager(queueManager);
-			chassisCapability.initialize();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		}
 	}
 
 	@Test
@@ -128,15 +82,65 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		/* initialize model */
+		MockResource mockResource = new MockResource();
+		mockResource.setResourceId(deviceID);
+		mockResource.setModel(new ComputerSystem());
 
-		prepareQueueManagerTest();
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put(ResourceDescriptorConstants.PROTOCOL,
+				"user:pass@host.net:2212");
+		resourceDescriptor.setProperties(properties);
+		mockResource.setResourceDescriptor(resourceDescriptor);
 
-		prepareChassisCapability();
+		/* initialize queue manager */
+		try {
+			log.info("Starting the test");
+
+			/* get queueManager as a service */
+			log.info("Getting queue manager factory...");
+			IQueueManagerFactory queueManagerFactory = getOsgiService(
+					IQueueManagerFactory.class, 5000);
+			log.info("Getting queue manager...");
+			// TODO create as a ICapability
+			queueManager = queueManagerFactory.createQueueManager(deviceID);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		}
+
+		/* initialize chassis capability */
+		try {
+			log.info("Starting the test");
+
+			/* get queueManager as a service */
+			log.info("Getting chassis capability factory...");
+
+			IChassisCapabilityFactory chassisFactory = getOsgiService(
+					IChassisCapabilityFactory.class, 5000);
+
+			log.info("Getting chassis capability...");
+
+			/* identify opers to can use */
+			List<String> list = actionFactory.getActionNames();
+			list.add(ActionConstants.GETCONFIG);
+			list.add(ActionConstants.SETINTERFACE);
+
+			chassisCapability = chassisFactory.createChassisCapability(list,
+					mockResource);
+
+			chassisCapability.initialize();
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			Assert.fail();
+		}
 
 		// chassisCapability.initialize();
 		String actionId = ActionConstants.SETINTERFACE;
-		ComputerSystem model = new ComputerSystem();
-		chassisCapability.setResource(model);
 
 		Object params = newParamsInterface();
 		chassisCapability.sendMessage(actionId, params);
@@ -145,7 +149,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		Assert.assertFalse(queueManager.getActions().size() != 1);
 
 		try {
-			List<ActionResponse> responses = queueManager.execute(newActionCommit(), newActionRollback(), newSessionContextNetconf());
+			List<ActionResponse> responses = queueManager.execute();
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -155,18 +159,18 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 			log.error(e.getMessage());
 			Assert.fail();
 		}
-
 		// check if it is added
 		Assert.assertFalse(queueManager.getActions().size() != 0);
 
 		chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
 
-		// chassisCapability.sendMessage(ChassisActionSetFactory.GETCONFIG, null);
+		// chassisCapability.sendMessage(ChassisActionSetFactory.GETCONFIG,
+		// null);
 		// check if it is added
 		Assert.assertFalse(queueManager.getActions().size() != 1);
 
 		try {
-			List<ActionResponse> responses = queueManager.execute(newActionCommit(), newActionRollback(), newSessionContextNetconf());
+			List<ActionResponse> responses = queueManager.execute();
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -182,44 +186,42 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		// We only can test it if we are working with real routers
 		// Assert.assertFalse(checkPort(model));
 
+		ComputerSystem model = (ComputerSystem) mockResource.getModel();
 		Assert.assertNotNull(model.getLogicalDevices());
 		for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
 			EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 			log.info("ethernetPort name: " + ethernetPort.getElementName());
 			if (ethernetPort.getElementName().equals(ethernetName)) {
-				Assert.assertFalse(ethernetPort.getProtocolEndpoint()==null);
-				Assert.assertFalse(ethernetPort.getProtocolEndpoint().size()==0);			
-				for (ProtocolEndpoint endpoint: ethernetPort.getProtocolEndpoint()) {
+				Assert.assertFalse(ethernetPort.getProtocolEndpoint() == null);
+				Assert.assertFalse(ethernetPort.getProtocolEndpoint().size() == 0);
+				for (ProtocolEndpoint endpoint : ethernetPort
+						.getProtocolEndpoint()) {
 					if (endpoint instanceof IPProtocolEndpoint) {
-						log.info("IP: "+((IPProtocolEndpoint)endpoint).getIPv4Address());
-						Assert.assertTrue("IP is not configured", ((IPProtocolEndpoint) endpoint).getIPv4Address().equals(ipConfigured));						
+						log.info("IP: "
+								+ ((IPProtocolEndpoint) endpoint)
+										.getIPv4Address());
+						Assert.assertTrue("IP is not configured",
+								((IPProtocolEndpoint) endpoint)
+										.getIPv4Address().equals(ipConfigured));
 					}
 				}
-					
+
 			}
-			//ethernetPort.getProtocolEndpoint()
-	}
+			// ethernetPort.getProtocolEndpoint()
+		}
 
-		//Assert.assertFalse(model.getLogicalDevices().size() == 0);
-
-	}
-
-	private Action newActionRollback() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private Action newActionCommit() {
-		return basicActionFactory.createAction("commit");
+		// Assert.assertFalse(model.getLogicalDevices().size() == 0);
 
 	}
 
 	private ProtocolSessionContext newSessionContextNetconf() {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@host.net:2212/mocksubsystem");
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI,
+				"mock://user:pass@host.net:2212/mocksubsystem");
 
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
 		// ADDED
 		return protocolSessionContext;
 	}
@@ -238,20 +240,24 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	}
 
-//	private boolean checkPort(ComputerSystem model) {
-//		if (model.getLogicalDevices() == null || model.getLogicalDevices().size() == 0)
-//			return false;
-//		EthernetPort ethernetPort = (EthernetPort) model.getLogicalDevices();
-//		boolean resultEquals = ethernetPort.getElementName().equals("ge-0/1/0");
-//		resultEquals = resultEquals && ethernetPort.getPortNumber() == 30;
-//		if (ethernetPort.getProtocolEndpoint() == null || ethernetPort.getProtocolEndpoint().size() == 0)
-//			return false;
-//		IPProtocolEndpoint ip = (IPProtocolEndpoint) ethernetPort.getProtocolEndpoint().get(0);
-//		resultEquals = resultEquals && ip.getIPv4Address().equals("193.1.24.88");
-//		resultEquals = resultEquals && ip.getSubnetMask().equals("255.255.255.0");
-//
-//		return resultEquals;
-//
-//	}
+	// private boolean checkPort(ComputerSystem model) {
+	// if (model.getLogicalDevices() == null || model.getLogicalDevices().size()
+	// == 0)
+	// return false;
+	// EthernetPort ethernetPort = (EthernetPort) model.getLogicalDevices();
+	// boolean resultEquals = ethernetPort.getElementName().equals("ge-0/1/0");
+	// resultEquals = resultEquals && ethernetPort.getPortNumber() == 30;
+	// if (ethernetPort.getProtocolEndpoint() == null ||
+	// ethernetPort.getProtocolEndpoint().size() == 0)
+	// return false;
+	// IPProtocolEndpoint ip = (IPProtocolEndpoint)
+	// ethernetPort.getProtocolEndpoint().get(0);
+	// resultEquals = resultEquals && ip.getIPv4Address().equals("193.1.24.88");
+	// resultEquals = resultEquals &&
+	// ip.getSubnetMask().equals("255.255.255.0");
+	//
+	// return resultEquals;
+	//
+	// }
 
 }

@@ -6,15 +6,15 @@ import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.CommandException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 public interface IQueueManagerService {
 
-	public List<ActionResponse> execute(Action commit, Action rollback, ProtocolSessionContext protocolSessionContext) throws ProtocolException, CommandException;
+	public List<ActionResponse> execute() throws ProtocolException,
+			CommandException;
 
 	public void empty();
 
-	public void queueAction(Action action, ProtocolSessionContext protocol, Object params);
+	public void queueAction(Action action, Object params);
 
 	public List<Action> getActions();
 

@@ -13,7 +13,6 @@ public class PersonalizeClassLoader extends ResourceLoader {
 		return 0;
 	}
 
-	@Override
 	public InputStream getResourceStream(String template)
 			throws ResourceNotFoundException {
 		return getClass().getResourceAsStream(template);

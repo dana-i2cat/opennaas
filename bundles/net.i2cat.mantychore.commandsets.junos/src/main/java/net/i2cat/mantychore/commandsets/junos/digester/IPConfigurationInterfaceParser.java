@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
+import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;

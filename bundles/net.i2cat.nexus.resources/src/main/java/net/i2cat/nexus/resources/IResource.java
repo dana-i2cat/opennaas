@@ -2,9 +2,10 @@ package net.i2cat.nexus.resources;
 
 import java.util.List;
 
+import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.Information;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 /**
  * The top level resource interface
@@ -13,7 +14,7 @@ import net.i2cat.nexus.resources.descriptor.Information;
  * 
  */
 public interface IResource extends ILifecycle {
-	
+
 	public IResourceIdentifier getResourceIdentifier();
 
 	public void setResourceIdentifier(IResourceIdentifier identifier);
@@ -73,8 +74,8 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Start the Resource. The resource must already be instantiated and in the
-	 * initialized state. This method will perform the necessary bootstrapping to
-	 * transistion from INITIALIZED to ACTIVE State
+	 * initialized state. This method will perform the necessary bootstrapping
+	 * to transistion from INITIALIZED to ACTIVE State
 	 */
 	public void start() throws ResourceException;
 
@@ -82,4 +83,8 @@ public interface IResource extends ILifecycle {
 	 * Stop the resource. This method will transition to the SHUTDOWN State
 	 */
 	public void stop() throws ResourceException;
+
+	public void setModel(ManagedElement model);
+
+	public ManagedElement getModel();
 }

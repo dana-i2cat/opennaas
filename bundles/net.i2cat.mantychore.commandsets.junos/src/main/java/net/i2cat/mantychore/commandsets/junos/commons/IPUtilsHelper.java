@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandsets.junos.digester;
+package net.i2cat.mantychore.commandsets.junos.commons;
 
 import java.util.regex.Pattern;
 

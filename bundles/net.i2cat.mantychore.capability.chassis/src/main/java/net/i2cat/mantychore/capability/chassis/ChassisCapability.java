@@ -1,102 +1,90 @@
 package net.i2cat.mantychore.capability.chassis;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import net.i2cat.mantychore.actionsets.junos.BasicActionSetFactory;
 import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
+import net.i2cat.mantychore.commons.AbstractMantychoreCapability;
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.ActionException;
+import net.i2cat.mantychore.commons.ErrorConstants;
 import net.i2cat.mantychore.commons.IActionSetFactory;
-import net.i2cat.mantychore.commons.ICapability;
 import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.IResource;
+import net.i2cat.nexus.resources.capability.CapabilityException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ChassisCapability implements ICapability {
+public class ChassisCapability extends AbstractMantychoreCapability {
 
-	public final static String		CHASSIS				= "chassis";
+	public final static String			CHASSIS				= "chassis";
 
-	Logger							log					= LoggerFactory
-																.getLogger(ChassisCapability.class);
+	Logger								log					= LoggerFactory
+																	.getLogger(ChassisCapability.class);
 
-	private String					resourceId			= "";
-	private QueueManagerWrapper		queueManagerWrapper	= new QueueManagerWrapper();
-	private List<String>			actionIds			= new ArrayList<String>();
-	private List<String>			basicActionIds		= new ArrayList<String>();
+	private final QueueManagerWrapper	queueManagerWrapper	= new QueueManagerWrapper();
+	// private final List<String> basicActionIds = new ArrayList<String>();
 
-	private IQueueManagerService	queueManager;
+	private IQueueManagerService		queueManager;
 
-	private Object					model;
-
-	private ProtocolSessionContext	protocolSessionContext;
-
-	public ChassisCapability(List<String> actionIds, ProtocolSessionContext protocolSessionContext,
-			String resourceId) {
-		this.protocolSessionContext = protocolSessionContext;
-		this.resourceId = resourceId;
-		this.actionIds = actionIds;
+	public ChassisCapability(List<String> actionIds, IResource resource) {
+		super(actionIds, resource);
 	}
 
-	public void initialize() {
-		// FIXME GIX THIS NULL IF WE GET THE QUEUEMANAGER WITH OTHER OPERATION
-		if (queueManager == null)
-			queueManager = queueManagerWrapper.getQueueManager(resourceId);
-		// FIXME use actionWrapper for basic actions and chassis actions
+	@Override
+	protected void initializeCapability() throws CapabilityException {
+		queueManager = queueManagerWrapper.getQueueManager(resource
+				.getResourceDescriptor().getId());
+
 	}
 
+	@Override
 	public Response sendMessage(String idOperation, Object params) {
 		// Check if it is an available operation
 		if (!actionIds.contains(idOperation)) {
 			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs.add(ICapability.ERROR_CAPABILITY);
+			errorMsgs.add(ErrorConstants.ERROR_CAPABILITY);
 			Response.errorResponse(idOperation, errorMsgs);
 		}
 
 		// FIXME IT HAS TO BE CALLED THROUGH OSGI SERVICE
+		// IS IT NECESSARY TO SPECIFY WITH CHASSIS CAPABILITY??
 		IActionSetFactory actionFactory = new ChassisActionSetFactory();
-		Action action = actionFactory.createAction(idOperation);
-		// IT IS HARDCODED!!
-		// FIXME
-		if (action == null) {
-			IActionSetFactory basicActionFactory = new BasicActionSetFactory();
-			action = basicActionFactory.createAction(idOperation);
+		Action action = null;
+		try {
+			action = actionFactory.createAction(idOperation);
+		} catch (ActionException e) {
+			Vector<String> errorMsgs = new Vector<String>();
+			errorMsgs
+					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
+			Response.errorResponse(idOperation, errorMsgs);
 		}
-		// Proposal
-		// Action action;
-		// IActionSetFactory actionFactory = new ChassisActionSetFactory();
-		// try{
-		// action = actionFactory.createAction(idOperation);
-		// }
-		// catch (Exception e) {
-		// IActionSetFactory basicActionFactory = new BasicActionSetFactory();
-		// action = basicActionFactory.createAction(idOperation);
-		// }
 
-		action.setModelToUpdate(model);
+		// FIXME how we can add the model in the action
+		action.setContextParams(resource.getResourceDescriptor()
+				.getProperties());
 
-		queueManager.queueAction(action, protocolSessionContext, params);
+		action.setModelToUpdate(resource.getModel());
+
+		queueManager.queueAction(action, params);
 		return Response.okResponse(idOperation);
 	}
 
-	public void setResource(Object model) {
-		this.model = model;
-	}
-
-	public Object getResource() {
-		return model;
-	}
-
-	public List<String> getIdMessages() {
-		return actionIds;
+	@Override
+	protected void activateCapability() throws CapabilityException {
 
 	}
 
-	public void setQueueManager(IQueueManagerService queueManager) {
-		this.queueManager = queueManager;
+	@Override
+	protected void deactivateCapability() throws CapabilityException {
+
+	}
+
+	@Override
+	protected void shutdownCapability() throws CapabilityException {
+
 	}
 
 }

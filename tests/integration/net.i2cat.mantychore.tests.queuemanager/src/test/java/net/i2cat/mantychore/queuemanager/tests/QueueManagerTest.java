@@ -156,28 +156,27 @@ public class QueueManagerTest extends AbstractIntegrationTest {
 	class MockCommand extends Command {
 		Query	query	= QueryFactory.newKeepAlive();
 
-		@Override
+
 		public void initialize() {
 			log.info("Initialization");
 
 		}
 
-		@Override
+
 		public Object message() {
 			log.info("sending a message");
 
 			return query;
 		}
 
-		@Override
+
 		public void parseResponse(Object arg0, Object arg1) {
 			log.info("It is parsed the message");
 
 		}
 
-		@Override
+
 		public Response checkResponse(Object arg0) {
-			// TODO Auto-generated method stub
 			return Response.okResponse(query.toXML());
 		}
 	}

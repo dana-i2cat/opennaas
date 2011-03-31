@@ -2,17 +2,13 @@ package net.i2cat.mantychore.capability.chassis;
 
 import java.util.List;
 
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
-
+import net.i2cat.nexus.resources.IResource;
 
 public class ChassisCapabilityFactory implements IChassisCapabilityFactory {
 
-	
-
-	public ChassisCapability createChassisCapability(List<String> actionIds, ProtocolSessionContext protocolSessionContext, String resourceId) {
-		// TODO Auto-generated method stub
-		return new ChassisCapability(actionIds,protocolSessionContext, resourceId);
+	public ChassisCapability createChassisCapability(List<String> actionIds,
+			IResource resource) {
+		return new ChassisCapability(actionIds, resource);
 	}
-
 
 }

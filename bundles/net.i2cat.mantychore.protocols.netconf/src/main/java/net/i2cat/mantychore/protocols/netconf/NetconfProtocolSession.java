@@ -5,11 +5,6 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.errors.NetconfProtocolException;
@@ -17,17 +12,22 @@ import net.i2cat.netconf.errors.TransportException;
 import net.i2cat.netconf.errors.TransportNotImplementedException;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NetconfProtocolSession implements IProtocolSession {
-	//
-	public static final String						PROTOCOL_URI			= "URI";
 
+	public static final String						PROTOCOL_URI			= "URI";
 	/** The logger **/
-	Logger											log						= LoggerFactory.getLogger(NetconfProtocolSession.class);
+	Logger											log						= LoggerFactory
+																					.getLogger(NetconfProtocolSession.class);
 
 	/**
 	 * Contains information about the protocol capability configuration:
@@ -41,7 +41,9 @@ public class NetconfProtocolSession implements IProtocolSession {
 	private Map<String, IProtocolSessionListener>	protocolListeners		= null;
 	private Map<String, IProtocolMessageFilter>		protocolMessageFilters	= null;
 
-	public NetconfProtocolSession(ProtocolSessionContext protocolSessionContext, String sessionID) throws ProtocolException {
+	public NetconfProtocolSession(
+			ProtocolSessionContext protocolSessionContext, String sessionID)
+			throws ProtocolException {
 
 		this.protocolListeners = new HashMap<String, IProtocolSessionListener>();
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
@@ -52,7 +54,8 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 		try {
 
-			String uri = (String) protocolSessionContext.getSessionParameters().get("protocol.uri");
+			String uri = (String) protocolSessionContext.getSessionParameters()
+					.get("protocol.uri");
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);
@@ -66,6 +69,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 		}
 	}
 
+	@Override
 	public void asyncSend(Object requestMessage) throws ProtocolException {
 		// Send a message to the device, and don't wait for the response
 		RPCElement rpcReply = null;
@@ -78,6 +82,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 	}
 
+	@Override
 	public Object sendReceive(Object requestMessage) throws ProtocolException {
 		// Send a message to the device, and wait for the response
 		RPCElement rpcReply = null;
@@ -90,10 +95,12 @@ public class NetconfProtocolSession implements IProtocolSession {
 		return rpcReply;
 	}
 
+	@Override
 	public void connect() throws ProtocolException {
 
 		if (status.equals(Status.CONNECTED)) {
-			throw new ProtocolException("Cannot connect because the session is already connected");
+			throw new ProtocolException(
+					"Cannot connect because the session is already connected");
 		}
 		// Start the receiver thread it will continuously get and parse the
 		// messages from the communication channel
@@ -103,21 +110,25 @@ public class NetconfProtocolSession implements IProtocolSession {
 			status = Status.CONNECTED;
 			// log.info("Status " + status.toString());
 		} catch (TransportException e) {
-			ProtocolException te = new ProtocolException("TransportException: " + e.getMessage());
+			ProtocolException te = new ProtocolException("TransportException: "
+					+ e.getMessage());
 			te.initCause(e);
 			throw te;
 		} catch (NetconfProtocolException e) {
-			ProtocolException te = new ProtocolException("NetconfProtocolException: " + e.getMessage());
+			ProtocolException te = new ProtocolException(
+					"NetconfProtocolException: " + e.getMessage());
 			te.initCause(e);
 			throw te;
 		}
 	}
 
-
+	@Override
 	public void disconnect() throws ProtocolException {
 
 		if (!status.equals(Status.CONNECTED)) {
-			throw new ProtocolException("Cannot disconnect because the session is already disconnected. Current state: " + status);
+			throw new ProtocolException(
+					"Cannot disconnect because the session is already disconnected. Current state: "
+							+ status);
 		}
 		try {
 			netconfSession.disconnect();
@@ -128,32 +139,35 @@ public class NetconfProtocolSession implements IProtocolSession {
 		log.info("Protocol session stopped");
 	}
 
+	@Override
 	public ProtocolSessionContext getSessionContext() {
 
 		return protocolSessionContext;
 	}
 
-
+	@Override
 	public String getSessionID() {
 		return sessionID;
 	}
 
-
+	@Override
 	public Status getStatus() {
 
 		return status;
 	}
 
-
-	public void registerProtocolSessionListener(IProtocolSessionListener protocolSessionListener, IProtocolMessageFilter protocolMessageFilter,
-			String idListener) {
+	@Override
+	public void registerProtocolSessionListener(
+			IProtocolSessionListener protocolSessionListener,
+			IProtocolMessageFilter protocolMessageFilter, String idListener) {
 		protocolMessageFilters.put(idListener, protocolMessageFilter);
 		protocolListeners.put(idListener, protocolSessionListener);
 
 	}
 
-
-	public void unregisterProtocolSessionListener(IProtocolSessionListener protocolSessionListener, String idListener) {
+	@Override
+	public void unregisterProtocolSessionListener(
+			IProtocolSessionListener protocolSessionListener, String idListener) {
 		protocolMessageFilters.remove(idListener);
 		protocolListeners.remove(idListener);
 

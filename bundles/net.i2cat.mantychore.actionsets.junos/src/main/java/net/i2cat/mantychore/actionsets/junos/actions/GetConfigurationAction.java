@@ -7,12 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GetConfigurationAction extends Action {
-	// public static final String GETCONFIG = "getConfiguration";
 	Logger	logger	= LoggerFactory.getLogger(GetConfigurationAction.class);
 	int		index	= 0;
 
 	public GetConfigurationAction() {
-		// super(GETCONFIG);
 		initialize();
 	}
 

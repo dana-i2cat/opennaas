@@ -19,27 +19,29 @@ public abstract class JunosCommand extends Command {
 
 	protected String	template	= "";
 
-	
-
 	/** logger **/
-	Logger				log			= LoggerFactory.getLogger(JunosCommand.class);
+	Logger				log			= LoggerFactory
+											.getLogger(JunosCommand.class);
 	protected Query		query;
 	protected String	netconfXML;
+	VelocityEngine		velocityEngine;
 
 	protected JunosCommand(String commandID, String template) {
 		this.setCommandId(commandID);
 		this.template = template;
+		velocityEngine = new VelocityEngine();
 	}
-	
+
 	protected JunosCommand(String commandID) {
 		this.setCommandId(commandID);
 	}
-	
-	public void initialize() throws CommandException {
 
+	@Override
+	public void initialize() throws CommandException {
 		try {
-			//finish initialize if it does not exist template
-			if (template==null || template.equals("")) return;
+			// finish initialize if it does not exist template
+			if (template == null || template.equals(""))
+				return;
 			netconfXML = prepareVelocityCommand();
 		} catch (ResourceNotFoundException e) {
 			e.printStackTrace();
@@ -61,25 +63,36 @@ public abstract class JunosCommand extends Command {
 
 	protected String prepareVelocityCommand() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
-		VelocityEngine velocityEngine = new VelocityEngine(template, params);
+
+		velocityEngine.setParam(params);
+		velocityEngine.setTemplate(template);
 		String command = velocityEngine.mergeTemplate();
 		log.debug("Command from velocity (netconfXML)" + command);
 		return command;
 	}
 
+	/*
+	 * Added if it is necessary to put extra params in a template
+	 */
+	protected void addExtraParams(String name, Object newParam) {
+		velocityEngine.addExtraParam(name, newParam);
+	}
+
+	@Override
 	public Response checkResponse(Object resp) {
 
-		//Check if is it a wellformed reply message
+		// Check if is it a wellformed reply message
 		if (!(resp instanceof Reply)) {
 			Vector<String> errors = new Vector<String>();
 			errors.add("The response message is badformed. It is not a reply message");
-			return Response.errorResponse(query.toXML(), errors );			
+			return Response.errorResponse(query.toXML(), errors);
 		}
-		
+
 		Reply reply = (Reply) resp;
 
 		// extra control, it checks if is not null the error list
-		if (reply.isOk() || reply.getErrors() == null || reply.getErrors().size() == 0) {
+		if (reply.isOk() || reply.getErrors() == null
+				|| reply.getErrors().size() == 0) {
 			// BUILD OK RESPONSE
 
 			return Response.okResponse(query.toXML());
@@ -94,15 +107,18 @@ public abstract class JunosCommand extends Command {
 		}
 
 	}
-	public abstract Object sendQuery();
-	
-	public Object message () {
-		query = (Query)sendQuery();
-		return query;
-		
+
+	public void setTemplate(String template) {
+		this.template = template;
 	}
-	
-	
-	
+
+	public abstract Object sendQuery();
+
+	@Override
+	public Object message() {
+		query = (Query) sendQuery();
+		return query;
+
+	}
 
 }

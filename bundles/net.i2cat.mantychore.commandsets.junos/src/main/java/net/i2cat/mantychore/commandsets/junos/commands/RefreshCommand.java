@@ -19,7 +19,11 @@ public class RefreshCommand extends JunosCommand {
 	public static final String	REFRESH		= "refresh";
 	public static final String	TEMPLATE	= "/VM_files/getconfiguration.vm";
 
-	// FIXME HOW WE SEND THE REFRESH COMMAND?
+	/*
+	 * TODO The refresh command uses candidate attribute. It will get the working configuration.... 
+	 * How a features this param can be configurable. Furthermore, it would be interesting to can configure filter and source params.
+	 */
+	
 	private String				source		= "running";
 	private String				attrFilter	= null;
 
@@ -32,7 +36,6 @@ public class RefreshCommand extends JunosCommand {
 
 	@Override
 	public Object sendQuery() {
-		// TODO Auto-generated method stub
 		return QueryFactory.newGetConfig(source, netconfXML, attrFilter);
 
 	}
@@ -50,11 +53,6 @@ public class RefreshCommand extends JunosCommand {
 			/* getting interface information */
 			Reply rpcReply = (Reply) response;
 			String message = rpcReply.getContain();
-
-			FileWriter file = new FileWriter("./response_command.txt");
-			file.write(message);
-			file.flush();
-			file.close();
 
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 

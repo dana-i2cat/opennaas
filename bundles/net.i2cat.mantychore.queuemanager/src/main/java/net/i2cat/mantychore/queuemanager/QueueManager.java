@@ -9,18 +9,16 @@ import java.util.concurrent.LinkedBlockingQueue;
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.CommandException;
-import net.i2cat.mantychore.commons.ICapability;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.mantychore.queuemanager.wrappers.ProtocolNetconfWrapper;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class QueueManager implements IQueueManagerService {
 
-	Logger			log			= LoggerFactory
-										.getLogger(QueueManager.class);
+	Logger			log			= LoggerFactory.getLogger(QueueManager.class);
 
 	private String	resourceId	= "";
 
@@ -28,7 +26,7 @@ public class QueueManager implements IQueueManagerService {
 		this.resourceId = resourceId;
 	}
 
-	private BlockingQueue<ActionInQueue>	queue	= new LinkedBlockingQueue<ActionInQueue>();
+	private final BlockingQueue<ActionInQueue>	queue	= new LinkedBlockingQueue<ActionInQueue>();
 
 	public void empty() {
 		queue.clear();
@@ -36,41 +34,48 @@ public class QueueManager implements IQueueManagerService {
 	}
 
 	/*
-	 * This execute uses two params: commit and rollback. These actions use THE SAME PROTOCOL SESSION CONTEXT. It will not be able to do a commit or rollback
-	 * with different  protocols
+	 * This execute uses two params: commit and rollback. These actions use THE
+	 * SAME PROTOCOL SESSION CONTEXT. It will not be able to do a commit or
+	 * rollback with different protocols
 	 */
-	public List<ActionResponse> execute(Action commit, Action rollback, ProtocolSessionContext protocolSessionContext) throws ProtocolException, CommandException {
+	public List<ActionResponse> execute() throws ProtocolException,
+			CommandException {
 
 		List<ActionResponse> responses = new Vector<ActionResponse>();
-
 
 		for (ActionInQueue actionInQueue : queue) {
 
 			/* use pool for get protocol session */
 			log.info("getting protocol session...");
-			responses.add(executeActionWithProtocol(actionInQueue.getAction(),actionInQueue.getProtocolSessionContext(),actionInQueue.getParams()));
+			responses.add(executeActionWithProtocol(actionInQueue.getAction(),
+					actionInQueue.getParams()));
 
 			queue.remove(actionInQueue);
 		}
-		
-		//FIXME It is necessary to send params in a commit
-		executeActionWithProtocol(commit,protocolSessionContext,null);
-		
+
+		// Get commit action
+		Action commit = getCommit();
+		// FIXME It is necessary to send params in a commit
+		executeActionWithProtocol(getCommit(), null);
+
 		return responses;
 
 	}
-	
-	public ActionResponse executeActionWithProtocol(Action action, ProtocolSessionContext protocolSessionContext, Object params) throws ProtocolException, CommandException  {
+
+	private Action getCommit() {
+		// TODO
+		return null;
+	}
+
+	public ActionResponse executeActionWithProtocol(Action action, Object params)
+			throws ProtocolException, CommandException {
 		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
-		/* create a protocol session for resource id*/
-		String sessionId = protocolWrapper.createProtocolSession(resourceId, protocolSessionContext);
 
-		IProtocolSession protocol = protocolWrapper.getProtocolSession(sessionId);
-		ActionResponse response = action.execute(protocol,params);
-		
-		/* restore the connection */
-		protocolWrapper.releaseProtocolSession(sessionId);
+		IProtocolSessionManager protocolSessionManager = protocolWrapper
+				.getProtocolSessionManager(resourceId);
 
+		ActionResponse response = action.execute(Activator.getContext(),
+				protocolSessionManager, params);
 
 		return response;
 
@@ -84,21 +89,18 @@ public class QueueManager implements IQueueManagerService {
 		return actions;
 	}
 
-	public void queueAction(Action action, ProtocolSessionContext protocolSessionContext, Object params) {
-		ActionInQueue actionInQueue = new ActionInQueue(action, protocolSessionContext,params);
+	public void queueAction(Action action, Object params) {
+		ActionInQueue actionInQueue = new ActionInQueue(action, params);
 		queue.add(actionInQueue);
 
 	}
-	
+
 	class ActionInQueue {
-		private Action					action;
-		private ProtocolSessionContext	protocolSessionContext;
-		private Object					params;
+		private final Action	action;
+		private final Object	params;
 
-
-		public ActionInQueue(Action action, ProtocolSessionContext protocolSessionContext, Object params) {
+		public ActionInQueue(Action action, Object params) {
 			this.action = action;
-			this.protocolSessionContext = protocolSessionContext;
 			this.params = params;
 		}
 
@@ -106,15 +108,9 @@ public class QueueManager implements IQueueManagerService {
 			return action;
 		}
 
-		public ProtocolSessionContext getProtocolSessionContext() {
-			return protocolSessionContext;
-		}
-		
-
 		public Object getParams() {
 			return params;
 		}
 	}
-
 
 }

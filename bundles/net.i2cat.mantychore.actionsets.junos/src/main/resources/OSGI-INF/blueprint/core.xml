@@ -12,7 +12,8 @@
 		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos" />
 			<entry key="actionset.capability" value="chassis" /> 
-			<entry key="actionset.version" value="1.0.0" />
+			<entry key="actionset.protocol" value="netconf" />			
+			<entry key="actionset.version" value="10.10" />
 		</service-properties>
 	</service>
 	
@@ -27,7 +28,8 @@
 		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos" />
 			<entry key="actionset.capability" value="basic" /> 
-			<entry key="actionset.version" value="1.0.0" />
+			<entry key="actionset.protocol" value="netconf" />			
+			<entry key="actionset.version" value="10.10" />
 		</service-properties>
 	</service>
 	

@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.nexus.resources.capability.ICapability;
+import net.i2cat.nexus.resources.descriptor.Information;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.Information;
 
 /**
  * Main resource class
@@ -20,22 +21,25 @@ import net.i2cat.nexus.resources.descriptor.Information;
 public class Resource implements IResource {
 
 	/** The logger **/
-	Logger logger = LoggerFactory.getLogger(Resource.class);
+	Logger							logger				= LoggerFactory
+																.getLogger(Resource.class);
 
 	/** The resource identifier **/
-	private IResourceIdentifier resourceIdentifier = null;
+	private IResourceIdentifier		resourceIdentifier	= null;
 
 	/** The resource current state **/
-	private State state = null;
+	private State					state				= null;
 
 	/** The resource descriptor **/
-	private ResourceDescriptor resourceDescriptor = null;
+	private ResourceDescriptor		resourceDescriptor	= null;
 
 	/** The resource capabilities **/
-	private List<ICapability> capabilities = null;
+	private List<ICapability>		capabilities		= null;
 
 	/** The resource specific bootstapper class */
-	private IResourceBootstrapper bootstrapper = null;
+	private IResourceBootstrapper	bootstrapper		= null;
+
+	private ManagedElement			model;
 
 	public Resource() {
 		capabilities = new ArrayList<ICapability>();
@@ -55,7 +59,8 @@ public class Resource implements IResource {
 	}
 
 	public void initialize() throws ResourceException {
-		if (getState().equals(State.INSTANTIATED) || getState().equals(State.SHUTDOWN)){
+		if (getState().equals(State.INSTANTIATED)
+				|| getState().equals(State.SHUTDOWN)) {
 			for (int i = 0; i < capabilities.size(); i++) {
 				capabilities.get(i).initialize();
 			}
@@ -64,7 +69,8 @@ public class Resource implements IResource {
 	}
 
 	public void activate() throws ResourceException {
-		if (getState().equals(State.INITIALIZED) || getState().equals(State.INACTIVE)){
+		if (getState().equals(State.INITIALIZED)
+				|| getState().equals(State.INACTIVE)) {
 			for (int i = 0; i < capabilities.size(); i++) {
 				capabilities.get(i).activate();
 			}
@@ -76,7 +82,7 @@ public class Resource implements IResource {
 	}
 
 	public void deactivate() throws ResourceException {
-		if (getState().equals(State.ACTIVE)){
+		if (getState().equals(State.ACTIVE)) {
 			for (int i = 0; i < capabilities.size(); i++) {
 				capabilities.get(i).deactivate();
 			}
@@ -85,7 +91,7 @@ public class Resource implements IResource {
 	}
 
 	public void shutdown() throws ResourceException {
-		if (getState().equals(State.INACTIVE)){
+		if (getState().equals(State.INACTIVE)) {
 			for (int i = 0; i < capabilities.size(); i++) {
 				capabilities.get(i).shutdown();
 			}
@@ -135,16 +141,19 @@ public class Resource implements IResource {
 	}
 
 	public void start() throws ResourceException {
-		logger.info("Resource is in "+ this.getState()+" state. Trying to start it");
-		if (getState().equals(State.INSTANTIATED) || getState().equals(State.SHUTDOWN)){
+		logger.info("Resource is in " + this.getState()
+				+ " state. Trying to start it");
+		if (getState().equals(State.INSTANTIATED)
+				|| getState().equals(State.SHUTDOWN)) {
 			initialize();
 			activate();
 		}
 	}
 
 	public void stop() throws ResourceException {
-		logger.info("Resource is in "+ this.getState()+" state. Trying to stop it");
-		if (getState().equals(State.ACTIVE)){
+		logger.info("Resource is in " + this.getState()
+				+ " state. Trying to stop it");
+		if (getState().equals(State.ACTIVE)) {
 			deactivate();
 			shutdown();
 		}
@@ -163,5 +172,20 @@ public class Resource implements IResource {
 	 */
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
+	}
+
+	/**
+	 * @param model
+	 *            the model to set
+	 */
+	public void setModel(ManagedElement model) {
+		this.model = model;
+	}
+
+	/**
+	 * @return the model
+	 */
+	public ManagedElement getModel() {
+		return model;
 	}
 }
