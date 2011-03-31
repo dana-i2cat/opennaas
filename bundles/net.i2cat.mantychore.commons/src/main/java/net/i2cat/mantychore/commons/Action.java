@@ -24,23 +24,12 @@ public class Action {
 	protected List<Command>			commands	= new ArrayList<Command>();
 	private Object					modelToUpdate;
 
-	private String					protocolId;
-	private BundleContext			bundleContext;
-	private IProtocolSessionManager	protocolSessionManager;
 	private CapabilityDescriptor	descriptor;
+	private Object					params;
 
-	public Action newActionWithContext(BundleContext bundleContext,
-			IProtocolSessionManager protocolSessionManager,
-			CapabilityDescriptor descriptor) {
-		Action action = new Action();
-		action.bundleContext = bundleContext;
-		action.protocolSessionManager = protocolSessionManager;
-		action.descriptor = descriptor;
-		return action;
-	}
-
-	public ActionResponse execute(Object params) throws ProtocolException,
-			CommandException {
+	public ActionResponse execute(BundleContext bundleContext,
+			IProtocolSessionManager protocolSessionManager)
+			throws ActionException {
 
 		ActionResponse actionResponse = new ActionResponse();
 
@@ -51,17 +40,18 @@ public class Action {
 		ProtocolNetconfWrapper protocolWrapper = ProtocolNetconfWrapper
 				.newActionWrapper(bundleContext, protocolSessionManager);
 
-		IProtocolSession protocol = protocolWrapper
-				.getProtocolSession(protocolSessionContext);
+		try {
+			IProtocolSession protocol = protocolWrapper
+					.getProtocolSession(protocolSessionContext);
 
-		for (Command command : commands) {
+			for (Command command : commands) {
 
-			// protocolSessionManager.getProtocolSession(arg0, arg1);
+				// protocolSessionManager.getProtocolSession(arg0, arg1);
 
-			log.info("initializing");
-			command.setParams(params);
-			command.initialize();
-			try {
+				log.info("initializing");
+				command.setParams(params);
+				command.initialize();
+
 				log.info("sending...");
 
 				Response response = sendCommandToProtocol(command, protocol);
@@ -73,19 +63,22 @@ public class Action {
 					break;
 				}
 
-			} catch (ProtocolException e) {
-				e.printStackTrace();
-				log.error(e.getMessage());
-				throw e;
-
-			} catch (CommandException e) {
-				e.printStackTrace();
-				log.error(e.getMessage());
-				throw e;
 			}
-		}
 
-		protocolWrapper.releaseProtocolSession();
+			protocolWrapper.releaseProtocolSession();
+
+		} catch (ProtocolException e) {
+			ActionException actionException = new ActionException(
+					e.getMessage());
+			actionException.initCause(e);
+			throw actionException;
+
+		} catch (CommandException e) {
+			ActionException actionException = new ActionException(
+					e.getMessage());
+			actionException.initCause(e);
+			throw actionException;
+		}
 
 		return actionResponse;
 
@@ -93,7 +86,9 @@ public class Action {
 
 	private ProtocolSessionContext getSessionContext() {
 		String protocolURI = descriptor
-				.getPropertyValue(ResourceDescriptorConstants.PROTOCOL);
+				.getPropertyValue(ResourceDescriptorConstants.PROTOCOL_URI);
+		String protocolId = descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
 
 		// merge user and password with protocol
 		// TODO IT IS HARDCODED THE TRANSPORT!!! IF WILL USE OTHER TRANSPORT IT
@@ -120,14 +115,6 @@ public class Action {
 		return response;
 	}
 
-	public String getProtocolId() {
-		return protocolId;
-	}
-
-	public void setProtocolId(String protocolId) {
-		this.protocolId = protocolId;
-	}
-
 	public List<Command> getCommands() {
 		return commands;
 	}
@@ -144,6 +131,22 @@ public class Action {
 
 	public void setModelToUpdate(Object modelToUpdate) {
 		this.modelToUpdate = modelToUpdate;
+	}
+
+	public CapabilityDescriptor getDescriptor() {
+		return descriptor;
+	}
+
+	public void setDescriptor(CapabilityDescriptor descriptor) {
+		this.descriptor = descriptor;
+	}
+
+	public Object getParams() {
+		return params;
+	}
+
+	public void setParams(Object params) {
+		this.params = params;
 	}
 
 }

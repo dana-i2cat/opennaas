@@ -1,42 +1,42 @@
 package net.i2cat.mantychore.capability.chassis;
 
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
-import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
 import net.i2cat.mantychore.commons.AbstractMantychoreCapability;
 import net.i2cat.mantychore.commons.Action;
-import net.i2cat.mantychore.commons.ActionException;
 import net.i2cat.mantychore.commons.ErrorConstants;
 import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.capability.CapabilityException;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ChassisCapability extends AbstractMantychoreCapability {
 
-	public final static String			CHASSIS				= "chassis";
+	public final static String		CHASSIS	= "chassis";
 
-	Logger								log					= LoggerFactory
-																	.getLogger(ChassisCapability.class);
+	Logger							log		= LoggerFactory
+													.getLogger(ChassisCapability.class);
 
-	private final QueueManagerWrapper	queueManagerWrapper	= new QueueManagerWrapper();
 	// private final List<String> basicActionIds = new ArrayList<String>();
 
-	private IQueueManagerService		queueManager;
+	// TODO HOW WE CAN PASS THE QUEUEMANAGER
+	private IQueueManagerService	queueManager;
 
 	public ChassisCapability(List<String> actionIds, IResource resource) {
-		super(actionIds, resource);
+		super(actionIds, resource, resource.getResourceDescriptor()
+				.getCapabilityDescriptor(CHASSIS));
 	}
 
 	@Override
 	protected void initializeCapability() throws CapabilityException {
-		queueManager = queueManagerWrapper.getQueueManager(resource
-				.getResourceDescriptor().getId());
 
 	}
 
@@ -46,30 +46,63 @@ public class ChassisCapability extends AbstractMantychoreCapability {
 		if (!actionIds.contains(idOperation)) {
 			Vector<String> errorMsgs = new Vector<String>();
 			errorMsgs.add(ErrorConstants.ERROR_CAPABILITY);
-			Response.errorResponse(idOperation, errorMsgs);
+			return Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		// FIXME IT HAS TO BE CALLED THROUGH OSGI SERVICE
-		// IS IT NECESSARY TO SPECIFY WITH CHASSIS CAPABILITY??
-		IActionSetFactory actionFactory = new ChassisActionSetFactory();
 		Action action = null;
 		try {
+			IActionSetFactory actionFactory = (IActionSetFactory) getCapability(
+					IActionSetFactory.class, Activator.getContext(),
+					createFilterProperties(descriptor));
 			action = actionFactory.createAction(idOperation);
-		} catch (ActionException e) {
+
+			action.setParams(params);
+			action.setDescriptor(descriptor);
+			action.setModelToUpdate(resource.getModel());
+
+			queueManager.queueAction(action);
+
+		} catch (Exception e) {
 			Vector<String> errorMsgs = new Vector<String>();
 			errorMsgs
 					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			Response.errorResponse(idOperation, errorMsgs);
+			return Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		// FIXME how we can add the model in the action
-		action.setContextParams(resource.getResourceDescriptor()
-				.getProperties());
-
-		action.setModelToUpdate(resource.getModel());
-
-		queueManager.queueAction(action, params);
 		return Response.okResponse(idOperation);
+	}
+
+	/*
+	 * necessary to get some capability type
+	 */
+
+	protected Properties createFilterProperties(
+			CapabilityDescriptor capabilityDescriptor) {
+		Properties properties = new Properties();
+		properties
+				.put(ResourceDescriptorConstants.ACTION_NAME,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME));
+
+		properties
+				.put(ResourceDescriptorConstants.ACTION_VERSION,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION));
+
+		properties
+				.put(ResourceDescriptorConstants.ACTION_PROTOCOL,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL));
+
+		return properties;
+	}
+
+	public IQueueManagerService getQueueManager() {
+		return queueManager;
+	}
+
+	public void setQueueManager(IQueueManagerService queueManager) {
+		this.queueManager = queueManager;
 	}
 
 	@Override

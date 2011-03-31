@@ -2,80 +2,117 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.commons.AbstractMantychoreCapability;
 import net.i2cat.mantychore.commons.Action;
+import net.i2cat.mantychore.commons.ActionException;
 import net.i2cat.mantychore.commons.ActionResponse;
-import net.i2cat.mantychore.commons.CommandException;
+import net.i2cat.mantychore.commons.ErrorConstants;
+import net.i2cat.mantychore.commons.IActionSetFactory;
+import net.i2cat.mantychore.commons.Response;
 import net.i2cat.mantychore.queuemanager.wrappers.ProtocolNetconfWrapper;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.resources.IResource;
+import net.i2cat.nexus.resources.capability.CapabilityException;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class QueueManager implements IQueueManagerService {
+public class QueueManager extends AbstractMantychoreCapability implements
+		IQueueManagerService {
 
-	Logger			log			= LoggerFactory.getLogger(QueueManager.class);
+	public final static String	QUEUE		= "queue";
 
-	private String	resourceId	= "";
+	Logger						log			= LoggerFactory
+													.getLogger(QueueManager.class);
 
-	public QueueManager(String resourceId) {
-		this.resourceId = resourceId;
+	private final String		resourceId	= "";
+
+	public QueueManager(List<String> actionIds, IResource resource) {
+		super(actionIds, resource, resource.getResourceDescriptor()
+				.getCapabilityDescriptor(QUEUE));
 	}
 
-	private final BlockingQueue<ActionInQueue>	queue	= new LinkedBlockingQueue<ActionInQueue>();
+	private final BlockingQueue<Action>	queue	= new LinkedBlockingQueue<Action>();
 
 	public void empty() {
 		queue.clear();
 
 	}
 
-	/*
-	 * This execute uses two params: commit and rollback. These actions use THE
-	 * SAME PROTOCOL SESSION CONTEXT. It will not be able to do a commit or
-	 * rollback with different protocols
-	 */
 	public List<ActionResponse> execute() throws ProtocolException,
-			CommandException {
+			CapabilityException, ActionException {
 
 		List<ActionResponse> responses = new Vector<ActionResponse>();
 
-		for (ActionInQueue actionInQueue : queue) {
+		for (Action action : queue) {
 
 			/* use pool for get protocol session */
 			log.info("getting protocol session...");
-			responses.add(executeActionWithProtocol(actionInQueue.getAction(),
-					actionInQueue.getParams()));
+			responses.add(executeActionWithProtocol(action));
 
-			queue.remove(actionInQueue);
+			queue.remove(action);
 		}
 
-		// Get commit action
-		Action commit = getCommit();
-		// FIXME It is necessary to send params in a commit
-		executeActionWithProtocol(getCommit(), null);
+		// TODO TO IMPLEMENT ROLLBACK A A BETTER EXCEPTION CONTROL
+		executeActionWithProtocol(getCommit());
 
 		return responses;
 
 	}
 
-	private Action getCommit() {
-		// TODO
-		return null;
+	private Action getCommit() throws CapabilityException, ActionException {
+
+		IActionSetFactory actionFactory = (IActionSetFactory) getCapability(
+				IActionSetFactory.class, Activator.getContext(),
+				createFilterProperties(descriptor));
+		Action action = actionFactory.createAction(ActionConstants.COMMIT);
+		action.setDescriptor(descriptor);
+
+		return action;
 	}
 
-	public ActionResponse executeActionWithProtocol(Action action, Object params)
-			throws ProtocolException, CommandException {
+	/*
+	 * necessary to get some capability type
+	 */
+	protected Properties createFilterProperties(
+			CapabilityDescriptor capabilityDescriptor) {
+		Properties properties = new Properties();
+		properties
+				.put(ResourceDescriptorConstants.ACTION_NAME,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME));
+
+		properties
+				.put(ResourceDescriptorConstants.ACTION_VERSION,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION));
+
+		properties
+				.put(ResourceDescriptorConstants.ACTION_PROTOCOL,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL));
+
+		return properties;
+	}
+
+	public ActionResponse executeActionWithProtocol(Action action)
+			throws ActionException, ProtocolException {
 		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
 
 		IProtocolSessionManager protocolSessionManager = protocolWrapper
 				.getProtocolSessionManager(resourceId);
 
 		ActionResponse response = action.execute(Activator.getContext(),
-				protocolSessionManager, params);
+				protocolSessionManager);
 
 		return response;
 
@@ -83,34 +120,51 @@ public class QueueManager implements IQueueManagerService {
 
 	public List<Action> getActions() {
 		List<Action> actions = new ArrayList<Action>();
-		for (ActionInQueue action : queue) {
-			actions.add(action.getAction());
+		for (Action action : queue) {
+			actions.add(action);
 		}
 		return actions;
 	}
 
-	public void queueAction(Action action, Object params) {
-		ActionInQueue actionInQueue = new ActionInQueue(action, params);
-		queue.add(actionInQueue);
+	public void queueAction(Action action) {
+		queue.add(action);
 
 	}
 
-	class ActionInQueue {
-		private final Action	action;
-		private final Object	params;
-
-		public ActionInQueue(Action action, Object params) {
-			this.action = action;
-			this.params = params;
+	@Override
+	public Response sendMessage(String idOperation, Object paramsModel) {
+		// Check if it is an available operation
+		if (!actionIds.contains(idOperation)) {
+			Vector<String> errorMsgs = new Vector<String>();
+			errorMsgs.add(ErrorConstants.ERROR_CAPABILITY);
+			Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		public Action getAction() {
-			return action;
-		}
+		return Response.okResponse(idOperation);
+	}
 
-		public Object getParams() {
-			return params;
-		}
+	@Override
+	protected void activateCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void deactivateCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void initializeCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void shutdownCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
 	}
 
 }

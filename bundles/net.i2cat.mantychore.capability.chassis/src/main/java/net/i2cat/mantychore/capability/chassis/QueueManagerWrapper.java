@@ -13,6 +13,10 @@ import org.osgi.framework.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/*
+ * A queue can only accessed via reference, between 
+ */
+@Deprecated
 public class QueueManagerWrapper {
 
 	private final Logger	logger	= LoggerFactory
@@ -34,8 +38,9 @@ public class QueueManagerWrapper {
 			IQueueManagerFactory queueFactory = (IQueueManagerFactory) RegistryUtil
 					.getServiceFromRegistry(bundleContext, filterQueue);
 
-			queueManager = queueFactory.createQueueManager(resourceId);
+			// queueManager = queueFactory.createQueueManager();
 
+			// TODO TO FIX PROBLEM WITH EXCEPTION
 		} catch (Exception e) {
 			throw new CapabilityException(e);
 		}
