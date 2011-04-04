@@ -68,6 +68,8 @@
 					<instructions>
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-Activator>net.i2cat.mantychore.actionsets.junos.Activator</Bundle-Activator>
+						
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"

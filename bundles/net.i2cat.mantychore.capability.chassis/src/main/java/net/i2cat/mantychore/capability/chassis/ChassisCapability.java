@@ -93,6 +93,10 @@ public class ChassisCapability extends AbstractMantychoreCapability {
 				.put(ResourceDescriptorConstants.ACTION_PROTOCOL,
 						capabilityDescriptor
 								.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL));
+		properties
+				.put(ResourceDescriptorConstants.ACTION_CAPABILITY,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_CAPABILITY));
 
 		return properties;
 	}

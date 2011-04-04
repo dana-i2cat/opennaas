@@ -93,11 +93,16 @@ public class Action {
 		// merge user and password with protocol
 		// TODO IT IS HARDCODED THE TRANSPORT!!! IF WILL USE OTHER TRANSPORT IT
 		// IS NECESSARY TO CHANGE THIS.
-		protocolURI = "ssh://" + protocolURI + "/" + protocolId;
+		if (!protocolURI.startsWith("mock://"))
+			protocolURI = "ssh://" + protocolURI + "/" + protocolId;
 
 		ProtocolSessionContext sessionContext = new ProtocolSessionContext();
 		sessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI,
 				protocolURI);
+
+		/* the protocolsessioncontext is the same that the action_protocol */
+		sessionContext
+				.addParameter(ProtocolSessionContext.PROTOCOL, protocolId);
 
 		return sessionContext;
 	}

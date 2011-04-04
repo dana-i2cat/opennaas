@@ -34,11 +34,12 @@ public class QueueManager extends AbstractMantychoreCapability implements
 	Logger						log			= LoggerFactory
 													.getLogger(QueueManager.class);
 
-	private final String		resourceId	= "";
+	private String				resourceId	= "";
 
 	public QueueManager(List<String> actionIds, IResource resource) {
 		super(actionIds, resource, resource.getResourceDescriptor()
 				.getCapabilityDescriptor(QUEUE));
+		this.resourceId = resource.getResourceDescriptor().getId();
 	}
 
 	private final BlockingQueue<Action>	queue	= new LinkedBlockingQueue<Action>();
@@ -107,6 +108,8 @@ public class QueueManager extends AbstractMantychoreCapability implements
 	public ActionResponse executeActionWithProtocol(Action action)
 			throws ActionException, ProtocolException {
 		ProtocolNetconfWrapper protocolWrapper = new ProtocolNetconfWrapper();
+		protocolWrapper.setBundleContext(Activator.getContext()); // add osgi
+																	// context
 
 		IProtocolSessionManager protocolSessionManager = protocolWrapper
 				.getProtocolSessionManager(resourceId);

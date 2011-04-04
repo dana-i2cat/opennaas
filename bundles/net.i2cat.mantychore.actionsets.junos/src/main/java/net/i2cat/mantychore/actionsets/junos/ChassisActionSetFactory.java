@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.KeepAliveAction;
+import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceAction;
 import net.i2cat.mantychore.commons.Action;
 import net.i2cat.mantychore.commons.ActionException;
 import net.i2cat.mantychore.commons.IActionSetFactory;
@@ -23,6 +24,8 @@ public class ChassisActionSetFactory implements IActionSetFactory {
 			return new GetConfigurationAction();
 		} else if (actionId.equals(ActionConstants.KEEPALIVE)) {
 			return new KeepAliveAction();
+		} else if (actionId.equals(ActionConstants.SETINTERFACE)) {
+			return new SetInterfaceAction();
 		} else {
 			throw new ActionException("Action " + actionId + " not found");
 		}

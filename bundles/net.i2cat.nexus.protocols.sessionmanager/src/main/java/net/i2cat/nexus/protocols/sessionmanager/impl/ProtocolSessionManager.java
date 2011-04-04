@@ -5,23 +5,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
+import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession.Status;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession.Status;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ProtocolSessionManager implements IProtocolSessionManager, IProtocolSessionListener, IProtocolMessageFilter {
+public class ProtocolSessionManager implements IProtocolSessionManager,
+		IProtocolSessionListener, IProtocolMessageFilter {
 
 	private String								deviceID				= null;
 	private Map<String, ProtocolPooled>			protocolSessions		= null;
@@ -29,7 +30,8 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	private List<String>						lockedProtocolSessions	= null;
 	private ProtocolManager						protocolManager			= null;
 
-	Logger										log						= LoggerFactory.getLogger(ProtocolSessionManager.class);
+	Logger										log						= LoggerFactory
+																				.getLogger(ProtocolSessionManager.class);
 
 	public ProtocolSessionManager(String deviceID) {
 		this.deviceID = deviceID;
@@ -42,30 +44,39 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		this.protocolManager = protocolManager;
 	}
 
-	@Override
-	public synchronized String createProtocolSession(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+	public synchronized String createProtocolSession(
+			ProtocolSessionContext protocolSessionContext)
+			throws ProtocolException {
 		long now = System.currentTimeMillis();
 
-		String protocol = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
-		IProtocolSessionFactory protocolFactory = protocolManager.getSessionFactory(protocol);
+		String protocol = (String) protocolSessionContext
+				.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
+		IProtocolSessionFactory protocolFactory = protocolManager
+				.getSessionFactory(protocol);
 		String sessionID = UUID.randomUUID().toString();
-		IProtocolSession protocolSession = protocolFactory.createProtocolSession(sessionID, protocolSessionContext);
+		IProtocolSession protocolSession = protocolFactory
+				.createProtocolSession(sessionID, protocolSessionContext);
 
 		/* Active listener */
 		protocolSession.registerProtocolSessionListener(this, this, sessionID);
-		protocolSessions.put(sessionID, new ProtocolPooled(protocolSession, now));
+		protocolSessions.put(sessionID,
+				new ProtocolPooled(protocolSession, now));
 		protocolSessionContexts.put(sessionID, protocolSessionContext);
 		protocolSession.connect();
 
 		return sessionID;
 	}
 
-	private synchronized String getProtocolSession(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+	private synchronized String getProtocolSession(
+			ProtocolSessionContext protocolSessionContext)
+			throws ProtocolException {
 		if (protocolSessionContext == null) {
-			throw new ProtocolException("The protocol session context provided is null");
+			throw new ProtocolException(
+					"The protocol session context provided is null");
 		}
 
-		Iterator<Entry<String, ProtocolSessionContext>> iterator = protocolSessionContexts.entrySet().iterator();
+		Iterator<Entry<String, ProtocolSessionContext>> iterator = protocolSessionContexts
+				.entrySet().iterator();
 		Entry<String, ProtocolSessionContext> entry = null;
 
 		while (iterator.hasNext()) {
@@ -79,14 +90,15 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return null;
 	}
 
-	@Override
-	public synchronized void destroyProtocolSession(String sessionID) throws ProtocolException {
+	public synchronized void destroyProtocolSession(String sessionID)
+			throws ProtocolException {
 		if (sessionID == null) {
 			throw new ProtocolException("The session ID provided is null");
 		}
 
 		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException("There is no existing session with this ID");
+			throw new ProtocolException(
+					"There is no existing session with this ID");
 		}
 
 		if (lockedProtocolSessions.contains(sessionID)) {
@@ -95,7 +107,8 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 			// exception or let the close proceed?
 		}
 
-		IProtocolSession protocolSession = protocolSessions.get(sessionID).getProtocolSession();
+		IProtocolSession protocolSession = protocolSessions.get(sessionID)
+				.getProtocolSession();
 
 		/* disconnect the session */
 		if (protocolSession.getStatus().equals(Status.CONNECTED)) {
@@ -108,28 +121,28 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	}
 
-	@Override
 	public Set<String> getAllProtocolSessions() {
 		return protocolSessions.keySet();
 	}
 
-	@Override
 	public String getDeviceID() {
 		return deviceID;
 	}
 
-	@Override
-	public synchronized IProtocolSession getProtocolSession(String sessionID, boolean lock) throws ProtocolException {
+	public synchronized IProtocolSession getProtocolSession(String sessionID,
+			boolean lock) throws ProtocolException {
 		if (sessionID == null) {
 			throw new ProtocolException("The session ID provided is null");
 		}
 
 		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException("There is no existing session with this ID");
+			throw new ProtocolException(
+					"There is no existing session with this ID");
 		}
 
 		if (lockedProtocolSessions.contains(sessionID)) {
-			throw new ProtocolException("The session identified by this sessionID is currently locked");
+			throw new ProtocolException(
+					"The session identified by this sessionID is currently locked");
 		}
 
 		if (lock) {
@@ -139,18 +152,20 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return protocolSessions.get(sessionID).getProtocolSession();
 	}
 
-	@Override
-	public synchronized void returnProtocolSession(String sessionID) throws ProtocolException {
+	public synchronized void returnProtocolSession(String sessionID)
+			throws ProtocolException {
 		if (sessionID == null) {
 			throw new ProtocolException("The session ID provided is null");
 		}
 
 		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException("There is no existing session with this ID");
+			throw new ProtocolException(
+					"There is no existing session with this ID");
 		}
 
 		if (!lockedProtocolSessions.contains(sessionID)) {
-			throw new ProtocolException("The session identified by this sessionID is not locked currently");
+			throw new ProtocolException(
+					"The session identified by this sessionID is not locked currently");
 		}
 
 		lockedProtocolSessions.remove(sessionID);
@@ -160,7 +175,8 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		private long				timeToExpire;
 		private IProtocolSession	protocolSession;
 
-		public ProtocolPooled(IProtocolSession protocolSession, long timeToExpire) {
+		public ProtocolPooled(IProtocolSession protocolSession,
+				long timeToExpire) {
 			this.setTimeToExpire(timeToExpire);
 			this.setProtocolSession(protocolSession);
 		}
@@ -185,7 +201,9 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	private static long	expirationTime	= 3000 * 1000;	// 1000 (1 milisec)
 
-	public synchronized String checkOut(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+	public synchronized String checkOut(
+			ProtocolSessionContext protocolSessionContext)
+			throws ProtocolException {
 		long now = System.currentTimeMillis();
 		if (protocolSessions.size() > 0) {
 			Iterator<String> sessionIDs = protocolSessions.keySet().iterator();
@@ -195,7 +213,8 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 				if ((now - protocolPooled.timeToExpire) > expirationTime) {
 					destroyProtocolSession(sessionID);
 				} else {
-					if (validateProtocolSession(protocolPooled, protocolSessionContext, sessionID)) {
+					if (validateProtocolSession(protocolPooled,
+							protocolSessionContext, sessionID)) {
 						protocolPooled.setTimeToExpire(now);
 						return sessionID;
 					}
@@ -208,8 +227,10 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	}
 
-	private boolean validateProtocolSession(ProtocolPooled protocolPooled, ProtocolSessionContext protocolSessionContext, String sessionID) {
-		boolean sameConfig = protocolPooled.getProtocolSession().getSessionContext().equals(protocolSessionContext);
+	private boolean validateProtocolSession(ProtocolPooled protocolPooled,
+			ProtocolSessionContext protocolSessionContext, String sessionID) {
+		boolean sameConfig = protocolPooled.getProtocolSession()
+				.getSessionContext().equals(protocolSessionContext);
 		return (sameConfig && !lockedProtocolSessions.contains(sessionID));
 	}
 
@@ -220,7 +241,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	/**
 	 * If you receive a listener message, it implements its action
 	 */
-	@Override
+
 	public void messageReceived(Object message) {
 		if (message instanceof String) {
 			String sessionID = (String) message;
@@ -237,7 +258,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	/**
 	 * Specify the type of message which we want to use
 	 */
-	@Override
+
 	public boolean notify(Object message) {
 		if (message instanceof Status) {
 			Status status = (Status) message;

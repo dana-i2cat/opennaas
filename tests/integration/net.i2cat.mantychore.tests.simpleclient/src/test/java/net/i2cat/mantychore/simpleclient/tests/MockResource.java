@@ -1,16 +1,21 @@
 package net.i2cat.mantychore.simpleclient.tests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.capability.ICapability;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,14 +26,60 @@ public class MockResource implements IResource {
 
 	Map<String, ICapability>	capabilities	= new HashMap<String, ICapability>();
 	ManagedElement				model;
-	String						resourceId;
+	ResourceDescriptor			resourceDescriptor;
+	List<CapabilityDescriptor>	capabilityDescriptors;
+
+	public static CapabilityDescriptor createCapabilityDescriptor(
+			String typeCapability, String actionCapability) {
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		CapabilityProperty property = new CapabilityProperty(
+				ResourceDescriptorConstants.PROTOCOL_URI,
+				"mock://user:pass@host.net:2212/mocksubsystem");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_NAME, "junos");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_PROTOCOL, "netconf");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_CAPABILITY, actionCapability);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType(typeCapability);
+		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+
+		return capabilityDescriptor;
+
+	}
+
+	public MockResource() {
+		resourceDescriptor = new ResourceDescriptor();
+
+		capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+	}
 
 	public String getResourceId() {
-		return resourceId;
+		return resourceDescriptor.getId();
 	}
 
 	public void setResourceId(String resourceId) {
-		this.resourceId = resourceId;
+		resourceDescriptor.setId(resourceId);
 	}
 
 	public void addCapability(ICapability capability) {
@@ -95,7 +146,7 @@ public class MockResource implements IResource {
 
 	public ResourceDescriptor getResourceDescriptor() {
 		log.info("get Resource Descriptor...");
-		return null;
+		return resourceDescriptor;
 	}
 
 	public IResourceIdentifier getResourceIdentifier() {
@@ -108,8 +159,9 @@ public class MockResource implements IResource {
 
 	}
 
-	public void setResourceDescriptor(ResourceDescriptor arg0) {
+	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		log.info("set Resource Descriptor...");
+		this.resourceDescriptor = resourceDescriptor;
 
 	}
 
