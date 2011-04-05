@@ -2,7 +2,6 @@ package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,8 +79,8 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 				mavenBundle().groupId("net.i2cat.mantychore.capability")
 						.artifactId("net.i2cat.mantychore.capability.chassis"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper"),
-				vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+						"net.i2cat.nexus.tests.helper")
+		// ,vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
 	}
@@ -246,19 +245,6 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		// Assert.assertFalse(model.getLogicalDevices().size() == 0);
 
-	}
-
-	@Deprecated
-	private ProtocolSessionContext newSessionContextNetconf() {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI,
-				"mock://user:pass@host.net:2212/mocksubsystem");
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
 	}
 
 	private Object newParamsInterface() {
