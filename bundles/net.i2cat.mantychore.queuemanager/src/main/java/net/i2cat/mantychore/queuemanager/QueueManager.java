@@ -21,6 +21,7 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 
 import org.slf4j.Logger;
@@ -72,13 +73,41 @@ public class QueueManager extends AbstractMantychoreCapability implements
 
 	private Action getCommit() throws CapabilityException, ActionException {
 
+		CapabilityDescriptor commitDescriptor = newCapabilityDescriptor(descriptor);
+
+		for (CapabilityProperty property : commitDescriptor.getCapabilityProperties()) {
+			log.info("-> property: " + property.getName() + " - " + property.getValue());
+
+		}
+
 		IActionSetFactory actionFactory = (IActionSetFactory) getCapability(
 				IActionSetFactory.class, Activator.getContext(),
-				createFilterProperties(descriptor));
+				createFilterProperties(commitDescriptor));
 		Action action = actionFactory.createAction(ActionConstants.COMMIT);
-		action.setDescriptor(descriptor);
+		action.setDescriptor(commitDescriptor);
 
 		return action;
+	}
+
+	private CapabilityDescriptor newCapabilityDescriptor(
+			CapabilityDescriptor descriptor) {
+		CapabilityDescriptor newDescriptor = new CapabilityDescriptor();
+
+		List<CapabilityProperty> properties = new ArrayList<CapabilityProperty>();
+
+		for (CapabilityProperty capabProperty : descriptor.getCapabilityProperties()) {
+			CapabilityProperty property = new CapabilityProperty();
+			property.setId(capabProperty.getId());
+			property.setName(capabProperty.getName());
+			property.setValue(capabProperty.getValue());
+			properties.add(property);
+
+		}
+
+		newDescriptor.setCapabilityProperties(properties);
+		newDescriptor.getProperty(ResourceDescriptorConstants.ACTION_CAPABILITY).setValue("basic");
+
+		return newDescriptor;
 	}
 
 	/*
@@ -87,6 +116,12 @@ public class QueueManager extends AbstractMantychoreCapability implements
 	protected Properties createFilterProperties(
 			CapabilityDescriptor capabilityDescriptor) {
 		Properties properties = new Properties();
+
+		properties
+				.put(ResourceDescriptorConstants.ACTION_CAPABILITY,
+						capabilityDescriptor
+								.getPropertyValue(ResourceDescriptorConstants.ACTION_CAPABILITY));
+
 		properties
 				.put(ResourceDescriptorConstants.ACTION_NAME,
 						capabilityDescriptor

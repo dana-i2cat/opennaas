@@ -13,7 +13,6 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.capability.chassis.IChassisCapabilityFactory;
-import net.i2cat.mantychore.commons.ActionException;
 import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -26,14 +25,13 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerFactory;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.mantychore.queuemanager.QueueManager;
 import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
-import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
@@ -80,7 +78,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 						.artifactId("net.i2cat.mantychore.capability.chassis"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-		// ,vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
 	}
@@ -130,6 +128,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
+			log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 
@@ -158,9 +157,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		try {
 			chassisCapability.initialize();
-		} catch (CapabilityException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
+			log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 
@@ -175,17 +175,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		try {
 			List<ActionResponse> responses = queueManager.execute();
-		} catch (ProtocolException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			Assert.fail();
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		} catch (ActionException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
+			log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 		// check if it is added
@@ -200,17 +193,10 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		try {
 			List<ActionResponse> responses = queueManager.execute();
-		} catch (ProtocolException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			Assert.fail();
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail();
-		} catch (ActionException e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
+			log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 
@@ -268,17 +254,11 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 	}
 
 	/*
-	 * private boolean checkPort(ComputerSystem model) { if
-	 * (model.getLogicalDevices() == null || model.getLogicalDevices().size() ==
-	 * 0) return false; EthernetPort ethernetPort = (EthernetPort)
-	 * model.getLogicalDevices(); boolean resultEquals =
-	 * ethernetPort.getElementName().equals("ge-0/1/0"); resultEquals =
-	 * resultEquals && ethernetPort.getPortNumber() == 30; if
-	 * (ethernetPort.getProtocolEndpoint() == null ||
-	 * ethernetPort.getProtocolEndpoint().size() == 0) return false;
-	 * IPProtocolEndpoint ip = (IPProtocolEndpoint) ethernetPort
-	 * .getProtocolEndpoint().get(0); resultEquals = resultEquals &&
-	 * ip.getIPv4Address().equals("193.1.24.88"); resultEquals = resultEquals &&
+	 * private boolean checkPort(ComputerSystem model) { if (model.getLogicalDevices() == null || model.getLogicalDevices().size() == 0) return false;
+	 * EthernetPort ethernetPort = (EthernetPort) model.getLogicalDevices(); boolean resultEquals = ethernetPort.getElementName().equals("ge-0/1/0");
+	 * resultEquals = resultEquals && ethernetPort.getPortNumber() == 30; if (ethernetPort.getProtocolEndpoint() == null ||
+	 * ethernetPort.getProtocolEndpoint().size() == 0) return false; IPProtocolEndpoint ip = (IPProtocolEndpoint) ethernetPort
+	 * .getProtocolEndpoint().get(0); resultEquals = resultEquals && ip.getIPv4Address().equals("193.1.24.88"); resultEquals = resultEquals &&
 	 * ip.getSubnetMask().equals("255.255.255.0");
 	 * 
 	 * return resultEquals;
