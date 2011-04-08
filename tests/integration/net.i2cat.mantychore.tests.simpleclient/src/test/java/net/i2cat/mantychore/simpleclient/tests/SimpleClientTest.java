@@ -35,7 +35,6 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -91,17 +90,15 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		System.out.println("--------------------------TRYING TO READ-----------------------------");
 
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
-		System.out.println("--------------------------READ..-------------------------------");
 
 	}
 
-	@Test
+	// @Test
 	public void testActions() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
