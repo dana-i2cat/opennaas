@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.queuemanager.wrappers;
+package net.i2cat.mantychore.queuemanager;
 
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolManager;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;

@@ -15,7 +15,6 @@ import net.i2cat.mantychore.commons.ActionResponse;
 import net.i2cat.mantychore.commons.ErrorConstants;
 import net.i2cat.mantychore.commons.IActionSetFactory;
 import net.i2cat.mantychore.commons.Response;
-import net.i2cat.mantychore.queuemanager.wrappers.ProtocolNetconfWrapper;
 import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.resources.IResource;
