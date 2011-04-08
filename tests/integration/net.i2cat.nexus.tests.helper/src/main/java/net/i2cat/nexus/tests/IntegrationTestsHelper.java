@@ -129,6 +129,8 @@ public class IntegrationTestsHelper {
 			}
 		}
 		log.info(listBundles);
+		System.out.println(listBundles);
+		
 	}
 	
 	private static String getStateString(int value) {
