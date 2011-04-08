@@ -80,7 +80,8 @@
 						</Import-Package>	
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
 						<Export-Package>
-							${pom.artifactId};version="${pom.version}"
+							net.i2cat.mantychore.actionsets.junos.actions;version="${pom.version}",
+							net.i2cat.mantychore.actionsets.junos;version="${pom.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
