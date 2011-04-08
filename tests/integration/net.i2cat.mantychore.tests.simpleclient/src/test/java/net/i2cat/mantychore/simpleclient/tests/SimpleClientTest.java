@@ -34,6 +34,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -76,22 +77,31 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		return combine(
 				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.mantychore.capability")
-						.artifactId("net.i2cat.mantychore.capability.chassis"),
-				mavenBundle().groupId("net.i2cat.mantychore.queuemanager")
-						.artifactId("net.i2cat.mantychore.queuemanager"),
+				// mavenBundle().groupId("net.i2cat.mantychore.capability")
+				// .artifactId("net.i2cat.mantychore.capability.chassis"),
+				// mavenBundle().groupId("net.i2cat.mantychore.queuemanager")
+				// .artifactId("net.i2cat.mantychore.queuemanager"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 
 		);
+
+	}
+
+	@Before
+	public void initBundles() {
+		log.info("Waiting to load all bundles");
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		log.info("Loaded all bundles");
+
 	}
 
 	@Test
 	public void testActions() {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+
 		/* initialize model */
 		MockResource mockResource = new MockResource();
 
