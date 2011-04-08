@@ -5,10 +5,6 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.Properties;
 
-import net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
-import net.i2cat.mantychore.commons.IActionSetFactory;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
@@ -26,24 +22,24 @@ import org.slf4j.LoggerFactory;
 public class SimpleClientTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	static Logger			log				= LoggerFactory
+	static Logger	log				= LoggerFactory
 													.getLogger(SimpleClientTest.class);
 	// IQueueManagerService queueManager;
 
-	String					deviceID		= "junos";
-	String					queueID			= "queue";
-	String					ethernetName	= "fe-0/3/2";
-	String					ipConfigured	= "192.168.33.2";
+	String			deviceID		= "junos";
+	String			queueID			= "queue";
+	String			ethernetName	= "fe-0/3/2";
+	String			ipConfigured	= "192.168.33.2";
 
-	ProtocolSessionContext	protocolSessionContext;
-	ChassisCapability		chassisCapability;
-
-	IActionSetFactory		actionFactory	= new ChassisActionSetFactory();
+	// ProtocolSessionContext protocolSessionContext;
+	// ChassisCapability chassisCapability;
+	//
+	// IActionSetFactory actionFactory = new ChassisActionSetFactory();
 
 	@Inject
-	BundleContext			bundleContext	= null;
+	BundleContext	bundleContext	= null;
 
-	static String			testVariable	= "test.variable";
+	static String	testVariable	= "test.variable";
 
 	@Configuration
 	public static Option[] configure() {
