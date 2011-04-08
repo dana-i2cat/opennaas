@@ -34,7 +34,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -88,7 +88,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	}
 
-	@Before
+	@Test
 	public void initBundles() {
 
 		log.info("Waiting to load all bundles");
