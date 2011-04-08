@@ -91,10 +91,13 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
+		System.out.println("--------------------------TRYING TO READ-----------------------------");
+
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
+		System.out.println("--------------------------READ..-------------------------------");
 
 	}
 
