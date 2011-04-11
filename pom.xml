@@ -656,22 +656,53 @@
 		</plugins>
 	</reporting>
 
-<repositories>
-    <repository>
-        <id>central</id>
-        <url>http://maven.i2cat.net:8081/artifactory/repo/</url>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-    </repository>
-    <repository>
-        <id>snapshots</id>
-        <url>http://maven.i2cat.net:8081/artifactory/repo/</url>
-        <releases>
-            <enabled>false</enabled>
-        </releases>
-    </repository>    
-</repositories>
+	<repositories>
+	    <repository>
+		<id>maven.i2cat.net</id>
+		<name>maven.i2cat.net-releases</name>
+		<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
+	    </repository>
+		<repository>
+			<id>i2cat</id>
+			<name>i2cat maven repository</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+		</repository>
+		<repository>
+			<id>springsource-external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+		<repository>
+			<id>springsource-releases</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>Maven-central</id>
+			<name>Maven central</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>osp4j</id>
+			<name>OSP4J releases</name>
+			<url>http://repository.ops4j.org/maven2</url>
+		</repository>
+		<repository>
+            		<id>DyanmicJava</id>
+            		<name>DynamicJava Repository</name>
+            		<url>http://maven.dynamicjava.org/</url>
+        	</repository>
+		<repository>
+			<id>fusesource</id>
+			<name>Fuse Source releases</name>
+			<url>http://repo.fusesource.com/maven2/</url>
+		</repository>
+		<repository>
+			<id>java</id>
+			<name>Java.net releases</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+	</repositories>
 
 
 
