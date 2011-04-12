@@ -1,0 +1,8 @@
+<configuration>
+	<interfaces>	
+		<interface  operation="replace">
+			<name> $param </name> 
+			<vlan-tagging/>
+		<interface>
+	<interfaces>	
+<configuration>

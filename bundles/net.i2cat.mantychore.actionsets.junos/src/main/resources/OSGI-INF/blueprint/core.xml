@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<!--  	publish action set services  -->
+	<bean id="chassisActionFactory"
+		class="net.i2cat.mantychore.actionsets.junos.ChassisActionSetFactory" />
+
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="chassisActionFactory"
+		interface="net.i2cat.mantychore.commons.IActionSetFactory">
+		<service-properties>
+		<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos" />
+			<entry key="actionset.capability" value="chassis" /> 
+			<entry key="actionset.protocol" value="netconf" />			
+			<entry key="actionset.version" value="10.10" />
+		</service-properties>
+	</service>
+	
+		<!--  	publish action set services  -->
+	<bean id="basicActionFactory"
+		class="net.i2cat.mantychore.actionsets.junos.BasicActionSetFactory" />
+
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="basicActionFactory"
+		interface="net.i2cat.mantychore.commons.IActionSetFactory">
+		<service-properties>
+		<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos" />
+			<entry key="actionset.capability" value="basic" /> 
+			<entry key="actionset.protocol" value="netconf" />			
+			<entry key="actionset.version" value="10.10" />
+		</service-properties>
+	</service>
+	
+	
+</blueprint>

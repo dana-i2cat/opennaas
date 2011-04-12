@@ -1,0 +1,9 @@
+<configuration>
+<logical-systems><name>logicalRouterName</name>
+<policy-options>
+<policy-statement operation="delete">
+<name>namePolicy</name>
+</policy-statement>
+</policy-options>
+</logical-systems>
+</configuration>

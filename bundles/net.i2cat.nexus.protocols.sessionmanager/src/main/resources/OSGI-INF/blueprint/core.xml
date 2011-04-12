@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<bean id="protocolManager" class="net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager" />
+
+	<!-- Listen for registration / deregistration of IProtocolSessionFactory services -->
+	<reference-list interface="net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory" availability="optional">
+		<reference-listener ref="protocolManager"
+			bind-method="sessionFactoryAdded" unbind-method="sessionFactoryRemoved" />
+	</reference-list>
+
+	<!-- Register a ProtocolManager as an OSGi Service -->
+	<service ref="protocolManager"
+		interface="net.i2cat.nexus.protocols.sessionmanager.IProtocolManager" />
+	
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="nexus/listProtocolFactories">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListProtocolFactoriesCommand" />
+		</command>
+		<command name="nexus/listDevices">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListDevicesCommand" />
+		</command>					
+	</command-bundle>
+
+</blueprint>

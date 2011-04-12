@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!-- Maven parent  -->
+	<parent>
+		<artifactId>mantychore-bundles</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<!--  POM id -->
+	<groupId>net.i2cat.mantychore.queuemanager</groupId>
+	<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>Mantychore Queue Manager</name>
+	<description>Mantychore Queue Manager Implementation</description>
+
+	<dependencies>
+	
+	<!--  it will be necessary to change the place the  -->
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.commons</groupId>
+			<artifactId>net.i2cat.mantychore.commons</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>
+			
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.0.0</version>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-Activator>net.i2cat.mantychore.queuemanager.Activator</Bundle-Activator>
+						<Import-Package>!${pom.artifactId},org.slf4j;version="1.5.6",
+							net.i2cat.nexus.protocols.sessionmanager*;version=${pom.version},*
+						</Import-Package>
+						<Export-Package>
+						net.i2cat.mantychore.queuemanager.IQueueManagerService;version="${pom.version}",
+						net.i2cat.mantychore.queuemanager;version="${pom.version}"
+						</Export-Package>
+						
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

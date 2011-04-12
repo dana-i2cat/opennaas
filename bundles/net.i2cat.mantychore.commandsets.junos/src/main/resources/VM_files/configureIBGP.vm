@@ -1,0 +1,50 @@
+<configuration>
+		if((logicalRouterName!=null)&&(!logicalRouterName.equals(""))){
+			command+="<logical-systems><name>"+logicalRouterName+"</name>";
+		}
+		/* bgp configuration */
+		command+="<protocols><bgp><group operation=\"replace\">"+'\n';
+		command+="<name>"+nameIBGPConfig+"</name>"+'\n';
+		command+="<type>internal</type>"+'\n';
+		
+		/* optional parameters */
+		if (ibgpConfiguration.getLocalAddress()!=null && ! ibgpConfiguration.getLocalAddress().equals("")
+				) {
+			command+="<local-address>"+ibgpConfiguration.getLocalAddress()+"</local-address>"+'\n';
+			if(ibgpConfiguration.isRouterReflector())
+				command+="<cluster>"+ibgpConfiguration.getLocalAddress()+"</cluster>"+'\n';	
+		}
+
+		
+		command+="<hold-time>"+ibgpConfiguration.getHoldTimer()+"</hold-time>"+'\n';		
+
+ 		
+		for (String importPolicy: ibgpConfiguration.getImportPoliciesNames()) {
+			command+="<import>"+importPolicy+"</import>"+'\n';	
+		}
+		for (String exportPolicy: ibgpConfiguration.getExportPoliciesNames()) {
+			command+="<export>"+exportPolicy+"</export>"+'\n';	
+		}
+		
+		command+="<peer-as>"+ibgpConfiguration.getAsName()+"</peer-as>"+'\n';	
+		
+		
+		for (String ibgpConfig: ibgpConfiguration.getNeighbors())
+			command+="<neighbor><name>"+ibgpConfig+"</name></neighbor>"+'\n';						
+		
+		
+		
+		command+="</group></bgp></protocols>"+'\n';
+		
+		
+		command+="<routing-options>"+'\n';
+		command+="<router-id>"+ibgpConfiguration.getRouterID()+"</router-id>"+'\n';
+		command+="<autonomous-system>"+'\n';
+		command+="<as-number>"+ibgpConfiguration.getAsName()+"</as-number>"+'\n';
+		command+="</autonomous-system>"+'\n';
+		command+="</routing-options>"+'\n';
+		
+		if((logicalRouterName!=null)&&(!logicalRouterName.equals(""))){
+			command+="</logical-systems>";
+		}
+</configuration>
