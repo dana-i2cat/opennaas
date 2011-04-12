@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.simpleclient.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
@@ -70,19 +72,22 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-		log.info("VARIABLE: " + testVariable + " : "
-				+ getSystemProperty(testVariable));
-		return combine(
+
+		Option[] options = combine(
 				IntegrationTestsHelper.getMantychoreTestOptions(),
-				// mavenBundle().groupId("net.i2cat.mantychore.capability")
-				// .artifactId("net.i2cat.mantychore.capability.chassis"),
-				// mavenBundle().groupId("net.i2cat.mantychore.queuemanager")
-				// .artifactId("net.i2cat.mantychore.queuemanager"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
 
-		);
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = System.getProperty("protocol.uri");
+		if (!uri.equals("${protocol.uri}")) {
+			Option[] optionsWithURI = options(systemProperty("protocol.uri").value(uri));
+			options = combine(options, optionsWithURI);
+		}
+
+		return options;
 
 	}
 
@@ -93,7 +98,6 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);

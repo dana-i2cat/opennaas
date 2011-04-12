@@ -33,9 +33,15 @@ public class MockResource implements IResource {
 			String typeCapability, String actionCapability) {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("")) {
+			log.info("INFO: Getting uri param from terminal");
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
 		CapabilityProperty property = new CapabilityProperty(
-				ResourceDescriptorConstants.PROTOCOL_URI,
-				"mock://user:pass@host.net:2212/mocksubsystem");
+				ResourceDescriptorConstants.PROTOCOL_URI, uri);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
