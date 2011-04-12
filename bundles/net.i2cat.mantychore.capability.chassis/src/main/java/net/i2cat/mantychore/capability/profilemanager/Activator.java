@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.capability.chassis;
+package net.i2cat.mantychore.capability.profilemanager;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
