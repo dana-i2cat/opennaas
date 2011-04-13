@@ -11,8 +11,16 @@ import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 public class MockResource implements IResource {
-	ResourceDescriptor			resourceDescriptor		= new ResourceDescriptor();
-	List<CapabilityDescriptor>	capabilityDescriptors	= new ArrayList<CapabilityDescriptor>();
+	ResourceDescriptor	resourceDescriptor	= new ResourceDescriptor();
+
+	public MockResource() {
+		resourceDescriptor.setCapabilityDescriptors(new ArrayList<CapabilityDescriptor>());
+	}
+
+	public void addCapabilityDescriptor(CapabilityDescriptor capabilityDescriptor) {
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+	}
 
 	public void activate() throws ResourceException {
 		// TODO Auto-generated method stub
@@ -45,7 +53,6 @@ public class MockResource implements IResource {
 	}
 
 	public void addCapability(ICapability arg0) {
-		// TODO Auto-generated method stub
 
 	}
 

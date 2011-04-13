@@ -49,14 +49,20 @@ public class ProfileManagerCapability extends AbstractMantychoreCapability {
 		}
 		Response okResponse = Response.okResponse(idOperation);
 		try {
-			Properties props = (Properties) params;
+
 			if (idOperation.equals(ProfileManagerConstants.ADDOPERATION)) {
+				Properties props = (Properties) params;
 				addOperation(props);
 				return Response.okResponse(idOperation);
 			} else if (idOperation.equals(ProfileManagerConstants.DELETEOPERATION)) {
+				Properties props = (Properties) params;
 				deleteOperation(props);
 			} else if (idOperation.equals(ProfileManagerConstants.LISTOPERATIONS)) {
 				String information = listOperations();
+				okResponse.setInformation(information);
+			} else if (idOperation.equals(ProfileManagerConstants.GETOPERATIONTEMPLATE)) {
+				Properties props = (Properties) params;
+				String information = getOperationTemplate(props);
 				okResponse.setInformation(information);
 			} else {
 				queueOperation(idOperation, params);
@@ -88,6 +94,12 @@ public class ProfileManagerCapability extends AbstractMantychoreCapability {
 	private void deleteOperation(Properties params) throws IOException {
 		String id = params.getProperty(ProfileManagerConstants.IDOPERATION);
 		profileOperations.remove(id);
+	}
+
+	private String getOperationTemplate(Properties params) {
+		String id = params.getProperty(ProfileManagerConstants.IDOPERATION);
+		return profileOperations.get(id);
+
 	}
 
 	private String listOperations() {
