@@ -9,11 +9,10 @@
 	#end
 #end
 
-#macro ( isVLAN $element $resp $vlanId )
+#macro ( isVLAN $element $resp )
 	#set( $resp = "false" )
 	#foreach ($endpoint in $$element.ProtocolEndpoint)
 		#if("VLANEndpoint"==$endpoint.getClass().getSimpleName())
-			#set( $vlanId = $endpoint.VlanID)
 			#set( $resp = "true" )
 			#break
 		#end
@@ -48,10 +47,9 @@
 					#else					
 						#set( $isvlan = "false" )
 						#set( $vlanId = "" )	
-						#isVLAN($param $isvlan $vlanId)			
+						#isVLAN($param $isvlan)			
 						#if($isvlan == "true")
 							<encapsulation>vlan</encapsulation>
-							<vlan-id>$vlanId<vlan-id>
 						#end
 					#end										
 					#set( $isIPConfig = "false" )

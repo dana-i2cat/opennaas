@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.commandsets.junos.tests;
 
 import net.i2cat.mantychore.commandsets.junos.commands.ConfigureSubInterfaceCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.DeleteSubInterfaceCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.GetVlanTaggingCommand;
 import net.i2cat.mantychore.commandsets.junos.commands.VlanTaggingCommand;
 import net.i2cat.mantychore.commons.Command;
 import net.i2cat.mantychore.commons.CommandException;
@@ -38,14 +40,64 @@ public class SubInterfaceTest {
 
 	}
 
+	/*
+	 * test of an interface ethernet without vlan encapsulation
+	 */
+	private Object newParamsInterfaceEthernet() {
+		EthernetPort eth = new EthernetPort();
+		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth.setElementName("fe-0/3/2");
+		IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		ip.setIPv4Address("192.168.32.1");
+		ip.setSubnetMask("255.255.255.0");
+		eth.addProtocolEndpoint(ip);
+		System.out.println(eth.getLinkTechnology().toString());
+
+		return eth;
+	}
+
+	/*
+	 * test of an interface ethernet without vlan encapsulation
+	 */
 	@Test
-	public void vlanTaggingTest() {
+	public void removeGEFEwithEthernetTest() {
+		log.info("ge | fe interfaces with ethernet Test...");
+		try {
+			testCommand(new DeleteSubInterfaceCommand(),
+					newParamsInterfaceEthernet());
+
+			log.info("OK : configured ge | fe with ethernet test!");
+
+		} catch (CommandException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
+	public void setVlanTaggingTest() {
 
 		log.info("vlanTagging Test...");
 		try {
 			testCommand(new VlanTaggingCommand(), newParamsVlanTagging());
 
 			log.info("OK : vlantagging test!");
+
+		} catch (CommandException e) {
+			log.error(e.getMessage());
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+
+	}
+
+	@Test
+	public void getVlanTaggingTest() {
+
+		log.info("Get vlanTagging Test...");
+		try {
+			testCommand(new GetVlanTaggingCommand(), newParamsVlanTagging());
 
 		} catch (CommandException e) {
 			log.error(e.getMessage());
@@ -102,7 +154,7 @@ public class SubInterfaceTest {
 		ip.setSubnetMask("255.255.255.0");
 		logicalTunnel.addProtocolEndpoint(ip);
 		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(1);
+		vlanEndpoint.setVlanID(2);
 		logicalTunnel.addProtocolEndpoint(vlanEndpoint);
 		return logicalTunnel;
 
@@ -157,22 +209,6 @@ public class SubInterfaceTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-	}
-
-	/*
-	 * test of an interface ethernet without vlan encapsulation
-	 */
-	private Object newParamsInterfaceEthernet() {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/3/2");
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address("192.168.32.1");
-		ip.setSubnetMask("255.255.255.0");
-		eth.addProtocolEndpoint(ip);
-		System.out.println(eth.getLinkTechnology().toString());
-
-		return eth;
 	}
 
 	@Test
