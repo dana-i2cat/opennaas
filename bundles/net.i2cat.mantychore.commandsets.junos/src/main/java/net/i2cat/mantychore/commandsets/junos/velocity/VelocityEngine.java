@@ -39,37 +39,6 @@ public class VelocityEngine {
 
 	}
 
-	/*
-	 * It must exist other method to implements this method to get resources It
-	 * was used to get the velocity template from a jar. In old versions, it
-	 * gave troubles to use
-	 */
-	@Deprecated
-	private void addJarProperties(Properties prop) {
-		Properties oldProps = (Properties) prop.clone();
-		prop.setProperty("resource.loader", "jar");
-		prop.setProperty("jar.resource.loader.class",
-				"org.apache.velocity.runtime.resource.loader.JarResourceLoader");
-		prop.setProperty("jar.resource.loader.cache", "true");
-		String absolutPath = "";
-		try {
-			absolutPath = "jar:file:" + (new File(".")).getCanonicalPath();
-		} catch (IOException e) {
-			log.error("It was impossible to get the canonical path");
-			// Restore propeties file
-			prop = oldProps;
-			return;
-		}
-		log.info("absoluthPath=" + absolutPath);
-		prop.setProperty(
-				"jar.resource.loader.path",
-				absolutPath
-						+ "/bundles/net.i2cat.mantychore.commandsets.junos_1.0.0.SNAPSHOT.jar");
-		// where there are templates
-		prop.setProperty("template.root", "VM_files");
-
-	}
-
 	public String mergeTemplate() throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 		init();
@@ -105,6 +74,36 @@ public class VelocityEngine {
 
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+
+	/*
+	 * It must exist other method to implements this method to get resources It was used to get the velocity template from a jar. In old versions, it
+	 * gave troubles to use
+	 */
+	@Deprecated
+	private void addJarProperties(Properties prop) {
+		Properties oldProps = (Properties) prop.clone();
+		prop.setProperty("resource.loader", "jar");
+		prop.setProperty("jar.resource.loader.class",
+				"org.apache.velocity.runtime.resource.loader.JarResourceLoader");
+		prop.setProperty("jar.resource.loader.cache", "true");
+		String absolutPath = "";
+		try {
+			absolutPath = "jar:file:" + (new File(".")).getCanonicalPath();
+		} catch (IOException e) {
+			log.error("It was impossible to get the canonical path");
+			// Restore propeties file
+			prop = oldProps;
+			return;
+		}
+		log.info("absoluthPath=" + absolutPath);
+		prop.setProperty(
+				"jar.resource.loader.path",
+				absolutPath
+						+ "/bundles/net.i2cat.mantychore.commandsets.junos_1.0.0.SNAPSHOT.jar");
+		// where there are templates
+		prop.setProperty("template.root", "VM_files");
+
 	}
 
 }

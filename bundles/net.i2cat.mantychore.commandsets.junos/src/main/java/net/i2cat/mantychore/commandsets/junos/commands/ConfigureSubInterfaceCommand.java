@@ -17,9 +17,10 @@ public class ConfigureSubInterfaceCommand extends JunosCommand {
 	public static final String	TEMPLATE_LOGICALTUNNEL	= "/VM_files/configureLogicalTunnel.vm";
 
 	/*
-	 * This params have to define in the initialize process. The all necessary
-	 * information is in the "params" variable.
+	 * This params have to define in the initialize process. The all necessary information is in the "params" variable.
 	 */
+
+	// TODO IS IT POSSIBLE TO ADD THESE WITH OTHER METHODS
 	private final String		target					= "candidate";
 	private final String		defaultOperation		= null;
 	private final String		testOption				= null;

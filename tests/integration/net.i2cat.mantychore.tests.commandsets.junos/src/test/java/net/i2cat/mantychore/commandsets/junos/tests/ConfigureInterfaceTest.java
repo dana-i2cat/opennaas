@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.commandsets.junos.tests;
 
 import net.i2cat.mantychore.commandsets.junos.commands.ConfigureSubInterfaceCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.DeleteSubInterfaceCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
@@ -25,10 +26,15 @@ public class ConfigureInterfaceTest {
 	 * Configure the protocol to connect
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("${protocol.uri}")) {
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+
 		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI,
-				"mock://user:pass@host.net:2212/mocksubsystem");
+				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
 		// ADDED
@@ -54,6 +60,9 @@ public class ConfigureInterfaceTest {
 
 	@Test
 	public void configureEthernetInterface() {
+		/* remove interface */
+		removeSubInterface();
+
 		log.info("Configure interfaces ethernet");
 		ComputerSystem modelToUpdate = new ComputerSystem(); // IT WILL NOT BE
 																// FILL UP, IT
@@ -92,6 +101,9 @@ public class ConfigureInterfaceTest {
 
 	// @Test
 	public void configureEthernetInterfaceWithVLAN() {
+		/* remove interface */
+		removeSubInterface();
+
 		log.info("Configure interfaces ethernet with vlan");
 		ComputerSystem modelToUpdate = new ComputerSystem(); // IT WILL NOT BE
 																// FILL UP, IT
@@ -126,8 +138,11 @@ public class ConfigureInterfaceTest {
 
 	}
 
-	// @Test
+	@Test
 	public void configureLogicalTunnel() {
+		/* remove logical tunnel */
+		removeLogicalTunnel();
+
 		log.info("Configure logical tunnel");
 		ComputerSystem modelToUpdate = new ComputerSystem(); // IT WILL NOT BE
 																// FILL UP, IT
@@ -157,14 +172,17 @@ public class ConfigureInterfaceTest {
 		ip.setSubnetMask("255.255.255.0");
 		logicalTunnel.addProtocolEndpoint(ip);
 		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(1);
+		vlanEndpoint.setVlanID(12);
 		logicalTunnel.addProtocolEndpoint(vlanEndpoint);
 		return logicalTunnel;
 
 	}
 
-	// @Test
+	@Test
 	public void configureLogicalTunnelWithVLAN() {
+		/* remove logical tunnel */
+		removeLogicalTunnel();
+
 		log.info("Configure logical tunnel with vlan");
 		ComputerSystem modelToUpdate = new ComputerSystem(); // IT WILL NOT BE
 																// FILL UP, IT
@@ -182,6 +200,40 @@ public class ConfigureInterfaceTest {
 			Assert.fail(e.getMessage());
 		}
 
+	}
+
+	public void removeSubInterface() {
+		ComputerSystem modelToUpdate = new ComputerSystem();
+		EthernetPort eth = new EthernetPort();
+		eth.setElementName("fe-0/3/2");
+		eth.setPortNumber(32);
+		try {
+			commandTestHelper.prepareAndSendCommand(new DeleteSubInterfaceCommand(), eth, modelToUpdate);
+
+			log.info("OK : configured ge | fe with ethernet test!");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+		}
+	}
+
+	public void removeLogicalTunnel() {
+		ComputerSystem modelToUpdate = new ComputerSystem();
+		LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
+		logicalTunnel.setElementName("lt-0/1/2");
+		logicalTunnel.setPortNumber(12);
+		logicalTunnel.setPeer_unit(2);
+
+		try {
+			commandTestHelper.prepareAndSendCommand(new DeleteSubInterfaceCommand(), logicalTunnel, modelToUpdate);
+
+			log.info("OK : configured ge | fe with ethernet test!");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+		}
 	}
 
 }
