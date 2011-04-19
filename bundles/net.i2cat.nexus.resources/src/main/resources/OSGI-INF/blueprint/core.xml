@@ -17,22 +17,25 @@
 
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="nexus/create">
+		<command name="resource/create">
 			<action class="net.i2cat.nexus.resources.shell.CreateResourceCommand" />
 		</command>
-		<command name="nexus/list">
+		<command name="resource/list">
 			<action class="net.i2cat.nexus.resources.shell.ListResourcesCommand" />
 		</command>
-		<command name="nexus/remove">
+		<command name="resource/info">
+			<action class="net.i2cat.nexus.resources.shell.InfoResourcesCommand" />
+		</command>
+		<command name="resource/remove">
 			<action class="net.i2cat.nexus.resources.shell.RemoveResourceCommand" />
 		</command>
-		<command name="nexus/start">
+		<command name="resource/start">
 			<action class="net.i2cat.nexus.resources.shell.StartResourceCommand" />
 		</command>
-		<command name="nexus/stop">
+		<command name="resource/stop">
 			<action class="net.i2cat.nexus.resources.shell.StopResourceCommand" />
 		</command>
-		<command name="nexus/export">
+		<command name="resource/export">
 			<action class="net.i2cat.nexus.resources.shell.ExportResourceDescriptorCommand" />
 		</command>					
 	</command-bundle>

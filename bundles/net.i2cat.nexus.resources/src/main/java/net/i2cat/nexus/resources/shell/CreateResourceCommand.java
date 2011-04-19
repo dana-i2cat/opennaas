@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 
 import net.i2cat.nexus.resources.IResource;
@@ -21,14 +22,18 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
+ * 
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "nexus", name = "create", description = "Create one or more resources")
+@Command(scope = "resource", name = "create", description = "Create one or more resources")
 public class CreateResourceCommand extends OsgiCommandSupport {
 
-	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to the resource descriptors for the resources to create", required = true, multiValued = true)
-	private List<String> paths;
+	@Argument(index = 0, name = "paths or urls", required = true, multiValued = true, description = "A space delimited list of file paths or urls to the resource descriptors for the resources to create")
+	private List<String>	paths;
+
+	@Option(name = "--profile", aliases = { "-p" }, required = false, description = "Setup the created resource to work with a given profile")
+	String					profileId;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -42,12 +47,10 @@ public class CreateResourceCommand extends OsgiCommandSupport {
 				descriptor = getResourceDescriptor(filename);
 				System.out.println("Creating Resource " + descriptor.getInformation().getName());
 				IResource resource = manager.createResource(descriptor);
-				System.out.println("Resource created with ID: "
-						+ resource.getResourceIdentifier().getId());
+				System.out.println("Resource created with ID: " + resource.getResourceIdentifier().getId());
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw e;
 		}
 
 		return null;
@@ -60,8 +63,7 @@ public class CreateResourceCommand extends OsgiCommandSupport {
 			URL url = new URL(filename);
 			log.info("URL: " + url);
 			stream = url.openStream();
-		}
-		catch (MalformedURLException ignore) {
+		} catch (MalformedURLException ignore) {
 			// They try a file
 			File file = new File(filename);
 			log.info("file: " + file);
@@ -72,16 +74,13 @@ public class CreateResourceCommand extends OsgiCommandSupport {
 		try {
 			JAXBContext context = JAXBContext.newInstance(ResourceDescriptor.class);
 			descriptor = (ResourceDescriptor) context.createUnmarshaller().unmarshal(stream);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			try {
 				stream.close();
-			}
-			catch (IOException e) {
-				// Ingore
+			} catch (IOException e) {
+				// Ignore
 			}
 		}
 		return descriptor;

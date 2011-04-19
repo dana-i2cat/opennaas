@@ -15,7 +15,7 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "nexus", name = "export", description = "Export the descriptor of a resource to a file")
+@Command(scope = "resource", name = "export", description = "Export the descriptor of a resource to a file")
 public class ExportResourceDescriptorCommand extends OsgiCommandSupport {
 
 	@Argument(index = 0, name = "resourceId", description = "The resourceId whose descriptor is going to be exported", required = true, multiValued = false)

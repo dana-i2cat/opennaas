@@ -16,7 +16,7 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "nexus", name = "start", description = "Start one or more resources")
+@Command(scope = "resource", name = "start", description = "Start one or more resources")
 public class StartResourceCommand extends OsgiCommandSupport {
 
 	@Argument(index = 0, name = "resource ids", description = "A space delimited list of resource ids to be started", required = true, multiValued = true)

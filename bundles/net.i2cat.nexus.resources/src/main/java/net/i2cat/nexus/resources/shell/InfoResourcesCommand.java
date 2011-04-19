@@ -2,6 +2,7 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
+import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 
@@ -10,29 +11,30 @@ import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.RegistryUtil;
 
 /**
- * List the Resources that are in the IaaS Container
+ * Start one or more resources
  * 
  * @author Scott Campbell (CRC)
  * 
  */
-@Command(scope = "resource", name = "list", description = "List the resources in the platform")
-public class ListResourcesCommand extends OsgiCommandSupport {
+@Command(scope = "resource", name = "info", description = "Provides extended information about one or more resources.")
+public class InfoResourcesCommand extends OsgiCommandSupport {
+
+	@Argument(index = 0, name = "resource ids", description = "A space delimited list of resource ids.", required = true, multiValued = true)
+	private List<String>	resourceIDs;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		log.debug("Executing list shell command");
+		log.debug("Executing resource start shell command");
 
 		try {
 			IResourceManager manager = getResourceManager();
 			List<IResource> resources = manager.listResources();
 
-			System.out.println("Found " + resources.size() + " resources");
-			for (IResource resource : resources) {
-				System.out.println("Resource: " + resource.getResourceDescriptor().getId() + ", " + resource.getResourceDescriptor().getInformation().toString());
+			for (String id : resourceIDs) {
+				throw new java.lang.NoSuchMethodException("NOT IMPLEMENTED");
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw e;
 		}
 
 		return null;
