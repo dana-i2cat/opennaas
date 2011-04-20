@@ -9,28 +9,58 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.actionsets</groupId>
 	<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 
-<!--  Maven configuration -->
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Mantychore ActionSet Junos</name>
 	<description>Mantychore ActionSet Junos Implementation</description>
 
 	<dependencies>
+		<!-- Internal Mantychore dependencies -->
 		<dependency>
 			<groupId>net.i2cat.mantychore.commons</groupId>
 			<artifactId>net.i2cat.mantychore.commons</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-			<dependency>
-			<groupId>net.i2cat.mantychore.commandsets</groupId>
-			<artifactId>net.i2cat.mantychore.commandsets.junos</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>
+
+		<!--
+			specify the last version from xerces-impl to work with the digester
+			parser
+		-->
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+		</dependency>
+		   <!--  library to build commands -->
+	<dependency>
+		<groupId>org.apache.servicemix.bundles</groupId>
+		<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
+	</dependency>   
+		<!--
+			specify the last version from org.apache.commons.lang to use velocity
+		-->
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.5</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-digester</groupId>
+			<artifactId>commons-digester</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -49,7 +79,7 @@
 				<artifactId>maven-pax-plugin</artifactId>
 				<version>1.4</version>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -64,7 +94,7 @@
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${pom.version}</Bundle-Version>
 						<Bundle-Activator>net.i2cat.mantychore.actionsets.junos.Activator</Bundle-Activator>
-						
+
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
@@ -72,7 +102,7 @@
 						<!-- avoid importing our own package -->
 						<Import-Package>
 							!${pom.artifactId}.*;version="${pom.version}",org.slf4j;version="1.5.6",*
-						</Import-Package>	
+						</Import-Package>
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
 						<Export-Package>
 							net.i2cat.mantychore.actionsets.junos.actions;version="${pom.version}",
