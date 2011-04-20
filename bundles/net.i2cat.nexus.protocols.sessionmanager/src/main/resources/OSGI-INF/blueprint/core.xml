@@ -26,5 +26,4 @@
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.RemoveCommand" />
 		</command>
 	</command-bundle>
-
 </blueprint>

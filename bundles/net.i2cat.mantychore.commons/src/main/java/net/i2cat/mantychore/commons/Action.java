@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class Action {
 
-	Logger							log			= LoggerFactory
-														.getLogger(Action.class);
+	Logger							log			= LoggerFactory.getLogger(Action.class);
 
 	protected List<Command>			commands	= new ArrayList<Command>();
 	private Object					modelToUpdate;
