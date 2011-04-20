@@ -47,7 +47,7 @@
 	<module>net.i2cat.nexus.protocols.sessionmanager</module> 
 	<module>net.i2cat.mantychore.model</module> 
     	<module>net.i2cat.mantychore.commons</module>
-    	<module>net.i2cat.mantychore.commandsets.junos</module>
+<!--   	<module>net.i2cat.mantychore.commandsets.junos</module> -->
 	<module>net.i2cat.mantychore.actionsets.junos</module>
    	<module>net.i2cat.mantychore.protocols.netconf</module>
    	<module>net.i2cat.mantychore.queuemanager</module>
