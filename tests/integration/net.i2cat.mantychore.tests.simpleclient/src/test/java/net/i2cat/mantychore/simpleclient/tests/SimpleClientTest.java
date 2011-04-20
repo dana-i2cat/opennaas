@@ -82,7 +82,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
-		if (if (uri != null && !uri.equals("${protocol.uri}")) {
+		if (uri != null && !uri.equals("${protocol.uri}")) {
 			Option[] optionsWithURI = options(systemProperty("protocol.uri").value(uri));
 			options = combine(options, optionsWithURI);
 		}
