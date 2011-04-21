@@ -630,8 +630,6 @@
 	<!-- Reporting configuration -->
 	<reporting>
 		<plugins>
-
-				
 			<!-- Javadoc -->
 			<plugin>
 				<artifactId>maven-javadoc-plugin</artifactId>

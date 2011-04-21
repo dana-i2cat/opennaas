@@ -23,23 +23,7 @@
 	<name>Mantychore CommandSet Junos</name>
 	<description>Mantychore CommandSet Junos Implementation</description>
 
-
-
-
-<!--  specify the last version from xerces-impl to work with the digester parser -->
   <dependencies>
-  		<dependency>
-			<groupId>org.apache.servicemix.bundles</groupId>
-			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
-		</dependency>
-		
-<!--  specify the last version from org.apache.commons.lang to use velocity -->
-  		<dependency>
-		    <groupId>commons-lang</groupId>
-		    <artifactId>commons-lang</artifactId>
-		    <version>2.5</version>
-		</dependency>
-		
 
    <!-- mantychore dependencies -->
    <dependency>

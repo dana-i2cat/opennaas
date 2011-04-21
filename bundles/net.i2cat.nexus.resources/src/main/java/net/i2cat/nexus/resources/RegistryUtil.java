@@ -29,11 +29,11 @@ public class RegistryUtil {
 	 * 
 	 * @throws InvalidSyntaxException
 	 */
-	public static Filter createServiceFilter(String clazz, Properties properties)
-			throws InvalidSyntaxException {
+	public static Filter createServiceFilter(String clazz, Properties properties) throws InvalidSyntaxException {
 		String objectClass = "(" + Constants.OBJECTCLASS + "=" + clazz + ")";
 
 		String filterString = "(&" + objectClass;
+		
 		Enumeration<Object> keys = properties.keys();
 		while (keys.hasMoreElements()) {
 			String currentKey = (String) keys.nextElement();
