@@ -1,0 +1,10 @@
+<configuration>
+	<interfaces>	
+		<interface>
+		<name>$param.ElementName</name>
+			<unit operation="delete">
+				<name>$param.PortNumber</name>
+			</unit>
+		</interface>
+	</interfaces>
+</configuration>

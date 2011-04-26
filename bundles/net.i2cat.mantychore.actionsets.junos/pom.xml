@@ -105,6 +105,8 @@
 						</Import-Package>
 						<!--  TODO Is it necessary to check the ${pom.artifactId}.actions -->
 						<Export-Package>
+							net.i2cat.mantychore.commandsets*;version="${pom.version}",
+							net.i2cat.mantychore.actionsets.junos;version="${pom.version}"
 							net.i2cat.mantychore.actionsets.junos.actions;version="${pom.version}",
 							net.i2cat.mantychore.actionsets.junos;version="${pom.version}"
 						</Export-Package>

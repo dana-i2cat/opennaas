@@ -1,0 +1,14 @@
+<configuration>
+<logical-systems><name>cpe1 </name></logical-systems>
+<routing-options>
+<static>
+<route>
+#foreach( $ruta in $param )
+<name> $ruta.DestinationAddress/$ruta.PrefixLength</name> 
+<next-hop>$ruta.ProtocolEndpoint.getIPv4Address() </next-hop>
+#end
+</route>
+</static>
+</routing-options>
+</logical-systems>
+</configuration>
