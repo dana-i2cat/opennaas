@@ -197,9 +197,11 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		try {
 			List<ActionResponse> responses = queueManager.execute();
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			log.error(e.getCause().getLocalizedMessage());
+
+			// e.printStackTrace();
+			// log.error(e.getMessage());
+			// log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 		// check if it is added
@@ -263,9 +265,7 @@ public class SimpleClientTest extends AbstractIntegrationTest {
 		ip.setIPv4Address(ipConfigured);
 		ip.setSubnetMask("255.255.255.0");
 		eth.addProtocolEndpoint(ip);
-		ArrayList params = new ArrayList();
-		params.add(eth);
-		return params;
+		return eth;
 
 	}
 
