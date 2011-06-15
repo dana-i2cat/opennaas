@@ -16,6 +16,15 @@
 	
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">		
+		<command name="protocols/info">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.InfoCommand" />
+		</command>
+		<command name="protocols/list">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListCommand" />
+		</command>
+		<command name="protocols/remove">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.RemoveCommand" />
+		</command>
 		<command name="protocols/add">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.AddCommand" />
 		</command>
