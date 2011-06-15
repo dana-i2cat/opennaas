@@ -70,7 +70,7 @@ public class ResourceRepositoryTest {
 
 			// check that the resource descriptor has been added to the resource
 			assertNotNull(resource.getResourceDescriptor());
-			resourceRepository.removeResource(descriptor.getId());
+
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());
 		}
@@ -80,14 +80,14 @@ public class ResourceRepositoryTest {
 	public void testModifyResource() {
 
 		try {
-			
+
 			resourceRepository.createResource(descriptor);
 
 			ResourceDescriptor descriptor2 = new ResourceDescriptor();
 			descriptor2.setCapabilityDescriptors(descriptor.getCapabilityDescriptors());
 
-			Information info = new Information("Mock", "Mock Resource WORKS", "1.0.0");
-			descriptor2.setInformation(info);
+			Information info1 = new Information("Mock", "Mock Resource WORKS", "1.0.0");
+			descriptor2.setInformation(info1);
 
 			assertNotNull(descriptor.getId());
 
