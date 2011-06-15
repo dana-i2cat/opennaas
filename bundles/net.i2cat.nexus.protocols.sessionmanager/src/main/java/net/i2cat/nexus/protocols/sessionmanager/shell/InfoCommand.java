@@ -43,6 +43,7 @@ public class InfoCommand extends GenericKarafCommand {
 
 		if (protocolSessionManager == null) {
 			printError("Wrong deviceId");
+			endcommand();
 			return null;
 		}
 
@@ -50,6 +51,7 @@ public class InfoCommand extends GenericKarafCommand {
 
 		if (protocolSession == null) {
 			printError("Unable to obtain a session with session id: " + sessionId);
+			endcommand();
 			return null;
 		}
 		printSymbol(horizontalSeparator);

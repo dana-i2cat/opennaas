@@ -45,6 +45,7 @@ public class ListCommand extends GenericKarafCommand {
 			for (String protocol : protocolManager.getAllSessionFactories()) {
 				printInfo(protocol);
 			}
+			endcommand();
 			return null;
 		}
 
@@ -59,6 +60,7 @@ public class ListCommand extends GenericKarafCommand {
 			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
 				printInfo(simpleTab + session);
 			}
+			endcommand();
 			return null;
 		}
 		if (verbose)
