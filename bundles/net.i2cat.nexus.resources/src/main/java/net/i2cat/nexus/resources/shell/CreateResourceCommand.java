@@ -13,6 +13,10 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
+
 import net.i2cat.nexus.resources.Activator;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -21,10 +25,6 @@ import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceManager;
 import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
@@ -117,7 +117,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		}
 		if (counter == 0) {
-			printInfo("Any resource have been created.");
+			printInfo("No resource has been created.");
 
 		} else {
 			printInfo("Created " + counter + " resource/s from " + totalFiles);
