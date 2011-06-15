@@ -80,6 +80,8 @@ public class ResourceRepositoryTest {
 	public void testModifyResource() {
 
 		try {
+			Information info = new Information("Mock", "Mock Resource 2", "1.0.0");
+			descriptor.setInformation(info);
 
 			resourceRepository.createResource(descriptor);
 
