@@ -52,6 +52,14 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		// For each argument path or URL
 		for (String filename : paths) {
 
+			// In windows, failing to specify double slash (\\) often result in random chars escaped to control chars.
+			if (filename.contains("\r")) {
+				printError("Malformed filename: " + filename + " (  ");
+				if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+					printInfo("You seem to be in windows. Are you using proper double escaped slashes? C:\\\\dir\\\\\file instead of C:\\dir\\file.");
+				continue;
+			}
+
 			File file = new File(filename);
 			// check if the argument path is a directory
 			// if it is, load all the descriptor files of the directory
@@ -86,13 +94,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 					printSymbol(underLine);
 				}
 			} else {
-				// In windows, failing to specify double slash (\\) often result in random chars escaped to control chars.
-				if (filename.contains("\r")) {
-					printError("Malformed filename: " + filename + " (  ");
-					if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
-						printInfo("You seem to be in windows. Are you using proper double escaped slashes? C:\\\\dir\\\\\file instead of C:\\dir\\file.");
-					continue;
-				}
 				if (!file.exists()) {
 					printError("File not found: " + filename);
 					continue;
@@ -124,11 +125,9 @@ public class CreateResourceCommand extends GenericKarafCommand {
 				}
 				printSymbol(underLine);
 			}
-
 		}
 		if (counter == 0) {
 			printInfo("No resource has been created.");
-
 		} else {
 			printInfo("Created " + counter + " resource/s from " + totalFiles + " descriptors.");
 		}
