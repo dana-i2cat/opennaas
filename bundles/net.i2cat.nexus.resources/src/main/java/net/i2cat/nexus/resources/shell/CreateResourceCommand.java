@@ -93,6 +93,10 @@ public class CreateResourceCommand extends GenericKarafCommand {
 						printInfo("You seem to be in windows. Are you using proper double escaped slashes? C:\\\\dir\\\\\file instead of C:\\dir\\file.");
 					continue;
 				}
+				if (!file.exists()) {
+					printError("File not found: " + filename);
+					continue;
+				}
 				if (filename.endsWith(".descriptor")) {
 					totalFiles++;
 					try {
@@ -108,7 +112,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 						printError(f);
 					} catch (FileNotFoundException f) {
 						printError("File not found: " + filename);
-
 					} catch (NullPointerException f) {
 						printError("The descriptor is not loaded " + filename);
 
