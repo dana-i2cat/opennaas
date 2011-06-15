@@ -44,7 +44,6 @@ public class ResourceRepositoryTest {
 		descriptor = new ResourceDescriptor();
 		Information info = new Information("Mock", "Mock Resource", "1.0.0");
 		descriptor.setInformation(info);
-		descriptor.setId("IT WORKS!!");
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 		capabilityDescriptor.setCapabilityInformation(new Information("MockCapability", "mock cpability factory", "1.0.0"));
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -71,7 +70,7 @@ public class ResourceRepositoryTest {
 
 			// check that the resource descriptor has been added to the resource
 			assertNotNull(resource.getResourceDescriptor());
-
+			resourceRepository.removeResource(descriptor.getId());
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());
 		}
@@ -81,6 +80,7 @@ public class ResourceRepositoryTest {
 	public void testModifyResource() {
 
 		try {
+			
 			resourceRepository.createResource(descriptor);
 
 			ResourceDescriptor descriptor2 = new ResourceDescriptor();
