@@ -15,13 +15,7 @@
 		interface="net.i2cat.nexus.resources.protocol.IProtocolManager" />
 	
 	<!-- Provide commands to the Karaf shell -->
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="nexus/listProtocolFactories">
-			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListProtocolFactoriesCommand" />
-		</command>
-		<command name="nexus/listDevices">
-			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListDevicesCommand" />
-		</command>					
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">		
 		<command name="protocols/add">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.AddCommand" />
 		</command>
