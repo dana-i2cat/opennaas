@@ -9,13 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class VelocityEngine {
 
@@ -23,8 +23,8 @@ public class VelocityEngine {
 
 	public static final String			PARAM_CONSTANT	= "param";
 
-	Logger								log				= LoggerFactory
-																.getLogger(VelocityEngine.class);
+	Log									log				= LogFactory
+																.getLog(VelocityEngine.class);
 
 	private static String				VELOCITY_PROPS	= "/velocity.properties";
 

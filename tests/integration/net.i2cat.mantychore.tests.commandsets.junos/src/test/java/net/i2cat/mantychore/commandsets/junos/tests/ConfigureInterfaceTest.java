@@ -12,12 +12,12 @@ import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class ConfigureInterfaceTest {
-	Logger				log					= LoggerFactory
-													.getLogger(ConfigureInterfaceTest.class);
+	Log			log					= LogFactory
+													.getLog(ConfigureInterfaceTest.class);
 
 	CommandTestsHelper	commandTestHelper	= new CommandTestsHelper(
 													newSessionContextNetconf());

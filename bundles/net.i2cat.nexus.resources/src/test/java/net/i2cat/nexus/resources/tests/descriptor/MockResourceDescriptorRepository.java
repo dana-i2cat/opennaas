@@ -7,35 +7,35 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.i2cat.nexus.persistence.GenericRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- * MockResourceDescriptorRepository
- * Mock class for resource descriptor saving
+ * MockResourceDescriptorRepository Mock class for resource descriptor saving
+ * 
  * @author knguyen
- *
+ * 
  */
 public class MockResourceDescriptorRepository implements GenericRepository<ResourceDescriptor, Long> {
-	
-    private static Logger logger = LoggerFactory.getLogger(MockResourceDescriptorRepository.class);
-    private EntityManagerFactory emFactory = null;
-    private EntityManager em = null;
+
+	private static Log				logger		= LogFactory.getLog(MockResourceDescriptorRepository.class);
+	private EntityManagerFactory	emFactory	= null;
+	private EntityManager			em			= null;
 
 	public MockResourceDescriptorRepository() throws ResourceException {
 		try {
-        	emFactory = Persistence.createEntityManagerFactory("ResourceCore-test");
-        	em = emFactory.createEntityManager();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new ResourceException("MockResourceDescriptorRepository could not be created");
-        }
+			emFactory = Persistence.createEntityManagerFactory("ResourceCore-test");
+			em = emFactory.createEntityManager();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new ResourceException("MockResourceDescriptorRepository could not be created");
+		}
 	}
-	
+
 	public int countAll() {
 		return 0;
 	}
@@ -74,14 +74,14 @@ public class MockResourceDescriptorRepository implements GenericRepository<Resou
 
 	public ResourceDescriptor save(ResourceDescriptor arg0) {
 		try {
-	        em.getTransaction().begin();
-	        em.persist(arg0);
-	        em.getTransaction().commit();
-        } catch (Exception ex) {
-            em.getTransaction().rollback();
-            logger.debug("Exception during saving ResourceDescriptor");
-            ex.printStackTrace();
-        }
+			em.getTransaction().begin();
+			em.persist(arg0);
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			logger.debug("Exception during saving ResourceDescriptor");
+			ex.printStackTrace();
+		}
 		return arg0;
 	}
 

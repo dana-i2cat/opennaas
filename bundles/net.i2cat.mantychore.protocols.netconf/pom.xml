@@ -32,9 +32,9 @@
 		    <groupId>commons-configuration</groupId>
 		    <artifactId>commons-configuration</artifactId>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>		

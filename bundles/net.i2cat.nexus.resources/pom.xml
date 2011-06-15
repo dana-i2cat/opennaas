@@ -40,17 +40,24 @@
 			<artifactId>net.i2cat.nexus.hibernate</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
+		<!-- 
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+		-->
 	</dependencies>
 
 	<build>
@@ -76,14 +83,19 @@
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.0.0</version>
 				<extensions>true</extensions>
-				<!-- | the following instructions build a simple set of public/private 
-					classes into an OSGi bundle -->
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>net.i2cat.nexus.resources</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
-						<!-- | assume public classes are in the top package, and private classes 
-							are under ".internal" -->
+						<Bundle-Version>${pom.version}</Bundle-Version>						
+						<Bundle-Activator>net.i2cat.nexus.resources.Activator</Bundle-Activator>
+						<!--
+							| assume public classes are in the top package, and private
+							classes are under ".internal"
+						-->
 						<Import-Package>
 							org.slf4j;version="1.5.6",
 							org.hibernate.proxy,

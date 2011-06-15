@@ -11,8 +11,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.i2cat.nexus.resourcemanager.soapendpoint.IResourceManagerSOAPEndpoint;
 import net.i2cat.nexus.resourcemanager.soapendpoint.ResourceData;
@@ -24,7 +22,8 @@ import net.i2cat.nexus.resources.capability.ICapabilityFactory;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /**
  * Test of the class ResourceManagerSOAPEndpoint
  * @author Ali LAHLOU (Synchromedia, ETS)
@@ -32,7 +31,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
  */
 public class ResourceManagerSOAPEndpointTest {
 	
-	Logger logger = LoggerFactory.getLogger(ResourceManagerSOAPEndpointTest.class);
+	Log logger = LogFactory.getLog(ResourceManagerSOAPEndpointTest.class);
 	//The client WebService
 	private IResourceManagerSOAPEndpoint client = null;
 	private static ResourceManager resourceManager = null;

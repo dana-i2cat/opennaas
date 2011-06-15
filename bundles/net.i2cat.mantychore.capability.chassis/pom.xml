@@ -49,12 +49,6 @@
 			<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 	</dependency>
-		
-	<dependency>
-		<groupId>net.i2cat.mantychore.commons</groupId>
-		<artifactId>net.i2cat.mantychore.commons</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</dependency>
 	
     <dependency>
 		<groupId>net.i2cat.mantychore.queuemanager</groupId>
@@ -66,32 +60,27 @@
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
   	</dependency>
-    <dependency>
-		<groupId>net.i2cat.mantychore.queuemanager</groupId>
-		<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</dependency>
-    <dependency>
-		<groupId>net.i2cat.mantychore.model</groupId>
-		<artifactId>net.i2cat.mantychore.model</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-	</dependency>
-
-
-
+  
    <!--  auxiliar methods  -->
    <dependency>
 		<groupId>net.i2cat.netconf</groupId>
 		<artifactId>netconf4j</artifactId>
    </dependency>
  
-   
+   	<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+			
+		</dependency>
   </dependencies>
 
   <build>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
 			</resource>
 		</resources>
 		<plugins>
@@ -120,7 +109,10 @@
 						-->
 						<Import-Package>!${project.artifactId}.*,
   							org.slf4j;version="1.5.6",
-							*</Import-Package>
+  							org.apache.activemq,
+							org.osgi.service.command,
+							*
+							</Import-Package>
 						<Export-Package>
 							${project.artifactId};version="${pom.version}"
 						</Export-Package>

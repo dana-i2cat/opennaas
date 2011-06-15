@@ -1,0 +1,3 @@
+<get-rollback-information>
+	<rollback>$param</rollback>
+</get-rollback-information>

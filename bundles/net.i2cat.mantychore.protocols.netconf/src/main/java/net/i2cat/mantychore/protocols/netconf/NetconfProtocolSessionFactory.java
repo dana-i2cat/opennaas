@@ -1,23 +1,22 @@
 package net.i2cat.mantychore.protocols.netconf;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class NetconfProtocolSessionFactory implements IProtocolSessionFactory {
 
 	/** The logger **/
-	Logger	logger	= LoggerFactory.getLogger(NetconfProtocolSessionFactory.class);
+	Log	log	= LogFactory.getLog(NetconfProtocolSessionFactory.class);
 
 	public NetconfProtocolSessionFactory() {
 		super();
-		logger.info("Netconf Protocol Session Factory created");
+		log.info("Netconf Protocol Session Factory created");
 	}
-
 
 	public IProtocolSession createProtocolSession(String sessionID, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		// TODO Auto-generated method stub

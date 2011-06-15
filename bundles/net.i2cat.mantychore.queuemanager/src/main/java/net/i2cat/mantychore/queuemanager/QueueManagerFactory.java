@@ -1,15 +1,26 @@
 package net.i2cat.mantychore.queuemanager;
 
-import java.util.List;
-
 import net.i2cat.nexus.resources.IResource;
+import net.i2cat.nexus.resources.capability.AbstractCapabilityFactory;
+import net.i2cat.nexus.resources.capability.CapabilityException;
+import net.i2cat.nexus.resources.capability.ICapability;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 
-public class QueueManagerFactory implements IQueueManagerFactory {
+public class QueueManagerFactory extends AbstractCapabilityFactory {
 
-	// TODO TO FIX, HOW WE CAN CALL ICAPABITIES OR QUEUEMANAGER
-	public QueueManager createQueueManager(List<String> actionIds,
-			IResource resource) {
-		return new QueueManager(actionIds, resource);
+	@Override
+	public ICapability create(IResource resource) throws CapabilityException {
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(QueueManager.QUEUE), resource
+				.getResourceDescriptor()
+					.getId());
+		capability.setResource(resource);
+		return capability;
+	}
+
+	@Override
+	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
+		return new QueueManager(capabilityDescriptor, resourceId);
+
 	}
 
 }

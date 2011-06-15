@@ -1,17 +1,17 @@
 package net.i2cat.nexus.protocols.sessionmanager.tests.mock;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MockProtocolSessionFactory implements IProtocolSessionFactory {
 
 	/** The logger **/
-	Logger	logger	= LoggerFactory.getLogger(MockProtocolSessionFactory.class);
+	Log	logger	= LogFactory.getLog(MockProtocolSessionFactory.class);
 
 	public MockProtocolSessionFactory() {
 		super();
@@ -20,6 +20,8 @@ public class MockProtocolSessionFactory implements IProtocolSessionFactory {
 
 	@Override
 	public IProtocolSession createProtocolSession(String sessionID, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
-		return new MockProtocolSession();
+		IProtocolSession session = new MockProtocolSession();
+		session.setSessionId(sessionID);
+		return session;
 	}
 }

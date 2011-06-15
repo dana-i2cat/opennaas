@@ -6,18 +6,16 @@ import java.util.List;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceIdentifier;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 @WebService
 public class ResourceManagerSOAPEndpoint implements IResourceManagerSOAPEndpoint {
-	Logger logger = LoggerFactory.getLogger(ResourceManagerSOAPEndpoint.class);
+	Log logger = LogFactory.getLog(ResourceManagerSOAPEndpoint.class);
     private IResourceManager resourceManager = null;
     
 	public ResourceManagerSOAPEndpoint(IResourceManager resourceManager) {

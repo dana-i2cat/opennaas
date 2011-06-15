@@ -14,31 +14,30 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * This class is used to define a capability. The ICapabilityFactory will use this
- * class to get the information it needs to instantiate the new capability.
+ * This class is used to define a capability. The ICapabilityFactory will use this class to get the information it needs to instantiate the new
+ * capability.
  * 
  * @author Mathieu Lemay (ITI)
  * 
  */
 @Entity
-public class CapabilityDescriptor
-{
+public class CapabilityDescriptor {
 
 	@Id
 	@GeneratedValue
-	private long id;
-	
+	private long						id;
+
 	/** Module Information */
 	@Embedded
-	private Information capabilityInformation;
+	private Information					capabilityInformation;
 
 	/** Capability Enabled Status **/
 	@Basic
-	private Boolean enabled;
+	private Boolean						enabled;
 
 	/** Configuration Properties for the capability **/
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<CapabilityProperty> capabilityProperties;
+	private List<CapabilityProperty>	capabilityProperties;
 
 	public CapabilityDescriptor() {
 		capabilityProperties = new ArrayList<CapabilityProperty>();
@@ -56,7 +55,7 @@ public class CapabilityDescriptor
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public void setCapabilityProperties(List<CapabilityProperty> properties) {
 		this.capabilityProperties = properties;
 	}
@@ -73,6 +72,7 @@ public class CapabilityDescriptor
 		this.capabilityInformation = capabilityInformation;
 	}
 
+	@XmlElement(name = "information")
 	public Information getCapabilityInformation() {
 		return capabilityInformation;
 	}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!--  parent parameters  -->
+	<parent>		
+		  <artifactId>itests-bundle-settings</artifactId>
+  			<groupId>net.i2cat.mantychore</groupId>
+  			<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+
+	<!--  POM id -->
+
+	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
+	<artifactId>net.i2cat.mantychore.tests.commandsKaraf</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<name>Mantychore commands Karaf Test</name>
+	<description>Mantychore commands Karaf Implementation test</description>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+<!--  		<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+		</dependency> -->
+	</dependencies>
+
+<!--  manage dependencies  -->
+	<build>
+		
+		<plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+            <!--
+                    By default, the Surefire Plugin will automatically include all test classes with the following wildcard patterns:
+                    "**/Test*.java" - includes all of its subdirectory and all java filenames that start with "Test". "**/*Test.java" -
+                    includes all of its subdirectory and all java filenames that end with "Test". "**/*TestCase.java" - includes all of
+                    its subdirectory and all java filenames that end with "TestCase".
+                -->
+		 </plugin>
+
+		<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+				<!--
+					| enable improved OSGi compilation support for the bundle
+					life-cycle. | to switch back to the standard bundle life-cycle,
+					move this setting | down to the maven-bundle-plugin section
+				-->
+				<extensions>true</extensions>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

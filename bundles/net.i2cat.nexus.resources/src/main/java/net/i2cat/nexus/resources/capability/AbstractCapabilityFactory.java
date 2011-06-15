@@ -4,30 +4,39 @@ import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.validation.CapabilityDescriptorValidator;
 import net.i2cat.nexus.resources.validation.ValidationException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
- * The AbstractCapabilityFactory is responsible for instantiating and
- * initializing new capabilities for a resource
+ * The AbstractCapabilityFactory is responsible for instantiating and initializing new capabilities for a resource
  * 
  * @author Mathieu Lemay
  * 
  */
-public abstract class AbstractCapabilityFactory implements ICapabilityFactory{
+public abstract class AbstractCapabilityFactory implements ICapabilityFactory {
 	/**
-	 * Validator object used to ensure that the capability descriptor has the
-	 * required information in it
+	 * Validator object used to ensure that the capability descriptor has the required information in it
 	 */
-	protected CapabilityDescriptorValidator validator = null;
+	protected CapabilityDescriptorValidator	validator	= null;
+
+	Log										log			= LogFactory.getLog(AbstractCapabilityFactory.class);
+
+	// FIXME Other method to has identified a factory??
+	private String							type		= "";
 
 	public ICapability create(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
 		ICapability capability = null;
 
-		try{
+		try {
+			log.debug("Validating capability descriptor...");
 			doCapabilityDescriptorValidation(capabilityDescriptor);
-		}catch(ValidationException ex){
+		} catch (ValidationException ex) {
 			throw new CapabilityException("Error creating capability", ex);
 		}
 
+		log.debug("Creating new Capability...");
 		capability = createCapability(capabilityDescriptor, resourceId);
+		log.debug("Created capability!");
 
 		return capability;
 	}
@@ -43,7 +52,7 @@ public abstract class AbstractCapabilityFactory implements ICapabilityFactory{
 			}
 		}
 	}
-	
+
 	/**
 	 * Creates a capability based on a capability descriptor and returns it.
 	 * 
@@ -60,4 +69,13 @@ public abstract class AbstractCapabilityFactory implements ICapabilityFactory{
 	public void setCapabilityDescriptorValidator(CapabilityDescriptorValidator validator) {
 		this.validator = validator;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 }

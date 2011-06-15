@@ -2,13 +2,13 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
+import net.i2cat.nexus.resources.IResourceIdentifier;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ResourceManager;
+import net.i2cat.nexus.resources.command.GenericKarafCommand;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.apache.karaf.shell.console.OsgiCommandSupport;
-
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.RegistryUtil;
 
 /**
  * Start one or more resources
@@ -17,43 +17,51 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * 
  */
 @Command(scope = "resource", name = "start", description = "Start one or more resources")
-public class StartResourceCommand extends OsgiCommandSupport {
+public class StartResourceCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resource ids", description = "A space delimited list of resource ids to be started", required = true, multiValued = true)
-	private List<String> resourceIDs;
+	@Argument(index = 0, name = "resourceType:resourceName", description = "A space delimited list of resource type:name to be started", required = true, multiValued = true)
+	private List<String>	resourceIDs;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		log.debug("Executing resource start shell command");
+		initcommand("resource start");
 
 		try {
-			IResourceManager manager = getResourceManager();
-			List<IResource> resources = manager.listResources();
-
+			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
-				// Must loop over all of the resources to find the
-				// ResourceIdentifier that matches the resource ID
-				for (IResource resource : resources) {
-					if (resource.getResourceIdentifier().getId().equals(id)) {
-						System.out.println("Starting Resource: "
-								+ resource.getResourceDescriptor().getId() + ", "
-								+ resource.getResourceDescriptor().getInformation().toString());
-						manager.startResource(resource.getResourceIdentifier());
+
+				if (!splitResourceName(id))
+					return null;
+
+				IResourceIdentifier identifier = null;
+				try {
+					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					if (identifier != null) {
+						printInfo("Starting Resource: "
+								+ args[1]);
+						manager.startResource(identifier);
+						counter++;
+						printInfo("Resource " + args[1] + " started.");
+					} else {
+						printError("The resource " + args[1] +
+										" is not found on repository.");
 					}
+				} catch (ResourceException e) {
+					printError(e);
+					printError("Didn't started the resource " + args[1] + ". ");
+
 				}
+
+				printSymbol(horizontalSeparator);
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+			printInfo("Started " + counter + " resource/s from " + resourceIDs.size());
 
+		} catch (Exception e) {
+			printError("An error occurred starting the resource.");
+			printError(e);
+		}
+		endcommand();
 		return null;
-	}
 
-	private IResourceManager getResourceManager() throws Exception {
-		IResourceManager resourceManager = (IResourceManager) RegistryUtil.getServiceFromRegistry(
-				getBundleContext(), IResourceManager.class.getName());
-
-		return resourceManager;
 	}
 }

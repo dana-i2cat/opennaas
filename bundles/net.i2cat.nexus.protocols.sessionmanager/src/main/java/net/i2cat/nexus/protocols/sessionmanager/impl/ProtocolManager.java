@@ -5,27 +5,24 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolManager;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class ProtocolManager implements IProtocolManager {
 
-	private final Logger							logger				= LoggerFactory
-																				.getLogger(ProtocolManager.class);
+	private final Log								log					= LogFactory.getLog(ProtocolManager.class);
 
 	private Map<String, IProtocolSessionManager>	sessionManagers		= null;
 
 	/**
-	 * Stores the protocolFactories present in the platform, indexed by the
-	 * protocol id
+	 * Stores the protocolFactories present in the platform, indexed by the protocol id
 	 */
 	private Map<String, IProtocolSessionFactory>	protocolFactories	= null;
 
@@ -34,39 +31,32 @@ public class ProtocolManager implements IProtocolManager {
 		protocolFactories = new HashMap<String, IProtocolSessionFactory>();
 	}
 
-	public synchronized String createProtocolSessionManager(String deviceID)
-			throws ProtocolException {
-		if (deviceID == null) {
-			deviceID = UUID.randomUUID().toString();
+	private synchronized String createProtocolSessionManager(String resourceID) throws ProtocolException {
+
+		if (sessionManagers.containsKey(resourceID)) {
+			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
 		}
 
-		if (sessionManagers.containsKey(deviceID)) {
-			throw new ProtocolException(
-					"This deviceID is already associated to an existing ProtocolSessionManager");
-		}
-
-		ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(
-				deviceID);
+		ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceID);
 		protocolSessionManager.setProtocolManager(this);
-		sessionManagers.put(deviceID, protocolSessionManager);
-		return deviceID;
+
+		sessionManagers.put(resourceID, protocolSessionManager);
+
+		return resourceID;
 	}
 
-	public synchronized void destroyProtocolSessionManager(String deviceID)
-			throws ProtocolException {
-		if (deviceID == null) {
+	public synchronized void destroyProtocolSessionManager(String resourceID) throws ProtocolException {
+		if (resourceID == null) {
 			throw new ProtocolException("deviceID is null");
 		}
 
-		if (!sessionManagers.containsKey(deviceID)) {
-			throw new ProtocolException(
-					"This deviceID is already associated to an existing ProtocolSessionManager");
+		if (!sessionManagers.containsKey(resourceID)) {
+			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
 		}
 
-		IProtocolSessionManager protocolSessionManager = sessionManagers
-				.remove(deviceID);
-		Iterator<String> iterator = protocolSessionManager
-				.getAllProtocolSessions().iterator();
+		IProtocolSessionManager protocolSessionManager = sessionManagers.remove(resourceID);
+		Iterator<String> iterator = protocolSessionManager.getAllProtocolSessionIds().iterator();
+
 		while (iterator.hasNext()) {
 			try {
 				protocolSessionManager.destroyProtocolSession(iterator.next());
@@ -76,21 +66,41 @@ public class ProtocolManager implements IProtocolManager {
 		}
 	}
 
-	public synchronized IProtocolSessionManager getProtocolSessionManager(
-			String deviceID) throws ProtocolException {
-		if (deviceID == null) {
+	public synchronized IProtocolSessionManager getProtocolSessionManagerWithContext(String resourceId, ProtocolSessionContext context)
+			throws ProtocolException {
+		if (resourceId == null) {
 			throw new ProtocolException("deviceID is null");
 		}
 
-		if (!sessionManagers.containsKey(deviceID)) {
-			throw new ProtocolException(
-					"This deviceID is already associated to an existing ProtocolSessionManager");
-		}
+		if (!sessionManagers.containsKey(resourceId)) {
+			log.debug("No existing ProtocolSessionManager for resource " + resourceId + ". Creating one...");
 
-		return sessionManagers.get(deviceID);
+			ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceId);
+			protocolSessionManager.setProtocolManager(this);
+			protocolSessionManager.registerContext(context);
+
+			sessionManagers.put(resourceId, protocolSessionManager);
+		}
+		return sessionManagers.get(resourceId);
+
 	}
 
-	public List<String> getAllDeviceIds() {
+	public synchronized IProtocolSessionManager getProtocolSessionManager(String resourceId) throws ProtocolException {
+		if (resourceId == null) {
+			throw new ProtocolException("deviceID is null");
+		}
+
+		if (!sessionManagers.containsKey(resourceId)) {
+			log.debug("No existing ProtocolSessionManager for resource " + resourceId + ". Creating one...");
+
+			// FIXME in the near future, a check to ResourceManager should be done here to avoid creating PSM for resources that don't exist.
+			createProtocolSessionManager(resourceId);
+		}
+
+		return sessionManagers.get(resourceId);
+	}
+
+	public List<String> getAllResourceIds() {
 		Iterator<String> iterator = sessionManagers.keySet().iterator();
 		List<String> result = new ArrayList<String>();
 		while (iterator.hasNext()) {
@@ -100,7 +110,11 @@ public class ProtocolManager implements IProtocolManager {
 		return result;
 	}
 
-	public List<String> getAllProtocolFactories() {
+	/*
+	 * SESSION FACTORIES
+	 */
+
+	public List<String> getAllSessionFactories() {
 		Iterator<String> iterator = protocolFactories.keySet().iterator();
 		List<String> result = new ArrayList<String>();
 		while (iterator.hasNext()) {
@@ -110,53 +124,48 @@ public class ProtocolManager implements IProtocolManager {
 		return result;
 	}
 
-	/**
-	 * Called by blueprint every time a sessionFactory is registered in the OSGi
-	 * repository
-	 * 
-	 * @param serviceInstance
-	 * @param serviceProperties
-	 */
-	public void sessionFactoryAdded(IProtocolSessionFactory serviceInstance,
-			Map serviceProperties) {
-		if (serviceInstance != null && serviceProperties != null) {
-			logger.debug("New protocol session factory added for protocols: "
-					+ serviceProperties.get(ProtocolSessionContext.PROTOCOL));
-			protocolFactories.put((String) serviceProperties
-					.get(ProtocolSessionContext.PROTOCOL), serviceInstance);
-		}
-	}
-
-	/**
-	 * Called by blueprint every time a sessionFactory is unregistered from the
-	 * OSGi repository
-	 * 
-	 * @param serviceInstance
-	 * @param serviceProperties
-	 */
-	public void sessionFactoryRemoved(IProtocolSessionFactory serviceInstance,
-			Map serviceProperties) {
-		if (serviceInstance != null && serviceProperties != null) {
-			logger.debug("Existing protocol session factory removed :"
-					+ serviceInstance.toString() + " "
-					+ serviceProperties.get(ProtocolSessionContext.PROTOCOL));
-			protocolFactories.remove(serviceProperties
-					.get(ProtocolSessionContext.PROTOCOL));
-		}
-	}
-
-	public synchronized IProtocolSessionFactory getSessionFactory(
-			String protocol) throws ProtocolException {
+	protected synchronized IProtocolSessionFactory getSessionFactory(String protocol) throws ProtocolException {
 		if (protocol == null) {
 			throw new ProtocolException("Protocol is null");
 		}
 
 		if (!protocolFactories.containsKey(protocol)) {
-			throw new ProtocolException(
-					"Could not find a session factory associated to the "
-							+ protocol + " protocol");
+			throw new ProtocolException("Could not find a session factory associated to the " + protocol + " protocol");
 		}
 
 		return protocolFactories.get(protocol);
 	}
+
+	/*
+	 * BLUEPRINT LISTENERS
+	 */
+
+	/**
+	 * Called by blueprint every time a sessionFactory is registered in the OSGi repository
+	 * 
+	 * @param serviceInstance
+	 * @param serviceProperties
+	 */
+	public void sessionFactoryAdded(IProtocolSessionFactory serviceInstance, Map serviceProperties) {
+		if (serviceInstance != null && serviceProperties != null) {
+			log.debug("New protocol session factory added for protocols: " + serviceProperties.get(ProtocolSessionContext.PROTOCOL));
+			protocolFactories.put((String) serviceProperties.get(ProtocolSessionContext.PROTOCOL), serviceInstance);
+		}
+	}
+
+	/**
+	 * Called by blueprint every time a sessionFactory is unregistered from the OSGi repository
+	 * 
+	 * @param serviceInstance
+	 * @param serviceProperties
+	 */
+	public void sessionFactoryRemoved(IProtocolSessionFactory serviceInstance, Map serviceProperties) {
+		if (serviceInstance != null && serviceProperties != null) {
+			log.debug("Existing protocol session factory removed :"
+					+ serviceInstance.toString() + " "
+					+ serviceProperties.get(ProtocolSessionContext.PROTOCOL));
+			protocolFactories.remove(serviceProperties.get(ProtocolSessionContext.PROTOCOL));
+		}
+	}
+
 }

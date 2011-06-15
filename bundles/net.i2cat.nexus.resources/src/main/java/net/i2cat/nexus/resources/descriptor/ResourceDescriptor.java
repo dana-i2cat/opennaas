@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,15 +16,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.CollectionOfElements;
 
 /**
- * Resource Descriptor with JPA and JAXB annotations to provide both persistence
- * and XML marshaling capabilities.
+ * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
  * 
  * @author Mathieu Lemay (ITI)
  * 
  */
 @XmlRootElement
 @Entity
-@org.hibernate.annotations.NamedQueries({ @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
+@org.hibernate.annotations.NamedQueries( { @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
 	private static final long			serialVersionUID	= -8571009012048021984L;
@@ -36,6 +36,9 @@ public class ResourceDescriptor {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CapabilityDescriptor>	capabilityDescriptors;
+
+	@Basic
+	private String						profileId			= "";
 
 	/**
 	 * necessary parameter to configure a ssh connection
@@ -89,4 +92,20 @@ public class ResourceDescriptor {
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
 	}
+
+	public String getProfileId() {
+		return profileId;
+	}
+
+	public void setProfileId(String profileId) {
+		this.profileId = profileId;
+	}
+
+	// public ManagedElement getModel() {
+	// return model;
+	// }
+	//
+	// public void setModel(ManagedElement model) {
+	// this.model = model;
+	// }
 }

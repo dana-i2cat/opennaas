@@ -44,6 +44,7 @@ public class ManagedElement implements Serializable {
 		List<Association> assocs = new LinkedList<Association>();
 
 		for (Association assoc : toAssociations) {
+
 			if (clazz.isInstance(assoc))
 				assocs.add(assoc);
 		}
@@ -61,6 +62,7 @@ public class ManagedElement implements Serializable {
 	public Association getFirstToAssociationsByType(Class<? extends Association> clazz) {
 
 		for (Association assoc : toAssociations) {
+
 			if (clazz.isInstance(assoc))
 				return assoc;
 		}
@@ -78,8 +80,8 @@ public class ManagedElement implements Serializable {
 
 	public List<? extends ManagedElement> getToAssociatedElementsByType(Class<? extends Association> clazz) {
 		List<ManagedElement> elements = new LinkedList<ManagedElement>();
-
 		for (Association assoc : toAssociations) {
+
 			if (clazz.isInstance(assoc))
 				elements.add(assoc.getTo());
 		}

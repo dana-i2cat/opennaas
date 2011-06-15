@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resourceDescriptor>
+	<capabilityDescriptors>
+		<capabilityProperty value="chassis" name="type">
+			<id>1</id>
+		</capabilityProperty>
+		<id>1</id>
+		<information>
+			<description>Chassis capability for junos</description>
+			<name>chassis capability</name>
+			<type>chassis</type>
+			<version>1.0.0</version>
+		</information>
+	</capabilityDescriptors>
+	<id>JunosM20</id>
+	<information>
+		<description>This is a full description of the Junos router</description>
+		<name>Junos M20 Xsf</name>
+		<type>router</type>
+		<version>1.0.0</version>
+	</information>
+	<properties/>
+</resourceDescriptor>

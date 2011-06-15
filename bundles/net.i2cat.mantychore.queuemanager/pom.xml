@@ -26,30 +26,14 @@
 	<!--  it will be necessary to change the place the  -->
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.commons</groupId>
-			<artifactId>net.i2cat.mantychore.commons</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.actionsets</groupId>
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>net.i2cat.netconf</groupId>
-			<artifactId>netconf4j</artifactId>
-		</dependency>
-			
+		</dependency>					
 	</dependencies>
 
 	<build>

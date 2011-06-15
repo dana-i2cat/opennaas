@@ -5,25 +5,31 @@
 	<bean id="protocolManager" class="net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager" />
 
 	<!-- Listen for registration / deregistration of IProtocolSessionFactory services -->
-	<reference-list interface="net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory" availability="optional">
+	<reference-list interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory" availability="optional">
 		<reference-listener ref="protocolManager"
 			bind-method="sessionFactoryAdded" unbind-method="sessionFactoryRemoved" />
 	</reference-list>
 
 	<!-- Register a ProtocolManager as an OSGi Service -->
 	<service ref="protocolManager"
-		interface="net.i2cat.nexus.protocols.sessionmanager.IProtocolManager" />
+		interface="net.i2cat.nexus.resources.protocol.IProtocolManager" />
 	
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="protocols/info">
-			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.InfoCommand" />
+		<command name="nexus/listProtocolFactories">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListProtocolFactoriesCommand" />
 		</command>
-		<command name="protocols/list">
-			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListCommand" />
+		<command name="nexus/listDevices">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListDevicesCommand" />
+		</command>					
+		<command name="protocols/add">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.AddCommand" />
 		</command>
-		<command name="protocols/remove">
-			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.RemoveCommand" />
+		<command name="protocols/purge">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.PurgeCommand" />
+		</command>
+		<command name="protocols/context">
+			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ContextCommand" />
 		</command>
 	</command-bundle>
 </blueprint>

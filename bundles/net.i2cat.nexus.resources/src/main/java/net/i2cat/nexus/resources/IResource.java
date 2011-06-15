@@ -6,6 +6,7 @@ import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.profile.IProfile;
 
 /**
  * The top level resource interface
@@ -73,18 +74,30 @@ public interface IResource extends ILifecycle {
 	public ICapability getCapability(Information information);
 
 	/**
-	 * Start the Resource. The resource must already be instantiated and in the
-	 * initialized state. This method will perform the necessary bootstrapping
-	 * to transistion from INITIALIZED to ACTIVE State
+	 * Start the Resource. The resource must already be instantiated and in the initialized state. This method will perform the necessary
+	 * bootstrapping to transistion from INITIALIZED to ACTIVE State
+	 * 
+	 * @throws CorruptStateException
 	 */
-	public void start() throws ResourceException;
+	public void start() throws ResourceException, CorruptStateException;
 
 	/**
 	 * Stop the resource. This method will transition to the SHUTDOWN State
+	 * 
+	 * @throws CorruptStateException
 	 */
-	public void stop() throws ResourceException;
+	public void stop() throws ResourceException, CorruptStateException;
 
 	public void setModel(ManagedElement model);
 
 	public ManagedElement getModel();
+
+	public IProfile getProfile();
+
+	public void setProfile(IProfile profile);
+
+	public IResourceBootstrapper getBootstrapper();
+
+	public void setBootstrapper(IResourceBootstrapper bootstrapper);
+
 }

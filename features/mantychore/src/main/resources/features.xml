@@ -62,23 +62,49 @@
 		-->
 		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.1-SNAPSHOT</bundle>
 	</feature>
-	<feature name="i2cat-mantychore-core" version="1.0.0-SNAPSHOT">
-		<feature version="1.0.0-SNAPSHOT">i2cat-nexus</feature>
-		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-deps</feature>
-		<bundle>mvn:net.i2cat.mantychore.commons/net.i2cat.mantychore.commons/1.0.0-SNAPSHOT
-		</bundle>
+
+
+
+	<feature name="i2cat-mantychore-Base" version="1.0.0-SNAPSHOT">
+		<!--
+			<bundle>mvn:net.i2cat.mantychore.commons/net.i2cat.mantychore.commons/1.0.0-SNAPSHOT
+			</bundle>
+		-->
 		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/1.0.0-SNAPSHOT
 		</bundle>
 		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT
 		</bundle>
-		<!--
-			<bundle>mvn:net.i2cat.mantychore.commandsets/net.i2cat.mantychore.commandsets.junos/1.0.0-SNAPSHOT</bundle>
-		-->
 		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/1.0.0-SNAPSHOT
+		</bundle>
+		<bundle>mvn:net.i2cat.mantychore.fragment/net.i2cat.mantychore.fragment.velocity/1.0.0-SNAPSHOT
 		</bundle>
 		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/1.0.0-SNAPSHOT
 		</bundle>
 		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.chassis/1.0.0-SNAPSHOT
 		</bundle>
+
 	</feature>
+
+
+	<feature name="i2cat-mantychore-Repo" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository/1.0.0-SNAPSHOT
+		</bundle>
+
+	</feature>
+	<feature name="i2cat-nexus-testprofile" version="1.0.0-SNAPSHOT">		
+		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/1.0.0-SNAPSHOT
+		</bundle>
+	</feature>
+	
+
+	<feature name="i2cat-mantychore-core" version="1.0.0-SNAPSHOT">
+		<feature version="1.0.0-SNAPSHOT">i2cat-nexus</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-deps</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-Base</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-Repo</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
+	</feature>
+	
+
+
 </features>

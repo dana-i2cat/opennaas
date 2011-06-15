@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resourceDescriptor>
+	<capabilityDescriptors>
+		<capabilityProperty value="value" name="name">
+			<id>1</id>
+		</capabilityProperty>
+		<id>1</id>
+		<information>
+			<description>Chassis capability for junos</description>
+			<name>ChassisCapability</name>
+			<type>ChassisCapabilityFactory</type>
+			<version>1.0.0</version>
+		</information>
+	</capabilityDescriptors>
+	<id>Junos</id>
+	<information>
+		<description>Test</description>
+		<name>JunosResource</name>
+		<type>router</type>
+		<version>1.0.0</version>
+	</information>
+	<properties/>
+</resourceDescriptor>

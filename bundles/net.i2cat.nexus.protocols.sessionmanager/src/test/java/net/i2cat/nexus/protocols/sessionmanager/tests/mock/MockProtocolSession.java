@@ -1,36 +1,32 @@
 package net.i2cat.nexus.protocols.sessionmanager.tests.mock;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MockProtocolSession implements IProtocolSession {
-	static Logger					log	= LoggerFactory
-												.getLogger(MockProtocolSession.class);
+	static Log						log			= LogFactory.getLog(MockProtocolSession.class);
 
 	private ProtocolSessionContext	protocolSessionContext;
 
+	String							sessionId	= "mockEmptyID";
+
 	public MockProtocolSession() {
-		protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "mock");
-		protocolSessionContext.addParameter("protocol.uri", "mock://foo:bar@foo:22/mock");
 	}
 
 	@Override
 	public void asyncSend(Object arg0) throws ProtocolException {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void connect() throws ProtocolException {
 		log.info("Connecting...");
-
 	}
 
 	@Override
@@ -43,21 +39,19 @@ public class MockProtocolSession implements IProtocolSession {
 		return protocolSessionContext;
 	}
 
+	@Override
 	public void setSessionContext(ProtocolSessionContext protocolSessionContext) {
 		this.protocolSessionContext = protocolSessionContext;
-
 	}
 
 	@Override
-	public String getSessionID() {
-		// TODO Auto-generated method stub
-		return "mockID";
+	public String getSessionId() {
+		return sessionId;
 	}
 
 	@Override
 	public Status getStatus() {
-		// TODO Auto-generated method stub
-		return null;
+		return Status.CONNECTED;
 	}
 
 	@Override
@@ -67,13 +61,15 @@ public class MockProtocolSession implements IProtocolSession {
 
 	@Override
 	public void registerProtocolSessionListener(IProtocolSessionListener arg0, IProtocolMessageFilter arg1, String arg2) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void unregisterProtocolSessionListener(IProtocolSessionListener arg0, String arg1) {
-		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 
 	}
 }

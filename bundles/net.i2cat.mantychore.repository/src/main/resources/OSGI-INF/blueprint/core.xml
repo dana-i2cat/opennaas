@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="mantychoreBootstrapperFactory"
+		class="net.i2cat.mantychore.repository.MantychoreBootstrapperFactory" />
+
+	<!-- Get capability factories from the OSGi registry -->
+	<!--
+		<reference-list id="capabilityFactory"
+		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		availability="mandatory"> <reference-listener
+		ref="mantychoreRepository" bind-method="capabilityFactoryAdded"
+		unbind-method="capabilityFactoryDeleted" /> </reference-list>
+	-->
+
+
+	<reference id="chassisCapabilityFactory"
+		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		filter="(&amp;(capability=chassis)(capability.model=junos))" />
+	<reference id="queueCapabilityFactory"
+		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		filter="(&amp;(capability=queue)(capability.model=junos))" />
+
+	<bean id="mantychoreRepository" class="net.i2cat.mantychore.repository.MantychoreRepository"
+		init-method="init">
+		<argument value="router" />
+		<argument value="ResourceCore" />
+		<property name="capabilityFactories">
+			<map>
+				<entry key="chassis" value-ref="chassisCapabilityFactory" />
+				<entry key="queue" value-ref="queueCapabilityFactory" />
+			</map>
+		</property>
+		<property name="resourceBootstrapperFactory" ref="mantychoreBootstrapperFactory" />
+		<property name="persistenceUnit" value="ResourceCore" />
+		
+	</bean>
+
+	<service ref="mantychoreRepository" interface="net.i2cat.nexus.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="router" />
+			<entry key="version" value="1.0.0" />
+		</service-properties>
+	</service>
+
+</blueprint>

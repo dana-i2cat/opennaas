@@ -2,41 +2,79 @@ package net.i2cat.nexus.protocols.sessionmanager.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession.Status;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionManager;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-public class ProtocolSessionManager implements IProtocolSessionManager,
-		IProtocolSessionListener, IProtocolMessageFilter {
+public class ProtocolSessionManager implements IProtocolSessionManager, IProtocolSessionListener, IProtocolMessageFilter {
 
-	private String								deviceID				= null;
-	private Map<String, ProtocolPooled>			protocolSessions		= null;
-	private Map<String, ProtocolSessionContext>	protocolSessionContexts	= null;
+	private String								resourceID				= null;
+	private Map<String, ProtocolPooled>			liveSessions			= null;
+	private Map<String, ProtocolSessionContext>	liveSessionContexts		= null;
+	private Map<String, ProtocolSessionContext>	registeredContexts		= null;
 	private List<String>						lockedProtocolSessions	= null;
 	private ProtocolManager						protocolManager			= null;
 
-	Logger										log						= LoggerFactory
-																				.getLogger(ProtocolSessionManager.class);
+	Log											log						= LogFactory.getLog(ProtocolSessionManager.class);
+
+	// TODO get this from the configuration
+	private static long							expirationTime			= 3000 * 1000;										// milis
+
+	class ProtocolPooled {
+		private long				lastUsed;
+		private IProtocolSession	session;
+
+		private Lock				lock;
+
+		public ProtocolPooled(IProtocolSession protocolSession, long time) {
+			this.lastUsed = time;
+			this.session = protocolSession;
+
+			lock = new java.util.concurrent.locks.ReentrantLock();
+		}
+
+		public void setProtocolSession(IProtocolSession session) {
+			this.session = session;
+		}
+
+		public IProtocolSession getProtocolSession() {
+			return session;
+		}
+
+		public void setLastUsed(long time) {
+			this.lastUsed = time;
+		}
+
+		public long getLastUsed() {
+			return lastUsed;
+		}
+
+		public Lock getLock() {
+			return lock;
+		}
+
+	}
 
 	public ProtocolSessionManager(String deviceID) {
-		this.deviceID = deviceID;
-		this.protocolSessions = new HashMap<String, ProtocolPooled>();
-		this.protocolSessionContexts = new HashMap<String, ProtocolSessionContext>();
+		this.resourceID = deviceID;
+		this.liveSessions = new HashMap<String, ProtocolPooled>();
+		this.liveSessionContexts = new HashMap<String, ProtocolSessionContext>();
+		this.registeredContexts = new HashMap<String, ProtocolSessionContext>();
 		this.lockedProtocolSessions = new ArrayList<String>();
 	}
 
@@ -44,221 +82,245 @@ public class ProtocolSessionManager implements IProtocolSessionManager,
 		this.protocolManager = protocolManager;
 	}
 
-	public synchronized String createProtocolSession(
-			ProtocolSessionContext protocolSessionContext)
-			throws ProtocolException {
+	public String getResourceID() {
+		return resourceID;
+	}
+
+	public Set<String> getAllProtocolSessionIds() {
+		return liveSessions.keySet();
+	}
+
+	public Map<String, ProtocolSessionContext> getRegisteredProtocolSessionContexts() {
+		return registeredContexts;
+	}
+
+	/**
+	 * Get the miliseconds since this session was last released.
+	 * 
+	 * @param sessionIds
+	 * @return System.currentTimeMillis() snapshot taken when released.
+	 */
+	public long getSessionlastUsed(String sessionIds) {
+		// This function is a bit bad placed, but saves us from having a lastUsed field in the IProtocolSession implementations, which are potentially
+		// done by third parties.
+		return liveSessions.get(sessionIds).getLastUsed();
+	}
+
+	private synchronized IProtocolSession createProtocolSession(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+
 		long now = System.currentTimeMillis();
 
-		String protocol = (String) protocolSessionContext
-				.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
-		IProtocolSessionFactory protocolFactory = protocolManager
-				.getSessionFactory(protocol);
+		String protocol = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
+		IProtocolSessionFactory protocolFactory = protocolManager.getSessionFactory(protocol);
 		String sessionID = UUID.randomUUID().toString();
-		IProtocolSession protocolSession = protocolFactory
-				.createProtocolSession(sessionID, protocolSessionContext);
+		IProtocolSession protocolSession = protocolFactory.createProtocolSession(sessionID, protocolSessionContext);
 
-		/* Active listener */
+		// Don't trust Factory implementations to do this.
+		protocolSession.setSessionId(sessionID);
+		protocolSession.setSessionContext(protocolSessionContext);
+
+		/* Activate listener */
 		protocolSession.registerProtocolSessionListener(this, this, sessionID);
-		protocolSessions.put(sessionID,
-				new ProtocolPooled(protocolSession, now));
-		protocolSessionContexts.put(sessionID, protocolSessionContext);
+		liveSessions.put(sessionID, new ProtocolPooled(protocolSession, now));
+		liveSessionContexts.put(sessionID, protocolSessionContext);
 		protocolSession.connect();
 
-		return sessionID;
+		return protocolSession;
 	}
 
-	private synchronized String getProtocolSession(
-			ProtocolSessionContext protocolSessionContext)
-			throws ProtocolException {
-		if (protocolSessionContext == null) {
-			throw new ProtocolException(
-					"The protocol session context provided is null");
-		}
-
-		Iterator<Entry<String, ProtocolSessionContext>> iterator = protocolSessionContexts
-				.entrySet().iterator();
-		Entry<String, ProtocolSessionContext> entry = null;
-
-		while (iterator.hasNext()) {
-			entry = iterator.next();
-			if (entry.getValue().equals(protocolSessionContext)) {
-				return entry.getKey();
-			}
-		}
-
-		// FIXME EXIST A BETTER OPTION??
-		return null;
-	}
-
-	public synchronized void destroyProtocolSession(String sessionID)
-			throws ProtocolException {
+	public synchronized void destroyProtocolSession(String sessionID) throws ProtocolException {
 		if (sessionID == null) {
 			throw new ProtocolException("The session ID provided is null");
 		}
 
-		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException(
-					"There is no existing session with this ID");
+		if (!liveSessions.containsKey(sessionID)) {
+			throw new ProtocolException("There is no existing session with this ID: " + sessionID);
 		}
 
-		if (lockedProtocolSessions.contains(sessionID)) {
-			// TODO what to do if the session is locked? It means is in use by
-			// someone, should we throw an
-			// exception or let the close proceed?
-		}
+		lockProtocolSession(sessionID);
 
-		IProtocolSession protocolSession = protocolSessions.get(sessionID)
-				.getProtocolSession();
+		IProtocolSession protocolSession = liveSessions.get(sessionID).getProtocolSession();
 
 		/* disconnect the session */
 		if (protocolSession.getStatus().equals(Status.CONNECTED)) {
 			protocolSession.disconnect();
 		}
 
-		protocolSessions.remove(sessionID);
-		protocolSessionContexts.remove(sessionID);
-		protocolSession.registerProtocolSessionListener(this, this, sessionID);
-
-	}
-
-	public Set<String> getAllProtocolSessions() {
-		return protocolSessions.keySet();
-	}
-
-	public String getDeviceID() {
-		return deviceID;
-	}
-
-	public synchronized IProtocolSession getProtocolSession(String sessionID,
-			boolean lock) throws ProtocolException {
-		if (sessionID == null) {
-			throw new ProtocolException("The session ID provided is null");
-		}
-
-		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException(
-					"There is no existing session with this ID");
-		}
-
-		if (lockedProtocolSessions.contains(sessionID)) {
-			throw new ProtocolException(
-					"The session identified by this sessionID is currently locked");
-		}
-
-		if (lock) {
-			lockedProtocolSessions.add(sessionID);
-		}
-
-		return protocolSessions.get(sessionID).getProtocolSession();
-	}
-
-	public synchronized void returnProtocolSession(String sessionID)
-			throws ProtocolException {
-		if (sessionID == null) {
-			throw new ProtocolException("The session ID provided is null");
-		}
-
-		if (!protocolSessions.containsKey(sessionID)) {
-			throw new ProtocolException(
-					"There is no existing session with this ID");
-		}
-
-		if (!lockedProtocolSessions.contains(sessionID)) {
-			throw new ProtocolException(
-					"The session identified by this sessionID is not locked currently");
-		}
+		liveSessions.remove(sessionID);
+		liveSessionContexts.remove(sessionID);
+		protocolSession.unregisterProtocolSessionListener(this, sessionID);
 
 		lockedProtocolSessions.remove(sessionID);
 	}
 
-	class ProtocolPooled {
-		private long				timeToExpire;
-		private IProtocolSession	protocolSession;
+	public void registerContext(ProtocolSessionContext context) throws ProtocolException {
 
-		public ProtocolPooled(IProtocolSession protocolSession,
-				long timeToExpire) {
-			this.setTimeToExpire(timeToExpire);
-			this.setProtocolSession(protocolSession);
-		}
+		// ignore returned object, we do this for the throw.
+		protocolManager.getSessionFactory((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
 
-		public void setProtocolSession(IProtocolSession protocolSession) {
-			this.protocolSession = protocolSession;
-		}
-
-		public IProtocolSession getProtocolSession() {
-			return protocolSession;
-		}
-
-		public void setTimeToExpire(long timeToExpire) {
-			this.timeToExpire = timeToExpire;
-		}
-
-		public long getTimeToExpire() {
-			return timeToExpire;
-		}
-
+		registeredContexts.put((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL), context);
 	}
 
-	private static long	expirationTime	= 3000 * 1000;	// 1000 (1 milisec)
+	public void unregisterContext(String protocol) {
+		registeredContexts.remove(protocol);
+	}
 
-	public synchronized String checkOut(
-			ProtocolSessionContext protocolSessionContext)
-			throws ProtocolException {
+	public synchronized boolean isLocked(String sessionId) throws ProtocolException {
+
+		if (sessionId == null) {
+			throw new ProtocolException("The session ID provided is null");
+		}
+
+		if (!liveSessions.containsKey(sessionId)) {
+			throw new ProtocolException("There is no existing session with ID: " + sessionId);
+		}
+
+		ProtocolPooled pooled = liveSessions.get(sessionId);
+
+		return ((ReentrantLock) pooled.getLock()).isLocked();
+	}
+
+	private synchronized void lockProtocolSession(String sessionID) throws ProtocolException {
+		if (sessionID == null) {
+			throw new ProtocolException("The session ID provided is null");
+		}
+
+		if (!liveSessions.containsKey(sessionID)) {
+			throw new ProtocolException("There is no existing session with ID: " + sessionID);
+		}
+
+		// if (lockedProtocolSessions.contains(sessionID)) {
+		// throw new ProtocolException("Trying to lock a sessionID that is currently locked");
+		// }
+
+		// while (lockedProtocolSessions.contains(sessionID)) {
+		// try {
+		// lockedProtocolSessions.wait();
+		// } catch (InterruptedException e) {
+		// }
+		// }
+
+		liveSessions.get(sessionID).getLock().lock();
+
+		lockedProtocolSessions.add(sessionID);
+	}
+
+	private synchronized void unlockProtocolSession(String sessionID) throws ProtocolException {
+		if (sessionID == null) {
+			throw new ProtocolException("The session ID provided is null");
+		}
+
+		if (!liveSessions.containsKey(sessionID)) {
+			throw new ProtocolException("There is no existing session with ID: " + sessionID);
+		}
+
+		if (!lockedProtocolSessions.contains(sessionID)) {
+			log.warn("The session identified by this sessionID is not currently locked. Ignoring unlock.");
+		}
+
+		lockedProtocolSessions.remove(sessionID);
+		liveSessions.get(sessionID).getLock().unlock();
+	}
+
+	public synchronized void purgeOldSessions() throws ProtocolException {
+		purgeOldSessions(expirationTime);
+	}
+
+	public synchronized void purgeOldSessions(long milis) throws ProtocolException {
+
 		long now = System.currentTimeMillis();
-		if (protocolSessions.size() > 0) {
-			Iterator<String> sessionIDs = protocolSessions.keySet().iterator();
-			while (sessionIDs.hasNext()) {
-				String sessionID = sessionIDs.next();
-				ProtocolPooled protocolPooled = protocolSessions.get(sessionID);
-				if ((now - protocolPooled.timeToExpire) > expirationTime) {
-					destroyProtocolSession(sessionID);
-				} else {
-					if (validateProtocolSession(protocolPooled,
-							protocolSessionContext, sessionID)) {
-						protocolPooled.setTimeToExpire(now);
-						return sessionID;
-					}
-				}
+
+		for (ProtocolPooled pooledSession : liveSessions.values()) {
+			if ((now - pooledSession.lastUsed) > milis) {
+				log.debug("Destroying session: " + pooledSession.getProtocolSession().getSessionId());
+				destroyProtocolSession(pooledSession.getProtocolSession().getSessionId());
+			}
+		}
+	}
+
+	@Override
+	public synchronized IProtocolSession obtainSessionByProtocol(String protocol, boolean lock) throws ProtocolException {
+
+		if (protocol == null)
+			throw new ProtocolException("Requested protocol is null.");
+
+		ProtocolSessionContext context = registeredContexts.get(protocol);
+		if (context == null)
+			throw new ProtocolException("No such registered context for protocol: " + protocol);
+
+		return obtainSession(context, lock);
+	}
+
+	@Override
+	public synchronized IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException {
+
+		ProtocolPooled pooled = liveSessions.get(sessionId);
+
+		if (pooled == null)
+			throw new ProtocolException("Session id " + sessionId + "not found.");
+
+		if (lock)
+			lockProtocolSession(pooled.getProtocolSession().getSessionId());
+
+		return pooled.getProtocolSession();
+	}
+
+	@Override
+	public synchronized IProtocolSession obtainSession(ProtocolSessionContext context, boolean lock) throws ProtocolException {
+
+		IProtocolSession session = null;
+
+		if (liveSessions.size() > 0) {
+			for (ProtocolPooled pooledSession : liveSessions.values()) {
+				if (pooledSession.getProtocolSession().getSessionContext().equals(context))
+					session = pooledSession.getProtocolSession();
+				break;
 			}
 		}
 
-		// no objects available, create a new one
-		return createProtocolSession(protocolSessionContext);
+		if (session == null) {
+			session = createProtocolSession(context);
+		}
 
+		if (lock)
+			lockProtocolSession(session.getSessionId());
+
+		return session;
 	}
 
-	private boolean validateProtocolSession(ProtocolPooled protocolPooled,
-			ProtocolSessionContext protocolSessionContext, String sessionID) {
-		boolean sameConfig = protocolPooled.getProtocolSession()
-				.getSessionContext().equals(protocolSessionContext);
-		return (sameConfig && !lockedProtocolSessions.contains(sessionID));
+	public synchronized void releaseSession(String sessionId) throws ProtocolException {
+		touchSession(sessionId);
+		unlockProtocolSession(sessionId);
 	}
 
-	public synchronized void checkIn(String sessionID) throws ProtocolException {
-		returnProtocolSession(sessionID);
+	public synchronized void releaseSession(IProtocolSession session) throws ProtocolException {
+		touchSession(session.getSessionId());
+		unlockProtocolSession(session.getSessionId());
+	}
+
+	private void touchSession(String sessionId) {
+		for (ProtocolPooled pooled : liveSessions.values())
+			if (pooled.getProtocolSession().getSessionId().equals(sessionId))
+				pooled.lastUsed = System.currentTimeMillis();
 	}
 
 	/**
-	 * If you receive a listener message, it implements its action
+	 * If you receive a message its a CONNECTION_LOST so destroy the session.
 	 */
-
 	public void messageReceived(Object message) {
 		if (message instanceof String) {
-			String sessionID = (String) message;
 			try {
-				destroyProtocolSession(sessionID);
+				destroyProtocolSession((String) message);
 			} catch (ProtocolException e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
 			}
 		}
-
 	}
 
 	/**
-	 * Specify the type of message which we want to use
+	 * Specify the type of message which we want to listen
 	 */
-
 	public boolean notify(Object message) {
 		if (message instanceof Status) {
 			Status status = (Status) message;
@@ -267,5 +329,4 @@ public class ProtocolSessionManager implements IProtocolSessionManager,
 
 		return false;
 	}
-
 }

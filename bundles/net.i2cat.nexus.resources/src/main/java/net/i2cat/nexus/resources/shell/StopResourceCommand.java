@@ -2,13 +2,14 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
+import net.i2cat.nexus.resources.IResourceIdentifier;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ResourceManager;
+import net.i2cat.nexus.resources.command.GenericKarafCommand;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.apache.karaf.shell.console.OsgiCommandSupport;
-
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.RegistryUtil;
+import org.apache.felix.gogo.commands.Option;
 
 /**
  * Stop one or more resources
@@ -17,43 +18,62 @@ import net.i2cat.nexus.resources.RegistryUtil;
  * 
  */
 @Command(scope = "resource", name = "stop", description = "Stop one or more resources")
-public class StopResourceCommand extends OsgiCommandSupport {
+public class StopResourceCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resource ids", description = "A space delimited list of resource ids to be stopped", required = true, multiValued = true)
-	private List<String> resourceIDs;
+	@Argument(index = 0, name = "resourceType:resourceName", description = "A space delimited list of resource type:name to be stopped", required = true, multiValued = true)
+	private List<String>	resourceIDs;
+
+	@Option(name = "--force", aliases = { "-f" }, description = "Force stop resources")
+	boolean					force;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		log.debug("Executing resource stop shell command");
 
+		initcommand("resource stop");
 		try {
-			IResourceManager manager = getResourceManager();
-			List<IResource> resources = manager.listResources();
-
+			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
-				// Must loop over all of the resources to find the
-				// ResourceIdentifier that matches the resource ID
-				for (IResource resource : resources) {
-					if (resource.getResourceIdentifier().getId().equals(id)) {
-						System.out.println("Starting Resource: "
-								+ resource.getResourceDescriptor().getId() + ", "
-								+ resource.getResourceDescriptor().getInformation().toString());
-						manager.stopResource(resource.getResourceIdentifier());
+
+				if (!splitResourceName(id))
+					return null;
+
+				IResourceIdentifier identifier = null;
+				try {
+					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					if (identifier != null) {
+						printInfo("Stopping Resource...");
+
+						if (!force) {
+							manager.stopResource(identifier);
+						} else {
+							printInfo("Forcing remove resource");
+							manager.forceStopResource(identifier);
+
+						}
+
+						counter++;
+						printInfo("Resource " + args[1] + " stopped.");
+					} else {
+						printError("The resource " + args[1] + " is not found on repository.");
 					}
+				} catch (ResourceException e) {
+					printError(e);
+					printError("Din't stopped the resource " + args[1] + ". ");
+
 				}
+
+				printSymbol(horizontalSeparator);
 			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 
+			printInfo("Stopped " + counter + " resource/s from " + resourceIDs.size());
+
+		} catch (Exception e) {
+			printError("An error occurred stopping the resource.");
+			printError(e);
+		}
+		endcommand();
 		return null;
+
 	}
 
-	private IResourceManager getResourceManager() throws Exception {
-		IResourceManager resourceManager = (IResourceManager) RegistryUtil.getServiceFromRegistry(
-				getBundleContext(), IResourceManager.class.getName());
-
-		return resourceManager;
-	}
 }

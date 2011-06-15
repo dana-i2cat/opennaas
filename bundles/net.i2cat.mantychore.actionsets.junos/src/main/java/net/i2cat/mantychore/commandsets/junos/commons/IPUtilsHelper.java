@@ -2,6 +2,12 @@ package net.i2cat.mantychore.commandsets.junos.commons;
 
 import java.util.regex.Pattern;
 
+/**
+ * It is used to parse different messages
+ * 
+ * @author Carlos Báez Ruiz
+ * 
+ */
 public class IPUtilsHelper {
 
 	public static short[] parseStrIPToBytesIP(String IP) {

@@ -10,14 +10,14 @@ import org.hsqldb.Server;
 import org.hsqldb.ServerConfiguration;
 import org.hsqldb.ServerConstants;
 import org.hsqldb.persist.HsqlProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class HSQLDBServer implements InitializingBean, DisposableBean {
 
-	private static Logger logger = LoggerFactory.getLogger(HSQLDBServer.class);
+	private static Log logger = LogFactory.getLog(HSQLDBServer.class);
 	private Server databaseServer;
 
 	/**

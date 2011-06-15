@@ -17,18 +17,25 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 
-	<!-- Factory that creates protocol capabilities -->
+	<!-- Factory that creates a queue manager (not import as a capability) -->
 	<bean  id="queueManagerFactory"
-		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" />
+		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" >
+		 <property name="type" value="queue" />
+	</bean>
 
 	
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="queueManagerFactory"
-		interface="net.i2cat.mantychore.queuemanager.IQueueManagerFactory">
+		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"> 
 	 	<service-properties>
+	 		<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="queue" />
+			<entry key="capability.model" value="junos" />
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
-	</service>
+	</service> 
+			
+	
 
+	
 </blueprint>

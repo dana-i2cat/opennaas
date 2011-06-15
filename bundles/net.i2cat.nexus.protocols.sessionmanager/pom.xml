@@ -27,9 +27,10 @@
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+		<groupId>net.i2cat.nexus</groupId>
+		<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
+		
 		</dependency>
 	</dependencies>
 

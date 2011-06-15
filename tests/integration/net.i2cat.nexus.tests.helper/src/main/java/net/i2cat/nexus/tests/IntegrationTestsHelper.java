@@ -15,12 +15,12 @@ import org.apache.karaf.testing.Helper;
 import org.ops4j.pax.exam.Option;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class IntegrationTestsHelper {
 
-	private static Logger	log	= LoggerFactory.getLogger(IntegrationTestsHelper.class);
+	private static Log	log	= LogFactory.getLog(IntegrationTestsHelper.class);
 
 	public static Option[] getSimpleTestOptions() {
 		String WORKING_DIRECTORY = "target/paxrunner/features/";
@@ -32,8 +32,8 @@ public class IntegrationTestsHelper {
 		// "http://repository.inocybe.ca/content/groups/public");
 
 		// TODO DELETE INOCYBE REPOSITORY
-		Option REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo", "http://repo1.maven.org/maven2",
-				"http://repository.inocybe.ca/content/groups/public");
+		Option REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo", "http://repo1.maven.org/maven2");
+			//	,"http://repository.inocybe.ca/content/groups/public");
 
 		/* specify log level */
 
@@ -61,7 +61,7 @@ public class IntegrationTestsHelper {
 	public static Option[] getMantychoreTestOptions() {
 		/* mantychore features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core" };
+		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core"};
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}

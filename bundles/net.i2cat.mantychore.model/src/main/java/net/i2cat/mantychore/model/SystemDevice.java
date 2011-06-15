@@ -5,42 +5,32 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
-import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class SystemDevice as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * SystemDeviceBean Interface. The CIM class SystemDevice is described as 
- * follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemDevice as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SystemDeviceBean Interface. The CIM class SystemDevice is described as follows:
  * 
- * LogicalDevices can be aggregated by a System. This relationship is made 
- * explicit by the SystemDevice association. 
+ * LogicalDevices can be aggregated by a System. This relationship is made explicit by the SystemDevice association.
  */
 public class SystemDevice extends SystemComponent implements Serializable {
 
-    /**
-     * This constructor creates a SystemDeviceBeanImpl Class which implements 
-     * the SystemDeviceBean Interface, and encapsulates the CIM class 
-     * SystemDevice in a Java Bean. The CIM class SystemDevice is described 
-     * as follows: 
-     * 
-     * LogicalDevices can be aggregated by a System. This relationship is made 
-     * explicit by the SystemDevice association. 
-     */
-    public SystemDevice(){};
-    /**
-     * This method create an Association of the type SystemDevice between one 
-     * System object and LogicalDevice object 
-     */
-    public static SystemDevice link(System groupComponent,LogicalDevice 
-	partComponent){
+	/**
+	 * This constructor creates a SystemDeviceBeanImpl Class which implements the SystemDeviceBean Interface, and encapsulates the CIM class
+	 * SystemDevice in a Java Bean. The CIM class SystemDevice is described as follows:
+	 * 
+	 * LogicalDevices can be aggregated by a System. This relationship is made explicit by the SystemDevice association.
+	 */
+	public SystemDevice() {
+	};
 
-    return (SystemDevice) 
-	Association.link(SystemDevice.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type SystemDevice between one System object and LogicalDevice object
+	 */
+	public static SystemDevice link(System groupComponent, LogicalDevice
+			partComponent) {
+
+		return (SystemDevice) Association.link(SystemDevice.class, groupComponent, partComponent);
+	}// link
 
 } // Class SystemDevice

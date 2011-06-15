@@ -11,12 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceRepository;
@@ -27,36 +21,41 @@ import net.i2cat.nexus.resources.ResourceManager;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Before;
+import org.junit.Test;
+
 public class ResourceManagerTest {
-	
-	Logger logger = LoggerFactory.getLogger(ResourceManagerTest.class);
-	private ResourceManager resourceManager = null;
-	private IResourceRepository mockRepository = null;
-	
+
+	Log							logger			= LogFactory.getLog(ResourceManagerTest.class);
+	private ResourceManager		resourceManager	= null;
+	private IResourceRepository	mockRepository	= null;
+
 	@Before
-	public void setUp(){
+	public void setUp() {
 		createAndInitializeMockObjects();
 		createAndInitializeResourceManager();
 	}
-	
-	private void createAndInitializeMockObjects(){
+
+	private void createAndInitializeMockObjects() {
 		mockRepository = createMock(IResourceRepository.class);
 	}
-	
-	private void createAndInitializeResourceManager(){
+
+	private void createAndInitializeResourceManager() {
 		resourceManager = new ResourceManager();
 		resourceManager.resourceRepositoryAdded(mockRepository, getMockRepositoryServiceProperties());
 	}
-	
-	private Map<String, String> getMockRepositoryServiceProperties(){
+
+	private Map<String, String> getMockRepositoryServiceProperties() {
 		Map<String, String> serviceProperties = new Hashtable<String, String>();
 		serviceProperties.put("type", "mock");
 		return serviceProperties;
 	}
-	
+
 	@Test
-	public void testCreateResource(){
-		try{
+	public void testCreateResource() {
+		try {
 			ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 			Information info = new Information();
 			info.setType("mock");
@@ -64,66 +63,69 @@ public class ResourceManagerTest {
 			prepareMockObjectsForTestCreateResource(resourceDescriptor);
 			resourceManager.createResource(resourceDescriptor);
 			verify(mockRepository);
-		}catch(ResourceException ex){
+		} catch (ResourceException ex) {
 			ex.printStackTrace();
-			Assert.assertTrue(true);
+			Assert.fail(ex.getMessage());
 		}
 	}
-	
-	private void prepareMockObjectsForTestCreateResource(ResourceDescriptor resourceDescriptor) throws ResourceException{
+
+	private void prepareMockObjectsForTestCreateResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		expect(mockRepository.createResource(resourceDescriptor)).andReturn(getMockResource("mock", new String("23")));
 		replay(mockRepository);
 	}
-	
-	private IResource getMockResource(String type, String id){
+
+	private IResource getMockResource(String type, String id) {
 		IResource mockResource = new Resource();
 		IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier(type, id);
 		mockResource.setResourceIdentifier(mockResourceIdentifier);
 		return mockResource;
 	}
-	
+
 	@Test
-	public void testListEngines(){
+	public void testListEngines() {
 		prepareMockObjectsForTestListResources();
 		List<IResource> resources = resourceManager.listResources();
 		Assert.assertEquals(2, resources.size());
 		Assert.assertEquals("mock", resources.get(0).getResourceIdentifier().getType());
 		Assert.assertEquals(new String("23"), resources.get(0).getResourceIdentifier().getId());
 	}
-	
-	private void prepareMockObjectsForTestListResources(){
+
+	private void prepareMockObjectsForTestListResources() {
 		expect(mockRepository.listResources()).andReturn(getResourcesList());
 		replay(mockRepository);
 	}
-	
-	private List<IResource> getResourcesList(){
+
+	private List<IResource> getResourcesList() {
 		List<IResource> resourcesList = new ArrayList<IResource>();
 		resourcesList.add(getMockResource("mock", new String("23")));
 		resourcesList.add(getMockResource("mock", new String("24")));
 		return resourcesList;
 	}
-	
+
 	@Test
-	public void testModify(){
-		try{
+	public void testModify() {
+		try {
+			IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier("mock", new String("23"));
+
 			ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 			Information info = new Information();
 			info.setType("mock");
 			resourceDescriptor.setInformation(info);
-			prepareMockObjectsForTestModify(resourceDescriptor);
-			resourceManager.modifyResource(resourceDescriptor);
+			prepareMockObjectsForTestModify(mockResourceIdentifier, resourceDescriptor);
+			resourceManager.modifyResource(mockResourceIdentifier, resourceDescriptor);
 			verify(mockRepository);
-		}catch(ResourceException ex){
+		} catch (ResourceException ex) {
 			ex.printStackTrace();
-			Assert.assertTrue(true);
+			Assert.fail(ex.getMessage());
 		}
 	}
-	
-	private void prepareMockObjectsForTestModify(ResourceDescriptor resourceDescriptor) throws ResourceException{
-		expect(mockRepository.modifyResource(resourceDescriptor)).andReturn(getMockResource("mock", new String("23")));
+
+	private void prepareMockObjectsForTestModify(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor)
+			throws ResourceException {
+		expect(mockRepository.modifyResource(resourceIdentifier.getId(), resourceDescriptor)).andReturn(getMockResource("mock", new String("23")));
 		replay(mockRepository);
 	}
-	
+
 	/**
 	 * Test start & stop resource functions
 	 */
@@ -135,31 +137,31 @@ public class ResourceManagerTest {
 			resourceManager.stopResource(mockResourceIdentifier);
 		} catch (ResourceException e) {
 			e.printStackTrace();
-			Assert.assertTrue(false);
+			Assert.fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
-	public void testRemoveResource(){
-		try{
-			prepareMockObjectsForTestRemoveResource();	
+	public void testRemoveResource() {
+		try {
+			prepareMockObjectsForTestRemoveResource();
 			resourceManager.removeResource(new ResourceIdentifier("mock", new String("23")));
 			resourceManager.removeResource(new ResourceIdentifier("mock", new String("24")));
 			verify(mockRepository);
-		}catch(ResourceException ex){
+		} catch (ResourceException ex) {
 			ex.printStackTrace();
-			Assert.assertTrue(true);
+			Assert.fail(ex.getMessage());
 		}
 	}
-	
-	private void prepareMockObjectsForTestRemoveResource() throws ResourceException{
+
+	private void prepareMockObjectsForTestRemoveResource() throws ResourceException {
 		mockRepository.removeResource(new String("23"));
 		mockRepository.removeResource(new String("24"));
 		replay(mockRepository);
 	}
-	
+
 	@Test
-	public void testResourceManagerList(){
+	public void testResourceManagerList() {
 		prepareMockObjectsForTestListResources();
 		List<IResource> resources = resourceManager.listResources();
 		Assert.assertEquals(2, resources.size());
@@ -170,19 +172,19 @@ public class ResourceManagerTest {
 	}
 
 	@Test
-	public void testGetResource(){
-		try{
+	public void testGetResource() {
+		try {
 			prepareMockObjectsForTestGetResource();
 			IResource resource = resourceManager.getResource(new ResourceIdentifier("mock", new String("23")));
 			verify(mockRepository);
 			Assert.assertNotNull(resource);
-		}catch(ResourceException ex){
+		} catch (ResourceException ex) {
 			ex.printStackTrace();
-			Assert.assertTrue(true);
+			Assert.fail(ex.getMessage());
 		}
 	}
-	
-	private void prepareMockObjectsForTestGetResource() throws ResourceException{
+
+	private void prepareMockObjectsForTestGetResource() throws ResourceException {
 		expect(mockRepository.getResource(new String("23"))).andReturn(getMockResource("mock", new String("23")));
 		replay(mockRepository);
 	}

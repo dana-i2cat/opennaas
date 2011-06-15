@@ -9,11 +9,11 @@ import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
 import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class CommandTestsHelper {
-	private Logger			log	= LoggerFactory.getLogger(CommandTestsHelper.class);
+	private Log			log	= Logactory.getLog(CommandTestsHelper.class);
 	ProtocolSessionContext	protocolSessionContext;
 
 	public CommandTestsHelper(ProtocolSessionContext protocolSessionContext) {

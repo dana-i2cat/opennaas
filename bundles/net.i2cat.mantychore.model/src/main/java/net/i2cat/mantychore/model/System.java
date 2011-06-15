@@ -58,14 +58,25 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
 	}
 
-
-	
-	
 	public boolean addLogicalDevice(LogicalDevice logicalDevice) {
-		if (logicalDevice == null) return false;
+		if (logicalDevice == null)
+			return false;
 		return (SystemDevice.link(this, logicalDevice) != null);
 	}
 
+	// TODO control the return value
+	public boolean removeAllLogicalDeviceByType(Class<? extends ManagedElement> clazz) {
+		List<LogicalDevice> list = getLogicalDevices();
+
+		for (LogicalDevice ld : list) {
+
+			if (clazz.isInstance(ld)) {
+				removeLogicalDevice(ld);
+			}
+		}
+
+		return true;
+	}
 
 	public boolean removeLogicalDevice(LogicalDevice logicalDevice) {
 
@@ -83,9 +94,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	public List<LogicalDevice> getLogicalDevices() {
 		return (List<LogicalDevice>) this.getToAssociatedElementsByType(SystemDevice.class);
 	}
-	
-	
-	
+
 	/**
 	 * Add a new SystemComponent association between managedSystemElement and this element
 	 * 

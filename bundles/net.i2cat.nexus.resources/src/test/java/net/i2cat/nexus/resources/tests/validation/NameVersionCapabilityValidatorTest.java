@@ -5,18 +5,18 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
-
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.validation.NameVersionCapabilityPropertyValidator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
 /**
  * Test that the NameVersionCapabilityValidator works properly
@@ -24,14 +24,13 @@ import net.i2cat.nexus.resources.validation.NameVersionCapabilityPropertyValidat
  * @author Scott Campbell (CRC)
  * 
  */
-public class NameVersionCapabilityValidatorTest
-{
-	Logger logger = LoggerFactory.getLogger(NameVersionCapabilityValidatorTest.class);
+public class NameVersionCapabilityValidatorTest {
+	Log										logger					= LogFactory.getLog(NameVersionCapabilityValidatorTest.class);
 
-	NameVersionCapabilityPropertyValidator validator = null;
-	CapabilityDescriptor capabilityDescriptor = null;
-	List<CapabilityProperty> capabilityProperties = null;
-	BindException errors = null;
+	NameVersionCapabilityPropertyValidator	validator				= null;
+	CapabilityDescriptor					capabilityDescriptor	= null;
+	List<CapabilityProperty>				capabilityProperties	= null;
+	BindException							errors					= null;
 
 	@Before
 	public void setup() {

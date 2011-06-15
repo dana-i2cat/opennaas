@@ -12,26 +12,24 @@ import net.i2cat.netconf.errors.TransportException;
 import net.i2cat.netconf.errors.TransportNotImplementedException;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolMessageFilter;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSession;
-import net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionListener;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolSessionContext;
+import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class NetconfProtocolSession implements IProtocolSession {
 
 	public static final String						PROTOCOL_URI			= "URI";
 	/** The logger **/
-	Logger											log						= LoggerFactory
-																					.getLogger(NetconfProtocolSession.class);
+	Log												log						= LogFactory.getLog(NetconfProtocolSession.class);
 
 	/**
-	 * Contains information about the protocol capability configuration:
-	 * transport, host, port, ...
+	 * Contains information about the protocol capability configuration: transport, host, port, ...
 	 **/
 	private ProtocolSessionContext					protocolSessionContext	= null;
 	private String									sessionID				= null;
@@ -41,9 +39,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 	private Map<String, IProtocolSessionListener>	protocolListeners		= null;
 	private Map<String, IProtocolMessageFilter>		protocolMessageFilters	= null;
 
-	public NetconfProtocolSession(
-			ProtocolSessionContext protocolSessionContext, String sessionID)
-			throws ProtocolException {
+	public NetconfProtocolSession(ProtocolSessionContext protocolSessionContext, String sessionID) throws ProtocolException {
 
 		this.protocolListeners = new HashMap<String, IProtocolSessionListener>();
 		this.protocolMessageFilters = new HashMap<String, IProtocolMessageFilter>();
@@ -54,18 +50,20 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 		try {
 
-			String uri = (String) protocolSessionContext.getSessionParameters()
-					.get("protocol.uri");
+			String uri = (String) protocolSessionContext.getSessionParameters().get("protocol.uri");
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);
-			/* these errors can not happen */
+
 		} catch (URISyntaxException e) {
-			log.error("Error with a syntaxis");
+			log.error("Error with the syntaxis");
+			throw new ProtocolException("Error with the syntaxis" + e.getMessage(), e);
 		} catch (TransportNotImplementedException e) {
-			log.error("Error with the transport not implemented");
+			log.error("Error with the transport initialization");
+			throw new ProtocolException("Error with the transport initialization" + e.getMessage(), e);
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
+			log.error("Configuration error");
+			throw new ProtocolException("Configuration error: " + e.getMessage(), e);
 		}
 	}
 
@@ -146,7 +144,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 	}
 
 	@Override
-	public String getSessionID() {
+	public String getSessionId() {
 		return sessionID;
 	}
 
@@ -173,4 +171,13 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 	}
 
+	@Override
+	public void setSessionContext(ProtocolSessionContext context) {
+		this.protocolSessionContext = context;
+	}
+
+	@Override
+	public void setSessionId(String sessionId) {
+		this.sessionID = sessionId;
+	}
 }

@@ -12,11 +12,11 @@
 
 	<!-- Maven configuration -->
 
-	<!--  Enforced by maven-enforcer-plugin below
-	<prerequisites>
-		<maven>2.0.9</maven>
-	</prerequisites> -->
-	
+	<!--
+		Enforced by maven-enforcer-plugin below <prerequisites>
+		<maven>2.0.9</maven> </prerequisites>
+	-->
+
 	<packaging>pom</packaging>
 
 	<!-- Administrative information -->
@@ -78,6 +78,13 @@
 			</dependency>
 
 			<!-- Digester, velocity and deps -->
+
+
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
 			<dependency>
 				<groupId>commons-configuration</groupId>
 				<artifactId>commons-configuration</artifactId>
@@ -499,10 +506,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-         		<groupId>org.easymock</groupId>
-         		<artifactId>easymock</artifactId>
-        		 <scope>test</scope>
-      		</dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- Logging -->
 		<dependency>
@@ -522,9 +529,9 @@
 			<artifactId>pax-logging-api</artifactId>
 		</dependency>
 		<dependency>
-        		<groupId>org.ops4j.pax.logging</groupId>
-         		<artifactId>pax-logging-service</artifactId>
-      		</dependency>
+			<groupId>org.ops4j.pax.logging</groupId>
+			<artifactId>pax-logging-service</artifactId>
+		</dependency>
 	</dependencies>
 
 	<!-- Modules configuration -->
@@ -535,56 +542,45 @@
 		<module>tests</module>
 		<module>platform</module>
 	</modules>
-	
-<!-- 	
-	<licenses>
-		<license>
-			<name>GNU Lesser General Public License</name>
-			<url>http://www.gnu.org/licenses/lgpl.html</url>
-		</license>
-	</licenses>
- -->
+
+	<!--
+		<licenses> <license> <name>GNU Lesser General Public License</name>
+		<url>http://www.gnu.org/licenses/lgpl.html</url> </license>
+		</licenses>
+	-->
 
 
 
 	<!-- Build information -->
-	<!-- Enforce Java5 - See: http://maven.apache.org/plugins/maven-enforcer-plugin/ -->
-	<build>
-	
 	<!--
-	<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>com.google.code.maven-license-plugin</groupId>
-					<artifactId>maven-license-plugin</artifactId>
-					<version>1.4.0</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
--->
+		Enforce Java5 - See:
+		http://maven.apache.org/plugins/maven-enforcer-plugin/
+	-->
+	<build>
+
+		<!--
+			<pluginManagement> <plugins> <plugin>
+			<groupId>com.google.code.maven-license-plugin</groupId>
+			<artifactId>maven-license-plugin</artifactId>
+			<version>1.4.0</version> </plugin> </plugins> </pluginManagement>
+		-->
 		<plugins>
-<!--   			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
+			<!--
+				<plugin> <groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>2.1.2</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
-		
-		
+				<version>2.1.2</version> <executions> <execution>
+				<id>attach-sources</id> <phase>verify</phase> <goals>
+				<goal>jar-no-fork</goal> </goals> </execution> </executions>
+				</plugin>
+			-->
+
+
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <version>2.4</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
 			</plugin>
-		
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
@@ -600,7 +596,7 @@
 									<version>1.6</version>
 								</requireJavaVersion>
 								<!-- <requireOS> <family>unix</family> </requireOS> -->
-								<requireMavenVersion> 
+								<requireMavenVersion>
 									<version>2.2.1</version>
 								</requireMavenVersion>
 							</rules>
@@ -639,11 +635,11 @@
 				<artifactId>jxr-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-resources-plugin</artifactId>
-			    <version>2.4</version>
-			</plugin>	
-			
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+
 			<!-- Unit Test Report -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -659,11 +655,11 @@
 	</reporting>
 
 	<repositories>
-	    <repository>
-		<id>maven.i2cat.net</id>
-		<name>maven.i2cat.net-releases</name>
-		<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
-	    </repository>
+		<repository>
+			<id>maven.i2cat.net</id>
+			<name>maven.i2cat.net-releases</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
+		</repository>
 		<repository>
 			<id>i2cat</id>
 			<name>i2cat maven repository</name>
@@ -671,12 +667,14 @@
 		</repository>
 		<repository>
 			<id>springsource-external</id>
-			<name>SpringSource Enterprise Bundle Repository - External Bundle Releases</name>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle
+				Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/external</url>
 		</repository>
 		<repository>
 			<id>springsource-releases</id>
-			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases</name>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle
+				Releases</name>
 			<url>http://repository.springsource.com/maven/bundles/release</url>
 		</repository>
 		<repository>
@@ -690,10 +688,10 @@
 			<url>http://repository.ops4j.org/maven2</url>
 		</repository>
 		<repository>
-            		<id>DyanmicJava</id>
-            		<name>DynamicJava Repository</name>
-            		<url>http://maven.dynamicjava.org/</url>
-        	</repository>
+			<id>DyanmicJava</id>
+			<name>DynamicJava Repository</name>
+			<url>http://maven.dynamicjava.org/</url>
+		</repository>
 		<repository>
 			<id>fusesource</id>
 			<name>Fuse Source releases</name>
@@ -708,22 +706,22 @@
 
 
 
-<pluginRepositories>
-    <pluginRepository>
-        <id>central</id>
-        <url>http://maven.i2cat.net:8081/artifactory/plugins-release</url>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-    </pluginRepository>
-    <pluginRepository>
-        <id>snapshots</id>
-        <url>http://maven.i2cat.net:8081/artifactory/plugins-snapshot</url>
-        <releases>
-            <enabled>false</enabled>
-        </releases>
-    </pluginRepository>
-</pluginRepositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<url>http://maven.i2cat.net:8081/artifactory/plugins-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>snapshots</id>
+			<url>http://maven.i2cat.net:8081/artifactory/plugins-snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
 
 
 	<distributionManagement>

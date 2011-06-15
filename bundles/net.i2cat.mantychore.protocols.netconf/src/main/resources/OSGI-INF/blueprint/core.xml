@@ -3,7 +3,7 @@
 <bean id="netconfProtocolSessionFactory" 
 	class="net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory"/>
 	<service ref="netconfProtocolSessionFactory"
-		interface="net.i2cat.nexus.protocols.sessionmanager.IProtocolSessionFactory" >
+		interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory" >
 		<service-properties>
 				<!--  identify the model router. It is generic for any router -->
 			<entry key="protocol" value="netconf" />

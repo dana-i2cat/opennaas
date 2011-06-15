@@ -12,7 +12,7 @@ import net.i2cat.nexus.resources.descriptor.Information;
  * @version 1.0
  */
 
-public interface ICapability extends ILifecycle{
+public interface ICapability extends ILifecycle {
 
 	/**
 	 * Get the descriptor for this capability
@@ -34,10 +34,17 @@ public interface ICapability extends ILifecycle{
 	 * @return
 	 */
 	public Information getCapabilityInformation();
-	
+
 	/**
 	 * The resource where this capability belongs
+	 * 
 	 * @param resource
 	 */
 	public void setResource(IResource resource);
+
+	/**
+	 * Operation to send messages from a capability
+	 */
+	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException;
+
 }

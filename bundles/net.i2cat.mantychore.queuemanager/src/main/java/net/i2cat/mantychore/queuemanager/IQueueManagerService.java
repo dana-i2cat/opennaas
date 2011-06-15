@@ -2,11 +2,11 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.List;
 
-import net.i2cat.mantychore.commons.Action;
-import net.i2cat.mantychore.commons.ActionException;
-import net.i2cat.mantychore.commons.ActionResponse;
-import net.i2cat.nexus.protocols.sessionmanager.ProtocolException;
+import net.i2cat.nexus.resources.action.ActionException;
+import net.i2cat.nexus.resources.action.ActionResponse;
+import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
 
 public interface IQueueManagerService {
 
@@ -15,8 +15,8 @@ public interface IQueueManagerService {
 
 	public void empty();
 
-	public void queueAction(Action action);
+	public void queueAction(IAction action);
 
-	public List<Action> getActions();
+	public List<IAction> getActions();
 
 }

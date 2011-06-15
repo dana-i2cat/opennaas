@@ -5,14 +5,14 @@ import java.util.Properties;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 import net.i2cat.nexus.hsqldb.internal.HSQLDBServer;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class HSQLDBServerTest {
-	protected static Logger log = LoggerFactory.getLogger( HSQLDBServerTest.class ); 
+	protected static Log log = LogFactory.getLog( HSQLDBServerTest.class ); 
 	private static HSQLDBServer server;
 
 @Test
