@@ -34,20 +34,12 @@ public class ResourceRepositoryTest {
 	 * The class under test - actually, it is a class that extends the class under test but adds no new functionality
 	 */
 	private static ResourceRepository	resourceRepository		= null;
-	private static ResourceDescriptor	descriptor				= null;
 	/* Use a mock module factory */
 	private static ICapabilityFactory	mockCapabilityFactory	= null;
 
 	@BeforeClass
 	public static void setup() {
 		mockCapabilityFactory = createMock(ICapabilityFactory.class);
-		descriptor = new ResourceDescriptor();
-		Information info = new Information("Mock", "Mock Resource", "1.0.0");
-		descriptor.setInformation(info);
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-		capabilityDescriptor.setCapabilityInformation(new Information("MockCapability", "mock cpability factory", "1.0.0"));
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		descriptor.setCapabilityDescriptors(capabilityDescriptors);
 		Map<String, ICapabilityFactory> capabilityFactories = new Hashtable<String, ICapabilityFactory>();
 		capabilityFactories.put("MockCapability", mockCapabilityFactory);
 		resourceRepository = new ResourceRepository("Mock", "", capabilityFactories);
@@ -59,7 +51,7 @@ public class ResourceRepositoryTest {
 		try {
 			replay(mockCapabilityFactory);
 			// Run the test
-
+			ResourceDescriptor descriptor = newResourceDescriptor("Resource Mock Create");
 			resourceRepository.createResource(descriptor);
 
 			verify(mockCapabilityFactory);
@@ -80,16 +72,10 @@ public class ResourceRepositoryTest {
 	public void testModifyResource() {
 
 		try {
-			Information info = new Information("Mock", "Mock Resource 2", "1.0.0");
-			descriptor.setInformation(info);
-
+			ResourceDescriptor descriptor = newResourceDescriptor("Resource Mock Modify");
 			resourceRepository.createResource(descriptor);
 
-			ResourceDescriptor descriptor2 = new ResourceDescriptor();
-			descriptor2.setCapabilityDescriptors(descriptor.getCapabilityDescriptors());
-
-			Information info1 = new Information("Mock", "Mock Resource WORKS", "1.0.0");
-			descriptor2.setInformation(info1);
+			ResourceDescriptor descriptor2 = newResourceDescriptor("Mock Resource WORKS");
 
 			assertNotNull(descriptor.getId());
 
@@ -105,18 +91,12 @@ public class ResourceRepositoryTest {
 		}
 	}
 
-	// MOVED TO INTEGRATION TEST
-	// public void testStartResource() {
-	// }
-	//
-	// public void testStopResource() {
-	// }
-
-	@Test
 	public void testRemoveResource() {
 		try {
+			ResourceDescriptor descriptor = newResourceDescriptor("Resource Mock CreateRemove");
+			resourceRepository.createResource(descriptor);
 			resourceRepository.removeResource(descriptor.getId());
-			assertTrue(resourceRepository.listResources().isEmpty());
+
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());
 		}
@@ -124,9 +104,19 @@ public class ResourceRepositoryTest {
 
 	@Test(expected = ResourceException.class)
 	public void testEngineTypeNotInConfig() throws ResourceException {
-		Information info = new Information();
-		info.setType("WrongEngine");
-		descriptor.setInformation(info);
+		ResourceDescriptor descriptor = newResourceDescriptor("Resource Mock Modify");
+		descriptor.getInformation().setType("WrongEngine");
 		resourceRepository.createResource(descriptor);
+	}
+
+	public ResourceDescriptor newResourceDescriptor(String name) {
+		ResourceDescriptor descriptor = new ResourceDescriptor();
+		Information info = new Information("Mock", name, "1.0.0");
+		descriptor.setInformation(info);
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		capabilityDescriptor.setCapabilityInformation(new Information("MockCapability", "mock cpability factory", "1.0.0"));
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		descriptor.setCapabilityDescriptors(capabilityDescriptors);
+		return descriptor;
 	}
 }
