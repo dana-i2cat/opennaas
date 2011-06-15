@@ -86,6 +86,13 @@ public class CreateResourceCommand extends GenericKarafCommand {
 					printSymbol(underLine);
 				}
 			} else {
+				// In windows, failing to specify double slash (\\) often result in random chars escaped to control chars.
+				if (filename.contains("\r")) {
+					printError("Malformed filename: " + filename + " (  ");
+					if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
+						printInfo("You seem to be in windows. Are you using proper double escaped slashes? C:\\\\dir\\\\\file instead of C:\\dir\\file.");
+					continue;
+				}
 				if (filename.endsWith(".descriptor")) {
 					totalFiles++;
 					try {
@@ -120,7 +127,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			printInfo("No resource has been created.");
 
 		} else {
-			printInfo("Created " + counter + " resource/s from " + totalFiles);
+			printInfo("Created " + counter + " resource/s from " + totalFiles + " descriptors.");
 		}
 		endcommand();
 		return null;
