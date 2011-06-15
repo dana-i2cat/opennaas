@@ -55,15 +55,13 @@ public class ProtocolManager implements IProtocolManager {
 		}
 
 		IProtocolSessionManager protocolSessionManager = sessionManagers.remove(resourceID);
-		Iterator<String> iterator = protocolSessionManager.getAllProtocolSessionIds().iterator();
 
-		while (iterator.hasNext()) {
-			try {
-				protocolSessionManager.destroyProtocolSession(iterator.next());
-			} catch (ProtocolException ex) {
-				ex.printStackTrace();
-			}
+		String[] sessionIdsToRemove = new String[protocolSessionManager.getAllProtocolSessionIds().size()];
+		sessionIdsToRemove = protocolSessionManager.getAllProtocolSessionIds().toArray(sessionIdsToRemove);
+		for (int i = 0; i < sessionIdsToRemove.length; i++) {
+			protocolSessionManager.destroyProtocolSession(sessionIdsToRemove[i]);
 		}
+
 	}
 
 	public synchronized IProtocolSessionManager getProtocolSessionManagerWithContext(String resourceId, ProtocolSessionContext context)

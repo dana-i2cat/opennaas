@@ -110,7 +110,7 @@ public class ProtocolManagerTest {
 		protocolSessionManager.releaseSession(session);
 	}
 
-	// @Test FIXME This test throws a ConcurrentModificationException and its not nice.
+	@Test
 	public void obtainSessionWithProtocol() throws ProtocolException {
 		IProtocolSession session1 = protocolSessionManager.obtainSessionByProtocol("netconf", true);
 		IProtocolSession session2 = protocolSessionManager.obtainSessionByProtocol("mock", true);
@@ -127,6 +127,45 @@ public class ProtocolManagerTest {
 
 		protocolSessionManager.destroyProtocolSession((session1.getSessionId()));
 		protocolSessionManager.destroyProtocolSession((session2.getSessionId()));
+	}
+
+	@Test
+	public void obtainAndPurgeSessionWithProtocol() throws ProtocolException {
+		IProtocolSession session1 = protocolSessionManager.obtainSessionByProtocol("netconf", true);
+		IProtocolSession session2 = protocolSessionManager.obtainSessionByProtocol("mock", true);
+
+		protocolSessionManager.releaseSession(session1);
+		protocolSessionManager.releaseSession(session2.getSessionId());
+
+		try {
+			Thread.sleep(150);
+		} catch (InterruptedException e) {
+			Assert.fail();
+		}
+
+		protocolSessionManager.purgeOldSessions(100);
+
+		session1 = protocolSessionManager.obtainSessionByProtocol("netconf", true);
+		session2 = protocolSessionManager.obtainSessionByProtocol("mock", true);
+
+		protocolSessionManager.releaseSession(session1);
+
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			Assert.fail();
+		}
+
+		protocolSessionManager.releaseSession(session2.getSessionId());
+
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e) {
+			Assert.fail();
+		}
+
+		protocolSessionManager.purgeOldSessions(300);
+		protocolSessionManager.purgeOldSessions(0);
 	}
 
 	@Test

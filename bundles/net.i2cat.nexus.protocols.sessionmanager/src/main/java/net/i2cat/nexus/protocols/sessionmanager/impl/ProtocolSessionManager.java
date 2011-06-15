@@ -11,12 +11,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -230,11 +230,18 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		long now = System.currentTimeMillis();
 
+		List<ProtocolPooled> toRemove = new ArrayList<ProtocolSessionManager.ProtocolPooled>();
+
 		for (ProtocolPooled pooledSession : liveSessions.values()) {
 			if ((now - pooledSession.lastUsed) > milis) {
-				log.debug("Destroying session: " + pooledSession.getProtocolSession().getSessionId());
-				destroyProtocolSession(pooledSession.getProtocolSession().getSessionId());
+				toRemove.add(pooledSession);
 			}
+		}
+
+		for (int i = toRemove.size() - 1; i >= 0; i--) {
+			ProtocolPooled pooledSession = toRemove.get(i);
+			log.debug("Destroying session: " + pooledSession.getProtocolSession().getSessionId());
+			destroyProtocolSession(pooledSession.getProtocolSession().getSessionId());
 		}
 	}
 
@@ -294,8 +301,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	public synchronized void releaseSession(IProtocolSession session) throws ProtocolException {
-		touchSession(session.getSessionId());
-		unlockProtocolSession(session.getSessionId());
+		releaseSession(session.getSessionId());
 	}
 
 	private void touchSession(String sessionId) {
