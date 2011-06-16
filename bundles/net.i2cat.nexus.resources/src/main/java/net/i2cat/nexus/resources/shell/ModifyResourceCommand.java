@@ -49,48 +49,32 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 		// if it is, load all the descriptor files of the directory
 		if (!file.isDirectory() && filename.endsWith(".descriptor")) {
 			// only accept the files with '.decriptor' extension
-			IResourceIdentifier identifier = null;
+			IResourceIdentifier resourceIdentifier = null;
 			try {
-				identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
-				if (identifier != null) {
+				resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+				if (resourceIdentifier != null) {
 					try {
 						descriptor = getResourceDescriptor(filename);
-						if (descriptor.getId() == null || descriptor.getId() == "") {
-							descriptor.setId(identifier.getId());
-						}
-						try {
-							modifyResource(manager, identifier, descriptor);
-						} catch (NullPointerException f) {
-							printError("Error modifiying the resource: " + args[1]);
-							return null;
-						}
+
+						manager.modifyResource(resourceIdentifier, descriptor);
+						printInfo("Resource " + args[1] + " modified.");
 					} catch (FileNotFoundException f) {
 						printError("File not found: " + filename);
-						return null;
-
-					} catch (NullPointerException f) {
-						printError("Error parsing descriptor.");
-						return null;
-
+						// printError(f);
 					} catch (JAXBException f) {
 						printError("Error parsing descriptor ");
 						printError(f);
-						return null;
 					} catch (ResourceException f) {
 						printError(f);
-						return null;
 					}
 
-					printInfo("Resource " + args[1] + " modified.");
 				} else {
-					printError("The resource " + args[1] +
-									" is not found on repository.");
+					printError("The resource " + args[1] + " is not found on repository.");
 				}
 			} catch (ResourceException e) {
-				printError("No modified " + args[1]);
 				printError(e);
+				printError("No modified " + args[1]);
 			}
-
 		} else {
 			printError("The file cannot be a directory");
 		}
@@ -121,11 +105,6 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 		printInfo("Descriptor loaded for resource " + rd.getInformation().getName() + " with type: " + rd.getInformation()
 				.getType());
 		return rd;
-	}
-
-	private void modifyResource(IResourceManager manager, IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor)
-			throws ResourceException {
-		manager.modifyResource(resourceIdentifier, resourceDescriptor);
 	}
 
 	private ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException {

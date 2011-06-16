@@ -130,8 +130,15 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public synchronized IResource modifyResource(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor)
 			throws ResourceException {
-		IResourceRepository repo = getResourceRepository(resourceDescriptor.getInformation().getType());
-		IResource resource = repo.modifyResource(resourceIdentifier.getId(), resourceDescriptor);
+		IResource previousResource = getResource(resourceIdentifier);
+		IResource resource = null;
+		// only can modify if the new type is the same as the previous resource
+		if (resourceDescriptor.getInformation().getType().equals(previousResource.getResourceDescriptor().getInformation().getType())) {
+			IResourceRepository repo = getResourceRepository(resourceDescriptor.getInformation().getType());
+			resource = repo.modifyResource(resourceIdentifier.getId(), resourceDescriptor);
+		} else {
+			throw new ResourceException("Cannot modify the type of the resource.");
+		}
 		return resource;
 	}
 

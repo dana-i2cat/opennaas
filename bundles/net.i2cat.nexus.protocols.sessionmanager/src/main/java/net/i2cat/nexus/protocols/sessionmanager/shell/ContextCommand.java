@@ -36,7 +36,13 @@ public class ContextCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 
 		IResourceManager manager = getResourceManager();
-		initcommand("Adding context");
+		if(optionRemove){
+			initcommand("Remove context");
+		}
+		else{
+			initcommand("Adding context");
+		}
+		
 		if (!splitResourceName(resourceId))
 			return null;
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
@@ -53,16 +59,18 @@ public class ContextCommand extends GenericKarafCommand {
 		}
 
 		if (protocol == null || protocol.contentEquals("")) {
+			printError("You must specify a [protocol] and [uri] to register.");
 			for (ProtocolSessionContext context : sessionManager.getRegisteredProtocolSessionContexts().values()) {
 				printInfo("protocol = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL)
 							+ ", uri = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
 			}
+			
 			endcommand();
 			return null;
 		}
 
 		if (uri == null || uri.contentEquals("")) {
-			printError("You must specify a [protocol] and [uri] to register.");
+			printError("You must specify a [uri] to register.");
 			endcommand();
 			return null;
 		}

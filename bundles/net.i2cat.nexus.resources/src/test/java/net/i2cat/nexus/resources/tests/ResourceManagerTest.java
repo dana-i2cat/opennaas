@@ -81,6 +81,18 @@ public class ResourceManagerTest {
 		return mockResource;
 	}
 
+	private IResource getMockResourceWithInformation(String type, String id) {
+		IResource mockResource = new Resource();
+		IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier(type, id);
+		mockResource.setResourceIdentifier(mockResourceIdentifier);
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		Information info = new Information();
+		info.setType(type);
+		resourceDescriptor.setInformation(info);
+		mockResource.setResourceDescriptor(resourceDescriptor);
+		return mockResource;
+	}
+
 	@Test
 	public void testListEngines() {
 		prepareMockObjectsForTestListResources();
@@ -106,7 +118,6 @@ public class ResourceManagerTest {
 	public void testModify() {
 		try {
 			IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier("mock", new String("23"));
-
 			ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 			Information info = new Information();
 			info.setType("mock");
@@ -122,6 +133,7 @@ public class ResourceManagerTest {
 
 	private void prepareMockObjectsForTestModify(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor)
 			throws ResourceException {
+		expect(mockRepository.getResource(resourceIdentifier.getId())).andReturn(getMockResourceWithInformation("mock", new String("23")));
 		expect(mockRepository.modifyResource(resourceIdentifier.getId(), resourceDescriptor)).andReturn(getMockResource("mock", new String("23")));
 		replay(mockRepository);
 	}

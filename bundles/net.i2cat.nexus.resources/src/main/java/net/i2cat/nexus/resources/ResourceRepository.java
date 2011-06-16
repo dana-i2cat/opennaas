@@ -189,7 +189,7 @@ public class ResourceRepository implements IResourceRepository {
 		checkResourceCanBeCreated(resourceDescriptor);
 
 		logger.debug("Resource Checked");
-		
+
 		IResource resource;
 
 		try {
@@ -202,7 +202,6 @@ public class ResourceRepository implements IResourceRepository {
 		resourceDescriptor = persistResourceDescriptor(resourceDescriptor);
 
 		logger.debug("Resource Persisted");
-
 
 		return resource;
 	}
@@ -222,7 +221,7 @@ public class ResourceRepository implements IResourceRepository {
 		shutdownResource(identifier);
 
 		logger.info("Resource shutdown");
-		
+
 		unpersistResourceDescriptor(resource.getResourceDescriptor());
 
 		logger.info("Unpersisted and removed resource");
@@ -375,11 +374,12 @@ public class ResourceRepository implements IResourceRepository {
 			throws ResourceException, CorruptStateException {
 
 		logger.debug("Initializing resource " + resourceIdentifier.getId() + " ...");
-
+		// keeping variables to make rollback
 		IResourceIdentifier oldIdentifier = resource.getResourceIdentifier();
 		ResourceDescriptor oldDescriptor = resource.getResourceDescriptor();
 		String oldId = resourceDescriptor.getId();
 
+		// Setting the variables for the resource
 		resource.setResourceIdentifier(resourceIdentifier);
 		resourceDescriptor.setId(resource.getResourceIdentifier().getId());
 		resource.setResourceDescriptor(resourceDescriptor);
