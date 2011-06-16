@@ -234,19 +234,19 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			log.info("---------------------------------------------");
-			log.info("executeCommand(chasis:listInterfaces " + resourceFriendlyID);
-			Integer response = (Integer) executeCommand("chasis:listInterfaces " + resourceFriendlyID);
+			log.info("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
+			Integer response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 
-			log.info("executeCommand(chasis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			response = (Integer) executeCommand("chasis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+			log.info("executeCommand(chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			response = (Integer) executeCommand("chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
 
-			log.info("executeCommand(chasis:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("chasis:listInterfaces " + resourceFriendlyID);
+			log.info("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
+			response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 

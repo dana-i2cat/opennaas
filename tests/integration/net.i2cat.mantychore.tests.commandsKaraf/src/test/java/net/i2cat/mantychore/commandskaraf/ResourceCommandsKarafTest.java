@@ -140,15 +140,15 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 			// resource.start();
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			log.debug("executeCommand(chasis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			Integer response = (Integer) executeCommand("chasis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+			log.debug("executeCommand(chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			Integer response = (Integer) executeCommand("chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
 			log.debug(response);
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
 
-			log.debug("executeCommand(chasis:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("chasis:listInterfaces " + resourceFriendlyID);
+			log.debug("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
+			response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 			repository.stopResource(resource.getResourceIdentifier().getId());
