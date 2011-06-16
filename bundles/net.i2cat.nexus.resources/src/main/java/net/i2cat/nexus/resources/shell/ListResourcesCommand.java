@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;

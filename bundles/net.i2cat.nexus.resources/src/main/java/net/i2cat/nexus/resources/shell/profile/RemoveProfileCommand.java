@@ -1,8 +1,8 @@
 package net.i2cat.nexus.resources.shell.profile;
 
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.profile.IProfileManager;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

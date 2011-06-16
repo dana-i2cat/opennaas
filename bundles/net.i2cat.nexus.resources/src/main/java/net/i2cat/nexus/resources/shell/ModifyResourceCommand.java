@@ -14,7 +14,6 @@ import javax.xml.bind.JAXBException;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 import org.apache.felix.gogo.commands.Argument;

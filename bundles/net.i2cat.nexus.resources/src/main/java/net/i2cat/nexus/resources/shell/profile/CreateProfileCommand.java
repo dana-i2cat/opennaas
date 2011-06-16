@@ -2,9 +2,9 @@ package net.i2cat.nexus.resources.shell.profile;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

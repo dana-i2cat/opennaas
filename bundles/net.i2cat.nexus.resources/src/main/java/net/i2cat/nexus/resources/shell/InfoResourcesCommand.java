@@ -9,7 +9,6 @@ import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceManager;
 import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.descriptor.Information;
 
 import org.apache.felix.gogo.commands.Argument;

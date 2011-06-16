@@ -13,18 +13,17 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-
 import net.i2cat.nexus.resources.Activator;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceManager;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
@@ -51,14 +50,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		// For each argument path or URL
 		for (String filename : paths) {
-
-			// In windows, failing to specify double slash (\\) often result in random chars escaped to control chars.
-			if (filename.contains("\r")) {
-				printError("Malformed filename: " + filename + " (  ");
-				if (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0)
-					printInfo("You seem to be in windows. Are you using proper double escaped slashes? C:\\\\dir\\\\\file instead of C:\\dir\\file.");
-				continue;
-			}
 
 			File file = new File(filename);
 			// check if the argument path is a directory
@@ -94,10 +85,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 					printSymbol(underLine);
 				}
 			} else {
-				if (!file.exists()) {
-					printError("File not found: " + filename);
-					continue;
-				}
 				if (filename.endsWith(".descriptor")) {
 					totalFiles++;
 					try {
@@ -113,6 +100,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 						printError(f);
 					} catch (FileNotFoundException f) {
 						printError("File not found: " + filename);
+
 					} catch (NullPointerException f) {
 						printError("The descriptor is not loaded " + filename);
 
@@ -125,11 +113,13 @@ public class CreateResourceCommand extends GenericKarafCommand {
 				}
 				printSymbol(underLine);
 			}
+
 		}
 		if (counter == 0) {
 			printInfo("No resource has been created.");
+
 		} else {
-			printInfo("Created " + counter + " resource/s from " + totalFiles + " descriptors.");
+			printInfo("Created " + counter + " resource/s from " + totalFiles);
 		}
 		endcommand();
 		return null;
