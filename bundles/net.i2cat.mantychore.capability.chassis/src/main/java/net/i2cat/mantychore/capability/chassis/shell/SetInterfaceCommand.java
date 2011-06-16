@@ -21,17 +21,17 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chasis", name = "setInterface", description = "Set a IP in a the interface of a given resource")
+@Command(scope = "chassis", name = "setInterface", description = "Set a IP in a the interface of a given resource")
 public class SetInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
 	private String	resourceId;
 	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
-	@Argument(index = 2, name = "IP", description = "A valid IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 2, name = "ip", description = "A valid IPv4: x.x.x.x", required = true, multiValued = false)
 	private String	ip;
 
-	@Argument(index = 3, name = "MASK", description = "A valid MASK IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 3, name = "mask", description = "A valid MASK IPv4: x.x.x.x", required = true, multiValued = false)
 	private String	mask;
 
 	@Override

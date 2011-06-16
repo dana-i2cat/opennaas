@@ -21,7 +21,7 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chasis", name = "listInterfaces", description = "List all the interfaces of a given resource.")
+@Command(scope = "chassis", name = "listInterfaces", description = "List all the interfaces of a given resource.")
 public class ListInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
