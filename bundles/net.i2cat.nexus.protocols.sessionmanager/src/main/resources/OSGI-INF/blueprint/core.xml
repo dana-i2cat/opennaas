@@ -4,6 +4,10 @@
 
 	<bean id="protocolManager" class="net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager" />
 
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter"
+		class="net.i2cat.nexus.resources.shell.completers.ResourceNameCompleter" />
+
 	<!-- Listen for registration / deregistration of IProtocolSessionFactory services -->
 	<reference-list interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory" availability="optional">
 		<reference-listener ref="protocolManager"
@@ -18,21 +22,45 @@
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">		
 		<command name="protocols/info">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.InfoCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="protocols/list">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ListCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="protocols/remove">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.RemoveCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="protocols/add">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.AddCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="protocols/purge">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.PurgeCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="protocols/context">
 			<action class="net.i2cat.nexus.protocols.sessionmanager.shell.ContextCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 	</command-bundle>
 </blueprint>
