@@ -113,10 +113,11 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		} catch (ResourceException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			log.error("Error ocurred!!!", e);
-			Assert.fail(e.getMessage());
 		}
+		// catch (ProtocolException e) {
+		// log.error("Error ocurred!!!", e);
+		// Assert.fail(e.getMessage());
+		// }
 	}
 
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
