@@ -5,7 +5,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 
 import org.apache.felix.gogo.commands.Argument;
@@ -45,7 +45,6 @@ public class ListCommand extends GenericKarafCommand {
 			for (String protocol : protocolManager.getAllSessionFactories()) {
 				printInfo(protocol);
 			}
-			endcommand();
 			return null;
 		}
 
@@ -60,7 +59,6 @@ public class ListCommand extends GenericKarafCommand {
 			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
 				printInfo(simpleTab + session);
 			}
-			endcommand();
 			return null;
 		}
 		if (verbose)

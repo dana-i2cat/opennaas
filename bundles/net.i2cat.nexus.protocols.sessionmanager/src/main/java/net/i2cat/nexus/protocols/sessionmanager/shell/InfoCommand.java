@@ -2,7 +2,7 @@ package net.i2cat.nexus.protocols.sessionmanager.shell;
 
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.command.GenericKarafCommand;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
@@ -43,7 +43,6 @@ public class InfoCommand extends GenericKarafCommand {
 
 		if (protocolSessionManager == null) {
 			printError("Wrong deviceId");
-			endcommand();
 			return null;
 		}
 
@@ -51,7 +50,6 @@ public class InfoCommand extends GenericKarafCommand {
 
 		if (protocolSession == null) {
 			printError("Unable to obtain a session with session id: " + sessionId);
-			endcommand();
 			return null;
 		}
 		printSymbol(horizontalSeparator);
