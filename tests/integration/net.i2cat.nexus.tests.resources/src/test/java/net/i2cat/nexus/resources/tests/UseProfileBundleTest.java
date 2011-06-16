@@ -22,6 +22,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,8 +54,8 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 						"net.i2cat.nexus.tests.helper"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.mockProfile")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
+							// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+							);
 		return options;
 	}
 
@@ -67,10 +68,32 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
-		resourceRepository = getOsgiService(IResourceRepository.class, 20000);
-		profileManager = getOsgiService(IProfileManager.class, 20000);
+		resourceRepository = getOsgiService(IResourceRepository.class, 30000);
+		profileManager = getOsgiService(IProfileManager.class, 30000);
+
+		clearRepo();
 
 		log.info("INFO: Initialized!");
+	}
+
+	@After
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceRepository.listResources().size()];
+		toRemove = resourceRepository.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			try {
+				resourceRepository.stopResource(resource.getResourceIdentifier().getId());
+				resourceRepository.removeResource(resource.getResourceIdentifier().getId());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 	/**
@@ -94,6 +117,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 			// create resourceDescriptor with profile id
 			ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+			resourceDescriptor.getInformation().setName("TestResource");
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -104,15 +128,23 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			resourceRepository.startResource(resource.getResourceIdentifier().getId());
 
 			// assert profile loading has been correct
-			Assert.assertTrue(resource.getProfile().equals(profile));
+			Assert.assertNotNull(resource.getProfile());
+			Assert.assertNotNull(profile);
+			// FIXME there are problems with CGLIB used by hibernate and equals()
+			// Assert.assertTrue(resource.getProfile().equals(profile));
+			Assert.assertTrue(resource.getProfile().getProfileName().equals(profile.getProfileName()));
+			Assert.assertTrue(resource.getProfile().getProfileDescriptor().equals(profile.getProfileDescriptor()));
 
 			// TODO launch setInterface Action and assert DummyAction is executed instead of original one
 
 		} catch (ResourceException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 		// catch (ProtocolException e) {
 		// log.error("Error ocurred!!!", e);
@@ -121,7 +153,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 	}
 
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 
 	}

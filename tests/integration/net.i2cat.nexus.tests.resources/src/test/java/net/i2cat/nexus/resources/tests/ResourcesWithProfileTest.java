@@ -23,6 +23,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -69,7 +70,29 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 		resourceRepository = getOsgiService(IResourceRepository.class, 20000);
 		profileManager = getOsgiService(IProfileManager.class, 20000);
 
+		clearRepo();
+
 		log.info("INFO: Initialized!");
+	}
+
+	@After
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceRepository.listResources().size()];
+		toRemove = resourceRepository.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			try {
+				resourceRepository.stopResource(resource.getResourceIdentifier().getId());
+				resourceRepository.removeResource(resource.getResourceIdentifier().getId());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 	/**
@@ -89,6 +112,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 			// create resourceDescriptor with profile id
 			ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+			resourceDescriptor.getInformation().setName("TestResource");
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -99,15 +123,20 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			resourceRepository.startResource(resource.getResourceIdentifier().getId());
 
 			// assert profile loading has been correct
-
-			ICapability capability = resource.getCapability(capDesc.getCapabilityInformation());
+			Assert.assertNotNull(resource.getProfile());
 			Assert.assertTrue(resource.getProfile().equals(profile));
+
+			// TODO launch setInterface Action and assert DummyAction is executed instead of original one
+			ICapability capability = resource.getCapability(capDesc.getCapabilityInformation());
 
 		} catch (ResourceException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 
 	}
