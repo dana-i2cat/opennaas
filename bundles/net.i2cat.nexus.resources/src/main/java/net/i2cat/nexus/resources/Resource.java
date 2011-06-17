@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.profile.IProfile;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Main resource class
@@ -22,8 +22,7 @@ import org.apache.commons.logging.LogFactory;
 public class Resource implements IResource {
 
 	/** The logger **/
-	Log								logger				= LogFactory
-																.getLog(Resource.class);
+	Log								logger				= LogFactory.getLog(Resource.class);
 
 	/** The resource identifier **/
 	private IResourceIdentifier		resourceIdentifier	= null;
@@ -63,7 +62,7 @@ public class Resource implements IResource {
 
 	public void initialize() throws IncorrectLifecycleStateException, ResourceException {
 		if (!(getState().equals(State.INSTANTIATED) || getState().equals(State.SHUTDOWN)))
-			throw new IncorrectLifecycleStateException("Unrecognized transition method (initialize) in state " + getState());
+			throw new IncorrectLifecycleStateException("Unrecognized transition method (initialize) in state " + getState(), getState());
 
 		// for (int i = 0; i < capabilities.size(); i++) {
 		// capabilities.get(i).initialize();
@@ -73,7 +72,7 @@ public class Resource implements IResource {
 
 	public void activate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.INITIALIZED))
-			throw new IncorrectLifecycleStateException("Unrecognized transition method (activate) in state " + getState());
+			throw new IncorrectLifecycleStateException("Unrecognized transition method (activate) in state " + getState(), getState());
 
 		startCapabilities(capabilities.size() - 1, true);
 
@@ -97,7 +96,7 @@ public class Resource implements IResource {
 
 	public void deactivate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.ACTIVE))
-			throw new IncorrectLifecycleStateException("Unrecognized transition method (deactivate) in state " + getState());
+			throw new IncorrectLifecycleStateException("Unrecognized transition method (deactivate) in state " + getState(), getState());
 
 		if (bootstrapper != null) {
 			bootstrapper.revertBootstrap(this);
@@ -145,7 +144,7 @@ public class Resource implements IResource {
 
 	public void shutdown() throws IncorrectLifecycleStateException, ResourceException {
 		if (!getState().equals(State.INITIALIZED))
-			throw new IncorrectLifecycleStateException("Unrecognized transition method (shutdown) in state " + getState());
+			throw new IncorrectLifecycleStateException("Unrecognized transition method (shutdown) in state " + getState(), getState());
 
 		// for (int i = 0; i < capabilities.size(); i++) {
 		// capabilities.get(i).shutdown();

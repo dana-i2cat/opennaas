@@ -2,12 +2,13 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ResourceManager;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+
+import net.i2cat.nexus.resources.IResourceIdentifier;
+import net.i2cat.nexus.resources.IncorrectLifecycleStateException;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ResourceManager;
 
 /**
  * Start one or more resources
@@ -46,8 +47,12 @@ public class StartResourceCommand extends GenericKarafCommand {
 										" is not found on repository.");
 					}
 				} catch (ResourceException e) {
-					printError(e);
-					printError("Didn't started the resource " + args[1] + ". ");
+					if (e.getCause() instanceof IncorrectLifecycleStateException)
+						printError("Cannot start resource " + args[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+								.getResourceState());
+					else
+						printError(e);
+					printError("Resource " + args[1] + " was not started");
 
 				}
 

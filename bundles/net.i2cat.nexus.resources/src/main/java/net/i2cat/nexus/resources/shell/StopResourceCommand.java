@@ -2,13 +2,14 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ResourceManager;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
+
+import net.i2cat.nexus.resources.IResourceIdentifier;
+import net.i2cat.nexus.resources.IncorrectLifecycleStateException;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ResourceManager;
 
 /**
  * Stop one or more resources
@@ -47,7 +48,6 @@ public class StopResourceCommand extends GenericKarafCommand {
 						} else {
 							printInfo("Forcing remove resource");
 							manager.forceStopResource(identifier);
-
 						}
 
 						counter++;
@@ -56,8 +56,12 @@ public class StopResourceCommand extends GenericKarafCommand {
 						printError("The resource " + args[1] + " is not found on repository.");
 					}
 				} catch (ResourceException e) {
-					printError(e);
-					printError("Din't stopped the resource " + args[1] + ". ");
+					if (e.getCause() instanceof IncorrectLifecycleStateException)
+						printError("Cannot stop resource " + args[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+								.getResourceState());
+					else
+						printError(e);
+					printError("Resource " + args[1] + " was not stopped. ");
 
 				}
 
@@ -74,5 +78,4 @@ public class StopResourceCommand extends GenericKarafCommand {
 		return null;
 
 	}
-
 }
