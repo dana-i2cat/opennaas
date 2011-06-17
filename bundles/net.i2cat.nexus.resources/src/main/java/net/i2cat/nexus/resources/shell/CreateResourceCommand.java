@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import net.i2cat.nexus.resources.Activator;
 import net.i2cat.nexus.resources.IResource;
@@ -24,6 +25,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
+import org.xml.sax.SAXException;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
@@ -33,6 +35,7 @@ import org.apache.felix.gogo.commands.Option;
  */
 @Command(scope = "resource", name = "create", description = "Create one or more resources from a given descriptor")
 public class CreateResourceCommand extends GenericKarafCommand {
+	private final String	NAME_SCHEMA	= "/descriptor.xsd";
 
 	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to resource descriptors ", required = true, multiValued = true)
 	private List<String>	paths;
@@ -61,6 +64,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 						totalFiles++;
 						try {
 							descriptor = getResourceDescriptor(files.getPath());
+
 							try {
 								createResource(manager, descriptor);
 							} catch (NullPointerException f) {
@@ -78,6 +82,9 @@ public class CreateResourceCommand extends GenericKarafCommand {
 							printError(f);
 						} catch (ResourceException f) {
 							printError("In file: " + files.getName());
+							printError(f);
+						} catch (SAXException f) {
+							printError("Not it is a correct format validator file: " + files.getName());
 							printError(f);
 						}
 
@@ -107,7 +114,11 @@ public class CreateResourceCommand extends GenericKarafCommand {
 					} catch (ResourceException f) {
 						printError("File: " + filename);
 						printError(f);
+					} catch (SAXException f) {
+						printError("Not it is a correct format validator file: " + filename);
+						printError(f);
 					}
+
 				} else {
 					printError("The file type is not a valid for " + filename);
 				}
@@ -134,7 +145,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 		IResource resource = null;
 		try {
-
 			printInfo("Creating Resource ...... ");
 			resource = manager.createResource(descriptor);
 		} catch (ResourceException e) {
@@ -157,7 +167,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		return 0;
 	}
 
-	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException {
+	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
 		InputStream stream = null;
 		// First try a URL
 		try {
@@ -169,6 +179,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			printInfo("file: " + filename);
 			stream = new FileInputStream(filename);
 		}
+
 		ResourceDescriptor rd = getDescriptor(stream);
 
 		if (rd.getInformation().getType() == null || rd.getInformation().getType() == "") {
@@ -183,11 +194,23 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		return rd;
 	}
 
-	private ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException {
+	public ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException, SAXException {
+
 		ResourceDescriptor descriptor = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(ResourceDescriptor.class);
-			descriptor = (ResourceDescriptor) context.createUnmarshaller().unmarshal(stream);
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			/* check wellformat xml with xsd */
+			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A COMMAND
+			// SchemaFactory sf = SchemaFactory.newInstance(
+			// javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			// ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			// Schema schema = sf.newSchema(new StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
+			// unmarshaller.setSchema(schema);
+
+			descriptor = (ResourceDescriptor) unmarshaller.unmarshal(stream);
 		} finally {
 			try {
 				stream.close();
