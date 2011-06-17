@@ -13,6 +13,7 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
@@ -58,17 +59,9 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
-			if (resource == null) {
-				printError("Error in resource.");
-				endcommand();
-				return -1;
-			}
 
-			if (!this.validateResource(resource)) {
-				printError("The resource was not found");
-				endcommand();
-				return -1;
-			}
+			validateResource(resource);
+
 			if (!validateIPAddress(ip)) {
 				printError("Ip format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
 				endcommand();
@@ -80,11 +73,6 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 				return -1;
 			}
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			if (chassisCapability == null) {
-				printError("Error in capability.");
-				endcommand();
-				return -1;
-			}
 
 			Object params = newParamsInterfaceEthernet(interfaceName, ip, mask);
 
@@ -120,8 +108,11 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 			}
 			printInfo("Interface setted successfully");
 
+		} catch (ResourceException e) {
+			printError(e);
+			endcommand();
+			return -1;
 		} catch (Exception e) {
-
 			printError("Error in setting interface.");
 			printError(e);
 			endcommand();
@@ -163,15 +154,17 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 				return capability;
 			}
 		}
-		throw new Exception();
+		throw new Exception("Error getting the capability");
 	}
 
-	private boolean validateResource(IResource resource) {
+	private boolean validateResource(IResource resource) throws ResourceException {
 		if (resource == null)
-			return false;
+			throw new ResourceException("No resource found.");
 		if (resource.getModel() == null)
-			return false;
-
+			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+		if (resource.getCapabilities() == null) {
+			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+		}
 		return true;
 	}
 

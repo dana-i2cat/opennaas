@@ -49,19 +49,11 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
-			if (resource == null) {
-				printError("Error in resource.");
-				endcommand();
-				return -1;
-			}
+
 			validateResource(resource);
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			if (chassisCapability == null) {
-				printError("Error in capability.");
-				endcommand();
-				return -1;
-			}
+
 			chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
 
 			// TODO WE NEED TO USE QUEUE WITH CHASSIS
@@ -81,7 +73,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 			for (Object logicalDevice : model.getLogicalDevices()) {
 				// TODO CHECK IF IT IS POSSIBLE
-
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 					for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
@@ -97,8 +88,8 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 					}
 				}
 			}
-		} catch (ResourceException e) {
 
+		} catch (ResourceException e) {
 			printError(e);
 			endcommand();
 			return -1;
@@ -112,21 +103,23 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public ICapability getCapability(List<ICapability> capabilities, String type) {
+	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
 			}
 		}
-		return null;
+		throw new Exception("Error getting the capability");
 	}
 
-	private boolean validateResource(IResource resource) {
+	private boolean validateResource(IResource resource) throws ResourceException {
 		if (resource == null)
-			return false;
+			throw new ResourceException("No resource found.");
 		if (resource.getModel() == null)
-			return false;
-
+			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+		if (resource.getCapabilities() == null) {
+			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+		}
 		return true;
 	}
 
