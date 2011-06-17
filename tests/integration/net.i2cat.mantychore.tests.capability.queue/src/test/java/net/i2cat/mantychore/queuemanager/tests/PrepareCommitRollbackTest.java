@@ -82,8 +82,8 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	 * Configure the protocol to connect
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
-		// String uri = System.getProperty("protocol.uri");
-		String uri = "ssh://i2cat:gagar50in@lola.hea.net:22/netconf";
+		 String uri = System.getProperty("protocol.uri");
+		
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
@@ -163,8 +163,8 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 			Assert.fail(e1.getMessage());
 		}
 		// Try to do a configuration with the router is corrupted
-		// String uri = System.getProperty("protocol.uri");
-		String uri = "ssh://i2cat:gagar50in@lola.hea.net:22/netconf";
+		 String uri = System.getProperty("protocol.uri");
+		
 
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
@@ -236,8 +236,8 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 			Assert.fail(e1.getMessage());
 		}
 
-		// String uri = System.getProperty("protocol.uri");
-		String uri = "ssh://i2cat:gagar50in@lola.hea.net:22/netconf";
+		 String uri = System.getProperty("protocol.uri");
+		
 
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";

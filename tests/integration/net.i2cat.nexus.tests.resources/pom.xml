@@ -13,14 +13,14 @@
 
 	<!--  POM id -->
 
-	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
-	<artifactId>net.i2cat.mantychore.tests.resources</artifactId>
+	<groupId>net.i2cat.nexus</groupId>
+	<artifactId>net.i2cat.nexus.tests.resources</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Mantychore repository test</name>
-	<description>Mantychore repository test</description>
+	<name>Nexus:: Integrations Resources Tests</name>
+	<description>nexus resource integration test</description>
 	<packaging>jar</packaging>
 	
 	<dependencies>
