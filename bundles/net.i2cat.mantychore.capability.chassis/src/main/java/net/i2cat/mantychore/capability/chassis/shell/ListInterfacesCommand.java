@@ -14,9 +14,9 @@ import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
-
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -68,7 +68,12 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
 
 			printInfo("Sending the message...");
-			queue.execute();
+			try {
+				queue.execute();
+			} catch (CapabilityException e) {
+				queue.empty();
+				throw e;
+			}
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 			printSymbol(horizontalSeparator);
 			printInfo(" [Interface name] 	IP/MASK			");

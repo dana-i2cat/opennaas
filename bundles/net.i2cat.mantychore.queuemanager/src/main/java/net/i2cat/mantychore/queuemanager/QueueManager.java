@@ -54,6 +54,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 	@Override
 	public void empty() {
+		log.debug("Cleaning the queue...");
 		queue.clear();
 	}
 

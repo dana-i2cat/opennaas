@@ -13,10 +13,9 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.action.ActionResponse;
+import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
-
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -113,7 +112,12 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 
 			// TODO WE NEED TO USE QUEUE WITH CHASSIS
 			IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
-			List<ActionResponse> response = queue.execute();
+			try {
+				queue.execute();
+			} catch (CapabilityException e) {
+				queue.empty();
+				throw e;
+			}
 			printInfo("Interface setted successfully");
 
 		} catch (Exception e) {
