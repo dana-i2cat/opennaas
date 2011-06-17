@@ -77,8 +77,7 @@
 		         <systemProperties>
                      <property>
                         <name>protocol.uri</name>
-                        <value>i2cat:gagar50in@lola.hea.net:22</value>
-<!--                          <value>${protocol.uri}</value> -->
+                          <value>${protocol.uri}</value> 
                     </property>
                 </systemProperties>
             </configuration> 
