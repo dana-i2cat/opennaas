@@ -1,6 +1,5 @@
 package net.i2cat.nexus.resources.shell;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,6 +9,7 @@ import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -18,6 +18,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.xml.sax.SAXException;
 
 @Command(scope = "resource", name = "modify", description = "Modify one or more existing resources")
 public class ModifyResourceCommand extends GenericKarafCommand {
@@ -37,37 +38,26 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 
 		initcommand("modify resource");
 
-		Boolean created = false;
 		IResourceManager manager = getResourceManager();
-		ResourceDescriptor descriptor = null;
 
-		if (!splitResourceName(name))
-			return null;
+		ResourceDescriptor descriptor = getDescriptor(filename);
 
-		File file = new File(filename);
-		// check if the argument path is a directory
-		// if it is, load all the descriptor files of the directory
-		if (!file.isDirectory() && filename.endsWith(".descriptor")) {
-			// only accept the files with '.decriptor' extension
+		if (descriptor != null) {
+
+			if (!splitResourceName(name))
+				return null;
+
 			IResourceIdentifier resourceIdentifier = null;
 			try {
 				resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
 				if (resourceIdentifier != null) {
 					try {
-						descriptor = getResourceDescriptor(filename);
 
 						manager.modifyResource(resourceIdentifier, descriptor);
 						printInfo("Resource " + args[1] + " modified.");
-					} catch (FileNotFoundException f) {
-						printError("File not found: " + filename);
-						// printError(f);
-					} catch (JAXBException f) {
-						printError("Error parsing descriptor ");
-						printError(f);
 					} catch (ResourceException f) {
 						printError(f);
 					}
-
 				} else {
 					printError("The resource " + args[1] + " is not found on repository.");
 				}
@@ -75,14 +65,62 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 				printError(e);
 				printError("No modified " + args[1]);
 			}
-		} else {
-			printError("The file cannot be a directory");
 		}
+
 		endcommand();
 		return null;
 	}
 
-	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException {
+	// @Override
+	// protected Object doExecute() throws Exception {
+	//
+	// initcommand("modify resource");
+	//
+	// IResourceManager manager = getResourceManager();
+	// ResourceDescriptor descriptor = null;
+	//
+	// if (!splitResourceName(name))
+	// return null;
+	//
+	// File file = new File(filename);
+	// // check if the argument path is a directory
+	// // if it is, load all the descriptor files of the directory
+	// if (!file.isDirectory() && filename.endsWith(".descriptor")) {
+	// // only accept the files with '.decriptor' extension
+	// IResourceIdentifier resourceIdentifier = null;
+	// try {
+	// resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+	// if (resourceIdentifier != null) {
+	// try {
+	// descriptor = getResourceDescriptor(filename);
+	//
+	// manager.modifyResource(resourceIdentifier, descriptor);
+	// printInfo("Resource " + args[1] + " modified.");
+	// } catch (FileNotFoundException f) {
+	// printError("File not found: " + filename);
+	// // printError(f);
+	// } catch (JAXBException f) {
+	// printError("Error parsing descriptor ");
+	// printError(f);
+	// } catch (ResourceException f) {
+	// printError(f);
+	// }
+	//
+	// } else {
+	// printError("The resource " + args[1] + " is not found on repository.");
+	// }
+	// } catch (ResourceException e) {
+	// printError(e);
+	// printError("No modified " + args[1]);
+	// }
+	// } else {
+	// printError("The file cannot be a directory");
+	// }
+	// endcommand();
+	// return null;
+	// }
+
+	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
 		InputStream stream = null;
 		// First try a URL
 		try {
@@ -107,11 +145,23 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 		return rd;
 	}
 
-	private ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException {
+	public ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException, SAXException {
+
 		ResourceDescriptor descriptor = null;
 		try {
 			JAXBContext context = JAXBContext.newInstance(ResourceDescriptor.class);
-			descriptor = (ResourceDescriptor) context.createUnmarshaller().unmarshal(stream);
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			/* check wellformat xml with xsd */
+			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A COMMAND
+			// SchemaFactory sf = SchemaFactory.newInstance(
+			// javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			// ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			// Schema schema = sf.newSchema(new StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
+			// unmarshaller.setSchema(schema);
+
+			descriptor = (ResourceDescriptor) unmarshaller.unmarshal(stream);
 		} finally {
 			try {
 				stream.close();
@@ -120,6 +170,63 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 			}
 		}
 		return descriptor;
+	}
+
+	private ResourceDescriptor getDescriptor(String path) {
+
+		ResourceDescriptor descriptor = null;
+
+		URL url = getDescriptorURL(path);
+
+		if (url == null)
+			return null;
+
+		try {
+
+			descriptor = getResourceDescriptor(url.toString());
+
+		} catch (FileNotFoundException f) {
+			printError("File not found: " + url.toString());
+		} catch (NullPointerException f) {
+			printError("Error parsing descriptor on " + url.toString());
+		} catch (JAXBException f) {
+			printError("Error parsing descriptor ");
+			printError(f);
+		} catch (ResourceException f) {
+			printError("In file: " + url.toString());
+			printError(f);
+		} catch (IOException e) {
+			printError("Error reading descriptor: " + url.toString(), e);
+		} catch (SAXException f) {
+			printError("Given file is not a valid descriptor. Check it complies with descriptor schema. Invalid file: " + url.toString());
+			printError(f);
+		}
+
+		return descriptor;
+	}
+
+	private URL getDescriptorURL(String path) {
+
+		URL url = null;
+		try {
+			url = fileNameToUrl(path);
+		} catch (MalformedURLException e1) {
+			printError("Could not read file. Malformed path: " + path);
+		}
+		return url;
+	}
+
+	private URL fileNameToUrl(String pathOrUrl) throws MalformedURLException {
+
+		String url;
+
+		if (!pathOrUrl.contains("://")) {
+			url = "file://" + pathOrUrl;
+		} else {
+			url = pathOrUrl;
+		}
+
+		return new URL(url);
 	}
 
 }

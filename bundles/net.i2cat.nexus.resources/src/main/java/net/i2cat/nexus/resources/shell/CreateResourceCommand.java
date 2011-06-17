@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -14,7 +16,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import net.i2cat.nexus.resources.Activator;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.IResourceRepository;
@@ -47,85 +48,21 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		initcommand("create resource");
 
-		Boolean created = false;
 		IResourceManager manager = getResourceManager();
-		ResourceDescriptor descriptor = null;
 
-		// For each argument path or URL
-		for (String filename : paths) {
+		List<ResourceDescriptor> descriptors = getDescriptors(paths);
 
-			File file = new File(filename);
-			// check if the argument path is a directory
-			// if it is, load all the descriptor files of the directory
-			if (file.isDirectory()) {
-				for (File files : file.listFiles()) {
-					// only accept the files with '.descriptor' extension
-					if (files.getName().endsWith(".descriptor")) {
-						totalFiles++;
-						try {
-							descriptor = getResourceDescriptor(files.getPath());
-
-							try {
-								createResource(manager, descriptor);
-							} catch (NullPointerException f) {
-								printError("Error creating Resource.");
-								printError(f);
-							}
-						} catch (FileNotFoundException f) {
-							printError("File not found: " + files);
-
-						} catch (NullPointerException f) {
-							printError("Error parsing descriptor on " + files.getName());
-
-						} catch (JAXBException f) {
-							printError("Error parsing descriptor ");
-							printError(f);
-						} catch (ResourceException f) {
-							printError("In file: " + files.getName());
-							printError(f);
-						} catch (SAXException f) {
-							printError("Not it is a correct format validator file: " + files.getName());
-							printError(f);
-						}
-
-					}
-					printSymbol(underLine);
-				}
-			} else {
-				if (filename.endsWith(".descriptor")) {
-					totalFiles++;
-					try {
-						descriptor = getResourceDescriptor(filename);
-						try {
-							createResource(manager, descriptor);
-						} catch (NullPointerException f) {
-							printError("Error creating Resource. ");
-							printError(f);
-						}
-					} catch (JAXBException f) {
-						printError("Error parsing descriptor ");
-						printError(f);
-					} catch (FileNotFoundException f) {
-						printError("File not found: " + filename);
-
-					} catch (NullPointerException f) {
-						printError("The descriptor is not loaded " + filename);
-
-					} catch (ResourceException f) {
-						printError("File: " + filename);
-						printError(f);
-					} catch (SAXException f) {
-						printError("Not it is a correct format validator file: " + filename);
-						printError(f);
-					}
-
-				} else {
-					printError("The file type is not a valid for " + filename);
-				}
+		for (ResourceDescriptor descriptor : descriptors) {
+			try {
+				totalFiles++;
+				createResource(manager, descriptor);
 				printSymbol(underLine);
+			} catch (NullPointerException f) {
+				printError("Error creating Resource " + descriptor.getInformation().getType() + ":" + descriptor.getInformation().getName());
+				printError(f);
 			}
-
 		}
+
 		if (counter == 0) {
 			printInfo("No resource has been created.");
 
@@ -134,7 +71,94 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 		endcommand();
 		return null;
+
 	}
+
+	// @Override
+	// protected Object doExecute() throws Exception {
+	//
+	// initcommand("create resource");
+	//
+	// Boolean created = false;
+	// IResourceManager manager = getResourceManager();
+	// ResourceDescriptor descriptor = null;
+	//
+	// // For each argument path or URL
+	// for (String filename : paths) {
+	//
+	// File file = new File(filename);
+	// // check if the argument path is a directory
+	// // if it is, load all the descriptor files of the directory
+	// if (file.isDirectory()) {
+	// for (File files : file.listFiles()) {
+	// // only accept the files with '.descriptor' extension
+	// if (files.getName().endsWith(".descriptor")) {
+	// totalFiles++;
+	// try {
+	// descriptor = getResourceDescriptor(files.getPath());
+	// try {
+	// createResource(manager, descriptor);
+	// } catch (NullPointerException f) {
+	// printError("Error creating Resource.");
+	// printError(f);
+	// }
+	// } catch (FileNotFoundException f) {
+	// printError("File not found: " + files);
+	//
+	// } catch (NullPointerException f) {
+	// printError("Error parsing descriptor on " + files.getName());
+	//
+	// } catch (JAXBException f) {
+	// printError("Error parsing descriptor ");
+	// printError(f);
+	// } catch (ResourceException f) {
+	// printError("In file: " + files.getName());
+	// printError(f);
+	// }
+	//
+	// }
+	// printSymbol(underLine);
+	// }
+	// } else {
+	// if (filename.endsWith(".descriptor")) {
+	// totalFiles++;
+	// try {
+	// descriptor = getResourceDescriptor(filename);
+	// try {
+	// createResource(manager, descriptor);
+	// } catch (NullPointerException f) {
+	// printError("Error creating Resource. ");
+	// printError(f);
+	// }
+	// } catch (JAXBException f) {
+	// printError("Error parsing descriptor ");
+	// printError(f);
+	// } catch (FileNotFoundException f) {
+	// printError("File not found: " + filename);
+	//
+	// } catch (NullPointerException f) {
+	// printError("The descriptor is not loaded " + filename);
+	//
+	// } catch (ResourceException f) {
+	// printError("File: " + filename);
+	// printError(f);
+	// }
+	// } else {
+	// printError("The file type is not a valid for " + filename);
+	// }
+	// printSymbol(underLine);
+	// }
+	//
+	// }
+	// if (counter == 0) {
+	// printInfo("No resource has been created.");
+	//
+	// } else {
+	// printInfo("Created " + counter + " resource/s from " + totalFiles);
+	// }
+	// endcommand();
+	// return null;
+	// }
 
 	public int createResource(IResourceManager manager, ResourceDescriptor descriptor) {
 
@@ -221,9 +245,100 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		return descriptor;
 	}
 
-	public IResourceManager getResourceManager() throws Exception {
-		IResourceManager resourceManager = Activator.getResourceManagerService();
+	// public IResourceManager getResourceManager() throws Exception {
+	// IResourceManager resourceManager = Activator.getResourceManagerService();
+	//
+	// return resourceManager;
+	// }
 
-		return resourceManager;
+	private List<ResourceDescriptor> getDescriptors(List<String> paths) {
+
+		List<URL> urls = new ArrayList<URL>();
+		List<ResourceDescriptor> descriptors = new ArrayList<ResourceDescriptor>();
+
+		for (String path : paths) {
+			urls.addAll(getDescriptorURLs(path));
+		}
+
+		for (URL url : urls) {
+			try {
+
+				descriptors.add(getResourceDescriptor(url.toString()));
+
+			} catch (FileNotFoundException f) {
+				printError("File not found: " + url.toString());
+			} catch (NullPointerException f) {
+				printError("Error parsing descriptor on " + url.toString());
+			} catch (JAXBException f) {
+				printError("Error parsing descriptor ");
+				printError(f);
+			} catch (ResourceException f) {
+				printError("In file: " + url.toString());
+				printError(f);
+			} catch (IOException e) {
+				printError("Error reading descriptor: " + url.toString(), e);
+			} catch (SAXException f) {
+				printError("Given file is not a valid descriptor. Check it complies with descriptor schema. Invalid file: " + url.toString());
+				printError(f);
+			}
+		}
+
+		return descriptors;
 	}
+
+	private List<URL> getDescriptorURLs(String path) {
+
+		List<URL> urls = new ArrayList<URL>();
+
+		try {
+			URL url = fileNameToUrl(path);
+
+			if (url.getProtocol().equals("file")) {
+				File file = new File(url.toURI());
+
+				if (file.isDirectory()) {
+
+					for (File fileInDirectory : file.listFiles()) {
+
+						if (fileInDirectory.getName().endsWith(".descriptor")) {
+							try {
+								urls.add(fileInDirectory.toURI().toURL());
+							} catch (MalformedURLException e) {
+								printError("Could not read file. Malformed path: " + fileInDirectory.toURI().toString());
+							}
+						}
+					}
+				} else {
+					if (file.getName().endsWith(".descriptor")) {
+						urls.add(url);
+					} else {
+						printError("The file type is not a valid for " + file.getName());
+					}
+				}
+			} else {
+				urls.add(url);
+			}
+
+		} catch (MalformedURLException e1) {
+			printError("Could not read file. Malformed path: " + path);
+		} catch (URISyntaxException e) {
+			printError("Could not read file. Malformed path: " + path);
+		}
+
+		return urls;
+	}
+
+	private URL fileNameToUrl(String pathOrUrl) throws MalformedURLException {
+
+		String url;
+
+		if (!pathOrUrl.contains("://")) {
+			url = "file://" + pathOrUrl;
+		} else {
+			url = pathOrUrl;
+		}
+
+		return new URL(url);
+	}
+
 }
