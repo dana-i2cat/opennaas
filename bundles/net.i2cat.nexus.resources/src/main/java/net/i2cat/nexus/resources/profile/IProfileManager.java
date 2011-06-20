@@ -11,17 +11,6 @@ import net.i2cat.nexus.resources.ResourceException;
  */
 public interface IProfileManager {
 
-	// public Map<String, IResource> getProfiles();
-
-	// /**
-	// * Adds a profile to this manager. Only added profiles can be used by resources
-	// *
-	// * @throws ResourceException
-	// * @deprecated use addProfile(IProfile) instead
-	// */
-	// @Deprecated
-	// public void addProfile(IProfile profile, String resourceType, String resourceId) throws ResourceException;
-
 	/**
 	 * Adds a profile to this manager. Only added profiles can be used by resources
 	 * 
@@ -81,8 +70,5 @@ public interface IProfileManager {
 	 *             if there is no profile with given profileId
 	 */
 	public List<IResource> getRegisteredResources(String profileId) throws ResourceException;
-
-	// @Deprecated
-	// public IResource getResourceFromProfile(String profileId) throws ResourceException;
 
 }

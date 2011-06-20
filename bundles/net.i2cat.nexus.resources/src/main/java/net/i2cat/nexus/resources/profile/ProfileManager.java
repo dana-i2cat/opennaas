@@ -36,11 +36,6 @@ public class ProfileManager implements IProfileManager {
 	 */
 	private Map<String, ProfileDescriptor>	profileDescriptors	= new HashMap<String, ProfileDescriptor>();
 
-	// @Override
-	// public void addProfile(IProfile profile, String ignored1, String ignored2) throws ResourceException {
-	// addProfile(profile);
-	// }
-
 	@Override
 	public void addProfile(IProfile profile) throws ResourceException {
 		String profileName = profile.getProfileDescriptor().getProfileName();
@@ -131,19 +126,6 @@ public class ProfileManager implements IProfileManager {
 			return new ArrayList<IResource>();
 	}
 
-	// @Override
-	// public IResource getResourceFromProfile(String profileId) throws ResourceException {
-	// IResource resource = null;
-	// try {
-	// resource = registeredResources.get(profileId).get(0);
-	// } catch (NullPointerException e) {
-	// throw new ResourceException("This profile name: " + profileId + " not have a resource asssociated.", e);
-	// } catch (ClassCastException e) {
-	// throw new ResourceException("This profile name: " + profileId + " is not found as a profile.", e);
-	// }
-	// return resource;
-	// }
-
 	/**
 	 * Called by blueprint every time a resource repository is registered
 	 * 
@@ -188,35 +170,6 @@ public class ProfileManager implements IProfileManager {
 					// ignored, could not be thrown
 				}
 			}
-		}
-	}
-
-	private void removeResources(IProfile profile) {
-
-		List<IResource> resourcesToRemove;
-
-		try {
-			resourcesToRemove = getRegisteredResources(profile.getProfileDescriptor().getProfileName());
-		} catch (ResourceException e) {
-			// profile is no longer stored in this manager
-			return;
-		}
-
-		try {
-			if (!resourcesToRemove.isEmpty()) {
-
-				IResourceManager resourceManager = Activator.getResourceManagerService();
-
-				for (int i = resourcesToRemove.size() - 1; i >= 0; i--) {
-					resourceManager.removeResource(resourcesToRemove.get(i).getResourceIdentifier());
-				}
-			}
-		} catch (ResourceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
