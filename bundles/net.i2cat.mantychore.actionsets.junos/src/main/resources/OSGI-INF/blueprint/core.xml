@@ -15,6 +15,20 @@
 			<entry key="actionset.version" value="10.10" />
 		</service-properties>
 	</service>
+		<!--  	publish action set services  -->
+	<bean id="ipActionSet"
+		class="net.i2cat.mantychore.actionsets.junos.IPActionSet" />
+
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="ipActionSet"
+		interface="net.i2cat.nexus.resources.action.IActionSet">
+		<service-properties>
+		<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos" />
+			<entry key="actionset.capability" value="ip" /> 
+			<entry key="actionset.version" value="10.10" />
+		</service-properties>
+	</service>
 	
 		<!--  	publish action set services  -->
 	<bean id="queueActionSet"

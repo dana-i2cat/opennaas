@@ -7,15 +7,9 @@ import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceAction;
 import net.i2cat.nexus.resources.action.ActionSet;
 
-@SuppressWarnings("serial")
-public class ChassisActionSet extends ActionSet {
-
-	public ChassisActionSet() {
-		super.setActionSetId("chassisActionSet");
-
-		// TODO create new actions
-		// encapsulation
-		// up down interfaces
+public class IPActionSet extends ActionSet {
+	public IPActionSet() {
+		super.setActionSetId("ipActionSet");
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 		this.putAction(ActionConstants.SETINTERFACE, SetInterfaceAction.class);
 	}
