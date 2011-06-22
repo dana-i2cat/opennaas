@@ -58,6 +58,11 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 
+		<dependency> 		
+			<groupId>net.i2cat.mantychore.capability</groupId>	
+			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
 	</dependencies>
 
 <!--  manage dependencies  -->

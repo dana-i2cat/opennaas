@@ -17,7 +17,7 @@
 	<!--  integration tests -->
 	<modules>
 		<module>net.i2cat.nexus.tests.helper</module>
-		<module>net.i2cat.nexus.tests.resources</module>
+<!--		<module>net.i2cat.nexus.tests.resources</module> -->
 		<module>net.i2cat.mantychore.tests.capability</module>
 		<module>net.i2cat.mantychore.tests.repository</module>
 		<module>net.i2cat.mantychore.tests.capability.queue</module>

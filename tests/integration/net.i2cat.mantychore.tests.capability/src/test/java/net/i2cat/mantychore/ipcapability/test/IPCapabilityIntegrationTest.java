@@ -18,7 +18,7 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
@@ -181,9 +181,9 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
+			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 1);
-			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
+			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
 			Assert.assertTrue(responses.size() == 2);
 			ActionResponse actionResponse = responses.get(0);
@@ -192,7 +192,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
 
-			queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
+			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
 
 		} catch (CapabilityException e) {
