@@ -8,7 +8,6 @@ import java.util.Vector;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.nexus.resources.ActivatorException;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionResponse;
@@ -112,18 +111,18 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	}
 
 	private ActionResponse confirm(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
-		IAction confirmAction = getActionSet().obtainAction(ActionConstants.CONFIRM);
+		IAction confirmAction = getActionSet().obtainAction(QueueConstants.CONFIRM);
 		ActionResponse restoreResponse = confirmAction.execute(protocolSessionManager);
 		return restoreResponse;
 	}
 
 	private void prepare(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
-		IAction prepareAction = getActionSet().obtainAction(ActionConstants.PREPARE);
+		IAction prepareAction = getActionSet().obtainAction(QueueConstants.PREPARE);
 		prepareAction.execute(protocolSessionManager);
 	}
 
 	private void restore(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
-		IAction restoreAction = getActionSet().obtainAction(ActionConstants.RESTORE);
+		IAction restoreAction = getActionSet().obtainAction(QueueConstants.RESTORE);
 		restoreAction.execute(protocolSessionManager);
 	}
 
