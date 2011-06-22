@@ -93,6 +93,14 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 		out.println(symbol);
 	}
 
+	public void printSymbolWithoutDoubleLine(String symbol) {
+		out.print(symbol);
+	}
+
+	public void printfSymbol(String format, String symbol) {
+		out.printf(format, symbol);
+	}
+
 	public boolean splitResourceName(String complexName) {
 		args = complexName.split(":");
 		if (args.length != 2) {
@@ -115,6 +123,32 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 		}
 
 		return true;
+	}
+
+	public void printTable(String[] titles, String[][] values, int sizeWords) {
+		boolean wordSizeVariable = false;
+		wordSizeVariable = (sizeWords == -1);
+
+		int max = 0;
+		if (wordSizeVariable) {
+			for (String title : titles) {
+				int sizeCaracts = title.length();
+				if (max < sizeCaracts)
+					max = sizeCaracts;
+			}
+		}
+
+		/* Print titles */
+		for (String title : titles)
+			printfSymbol("%" + max + "s ", title);
+		printSymbolWithoutDoubleLine("\n");
+
+		for (int row = 0; row < values.length; row++) {
+			for (int col = 0; col < values[row].length; col++) {
+				printfSymbol("%" + max + "s ", values[row][col]);
+			}
+			printSymbolWithoutDoubleLine("\n");
+		}
 	}
 
 	protected IResourceManager getResourceManager() throws Exception {

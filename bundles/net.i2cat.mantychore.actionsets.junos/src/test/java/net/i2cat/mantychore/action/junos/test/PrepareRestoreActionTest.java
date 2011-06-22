@@ -3,7 +3,6 @@ package net.i2cat.mantychore.action.junos.test;
 import java.util.HashMap;
 
 import junit.framework.Assert;
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.PrepareAction;
 import net.i2cat.mantychore.actionsets.junos.actions.RestoreAction;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
@@ -12,6 +11,7 @@ import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,8 +51,8 @@ public class PrepareRestoreActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.RESTORE, restoreAction.getActionID());
-		Assert.assertEquals("Wrong ActionID", ActionConstants.PREPARE, prepareAction.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.RESTORE, restoreAction.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.PREPARE, prepareAction.getActionID());
 
 	}
 

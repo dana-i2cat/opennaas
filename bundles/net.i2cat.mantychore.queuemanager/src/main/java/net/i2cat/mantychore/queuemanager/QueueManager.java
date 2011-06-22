@@ -20,6 +20,7 @@ import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -170,9 +171,9 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		log.debug("Sending message to Queue Capability");
 		try {
 
-			if (idOperation.equals(QueueManagerConstants.EXECUTE)) {
+			if (idOperation.equals(QueueConstants.EXECUTE)) {
 				return execute();
-			} else if (idOperation.equals(QueueManagerConstants.GETQUEUE)) {
+			} else if (idOperation.equals(QueueConstants.GETQUEUE)) {
 				return getQueue();
 			}
 

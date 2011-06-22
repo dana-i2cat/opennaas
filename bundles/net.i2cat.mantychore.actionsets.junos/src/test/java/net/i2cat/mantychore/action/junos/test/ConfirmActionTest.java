@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfirmAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -16,6 +15,7 @@ import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,7 +54,7 @@ public class ConfirmActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.CONFIRM, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", QueueConstants.CONFIRM, action.getActionID());
 	}
 
 	@Test

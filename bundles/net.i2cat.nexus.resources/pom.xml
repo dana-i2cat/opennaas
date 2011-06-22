@@ -109,7 +109,8 @@
 							org.apache.activemq,
 							org.osgi.service.command,
 							*</Import-Package>
-						<Export-Package>net.i2cat.nexus.resources*;version="${pom.version}"</Export-Package>
+						<Export-Package>net.i2cat.nexus.resources*;version="${pom.version}"
+						</Export-Package>
 						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
 					</instructions>
 				</configuration>

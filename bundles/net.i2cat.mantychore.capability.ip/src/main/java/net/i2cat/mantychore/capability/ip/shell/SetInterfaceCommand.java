@@ -3,18 +3,15 @@ package net.i2cat.mantychore.capability.ip.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.ip.Activator;
 import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
@@ -98,15 +95,7 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 			printInfo("Sending the message...");
 			chassisCapability.sendMessage(ActionConstants.SETIPv4, params);
 
-			// TODO WE NEED TO USE QUEUE WITH CHASSIS
-			IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
-			try {
-				queue.execute();
-			} catch (CapabilityException e) {
-				queue.empty();
-				throw e;
-			}
-			printInfo("Interface setted successfully");
+			printInfo("Sent interface setted");
 
 		} catch (ResourceException e) {
 			printError(e);
