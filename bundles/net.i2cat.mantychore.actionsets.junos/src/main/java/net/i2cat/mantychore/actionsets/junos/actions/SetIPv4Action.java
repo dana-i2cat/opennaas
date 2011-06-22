@@ -13,17 +13,17 @@ import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class SetInterfaceAction extends JunosAction {
-	Log	log	= LogFactory.getLog(SetInterfaceAction.class);
+public class SetIPv4Action extends JunosAction {
+	Log	log	= LogFactory.getLog(SetIPv4Action.class);
 
-	public SetInterfaceAction() {
+	public SetIPv4Action() {
 		super();
 		initialize();
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.SETINTERFACE);
-		setTemplate("/VM_files/configureEthernet.vm");
+		this.setActionID(ActionConstants.SETIPv4);
+		setTemplate("/VM_files/configureIPv4.vm");
 		this.protocolName = "netconf";
 
 	}

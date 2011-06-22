@@ -32,4 +32,15 @@
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
 	</service>
+	
+			<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
+		<command name="ip/listInterfaces">
+			<action class="net.i2cat.mantychore.capability.ip.shell.ListInterfacesCommand" />
+		</command>
+		<command name="ip/setIPv4">
+			<action class="net.i2cat.mantychore.capability.ip.shell.SetIPv4Command" />
+		</command>
+	</command-bundle>
+	
 </blueprint>

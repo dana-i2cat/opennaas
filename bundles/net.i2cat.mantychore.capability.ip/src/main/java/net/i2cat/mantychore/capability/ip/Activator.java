@@ -25,13 +25,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
+		this.context = context;
 
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 

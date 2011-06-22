@@ -196,7 +196,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		IActionSet actionSet = getOsgiService(IActionSet.class, "actionset.capability=chassis", 5000);
 		IAction action = null;
 		try {
-			action = actionSet.obtainAction(ActionConstants.SETINTERFACE);
+			action = actionSet.obtainAction(ActionConstants.SETIPv4);
 			action.setParams(newParamsInterfaceEthernet());
 		} catch (ActionException e) {
 			e.printStackTrace();

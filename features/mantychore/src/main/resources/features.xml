@@ -82,6 +82,8 @@
 		</bundle>
 		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.chassis/1.0.0-SNAPSHOT
 		</bundle>
+		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.ip/1.0.0-SNAPSHOT
+		</bundle>
 
 	</feature>
 

@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.chassiscapability.test;
+package net.i2cat.mantychore.ipcapability.test;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
+import net.i2cat.mantychore.capability.ip.IPCapability;
+import net.i2cat.mantychore.chassiscapability.test.MockResource;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
@@ -47,15 +48,14 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
-public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	static Log			log				= LogFactory
-															.getLog(ChassisCapabilityIntegrationTest.class);
+												.getLog(IPCapabilityIntegrationTest.class);
 	static MockResource	mockResource;
 	String				deviceID		= "junos";
 	String				queueID			= "queue";
-	static ICapability	chassisCapability;
 
+	static ICapability	ipCapability;
 	@Inject
 	BundleContext		bundleContext	= null;
 	private ICapability	queueCapability;
@@ -94,7 +94,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		/* chassis descriptor */
 		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				ChassisCapability.CHASSIS, "chassis"));
+				IPCapability.IP, "ip"));
 
 		/* queue descriptor */
 		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
@@ -142,16 +142,16 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-			ICapabilityFactory chassisFactory = getOsgiService(ICapabilityFactory.class, "capability=chassis", 10000);
+			ICapabilityFactory ipFactory = getOsgiService(ICapabilityFactory.class, "capability=ip", 10000);
 			// Test elements not null
-			log.info("Checking chassis factory");
-			Assert.assertNotNull(chassisFactory);
+			log.info("Checking ip factory");
+			Assert.assertNotNull(ipFactory);
 			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("chassis"));
-			log.info("Creating chassis capability");
-			chassisCapability = chassisFactory.create(mockResource);
-			Assert.assertNotNull(chassisCapability);
-			chassisCapability.initialize();
+			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ip"));
+			log.info("Creating ip capability");
+			ipCapability = ipFactory.create(mockResource);
+			Assert.assertNotNull(ipCapability);
+			ipCapability.initialize();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -172,13 +172,13 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void TestChassisAction() {
-		log.info("TEST CHASSIS ACTION");
+	public void TestIPAction() {
+		log.info("TEST ip ACTION");
 		List<String> availabledActions = new ArrayList<String>();
 		availabledActions.add(ActionConstants.GETCONFIG);
 		availabledActions.add(ActionConstants.SETIPv4);
 		try {
-			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+			Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);

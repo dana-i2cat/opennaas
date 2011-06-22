@@ -128,7 +128,7 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
 		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
@@ -140,15 +140,15 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 			// resource.start();
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			log.debug("executeCommand(chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			Integer response = (Integer) executeCommand("chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+			log.debug("executeCommand(ip:setIPv4 " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			Integer response = (Integer) executeCommand("ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
 			log.debug(response);
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
 
-			log.debug("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
+			log.debug("executeCommand(ip:listInterfaces " + resourceFriendlyID);
+			response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 			repository.stopResource(resource.getResourceIdentifier().getId());

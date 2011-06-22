@@ -35,14 +35,7 @@
 	</service>
 	
 		<!-- Provide commands to the Karaf shell -->
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
-		<command name="chassis/listInterfaces">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.ListInterfacesCommand" />
-		</command>
-		<command name="chassis/setInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.SetInterfaceCommand" />
-		</command>
-	</command-bundle>
+	
 	
 
 </blueprint>

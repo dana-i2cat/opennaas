@@ -2,7 +2,7 @@ package net.i2cat.mantychore.action.junos.test;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.SetIPv4Action;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 
@@ -12,14 +12,14 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SetInterfaceActionTest {
-	Log									log	= LogFactory.getLog(GetConfigActionTest.class);
-	private static SetInterfaceAction	action;
-	static ActionTestHelper				helper;
-	static ProtocolSessionManager		protocolsessionmanager;
+	Log								log	= LogFactory.getLog(GetConfigActionTest.class);
+	private static SetIPv4Action	action;
+	static ActionTestHelper			helper;
+	static ProtocolSessionManager	protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
-		action = new SetInterfaceAction();
+		action = new SetIPv4Action();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
@@ -37,7 +37,7 @@ public class SetInterfaceActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.SETINTERFACE, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", ActionConstants.SETIPv4, action.getActionID());
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class SetInterfaceActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/configureEthernet.vm", action.getTemplate());
+		Assert.assertEquals("Not accepted param", "/VM_files/configureIPv4.vm", action.getTemplate());
 	}
 
 }

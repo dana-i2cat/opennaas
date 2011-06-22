@@ -1,10 +1,10 @@
-package net.i2cat.mantychore.capability.chassis.shell;
+package net.i2cat.mantychore.capability.ip.shell;
 
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.Activator;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
+import net.i2cat.mantychore.capability.ip.Activator;
+import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
@@ -21,7 +21,7 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "setInterface", description = "Set a IP in a the interface of a given resource")
+@Command(scope = "ip", name = "setIPv4", description = "Set a IP in a the interface of a given resource")
 public class SetInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
@@ -72,7 +72,7 @@ public class SetInterfaceCommand extends GenericKarafCommand {
 				endcommand();
 				return -1;
 			}
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
+			ICapability chassisCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
 
 			Object params = newParamsInterfaceEthernet(interfaceName, ip, mask);
 

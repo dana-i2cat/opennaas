@@ -34,7 +34,7 @@ public class RepositoryHelper {
 		return resourceDescriptor;
 	}
 
-	public static CapabilityDescriptor newChassisCapabilityDescriptor() {
+	public static CapabilityDescriptor newIPCapabilityDescriptor() {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
@@ -62,8 +62,9 @@ public class RepositoryHelper {
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
-		capabilityInformation.setType("chassis");
+		capabilityInformation.setType("ip");
 		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+		
 
 		return capabilityDescriptor;
 	}

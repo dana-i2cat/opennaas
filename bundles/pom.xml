@@ -52,6 +52,7 @@
   	<module>net.i2cat.mantychore.queuemanager</module>
   	<module>net.i2cat.mantychore.repository</module>
   	<module>net.i2cat.mantychore.capability.chassis</module> 
+  	<module>net.i2cat.mantychore.capability.ip</module> 
   	<module>net.i2cat.nexus.tests.mockprofile</module> 
  
   </modules>

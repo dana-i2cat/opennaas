@@ -137,7 +137,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource2");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newChassisCapabilityDescriptor();
+		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newIPCapabilityDescriptor();
 		CapabilityDescriptor queueDescriptor = RepositoryHelper.newQueueCapabilityDescriptor();
 		capabilityDescriptors.add(chassisDescriptor);
 		capabilityDescriptors.add(queueDescriptor);
@@ -211,7 +211,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource7");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newChassisCapabilityDescriptor();
+		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newIPCapabilityDescriptor();
 		CapabilityDescriptor queueDescriptor = RepositoryHelper.newQueueCapabilityDescriptor();
 		capabilityDescriptors.add(chassisDescriptor);
 		capabilityDescriptors.add(queueDescriptor);
@@ -219,7 +219,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
-		IProfile profile1 = createProfile("profile1", "setInterface", chassisDescriptor.getCapabilityInformation().getType(), "router");
+		IProfile profile1 = createProfile("profile1", "setIPv4", chassisDescriptor.getCapabilityInformation().getType(), "router");
 
 		try {
 			profileManager.addProfile(profile1);
@@ -234,19 +234,19 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			log.info("---------------------------------------------");
-			log.info("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
-			Integer response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
+			log.info("executeCommand(ip:listInterfaces " + resourceFriendlyID);
+			Integer response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 
-			log.info("executeCommand(chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			response = (Integer) executeCommand("chassis:setInterface " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+			log.info("executeCommand(ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			response = (Integer) executeCommand("ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
 
-			log.info("executeCommand(chassis:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("chassis:listInterfaces " + resourceFriendlyID);
+			log.info("executeCommand(ip:listInterfaces " + resourceFriendlyID);
+			response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
 			if (response != null)
 				Assert.fail("Error in the listInterfaces command");
 

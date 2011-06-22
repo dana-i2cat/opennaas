@@ -12,7 +12,8 @@
 		ref="mantychoreRepository" bind-method="capabilityFactoryAdded"
 		unbind-method="capabilityFactoryDeleted" /> </reference-list>
 	-->
-
+	
+<!-- TODO: make this automatically with a listener or similar -->
 
 	<reference id="chassisCapabilityFactory"
 		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
@@ -20,6 +21,9 @@
 	<reference id="queueCapabilityFactory"
 		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
 		filter="(&amp;(capability=queue)(capability.model=junos))" />
+	<reference id="ipCapabilityFactory"
+		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		filter="(&amp;(capability=ip)(capability.model=junos))" />
 
 	<bean id="mantychoreRepository" class="net.i2cat.mantychore.repository.MantychoreRepository"
 		init-method="init">
@@ -28,6 +32,7 @@
 		<property name="capabilityFactories">
 			<map>
 				<entry key="chassis" value-ref="chassisCapabilityFactory" />
+				<entry key="ip" value-ref="ipCapabilityFactory" />
 				<entry key="queue" value-ref="queueCapabilityFactory" />
 			</map>
 		</property>
