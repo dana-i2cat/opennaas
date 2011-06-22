@@ -221,7 +221,7 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 		String url;
 
 		if (!pathOrUrl.contains("://")) {
-			url = "file://" + pathOrUrl;
+			url = "file:///" + pathOrUrl;
 		} else {
 			url = pathOrUrl;
 		}
