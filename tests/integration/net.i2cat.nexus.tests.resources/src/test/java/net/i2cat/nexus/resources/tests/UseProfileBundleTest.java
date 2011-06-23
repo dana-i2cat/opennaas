@@ -53,7 +53,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.mockProfile")
+						"net.i2cat.nexus.tests.mockprofile")
 							// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 							);
 		return options;
