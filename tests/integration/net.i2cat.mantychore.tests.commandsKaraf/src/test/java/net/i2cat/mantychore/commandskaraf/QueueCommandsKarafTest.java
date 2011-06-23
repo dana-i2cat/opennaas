@@ -32,7 +32,7 @@ import org.osgi.service.command.CommandProcessor;
 import org.osgi.service.command.CommandSession;
 
 @RunWith(JUnit4TestRunner.class)
-public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
+public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 	static Log			log	= LogFactory
@@ -98,8 +98,8 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-					);
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
 
 		return options;
 	}
@@ -146,19 +146,22 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
-			
-			log.debug("executeCommand(queue:execute " + resourceFriendlyID );
-			response = (Integer) executeCommand("queue:execute  " + resourceFriendlyID );
+
+			log.debug("executeCommand(queue:listActions " + resourceFriendlyID);
+			response = (Integer) executeCommand("queue:listActions  " + resourceFriendlyID);
 			log.debug(response);
-			
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the setInterfaces command");
 
-			log.debug("executeCommand(ip:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
+			log.debug("executeCommand(queue:execute " + resourceFriendlyID);
+			response = (Integer) executeCommand("queue:execute  " + resourceFriendlyID);
+			log.debug(response);
+
+			// Assert.assertNotNull(response);
 			if (response != null)
-				Assert.fail("Error in the listInterfaces command");
+				Assert.fail("Error in the setInterfaces command");
+
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 

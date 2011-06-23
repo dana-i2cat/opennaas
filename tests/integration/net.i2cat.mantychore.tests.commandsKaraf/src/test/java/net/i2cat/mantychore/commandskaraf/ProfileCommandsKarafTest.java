@@ -53,8 +53,8 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-							// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-							);
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
 
 		return options;
 	}

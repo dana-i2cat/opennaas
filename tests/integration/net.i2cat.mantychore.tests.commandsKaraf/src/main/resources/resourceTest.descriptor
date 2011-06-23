@@ -1,23 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resourceDescriptor>
 	<capabilityDescriptors>
-		<capabilityProperty value="value" name="name">
-			<id>1</id>
-		</capabilityProperty>
-		<id>1</id>
-		<information>
-			<description>Chassis capability for junos</description>
-			<name>ChassisCapability</name>
-			<type>ChassisCapabilityFactory</type>
-			<version>1.0.0</version>
-		</information>
+		<capabilityProperty value="junos" name="actionset.name" />
+		<capabilityProperty value="10.10" name="actionset.version" />
+		<information><type>chassis</type></information>
 	</capabilityDescriptors>
-	<id>Junos</id>
+
+	<capabilityDescriptors>
+		<capabilityProperty value="junos" name="actionset.name" />
+		<capabilityProperty value="10.10" name="actionset.version" />
+		<information><type>ip</type></information>
+	</capabilityDescriptors>
+
+
+<!-- info for queue -->
+	<capabilityDescriptors>
+		<capabilityProperty value="junos" name="actionset.name" />
+		<capabilityProperty value="10.10" name="actionset.version" />
+		<information><type>queue</type></information>
+	</capabilityDescriptors>
+
+
+<!-- resource info -->
 	<information>
-		<description>Test</description>
-		<name>JunosResource</name>
 		<type>router</type>
-		<version>1.0.0</version>
+		<name>junos20</name>
 	</information>
 	<properties/>
 </resourceDescriptor>
