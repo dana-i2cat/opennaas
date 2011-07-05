@@ -11,24 +11,12 @@
 	<groupId>net.i2cat.mantychore</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
-	<name>Mantychore :: POMS :: Integration Test</name>
+	<name>Mantychore :: POMS :: Sprint tests</name>
 	<packaging>pom</packaging>
 
 	<!--  integration tests -->
 	<modules>
-		<module>net.i2cat.nexus.tests.helper</module>
-		<module>net.i2cat.nexus.tests.resources</module>
-		<module>net.i2cat.mantychore.tests.capability</module>
-		<module>net.i2cat.mantychore.tests.repository</module>
-		<module>net.i2cat.mantychore.tests.capability.queue</module>
-		<module>net.i2cat.mantychore.tests.commandsKaraf</module>
-		<!--
-			<module>net.i2cat.mantychore.tests.commandsets.junos</module>
-		-->
-		<!--  IT IS NOT USED -->
-		<!--
-			<module>net.i2cat.mantychore.tests.protocols.netconf</module>
-		-->
+		<module>week26</module>
 	</modules>
 
 	<!--  dependencies for integration tests -->

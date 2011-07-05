@@ -167,7 +167,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	}
 
 	@Override
-	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
+	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
 		log.debug("Sending message to Queue Capability");
 		try {
 
@@ -175,6 +175,8 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 				return execute();
 			} else if (idOperation.equals(QueueConstants.GETQUEUE)) {
 				return getQueue();
+			} else if (idOperation.equals(QueueConstants.MODIFY)) {
+				return modify(params);
 			}
 
 		} catch (CapabilityException e) {
@@ -182,6 +184,16 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		}
 
 		return Response.okResponse(idOperation);
+	}
+
+	private Object remove(Object params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Object modify(Object params) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

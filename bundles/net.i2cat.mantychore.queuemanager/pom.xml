@@ -68,7 +68,7 @@
 						<Bundle-Version>${pom.version}</Bundle-Version>
 						<Bundle-Activator>net.i2cat.mantychore.queuemanager.Activator</Bundle-Activator>
 						<Import-Package>!${pom.artifactId},org.slf4j;version="1.5.6",
-							org.osgi.service.command,				
+							org.osgi.service.command,				<!--  necessary to do karaf commands -->
 							net.i2cat.nexus.protocols.sessionmanager*;version=${pom.version},*
 						</Import-Package>
 						<Export-Package>
