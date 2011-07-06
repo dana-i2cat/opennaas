@@ -1,3 +1,5 @@
+package queue;
+
 import net.i2cat.nexus.resources.action.Action;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionResponse;
