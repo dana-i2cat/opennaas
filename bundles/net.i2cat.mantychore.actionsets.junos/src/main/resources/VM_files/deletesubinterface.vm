@@ -1,6 +1,7 @@
 <configuration>
 	<interfaces>	
 		<interface>
+		##param must be an "Ethernetport" object
 		<name>$param.ElementName</name>
 			<unit operation="delete">
 				<name>$param.PortNumber</name>

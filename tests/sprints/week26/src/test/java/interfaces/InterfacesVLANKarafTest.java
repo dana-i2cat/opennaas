@@ -1,3 +1,5 @@
+package interfaces;
+
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
@@ -25,14 +27,15 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.osgi.service.command.CommandProcessor;
 import org.osgi.service.command.CommandSession;
 
-public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
+public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	static Log			log	= LogFactory
-									.getLog(InterfacesCommandKarafTest.class);
+									.getLog(InterfacesVLANKarafTest.class);
 	IResourceRepository	repository;
 	String				resourceFriendlyID;
 	IResource			resource;
@@ -122,8 +125,9 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 	}
 
 	/**
-	 * Configure the a VLNA in a ethernet interface
+	 * Configure a VLAN in a ethernet interface
 	 */
+	@Test
 	public void setVLANforEth() {
 
 		try {
@@ -133,6 +137,9 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 
 			Object response1 = executeCommand("queue:execute " + resourceFriendlyID);
 			Assert.assertNotNull(response1);
+
+			Object response2 = executeCommand("ip:listInterfaces " + resourceFriendlyID);
+			Assert.assertNotNull(response2);
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
@@ -161,6 +168,8 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 					}
 				}
 			}
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -169,6 +178,10 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 
 	}
 
+	/**
+	 * Configure a VLAN in a LT interface
+	 */
+	@Test
 	public void setVLANforLT() {
 		try {
 			// chassis:setVLAN interface -pu PeerUnit

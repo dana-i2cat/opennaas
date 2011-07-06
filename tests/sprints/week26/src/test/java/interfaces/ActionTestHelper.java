@@ -1,3 +1,4 @@
+package interfaces;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.model.EthernetPort;

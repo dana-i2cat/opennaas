@@ -63,11 +63,7 @@
 							</inet>
 						</family>	
 					#end					
-					
-
-
 			</unit>
 		</interface>	
-
 	</interfaces>
 </configuration>
