@@ -1,9 +1,11 @@
 package net.i2cat.nexus.resources.shell;
 
 import java.io.PrintStream;
+import java.util.List;
 
 import net.i2cat.nexus.resources.Activator;
 import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 
@@ -75,8 +77,8 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	public void printError(Throwable e) {
-		err.println(error + e.getMessage());
-		log.error(e.getMessage(), e);
+		err.println(error + e.getCause());
+		log.error(e.getLocalizedMessage(), e);
 	}
 
 	public void printError(String message, Throwable e) {
@@ -163,5 +165,14 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 
 	protected IProtocolManager getProtocolManager() throws Exception {
 		return (IProtocolManager) getAllServices(IProtocolManager.class, null).get(0);
+	}
+
+	protected ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+		for (ICapability capability : capabilities) {
+			if (capability.getCapabilityInformation().getType().equals(type)) {
+				return capability;
+			}
+		}
+		throw new Exception("Error getting the capability");
 	}
 }

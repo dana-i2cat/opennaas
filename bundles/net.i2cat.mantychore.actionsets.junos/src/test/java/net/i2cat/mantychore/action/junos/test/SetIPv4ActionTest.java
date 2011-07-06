@@ -11,7 +11,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class SetInterfaceActionTest {
+public class SetIPv4ActionTest {
 	Log								log	= LogFactory.getLog(GetConfigActionTest.class);
 	private static SetIPv4Action	action;
 	static ActionTestHelper			helper;

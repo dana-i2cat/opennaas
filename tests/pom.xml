@@ -23,6 +23,7 @@
 
   <modules>
     <module>integration</module>
+    <module>sprints</module>
   </modules>
 
 </project>

@@ -13,6 +13,7 @@ public class GetNetconfCommand extends JunosCommand {
 	}
 
 	public Query message() {
+		// setQuery(QueryFactory.newGetInterfaceInformation());
 		setQuery(QueryFactory.newGetConfig(source, netconfXML, attrFilter));
 		return query;
 	}

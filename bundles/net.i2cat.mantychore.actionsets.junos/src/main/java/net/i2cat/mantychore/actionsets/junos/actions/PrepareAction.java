@@ -20,7 +20,7 @@ public class PrepareAction extends JunosAction {
 
 	protected void initialize() {
 		this.setActionID(QueueConstants.PREPARE);
-		setTemplate("/VM_files/getconfiguration.vm");
+		// setTemplate("/VM_files/getconfiguration.vm");
 		this.protocolName = "netconf";
 
 	}

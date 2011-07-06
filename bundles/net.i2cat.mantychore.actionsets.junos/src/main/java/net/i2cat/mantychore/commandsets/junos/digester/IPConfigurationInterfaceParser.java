@@ -44,6 +44,8 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
 
+			addMyRule("*/interfaces/interface/name", "setLocation", 0);
+
 		}
 	}
 

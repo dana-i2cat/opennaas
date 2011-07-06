@@ -36,6 +36,13 @@
 	
 		<!-- Provide commands to the Karaf shell -->
 	
-	
+		<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
+		<command name="chassis/createSubInterface">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand" />
+		</command>
+		<command name="chassis/deleteSubInterface">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteSubInterfaceCommand" />
+		</command>
+	</command-bundle>
 
 </blueprint>

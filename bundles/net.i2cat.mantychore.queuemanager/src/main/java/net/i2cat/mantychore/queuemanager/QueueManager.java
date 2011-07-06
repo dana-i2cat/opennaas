@@ -105,6 +105,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 			 */
 			assert protocolSessionManager != null;
 			restore(protocolSessionManager);
+			empty();
 			throw new CapabilityException(e1);
 
 		}
@@ -113,6 +114,9 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 	private ActionResponse confirm(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
 		IAction confirmAction = getActionSet().obtainAction(QueueConstants.CONFIRM);
+		if (confirmAction == null) {
+			throw new CapabilityException("Error obtaining ConfirmAction");
+		}
 		ActionResponse restoreResponse = confirmAction.execute(protocolSessionManager);
 		return restoreResponse;
 	}

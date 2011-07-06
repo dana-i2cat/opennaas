@@ -69,7 +69,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 				endcommand();
 				return -1;
 			}
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
+			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
 
 			Object params = newParamsInterfaceEthernet(interfaceName, ip, mask);
 
@@ -92,8 +92,8 @@ public class SetIPv4Command extends GenericKarafCommand {
 				}
 			}
 
-			printInfo("Sending the message...");
-			chassisCapability.sendMessage(ActionConstants.SETIPv4, params);
+			printInfo("Sending message to the queue");
+			ipCapability.sendMessage(ActionConstants.SETIPv4, params);
 
 		} catch (ResourceException e) {
 			printError(e);

@@ -176,19 +176,41 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		log.info("TEST CHASSIS ACTION");
 		List<String> availabledActions = new ArrayList<String>();
 		availabledActions.add(ActionConstants.GETCONFIG);
-		availabledActions.add(ActionConstants.SETIPv4);
+		availabledActions.add(ActionConstants.DELETESUBINTERFACE);
+		availabledActions.add(ActionConstants.CREATESUBINTERFACE);
 		try {
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
+
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 1);
+			Assert.assertTrue(queue.size() == 3);
 			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
 
-			Assert.assertTrue(responses.size() == 2);
+			Assert.assertTrue(responses.size() == 4);
 			ActionResponse actionResponse = responses.get(0);
 			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 			for (Response response : actionResponse.getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
+
+			ActionResponse actionResponse1 = responses.get(1);
+			Assert.assertEquals(ActionConstants.CREATESUBINTERFACE, actionResponse1.getActionID());
+			for (Response response : actionResponse1.getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
+
+			ActionResponse actionResponse2 = responses.get(2);
+			Assert.assertEquals(ActionConstants.DELETESUBINTERFACE, actionResponse2.getActionID());
+			for (Response response : actionResponse2.getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
 
@@ -197,7 +219,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		} catch (CapabilityException e) {
 			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 
 	}
@@ -210,6 +232,15 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		ip.setIPv4Address(ipName);
 		ip.setSubnetMask(mask);
 		eth.addProtocolEndpoint(ip);
+		return eth;
+	}
+
+	public Object newParamsInterfaceEthernetPort(String name, int port) {
+		EthernetPort eth = new EthernetPort();
+		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth.setElementName(name);
+		eth.setPortNumber(port);
+
 		return eth;
 	}
 }

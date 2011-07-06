@@ -52,14 +52,14 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
+			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
 
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+			ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
 
 			// TODO WE NEED TO USE QUEUE WITH CHASSIS
 			IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
 
-			printInfo("Sending the message...");
+			printInfo("Sending the message to the queue");
 			try {
 				queue.execute();
 			} catch (CapabilityException e) {

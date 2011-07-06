@@ -1,24 +1,15 @@
 <configuration>
 <interfaces>
 ## for each interface in logical router. TODO change param por logicalROuter.interfaces
-	#foreach($element in $param)
-	#if("Ethernetport"==$element.getClass().getSimpleName())		
+##	#foreach($element in $param)
+##	#if("Ethernetport"==$element.getClass().getSimpleName())		
 	<interface>
-		<name>$element.ElementName</name>
+		<name>$param.ElementName</name>
 		<unit>
-		<name>$element.PortNumber</name>
-		#if(!$element.ProtocolEndpoint.Empty && "IPProtocolEndpoint"==$element.ProtocolEndpoint.get(0).getClass().getSimpleName())		
-		<family>
-			<inet>
-			<address>
-			<name>$element.ProtocolEndpoint.get(0).getIPv4Address()</name>
-			</address>
-			</inet>
-		</family>	
-		#end
+		<name>$param.PortNumber</name>
 		</unit>
 	</interface>
-	#end
-	#end
+##	#end
+##	#end
 </interfaces>
 </configuration>

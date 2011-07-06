@@ -1,5 +1,3 @@
-package net.i2cat.mantychore.commandskaraf;
-
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
@@ -26,6 +24,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.osgi.service.command.CommandProcessor;
@@ -33,7 +32,7 @@ import org.osgi.service.command.CommandSession;
 
 public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 	static Log			log	= LogFactory
-									.getLog(ResourceCommandsKarafTest.class);
+									.getLog(InterfacesCommandKarafTest.class);
 	IResourceRepository	repository;
 	String				resourceFriendlyID;
 	IResource			resource;
@@ -69,6 +68,7 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 		cs.close();
 		return commandOutput;
 	}
+
 	@Before
 	public void initTest() {
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
@@ -139,15 +139,24 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 			for (LogicalDevice l : ld) {
 				if (l instanceof EthernetPort) {
 					EthernetPort ethport = (EthernetPort) l;
-			
+
 					// show data of ETH
 					// name, linkTecnology
-						
-					List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
-					for (ProtocolEndpoint p : pp) {
-						if (p instanceof VLANEndpoint) {
-							// show tha VLAN setted for this LT
-							((VLANEndpoint) p).getVlanID();
+					// Only check the modified interface
+					if (ethport.getElementName().equalsIgnoreCase("fe-0/1/2")) {
+						if (ethport.getPortNumber() == 0) {
+							Assert.assertEquals(ethport.getLinkTechnology().toString(), "ETHERNET");
+						} else {
+							Assert.assertNotSame(ethport.getLinkTechnology().toString(), "ETHERNET");
+						}
+
+						List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof VLANEndpoint) {
+								// show tha VLAN setted for this LT
+								Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 1);
+							}
+
 						}
 					}
 				}
@@ -182,12 +191,25 @@ public class InterfacesCommandKarafTest extends AbstractIntegrationTest {
 					LogicalTunnelPort ltp = (LogicalTunnelPort) l;
 					// show data of LT
 					// name, peer-unit
-					List<ProtocolEndpoint> pp = ltp.getProtocolEndpoint();
-					for (ProtocolEndpoint p : pp) {
-						if (p instanceof VLANEndpoint) {
-							// show tha VLAN setted for this LT
-							((VLANEndpoint) p).getVlanID();
+
+					// Only check the modified interface
+					if (ltp.getElementName().equalsIgnoreCase("lt-0/1/2")) {
+
+						Assert.assertEquals(ltp.getPortNumber(), 12);
+						if (ltp.getLinkTechnology().toString().equals("ETHERNET")) {
+							Assert.assertNotNull(ltp.getPeer_unit());
+						} else {
+							Assert.assertNotNull(ltp.getPeer_unit());
+							List<ProtocolEndpoint> pp = ltp.getProtocolEndpoint();
+							for (ProtocolEndpoint p : pp) {
+								if (p instanceof VLANEndpoint) {
+									// show tha VLAN setted for this LT
+									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 1);
+								}
+
+							}
 						}
+
 					}
 				}
 			}

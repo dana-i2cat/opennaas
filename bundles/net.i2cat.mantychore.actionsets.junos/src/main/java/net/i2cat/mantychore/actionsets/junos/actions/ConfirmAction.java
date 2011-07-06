@@ -31,7 +31,7 @@ public class ConfirmAction extends JunosAction {
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
 		} catch (Exception e) {
-			throw new ActionException(this.actionID, e);
+			throw new ActionException(this.actionID + "\n" + e.getMessage());
 		}
 	}
 

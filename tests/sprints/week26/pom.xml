@@ -4,10 +4,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<!--  parent parameters  -->
-	<parent>		
-		  <artifactId>itests-bundle-settings</artifactId>
-  			<groupId>net.i2cat.mantychore</groupId>
-  			<version>1.0.0-SNAPSHOT</version>
+	<parent>
+		<artifactId>itests-bundle-settings</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 
@@ -22,7 +22,7 @@
 	<name>Week 26 - Mantychore queue test</name>
 	<description>Week 26 - Mantychore queue test</description>
 	<packaging>jar</packaging>
-	
+
 	<dependencies>
 
 		<dependency>
@@ -35,55 +35,62 @@
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
-		<dependency> 		
+
+		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
-		<dependency> 		
+
+		<dependency>
 			<groupId>net.i2cat.mantychore.capability</groupId>
 			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
-		
-		<dependency> 		
+
+
+		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
 
-		
-		
+			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 
-<!--  manage dependencies  -->
+	<!--  manage dependencies  -->
 	<build>
-		
-		<plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.4.3</version>
-            <!--
-                    By default, the Surefire Plugin will automatically include all test classes with the following wildcard patterns:
-                    "**/Test*.java" - includes all of its subdirectory and all java filenames that start with "Test". "**/*Test.java" -
-                    includes all of its subdirectory and all java filenames that end with "Test". "**/*TestCase.java" - includes all of
-                    its subdirectory and all java filenames that end with "TestCase".
-                -->
-             <configuration>	
-		         <systemProperties>
-                     <property>
-                        <name>protocol.uri</name>
-                          <value>${protocol.uri}</value> 
-                    </property>
-                </systemProperties>
-            </configuration> 
-		 </plugin>
 
-		<plugin>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<!--
+					By default, the Surefire Plugin will automatically include all test
+					classes with the following wildcard patterns: "**/Test*.java" -
+					includes all of its subdirectory and all java filenames that start
+					with "Test". "**/*Test.java" - includes all of its subdirectory and
+					all java filenames that end with "Test". "**/*TestCase.java" -
+					includes all of its subdirectory and all java filenames that end
+					with "TestCase".
+				-->
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>protocol.uri</name>
+							<value>${protocol.uri}</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
 				<version>1.4</version>
@@ -94,7 +101,7 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-		
+
 			<plugin>
 				<groupId>org.apache.servicemix.tooling</groupId>
 				<artifactId>depends-maven-plugin</artifactId>
