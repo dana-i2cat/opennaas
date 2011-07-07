@@ -3,12 +3,12 @@ package net.i2cat.mantychore.queuemanager.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.capability.ICapability;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
@@ -46,7 +46,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 			validateResource(resource);
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			printSymbol("Executing actions...");
-			queue.sendMessage(QueueManagerConstants.EXECUTE, null);
+			queue.sendMessage(QueueConstants.EXECUTE, null);
 			printSymbol("Executed!!!");
 
 		} catch (Exception e) {

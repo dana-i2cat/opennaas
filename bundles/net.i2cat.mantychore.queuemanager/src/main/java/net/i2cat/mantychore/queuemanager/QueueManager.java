@@ -5,8 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import net.i2cat.nexus.resources.ActivatorException;
 import net.i2cat.nexus.resources.action.ActionException;
@@ -20,6 +18,7 @@ import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.queue.ModifyParams;
 import net.i2cat.nexus.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
@@ -42,6 +41,15 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		log.debug("Registered!");
 	}
 
+	/**
+	 * Constructor to test the component
+	 * 
+	 * @param queueDescriptor
+	 */
+	public QueueManager(CapabilityDescriptor queueDescriptor) {
+		super(queueDescriptor);
+	}
+
 	private void registerQueueCapability() {
 		Properties props = new Properties();
 		props.put(ResourceDescriptorConstants.CAPABILITY, "queue");
@@ -50,7 +58,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 	}
 
-	private final BlockingQueue<IAction>	queue	= new LinkedBlockingQueue<IAction>();
+	private final Vector<IAction>	queue	= new Vector<IAction>();
 
 	@Override
 	public void empty() {
@@ -186,18 +194,25 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		} catch (CapabilityException e) {
 			throw new CapabilityException(e);
 		}
-
+		// TODO ADD NECESSARY INFORMATION
 		return Response.okResponse(idOperation);
 	}
 
-	private Object remove(Object params) {
-		// TODO Auto-generated method stub
-		return null;
+	private Object modify(Object params) {
+		if (params instanceof ModifyParams) {
+			ModifyParams modifyParams = (ModifyParams) params;
+			if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
+				return remove(modifyParams.getPosAction());
+			}
+		}
+		// TODO ADD NECESSARY INFORMATION
+		return Response.okResponse(QueueConstants.MODIFY);
 	}
 
-	private Object modify(Object params) {
-		// TODO Auto-generated method stub
-		return null;
+	private Object remove(int posAction) {
+		queue.remove(posAction);
+		return Response.okResponse(QueueConstants.MODIFY, "Remove operation in pos: " + posAction);
+
 	}
 
 	@Override

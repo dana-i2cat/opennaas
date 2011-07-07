@@ -1,7 +1,8 @@
 package net.i2cat.nexus.resources.queue;
 
 public class ModifyParams {
-	private String		actionId;
+	private int			posAction;
+
 	private Operations	QueueOper;
 	private Object		params;
 
@@ -9,12 +10,12 @@ public class ModifyParams {
 		REMOVE, UP, DOWN
 	}
 
-	public String getActionId() {
-		return actionId;
+	public int getPosAction() {
+		return posAction;
 	}
 
-	public void setActionId(String actionId) {
-		this.actionId = actionId;
+	public void setPosAction(int posAction) {
+		this.posAction = posAction;
 	}
 
 	public Operations getQueueOper() {
@@ -38,6 +39,13 @@ public class ModifyParams {
 	 */
 	public Object getParams() {
 		return params;
+	}
+
+	public static ModifyParams newRemoveOperation(int posAction) {
+		ModifyParams removeParams = new ModifyParams();
+		removeParams.setPosAction(posAction);
+		removeParams.setQueueOper(Operations.REMOVE);
+		return removeParams;
 	}
 
 }

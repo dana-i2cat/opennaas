@@ -10,12 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class MockAction extends Action {
 	private Log				log				= LogFactory.getLog(MockAction.class);
-	private String			actionID;
 	private ActionResponse	actionResponse	= new ActionResponse();
-
-	public void setActionID(String actionID) {
-		this.actionID = actionID;
-	}
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {

@@ -186,7 +186,7 @@ public class QueueTest extends AbstractIntegrationTest {
 
 	private Object newQueueModifyParams() {
 		ModifyParams modifyParams = new ModifyParams();
-		modifyParams.setActionId("action1");
+		modifyParams.setPosAction(1);
 		modifyParams.setQueueOper(ModifyParams.Operations.REMOVE);
 		return modifyParams;
 	}

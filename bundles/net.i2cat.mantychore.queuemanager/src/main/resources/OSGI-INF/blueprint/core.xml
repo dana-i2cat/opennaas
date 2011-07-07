@@ -54,6 +54,13 @@
 					<null />
 				</completers> -->
 			</command>
+			<command name="queue/remove">
+				<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand" />
+	<!-- 			<completers>
+					<ref component-id="resourceNameCompleter" />
+					<null />
+				</completers> -->
+			</command>
 	</command-bundle>
 	
 </blueprint>

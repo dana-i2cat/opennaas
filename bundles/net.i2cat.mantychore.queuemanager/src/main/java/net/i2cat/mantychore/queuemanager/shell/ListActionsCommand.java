@@ -3,13 +3,13 @@ package net.i2cat.mantychore.queuemanager.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.ICapability;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
@@ -47,7 +47,7 @@ public class ListActionsCommand extends GenericKarafCommand {
 			validateResource(resource);
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 
-			List<IAction> listActions = (List<IAction>) queue.sendMessage(QueueManagerConstants.GETQUEUE, null);
+			List<IAction> listActions = (List<IAction>) queue.sendMessage(QueueConstants.GETQUEUE, null);
 
 			String[] titles = { "num", "actionID" };
 			String[][] matrix = new String[listActions.size()][2];

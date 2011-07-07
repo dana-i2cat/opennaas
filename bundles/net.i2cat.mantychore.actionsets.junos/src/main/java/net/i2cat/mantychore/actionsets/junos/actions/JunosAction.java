@@ -54,6 +54,8 @@ public abstract class JunosAction extends Action {
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 
 		try {
+			
+			//TODO WHY THE PROTOCOL NAME, WE ALWAYS USE A NETCONFPROTOCOLSESSION PROTOCOL
 			NetconfProtocolSession protocol = (NetconfProtocolSession) protocolSessionManager.obtainSessionByProtocol(protocolName, false);
 			/* call commands */
 			prepareMessage();
