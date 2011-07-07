@@ -69,7 +69,8 @@ public class GetConfigurationAction extends JunosAction {
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
 			FileWriter f = new FileWriter("C:/Dev/configuration.txt");
-			f.write(message.getBytes().toString());
+
+			f.write(message);
 
 			// /TODO implements a better method to merge the elements in model
 			// now are deleted all the existing elements of the class EthernetPort
