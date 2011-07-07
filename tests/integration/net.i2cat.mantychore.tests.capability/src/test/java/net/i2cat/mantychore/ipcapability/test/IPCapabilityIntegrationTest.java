@@ -18,7 +18,6 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
@@ -31,6 +30,8 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.queue.QueueConstants;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -183,10 +184,14 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 1);
-			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(responses.size() == 2);
-			ActionResponse actionResponse = responses.get(0);
+			Assert.assertTrue(queueResponse.getResponses().size() == 1);
+			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+
+			ActionResponse actionResponse = queueResponse.getResponses().get(0);
 			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 			for (Response response : actionResponse.getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);

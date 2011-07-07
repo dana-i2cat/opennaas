@@ -49,4 +49,19 @@ public class ActionResponse {
 		return actionResponse;
 	}
 
+	public static ActionResponse newOkAction(String actionID) {
+		ActionResponse actionResponse = new ActionResponse();
+		actionResponse.setActionID(actionID);
+		actionResponse.setStatus(STATUS.OK);
+		return actionResponse;
+	}
+
+	// public static ActionResponse configureAction(List<Response> responses) {
+	// ActionResponse actionResponse = new ActionResponse();
+	// for (Response response: responses) {
+	// response.getErrors()
+	//
+	// }
+	// }
+
 }

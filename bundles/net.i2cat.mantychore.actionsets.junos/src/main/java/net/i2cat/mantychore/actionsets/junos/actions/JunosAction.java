@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
+import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.commandsets.junos.commands.JunosCommand;
@@ -38,52 +39,61 @@ public abstract class JunosAction extends Action {
 		return command;
 	}
 
+	public void validateAction(ActionResponse actionResponse) throws ActionException {
+
+		for (Response response : actionResponse.getResponses()) {
+			if (response.getStatus() == Response.Status.ERROR) {
+				actionResponse.setStatus(ActionResponse.STATUS.ERROR);
+				return;
+			}
+		}
+
+	}
+
 	public Response sendCommandToProtocol(JunosCommand command, IProtocolSession
 				generalProtocol) throws ProtocolException,
 			ActionException {
 		// FIXME PARSE TO NETCONFPROTOCOL SESSION
 		NetconfProtocolSession protocol = (NetconfProtocolSession) generalProtocol;
 		Object messageResp = protocol.sendReceive(command.message());
+
 		Response response = command.checkResponse(messageResp);
-		validateResponse(response);
-		parseResponse(messageResp, modelToUpdate);
+
+		if (response.getStatus().equals(Response.Status.OK))
+			parseResponse(messageResp, modelToUpdate);
 
 		return response;
 	}
 
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-
+		ActionResponse actionResponse = new ActionResponse();
 		try {
-			
-			//TODO WHY THE PROTOCOL NAME, WE ALWAYS USE A NETCONFPROTOCOLSESSION PROTOCOL
+
+			// TODO WHY THE PROTOCOL NAME, WE ALWAYS USE A NETCONFPROTOCOLSESSION PROTOCOL
 			NetconfProtocolSession protocol = (NetconfProtocolSession) protocolSessionManager.obtainSessionByProtocol(protocolName, false);
 			/* call commands */
 			prepareMessage();
-			ActionResponse actionResponse = new ActionResponse();
-			executeListCommand(actionResponse, protocol);
+
+			actionResponse.setStatus(ActionResponse.STATUS.OK);
 			actionResponse.setActionID(this.getActionID());
 
+			executeListCommand(actionResponse, protocol);
+
 			// protocolSessionManager.releaseSession(protocol);
+
 			return actionResponse;
 
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
 		}
-
 	}
 
-	private void validateResponse(Response response) throws ActionException {
-
-		if (response.getErrors() != null && response.getErrors().size() > 0) {
-			String listErrors = new String();
-			for (String error : response.getErrors())
-				listErrors += "-" + error + "\n";
-			ActionException actionException = new ActionException(listErrors);
-			throw actionException;
+	private String concatenateErrors(List<String> errors) {
+		String listErrors = "";
+		for (String error : errors) {
+			listErrors += "- " + error + '\n';
 		}
-		if (!response.getStatus().equals(Response.Status.OK))
-			throw new ActionException();
-
+		return listErrors;
 	}
 
 	public String getVelocityMessage() {

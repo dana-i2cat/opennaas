@@ -20,6 +20,7 @@ import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.queue.ModifyParams;
 import net.i2cat.nexus.resources.queue.QueueConstants;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,7 +68,11 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	}
 
 	@Override
-	public List<ActionResponse> execute() throws CapabilityException {
+	public QueueResponse execute() throws CapabilityException {
+		// initialize queue response
+		QueueResponse queueResponse = QueueResponse.newQueueResponse(queue);
+		// FACTORY
+
 		IProtocolSessionManager protocolSessionManager = null;
 		try {
 			IProtocolManager protocolManager = (IProtocolManager) Activator.getProtocolManagerService();
@@ -75,7 +80,9 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 			/* Always i have to be one response */
 			log.debug("Preparing queue");
-			prepare(protocolSessionManager);
+			ActionResponse prepareResponse = prepare(protocolSessionManager);
+			/* status for actionResponse */
+			queueResponse.setPrepareResponse(prepareResponse);
 			log.debug("Prepared!");
 
 		} catch (Exception e1) {
@@ -83,7 +90,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		}
 
 		try {
-			List<ActionResponse> responses = new Vector<ActionResponse>();
+			Vector<ActionResponse> responses = new Vector<ActionResponse>();
 
 			/* execute action */
 			for (IAction action : queue) {
@@ -91,30 +98,42 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 				log.debug("getting protocol session...");
 				log.debug("Executing action: " + action.getActionID());
 				log.debug("Trying to print params:" + action.getParams());
-				responses.add(action.execute(protocolSessionManager));
+				ActionResponse actionResponse = action.execute(protocolSessionManager);
+				responses.add(actionResponse);
 				log.debug("Executed!");
+
+				/* The action response didn't work, we need to do a restore */
+				if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
+					throw new Exception();
+
 			}
+			/* fill variable response */
+			queueResponse.setResponses(responses);
 
 			/* commit action */
 			log.debug("Confirming actions");
-			ActionResponse actionResponse = confirm(protocolSessionManager);
+			ActionResponse confirmResponse = confirm(protocolSessionManager);
+			queueResponse.setConfirmResponse(confirmResponse);
 			log.debug("Confirmed!");
-
-			responses.add(actionResponse);
 
 			/* clear queue */
 			queue.clear();
 			log.debug("clearing queue");
-			return responses;
-
+			return queueResponse;
 		} catch (Exception e1) {
 			/*
 			 * FIXME, IT IS IMPOSSIBLE TO THROW THIS EXCEPTION WITHOUT BACKUP. IT COULD CORRUPT CONFIGURATION
 			 */
 			assert protocolSessionManager != null;
-			restore(protocolSessionManager);
-			empty();
-			throw new CapabilityException(e1);
+			try {
+				ActionResponse restoreResponse = restore(protocolSessionManager);
+				queueResponse.setRestoreResponse(restoreResponse);
+				empty();
+				return queueResponse;
+			} catch (Exception e2) {
+				throw new CapabilityException(e2);
+
+			}
 
 		}
 
@@ -129,14 +148,14 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		return restoreResponse;
 	}
 
-	private void prepare(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
+	private ActionResponse prepare(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
 		IAction prepareAction = getActionSet().obtainAction(QueueConstants.PREPARE);
-		prepareAction.execute(protocolSessionManager);
+		return prepareAction.execute(protocolSessionManager);
 	}
 
-	private void restore(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
+	private ActionResponse restore(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
 		IAction restoreAction = getActionSet().obtainAction(QueueConstants.RESTORE);
-		restoreAction.execute(protocolSessionManager);
+		return restoreAction.execute(protocolSessionManager);
 	}
 
 	@Override

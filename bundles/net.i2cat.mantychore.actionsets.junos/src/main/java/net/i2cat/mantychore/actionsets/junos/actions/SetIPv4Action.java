@@ -64,5 +64,6 @@ public class SetIPv4Action extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
+		validateAction(actionResponse);
 	}
 }

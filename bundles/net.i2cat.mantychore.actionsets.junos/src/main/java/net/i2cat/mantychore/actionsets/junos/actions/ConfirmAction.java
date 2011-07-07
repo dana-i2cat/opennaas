@@ -33,6 +33,8 @@ public class ConfirmAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + "\n" + e.getMessage());
 		}
+		validateAction(actionResponse);
+
 	}
 
 	@Override

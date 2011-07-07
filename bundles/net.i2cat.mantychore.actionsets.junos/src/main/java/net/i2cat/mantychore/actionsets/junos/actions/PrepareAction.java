@@ -35,18 +35,10 @@ public class PrepareAction extends JunosAction {
 			actionResponse.addResponse(response);
 
 			/* it can't be executed this workflow */
-			// /* get config */
-			// GetNetconfCommand getcommand = new GetNetconfCommand(getVelocityMessage());
-			// getcommand.initialize();
-			// response = sendCommandToProtocol(getcommand, protocol);
-			// actionResponse.addResponse(response);
-			//
-			// /* store config */
-			// TempFileManager.getInstance().createFile("backup.xml", response.getInformation());
-
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);
 		}
+		validateAction(actionResponse);
 	}
 
 	@Override

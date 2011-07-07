@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
@@ -21,6 +20,8 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.queue.QueueConstants;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -211,16 +212,20 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 				Assert.fail("Capability not found");
 
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(responses.size() == 2);
-			ActionResponse actionResponse = responses.get(0);
+			Assert.assertTrue(queueResponse.getResponses().size() == 1);
+			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+
+			ActionResponse actionResponse = queueResponse.getResponses().get(0);
 			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 			for (Response response : actionResponse.getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
 
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
+			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
 
 			repository.stopResource(resource.getResourceIdentifier().getId());

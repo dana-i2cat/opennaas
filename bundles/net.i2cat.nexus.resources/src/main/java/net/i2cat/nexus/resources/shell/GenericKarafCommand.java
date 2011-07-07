@@ -13,7 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 
-public class GenericKarafCommand extends OsgiCommandSupport {
+public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	Log						log					= LogFactory.getLog(GenericKarafCommand.class);
 
 	protected PrintStream	out					= System.out;
@@ -38,12 +38,6 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 	protected String		horizontalSeparator	= "|------------------------------------------------------------------|";
 	protected String		titleFrame			= "=";
 
-	@Override
-	protected Object doExecute() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void initcommand(String commandName) {
 
 		String title = " Executing " + commandName + " command ";
@@ -67,6 +61,14 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 		printSymbol(doubleLine);
 	}
 
+	public void newLine() {
+		printSymbol(underLine);
+	}
+
+	public void newSeparator() {
+		printSymbol(horizontalSeparator);
+	}
+
 	public void endcommand() {
 		printSymbol(doubleLine);
 	}
@@ -77,8 +79,8 @@ public class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	public void printError(Throwable e) {
-		err.println(error + e.getCause());
-		log.error(e.getLocalizedMessage(), e);
+		err.println(error + e.getMessage());
+		log.error(e.getMessage(), e);
 	}
 
 	public void printError(String message, Throwable e) {

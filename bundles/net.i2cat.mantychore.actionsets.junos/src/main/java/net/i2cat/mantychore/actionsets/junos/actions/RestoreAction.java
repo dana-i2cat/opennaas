@@ -28,21 +28,10 @@ public class RestoreAction extends JunosAction {
 			Response response = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(response);
 
-			// FIXME THE LOAD AND RESTORE CONFIGURATION HAS PROBLEMS. IT CAN CREATE CORRUPT CONFIGURATIONS
-			// /* load and restore config */
-			// log.info("creating command");
-			// ReplaceNetconfCommand replaceCommand = new ReplaceNetconfCommand(TempFileManager.getInstance().loadFile());
-			// replaceCommand.initialize();
-			// actionResponse.addResponse(sendCommandToProtocol(replaceCommand, protocol));
-			//
-			// /* commit command */
-			// CommitNetconfCommand commitCommand = new CommitNetconfCommand();
-			// commitCommand.initialize();
-			// actionResponse.addResponse(sendCommandToProtocol(commitCommand, protocol));
-
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);
 		}
+		validateAction(actionResponse);
 	}
 
 	@Override

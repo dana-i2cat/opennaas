@@ -51,6 +51,7 @@ public abstract class JunosCommand extends Command {
 				|| reply.getErrors().size() == 0) {
 			// BUILD OK RESPONSE
 			Response response = Response.okResponse(getQuery().toXML());
+			response.setCommandName(this.getClass().toString());
 			response.setInformation(reply.getContain());
 			return response;
 		} else {

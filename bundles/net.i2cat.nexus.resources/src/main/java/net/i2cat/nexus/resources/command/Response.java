@@ -6,9 +6,24 @@ import java.util.Vector;
 public class Response {
 
 	public enum Status {
-		OK, ERROR, WAIT
+		OK {
+			public String toString() {
+				return "OK";
+			}
+		},
+		ERROR {
+			public String toString() {
+				return "ERROR";
+			}
+		},
+		WAIT {
+			public String toString() {
+				return "WAIT";
+			}
+		},
 	}
 
+	private String			commandName;
 	private String			sentMessage;
 	private Status			status;
 	private String			information;
@@ -78,6 +93,14 @@ public class Response {
 		response.setSentMessage(sentMessage);
 		response.setStatus(Status.WAIT);
 		return response;
+	}
+
+	public String getCommandName() {
+		return commandName;
+	}
+
+	public void setCommandName(String commandName) {
+		this.commandName = commandName;
 	}
 
 }
