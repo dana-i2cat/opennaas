@@ -16,8 +16,8 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
+import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.mantychore.queuemanager.QueueManagerConstants;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
@@ -30,6 +30,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -174,10 +175,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	@Test
 	public void TestChassisAction() {
 		log.info("TEST CHASSIS ACTION");
-		List<String> availabledActions = new ArrayList<String>();
-		availabledActions.add(ActionConstants.GETCONFIG);
-		availabledActions.add(ActionConstants.DELETESUBINTERFACE);
-		availabledActions.add(ActionConstants.CREATESUBINTERFACE);
+
 		try {
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
@@ -191,11 +189,15 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 3);
-			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETVLAN, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			Assert.assertTrue(responses.size() == 4);
+			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+			Assert.assertTrue(queue.size() == 4);
+			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+
+			Assert.assertTrue(responses.size() == 5);
 			ActionResponse actionResponse = responses.get(0);
 			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 			for (Response response : actionResponse.getResponses()) {
@@ -213,8 +215,13 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			for (Response response : actionResponse2.getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
+			ActionResponse actionResponse3 = responses.get(2);
+			Assert.assertEquals(ActionConstants.SETVLAN, actionResponse3.getActionID());
+			for (Response response : actionResponse3.getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
 
-			queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
+			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
 
 		} catch (CapabilityException e) {
@@ -241,6 +248,18 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		eth.setElementName(name);
 		eth.setPortNumber(port);
 
+		return eth;
+	}
+
+	public Object newParamsInterfaceEthernetPortVLAN(String name, int port, int vlanID) {
+		EthernetPort eth = new EthernetPort();
+		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
+		eth.setElementName(name);
+		eth.setPortNumber(port);
+
+		VLANEndpoint vlan = new VLANEndpoint();
+		vlan.setVlanID(vlanID);
+		eth.addProtocolEndpoint(vlan);
 		return eth;
 	}
 }
