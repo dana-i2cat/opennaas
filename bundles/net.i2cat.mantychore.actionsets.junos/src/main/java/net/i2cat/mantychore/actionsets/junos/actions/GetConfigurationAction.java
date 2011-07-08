@@ -48,7 +48,8 @@ public class GetConfigurationAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);
 		}
-
+		validateAction(actionResponse);
+		
 	}
 
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
