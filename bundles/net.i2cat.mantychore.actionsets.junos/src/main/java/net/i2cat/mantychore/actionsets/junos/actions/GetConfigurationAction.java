@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileWriter;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
@@ -49,7 +48,7 @@ public class GetConfigurationAction extends JunosAction {
 			throw new ActionException(this.actionID, e);
 		}
 		validateAction(actionResponse);
-		
+
 	}
 
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
@@ -69,10 +68,6 @@ public class GetConfigurationAction extends JunosAction {
 
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
-			FileWriter f = new FileWriter("C:/Dev/configuration.txt");
-
-			f.write(message);
-
 			// /TODO implements a better method to merge the elements in model
 			// now are deleted all the existing elements of the class EthernetPort
 			routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
@@ -80,8 +75,6 @@ public class GetConfigurationAction extends JunosAction {
 				routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
 			}
 
-			f.write("\n");
-			f.write("Key set size " + logicalInterfParser.getMapElements().keySet().size());
 			/* Parse routing options info */
 			DigesterEngine routingOptionsParser = new RoutingOptionsParser();
 			routingOptionsParser.init();
