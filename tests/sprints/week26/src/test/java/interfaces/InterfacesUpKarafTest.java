@@ -134,16 +134,23 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 		try {
 			// chassis:setVLAN interface VLANid
-			String response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " fe-0/1/2", commandprocessor);
-			Assert.assertNotNull(response);
+			String response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " fe-0/0/1", commandprocessor);
+
+			// assert command output no contains ERROR tag
 
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
 
+			// assert command output no contains ERROR tag
+
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
+
+			// assert command output no contains ERROR tag
+
+			// assert model updated
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("fe-0/1/2")) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("fe-0/0/1")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
 					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
 				}
@@ -168,18 +175,22 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 		try {
 			// chassis:setVLAN interface VLANid
-			String response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " fe-0/1/2", commandprocessor);
-			Assert.assertNotNull(response);
+			String response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lt-0/1/2", commandprocessor);
+			// assert command output no contains ERROR tag
 
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
+			// assert command output no contains ERROR tag
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
 
+			// assert command output no contains ERROR tag
+
+			// assert model updated
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("fe-0/1/2")) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lt-0/1/2")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
-					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
 				}
 			}
 		} catch (Exception e) {
@@ -194,18 +205,23 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	public void UPInterfaceLoTest() {
 		try {
 			// chassis:setVLAN interface VLANid
-			String response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0.0", commandprocessor);
-			Assert.assertNotNull(response);
+			String response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0.0", commandprocessor);
+			// assert command output no contains ERROR tag
 
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
+			// assert command output no contains ERROR tag
 
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
+
+			// assert command output no contains ERROR tag
+
+			// assert model updated
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
 				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
-					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
 				}
 			}
 		} catch (Exception e) {

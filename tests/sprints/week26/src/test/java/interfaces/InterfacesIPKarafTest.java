@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
@@ -110,18 +111,17 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	public void setIPlt() {
 
 		try {
-			String response = KarafCommandHelper.executeCommand("ip:setIPv4  " + resourceFriendlyID + " lt-0/1/2.5 192.168.1.1 255.255.255.0",
+			String response = KarafCommandHelper.executeCommand("ipv4:setIP  " + resourceFriendlyID + " lt-0/1/2.5 192.168.1.1 255.255.255.0",
 					commandprocessor);
 
-			log.info(response);
-
-			Assert.assertNotNull(response);
+			// assert command output no contains ERROR tag
 
 			Object response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
+			// assert command output no contains ERROR tag
 
-			Object response2 = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response2);
+			Object response2 = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
+
+			// assert command output no contains ERROR tag
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
@@ -167,11 +167,11 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setIPl0() {
 		try {
-			String response = KarafCommandHelper.executeCommand("ip:setIPv4  " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
+			String response = KarafCommandHelper.executeCommand("ipv4:setIP   " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
 					commandprocessor);
-			Assert.assertNotNull(response);
 
-			Assert.assertTrue(response.contains("[ERROR]Configuration for Loopback interface not allowed"));
+			// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
+			// Assert.assertTrue(response.contains("[ERROR] Configuration for Loopback interface not allowed"));
 
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
@@ -188,17 +188,46 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setIPETH() {
 		try {
-			log.debug("executeCommand(ip:setIPv4 " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			log.debug("executeCommand(ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
 			Object response = KarafCommandHelper.executeCommand(
 					"ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
+			// assert command output no contains ERROR tag
 
 			log.debug("executeCommand(queue:execute " + resourceFriendlyID);
 			response = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
-			log.debug(response);
+			// assert command output no contains ERROR tag
 
-			log.debug("executeCommand(ip:listInterfaces " + resourceFriendlyID);
+			log.debug("executeCommand(ipv4:list " + resourceFriendlyID);
 			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID, commandprocessor);
+			// assert command output no contains ERROR tag
 
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			for (LogicalDevice l : ld) {
+				if (l instanceof EthernetPort) {
+					EthernetPort lt = (EthernetPort) l;
+
+					// show data of LT
+					// name, linkTecnology
+					// Only check the modified interface
+					if (lt.getElementName().equalsIgnoreCase("fe-0/1/2.0")) {
+						if (lt.getPortNumber() == 0) {
+							Assert.assertEquals(lt.getLinkTechnology().toString(), "ETHERNET");
+						} else {
+							Assert.assertNotSame(lt.getLinkTechnology().toString(), "ETHERNET");
+						}
+
+						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof IPProtocolEndpoint) {
+								// show tha VLAN setted for this LT
+								Assert.assertEquals(((IPProtocolEndpoint) p).getIPv4Address(), "192.168.1.1");
+							}
+
+						}
+					}
+				}
+			}
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 

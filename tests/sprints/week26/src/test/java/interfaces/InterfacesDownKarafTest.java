@@ -133,18 +133,21 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 
 		try {
 			// chassis:setVLAN interface VLANid
-			String response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " fe-0/1/2", commandprocessor);
+			String response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " fe-0/0/1", commandprocessor);
+			// assert command output no contains ERROR tag
 
-			Assert.assertNotNull(response);
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
+			// assert command output no contains ERROR tag
+
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
+			// assert command output no contains ERROR tag
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("fe-0/1/2")) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("fe-0/0/1")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
-					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 				}
 			}
 		} catch (Exception e) {
@@ -168,11 +171,12 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 		try {
 			// chassis:setVLAN interface VLANid
 			String response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lt-0/1/2", commandprocessor);
-			Assert.assertNotNull(response);
+			// assert command output no contains ERROR tag
 
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
-
+			// assert command output no contains ERROR tag
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
+			// assert command output no contains ERROR tag
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
@@ -195,11 +199,12 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 		try {
 			// chassis:setVLAN interface VLANid
 			String response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0.0", commandprocessor);
-			Assert.assertNotNull(response);
+			// assert command output no contains ERROR tag
 
 			String response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			Assert.assertNotNull(response1);
-
+			// assert command output no contains ERROR tag
+			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
+			// assert command output no contains ERROR tag
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
