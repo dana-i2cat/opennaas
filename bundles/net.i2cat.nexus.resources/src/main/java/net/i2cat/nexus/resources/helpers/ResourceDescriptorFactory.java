@@ -1,4 +1,5 @@
 package net.i2cat.nexus.resources.helpers;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,8 +42,8 @@ public class ResourceDescriptorFactory {
 		resourceDescriptor.setId(identifier.getId());
 		/* information. It is only necessary to add type */
 		Information information = new Information();
-		information.setType(name);
-		information.setName("Switch Test");
+		information.setType(type);
+		information.setName(name);
 		resourceDescriptor.setInformation(information);
 
 		return resourceDescriptor;
@@ -67,8 +68,8 @@ public class ResourceDescriptorFactory {
 		resourceDescriptor.setId(identifier.getId());
 		/* information. It is only necessary to add type */
 		Information information = new Information();
-		information.setType(name);
-		information.setName("Switch Test");
+		information.setType(type);
+		information.setName(name);
 		resourceDescriptor.setInformation(information);
 
 		return resourceDescriptor;

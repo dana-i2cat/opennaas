@@ -42,7 +42,7 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 			File file = new File(fileName);
 			if (file.getName().endsWith(".descriptor")) {
 
-				identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+				identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (identifier == null) {
 					printError("Resource not found in Repository");
 					printError("The exportation is canceled");

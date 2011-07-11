@@ -53,9 +53,9 @@ public class ListCommand extends GenericKarafCommand {
 			if (!splitResourceName(resourceId))
 				return null;
 
-			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (verbose)
-				printInfo(args[1] + ":");
+				printInfo(argsRouterName[1] + ":");
 			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
 				printInfo(simpleTab + session);
 			}

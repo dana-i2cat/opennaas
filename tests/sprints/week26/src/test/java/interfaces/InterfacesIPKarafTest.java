@@ -2,22 +2,24 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.KarafCommandHelper;
+import helpers.ProtocolSessionHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -26,17 +28,24 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
-import org.osgi.service.command.CommandSession;
 
+@RunWith(JUnit4TestRunner.class)
 public class InterfacesIPKarafTest extends AbstractIntegrationTest {
-	static Log			log	= LogFactory
-									.getLog(InterfacesUpDownKarafTest.class);
-	IResourceRepository	repository;
-	String				resourceFriendlyID;
-	IResource			resource;
+	static Log					log				= LogFactory
+														.getLog(InterfacesIPKarafTest.class);
+	IResourceRepository			repository;
+	String						resourceFriendlyID;
+	IResource					resource;
+	private CommandProcessor	commandprocessor;
+	@Inject
+	BundleContext				bundleContext	= null;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -51,36 +60,33 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	public Object executeCommand(String command) throws Exception {
-		// Run some commands to make sure they are installed properly
-		CommandProcessor cp = getOsgiService(CommandProcessor.class);
-		CommandSession cs = cp.createSession(System.in, System.out, System.err);
-		Object commandOutput = null;
-		try {
-			commandOutput = cs.execute(command);
-			return commandOutput;
-		} catch (IllegalArgumentException e) {
-			Assert.fail("Action should have thrown an exception because: " + e.toString());
-		} catch (NoSuchMethodException a) {
-			log.error("Method for command not found: " + a.getLocalizedMessage());
-			Assert.fail("Method for command not found.");
-		}
+	@Before
+	public void initBundles() {
+		log.info("Waiting to load all bundles");
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		log.info("Loaded all bundles");
+		repository = getOsgiService(IResourceRepository.class, 50000);
+		commandprocessor = getOsgiService(CommandProcessor.class);
+		initTest();
 
-		cs.close();
-		return commandOutput;
 	}
 
-	@Before
 	public void initTest() {
+
 		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "junos", capabilities);
+		capabilities.add("ip");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
 			resource = repository.createResource(resourceDescriptor);
 			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-			protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(), newSessionContextNetconf());
+			protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(), ProtocolSessionHelper
+					.newSessionContextNetconf());
 			repository.startResource(resource.getResourceDescriptor().getId());
 
 		} catch (ResourceException e) {
@@ -96,25 +102,6 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	}
 
 	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
-	}
-
-	/**
 	 * Configure a IP in a lt interface
 	 * 
 	 */
@@ -123,32 +110,36 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	public void setIPlt() {
 
 		try {
-			Object response = executeCommand("ip:setIPv4  " + resourceFriendlyID + " lt-0/1/2.0 192.168.1.1 255.255.255.0");
+			String response = KarafCommandHelper.executeCommand("ip:setIPv4  " + resourceFriendlyID + " lt-0/1/2.5 192.168.1.1 255.255.255.0",
+					commandprocessor);
+
+			log.info(response);
+
 			Assert.assertNotNull(response);
 
-			Object response1 = executeCommand("queue:execute " + resourceFriendlyID);
+			Object response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			Assert.assertNotNull(response1);
 
-			Object response2 = executeCommand("ip:listInterfaces " + resourceFriendlyID);
+			Object response2 = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID, commandprocessor);
 			Assert.assertNotNull(response2);
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice l : ld) {
-				if (l instanceof EthernetPort) {
-					EthernetPort ethport = (EthernetPort) l;
+				if (l instanceof LogicalTunnelPort) {
+					LogicalTunnelPort lt = (LogicalTunnelPort) l;
 
-					// show data of ETH
+					// show data of LT
 					// name, linkTecnology
 					// Only check the modified interface
-					if (ethport.getElementName().equalsIgnoreCase("fe-0/1/2")) {
-						if (ethport.getPortNumber() == 0) {
-							Assert.assertEquals(ethport.getLinkTechnology().toString(), "ETHERNET");
+					if (lt.getElementName().equalsIgnoreCase("lt-0/1/2")) {
+						if (lt.getPortNumber() == 0) {
+							Assert.assertEquals(lt.getLinkTechnology().toString(), "ETHERNET");
 						} else {
-							Assert.assertNotSame(ethport.getLinkTechnology().toString(), "ETHERNET");
+							Assert.assertNotSame(lt.getLinkTechnology().toString(), "ETHERNET");
 						}
 
-						List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
+						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
 						for (ProtocolEndpoint p : pp) {
 							if (p instanceof IPProtocolEndpoint) {
 								// show tha VLAN setted for this LT
@@ -176,14 +167,45 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setIPl0() {
 		try {
-			Object response = executeCommand("ip:setIPv4  " + resourceFriendlyID + " l0.1 192.168.1.1 255.255.255.0");
+			String response = KarafCommandHelper.executeCommand("ip:setIPv4  " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
+					commandprocessor);
 			Assert.assertNotNull(response);
 
-			Assert.assertEquals(response.toString(), "[ERROR]No possible to configure l0 interface");
+			Assert.assertTrue(response.contains("[ERROR]Configuration for Loopback interface not allowed"));
+
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
+		}
+	}
+
+	/**
+	 * Configure a IP in a ETh interface
+	 * 
+	 */
+	@Test
+	public void setIPETH() {
+		try {
+			log.debug("executeCommand(ip:setIPv4 " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
+			Object response = KarafCommandHelper.executeCommand(
+					"ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
+
+			log.debug("executeCommand(queue:execute " + resourceFriendlyID);
+			response = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
+			log.debug(response);
+
+			log.debug("executeCommand(ip:listInterfaces " + resourceFriendlyID);
+			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID, commandprocessor);
+
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		}
+
 	}
 }

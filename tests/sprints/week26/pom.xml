@@ -5,9 +5,9 @@
 
 	<!--  parent parameters  -->
 	<parent>
-		<artifactId>itests-bundle-settings</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+<artifactId>itests-bundle-settings</artifactId>
+	<groupId>net.i2cat.mantychore.sprints</groupId>
+	<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 
@@ -35,6 +35,7 @@
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>

@@ -20,8 +20,8 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	protected PrintStream	err					= System.err;
 	protected int			counter				= 0;
 	protected int			totalFiles			= 0;
-	protected String[]		args				= null;
-
+	protected String[]		argsRouterName		= null;
+	protected String[]		argsInterface		= null;
 	// Messages
 	protected String		error				= "[ERROR] ";
 	protected String		info				= "[INFO] ";
@@ -106,26 +106,49 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	public boolean splitResourceName(String complexName) {
-		args = complexName.split(":");
-		if (args.length != 2) {
+		argsRouterName = complexName.split(":");
+		if (argsRouterName.length != 2) {
 			printError("Invalid resourceId.");
 			printError("ResourceId must have the format [resourceType:resourceName]");
 			endcommand();
 			return false;
 		}
-		if (args[0].equalsIgnoreCase("")) {
+		if (argsRouterName[0].equalsIgnoreCase("")) {
 			printError("Invalid resource type.");
 			printError("[resourceType] can not be null");
 			endcommand();
 			return false;
 		}
-		if (args[1].equalsIgnoreCase("")) {
+		if (argsRouterName[1].equalsIgnoreCase("")) {
 			printError("Invalid resource name.");
 			printError("[resourceName] can not be null");
 			endcommand();
 			return false;
 		}
 
+		return true;
+	}
+
+	public boolean splitInterfaces(String complexInterface) {
+		try {
+			argsInterface = complexInterface.split("\\.");
+			if (argsInterface.length != 2) {
+				printError("Invalid interface name.");
+				endcommand();
+				return false;
+			}
+			if (argsInterface[0].equalsIgnoreCase("")) {
+				printError("Invalid resource type.");
+				endcommand();
+				return false;
+			}
+
+		} catch (Exception e) {
+			// throw new Exception("Bad interface name.", e);
+			printError("Error reading the interface name.");
+			endcommand();
+			return false;
+		}
 		return true;
 	}
 

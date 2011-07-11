@@ -40,7 +40,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 				IResourceIdentifier identifier = null;
 				IResource resource = null;
 				try {
-					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
 
 						resource = manager.getResource(identifier);

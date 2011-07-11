@@ -43,6 +43,9 @@
 		<command name="chassis/deleteSubInterface">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteSubInterfaceCommand" />
 		</command>
+			<command name="chassis/setVLAN">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.SetVLANCommand" />
+		</command>
 	</command-bundle>
 
 </blueprint>

@@ -35,7 +35,7 @@ public class CreateSubIntefaceCommand extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = null;
 
-			resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
 				endcommand();

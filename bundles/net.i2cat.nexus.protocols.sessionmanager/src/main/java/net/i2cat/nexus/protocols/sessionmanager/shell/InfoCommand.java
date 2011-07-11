@@ -36,7 +36,7 @@ public class InfoCommand extends GenericKarafCommand {
 		if (!splitResourceName(resourceId))
 			return null;
 
-		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 		protocolManager = getProtocolManager();
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceIdentifier.getId());

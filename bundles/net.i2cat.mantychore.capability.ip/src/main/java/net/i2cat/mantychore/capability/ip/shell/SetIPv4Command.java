@@ -48,7 +48,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			if (!splitResourceName(resourceId))
 				return -1;
 
-			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
 				endcommand();

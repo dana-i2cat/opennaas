@@ -16,6 +16,26 @@ public class QueueResponse {
 
 	Vector<ActionResponse>	responses		= new Vector<ActionResponse>();
 
+	public String			user;
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public int getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(int timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	public int	timestamp;
+
 	public ActionResponse getPrepareResponse() {
 		return prepareResponse;
 	}

@@ -39,7 +39,7 @@ public class StopResourceCommand extends GenericKarafCommand {
 
 				IResourceIdentifier identifier = null;
 				try {
-					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
 						printInfo("Stopping Resource...");
 
@@ -51,17 +51,17 @@ public class StopResourceCommand extends GenericKarafCommand {
 						}
 
 						counter++;
-						printInfo("Resource " + args[1] + " stopped.");
+						printInfo("Resource " + argsRouterName[1] + " stopped.");
 					} else {
-						printError("The resource " + args[1] + " is not found on repository.");
+						printError("The resource " + argsRouterName[1] + " is not found on repository.");
 					}
 				} catch (ResourceException e) {
 					if (e.getCause() instanceof IncorrectLifecycleStateException)
-						printError("Cannot stop resource " + args[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+						printError("Cannot stop resource " + argsRouterName[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
 								.getResourceState());
 					else
 						printError(e);
-					printError("Resource " + args[1] + " was not stopped. ");
+					printError("Resource " + argsRouterName[1] + " was not stopped. ");
 
 				}
 

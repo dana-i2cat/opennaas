@@ -40,7 +40,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 				return -1;
 
 			IResourceIdentifier resourceIdentifier = null;
-			resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 			/* validate resource identifier */
 			if (resourceIdentifier == null) {

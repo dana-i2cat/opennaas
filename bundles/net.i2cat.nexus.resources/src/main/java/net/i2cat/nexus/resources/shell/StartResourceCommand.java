@@ -35,24 +35,24 @@ public class StartResourceCommand extends GenericKarafCommand {
 
 				IResourceIdentifier identifier = null;
 				try {
-					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
 						printInfo("Starting Resource: "
-								+ args[1]);
+								+ argsRouterName[1]);
 						manager.startResource(identifier);
 						counter++;
-						printInfo("Resource " + args[1] + " started.");
+						printInfo("Resource " + argsRouterName[1] + " started.");
 					} else {
-						printError("The resource " + args[1] +
+						printError("The resource " + argsRouterName[1] +
 										" is not found on repository.");
 					}
 				} catch (ResourceException e) {
 					if (e.getCause() instanceof IncorrectLifecycleStateException)
-						printError("Cannot start resource " + args[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+						printError("Cannot start resource " + argsRouterName[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
 								.getResourceState());
 					else
 						printError(e);
-					printError("Resource " + args[1] + " was not started");
+					printError("Resource " + argsRouterName[1] + " was not started");
 
 				}
 

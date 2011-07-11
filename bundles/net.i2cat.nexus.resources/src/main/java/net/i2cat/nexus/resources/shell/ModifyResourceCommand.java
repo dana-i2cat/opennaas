@@ -49,21 +49,21 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = null;
 			try {
-				resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+				resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (resourceIdentifier != null) {
 					try {
 
 						manager.modifyResource(resourceIdentifier, descriptor);
-						printInfo("Resource " + args[1] + " modified.");
+						printInfo("Resource " + argsRouterName[1] + " modified.");
 					} catch (ResourceException f) {
 						printError(f);
 					}
 				} else {
-					printError("The resource " + args[1] + " is not found on repository.");
+					printError("The resource " + argsRouterName[1] + " is not found on repository.");
 				}
 			} catch (ResourceException e) {
 				printError(e);
-				printError("No modified " + args[1]);
+				printError("No modified " + argsRouterName[1]);
 			}
 		}
 

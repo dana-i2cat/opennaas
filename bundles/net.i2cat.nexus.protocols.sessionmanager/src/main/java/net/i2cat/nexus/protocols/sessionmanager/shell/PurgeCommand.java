@@ -34,7 +34,7 @@ public class PurgeCommand extends GenericKarafCommand {
 		if (!splitResourceName(resourceId))
 			return null;
 
-		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 		IProtocolManager protocolManager = getProtocolManager();
 		ProtocolSessionManager sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceIdentifier.getId());

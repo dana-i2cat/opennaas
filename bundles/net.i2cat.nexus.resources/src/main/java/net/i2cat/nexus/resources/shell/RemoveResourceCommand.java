@@ -34,16 +34,16 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 
 				IResourceIdentifier identifier = null;
 				try {
-					identifier = manager.getIdentifierFromResourceName(args[0], args[1]);
+					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
 
 						printInfo("Removing Resource: "
-								+ args[1]);
+								+ argsRouterName[1]);
 						manager.removeResource(identifier);
 						counter++;
-						printInfo("Resource " + args[1] + " removed.");
+						printInfo("Resource " + argsRouterName[1] + " removed.");
 					} else {
-						printError("The resource " + args[1] +
+						printError("The resource " + argsRouterName[1] +
 										" is not found on repository.");
 					}
 				} catch (ResourceException e) {

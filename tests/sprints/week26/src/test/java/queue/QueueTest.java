@@ -2,6 +2,7 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.ProtocolSessionHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,9 +20,10 @@ import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.helpers.MockActionFactory;
+import net.i2cat.nexus.resources.helpers.MockResource;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.queue.ModifyParams;
 import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -33,9 +35,11 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -51,6 +55,7 @@ import org.osgi.framework.BundleContext;
  * 
  *         jira ticket : http://jira.i2cat.net:8080/browse/MANTYCHORE-185
  */
+@RunWith(JUnit4TestRunner.class)
 public class QueueTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
@@ -76,26 +81,6 @@ public class QueueTest extends AbstractIntegrationTest {
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		return options;
-	}
-
-	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
-
 	}
 
 	public void initBundles() throws ProtocolException {
@@ -129,7 +114,7 @@ public class QueueTest extends AbstractIntegrationTest {
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceID, newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(resourceID, ProtocolSessionHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 
@@ -216,6 +201,8 @@ public class QueueTest extends AbstractIntegrationTest {
 		}
 		Assert.assertTrue(responses.size() == 4); // INCLUDE COMMIT
 		ActionResponse actionResponseOk = responses.get(0);
+
+		/* check first action */
 
 		/* check first action */
 		for (Response response : actionResponseOk.getResponses()) {
