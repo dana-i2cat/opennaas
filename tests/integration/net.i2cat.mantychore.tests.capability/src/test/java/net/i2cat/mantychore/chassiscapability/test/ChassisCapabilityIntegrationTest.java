@@ -31,6 +31,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.queue.QueueConstants;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -68,8 +69,8 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-					);
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
 		if (uri != null && !uri.equals("${protocol.uri}")) {
@@ -116,7 +117,6 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
-
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 
 		protocolSessionContext.addParameter(
@@ -195,31 +195,34 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 4);
-			List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(responses.size() == 5);
-			ActionResponse actionResponse = responses.get(0);
-			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
-			for (Response response : actionResponse.getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
+			Assert.assertTrue(queueResponse.getResponses().size() == 4);
 
-			ActionResponse actionResponse1 = responses.get(1);
-			Assert.assertEquals(ActionConstants.CREATESUBINTERFACE, actionResponse1.getActionID());
-			for (Response response : actionResponse1.getResponses()) {
+			Assert.assertTrue(queueResponse.getResponses().get(0).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(0).getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
 
-			ActionResponse actionResponse2 = responses.get(2);
-			Assert.assertEquals(ActionConstants.DELETESUBINTERFACE, actionResponse2.getActionID());
-			for (Response response : actionResponse2.getResponses()) {
+			Assert.assertTrue(queueResponse.getResponses().get(1).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(1).getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
-			ActionResponse actionResponse3 = responses.get(2);
-			Assert.assertEquals(ActionConstants.SETVLAN, actionResponse3.getActionID());
-			for (Response response : actionResponse3.getResponses()) {
+
+			Assert.assertTrue(queueResponse.getResponses().get(2).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(2).getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
+
+			Assert.assertTrue(queueResponse.getResponses().get(3).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(3).getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
+
+			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
+
+			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
 
 			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
