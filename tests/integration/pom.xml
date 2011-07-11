@@ -22,9 +22,6 @@
 	<!--		<module>net.i2cat.mantychore.tests.repository</module>
 		<module>net.i2cat.mantychore.tests.capability.queue</module>
 		<module>net.i2cat.mantychore.tests.commandsKaraf</module>-->
-		<!--
-			<module>net.i2cat.mantychore.tests.commandsets.junos</module>
-		-->
 		<!--  IT IS NOT USED -->
 		<!--
 			<module>net.i2cat.mantychore.tests.protocols.netconf</module>
