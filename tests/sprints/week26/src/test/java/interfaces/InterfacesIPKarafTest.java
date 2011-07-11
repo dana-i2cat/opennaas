@@ -119,7 +119,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 			Object response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			// assert command output no contains ERROR tag
 
-			Object response2 = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
+			Object response2 = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID+" -r", commandprocessor);
 
 			// assert command output no contains ERROR tag
 
@@ -198,7 +198,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 			// assert command output no contains ERROR tag
 
 			log.debug("executeCommand(ipv4:list " + resourceFriendlyID);
-			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID, commandprocessor);
+			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID +" -r", commandprocessor);
 			// assert command output no contains ERROR tag
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
