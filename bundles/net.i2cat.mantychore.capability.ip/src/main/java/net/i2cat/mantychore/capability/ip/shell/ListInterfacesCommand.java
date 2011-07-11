@@ -75,17 +75,21 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
-						if (protocolEndpoint instanceof IPProtocolEndpoint) {
-							String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
-							String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
-							if (ipv4 != null && mask != null) {
-								printInfo(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  " + ipv4 + " / " + mask);
-							} else {
-								printInfo(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
+					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
+					if (ethernetPort.getProtocolEndpoint() != null) {
+						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
+							if (protocolEndpoint instanceof IPProtocolEndpoint) {
+								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
+								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
+								if (ipv4 != null && mask != null) {
+									printSymbolWithoutDoubleLine(ipv4 + " / " + mask);
+								}
 							}
+
 						}
 					}
+					printInfo("");
+
 				}
 			}
 
