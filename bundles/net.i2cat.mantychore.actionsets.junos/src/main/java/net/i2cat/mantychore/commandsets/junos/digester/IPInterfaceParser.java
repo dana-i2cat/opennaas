@@ -3,16 +3,27 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 
-public class IPConfigurationInterfaceParser extends DigesterEngine {
+/**
+ * 
+ * Parser of the interfaces. Takes the name and unit of the interface. Set IP values, VLAN and peer-unit when exists
+ * 
+ * @author Evelyn Torras
+ * 
+ */
+public class IPInterfaceParser extends DigesterEngine {
 	String			location		= "";
 
 	VLANEndpoint	vlanEndpoint	= null;
+	boolean			flagLT			= false;
+	long			peerUnit		= 0;
 
 	/** vlan info **/
 
@@ -36,6 +47,9 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 			addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
 			addSetNext("*/interfaces/interface/unit", "addInterface");
 			addMyRule("*/interfaces/interface/unit/name", "setName", 0);
+
+			// addObjectCreate("*/interfaces/interface/unit/peer-unit", LogicalTunnelPort.class);
+			addMyRule("*/interfaces/interface/unit/peer-unit", "setPeerUnit", 0);
 			addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
@@ -49,36 +63,56 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 		}
 	}
 
-	public IPConfigurationInterfaceParser() {
+	public IPInterfaceParser() {
 		ruleSet = new ParserRuleSet();
 	}
 
-	public IPConfigurationInterfaceParser(String prefix) {
+	public IPInterfaceParser(String prefix) {
 		ruleSet = new ParserRuleSet(prefix);
 	}
 
+	public void setPeerUnit(String peerunit) {
+		this.flagLT = true;
+		this.peerUnit = Long.parseLong(peerunit);
+	}
+
 	public void addInterface(EthernetPort ethernetPort) {
-		String location = ethernetPort.getElementName();
+		String location = ethernetPort.getElementName() + Integer.toString(ethernetPort.getPortNumber());
 
-		/* add new vlan endpoint */
-		if (vlanEndpoint != null) {
-			ethernetPort.addProtocolEndpoint(vlanEndpoint);
+		if (flagLT) {
+			LogicalTunnelPort lt = new LogicalTunnelPort();
+			lt.setElementName(ethernetPort.getElementName());
+			lt.setPortNumber(ethernetPort.getPortNumber());
+			lt.setPeer_unit(peerUnit);
+			for (ProtocolEndpoint pE : ethernetPort.getProtocolEndpoint()) {
+				lt.addProtocolEndpoint(pE);
+			}
+			if (vlanEndpoint != null) {
+				lt.addProtocolEndpoint(vlanEndpoint);
+				// setPortImplementsVlan(vlanEndpoint);
+				vlanEndpoint = null;
+			}
+			mapElements.put(location, lt);
+		} else {
+			/* add new vlan endpoint */
+			if (vlanEndpoint != null) {
+				ethernetPort.addProtocolEndpoint(vlanEndpoint);
+				// setPortImplementsVlan(vlanEndpoint);
+				vlanEndpoint = null;
+			}
 
-			// setPortImplementsVlan(vlanEndpoint);
-			vlanEndpoint = null;
+			if (mapElements.containsKey(location)) {
+				EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
+				ethernetPort.merge(hashEthernetPort);
+				mapElements.remove(location);
+			}
+			mapElements.put(location, ethernetPort);
 		}
-
-		if (mapElements.containsKey(location)) {
-			EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
-			ethernetPort.merge(hashEthernetPort);
-			mapElements.remove(location);
-		}
-		mapElements.put(location, ethernetPort);
 	}
 
 	/* Configure name */
 	public void setName(String name) {
-		EthernetPort ethernetPort = (EthernetPort) peek();
+		NetworkPort ethernetPort = (NetworkPort) peek();
 
 		assert !location.equals("") : "LogicalInterfaceParser: location have to be defined";
 		/* fill identifier parameters */
@@ -90,7 +124,6 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 
 	public void setLocation(String location) {
 		this.location = location;
-
 	}
 
 	/* IP Protocol Endpoint */
@@ -133,7 +166,7 @@ public class IPConfigurationInterfaceParser extends DigesterEngine {
 
 		String str = "" + '\n';
 		for (String key : this.mapElements.keySet()) {
-			EthernetPort port = (EthernetPort) mapElements.get(key);
+			NetworkPort port = (NetworkPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';
 			str += port.getOtherPortType() + '\n';
 			str += port.getPermanentAddress() + '\n';

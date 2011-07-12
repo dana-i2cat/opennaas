@@ -5,10 +5,11 @@ import java.io.ByteArrayInputStream;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
-import net.i2cat.mantychore.commandsets.junos.digester.IPConfigurationInterfaceParser;
+import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.Reply;
 import net.i2cat.nexus.resources.action.ActionException;
@@ -55,7 +56,8 @@ public class GetConfigurationAction extends JunosAction {
 		String message;
 		try {
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
-			DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
+			DigesterEngine logicalInterfParser = new IPInterfaceParser();
+			// DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
 			logicalInterfParser.init();
 
 			/* getting interface information */
@@ -71,6 +73,7 @@ public class GetConfigurationAction extends JunosAction {
 			// /TODO implements a better method to merge the elements in model
 			// now are deleted all the existing elements of the class EthernetPort
 			routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
+			routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
 			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
 				routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
 			}

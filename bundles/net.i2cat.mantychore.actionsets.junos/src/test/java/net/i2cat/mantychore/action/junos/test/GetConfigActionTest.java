@@ -10,7 +10,12 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionResponse;
@@ -65,9 +70,34 @@ public class GetConfigActionTest {
 		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
 		Assert.assertNotNull(routerModel);
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
+
+		log.info("Logical devices: " + ld.size());
+
 		for (LogicalDevice device : ld) {
-			EthernetPort ep = (EthernetPort) device;
-			log.info(ep.getElementName());
+			LogicalPort lp = (LogicalPort) device;
+			if (device instanceof LogicalTunnelPort) {
+				LogicalTunnelPort lt = (LogicalTunnelPort) device;
+				log.info("LogicalTunnelPort: " + lt.getElementName());
+				log.info("Peer unit " + lt.getPeer_unit());
+				log.info("Unit " + lt.getPortNumber());
+			} else if (device instanceof EthernetPort) {
+				EthernetPort ep = (EthernetPort) device;
+				log.info("EthernetPort: " + ep.getElementName());
+				log.info("Unit " + ep.getPortNumber());
+			} else {
+				log.info("No such class considered ");
+			}
+			for (ProtocolEndpoint p : lp.getProtocolEndpoint()) {
+				if (p instanceof IPProtocolEndpoint) {
+					IPProtocolEndpoint ip = (IPProtocolEndpoint) p;
+					log.info(ip.getIPv4Address());
+					log.info(ip.getSubnetMask());
+				} else {
+					VLANEndpoint vlan = (VLANEndpoint) p;
+					log.info("VLAN " + vlan.getVlanID());
+				}
+			}
+
 		}
 	}
 
