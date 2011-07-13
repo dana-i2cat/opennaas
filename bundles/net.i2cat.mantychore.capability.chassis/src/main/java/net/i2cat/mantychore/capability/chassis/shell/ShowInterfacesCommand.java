@@ -28,6 +28,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
+
 	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the router configuration")
 	boolean			refresh;
 
@@ -87,42 +88,28 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 					printSymbolWithoutDoubleLine(doubleTab);
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
-							// if (protocolEndpoint instanceof IPProtocolEndpoint) {
-							// String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
-							// String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
-							// if (ipv4 != null && mask != null) {
-							// printSymbolWithoutDoubleLine(ipv4 + " / " + mask);
-							// }
-							// }
 							if (protocolEndpoint instanceof VLANEndpoint) {
 								printSymbolWithoutDoubleLine(doubleTab + Integer.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
 							}
 
 						}
+						printSymbol(doubleTab + ethernetPort.getOperationalStatus());
 					}
-					printInfo("");
-				} else if (logicalDevice instanceof LogicalTunnelPort) {
-					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
 
+				} else if (logicalDevice instanceof LogicalTunnelPort) {
+					printInfo("");
+					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " [" + lt.getElementName() + "." + lt.getPortNumber() + "]  ");
 					printSymbolWithoutDoubleLine(doubleTab + lt.getPeer_unit());
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
-							// if (protocolEndpoint instanceof IPProtocolEndpoint) {
-							// String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
-							// String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
-							// if (ipv4 != null && mask != null) {
-							// printSymbolWithoutDoubleLine(ipv4 + " / " + mask);
-							// }
-							// }
 							if (protocolEndpoint instanceof VLANEndpoint) {
 								printSymbolWithoutDoubleLine(doubleTab + Integer.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
 
 							}
-
 						}
+						printSymbol(doubleTab + lt.getOperationalStatus());
 					}
-					printInfo("");
 				}
 
 			}
