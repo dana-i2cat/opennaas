@@ -93,6 +93,8 @@ public class IPInterfaceParser extends DigesterEngine {
 				vlanEndpoint = null;
 			}
 			mapElements.put(location, lt);
+			flagLT = false;
+			peerUnit = 0;
 		} else {
 			/* add new vlan endpoint */
 			if (vlanEndpoint != null) {
