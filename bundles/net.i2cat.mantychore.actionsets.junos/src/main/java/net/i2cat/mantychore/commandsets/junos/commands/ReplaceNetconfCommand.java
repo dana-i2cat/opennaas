@@ -14,6 +14,7 @@ public class ReplaceNetconfCommand extends JunosCommand {
 		super(CommandNetconfConstants.EDIT, netconfXML);
 	}
 
+	@Override
 	public Query message() {
 		setQuery(QueryFactory.newEditConfig(target, defaultOperation, testOption,
 				errorOption, netconfXML));

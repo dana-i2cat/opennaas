@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -92,7 +90,8 @@ public class Capabilities extends ManagedElement implements Serializable {
      * @return	String	current instanceID property value
      * @exception	Exception	
      */
-    public String getInstanceID(){
+    @Override
+	public String getInstanceID(){
 
     return this.instanceID;
     } // getInstanceID
@@ -125,7 +124,8 @@ public class Capabilities extends ManagedElement implements Serializable {
      * @param	String	new instanceID property value
      * @exception	Exception	
      */
-    public void setInstanceID(String instanceID) {
+    @Override
+	public void setInstanceID(String instanceID) {
 
     this.instanceID = instanceID;
     } // setInstanceID
@@ -147,7 +147,8 @@ public class Capabilities extends ManagedElement implements Serializable {
      * @return	String	current elementName property value
      * @exception	Exception	
      */
-    public String getElementName(){
+    @Override
+	public String getElementName(){
 
     return this.elementName;
     } // getElementName
@@ -163,7 +164,8 @@ public class Capabilities extends ManagedElement implements Serializable {
      * @param	String	new elementName property value
      * @exception	Exception	
      */
-    public void setElementName(String elementName) {
+    @Override
+	public void setElementName(String elementName) {
 
     this.elementName = elementName;
     } // setElementName

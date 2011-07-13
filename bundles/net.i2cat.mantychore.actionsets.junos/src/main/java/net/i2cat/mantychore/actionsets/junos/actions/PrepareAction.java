@@ -56,6 +56,7 @@ public class PrepareAction extends JunosAction {
 		}
 	}
 
+	@Override
 	public void prepareMessage() throws ActionException {
 
 	}

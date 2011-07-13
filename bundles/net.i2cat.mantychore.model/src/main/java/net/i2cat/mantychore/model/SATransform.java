@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -80,7 +78,8 @@ public class SATransform extends ScopedSettingData implements Serializable {
      * @return	String	current elementName property value
      * @exception	Exception	
      */
-    public String getElementName(){
+    @Override
+	public String getElementName(){
 
     return this.elementName;
     } // getElementName
@@ -97,7 +96,8 @@ public class SATransform extends ScopedSettingData implements Serializable {
      * @param	String	new elementName property value
      * @exception	Exception	
      */
-    public void setElementName(String elementName) {
+    @Override
+	public void setElementName(String elementName) {
 
     this.elementName = elementName;
     } // setElementName

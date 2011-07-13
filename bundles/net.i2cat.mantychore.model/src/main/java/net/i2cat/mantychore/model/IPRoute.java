@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -413,7 +411,8 @@ public class IPRoute extends NextHopRouting implements Serializable {
      * @return	String	current destinationAddress property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public String getDestinationAddress(){
 
     return this.destinationAddress;
@@ -428,7 +427,8 @@ public class IPRoute extends NextHopRouting implements Serializable {
      * @param	String	new destinationAddress property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public void setDestinationAddress(String destinationAddress) {
 
     this.destinationAddress = destinationAddress;
@@ -449,7 +449,8 @@ public class IPRoute extends NextHopRouting implements Serializable {
      * @return	String	current destinationMask property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public String getDestinationMask(){
 
     return this.destinationMask;
@@ -464,7 +465,8 @@ public class IPRoute extends NextHopRouting implements Serializable {
      * @param	String	new destinationMask property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public void setDestinationMask(String destinationMask) {
 
     this.destinationMask = destinationMask;

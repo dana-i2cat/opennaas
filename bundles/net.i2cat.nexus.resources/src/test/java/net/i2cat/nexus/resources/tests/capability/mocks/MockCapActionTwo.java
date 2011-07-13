@@ -12,6 +12,7 @@ public class MockCapActionTwo extends Action {
 	private Log		log	= LogFactory.getLog(MockCapActionTwo.class);
 	private String	actionID;
 
+	@Override
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
 	}

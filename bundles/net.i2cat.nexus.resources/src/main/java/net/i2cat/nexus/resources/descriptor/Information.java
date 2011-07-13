@@ -117,6 +117,7 @@ public class Information
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return "Type: " + type + ", Name: " + name + ", Version: " + version
 				+ ", Description: " + description;

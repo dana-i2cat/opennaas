@@ -40,6 +40,7 @@ public class ProtocolSessionContext {
 		return sessionParameters;
 	}
 
+	@Override
 	public boolean equals(Object object) {
 		ProtocolSessionContext other = null;
 		Entry<String, Object> entry = null;
@@ -86,6 +87,7 @@ public class ProtocolSessionContext {
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		String result = "";
 		Entry<String, Object> entry = null;

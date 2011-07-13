@@ -19,9 +19,9 @@ public class QueueOperationsTest {
 
 		MockActionFactory actionFactory = new MockActionFactory();
 
-		queueManager.queueAction(actionFactory.newMockActionOK("actionMock1"));
-		queueManager.queueAction(actionFactory.newMockActionOK("actionMock2"));
-		queueManager.queueAction(actionFactory.newMockActionOK("actionMock3"));
+		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock1"));
+		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock2"));
+		queueManager.queueAction(MockActionFactory.newMockActionOK("actionMock3"));
 		Assert.assertTrue(queueManager.getActions().size() == 3);
 
 		ModifyParams modifyParams = ModifyParams.newRemoveOperation(1);

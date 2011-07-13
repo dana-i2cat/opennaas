@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -47,7 +45,8 @@ public class EthernetPortStatistics extends NetworkPortStatistics implements
      * @return	long	current packetsTransmitted property value
      * @exception	Exception	
      */
-    public long getPacketsTransmitted(){
+    @Override
+	public long getPacketsTransmitted(){
 
     return this.packetsTransmitted;
     } // getPacketsTransmitted
@@ -61,7 +60,8 @@ public class EthernetPortStatistics extends NetworkPortStatistics implements
      * @param	long	new packetsTransmitted property value
      * @exception	Exception	
      */
-    public void setPacketsTransmitted(long packetsTransmitted) {
+    @Override
+	public void setPacketsTransmitted(long packetsTransmitted) {
 
     this.packetsTransmitted = packetsTransmitted;
     } // setPacketsTransmitted
@@ -81,7 +81,8 @@ public class EthernetPortStatistics extends NetworkPortStatistics implements
      * @return	long	current packetsReceived property value
      * @exception	Exception	
      */
-    public long getPacketsReceived(){
+    @Override
+	public long getPacketsReceived(){
 
     return this.packetsReceived;
     } // getPacketsReceived
@@ -95,7 +96,8 @@ public class EthernetPortStatistics extends NetworkPortStatistics implements
      * @param	long	new packetsReceived property value
      * @exception	Exception	
      */
-    public void setPacketsReceived(long packetsReceived) {
+    @Override
+	public void setPacketsReceived(long packetsReceived) {
 
     this.packetsReceived = packetsReceived;
     } // setPacketsReceived

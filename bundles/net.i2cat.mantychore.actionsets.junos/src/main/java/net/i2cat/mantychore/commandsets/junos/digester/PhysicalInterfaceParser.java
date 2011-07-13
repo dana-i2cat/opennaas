@@ -4,6 +4,9 @@ import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
 import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 
 import org.apache.commons.digester.Digester;
@@ -25,12 +28,12 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 		@Override
 		public void addRuleInstances(Digester arg0) {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
-			addObjectCreate("*/interface-information/physical-interface", EthernetPort.class);
-			addCallMethod("*/interface-information/physical-interface/name", "setOtherPortType", 0);
-			// addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
+			addObjectCreate("*/interface-information/physical-interface", NetworkPort.class);
+			addMyRule("*/interface-information/physical-interface/name", "setName", 0);
+			addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
 
 			addMyRule("*/interface-information/physical-interface/link-level-type", "setLinkTechnologyParser", 0);
-			addCallMethod("*/interface-information/physical-interface/mtu", "setSupportedMaximumTransmissionUnit", 0);
+			// addCallMethod("*/interface-information/physical-interface/mtu", "setSupportedMaximumTransmissionUnit", 0);
 
 			addMyRule("*/interface-information/physical-interface/link-mode", "setFullDuplexParser", 0);
 			addMyRule("*/interface-information/physical-interface/speed", "setMaxSpeedParser", 0);
@@ -47,14 +50,53 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 		this.ruleSet = new ParserRuleSet();
 	}
 
-	public void addInterface(EthernetPort ethernetPort) {
-		String location = ethernetPort.getOtherPortType();
-		if (mapElements.containsKey(location)) {
-			EthernetPort hashEthernetPort = (EthernetPort) mapElements.get(location);
-			ethernetPort.merge(hashEthernetPort);
-			mapElements.remove(location);
+	/* Configure name */
+	public void setName(String name) {
+		NetworkPort networkPort = (NetworkPort) peek();
+
+		String[] nameAndUnit = name.split(".");
+		if (nameAndUnit.length == 1) {
+			networkPort.setElementName(name);
+		} else {
+			networkPort.setElementName(nameAndUnit[0]);
+			int portNumber = -1;
+			try {
+				portNumber = Integer.parseInt(nameAndUnit[1]);
+			} catch (NumberFormatException numFormatException) {
+				return;
+			}
+
+			networkPort.setPortNumber(portNumber);
 		}
-		mapElements.put(location, ethernetPort);
+
+	}
+
+	public void addInterface(NetworkPort networkPort) {
+		int numPort = networkPort.getPortNumber();
+		String nameInterface = networkPort.getElementName();
+		if (numPort != -1) {
+			nameInterface = nameInterface + "." + numPort;
+		}
+
+		if (networkPort.getElementName().startsWith("lt")) {
+			LogicalTunnelPort logicalTunnel = (LogicalTunnelPort) networkPort;
+			if (mapElements.containsKey(nameInterface)) {
+				LogicalTunnelPort hashLogicalPort = (LogicalTunnelPort) mapElements.get(nameInterface);
+				logicalTunnel.merge((LogicalTunnelPort) hashLogicalPort);
+				mapElements.remove(nameInterface);
+			}
+			mapElements.put(nameInterface, logicalTunnel);
+		} else {
+			EthernetPort ethernetPort = (EthernetPort) networkPort;
+			if (mapElements.containsKey(nameInterface)) {
+				NetworkPort hashLogicalPort = (NetworkPort) mapElements.get(nameInterface);
+				ethernetPort.merge((EthernetPort) hashLogicalPort);
+				mapElements.remove(nameInterface);
+			}
+			mapElements.put(nameInterface, ethernetPort);
+
+		}
+
 	}
 
 	/* IPHeadersFilter Parser */
@@ -86,9 +128,9 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 	public void setLinkTechnologyParser(String linkTechnology) {
 
 		try {
-			EthernetPort ethernetPort = (EthernetPort) peek();
+			NetworkPort networkPort = (NetworkPort) peek();
 
-			ethernetPort.setLinkTechnology(LinkTechnology.valueOf(linkTechnology));
+			networkPort.setLinkTechnology(LinkTechnology.valueOf(linkTechnology));
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -99,8 +141,8 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 	public void setFullDuplexParser(String fullDuplex) {
 
 		try {
-			EthernetPort ethernetPort = (EthernetPort) peek();
-			ethernetPort.setFullDuplex(fullDuplex.equals(FULLDUPLEX));
+			NetworkPort networkPort = (NetworkPort) peek();
+			networkPort.setFullDuplex(fullDuplex.equals(FULLDUPLEX));
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
@@ -125,28 +167,26 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 	public void setMaxSpeedParser(String strMaxSpeed) {
 		try {
 			// TODO FIX IF IT IS NOT ONLY POSSIBLE TO FIX NUMBERS
-			EthernetPort ethernetPort = (EthernetPort) peek();
+			NetworkPort networkPort = (NetworkPort) peek();
 			long maxSpeed = parseMaxSpeed(strMaxSpeed);
-			ethernetPort.setMaxSpeed(maxSpeed);
+			networkPort.setMaxSpeed(maxSpeed);
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 
 	}
 
-	public static final short	DOWN	= 0;
-	public static final short	UP		= 1;
-
 	public static final String	strDOWN	= "down";
 	public static final String	strUP	= "up";
 
 	public void setEnabledStateParser(String enabledState) {
 		try {
-			short status = UP;
-			if (enabledState.equals(strDOWN))
-				status = DOWN;
-
-			EthernetPort ethernetPort = (EthernetPort) peek();
+			NetworkPort networkPort = (NetworkPort) peek();
+			if (enabledState.equals(strDOWN)) {
+				networkPort.setOperationalStatus(OperationalStatus.STOPPED);
+			} else {
+				networkPort.setOperationalStatus(OperationalStatus.OK);
+			}
 
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -157,16 +197,19 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 		String str = "" + '\n';
 		for (String key : mapElements.keySet()) {
-			EthernetPort port = (EthernetPort) mapElements.get(key);
-			str += "- EthernetPort: " + '\n';
-			str += port.getOtherPortType() + '\n';
+			NetworkPort port = (NetworkPort) mapElements.get(key);
+			str += "- NetworkPort: " + '\n';
+			str += port.getElementName() + '\n';
 			str += port.getPermanentAddress() + '\n';
 			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';
+			if (mapElements.get(key) instanceof LogicalTunnelPort) {
+				LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
+				str += "lt peer-unit:" + logicalTunnel.getPeer_unit();
+			}
 		}
 
 		return str;
 	}
-
 }

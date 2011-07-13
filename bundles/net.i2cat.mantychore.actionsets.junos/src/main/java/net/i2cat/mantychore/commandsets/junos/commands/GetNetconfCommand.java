@@ -12,6 +12,7 @@ public class GetNetconfCommand extends JunosCommand {
 		super(CommandNetconfConstants.GET, netconfXML);
 	}
 
+	@Override
 	public Query message() {
 		// setQuery(QueryFactory.newGetInterfaceInformation());
 		setQuery(QueryFactory.newGetConfig(source, netconfXML, attrFilter));

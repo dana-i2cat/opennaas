@@ -200,6 +200,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 * @return String current name property value
 	 * @exception Exception
 	 */
+	@Override
 	public String getName() {
 
 		return this.name;
@@ -214,6 +215,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 *            new name property value
 	 * @exception Exception
 	 */
+	@Override
 	public void setName(String name) {
 
 		this.name = name;

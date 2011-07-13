@@ -70,7 +70,7 @@ public class NetconfCommandTest {
 			String template = velocityEngine.mergeTemplate();
 			EditNetconfCommand editCommand = new EditNetconfCommand(template);
 
-			log.info(((Query) editCommand.message()).toXML());
+			log.info((editCommand.message()).toXML());
 
 		} catch (Exception e) {
 			Assert.fail(e.getLocalizedMessage());
@@ -86,7 +86,7 @@ public class NetconfCommandTest {
 		try {
 			String template = velocityEngine.mergeTemplate();
 			GetNetconfCommand getCommand = new GetNetconfCommand(template);
-			log.info(((Query) getCommand.message()).toXML());
+			log.info((getCommand.message()).toXML());
 
 		} catch (Exception e) {
 			Assert.fail(e.getLocalizedMessage());
@@ -97,7 +97,7 @@ public class NetconfCommandTest {
 	public void keepAliveCommandTest() {
 		try {
 			KeepAliveNetconfCommand keepAliveCommand = new KeepAliveNetconfCommand();
-			log.info(((Query) keepAliveCommand.message()).toXML());
+			log.info((keepAliveCommand.message()).toXML());
 
 		} catch (Exception e) {
 			Assert.fail(e.getLocalizedMessage());
@@ -109,7 +109,7 @@ public class NetconfCommandTest {
 	public void commitCommandTest() {
 		try {
 			CommitNetconfCommand commitCommand = new CommitNetconfCommand();
-			log.info(((Query) commitCommand.message()).toXML());
+			log.info((commitCommand.message()).toXML());
 
 		} catch (Exception e) {
 			Assert.fail(e.getLocalizedMessage());

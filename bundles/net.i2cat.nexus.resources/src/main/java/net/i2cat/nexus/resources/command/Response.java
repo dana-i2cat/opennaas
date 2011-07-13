@@ -7,16 +7,19 @@ public class Response {
 
 	public enum Status {
 		OK {
+			@Override
 			public String toString() {
 				return "OK";
 			}
 		},
 		ERROR {
+			@Override
 			public String toString() {
 				return "ERROR";
 			}
 		},
 		WAIT {
+			@Override
 			public String toString() {
 				return "WAIT";
 			}

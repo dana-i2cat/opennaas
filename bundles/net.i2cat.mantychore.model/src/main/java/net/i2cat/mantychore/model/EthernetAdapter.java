@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -57,7 +55,8 @@ public class EthernetAdapter extends NetworkAdapter implements Serializable
      * @return	String[]	current networkAddresses property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public String[] getNetworkAddresses(){
 
     return this.networkAddresses;
@@ -77,7 +76,8 @@ public class EthernetAdapter extends NetworkAdapter implements Serializable
      * @param	String[]	new networkAddresses property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public void setNetworkAddresses(String[] networkAddresses) {
 
     this.networkAddresses = networkAddresses;

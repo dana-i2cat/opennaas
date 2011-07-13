@@ -9,6 +9,7 @@ public class KeepAliveNetconfCommand extends JunosCommand {
 		super(CommandNetconfConstants.KEEPALIVE, null);
 	}
 
+	@Override
 	public Query message() {
 		setQuery(QueryFactory.newKeepAlive());
 		return query;

@@ -53,6 +53,7 @@ public class ConfirmAction extends JunosAction {
 		}
 	}
 
+	@Override
 	public void prepareMessage() throws ActionException {
 		// TODO implement the preparation of the message
 		// Check the template is there any

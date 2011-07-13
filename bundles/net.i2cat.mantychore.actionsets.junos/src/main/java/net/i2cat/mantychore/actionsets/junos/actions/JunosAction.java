@@ -65,6 +65,7 @@ public abstract class JunosAction extends Action {
 		return response;
 	}
 
+	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		ActionResponse actionResponse = new ActionResponse();
 		try {
@@ -116,6 +117,7 @@ public abstract class JunosAction extends Action {
 
 	public abstract void parseResponse(Object responseMessage, Object model) throws ActionException;
 
+	@Override
 	public abstract boolean checkParams(Object params) throws ActionException;
 
 	public abstract void prepareMessage() throws ActionException;

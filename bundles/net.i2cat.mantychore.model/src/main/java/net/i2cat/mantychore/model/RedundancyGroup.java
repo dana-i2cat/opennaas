@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -99,7 +97,8 @@ public class RedundancyGroup extends LogicalElement implements Serializable
      * @return	String	current name property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public String getName(){
 
     return this.name;
@@ -115,7 +114,8 @@ public class RedundancyGroup extends LogicalElement implements Serializable
      * @param	String	new name property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public void setName(String name) {
 
     this.name = name;

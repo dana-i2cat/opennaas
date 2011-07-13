@@ -7,7 +7,6 @@ package net.i2cat.mantychore.model;
 
 import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -132,7 +131,8 @@ public class PhysicalElement extends ManagedSystemElement implements
      * @return	String	current description property value
      * @exception	Exception	
      */
-    public String getDescription(){
+    @Override
+	public String getDescription(){
 
     return this.description;
     } // getDescription
@@ -146,7 +146,8 @@ public class PhysicalElement extends ManagedSystemElement implements
      * @param	String	new description property value
      * @exception	Exception	
      */
-    public void setDescription(String description) {
+    @Override
+	public void setDescription(String description) {
 
     this.description = description;
     } // setDescription
@@ -218,7 +219,8 @@ public class PhysicalElement extends ManagedSystemElement implements
      * @return	String	current elementName property value
      * @exception	Exception	
      */
-    public String getElementName(){
+    @Override
+	public String getElementName(){
 
     return this.elementName;
     } // getElementName
@@ -244,7 +246,8 @@ public class PhysicalElement extends ManagedSystemElement implements
      * @param	String	new elementName property value
      * @exception	Exception	
      */
-    public void setElementName(String elementName) {
+    @Override
+	public void setElementName(String elementName) {
 
     this.elementName = elementName;
     } // setElementName

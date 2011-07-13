@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -49,7 +47,8 @@ public class SNMPTrapTarget extends RemotePort implements Serializable {
      * @return	String	current accessInfo property value
      * @exception	Exception	
      */
-    public String getAccessInfo(){
+    @Override
+	public String getAccessInfo(){
 
     return this.accessInfo;
     } // getAccessInfo
@@ -63,7 +62,8 @@ public class SNMPTrapTarget extends RemotePort implements Serializable {
      * @param	String	new accessInfo property value
      * @exception	Exception	
      */
-    public void setAccessInfo(String accessInfo) {
+    @Override
+	public void setAccessInfo(String accessInfo) {
 
     this.accessInfo = accessInfo;
     } // setAccessInfo
@@ -85,7 +85,8 @@ public class SNMPTrapTarget extends RemotePort implements Serializable {
      * @return	String	current portInfo property value
      * @exception	Exception	
      */
-    public String getPortInfo(){
+    @Override
+	public String getPortInfo(){
 
     return this.portInfo;
     } // getPortInfo
@@ -100,7 +101,8 @@ public class SNMPTrapTarget extends RemotePort implements Serializable {
      * @param	String	new portInfo property value
      * @exception	Exception	
      */
-    public void setPortInfo(String portInfo) {
+    @Override
+	public void setPortInfo(String portInfo) {
 
     this.portInfo = portInfo;
     } // setPortInfo

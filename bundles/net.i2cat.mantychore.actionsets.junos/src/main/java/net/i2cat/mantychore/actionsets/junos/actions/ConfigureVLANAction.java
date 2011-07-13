@@ -68,6 +68,7 @@ public class ConfigureVLANAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
+		validateAction(actionResponse);
 	}
 
 	@Override

@@ -1,5 +1,0 @@
-<configuration>
-	<logical-systems operation=delete> 
-		<name>$param.Name</name>
-		</logical-systems>
-</configuration>

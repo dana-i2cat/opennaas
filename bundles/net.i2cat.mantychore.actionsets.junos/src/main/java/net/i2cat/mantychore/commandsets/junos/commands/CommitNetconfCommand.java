@@ -9,6 +9,7 @@ public class CommitNetconfCommand extends JunosCommand {
 		super(CommandNetconfConstants.COMMIT, null);
 	}
 
+	@Override
 	public Query message() {
 		setQuery(QueryFactory.newCommit());
 		return query;

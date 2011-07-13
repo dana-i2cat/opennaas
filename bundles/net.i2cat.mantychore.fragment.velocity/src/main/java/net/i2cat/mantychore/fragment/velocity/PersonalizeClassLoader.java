@@ -9,15 +9,18 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 
 public class PersonalizeClassLoader extends ResourceLoader {
 
+	@Override
 	public long getLastModified(Resource arg0) {
 		return 0;
 	}
 
+	@Override
 	public InputStream getResourceStream(String template)
 			throws ResourceNotFoundException {
 		return getClass().getResourceAsStream(template);
 	}
 
+	@Override
 	public void init(ExtendedProperties arg0) {
 		if (log.isTraceEnabled()) {
 			log.trace("PersonalizeClassLoader : initialization complete.");
@@ -25,6 +28,7 @@ public class PersonalizeClassLoader extends ResourceLoader {
 
 	}
 
+	@Override
 	public boolean isSourceModified(Resource arg0) {
 		return false;
 	}

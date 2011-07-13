@@ -59,7 +59,7 @@ public class ResourceManager implements IResourceManager {
 		if (serviceInstance != null && serviceProperties != null) {
 			logger.debug("Existing resource repository removed :" + serviceInstance.toString() + " " + serviceProperties.get("type"));
 			// Remove it from the map
-			resourceRepositories.remove((String) serviceProperties.get("type"));
+			resourceRepositories.remove(serviceProperties.get("type"));
 		}
 	}
 
@@ -271,6 +271,7 @@ public class ResourceManager implements IResourceManager {
 	 * 
 	 * @return the Name. If null didn't find a resource with this ID
 	 */
+	@Override
 	public String getNameFromResourceID(String ID) throws ResourceException {
 		String name = null;
 		IResourceRepository repo = null;

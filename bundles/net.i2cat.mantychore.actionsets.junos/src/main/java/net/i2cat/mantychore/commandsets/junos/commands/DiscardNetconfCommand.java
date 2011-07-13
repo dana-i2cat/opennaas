@@ -9,6 +9,7 @@ public class DiscardNetconfCommand extends JunosCommand {
 		super(CommandNetconfConstants.DISCARD, null);
 	}
 
+	@Override
 	public Query message() {
 		setQuery(QueryFactory.newDiscardChanges());
 		return query;

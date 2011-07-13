@@ -123,6 +123,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return String current description property value
 	 * @exception Exception
 	 */
+	@Override
 	public String getDescription() {
 
 		return this.description;
@@ -137,6 +138,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 *            new description property value
 	 * @exception Exception
 	 */
+	@Override
 	public void setDescription(String description) {
 
 		this.description = description;
@@ -157,6 +159,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return Date current timeOfLastStateChange property value
 	 * @exception Exception
 	 */
+	@Override
 	public Date getTimeOfLastStateChange() {
 
 		return this.timeOfLastStateChange;
@@ -173,6 +176,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 *            new timeOfLastStateChange property value
 	 * @exception Exception
 	 */
+	@Override
 	public void setTimeOfLastStateChange(Date timeOfLastStateChange) {
 
 		this.timeOfLastStateChange = timeOfLastStateChange;
@@ -193,6 +197,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return String current name property value
 	 * @exception Exception
 	 */
+	@Override
 	public String getName() {
 
 		return this.name;
@@ -209,6 +214,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 *            new name property value
 	 * @exception Exception
 	 */
+	@Override
 	public void setName(String name) {
 
 		this.name = name;

@@ -3,6 +3,7 @@ package net.i2cat.mantychore.actionsets.junos;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
@@ -22,6 +23,7 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.DELETESUBINTERFACE, DeleteSubInterfaceAction.class);
 		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETVLAN, ConfigureVLANAction.class);
+		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
 
 	}
 
@@ -32,6 +34,7 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.DELETESUBINTERFACE);
 		actionNames.add(ActionConstants.CREATESUBINTERFACE);
 		actionNames.add(ActionConstants.SETVLAN);
+		actionNames.add(ActionConstants.CONFIGURESTATUS);
 		return actionNames;
 	}
 }

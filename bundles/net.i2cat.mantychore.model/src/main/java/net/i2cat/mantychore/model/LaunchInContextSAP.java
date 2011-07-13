@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -56,7 +54,8 @@ public class LaunchInContextSAP extends RemoteServiceAccessPoint implements
      * @return	String	current accessInfo property value
      * @exception	Exception	
      */
-    public String getAccessInfo(){
+    @Override
+	public String getAccessInfo(){
 
     return this.accessInfo;
     } // getAccessInfo
@@ -74,7 +73,8 @@ public class LaunchInContextSAP extends RemoteServiceAccessPoint implements
      * @param	String	new accessInfo property value
      * @exception	Exception	
      */
-    public void setAccessInfo(String accessInfo) {
+    @Override
+	public void setAccessInfo(String accessInfo) {
 
     this.accessInfo = accessInfo;
     } // setAccessInfo

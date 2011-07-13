@@ -51,6 +51,7 @@ public class IsAliveAction extends JunosAction {
 		}
 	}
 
+	@Override
 	public void prepareMessage() throws ActionException {
 		// TODO implements if is necessary if not delete
 

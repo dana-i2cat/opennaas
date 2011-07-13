@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -160,7 +158,8 @@ public class SystemStatisticalInformation extends StatisticalInformation
      * @return	String	current name property value
      * @exception	Exception	
      */
-    public String getName(){
+    @Override
+	public String getName(){
 
     return this.name;
     } // getName
@@ -175,7 +174,8 @@ public class SystemStatisticalInformation extends StatisticalInformation
      * @param	String	new name property value
      * @exception	Exception	
      */
-    public void setName(String name) {
+    @Override
+	public void setName(String name) {
 
     this.name = name;
     } // setName

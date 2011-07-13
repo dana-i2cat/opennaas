@@ -20,6 +20,7 @@ public class QueueActionSet extends ActionSet {
 		this.putAction(QueueConstants.RESTORE, RestoreAction.class);
 	}
 
+	@Override
 	public List<String> getActionNames() {
 		List<String> actionNames = new ArrayList<String>();
 		actionNames.add(QueueConstants.CONFIRM);

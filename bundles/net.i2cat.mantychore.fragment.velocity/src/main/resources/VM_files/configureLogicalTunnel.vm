@@ -63,9 +63,6 @@
 							</inet>
 						</family>	
 					#end					
-					
-
-
 			</unit>
 		</interface>	
 

@@ -108,6 +108,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 * @return String current instanceID property value
 	 * @exception Exception
 	 */
+	@Override
 	public String getInstanceID() {
 
 		return this.instanceID;
@@ -131,6 +132,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 *            new instanceID property value
 	 * @exception Exception
 	 */
+	@Override
 	public void setInstanceID(String instanceID) {
 
 		this.instanceID = instanceID;

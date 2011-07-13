@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -72,7 +70,8 @@ public class BoundedPrioritySchedulingElement extends
      * @return	boolean	current workConserving property value
      * @exception	Exception	
      */
-    public boolean isWorkConserving(){
+    @Override
+	public boolean isWorkConserving(){
 
     return this.workConserving;
     } // getWorkConserving
@@ -93,7 +92,8 @@ public class BoundedPrioritySchedulingElement extends
      * @param	boolean	new workConserving property value
      * @exception	Exception	
      */
-    public void setWorkConserving(boolean workConserving) {
+    @Override
+	public void setWorkConserving(boolean workConserving) {
 
     this.workConserving = workConserving;
     } // setWorkConserving

@@ -69,6 +69,7 @@ public class ChassisCapability extends AbstractCapability {
 
 	}
 
+	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String protocol = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);

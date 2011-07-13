@@ -7,7 +7,6 @@ package net.i2cat.mantychore.model;
 
 import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -65,7 +64,8 @@ public class ConcreteJob extends Job implements Serializable {
      * @return	String	current instanceID property value
      * @exception	Exception	
      */
-    public String getInstanceID(){
+    @Override
+	public String getInstanceID(){
 
     return this.instanceID;
     } // getInstanceID
@@ -98,7 +98,8 @@ public class ConcreteJob extends Job implements Serializable {
      * @param	String	new instanceID property value
      * @exception	Exception	
      */
-    public void setInstanceID(String instanceID) {
+    @Override
+	public void setInstanceID(String instanceID) {
 
     this.instanceID = instanceID;
     } // setInstanceID
@@ -120,7 +121,8 @@ public class ConcreteJob extends Job implements Serializable {
      * @return	String	current name property value
      * @exception	Exception	
      */
-    public String getName(){
+    @Override
+	public String getName(){
 
     return this.name;
     } // getName
@@ -136,7 +138,8 @@ public class ConcreteJob extends Job implements Serializable {
      * @param	String	new name property value
      * @exception	Exception	
      */
-    public void setName(String name) {
+    @Override
+	public void setName(String name) {
 
     this.name = name;
     } // setName

@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -104,7 +102,8 @@ public class StorageAllocationSettingData extends
      * @return	long	current virtualQuantity property value
      * @exception	Exception	
      */
-    public long getVirtualQuantity(){
+    @Override
+	public long getVirtualQuantity(){
 
     return this.virtualQuantity;
     } // getVirtualQuantity
@@ -119,7 +118,8 @@ public class StorageAllocationSettingData extends
      * @param	long	new virtualQuantity property value
      * @exception	Exception	
      */
-    public void setVirtualQuantity(long virtualQuantity) {
+    @Override
+	public void setVirtualQuantity(long virtualQuantity) {
 
     this.virtualQuantity = virtualQuantity;
     } // setVirtualQuantity
@@ -154,7 +154,8 @@ public class StorageAllocationSettingData extends
      * value 
      * @exception	Exception	
      */
-    public String getVirtualQuantityUnits(){
+    @Override
+	public String getVirtualQuantityUnits(){
 
     return this.virtualQuantityUnits;
     } // getVirtualQuantityUnits
@@ -181,7 +182,8 @@ public class StorageAllocationSettingData extends
      * @param	String	new virtualQuantityUnits property value
      * @exception	Exception	
      */
-    public void setVirtualQuantityUnits(String virtualQuantityUnits) {
+    @Override
+	public void setVirtualQuantityUnits(String virtualQuantityUnits) {
 
     this.virtualQuantityUnits = virtualQuantityUnits;
     } // setVirtualQuantityUnits
@@ -300,7 +302,8 @@ public class StorageAllocationSettingData extends
      * @return	long	current reservation property value
      * @exception	Exception	
      */
-    public long getReservation(){
+    @Override
+	public long getReservation(){
 
     return this.reservation;
     } // getReservation
@@ -316,7 +319,8 @@ public class StorageAllocationSettingData extends
      * @param	long	new reservation property value
      * @exception	Exception	
      */
-    public void setReservation(long reservation) {
+    @Override
+	public void setReservation(long reservation) {
 
     this.reservation = reservation;
     } // setReservation
@@ -343,7 +347,8 @@ public class StorageAllocationSettingData extends
      * @return	long	current limit property value
      * @exception	Exception	
      */
-    public long getLimit(){
+    @Override
+	public long getLimit(){
 
     return this.limit;
     } // getLimit
@@ -364,7 +369,8 @@ public class StorageAllocationSettingData extends
      * @param	long	new limit property value
      * @exception	Exception	
      */
-    public void setLimit(long limit) {
+    @Override
+	public void setLimit(long limit) {
 
     this.limit = limit;
     } // setLimit

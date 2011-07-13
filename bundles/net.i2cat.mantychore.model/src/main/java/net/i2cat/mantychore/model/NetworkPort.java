@@ -8,42 +8,52 @@ package net.i2cat.mantychore.model;
 import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkPort as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * NetworkPortBean Interface. The CIM class NetworkPort is described as follows:
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the NetworkPortBean Interface. The CIM class NetworkPort is described as follows:
  * 
- * NetworkPort is the logical representation of network communications hardware
- * such as a physical connector and the setup or operation of the network chips,
- * at the lowest layers of a network stack.
+ * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the network
+ * chips, at the lowest layers of a network stack.
  */
 public class NetworkPort extends LogicalPort implements Serializable {
 
+	// TODO IT HAVE TO BE MODIFIED
+	public void merge(NetworkPort networkPort) {
+		if (this.getElementName() == null)
+			this.setElementName(networkPort.getElementName());
+		if (this.getPermanentAddress() == null)
+			this.setPermanentAddress(networkPort.getPermanentAddress());
+
+		if (this.getDescription() == null)
+			this.setDescription(networkPort.getDescription());
+
+		/* default params */
+		if (!this.isFullDuplex())
+			this.setFullDuplex(networkPort.isFullDuplex());
+		if (this.getMaxSpeed() == 0)
+			this.setMaxSpeed(networkPort.getMaxSpeed());
+
+	}
+
 	/**
-	 * This constructor creates a NetworkPortBeanImpl Class which implements the
-	 * NetworkPortBean Interface, and encapsulates the CIM class NetworkPort in
-	 * a Java Bean. The CIM class NetworkPort is described as follows:
+	 * This constructor creates a NetworkPortBeanImpl Class which implements the NetworkPortBean Interface, and encapsulates the CIM class NetworkPort
+	 * in a Java Bean. The CIM class NetworkPort is described as follows:
 	 * 
-	 * NetworkPort is the logical representation of network communications
-	 * hardware such as a physical connector and the setup or operation of the
+	 * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the
 	 * network chips, at the lowest layers of a network stack.
 	 */
 	public NetworkPort() {
 	};
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property speed.
+	 * The following constants are defined for use with the ValueMap/Values qualified property speed.
 	 */
 	private long	speed;
 
 	/**
-	 * This method returns the NetworkPort.speed property value. This property
-	 * is described as follows:
+	 * This method returns the NetworkPort.speed property value. This property is described as follows:
 	 * 
-	 * The current bandwidth of the Port in Bits per Second. For ports that vary
-	 * in bandwidth or for those where no accurate estimation can be made, this
-	 * property should contain the nominal bandwidth.
+	 * The current bandwidth of the Port in Bits per Second. For ports that vary in bandwidth or for those where no accurate estimation can be made,
+	 * this property should contain the nominal bandwidth.
 	 * 
 	 * @return long current speed property value
 	 * @exception Exception
@@ -55,12 +65,10 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getSpeed
 
 	/**
-	 * This method sets the NetworkPort.speed property value. This property is
-	 * described as follows:
+	 * This method sets the NetworkPort.speed property value. This property is described as follows:
 	 * 
-	 * The current bandwidth of the Port in Bits per Second. For ports that vary
-	 * in bandwidth or for those where no accurate estimation can be made, this
-	 * property should contain the nominal bandwidth.
+	 * The current bandwidth of the Port in Bits per Second. For ports that vary in bandwidth or for those where no accurate estimation can be made,
+	 * this property should contain the nominal bandwidth.
 	 * 
 	 * @param long new speed property value
 	 * @exception Exception
@@ -72,19 +80,16 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setSpeed
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property otherNetworkPortType.
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherNetworkPortType.
 	 */
 	@Deprecated
 	private String	otherNetworkPortType;
 
 	/**
-	 * This method returns the NetworkPort.otherNetworkPortType property value.
-	 * This property is described as follows:
+	 * This method returns the NetworkPort.otherNetworkPortType property value. This property is described as follows:
 	 * 
-	 * Note: The use of this property is deprecated in lieu of
-	 * CIM_LogicalPort.PortType. Deprecated description: The type of module,
-	 * when PortType is set to 1 ("Other".)
+	 * Note: The use of this property is deprecated in lieu of CIM_LogicalPort.PortType. Deprecated description: The type of module, when PortType is
+	 * set to 1 ("Other".)
 	 * 
 	 * @return String current otherNetworkPortType property value
 	 * @exception Exception
@@ -96,12 +101,10 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getOtherNetworkPortType
 
 	/**
-	 * This method sets the NetworkPort.otherNetworkPortType property value.
-	 * This property is described as follows:
+	 * This method sets the NetworkPort.otherNetworkPortType property value. This property is described as follows:
 	 * 
-	 * Note: The use of this property is deprecated in lieu of
-	 * CIM_LogicalPort.PortType. Deprecated description: The type of module,
-	 * when PortType is set to 1 ("Other".)
+	 * Note: The use of this property is deprecated in lieu of CIM_LogicalPort.PortType. Deprecated description: The type of module, when PortType is
+	 * set to 1 ("Other".)
 	 * 
 	 * @param String
 	 *            new otherNetworkPortType property value
@@ -114,17 +117,14 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setOtherNetworkPortType
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property portNumber.
+	 * The following constants are defined for use with the ValueMap/Values qualified property portNumber.
 	 */
 	private int	portNumber;
 
 	/**
-	 * This method returns the NetworkPort.portNumber property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.portNumber property value. This property is described as follows:
 	 * 
-	 * NetworkPorts are often numbered relative to either a logical module or a
-	 * network element.
+	 * NetworkPorts are often numbered relative to either a logical module or a network element.
 	 * 
 	 * @return int current portNumber property value
 	 * @exception Exception
@@ -135,11 +135,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getPortNumber
 
 	/**
-	 * This method sets the NetworkPort.portNumber property value. This property
-	 * is described as follows:
+	 * This method sets the NetworkPort.portNumber property value. This property is described as follows:
 	 * 
-	 * NetworkPorts are often numbered relative to either a logical module or a
-	 * network element.
+	 * NetworkPorts are often numbered relative to either a logical module or a network element.
 	 * 
 	 * @param int new portNumber property value
 	 * @exception Exception
@@ -150,8 +148,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setPortNumber
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property LinkTechnology.
+	 * The following constants are defined for use with the ValueMap/Values qualified property LinkTechnology.
 	 */
 
 	public enum LinkTechnology {
@@ -161,11 +158,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	private LinkTechnology	linkTechnology;
 
 	/**
-	 * This method returns the NetworkPort.linkTechnology property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.linkTechnology property value. This property is described as follows:
 	 * 
-	 * An enumeration of the types of links. When set to 1 ("Other"), the
-	 * related property OtherLinkTechnology contains a string description of the
+	 * An enumeration of the types of links. When set to 1 ("Other"), the related property OtherLinkTechnology contains a string description of the
 	 * type of link.
 	 * 
 	 * @return int current linkTechnology property value
@@ -177,11 +172,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getLinkTechnology
 
 	/**
-	 * This method sets the NetworkPort.linkTechnology property value. This
-	 * property is described as follows:
+	 * This method sets the NetworkPort.linkTechnology property value. This property is described as follows:
 	 * 
-	 * An enumeration of the types of links. When set to 1 ("Other"), the
-	 * related property OtherLinkTechnology contains a string description of the
+	 * An enumeration of the types of links. When set to 1 ("Other"), the related property OtherLinkTechnology contains a string description of the
 	 * type of link.
 	 * 
 	 * @param int new linkTechnology property value
@@ -192,17 +185,14 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setLinkTechnology
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property otherLinkTechnology.
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherLinkTechnology.
 	 */
 	private String	otherLinkTechnology;
 
 	/**
-	 * This method returns the NetworkPort.otherLinkTechnology property value.
-	 * This property is described as follows:
+	 * This method returns the NetworkPort.otherLinkTechnology property value. This property is described as follows:
 	 * 
-	 * A string value that describes LinkTechnology when it is set to 1,
-	 * "Other".
+	 * A string value that describes LinkTechnology when it is set to 1, "Other".
 	 * 
 	 * @return String current otherLinkTechnology property value
 	 * @exception Exception
@@ -213,11 +203,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getOtherLinkTechnology
 
 	/**
-	 * This method sets the NetworkPort.otherLinkTechnology property value. This
-	 * property is described as follows:
+	 * This method sets the NetworkPort.otherLinkTechnology property value. This property is described as follows:
 	 * 
-	 * A string value that describes LinkTechnology when it is set to 1,
-	 * "Other".
+	 * A string value that describes LinkTechnology when it is set to 1, "Other".
 	 * 
 	 * @param String
 	 *            new otherLinkTechnology property value
@@ -229,19 +217,15 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setOtherLinkTechnology
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property permanentAddress.
+	 * The following constants are defined for use with the ValueMap/Values qualified property permanentAddress.
 	 */
 	private String	permanentAddress;
 
 	/**
-	 * This method returns the NetworkPort.permanentAddress property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.permanentAddress property value. This property is described as follows:
 	 * 
-	 * PermanentAddress defines the network address that is hardcoded into a
-	 * port. This 'hardcoded' address can be changed using a firmware upgrade or
-	 * a software configuration. When this change is made, the field should be
-	 * updated at the same time. PermanentAddress should be left blank if no
+	 * PermanentAddress defines the network address that is hardcoded into a port. This 'hardcoded' address can be changed using a firmware upgrade or
+	 * a software configuration. When this change is made, the field should be updated at the same time. PermanentAddress should be left blank if no
 	 * 'hardcoded' address exists for the NetworkAdapter.
 	 * 
 	 * @return String current permanentAddress property value
@@ -253,13 +237,10 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getPermanentAddress
 
 	/**
-	 * This method sets the NetworkPort.permanentAddress property value. This
-	 * property is described as follows:
+	 * This method sets the NetworkPort.permanentAddress property value. This property is described as follows:
 	 * 
-	 * PermanentAddress defines the network address that is hardcoded into a
-	 * port. This 'hardcoded' address can be changed using a firmware upgrade or
-	 * a software configuration. When this change is made, the field should be
-	 * updated at the same time. PermanentAddress should be left blank if no
+	 * PermanentAddress defines the network address that is hardcoded into a port. This 'hardcoded' address can be changed using a firmware upgrade or
+	 * a software configuration. When this change is made, the field should be updated at the same time. PermanentAddress should be left blank if no
 	 * 'hardcoded' address exists for the NetworkAdapter.
 	 * 
 	 * @param String
@@ -272,14 +253,12 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setPermanentAddress
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property networkAddresses.
+	 * The following constants are defined for use with the ValueMap/Values qualified property networkAddresses.
 	 */
 	private String[]	networkAddresses;
 
 	/**
-	 * This method returns the NetworkPort.networkAddresses property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.networkAddresses property value. This property is described as follows:
 	 * 
 	 * An array of strings that indicates the network addresses for the port.
 	 * 
@@ -292,8 +271,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getNetworkAddresses
 
 	/**
-	 * This method sets the NetworkPort.networkAddresses property value. This
-	 * property is described as follows:
+	 * This method sets the NetworkPort.networkAddresses property value. This property is described as follows:
 	 * 
 	 * An array of strings that indicates the network addresses for the port.
 	 * 
@@ -307,14 +285,12 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setNetworkAddresses
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property fullDuplex.
+	 * The following constants are defined for use with the ValueMap/Values qualified property fullDuplex.
 	 */
 	private boolean	fullDuplex;
 
 	/**
-	 * This method returns the NetworkPort.fullDuplex property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.fullDuplex property value. This property is described as follows:
 	 * 
 	 * Boolean that indicates that the port is operating in full duplex mode.
 	 * 
@@ -327,8 +303,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getFullDuplex
 
 	/**
-	 * This method sets the NetworkPort.fullDuplex property value. This property
-	 * is described as follows:
+	 * This method sets the NetworkPort.fullDuplex property value. This property is described as follows:
 	 * 
 	 * Boolean that indicates that the port is operating in full duplex mode.
 	 * 
@@ -341,18 +316,15 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setFullDuplex
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property autoSense.
+	 * The following constants are defined for use with the ValueMap/Values qualified property autoSense.
 	 */
 	private boolean	autoSense;
 
 	/**
-	 * This method returns the NetworkPort.autoSense property value. This
-	 * property is described as follows:
+	 * This method returns the NetworkPort.autoSense property value. This property is described as follows:
 	 * 
-	 * A Boolean that indicates whether the NetworkPort is capable of
-	 * automatically determining the speed or other communications
-	 * characteristics of the attached network media.
+	 * A Boolean that indicates whether the NetworkPort is capable of automatically determining the speed or other communications characteristics of
+	 * the attached network media.
 	 * 
 	 * @return boolean current autoSense property value
 	 * @exception Exception
@@ -363,12 +335,10 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getAutoSense
 
 	/**
-	 * This method sets the NetworkPort.autoSense property value. This property
-	 * is described as follows:
+	 * This method sets the NetworkPort.autoSense property value. This property is described as follows:
 	 * 
-	 * A Boolean that indicates whether the NetworkPort is capable of
-	 * automatically determining the speed or other communications
-	 * characteristics of the attached network media.
+	 * A Boolean that indicates whether the NetworkPort is capable of automatically determining the speed or other communications characteristics of
+	 * the attached network media.
 	 * 
 	 * @param boolean new autoSense property value
 	 * @exception Exception
@@ -379,14 +349,12 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setAutoSense
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property supportedMaximumTransmissionUnit.
+	 * The following constants are defined for use with the ValueMap/Values qualified property supportedMaximumTransmissionUnit.
 	 */
 	private long	supportedMaximumTransmissionUnit;
 
 	/**
-	 * This method returns the NetworkPort.supportedMaximumTransmissionUnit
-	 * property value. This property is described as follows:
+	 * This method returns the NetworkPort.supportedMaximumTransmissionUnit property value. This property is described as follows:
 	 * 
 	 * The maximum transmission unit (MTU) that can be supported.
 	 * 
@@ -399,8 +367,7 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getSupportedMaximumTransmissionUnit
 
 	/**
-	 * This method sets the NetworkPort.supportedMaximumTransmissionUnit
-	 * property value. This property is described as follows:
+	 * This method sets the NetworkPort.supportedMaximumTransmissionUnit property value. This property is described as follows:
 	 * 
 	 * The maximum transmission unit (MTU) that can be supported.
 	 * 
@@ -414,17 +381,14 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // setSupportedMaximumTransmissionUnit
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values
-	 * qualified property activeMaximumTransmissionUnit.
+	 * The following constants are defined for use with the ValueMap/Values qualified property activeMaximumTransmissionUnit.
 	 */
 	private long	activeMaximumTransmissionUnit;
 
 	/**
-	 * This method returns the NetworkPort.activeMaximumTransmissionUnit
-	 * property value. This property is described as follows:
+	 * This method returns the NetworkPort.activeMaximumTransmissionUnit property value. This property is described as follows:
 	 * 
-	 * The active or negotiated maximum transmission unit (MTU) that can be
-	 * supported.
+	 * The active or negotiated maximum transmission unit (MTU) that can be supported.
 	 * 
 	 * @return long current activeMaximumTransmissionUnit property value
 	 * @exception Exception
@@ -435,11 +399,9 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	} // getActiveMaximumTransmissionUnit
 
 	/**
-	 * This method sets the NetworkPort.activeMaximumTransmissionUnit property
-	 * value. This property is described as follows:
+	 * This method sets the NetworkPort.activeMaximumTransmissionUnit property value. This property is described as follows:
 	 * 
-	 * The active or negotiated maximum transmission unit (MTU) that can be
-	 * supported.
+	 * The active or negotiated maximum transmission unit (MTU) that can be supported.
 	 * 
 	 * @param long new activeMaximumTransmissionUnit property value
 	 * @exception Exception

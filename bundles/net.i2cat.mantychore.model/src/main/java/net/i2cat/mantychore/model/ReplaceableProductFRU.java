@@ -5,10 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
-import java.lang.Exception;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined 

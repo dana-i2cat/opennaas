@@ -2,8 +2,6 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.ProtocolSessionHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -128,7 +126,7 @@ public class QueueTest extends AbstractIntegrationTest {
 		log.info("INFO: Before test, getting queue...");
 		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 20000);
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
+		queueManagerService = getOsgiService(IQueueManagerService.class,
 				"(capability=queue)(capability.name=" + resourceID + ")", 20000);
 
 	}

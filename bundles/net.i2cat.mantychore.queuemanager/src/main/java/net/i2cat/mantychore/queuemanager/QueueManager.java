@@ -75,7 +75,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 		IProtocolSessionManager protocolSessionManager = null;
 		try {
-			IProtocolManager protocolManager = (IProtocolManager) Activator.getProtocolManagerService();
+			IProtocolManager protocolManager = Activator.getProtocolManagerService();
 			protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
 
 			/* Always i have to be one response */
@@ -175,6 +175,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 	}
 
+	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String protocol = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);

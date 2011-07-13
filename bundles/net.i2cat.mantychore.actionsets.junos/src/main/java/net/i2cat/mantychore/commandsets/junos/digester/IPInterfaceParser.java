@@ -1,9 +1,13 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
@@ -19,11 +23,13 @@ import org.apache.commons.digester.RuleSetBase;
  * 
  */
 public class IPInterfaceParser extends DigesterEngine {
-	String			location		= "";
+	String									location		= "";
 
-	VLANEndpoint	vlanEndpoint	= null;
-	boolean			flagLT			= false;
-	long			peerUnit		= 0;
+	VLANEndpoint							vlanEndpoint	= null;
+	boolean									flagLT			= false;
+	long									peerUnit		= 0;
+
+	public Map<String, OperationalStatus>	mapStatus		= new HashMap<String, OperationalStatus>();
 
 	/** vlan info **/
 
@@ -45,8 +51,10 @@ public class IPInterfaceParser extends DigesterEngine {
 
 			/* IP Configuration */
 			addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
-			addSetNext("*/interfaces/interface/unit", "addInterface");
+			addSetNext("*/interfaces/interface/unit", "addInterface"); /* call our method addInterface!! */
 			addMyRule("*/interfaces/interface/unit/name", "setName", 0);
+			/* status */
+			addMyRule("*/interfaces/interface/disable", "setStatus", 0);
 
 			// addObjectCreate("*/interfaces/interface/unit/peer-unit", LogicalTunnelPort.class);
 			addMyRule("*/interfaces/interface/unit/peer-unit", "setPeerUnit", 0);
@@ -61,6 +69,11 @@ public class IPInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
 		}
+	}
+
+	public void setStatus(String stat) {
+		mapStatus.put(location, OperationalStatus.STOPPED);
+
 	}
 
 	public IPInterfaceParser() {
@@ -84,6 +97,8 @@ public class IPInterfaceParser extends DigesterEngine {
 			lt.setElementName(ethernetPort.getElementName());
 			lt.setPortNumber(ethernetPort.getPortNumber());
 			lt.setPeer_unit(peerUnit);
+			/* set status */
+			lt.setOperationalStatus(ethernetPort.getOperationalStatus());
 			for (ProtocolEndpoint pE : ethernetPort.getProtocolEndpoint()) {
 				lt.addProtocolEndpoint(pE);
 			}
@@ -110,6 +125,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			}
 			mapElements.put(location, ethernetPort);
 		}
+
 	}
 
 	/* Configure name */
@@ -164,22 +180,62 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	}
 
+	public HashMap<String, Object> getMapElements() {
+		HashMap<String, Object> mapElements = super.getMapElements();
+
+		/* method to check */
+		checkStatus(mapElements);
+
+		return mapElements;
+	}
+
+	public void checkStatus(HashMap<String, Object> mapElements) {
+		for (String key : mapElements.keySet()) {
+			Object element = mapElements.get(key);
+
+			if (element instanceof NetworkPort) {
+				NetworkPort networkPort = (NetworkPort) element;
+				String name = networkPort.getElementName(); // always it have one element
+
+				OperationalStatus status = OperationalStatus.OK;
+				if (mapStatus.containsKey(name))
+					status = mapStatus.get(name);
+
+				networkPort.setOperationalStatus(status);
+
+			}
+		}
+
+	}
+
 	public String toPrint() {
 
+		HashMap<String, Object> mapElements = this.getMapElements();
+
 		String str = "" + '\n';
-		for (String key : this.mapElements.keySet()) {
+
+		for (String key : mapElements.keySet()) {
 			NetworkPort port = (NetworkPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';
-			str += port.getOtherPortType() + '\n';
+			str += port.getElementName() + '\n';
 			str += port.getPermanentAddress() + '\n';
-			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';
+			// str += port.getOperationalStatus().toString() + '\n';
+			if (port instanceof LogicalTunnelPort) {
+				str += ((LogicalTunnelPort) port).getPeer_unit() + '\n';
+			}
+
 			for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
-				IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
-						protocolEndpoint;
-				str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
-				str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+				if (protocolEndpoint instanceof IPProtocolEndpoint) {
+					IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+							protocolEndpoint;
+					str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
+					str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+				} else if (protocolEndpoint instanceof VLANEndpoint) {
+					VLANEndpoint vlanEndpoint = (VLANEndpoint) protocolEndpoint;
+					str += "vlan: " + vlanEndpoint.getVlanID() + '\n';
+				}
 			}
 		}
 

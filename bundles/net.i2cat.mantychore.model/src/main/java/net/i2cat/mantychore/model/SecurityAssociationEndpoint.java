@@ -7,7 +7,6 @@ package net.i2cat.mantychore.model;
 
 import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -55,7 +54,8 @@ public class SecurityAssociationEndpoint extends ProtocolEndpoint implements
      * @return	Date	current installDate property value
      * @exception	Exception	
      */
-    public Date getInstallDate(){
+    @Override
+	public Date getInstallDate(){
 
     return this.installDate;
     } // getInstallDate
@@ -69,7 +69,8 @@ public class SecurityAssociationEndpoint extends ProtocolEndpoint implements
      * @param	Date	new installDate property value
      * @exception	Exception	
      */
-    public void setInstallDate(Date installDate) {
+    @Override
+	public void setInstallDate(Date installDate) {
 
     this.installDate = installDate;
     } // setInstallDate

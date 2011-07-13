@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -155,7 +153,8 @@ public class SystemSetting extends Setting implements Serializable {
      * @return	String	current settingID property value
      * @exception	Exception	
      */
-    public String getSettingID(){
+    @Override
+	public String getSettingID(){
 
     return this.settingID;
     } // getSettingID
@@ -169,7 +168,8 @@ public class SystemSetting extends Setting implements Serializable {
      * @param	String	new settingID property value
      * @exception	Exception	
      */
-    public void setSettingID(String settingID) {
+    @Override
+	public void setSettingID(String settingID) {
 
     this.settingID = settingID;
     } // setSettingID

@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -66,7 +64,8 @@ public class BufferPool extends CollectionOfMSEs implements Serializable {
      * @return	String	current collectionID property value
      * @exception	Exception	
      */
-    public String getCollectionID(){
+    @Override
+	public String getCollectionID(){
 
     return this.collectionID;
     } // getCollectionID
@@ -82,7 +81,8 @@ public class BufferPool extends CollectionOfMSEs implements Serializable {
      * @param	String	new collectionID property value
      * @exception	Exception	
      */
-    public void setCollectionID(String collectionID) {
+    @Override
+	public void setCollectionID(String collectionID) {
 
     this.collectionID = collectionID;
     } // setCollectionID

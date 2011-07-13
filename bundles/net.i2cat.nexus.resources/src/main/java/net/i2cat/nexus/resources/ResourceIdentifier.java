@@ -4,13 +4,10 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
-import java.util.Random;
 import java.util.UUID;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -52,15 +49,18 @@ public class ResourceIdentifier implements IResourceIdentifier {
 		this.id = id;
 	}
 
+	@Override
 	@XmlTransient
 	public String getId() {
 		return id;
 	}
 
+	@Override
 	public String getType() {
 		return type;
 	}
 
+	@Override
 	@XmlTransient
 	public URI getURI() {
 		try {
@@ -93,6 +93,7 @@ public class ResourceIdentifier implements IResourceIdentifier {
 		return ((ResourceIdentifier) obj).getId().equals(this.id);
 	}
 
+	@Override
 	public String toString() {
 		return type + "/" + id.toString();
 	}

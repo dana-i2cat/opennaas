@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -111,7 +109,8 @@ public class Profile extends Collection implements Serializable {
      * @return	String	current instanceID property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public String getInstanceID(){
 
     return this.instanceID;
@@ -146,7 +145,8 @@ public class Profile extends Collection implements Serializable {
      * @param	String	new instanceID property value
      * @exception	Exception	
      */
-    @Deprecated
+    @Override
+	@Deprecated
     public void setInstanceID(String instanceID) {
 
     this.instanceID = instanceID;

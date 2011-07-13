@@ -16,14 +16,9 @@ import java.io.Serializable;
 public class EthernetPort extends NetworkPort implements Serializable {
 
 	public void merge(EthernetPort hashEthernetPort) {
-		// FIXME FILL WITH ETHERNETPORT ELEMENTS
-		if (this.getOtherPortType() == null) {
-			this.setOtherPortType(hashEthernetPort.getOtherPortType());
-		}
+		super.merge(hashEthernetPort);
 
-		if (this.getMaxSpeed() != 0) {
-			this.setMaxSpeed(hashEthernetPort.getMaxSpeed());
-		}
+		/* add for particular params */
 
 	}
 
@@ -51,6 +46,7 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	 * @return String[] current networkAddresses property value
 	 * @exception Exception
 	 */
+	@Override
 	public String[] getNetworkAddresses() {
 
 		return this.networkAddresses;

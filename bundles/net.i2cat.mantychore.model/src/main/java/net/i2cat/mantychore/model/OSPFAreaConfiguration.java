@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -110,7 +108,8 @@ public class OSPFAreaConfiguration extends LogicalElement implements
      * @return	String	current instanceID property value
      * @exception	Exception	
      */
-    public String getInstanceID(){
+    @Override
+	public String getInstanceID(){
 
     return this.instanceID;
     } // getInstanceID
@@ -140,7 +139,8 @@ public class OSPFAreaConfiguration extends LogicalElement implements
      * @param	String	new instanceID property value
      * @exception	Exception	
      */
-    public void setInstanceID(String instanceID) {
+    @Override
+	public void setInstanceID(String instanceID) {
 
     this.instanceID = instanceID;
     } // setInstanceID

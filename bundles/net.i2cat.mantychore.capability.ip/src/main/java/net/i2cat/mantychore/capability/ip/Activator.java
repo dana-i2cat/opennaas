@@ -25,7 +25,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext context) throws Exception {
-		this.context = context;
+		Activator.context = context;
 
 	}
 

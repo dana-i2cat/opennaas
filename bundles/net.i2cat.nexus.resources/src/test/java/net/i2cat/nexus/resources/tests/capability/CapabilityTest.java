@@ -47,7 +47,7 @@ public class CapabilityTest {
 		Resource resource = new Resource();
 		// resource.setProfile(profile);
 
-		capability.setResource((IResource) resource);
+		capability.setResource(resource);
 
 		/* init actionSet */
 		ActionSet actionSetCapability = new ActionSet();
@@ -79,7 +79,7 @@ public class CapabilityTest {
 	public void testInitialize() throws ResourceException {
 		capability.initialize();
 		Assert.assertEquals(ILifecycle.State.INITIALIZED, capability.getState());
-		MockCapability mockCapability = (MockCapability) capability;
+		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "initialize");
 	}
 
@@ -87,7 +87,7 @@ public class CapabilityTest {
 	public void testActivate() throws ResourceException {
 		capability.activate();
 		Assert.assertEquals(ILifecycle.State.ACTIVE, capability.getState());
-		MockCapability mockCapability = (MockCapability) capability;
+		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "activate");
 	}
 
@@ -124,7 +124,7 @@ public class CapabilityTest {
 	public void testDeactivate() throws ResourceException {
 		capability.deactivate();
 		Assert.assertEquals(ILifecycle.State.INACTIVE, capability.getState());
-		MockCapability mockCapability = (MockCapability) capability;
+		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "deactivate");
 	}
 
@@ -132,7 +132,7 @@ public class CapabilityTest {
 	public void testShutdown() throws ResourceException {
 		capability.shutdown();
 		Assert.assertEquals(ILifecycle.State.SHUTDOWN, capability.getState());
-		MockCapability mockCapability = (MockCapability) capability;
+		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "shutdown");
 	}
 }

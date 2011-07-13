@@ -1,6 +1,0 @@
-<configuration>
-	<logical-systems>
-		<name>param.Name</name>
-		#parse("createSubinterface.vm")
-	</logical-systems>
-</configuration>

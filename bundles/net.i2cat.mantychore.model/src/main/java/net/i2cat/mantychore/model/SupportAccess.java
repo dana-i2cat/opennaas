@@ -5,9 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.util.*;
 import java.io.*;
-import javax.persistence.*;
 import java.lang.Exception;
 
 /**
@@ -86,7 +84,8 @@ public class SupportAccess extends ManagedElement implements Serializable {
      * @return	String	current description property value
      * @exception	Exception	
      */
-    public String getDescription(){
+    @Override
+	public String getDescription(){
 
     return this.description;
     } // getDescription
@@ -100,7 +99,8 @@ public class SupportAccess extends ManagedElement implements Serializable {
      * @param	String	new description property value
      * @exception	Exception	
      */
-    public void setDescription(String description) {
+    @Override
+	public void setDescription(String description) {
 
     this.description = description;
     } // setDescription

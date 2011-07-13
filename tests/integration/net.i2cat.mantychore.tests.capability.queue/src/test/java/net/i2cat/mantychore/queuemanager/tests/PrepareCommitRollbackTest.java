@@ -143,7 +143,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		log.info("INFO: Before test, getting queue...");
 		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 50000);
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
+		queueManagerService = getOsgiService(IQueueManagerService.class,
 				"(capability=queue)(capability.name=" + resourceID + ")", 50000);
 
 	}

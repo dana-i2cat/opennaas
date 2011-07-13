@@ -144,18 +144,44 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * The following constants are defined for use with the ValueMap/Values qualified property OperationalStatus.
 	 */
 
+	// TODO ADDED MANUALLY IN THE MODEL METHODS TOSTRING
 	public enum OperationalStatus {
-		UNKNOWN,
-		OTHER,
-		OK,
+		UNKNOWN {
+			@Override
+			public String toString() {
+				return "UNKNOWN";
+			}
+		},
+		OTHER {
+			@Override
+			public String toString() {
+				return "OTHER";
+			}
+		},
+		OK {
+			@Override
+			public String toString() {
+				return "OK";
+			}
+		},
 		DEGRADED,
 		STRESSED,
 		PREDICTIVE_FAILURE,
-		ERROR,
+		ERROR {
+			@Override
+			public String toString() {
+				return "ERROR";
+			}
+		},
 		NON_RECOVERABLE_ERROR,
 		STARTING,
 		STOPPING,
-		STOPPED,
+		STOPPED {
+			@Override
+			public String toString() {
+				return "STOPPED";
+			}
+		},
 		IN_SERVICE,
 		NO_CONTACT,
 		LOST_COMMUNICATION,

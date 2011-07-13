@@ -57,7 +57,7 @@ public class InformationValidatorTest {
 
 	private void printFieldErrors(List<FieldError> fieldErrors) {
 		for (int j = 0; j < fieldErrors.size(); j++) {
-			FieldError fieldError = (FieldError) fieldErrors.get(j);
+			FieldError fieldError = fieldErrors.get(j);
 			logger.debug("Error " + j);
 			logger.debug("  Effected Field " + fieldError.getField());
 			logger.debug("  Rejected Value: " + fieldError.getRejectedValue());
