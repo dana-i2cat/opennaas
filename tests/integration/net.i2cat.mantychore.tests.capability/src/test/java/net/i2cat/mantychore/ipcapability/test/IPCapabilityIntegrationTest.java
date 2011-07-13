@@ -12,7 +12,6 @@ import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.ip.IPCapability;
-import net.i2cat.mantychore.chassiscapability.test.MockResource;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
@@ -28,6 +27,7 @@ import net.i2cat.nexus.resources.command.Response.Status;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.helpers.MockResource;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.queue.QueueConstants;

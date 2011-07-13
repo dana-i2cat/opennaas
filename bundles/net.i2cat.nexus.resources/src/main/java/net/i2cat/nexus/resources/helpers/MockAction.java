@@ -13,6 +13,11 @@ public class MockAction extends Action {
 	private ActionResponse	actionResponse	= new ActionResponse();
 
 	@Override
+	public void setActionID(String actionID) {
+		this.actionID = actionID;
+	}
+
+	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		log.info("----> Executing action: MOCK ACTION");
 		actionResponse.setActionID(actionID);

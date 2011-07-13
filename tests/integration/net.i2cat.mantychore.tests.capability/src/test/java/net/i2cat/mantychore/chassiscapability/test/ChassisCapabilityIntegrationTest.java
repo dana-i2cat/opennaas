@@ -28,6 +28,7 @@ import net.i2cat.nexus.resources.command.Response.Status;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.helpers.MockResource;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.queue.QueueConstants;

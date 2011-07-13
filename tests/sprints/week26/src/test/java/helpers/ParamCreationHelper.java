@@ -14,11 +14,6 @@ import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 public class ParamCreationHelper {
 
-	
-
-
-
-	
 
 	/*
 	 * test of an interface ethernet without vlan encapsulation

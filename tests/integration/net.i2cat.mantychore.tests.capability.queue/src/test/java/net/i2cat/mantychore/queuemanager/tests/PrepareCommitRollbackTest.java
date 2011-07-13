@@ -34,6 +34,8 @@ import net.i2cat.nexus.resources.capability.ICapabilityFactory;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.helpers.MockAction;
+import net.i2cat.nexus.resources.helpers.MockResource;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
@@ -82,8 +84,8 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	 * Configure the protocol to connect
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
-		 String uri = System.getProperty("protocol.uri");
-		
+		String uri = System.getProperty("protocol.uri");
+
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
@@ -163,8 +165,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 			Assert.fail(e1.getMessage());
 		}
 		// Try to do a configuration with the router is corrupted
-		 String uri = System.getProperty("protocol.uri");
-		
+		String uri = System.getProperty("protocol.uri");
 
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
@@ -236,8 +237,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 			Assert.fail(e1.getMessage());
 		}
 
-		 String uri = System.getProperty("protocol.uri");
-		
+		String uri = System.getProperty("protocol.uri");
 
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";

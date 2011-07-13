@@ -14,8 +14,9 @@ import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.MockProfile;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.profile.ProfileDescriptor;
@@ -134,17 +135,16 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 		initBundles();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource2");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		List<String> capabilities = new ArrayList<String>();
 
-		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newIPCapabilityDescriptor();
-		CapabilityDescriptor queueDescriptor = RepositoryHelper.newQueueCapabilityDescriptor();
-		capabilityDescriptors.add(chassisDescriptor);
-		capabilityDescriptors.add(queueDescriptor);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+		capabilities.add("ipv4");
+		capabilities.add("queue");
 
-		IProfile profile1 = createProfile("profile1", "setInterface", String.valueOf(chassisDescriptor.getId()), "router");
-		IProfile profile2 = createProfile("profile2", "setInterface", String.valueOf(chassisDescriptor.getId()), "router");
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource2", "router", capabilities);
+		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
+
+		IProfile profile1 = createProfile("profile1", "setInterface", "ipv4", "router");
+		IProfile profile2 = createProfile("profile2", "setInterface", "ipv4", "router");
 
 		try {
 
@@ -207,19 +207,15 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 	public void testActionIsOverriden() {
 
 		initBundles();
+		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource7");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilities.add("ipv4");
+		capabilities.add("queue");
 
-		CapabilityDescriptor chassisDescriptor = RepositoryHelper.newIPCapabilityDescriptor();
-		CapabilityDescriptor queueDescriptor = RepositoryHelper.newQueueCapabilityDescriptor();
-		capabilityDescriptors.add(chassisDescriptor);
-		capabilityDescriptors.add(queueDescriptor);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource7", "router", capabilities);
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
-		IProfile profile1 = createProfile("profile1", "setIPv4", chassisDescriptor.getCapabilityInformation().getType(), "router");
+		IProfile profile1 = createProfile("profile1", "setIPv4", "ipv4", "router");
 
 		try {
 			profileManager.addProfile(profile1);

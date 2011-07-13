@@ -4,7 +4,6 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
-import helpers.RepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +17,8 @@ import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -79,16 +78,12 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	public void initTest() {
 
-		// ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
+		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
+		capabilities.add("chassis");
+		capabilities.add("queue");
 
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
@@ -191,6 +186,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 
 			Assert.fail(e.getCause().getLocalizedMessage());
+
 		}
 
 	}

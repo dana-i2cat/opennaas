@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.commandskaraf;
+package net.i2cat.nexus.resources.helpers;
 
 import java.util.HashMap;
 import java.util.Map;

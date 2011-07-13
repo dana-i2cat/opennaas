@@ -12,8 +12,8 @@ import java.util.List;
 
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
@@ -126,12 +126,12 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void SetAndGetInterfacesCommandTest() {
 		initBundles();
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+		List<String> capabilities = new ArrayList<String>();
 
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource1", "router", capabilities);
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {

@@ -111,15 +111,15 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	public void setIPlt() {
 
 		try {
-			String response = KarafCommandHelper.executeCommand("ipv4:setIP  " + resourceFriendlyID + " lt-0/1/2.5 192.168.1.1 255.255.255.0",
+			List<String> response = KarafCommandHelper.executeCommand("ipv4:setIP  " + resourceFriendlyID + " lt-0/1/2.5 192.168.1.1 255.255.255.0",
 					commandprocessor);
 
 			// assert command output no contains ERROR tag
 
-			Object response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			// assert command output no contains ERROR tag
 
-			Object response2 = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID+" -r", commandprocessor);
+			List<String> response2 = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID + " -r", commandprocessor);
 
 			// assert command output no contains ERROR tag
 
@@ -167,7 +167,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setIPl0() {
 		try {
-			String response = KarafCommandHelper.executeCommand("ipv4:setIP   " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
+			List<String> response = KarafCommandHelper.executeCommand("ipv4:setIP   " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
 					commandprocessor);
 
 			// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
@@ -189,7 +189,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 	public void setIPETH() {
 		try {
 			log.debug("executeCommand(ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			Object response = KarafCommandHelper.executeCommand(
+			List<String> response = KarafCommandHelper.executeCommand(
 					"ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
 			// assert command output no contains ERROR tag
 
@@ -198,7 +198,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 			// assert command output no contains ERROR tag
 
 			log.debug("executeCommand(ipv4:list " + resourceFriendlyID);
-			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID +" -r", commandprocessor);
+			response = KarafCommandHelper.executeCommand("ip:listInterfaces " + resourceFriendlyID + " -r", commandprocessor);
 			// assert command output no contains ERROR tag
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();

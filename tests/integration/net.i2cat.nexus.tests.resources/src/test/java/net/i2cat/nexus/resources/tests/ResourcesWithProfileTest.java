@@ -103,24 +103,23 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 	public void createResourceWithProfile() {
 
 		try {
-
-			CapabilityDescriptor capDesc = RepositoryHelper.newChassisCapabilityDescriptor();
-
+						
+			List<String> capabilities;
+			capabilities.add("chassis");
+			capabilities.add("queue");
+			
 			// put profile in profileManager
 			IProfile profile = createProfile("aProfile", "setInterface", String.valueOf(capDesc.getId()), "router");
 			profileManager.addProfile(profile);
+			
+			log.info("Found profile with name: " + profileDescriptors.get(0).getProfileName());
+			IProfile profile = profileManager.getProfile(profileDescriptors.get(0).getProfileName());
 
 			// create resourceDescriptor with profile id
-			ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
-			resourceDescriptor.getInformation().setName("TestResource");
+
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("router", "TestResource",capabilities);
 			resourceDescriptor.setProfileId(profile.getProfileName());
-
-			List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-			capabilityDescriptors.add(capDesc);
-			capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-
-			resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-
+			
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
 			resourceRepository.startResource(resource.getResourceIdentifier().getId());

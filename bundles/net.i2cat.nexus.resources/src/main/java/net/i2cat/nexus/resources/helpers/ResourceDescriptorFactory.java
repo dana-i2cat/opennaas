@@ -11,6 +11,7 @@ import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,16 +27,15 @@ public class ResourceDescriptorFactory {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 		Map<String, String> properties = new HashMap<String, String>();
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-
 		for (String capability : capabilities) {
-			capabilityDescriptors.add(newCapabilityDescriptor(capability, type));
+			capabilityDescriptors.add(newCapabilityDescriptor(capability.toString(), "junos"));
 		}
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 		// /* FIXME PUT PROTOCOL_URI IN RESOURCE DESCRIPTOR CONSTANTS */
-		// properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-		// "user:pass@host.net:2212");
+		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
+				"user:pass@host.net:2212");
 
 		resourceDescriptor.setProperties(properties);
 		ResourceIdentifier identifier = new ResourceIdentifier(type);
@@ -76,14 +76,30 @@ public class ResourceDescriptorFactory {
 	}
 
 	public static CapabilityDescriptor newCapabilityDescriptor(String type, String model) {
+
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("")) {
+			log.info("INFO: Getting uri param from terminal");
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
 		CapabilityProperty property = new CapabilityProperty(
+				ResourceDescriptorConstants.PROTOCOL_URI, uri);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
 				ResourceDescriptorConstants.ACTION_NAME, model);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_VERSION, version);
+				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(ProtocolSessionContext.PROTOCOL,
+				"netconf");
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
@@ -91,6 +107,7 @@ public class ResourceDescriptorFactory {
 		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
 
 		return capabilityDescriptor;
+
 	}
 
 }

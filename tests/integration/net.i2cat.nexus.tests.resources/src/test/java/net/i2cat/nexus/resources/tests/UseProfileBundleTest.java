@@ -105,8 +105,10 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 		try {
 
-			CapabilityDescriptor capDesc = RepositoryHelper.newChassisCapabilityDescriptor();
-
+			List<String> capabilities;
+			capabilities.add("chassis");
+			capabilities.add("queue");
+			
 			// put profile in profileManager
 			List<ProfileDescriptor> profileDescriptors = profileManager.listProfiles();
 			Assert.assertFalse(profileDescriptors.isEmpty());
@@ -116,15 +118,9 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 			IProfile profile = profileManager.getProfile(profileDescriptors.get(0).getProfileName());
 
 			// create resourceDescriptor with profile id
-			ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
-			resourceDescriptor.getInformation().setName("TestResource");
+
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("router", "TestResource",capabilities);
 			resourceDescriptor.setProfileId(profile.getProfileName());
-
-			List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-			capabilityDescriptors.add(capDesc);
-			capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-
-			resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);

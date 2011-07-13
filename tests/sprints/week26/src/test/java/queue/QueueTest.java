@@ -2,6 +2,8 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.ProtocolSessionHelper;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
