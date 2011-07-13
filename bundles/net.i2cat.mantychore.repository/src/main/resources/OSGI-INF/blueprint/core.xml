@@ -23,7 +23,7 @@
 		filter="(&amp;(capability=queue)(capability.model=junos))" />
 	<reference id="ipCapabilityFactory"
 		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
-		filter="(&amp;(capability=ip)(capability.model=junos))" />
+		filter="(&amp;(capability=ipv4)(capability.model=junos))" />
 
 	<bean id="mantychoreRepository" class="net.i2cat.mantychore.repository.MantychoreRepository"
 		init-method="init">
@@ -32,7 +32,7 @@
 		<property name="capabilityFactories">
 			<map>
 				<entry key="chassis" value-ref="chassisCapabilityFactory" />
-				<entry key="ip" value-ref="ipCapabilityFactory" />
+				<entry key="ipv4" value-ref="ipCapabilityFactory" />
 				<entry key="queue" value-ref="queueCapabilityFactory" />
 			</map>
 		</property>

@@ -95,7 +95,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		/* chassis descriptor */
 		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				IPCapability.IP, "ip"));
+				IPCapability.IP, "ipv4"));
 
 		/* queue descriptor */
 		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
@@ -143,12 +143,12 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-			ICapabilityFactory ipFactory = getOsgiService(ICapabilityFactory.class, "capability=ip", 10000);
+			ICapabilityFactory ipFactory = getOsgiService(ICapabilityFactory.class, "capability=ipv4", 10000);
 			// Test elements not null
 			log.info("Checking ip factory");
 			Assert.assertNotNull(ipFactory);
 			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ip"));
+			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ipv4"));
 			log.info("Creating ip capability");
 			ipCapability = ipFactory.create(mockResource);
 			Assert.assertNotNull(ipCapability);

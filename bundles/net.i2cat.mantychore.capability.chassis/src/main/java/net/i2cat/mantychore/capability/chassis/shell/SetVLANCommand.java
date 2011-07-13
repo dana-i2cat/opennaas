@@ -94,6 +94,13 @@ public class SetVLANCommand extends GenericKarafCommand {
 		if (splitInterfaces(subinterface)) {
 
 			String name = argsInterface[0];
+
+			if (name.startsWith("lo")) {
+				printError("Not allowed VLAN configuration for loopback interface");
+				endcommand();
+				return null;
+			}
+
 			int port = Integer.parseInt(argsInterface[1]);
 			ComputerSystem routerModel = (ComputerSystem) resource.getModel();
 
@@ -102,7 +109,6 @@ public class SetVLANCommand extends GenericKarafCommand {
 				// the interface is found on the model
 				if (device.getElementName().equalsIgnoreCase(name)) {
 					if (device instanceof NetworkPort) {
-
 						// TODO implement method clone
 						device.getElementName();
 						if (((NetworkPort) device).getPortNumber() == port) {
@@ -117,12 +123,6 @@ public class SetVLANCommand extends GenericKarafCommand {
 								vlan.setVlanID(vlanId);
 								lt.addProtocolEndpoint(vlan);
 								return lt;
-							} else if (name.startsWith("lo")) {
-
-								printError("Not allowed VLAN configuration for loopback interface");
-								endcommand();
-								return null;
-
 							} else {
 								EthernetPort ethOld = (EthernetPort) device;
 								EthernetPort eth = new EthernetPort();

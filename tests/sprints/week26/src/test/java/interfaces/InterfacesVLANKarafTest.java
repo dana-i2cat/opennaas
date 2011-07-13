@@ -2,6 +2,10 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.KarafCommandHelper;
+import helpers.ProtocolSessionHelper;
+import helpers.RepositoryHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +18,11 @@ import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,23 +32,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
-	static Log					log				= LogFactory
+	static Log					log	= LogFactory
 														.getLog(InterfacesVLANKarafTest.class);
 	IResourceRepository			repository;
 	String						resourceFriendlyID;
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
-	@Inject
-	BundleContext				bundleContext	= null;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -70,21 +71,30 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	}
 
+	public void createProtocolForResource(String resourceId) throws ProtocolException {
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
+
+	}
+
 	public void initTest() {
 
-		List<String> capabilities = new ArrayList<String>();
+		// ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 
-		capabilities.add("chassis");
-		capabilities.add("queue");
+		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
+		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
 
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
 			resource = repository.createResource(resourceDescriptor);
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-			protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(), ProtocolSessionHelper
-					.newSessionContextNetconf());
+
+			createProtocolForResource(resource.getResourceIdentifier().getId());
 			repository.startResource(resource.getResourceDescriptor().getId());
 
 			// call the command to initialize the model
@@ -123,53 +133,64 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 		try {
 
+			List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			log.info(responseError.get(0));
+
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
+
+			// previous configuration
+			// fe-0/3/1.30 vlan 30
+
 			// chassis:setVLAN interface VLANid
-			String responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " fe-0/0/1.12 1",
-					getOsgiService(CommandProcessor.class));
-
+			responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " fe-0/3/1.30 30"
+					, commandprocessor);
 			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
-			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, getOsgiService(CommandProcessor.class));
+			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			// assert command output no contains ERROR tag
+			log.info(responseError.get(0));
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
-			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
-
+			responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			log.info(responseError.get(0));
 			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
-			//
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
+			Assert.assertNotNull(ld);
 			for (LogicalDevice l : ld) {
 				if (l instanceof EthernetPort) {
-					EthernetPort ethport = (EthernetPort) l;
 
+					EthernetPort ethport = new EthernetPort();
+					ethport = (EthernetPort) l;
 					// show data of ETH
-					// name, linkTecnology
+					// name,
 					// Only check the modified interface
-					if (ethport.getElementName().equalsIgnoreCase("fe-0/0/1")) {
+					if (ethport.getElementName().equalsIgnoreCase("fe-0/3/1")) {
+						log.info(ethport.getElementName());
+						log.info(ethport.getPortNumber());
+						if (ethport.getPortNumber() == 30) {
+							List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
+							Assert.assertNotNull(pp);
+							for (ProtocolEndpoint p : pp) {
+								if (p instanceof VLANEndpoint) {
+									log.info(((VLANEndpoint) p).getVlanID());
+									// show tha VLAN setted for this LT
+									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 30);
+								}
 
-						if (ethport.getPortNumber() == 0) {
-							Assert.assertEquals(ethport.getLinkTechnology().toString(), "ETHERNET");
-						} else {
-							Assert.assertNotSame(ethport.getLinkTechnology().toString(), "ETHERNET");
-						}
-
-						List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
-						for (ProtocolEndpoint p : pp) {
-							if (p instanceof VLANEndpoint) {
-								// show tha VLAN setted for this LT
-								Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 1);
 							}
-
 						}
 					}
 				}
 			}
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
+
+			Assert.fail(e.getCause().getLocalizedMessage());
 		}
 
 	}
@@ -180,18 +201,31 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setVLANforLT() {
 		try {
-			// chassis:setVLAN interface -pu PeerUnit
-			String responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lt-0/1/2.12 1",
-					getOsgiService(CommandProcessor.class));
+
+			List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			log.info(responseError.get(0));
 
 			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
-			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, getOsgiService(CommandProcessor.class));
+			// previous configuration
+			// lt-1/2/0.121 peer-unit 2 vlan 222
+
+			// chassis:setVLAN interface VLANid
+			responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lt-1/2/0.121 222"
+					, commandprocessor);
 			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
-			String response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID + " -r", commandprocessor);
-
+			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			// assert command output no contains ERROR tag
+			log.info(responseError.get(0));
+			Assert.assertTrue(responseError.get(1).isEmpty());
+
+			responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			log.info(responseError.get(0));
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(responseError.get(1).isEmpty());
 
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 
@@ -204,23 +238,23 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 					// Only check the modified interface
 					if (ltp.getElementName().equalsIgnoreCase("lt-0/1/2")) {
+						Assert.assertNotNull(ltp.getPeer_unit());
 
-						Assert.assertEquals(ltp.getPortNumber(), 12);
-						if (ltp.getLinkTechnology().toString().equals("ETHERNET")) {
-							Assert.assertNotNull(ltp.getPeer_unit());
-						} else {
-							Assert.assertNotNull(ltp.getPeer_unit());
+						if (ltp.getPortNumber() == 121) {
+							Assert.assertEquals(121, ltp.getPortNumber());
 							List<ProtocolEndpoint> pp = ltp.getProtocolEndpoint();
+							Assert.assertNotNull(pp);
 							for (ProtocolEndpoint p : pp) {
 								if (p instanceof VLANEndpoint) {
+									log.info(((VLANEndpoint) p).getVlanID());
 									// show tha VLAN setted for this LT
-									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 1);
+									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 222);
 								}
 
 							}
 						}
-
 					}
+
 				}
 			}
 
@@ -238,12 +272,10 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	@Test
 	public void setVLANforLo() {
 
-		String responseError = null;
 		try {
-			responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.0 1",
-					getOsgiService(CommandProcessor.class));
-
-			// assert command output contains [ERROR]: not allowed VLAN configuration for loopback interface
+			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.0 1",
+					commandprocessor);
+			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
 
 		} catch (Exception e) {
 			e.printStackTrace();

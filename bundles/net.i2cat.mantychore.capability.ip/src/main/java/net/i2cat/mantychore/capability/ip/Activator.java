@@ -69,7 +69,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		Properties properties = new Properties();
 
 		properties
-				.put(ResourceDescriptorConstants.ACTION_CAPABILITY, "ip");
+				.put(ResourceDescriptorConstants.ACTION_CAPABILITY, "ipv4");
 
 		properties
 				.put(ResourceDescriptorConstants.ACTION_NAME, name);

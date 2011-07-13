@@ -20,14 +20,14 @@
   		<!-- Factory that creates protocol capabilities -->
 	<bean  id="ipCapabilityFactory"
 		class="net.i2cat.mantychore.capability.ip.IPCapabilityFactory">
-		 <property name="type" value="ip" />
+		 <property name="type" value="ipv4" />
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="ipCapabilityFactory"
 		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory">
 	 	<service-properties>
 	 		<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="ip" />
+			<entry key="capability" value="ipv4" />
 			<entry key="capability.model" value="junos" />
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
@@ -38,7 +38,7 @@
 		<command name="ip/listInterfaces">
 			<action class="net.i2cat.mantychore.capability.ip.shell.ListInterfacesCommand" />
 		</command>
-		<command name="ip/setIPv4">
+		<command name="ipv4/setIP">
 			<action class="net.i2cat.mantychore.capability.ip.shell.SetIPv4Command" />
 		</command>
 	</command-bundle>

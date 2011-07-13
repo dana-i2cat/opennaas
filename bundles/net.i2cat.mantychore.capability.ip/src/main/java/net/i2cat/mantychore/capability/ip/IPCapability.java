@@ -16,7 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class IPCapability extends AbstractCapability {
-	public final static String	IP			= "ip";
+	public final static String	IP			= "ipv4";
 
 	Log							log			= LogFactory.getLog(IPCapability.class);
 

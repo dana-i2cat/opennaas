@@ -133,12 +133,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		try {
 			argsInterface = complexInterface.split("\\.");
 			if (argsInterface.length != 2) {
-				printError("Invalid interface name.");
-				endcommand();
-				return false;
-			}
-			if (argsInterface[0].equalsIgnoreCase("")) {
-				printError("Invalid resource type.");
+				printError("Invalid format in interface name.");
 				endcommand();
 				return false;
 			}
