@@ -61,7 +61,40 @@ public class RepositoryHelper {
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
-		capabilityInformation.setType("ip");
+		capabilityInformation.setType("ipv4");
+		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+
+		return capabilityDescriptor;
+	}
+
+	public static CapabilityDescriptor newChassisCapabilityDescriptor() {
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("")) {
+			log.info("INFO: Getting uri param from terminal");
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
+		CapabilityProperty property = new CapabilityProperty(
+				ResourceDescriptorConstants.PROTOCOL_URI, uri);
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_NAME, "junos");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType("chassis");
 		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
 
 		return capabilityDescriptor;
