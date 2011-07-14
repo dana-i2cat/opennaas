@@ -54,7 +54,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			printSymbol("Executing actions...");
 			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
-			printSymbol("Executed!!!");
+			printSymbol("Executed in " + queueResponse.getTotalTime() + " ms");
 
 			if (debug) {
 				printDebug(queueResponse);
@@ -90,6 +90,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 	}
 
 	private void printOverview(QueueResponse queueResponse) {
+
 		if (queueResponse.getRestoreResponse().getStatus() != ActionResponse.STATUS.PENDING) {
 			printSymbol("WARNING IT WAS NECESARY TO RESTORE THE CONFIGURATION!!");
 			printActionResponseBrief(queueResponse.restoreResponse);

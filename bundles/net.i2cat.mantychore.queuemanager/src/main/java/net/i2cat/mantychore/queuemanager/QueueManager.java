@@ -70,8 +70,13 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	@Override
 	public QueueResponse execute() throws CapabilityException {
 		// initialize queue response
+		long startTime = 0;
+		long stopTime = 0;
+
+		/* start time */
+		startTime = java.lang.System.currentTimeMillis();
+
 		QueueResponse queueResponse = QueueResponse.newQueueResponse(queue);
-		// FACTORY
 
 		IProtocolSessionManager protocolSessionManager = null;
 		try {
@@ -81,6 +86,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 			/* Always i have to be one response */
 			log.debug("Preparing queue");
 			ActionResponse prepareResponse = prepare(protocolSessionManager);
+
 			/* status for actionResponse */
 			queueResponse.setPrepareResponse(prepareResponse);
 			log.debug("Prepared!");
@@ -119,16 +125,23 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 			/* clear queue */
 			queue.clear();
 			log.debug("clearing queue");
+
+			/* stop time */
+			stopTime = java.lang.System.currentTimeMillis();
+			queueResponse.setTotalTime(stopTime - startTime);
+
 			return queueResponse;
 		} catch (Exception e1) {
-			/*
-			 * FIXME, IT IS IMPOSSIBLE TO THROW THIS EXCEPTION WITHOUT BACKUP. IT COULD CORRUPT CONFIGURATION
-			 */
+			/* FIXME, IT IS IMPOSSIBLE TO THROW THIS EXCEPTION WITHOUT BACKUP. IT COULD CORRUPT CONFIGURATION */
 			assert protocolSessionManager != null;
 			try {
 				ActionResponse restoreResponse = restore(protocolSessionManager);
 				queueResponse.setRestoreResponse(restoreResponse);
 				empty();
+
+				stopTime = java.lang.System.currentTimeMillis();
+				queueResponse.setTotalTime(stopTime - startTime);
+
 				return queueResponse;
 			} catch (Exception e2) {
 				throw new CapabilityException(e2);
