@@ -49,9 +49,11 @@ public abstract class JunosCommand extends Command {
 		// extra control, it checks if is not null the error list
 		if (reply.isOk() || reply.getErrors() == null
 				|| reply.getErrors().size() == 0) {
+
 			// BUILD OK RESPONSE
 			Response response = Response.okResponse(getQuery().toXML());
-			response.setCommandName(this.getClass().toString());
+			response.setCommandName(this.getClass().getSimpleName());
+
 			response.setInformation(reply.getContain());
 			return response;
 		} else {
