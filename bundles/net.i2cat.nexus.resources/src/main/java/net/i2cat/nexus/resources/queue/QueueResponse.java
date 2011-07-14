@@ -18,6 +18,8 @@ public class QueueResponse {
 
 	public String			user;
 
+	public long				totalTime		= 0;
+
 	public String getUser() {
 		return user;
 	}
@@ -81,6 +83,14 @@ public class QueueResponse {
 
 	public void setRestoreResponse(ActionResponse restoreResponse) {
 		this.restoreResponse = restoreResponse;
+	}
+
+	public long getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(long totalTime) {
+		this.totalTime = totalTime;
 	}
 
 	/* status connection */
