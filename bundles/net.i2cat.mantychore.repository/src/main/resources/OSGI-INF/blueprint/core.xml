@@ -32,7 +32,7 @@
 		<property name="capabilityFactories">
 			<map>
 				<entry key="chassis" value-ref="chassisCapabilityFactory" />
-				<entry key="ipv4" value-ref="ipCapabilityFactory" />
+ 				<entry key="ipv4" value-ref="ipCapabilityFactory" /> 
 				<entry key="queue" value-ref="queueCapabilityFactory" />
 			</map>
 		</property>

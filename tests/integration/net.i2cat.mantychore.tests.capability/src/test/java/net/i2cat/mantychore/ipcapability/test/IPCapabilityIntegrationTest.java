@@ -4,6 +4,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +51,8 @@ import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
 public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+
 	static Log			log				= LogFactory
 												.getLog(IPCapabilityIntegrationTest.class);
 	static MockResource	mockResource;
@@ -68,7 +71,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+		//			, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 					);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
