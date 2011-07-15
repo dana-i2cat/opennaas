@@ -11,6 +11,7 @@ import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import net.i2cat.nexus.resources.profile.ProfileDescriptor;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
@@ -107,6 +108,16 @@ public class ResourceDescriptorFactory {
 		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
 
 		return capabilityDescriptor;
+
+	}
+
+	public static ProfileDescriptor newProfileDescriptor(String profileName, String resourceType) {
+
+		ProfileDescriptor profileDescriptor = new ProfileDescriptor();
+		profileDescriptor.setProfileName(profileName);
+		profileDescriptor.setResourceType(resourceType);
+
+		return profileDescriptor;
 
 	}
 

@@ -6,15 +6,17 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionSet;
 import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.MockAction;
+import net.i2cat.nexus.resources.helpers.MockProfileFactory;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.profile.ProfileDescriptor;
@@ -103,23 +105,27 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 	public void createResourceWithProfile() {
 
 		try {
-						
-			List<String> capabilities;
+
+			List<String> capabilities = new ArrayList<String>();
 			capabilities.add("chassis");
 			capabilities.add("queue");
-			
-			// put profile in profileManager
-			IProfile profile = createProfile("aProfile", "setInterface", String.valueOf(capDesc.getId()), "router");
+
+			ProfileDescriptor profileDescriptor = ResourceDescriptorFactory.newProfileDescriptor("profile", "router");
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
+
+			/* specify profiles */
+			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
+			ActionSet actionSet = new ActionSet();
+			actionSet.putAction("setIPv4", MockAction.class);
+
+			actionSets.put("chassis", actionSet);
+
+			IProfile profile = MockProfileFactory.newMockProfilefactory(profileDescriptor, actionSets);
+
 			profileManager.addProfile(profile);
-			
-			log.info("Found profile with name: " + profileDescriptors.get(0).getProfileName());
-			IProfile profile = profileManager.getProfile(profileDescriptors.get(0).getProfileName());
 
-			// create resourceDescriptor with profile id
-
-			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("router", "TestResource",capabilities);
 			resourceDescriptor.setProfileId(profile.getProfileName());
-			
+
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
 			resourceRepository.startResource(resource.getResourceIdentifier().getId());
@@ -128,8 +134,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(resource.getProfile());
 			Assert.assertTrue(resource.getProfile().equals(profile));
 
-			// TODO launch setInterface Action and assert DummyAction is executed instead of original one
-			ICapability capability = resource.getCapability(capDesc.getCapabilityInformation());
+			// // TODO launch setInterface Action and assert DummyAction is executed instead of original one
 
 		} catch (ResourceException e) {
 			log.error("Error ocurred!!!", e);
@@ -137,27 +142,6 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 		} finally {
 			clearRepo();
 		}
-
-	}
-
-	private IProfile createProfile(String profileName, String actionId, String capabilityId, String resourceType) {
-
-		ActionSet actionSet = new ActionSet();
-
-		actionSet.setActionSetId("aProfileActionSet");
-		actionSet.putAction(actionId, DummyAction.class);
-
-		HashMap<String, IActionSet> overridenActions = new HashMap<String, IActionSet>();
-		overridenActions.put(capabilityId, actionSet);
-
-		ProfileDescriptor profileDesc = new ProfileDescriptor();
-		profileDesc.setProfileName(profileName);
-		profileDesc.setResourceType(resourceType);
-
-		IProfile profile = new MockProfile(profileDesc);
-		profile.addActionSetForCapability(actionSet, capabilityId);
-
-		return profile;
 
 	}
 

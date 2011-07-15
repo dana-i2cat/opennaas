@@ -9,8 +9,8 @@ import java.util.List;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.profile.ProfileDescriptor;
@@ -105,10 +105,10 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 		try {
 
-			List<String> capabilities;
+			List<String> capabilities = new ArrayList<String>();
 			capabilities.add("chassis");
 			capabilities.add("queue");
-			
+
 			// put profile in profileManager
 			List<ProfileDescriptor> profileDescriptors = profileManager.listProfiles();
 			Assert.assertFalse(profileDescriptors.isEmpty());
@@ -119,7 +119,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 			// create resourceDescriptor with profile id
 
-			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("router", "TestResource",capabilities);
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			// call createResource(resourceDescriptor)
