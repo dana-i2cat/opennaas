@@ -39,8 +39,7 @@ public class ResourceDescriptorFactory {
 				"user:pass@host.net:2212");
 
 		resourceDescriptor.setProperties(properties);
-		ResourceIdentifier identifier = new ResourceIdentifier(type);
-		resourceDescriptor.setId(identifier.getId());
+
 		/* information. It is only necessary to add type */
 		Information information = new Information();
 		information.setType(type);

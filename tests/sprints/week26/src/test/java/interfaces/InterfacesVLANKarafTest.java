@@ -15,7 +15,7 @@ import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
+import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
@@ -26,7 +26,6 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,10 +39,11 @@ import org.osgi.service.command.CommandProcessor;
 public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	static Log					log	= LogFactory
 														.getLog(InterfacesVLANKarafTest.class);
-	IResourceRepository			repository;
+
 	String						resourceFriendlyID;
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
+	private IResourceManager	resourceManager;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -64,7 +64,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
-		repository = getOsgiService(IResourceRepository.class, 50000);
+		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
 		initTest();
 
@@ -87,10 +87,9 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
-			resource = repository.createResource(resourceDescriptor);
-
+			resource = resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
 
 			// call the command to initialize the model
 
@@ -106,24 +105,10 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	@After
-	public void resetRepository() {
-
-		try {
-			repository.stopResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
-		} catch (ResourceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail();
-		}
-
-	}
-
 	/**
 	 * Configure a VLAN in a ethernet interface
 	 */
-	@Test
+	// @Test
 	public void setVLANforEth() {
 
 		try {
@@ -161,19 +146,14 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 					EthernetPort ethport = new EthernetPort();
 					ethport = (EthernetPort) l;
-					// show data of ETH
-					// name,
 					// Only check the modified interface
 					if (ethport.getElementName().equalsIgnoreCase("fe-0/3/1")) {
-						log.info(ethport.getElementName());
-						log.info(ethport.getPortNumber());
 						if (ethport.getPortNumber() == 30) {
 							List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
 							Assert.assertNotNull(pp);
 							for (ProtocolEndpoint p : pp) {
 								if (p instanceof VLANEndpoint) {
-									log.info(((VLANEndpoint) p).getVlanID());
-									// show tha VLAN setted for this LT
+
 									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 30);
 								}
 
@@ -182,11 +162,20 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 					}
 				}
 			}
-
+			try {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+				resourceManager.removeResource(resource.getResourceIdentifier());
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (ResourceException e) {
+				Assert.fail();
+			}
 		} catch (Exception e) {
-
 			Assert.fail(e.getCause().getLocalizedMessage());
-
 		}
 
 	}
@@ -253,6 +242,18 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 				}
 			}
+			try {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+				resourceManager.removeResource(resource.getResourceIdentifier());
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (ResourceException e) {
+				Assert.fail();
+			}
 
 		} catch (Exception e) {
 
@@ -272,7 +273,18 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.0 1",
 					commandprocessor);
 			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
-
+			try {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+				resourceManager.removeResource(resource.getResourceIdentifier());
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} catch (ResourceException e) {
+				Assert.fail();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());

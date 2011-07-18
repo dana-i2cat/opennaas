@@ -33,6 +33,7 @@ public class MockResource implements IResource {
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
+
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI

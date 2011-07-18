@@ -9,7 +9,6 @@ import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.netconf.rpc.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -217,12 +217,10 @@ public class ResourceRepository implements IResourceRepository {
 		logger.info("Removing resource with ID #" + identifier);
 
 		IResource resource = getResource(identifier);
-
-		shutdownResource(identifier);
+		unpersistResourceDescriptor(resource.getResourceDescriptor());
 
 		logger.info("Resource shutdown");
-
-		unpersistResourceDescriptor(resource.getResourceDescriptor());
+		shutdownResource(identifier);
 
 		logger.info("Unpersisted and removed resource");
 	}

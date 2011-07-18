@@ -8,6 +8,8 @@ import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.IResource;
@@ -20,12 +22,16 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
-@Command(scope = "ip", name = "listInterfaces", description = "List all the interfaces of a given resource.")
+@Command(scope = "ipv4", name = "list", description = "List all the interfaces of a given resource.")
 public class ListInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
+
+	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the router configuration")
+	boolean			refresh;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -37,7 +43,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			printInfo("Listing interfaces...");
 
 			if (!splitResourceName(resourceId))
-				return -1;
+				return null;
 
 			IResourceIdentifier resourceIdentifier = null;
 
@@ -45,52 +51,71 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
 				endcommand();
-				return -1;
+				return null;
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
 
 			validateResource(resource);
 
-			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IP);
+			if (refresh) {
+				ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
 
-			ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
+				ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
+				// TODO WE NEED TO USE QUEUE WITH CHASSIS
+				IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
 
-			// TODO WE NEED TO USE QUEUE WITH CHASSIS
-			IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
-
-			printInfo("Sending the message to the queue");
-			try {
-				queue.execute();
-			} catch (CapabilityException e) {
-				queue.empty();
-				throw e;
+				printInfo("Sending the message...");
+				try {
+					queue.execute();
+				} catch (CapabilityException e) {
+					queue.empty();
+					throw e;
+				}
 			}
+
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 			printSymbol(horizontalSeparator);
 			printInfo(" [Interface name] 	IP/MASK			");
 			printSymbol(horizontalSeparator);
 
-			for (Object logicalDevice : model.getLogicalDevices()) {
+			for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
+					printSymbolWithoutDoubleLine(doubleTab);
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof IPProtocolEndpoint) {
 								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
 								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
 								if (ipv4 != null && mask != null) {
-									printSymbolWithoutDoubleLine(ipv4 + " / " + mask);
+									printSymbolWithoutDoubleLine(doubleTab + ipv4 + " / " + mask);
 								}
 							}
 
 						}
 					}
-					printInfo("");
+
+				} else if (logicalDevice instanceof LogicalTunnelPort) {
+					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
+					printSymbolWithoutDoubleLine(bullet + " [" + lt.getElementName() + "." + lt.getPortNumber() + "]  ");
+					// printSymbolWithoutDoubleLine(doubleTab + lt.getPeer_unit());
+					if (lt.getProtocolEndpoint() != null) {
+						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
+							if (protocolEndpoint instanceof IPProtocolEndpoint) {
+								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
+								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
+								if (ipv4 != null && mask != null) {
+									printSymbol(doubleTab + ipv4 + " / " + mask);
+								}
+							}
+						}
+					}
 
 				}
+				printSymbol("");
 			}
 
 		} catch (ResourceException e) {

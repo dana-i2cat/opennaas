@@ -35,7 +35,7 @@
 	
 			<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
-		<command name="ip/listInterfaces">
+		<command name="ipv4/list">
 			<action class="net.i2cat.mantychore.capability.ip.shell.ListInterfacesCommand" />
 		</command>
 		<command name="ipv4/setIP">

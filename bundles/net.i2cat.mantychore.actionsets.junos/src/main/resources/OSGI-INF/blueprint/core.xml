@@ -25,7 +25,7 @@
 		<service-properties>
 		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="junos" />
-			<entry key="actionset.capability" value="ip" /> 
+			<entry key="actionset.capability" value="ipv4" /> 
 			<entry key="actionset.version" value="10.10" />
 		</service-properties>
 	</service>

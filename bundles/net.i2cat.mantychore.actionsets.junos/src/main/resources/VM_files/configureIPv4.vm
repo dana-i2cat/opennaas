@@ -1,3 +1,14 @@
+
+#macro (isPeerUnit $element $resp $peerUnit)
+	#set( $resp = "false" )
+	#if("LogicalTunnelPort"==$element.getClass().getSimpleName())
+			#set( $peerUnit = $element.Peer_unit)
+			#set( $resp = "true" )
+			#break
+	#end
+
+#end
+
 ###############################################################################
 ###########             CONFIGURE IP IN AN INTERFACE                ###########
 ###############################################################################
@@ -7,7 +18,10 @@
 		<interface>
 			<name>$param.ElementName</name>
 				<unit>					
-				<name>$param.PortNumber</name>													
+				<name>$param.PortNumber</name>	
+					#if("LogicalTunnelPort"==$param.getClass().getSimpleName())
+					<peer-unit>$param.Peer_unit</peer-unit>	
+					#end										
 				<family>
 					<inet operation="replace">
 						<address>

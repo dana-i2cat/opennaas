@@ -42,7 +42,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			printInfo("Showing interfaces...");
 
 			if (!splitResourceName(resourceId))
-				return -1;
+				return null;
 
 			IResourceIdentifier resourceIdentifier = null;
 
@@ -50,7 +50,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
 				endcommand();
-				return -1;
+				return null;
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
