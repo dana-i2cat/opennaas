@@ -6,18 +6,14 @@ import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.mantychore.queuemanager.QueueManager;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
@@ -25,10 +21,9 @@ import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.capability.ICapabilityFactory;
 import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.helpers.MockResource;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.queue.QueueConstants;
@@ -85,29 +80,17 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
+
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
+		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-				"user:pass@host.net:2212");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-
-		/* chassis descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				ChassisCapability.CHASSIS, "chassis"));
-
-		/* queue descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				QueueManager.QUEUE, "queue"));
-
-		resourceDescriptor.setProperties(properties);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId(deviceID);
+		capabilities.add("chassis");
+		capabilities.add("queue");
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
+
 	}
 
 	/**

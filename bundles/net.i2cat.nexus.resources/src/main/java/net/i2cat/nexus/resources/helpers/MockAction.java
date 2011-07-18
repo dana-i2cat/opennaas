@@ -19,7 +19,7 @@ public class MockAction extends Action {
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
-		log.info("----> Executing action: MOCK ACTION");
+		log.info("----> Executing action: MOCK ACTION: " + actionID);
 		actionResponse.setActionID(actionID);
 		return actionResponse;
 	}

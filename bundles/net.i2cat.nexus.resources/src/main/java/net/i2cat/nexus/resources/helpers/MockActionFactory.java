@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.nexus.resources.action.ActionResponse;
+import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.command.Response;
 
@@ -15,7 +16,7 @@ public class MockActionFactory {
 		action.setActionID(actionID);
 		/* build responses */
 		ActionResponse actionResponse = new ActionResponse();
-
+		actionResponse.setStatus(STATUS.ERROR);
 		List<Response> responses = new ArrayList<Response>();
 		Vector<String> errors = new Vector<String>();
 
@@ -52,7 +53,7 @@ public class MockActionFactory {
 
 		actionResponse.setResponses(responses);
 		action.setActionResponse(actionResponse);
-
+		actionResponse.setStatus(STATUS.ERROR);
 		return action;
 	}
 
@@ -63,6 +64,7 @@ public class MockActionFactory {
 		/* build responses */
 		ActionResponse actionResponse = new ActionResponse();
 
+		actionResponse.setStatus(STATUS.OK);
 		List<Response> responses = new ArrayList<Response>();
 		responses.add(Response.okResponse("response 1: " + actionID));
 
@@ -78,6 +80,7 @@ public class MockActionFactory {
 
 		/* build responses */
 		ActionResponse actionResponse = new ActionResponse();
+		actionResponse.setStatus(STATUS.OK);
 
 		List<Response> responses = new ArrayList<Response>();
 		responses.add(Response.okResponse("response 1: " + actionID));

@@ -8,34 +8,27 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.Assert;
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.mantychore.queuemanager.QueueManager;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 import net.i2cat.netconf.rpc.Reply;
-import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.action.IActionSet;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.capability.ICapabilityFactory;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.helpers.MockAction;
 import net.i2cat.nexus.resources.helpers.MockResource;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
@@ -112,27 +105,18 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
+		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
+		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-
-		/* add queue capability */
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-				"user:pass@host.net:2212");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				QueueManager.QUEUE, "queue"));
-
-		resourceDescriptor.setProperties(properties);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId(resourceID);
+		capabilities.add("queue");
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 50000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceID, newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 
@@ -146,70 +130,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 50000);
 		queueCapability = queueManagerFactory.create(mockResource);
 		queueManagerService = getOsgiService(IQueueManagerService.class,
-				"(capability=queue)(capability.name=" + resourceID + ")", 50000);
-
-	}
-
-	// @After
-	// public void after() {
-	// log.info("INFO: After test, cleaning queue...");
-	// queueManagerService.empty();
-	//
-	// }
-
-	@Test
-	public void testCheckConfigurationAction() {
-		try {
-			before();
-		} catch (Exception e1) {
-			Assert.fail(e1.getMessage());
-		}
-		// Try to do a configuration with the router is corrupted
-		String uri = System.getProperty("protocol.uri");
-
-		if (uri == null || uri.equals("${protocol.uri}")) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-		String backup = null;
-		/* 1.- Backup */
-		Query query;
-		try {
-			query = QueryFactory.newGetConfig("running", "<configuration></configuration>", null);
-			Reply reply = sendNetconfMessage(query, uri);
-			backup = reply.getContain();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
-
-		/* 2.- Prepare configuration. Corrupt config */
-		try {
-			query = QueryFactory.newEditConfig("candidate", null, null, null, readStringFromFile("/corruptconfig.xml"));
-			sendNetconfMessage(query, uri);
-			// query = QueryFactory.newGetConfig(source, filter, attrFilter)
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
-
-		/* 3.- Test configuration. Corrupt config */
-		IActionSet actionSet = getOsgiService(IActionSet.class, "actionset.capability=chassis", 5000);
-		IAction action = null;
-		try {
-			action = actionSet.obtainAction(ActionConstants.SETIPv4);
-			action.setParams(newParamsInterfaceEthernet());
-		} catch (ActionException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
-
-		queueManagerService.queueAction(action);
-		try {
-			queueManagerService.execute();
-		} catch (Exception e) {
-			Assert.fail(e.getMessage());
-		}
+				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")", 50000);
 
 	}
 

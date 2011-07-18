@@ -96,25 +96,20 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		}
 
 		try {
-			Vector<ActionResponse> responses = new Vector<ActionResponse>();
-
-			/* execute action */
+			int numAction = 0;
 			for (IAction action : queue) {
 				/* use pool for get protocol session */
 				log.debug("getting protocol session...");
 				log.debug("Executing action: " + action.getActionID());
 				log.debug("Trying to print params:" + action.getParams());
 				ActionResponse actionResponse = action.execute(protocolSessionManager);
-				responses.add(actionResponse);
-				log.debug("Executed!");
-
+				queueResponse.getResponses().set(numAction, actionResponse);
+				numAction++;
 				/* The action response didn't work, we need to do a restore */
 				if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
 					throw new Exception();
 
 			}
-			/* fill variable response */
-			queueResponse.setResponses(responses);
 
 			/* commit action */
 			log.debug("Confirming actions");

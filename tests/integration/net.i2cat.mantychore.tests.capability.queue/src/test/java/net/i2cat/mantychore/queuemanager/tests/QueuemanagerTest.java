@@ -4,23 +4,19 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.mantychore.queuemanager.QueueManager;
 import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.capability.ICapabilityFactory;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 import net.i2cat.nexus.resources.helpers.MockAction;
 import net.i2cat.nexus.resources.helpers.MockResource;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
@@ -100,25 +96,15 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
+		List<String> capabilities = new ArrayList<String>();
 
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-
-		/* add queue capability */
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-				"user:pass@host.net:2212");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				QueueManager.QUEUE, "queue"));
-
-		resourceDescriptor.setProperties(properties);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId(resourceID);
+		capabilities.add("queue");
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceID, newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 
@@ -133,7 +119,7 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 20000);
 		queueCapability = queueManagerFactory.create(mockResource);
 		queueManagerService = getOsgiService(IQueueManagerService.class,
-				"(capability=queue)(capability.name=" + resourceID + ")", 20000);
+				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")", 20000);
 
 	}
 
