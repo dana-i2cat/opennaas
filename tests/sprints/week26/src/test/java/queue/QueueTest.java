@@ -26,6 +26,7 @@ import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.queue.ModifyParams;
 import net.i2cat.nexus.resources.queue.QueueConstants;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -193,47 +194,72 @@ public class QueueTest extends AbstractIntegrationTest {
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionVariousError("action3"));
 
-		List<ActionResponse> responses = null;
+		QueueResponse queueResponse = null;
 		try {
-			responses = (List<ActionResponse>) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
 			Assert.fail(e.getMessage());
 		}
-		Assert.assertTrue(responses.size() == 4); // INCLUDE COMMIT
-		ActionResponse actionResponseOk = responses.get(0);
 
-		/* check first action */
+		/* check prepare action */
+		ActionResponse prepareResponse = queueResponse.getPrepareResponse();
+		Assert.assertTrue(prepareResponse.getStatus() == ActionResponse.STATUS.OK);
+		Assert.assertTrue(queueResponse.getResponses().size() == 3);
 
-		/* check first action */
-		for (Response response : actionResponseOk.getResponses()) {
+		ActionResponse actionResponse = queueResponse.getResponses().get(0);
+		for (Response response : actionResponse.getResponses()) {
 			Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			Assert.assertNotNull(response.getSentMessage() != null);
 		}
 
-		ActionResponse actionResponseAnError = responses.get(1);
-
+		ActionResponse actionResponseAnError = queueResponse.getResponses().get(1);
 		/* check message with error */
-		Assert.assertNotNull(actionResponseAnError.getResponses());
+
+		Assert.assertTrue(actionResponseAnError.getStatus() == ActionResponse.STATUS.ERROR);
 		Assert.assertTrue(actionResponseAnError.getResponses().size() == 1);
 
-		Response response = actionResponseAnError.getResponses().get(0);
-		Assert.assertTrue(response.getStatus() == Response.Status.OK);
-		Assert.assertNotNull(response.getSentMessage() != null);
-		Assert.assertNotNull(response.getErrors());
+		ActionResponse actionResponsePending = queueResponse.getResponses().get(2);
+		Assert.assertTrue(actionResponsePending.getStatus() == ActionResponse.STATUS.PENDING);
 
-		Assert.assertTrue(response.getErrors().size() > 0);
-		for (String error : response.getErrors()) {
-			log.info("Message with error: " + error);
-		}
+		/* confirm response */
+		ActionResponse confirmResponse = queueResponse.getConfirmResponse();
+		Assert.assertTrue(confirmResponse.getStatus() == ActionResponse.STATUS.PENDING);
 
-		ActionResponse actionResponsePending = responses.get(2);
+		/* restore response */
+		ActionResponse restoreResponse = queueResponse.getRestoreResponse();
+		Assert.assertTrue(restoreResponse.getStatus() == ActionResponse.STATUS.OK);
 
-		/* check first action */
-		for (Response pendings : actionResponsePending.getResponses()) {
-			Assert.assertTrue(pendings.getStatus() == Response.Status.WAIT);
-			Assert.assertNotNull(response.getSentMessage() != null);
-		}
+		// /* check first action */
+		//
+		// /* check first action */
+		// for (Response response : actionResponseOk.getResponses()) {
+		// Assert.assertTrue(response.getStatus() == Response.Status.OK);
+		// Assert.assertNotNull(response.getSentMessage() != null);
+		// }
+		//
+		// ActionResponse actionResponseAnError = responses.get(1);
+		//
+		// /* check message with error */
+		// Assert.assertNotNull(actionResponseAnError.getResponses());
+		// Assert.assertTrue(actionResponseAnError.getResponses().size() == 1);
+		//
+		// Response response = actionResponseAnError.getResponses().get(0);
+		// Assert.assertTrue(response.getStatus() == Response.Status.OK);
+		// Assert.assertNotNull(response.getSentMessage() != null);
+		// Assert.assertNotNull(response.getErrors());
+		//
+		// Assert.assertTrue(response.getErrors().size() > 0);
+		// for (String error : response.getErrors()) {
+		// log.info("Message with error: " + error);
+		// }
+		//
+		// ActionResponse actionResponsePending = responses.get(2);
+		//
+		// /* check first action */
+		// for (Response pendings : actionResponsePending.getResponses()) {
+		// Assert.assertTrue(pendings.getStatus() == Response.Status.WAIT);
+		// Assert.assertNotNull(response.getSentMessage() != null);
+		// }
 
 	}
-
 }
