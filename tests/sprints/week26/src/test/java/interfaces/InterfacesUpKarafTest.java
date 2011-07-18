@@ -68,7 +68,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	//@Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -87,7 +87,6 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void initTest() {
-
 		// ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 
 		List<String> capabilities = new ArrayList<String>();
@@ -118,7 +117,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	@After
+	//@After
 	public void resetRepository() {
 
 		try {
@@ -153,6 +152,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	 */
 	@Test
 	public void UpInterfaceETHTest() {
+		initBundles();
 
 		try {
 			// chassis:setVLAN interface VLANid
@@ -194,7 +194,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-
+		resetRepository();
 	}
 
 	/**
@@ -206,6 +206,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	 */
 	@Test
 	public void UPInterfaceLTTest() {
+		initBundles();
 
 		try {
 			// chassis:setVLAN interface VLANid
@@ -240,11 +241,14 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
+		resetRepository();
 
 	}
 
 	@Test
 	public void UPInterfaceLoTest() {
+		initBundles();
+
 		try {
 			// chassis:setVLAN interface VLANid
 			List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0.0", commandprocessor);
@@ -279,6 +283,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
+		resetRepository();
 	}
 
 }
