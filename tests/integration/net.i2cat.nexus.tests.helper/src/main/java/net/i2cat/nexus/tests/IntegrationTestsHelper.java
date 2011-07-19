@@ -9,15 +9,17 @@ import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.workingDirectory;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Enumeration;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.Helper;
 import org.ops4j.pax.exam.Option;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 public class IntegrationTestsHelper {
 
 	private static Log	log	= LogFactory.getLog(IntegrationTestsHelper.class);
@@ -33,7 +35,7 @@ public class IntegrationTestsHelper {
 
 		// TODO DELETE INOCYBE REPOSITORY
 		Option REPOS = repositories("http://maven.i2cat.net:8081/artifactory/repo", "http://repo1.maven.org/maven2");
-			//	,"http://repository.inocybe.ca/content/groups/public");
+		// ,"http://repository.inocybe.ca/content/groups/public");
 
 		/* specify log level */
 
@@ -61,7 +63,7 @@ public class IntegrationTestsHelper {
 	public static Option[] getMantychoreTestOptions() {
 		/* mantychore features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core"};
+		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
@@ -85,6 +87,13 @@ public class IntegrationTestsHelper {
 							ex.printStackTrace();
 							if (ex.getMessage().indexOf("fragment") != -1) {
 								fragments.add(new Integer(j));
+
+								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
+								Enumeration headers = headers_dic.keys();
+								log.info("Fragment headers:");
+								while (headers.hasMoreElements()) {
+									log.info(headers.nextElement());
+								}
 							}
 						}
 					}
@@ -101,6 +110,7 @@ public class IntegrationTestsHelper {
 				Thread.sleep(1000);
 			} catch (InterruptedException ex) {
 				ex.printStackTrace();
+				break;
 			}
 		}
 
@@ -134,6 +144,17 @@ public class IntegrationTestsHelper {
 		log.info(listBundles);
 		return listBundles;
 
+	}
+
+	private static boolean isFragment(Bundle bundle) {
+		Dictionary headers = bundle.getHeaders();
+		Enumeration headerNames = headers.keys();
+		boolean isFragment = false;
+		while (headerNames.hasMoreElements() && !isFragment) {
+			if (headerNames.nextElement().equals("Fragment-Host"))
+				isFragment = true;
+		}
+		return isFragment;
 	}
 
 	private static String getStateString(int value) {
