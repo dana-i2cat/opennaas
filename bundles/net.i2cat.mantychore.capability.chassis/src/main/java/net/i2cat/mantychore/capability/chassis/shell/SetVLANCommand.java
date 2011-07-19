@@ -21,7 +21,7 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "setVLAN", description = "Set a VLAN id into an interface.")
+@Command(scope = "chassis", name = "setVLAN", description = "Set a VLAN id in a given interface.")
 public class SetVLANCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)

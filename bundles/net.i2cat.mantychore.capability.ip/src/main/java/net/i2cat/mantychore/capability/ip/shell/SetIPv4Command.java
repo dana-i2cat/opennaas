@@ -21,7 +21,7 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "ipv4", name = "setIP", description = "Set a IP in a the interface of a given resource")
+@Command(scope = "ipv4", name = "setIP", description = "Set a IP in a given interface of a resource")
 public class SetIPv4Command extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)

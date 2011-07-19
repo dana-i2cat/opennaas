@@ -29,7 +29,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the router configuration")
+	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the last router configuration")
 	boolean			refresh;
 
 	@Override

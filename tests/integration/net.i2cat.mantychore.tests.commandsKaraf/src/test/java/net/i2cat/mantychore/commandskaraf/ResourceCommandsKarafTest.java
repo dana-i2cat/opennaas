@@ -11,13 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,16 +30,17 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.service.command.CommandProcessor;
-import org.osgi.service.command.CommandSession;
 
 @RunWith(JUnit4TestRunner.class)
 public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	static Log			log	= LogFactory
-									.getLog(ResourceCommandsKarafTest.class);
+	static Log					log	= LogFactory
+											.getLog(ResourceCommandsKarafTest.class);
 
-	IResourceRepository	repository;
+	IResourceManager			resourceManager;
+
+	private CommandProcessor	commandprocessor;
 
 	public String capture() throws IOException {
 		StringWriter sw = new StringWriter();
@@ -85,9 +87,10 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
-		repository = getOsgiService(IResourceRepository.class, 50000);
+		resourceManager = getOsgiService(IResourceManager.class, 50000);
 
 		log.info("INFO: Initialized!");
+		commandprocessor = getOsgiService(CommandProcessor.class);
 
 	}
 
@@ -104,63 +107,33 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	public Object executeCommand(String command) throws Exception {
-		// Run some commands to make sure they are installed properly
-		CommandProcessor cp = getOsgiService(CommandProcessor.class);
-		CommandSession cs = cp.createSession(System.in, System.out, System.err);
-		Object commandOutput = null;
-		try {
-			commandOutput = cs.execute(command);
-			return commandOutput;
-		} catch (IllegalArgumentException e) {
-			Assert.fail("Action should have thrown an exception because: " + e.toString());
-		} catch (NoSuchMethodException a) {
-			log.error("Method for command not found: " + a.getLocalizedMessage());
-			Assert.fail("Method for command not found.");
-		}
-
-		cs.close();
-		return commandOutput;
-	}
-
 	@Test
-	public void SetAndGetInterfacesCommandTest() {
+	public void InfoCommandTest() {
 		initBundles();
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+		List<String> capabilities = new ArrayList<String>();
 
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
-			IResource resource = repository.createResource(resourceDescriptor);
-			repository.startResource(resource.getResourceDescriptor().getId());
-			// resource.start();
+			IResource resource = resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
 
-			log.debug("executeCommand(ip:setIPv4 " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			Integer response = (Integer) executeCommand("ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
-			log.debug(response);
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
-			
-			log.debug("executeCommand(queue:execute " + resourceFriendlyID );
-			response = (Integer) executeCommand("queue:execute  " + resourceFriendlyID );
-			log.debug(response);
-			
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
+			List<String> response = KarafCommandHelper.executeCommand(
+					"resource:info " + resourceFriendlyID,
+					commandprocessor);
+			Assert.assertTrue(response.get(1).isEmpty());
 
-			log.debug("executeCommand(ip:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
-			if (response != null)
-				Assert.fail("Error in the listInterfaces command");
-			repository.stopResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
+			Assert.assertTrue(response.get(0).contains("Resource ID: junosm20"));
+			Assert.assertTrue(response.get(0).contains("Type: ipv4"));
+			Assert.assertTrue(response.get(0).contains("Type: queue"));
+
+			resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
 
 		} catch (Exception e) {
 			e.printStackTrace();
