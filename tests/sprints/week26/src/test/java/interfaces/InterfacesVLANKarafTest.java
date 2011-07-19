@@ -220,11 +220,9 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 					LogicalTunnelPort ltp = (LogicalTunnelPort) l;
 					// show data of LT
 					// name, peer-unit
-
 					// Only check the modified interface
 					if (ltp.getElementName().equalsIgnoreCase("lt-0/1/2")) {
 						Assert.assertNotNull(ltp.getPeer_unit());
-
 						if (ltp.getPortNumber() == 121) {
 							Assert.assertEquals(121, ltp.getPortNumber());
 							List<ProtocolEndpoint> pp = ltp.getProtocolEndpoint();
@@ -239,7 +237,6 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 							}
 						}
 					}
-
 				}
 			}
 			try {

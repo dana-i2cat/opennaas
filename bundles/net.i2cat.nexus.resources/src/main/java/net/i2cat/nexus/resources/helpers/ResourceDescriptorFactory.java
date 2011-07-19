@@ -45,6 +45,8 @@ public class ResourceDescriptorFactory {
 		information.setType(type);
 		information.setName(name);
 		resourceDescriptor.setInformation(information);
+		ResourceIdentifier id = new ResourceIdentifier();
+		resourceDescriptor.setId(id.getId());
 
 		return resourceDescriptor;
 	}

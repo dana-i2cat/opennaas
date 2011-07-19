@@ -178,31 +178,34 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(resource);
 
 			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.INITIALIZED, resource.getState());
-
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 
 	@Test
-	// (expected = ResourceException.class)
 	public void removeResource() throws ResourceException {
 		List<IResource> resources = rm.listResourcesByType("router");
 		Assert.assertFalse(resources.isEmpty());
 		try {
 			rm.removeResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}
 
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-		// Assert.assertNull(resource);
 	}
 
 	@Test
