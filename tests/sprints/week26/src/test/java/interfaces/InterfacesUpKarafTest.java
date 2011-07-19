@@ -15,14 +15,13 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -68,7 +67,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	//@Before
+	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -82,7 +81,10 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
+		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "ssh://i2cat:gagar60in@193.1.190.254:22/netconf");
+		protocolManager.getProtocolSessionManagerWithContext(resourceId, protocolSessionContext);
+		// protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
 
 	}
 
@@ -117,12 +119,18 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	//@After
+	// @After
 	public void resetRepository() {
 
 		try {
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} catch (ResourceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

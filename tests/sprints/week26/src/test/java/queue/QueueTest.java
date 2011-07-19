@@ -229,37 +229,5 @@ public class QueueTest extends AbstractIntegrationTest {
 		ActionResponse restoreResponse = queueResponse.getRestoreResponse();
 		Assert.assertTrue(restoreResponse.getStatus() == ActionResponse.STATUS.OK);
 
-		// /* check first action */
-		//
-		// /* check first action */
-		// for (Response response : actionResponseOk.getResponses()) {
-		// Assert.assertTrue(response.getStatus() == Response.Status.OK);
-		// Assert.assertNotNull(response.getSentMessage() != null);
-		// }
-		//
-		// ActionResponse actionResponseAnError = responses.get(1);
-		//
-		// /* check message with error */
-		// Assert.assertNotNull(actionResponseAnError.getResponses());
-		// Assert.assertTrue(actionResponseAnError.getResponses().size() == 1);
-		//
-		// Response response = actionResponseAnError.getResponses().get(0);
-		// Assert.assertTrue(response.getStatus() == Response.Status.OK);
-		// Assert.assertNotNull(response.getSentMessage() != null);
-		// Assert.assertNotNull(response.getErrors());
-		//
-		// Assert.assertTrue(response.getErrors().size() > 0);
-		// for (String error : response.getErrors()) {
-		// log.info("Message with error: " + error);
-		// }
-		//
-		// ActionResponse actionResponsePending = responses.get(2);
-		//
-		// /* check first action */
-		// for (Response pendings : actionResponsePending.getResponses()) {
-		// Assert.assertTrue(pendings.getStatus() == Response.Status.WAIT);
-		// Assert.assertNotNull(response.getSentMessage() != null);
-		// }
-
 	}
 }
