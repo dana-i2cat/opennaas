@@ -11,8 +11,6 @@ import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalPort;
-import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
@@ -35,18 +33,9 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
 
-/**
- * Tests new chassis operations in interface. In this feature it is necessary to create two operations to configure the status interface. The
- * objective it is to configure the interface status (up, down status administrative)
- * 
- * jira ticket: http://jira.i2cat.net:8080/browse/MANTYCHORE-161
- * 
- * @author Carlos Báez Ruiz
- * 
- */
 @SuppressWarnings("unused")
 @RunWith(JUnit4TestRunner.class)
-public class InterfacesDownKarafTest extends AbstractIntegrationTest {
+public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	static Log					log				= LogFactory
 														.getLog(InterfacesDownKarafTest.class);
@@ -83,8 +72,12 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
+
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		String uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, uri);
 
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, protocolSessionContext);
 
@@ -140,112 +133,88 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	/**
-	 * This test change the interface status to up. It try to enable the administrative mode, and it will be able to be configured. Estimation: 15
-	 * 
-	 * tasks:
-	 * 
-	 * -> Create unitary test, and integration test to new feature
-	 * 
-	 * -> Implement operation
-	 * 
-	 * -> create template
-	 * 
-	 * -> add modifications in the parser
-	 * 
-	 * -> create karaf command -
-	 * 
-	 * -> test to a real router
-	 * 
-	 * 
-	 */
 	@Test
-	public void DownInterfaceETHTest() {
+	public void DownUPInterfaceLoTest() {
 		initBundles();
+		DownInterfaceLo();
+		UPInterfaceLo();
+		resetRepository();
+	}
+
+	public void DownInterfaceLo() {
+
 		try {
-			String interfaceToConfigure = "fe-0/3/0";
 			// chassis:setVLAN interface VLANid
-			List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-					commandprocessor);
+			List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0", commandprocessor);
 			log.info(response.get(0));
 
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
+
+			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+			log.info(response1.get(0));
+
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			log.info(response2.get(0));
+
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			// for (LogicalDevice logicalDevice : ld) {
+			// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+			// LogicalPort logicalPort = (LogicalPort) logicalDevice;
+			// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+			// }
+			// }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+
+	}
+
+	public void UPInterfaceLo() {
+
+		try {
+			// chassis:setVLAN interface VLANid
+			List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0", commandprocessor);
+			log.info(response.get(0));
+
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
 			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 			log.info(response1.get(0));
 
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response1.get(1).isEmpty());
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces  -r " + resourceFriendlyID, commandprocessor);
 			log.info(response2.get(0));
 
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response2.get(1).isEmpty());
 
-			ComputerSystem system = (ComputerSystem) resource.getModel();
-			List<LogicalDevice> ld = system.getLogicalDevices();
-			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
-					LogicalPort logicalPort = (LogicalPort) logicalDevice;
-					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
-				}
-			}
+			// // assert model updated
+			// ComputerSystem system = (ComputerSystem) resource.getModel();
+			// List<LogicalDevice> ld = system.getLogicalDevices();
+			// for (LogicalDevice logicalDevice : ld) {
+			// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+			// LogicalPort logicalPort = (LogicalPort) logicalDevice;
+			// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+			// }
+			// }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-		resetRepository();
-
-	}
-
-	/**
-	 * This test change the interface status to down. It try to enable the administrative mode, and it will be able to be configured. Estimation: 5
-	 * (the operation can be cloned fromt he upInterface) tasks: -> Create unitary test, and integration test to new feature -> Implement operation ->
-	 * create template -> add modifications in the parser -> create karaf command -> test to a real router
-	 * 
-	 * 
-	 */
-	@Test
-	public void DownInterfaceLTTest() {
-		initBundles();
-		try {
-			String interfaceToConfigure = "lt-0/1/2";
-			// chassis:setVLAN interface VLANid
-			List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-					commandprocessor);
-			log.info(response.get(0));
-
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			log.info(response1.get(0));
-
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(response2.get(0));
-
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-			ComputerSystem system = (ComputerSystem) resource.getModel();
-			List<LogicalDevice> ld = system.getLogicalDevices();
-			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
-					LogicalPort logicalPort = (LogicalPort) logicalDevice;
-					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
-				}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-		resetRepository();
-
 	}
 
 }

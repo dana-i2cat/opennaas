@@ -104,6 +104,7 @@ public class QueueTest extends AbstractIntegrationTest {
 		Map<String, String> properties = new HashMap<String, String>();
 		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
 				"user:pass@host.net:2212");
+
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
 				QueueManager.QUEUE, "queue"));
