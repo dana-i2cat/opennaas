@@ -96,6 +96,14 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	@Test
+	public void resourceWorkflow() {
+		createResource();
+		startResource();
+		stopResource();
+		removeResource();
+		createResourcetwo();
+	}
+
 	public void createResource() {
 		List<String> capabilities = new ArrayList<String>();
 
@@ -117,12 +125,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(resourceRepo);
 			List<IResource> resources1 = resourceRepo.listResources();
 			Assert.assertFalse(resources1.isEmpty());
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		} catch (ResourceException e) {
 
 			Assert.fail();
@@ -133,7 +136,6 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 
 	}
 
-	@Test
 	public void startResource() {
 		try {
 			Assert.assertNotNull(resourceRepo);
@@ -152,23 +154,17 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(resource);
 
 			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.ACTIVE, resource.getState());
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}
 	}
 
-	@Test
 	public void stopResource() {
 		try {
 			List<IResource> resources = rm.listResourcesByType("router");
 			Assert.assertFalse(resources.isEmpty());
-			rm.startResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+
 			IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			Assert.assertNotNull(resource);
 			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.ACTIVE, resource.getState());
@@ -189,26 +185,18 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 		}
 	}
 
-	@Test
-	public void removeResource() throws ResourceException {
+	public void removeResource() {
 		List<IResource> resources = rm.listResourcesByType("router");
 		Assert.assertFalse(resources.isEmpty());
 		try {
 			rm.removeResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}
 
 	}
 
-	@Test
 	public void createResourcetwo() {
 		List<String> capabilities = new ArrayList<String>();
 
