@@ -2,6 +2,7 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
 
@@ -18,7 +19,6 @@ import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -84,20 +84,11 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
 
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "ssh://i2cat:gagar60in@193.1.190.254:22/netconf");
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, protocolSessionContext);
 
 	}
 
 	public void initTest() {
-
-		// ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
-
-		// ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router", "resource1");
-		// List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		// capabilityDescriptors.add(RepositoryHelper.newIPCapabilityDescriptor());
-		// capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-		// capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
 
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");

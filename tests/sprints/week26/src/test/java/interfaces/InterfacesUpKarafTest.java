@@ -2,6 +2,7 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
 
@@ -16,7 +17,6 @@ import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,7 +82,6 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "ssh://i2cat:gagar60in@193.1.190.254:22/netconf");
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, protocolSessionContext);
 		// protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
 
@@ -212,7 +211,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	 * 
 	 * 
 	 */
-	@Test
+	// @Test
 	public void UPInterfaceLTTest() {
 		initBundles();
 
@@ -253,7 +252,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	@Test
+	// @Test
 	public void UPInterfaceLoTest() {
 		initBundles();
 

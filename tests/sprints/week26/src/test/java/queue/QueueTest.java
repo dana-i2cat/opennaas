@@ -2,6 +2,7 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.IntegrationTestsHelper;
 import helpers.ProtocolSessionHelper;
 
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.queue.ModifyParams;
 import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.queue.QueueResponse;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
