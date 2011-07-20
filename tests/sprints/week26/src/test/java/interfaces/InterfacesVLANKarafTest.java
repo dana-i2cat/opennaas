@@ -2,6 +2,7 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
 
@@ -21,11 +22,11 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -105,187 +106,190 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	/**
-	 * Configure a VLAN in a ethernet interface
-	 */
-	// @Test
-	public void setVLANforEth() {
-
+	@After
+	public void deleteResource() {
 		try {
-
-			List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(responseError.get(0));
-
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			// previous configuration
-			// fe-0/3/1.30 vlan 30
-
-			// chassis:setVLAN interface VLANid
-			responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " fe-0/3/1.30 30"
-					, commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			// assert command output no contains ERROR tag
-			log.info(responseError.get(0));
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(responseError.get(0));
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			ComputerSystem system = (ComputerSystem) resource.getModel();
-			List<LogicalDevice> ld = system.getLogicalDevices();
-			Assert.assertNotNull(ld);
-			for (LogicalDevice l : ld) {
-				if (l instanceof EthernetPort) {
-
-					EthernetPort ethport = new EthernetPort();
-					ethport = (EthernetPort) l;
-					// Only check the modified interface
-					if (ethport.getElementName().equalsIgnoreCase("fe-0/3/1")) {
-						if (ethport.getPortNumber() == 30) {
-							List<ProtocolEndpoint> pp = ethport.getProtocolEndpoint();
-							Assert.assertNotNull(pp);
-							for (ProtocolEndpoint p : pp) {
-								if (p instanceof VLANEndpoint) {
-
-									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 30);
-								}
-
-							}
-						}
-					}
-				}
-			}
+			resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
 			try {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-				resourceManager.removeResource(resource.getResourceIdentifier());
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (ResourceException e) {
-				Assert.fail();
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (Exception e) {
-			Assert.fail(e.getCause().getLocalizedMessage());
+		} catch (ResourceException e) {
+			Assert.fail();
 		}
 
 	}
 
-	/**
-	 * Configure a VLAN in a LT interface
-	 */
 	@Test
-	public void setVLANforLT() {
+	public void setVLANtest() {
+		// SET ETH
+		int VLANid = 50;
+		String inter = "fe-0/3/1";
+		String subport = "30";
+
 		try {
-
-			List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(responseError.get(0));
-
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			// previous configuration
-			// lt-1/2/0.121 peer-unit 2 vlan 222
-
-			// chassis:setVLAN interface VLANid
-			responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lt-1/2/0.121 222"
-					, commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			// assert command output no contains ERROR tag
-			log.info(responseError.get(0));
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(responseError.get(0));
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(responseError.get(1).isEmpty());
-
-			ComputerSystem system = (ComputerSystem) resource.getModel();
-
-			List<LogicalDevice> ld = system.getLogicalDevices();
-			for (LogicalDevice l : ld) {
-				if (l instanceof LogicalTunnelPort) {
-					LogicalTunnelPort ltp = (LogicalTunnelPort) l;
-					// show data of LT
-					// name, peer-unit
-					// Only check the modified interface
-					if (ltp.getElementName().equalsIgnoreCase("lt-0/1/2")) {
-						Assert.assertNotNull(ltp.getPeer_unit());
-						if (ltp.getPortNumber() == 121) {
-							Assert.assertEquals(121, ltp.getPortNumber());
-							List<ProtocolEndpoint> pp = ltp.getProtocolEndpoint();
-							Assert.assertNotNull(pp);
-							for (ProtocolEndpoint p : pp) {
-								if (p instanceof VLANEndpoint) {
-									log.info(((VLANEndpoint) p).getVlanID());
-									// show tha VLAN setted for this LT
-									Assert.assertEquals(((VLANEndpoint) p).getVlanID(), 222);
-								}
-
-							}
-						}
-					}
-				}
-			}
-			try {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-				resourceManager.removeResource(resource.getResourceIdentifier());
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (ResourceException e) {
-				Assert.fail();
-			}
-
+			testingMethod(inter, subport, VLANid);
 		} catch (Exception e) {
-
 			e.printStackTrace();
-			Assert.fail(e.getMessage());
+			Assert.fail(e.getLocalizedMessage());
 		}
 
-	}
+		// SET LT
+		VLANid = 223;
+		inter = "lt-1/2/0";
+		subport = "121";
 
-	/**
-	 * Configure a VLAN in a Lo interface
-	 */
-	@Test
-	public void setVLANforLo() {
+		try {
+			testingMethod(inter, subport, VLANid);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			Assert.fail(e1.getLocalizedMessage());
+		}
 
+		// set LO
 		try {
 			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.0 1",
 					commandprocessor);
 			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
-			try {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-				resourceManager.removeResource(resource.getResourceIdentifier());
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} catch (ResourceException e) {
-				Assert.fail();
-			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
+
+	}
+
+	public void checkModel(String inter, String port, int vlanid, IResource resource) {
+
+		Boolean found = false;
+
+		ComputerSystem system = (ComputerSystem) resource.getModel();
+		List<LogicalDevice> ld = system.getLogicalDevices();
+		Assert.assertNotNull(ld);
+		for (LogicalDevice l : ld) {
+			// Only check the modified interface
+			if (l.getElementName().equalsIgnoreCase(inter)) {
+				if (l instanceof EthernetPort) {
+					EthernetPort eth = (EthernetPort) l;
+					if (eth.getPortNumber() == Integer.parseInt(port)) {
+						found = true;
+						List<ProtocolEndpoint> pp = eth.getProtocolEndpoint();
+						Assert.assertNotNull(pp);
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof VLANEndpoint) {
+								Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+							}
+						}
+					}
+				} else if (l instanceof LogicalTunnelPort) {
+					LogicalTunnelPort lt = (LogicalTunnelPort) l;
+					Assert.assertNotNull(lt.getPeer_unit());
+					if (lt.getPortNumber() == Integer.parseInt(port)) {
+						found = true;
+						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
+						Assert.assertNotNull(pp);
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof VLANEndpoint) {
+								Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+							}
+						}
+
+					}
+				}
+
+			}
+		}
+		// Look if exits the interface to be checked
+		Assert.assertTrue(found);
+
+	}
+
+	public int getOldInterface(IResource resource, String inter, String port) {
+
+		ComputerSystem system = (ComputerSystem) resource.getModel();
+		List<LogicalDevice> ld = system.getLogicalDevices();
+		Assert.assertNotNull(ld);
+		for (LogicalDevice l : ld) {
+			// Only check the modified interface
+			if (l.getElementName().equalsIgnoreCase(inter)) {
+
+				if (l instanceof EthernetPort) {
+					EthernetPort eth = (EthernetPort) l;
+					if (eth.getPortNumber() == Integer.parseInt(port)) {
+						List<ProtocolEndpoint> pp = eth.getProtocolEndpoint();
+						Assert.assertNotNull(pp);
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof VLANEndpoint) {
+								return ((VLANEndpoint) p).getVlanID();
+							}
+						}
+					}
+				} else if (l instanceof LogicalTunnelPort) {
+					LogicalTunnelPort lt = (LogicalTunnelPort) l;
+					if (lt.getPortNumber() == Integer.parseInt(port)) {
+						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
+						Assert.assertNotNull(pp);
+						for (ProtocolEndpoint p : pp) {
+							if (p instanceof VLANEndpoint) {
+								return ((VLANEndpoint) p).getVlanID();
+							}
+						}
+
+					}
+				}
+			}
+		}
+		Assert.fail("Interface not found");
+		return 0;
+	}
+
+	public void testingMethod(String inter, String subport, int VLANid) throws Exception {
+
+		// REFRESH to fill up the model
+		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		// Obtain the previous IP/MASK make the rollback of the test
+		int OldVLAN = getOldInterface(resource, inter, subport);
+
+		// SET NEW VLAN
+		responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
+					, commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(responseError.get(1).isEmpty());
+		responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		// Check that the resource have the old VLAN in the model despite of have send the command
+		checkModel(inter, subport, OldVLAN, resource);
+
+		// REFRESH to fill up the model
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		// CHECK CHANGES IN THE INTERFACE with new VLAN
+		checkModel(inter, subport, VLANid, resource);
+
+		// ROLLBACK OF THE INTERFACE
+		responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
+							, commandprocessor);
+		Assert.assertTrue(responseError.get(1).isEmpty());
+		responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		// REFRESH to fill up the model
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		// CHECK THe ROLLBACK IS DONE
+		checkModel(inter, subport, OldVLAN, resource);
 
 	}
 }
