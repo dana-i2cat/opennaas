@@ -1,4 +1,4 @@
-package net.i2cat.nexus.resources.helpers;
+package net.i2cat.nexus.tests;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
