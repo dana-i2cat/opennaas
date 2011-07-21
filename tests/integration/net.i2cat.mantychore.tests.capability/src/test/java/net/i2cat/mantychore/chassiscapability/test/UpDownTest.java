@@ -4,6 +4,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -64,7 +65,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//					, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
@@ -99,7 +100,6 @@ public class UpDownTest extends AbstractIntegrationTest {
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
-		uri = "ssh://i2cat:gagar60in@193.1.190.254:22/netconf";
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 
 		protocolSessionContext.addParameter(
