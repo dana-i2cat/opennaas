@@ -18,6 +18,7 @@ import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,16 +30,17 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.service.command.CommandProcessor;
-import org.osgi.service.command.CommandSession;
 
 @RunWith(JUnit4TestRunner.class)
 public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	static Log			log	= LogFactory
-									.getLog(ResourceCommandsKarafTest.class);
+	static Log					log	= LogFactory
+											.getLog(ResourceCommandsKarafTest.class);
 
-	IResourceRepository	repository;
+	IResourceRepository			repository;
+
+	private CommandProcessor	commandprocessor;
 
 	public String capture() throws IOException {
 		StringWriter sw = new StringWriter();
@@ -86,7 +88,7 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		repository = getOsgiService(IResourceRepository.class, 50000);
-
+		commandprocessor = getOsgiService(CommandProcessor.class);
 		log.info("INFO: Initialized!");
 
 	}
@@ -102,25 +104,6 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 				);
 
 		return options;
-	}
-
-	public Object executeCommand(String command) throws Exception {
-		// Run some commands to make sure they are installed properly
-		CommandProcessor cp = getOsgiService(CommandProcessor.class);
-		CommandSession cs = cp.createSession(System.in, System.out, System.err);
-		Object commandOutput = null;
-		try {
-			commandOutput = cs.execute(command);
-			return commandOutput;
-		} catch (IllegalArgumentException e) {
-			Assert.fail("Action should have thrown an exception because: " + e.toString());
-		} catch (NoSuchMethodException a) {
-			log.error("Method for command not found: " + a.getLocalizedMessage());
-			Assert.fail("Method for command not found.");
-		}
-
-		cs.close();
-		return commandOutput;
 	}
 
 	@Test
@@ -140,28 +123,16 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 			// resource.start();
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			log.debug("executeCommand(ip:setIPv4 " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			Integer response = (Integer) executeCommand("ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
-			log.debug(response);
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
-
-			log.debug("executeCommand(queue:listActions " + resourceFriendlyID);
-			response = (Integer) executeCommand("queue:listActions  " + resourceFriendlyID);
-			log.debug(response);
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
-
-			log.debug("executeCommand(queue:execute " + resourceFriendlyID);
-			response = (Integer) executeCommand("queue:execute  " + resourceFriendlyID);
-			log.debug(response);
-
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
-
+			ArrayList<String> response = KarafCommandHelper.executeCommand(
+					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+			response = KarafCommandHelper.executeCommand("queue:listActions  " + resourceFriendlyID, commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+			response = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 

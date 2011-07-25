@@ -4,7 +4,6 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,7 +35,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -65,7 +63,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-//					, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
@@ -168,7 +166,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 	}
 
-	@Test
+	// @Test
 	public void UpDownActionTest() {
 		try {
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);

@@ -24,6 +24,7 @@ import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,17 +36,18 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.service.command.CommandProcessor;
-import org.osgi.service.command.CommandSession;
 
 @RunWith(JUnit4TestRunner.class)
 public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	static Log			log	= LogFactory
-									.getLog(ProfileCommandsKarafTest.class);
+	static Log					log	= LogFactory
+											.getLog(ProfileCommandsKarafTest.class);
 
-	IResourceRepository	repository;
-	IProfileManager		profileManager;
+	IResourceRepository			repository;
+	IProfileManager				profileManager;
+
+	private CommandProcessor	commandprocessor;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -70,7 +72,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 		repository = getOsgiService(IResourceRepository.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 25000);
-
+		commandprocessor = getOsgiService(CommandProcessor.class);
 		log.info("INFO: Initialized!");
 
 	}
@@ -111,25 +113,6 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	public Object executeCommand(String command) throws Exception {
-		// Run some commands to make sure they are installed properly
-		CommandProcessor cp = getOsgiService(CommandProcessor.class);
-		CommandSession cs = cp.createSession(System.in, System.out, System.err);
-		Object commandOutput = null;
-		try {
-			commandOutput = cs.execute(command);
-			return commandOutput;
-		} catch (IllegalArgumentException e) {
-			Assert.fail("Action should have thrown an exception because: " + e.toString());
-		} catch (NoSuchMethodException a) {
-			log.error("Method for command not found: " + a.getLocalizedMessage());
-			Assert.fail("Method for command not found.");
-		}
-
-		cs.close();
-		return commandOutput;
-	}
-
 	@Test
 	public void testListInfoAndRemoveProfileCommand() {
 
@@ -150,30 +133,30 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 			profileManager.addProfile(profile1);
 
-			executeCommand("profile:list");
-			executeCommand("profile:info " + profile1.getProfileName());
+			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
+			KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
 
 			profileManager.addProfile(profile2);
-			executeCommand("profile:list");
+			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
 
 			// add resource with profile1
 			resourceDescriptor.setProfileId(profile1.getProfileName());
 			IResource resource = repository.createResource(resourceDescriptor);
 			repository.startResource(resource.getResourceDescriptor().getId());
 
-			executeCommand("profile:list");
-			executeCommand("profile:info " + profile1.getProfileName());
+			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
+			KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
 
-			executeCommand("profile:remove " + profile2.getProfileName());
-			executeCommand("profile:list");
+			KarafCommandHelper.executeCommand("profile:remove " + profile2.getProfileName(), commandprocessor);
+			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
 
 			// there is no such profile, but it does not fail for that ;)
 			// it silently does nothing
-			executeCommand("profile:remove " + profile2.getProfileName());
+			KarafCommandHelper.executeCommand("profile:remove " + profile2.getProfileName(), commandprocessor);
 
 			boolean failed = false;
 			try {
-				executeCommand("profile:remove " + profile1.getProfileName());
+				KarafCommandHelper.executeCommand("profile:remove " + profile1.getProfileName(), commandprocessor);
 			} catch (ResourceException e) {
 				// profile in use
 				failed = true;
@@ -186,12 +169,12 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 			// log.debug("executing command  #>resource:remove " + resourceFriendlyID);
 			// executeCommand("resource:remove " + resourceFriendlyID);
 
-			executeCommand("profile:remove " + profile1.getProfileName());
-			executeCommand("profile:list");
+			KarafCommandHelper.executeCommand("profile:remove " + profile1.getProfileName(), commandprocessor);
+			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
 
 			// there is no such profile, but it does not fail for that ;)
 			// it silently does nothing
-			executeCommand("profile:info " + profile1.getProfileName());
+			KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
 
 		} catch (ResourceException e1) {
 			log.error("ResourceException ocurred!!!", e1);
@@ -229,35 +212,27 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			log.info("---------------------------------------------");
-			log.info("executeCommand(ip:listInterfaces " + resourceFriendlyID);
-			Integer response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
-			if (response != null)
-				Assert.fail("Error in the listInterfaces command");
+			ArrayList<String> response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
 
-			log.info("executeCommand(ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0)");
-			response = (Integer) executeCommand("ip:setIPv4  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
-			// Assert.assertNotNull(response);
-			if (response != null)
-				Assert.fail("Error in the setInterfaces command");
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
-			log.info("executeCommand(ip:listInterfaces " + resourceFriendlyID);
-			response = (Integer) executeCommand("ip:listInterfaces " + resourceFriendlyID);
-			if (response != null)
-				Assert.fail("Error in the listInterfaces command");
+			response = KarafCommandHelper.executeCommand("ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0",
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
-			log.info("---------------------------------------------");
-			log.info("---------------------------------------------");
-			log.info("---------------------------------------------");
+			response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
 		} catch (ResourceException e) {
-			log.error("ResourceException ocurred!!!", e);
+
 			Assert.fail(e.getMessage());
 		} catch (ProtocolException e) {
-			log.error("ProtocolException ocurred!!!", e);
+
 			Assert.fail(e.getMessage());
 		} catch (Exception e) {
-			log.error("Exception ocurred while executing setInterface command!!!", e);
 			Assert.fail(e.getMessage());
 		}
 
