@@ -2,7 +2,6 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
@@ -66,8 +65,8 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-					, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
+					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+					);
 
 		return options;
 	}
