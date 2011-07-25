@@ -52,7 +52,7 @@
 					<instructions>
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${pom.version}</Bundle-Version>
-						<Import-Package>!${pom.artifactId}.*,
+						<Import-Package>!net.i2cat.nexus.tests*,
 							org.slf4j,
 							org.ops4j.pax.exam, 
 							org.apache.karaf.testing,
