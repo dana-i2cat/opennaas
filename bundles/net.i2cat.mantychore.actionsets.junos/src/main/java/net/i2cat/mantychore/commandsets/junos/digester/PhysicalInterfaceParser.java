@@ -3,10 +3,10 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPHeadersFilter;
-import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.NetworkPort;
+import net.i2cat.mantychore.model.IPHeadersFilter.HdrIPVersion;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 
 import org.apache.commons.digester.Digester;
@@ -82,6 +82,7 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			LogicalTunnelPort logicalTunnel = (LogicalTunnelPort) networkPort;
 			if (mapElements.containsKey(nameInterface)) {
 				LogicalTunnelPort hashLogicalPort = (LogicalTunnelPort) mapElements.get(nameInterface);
+				// TODO implements merge method
 				logicalTunnel.merge((LogicalTunnelPort) hashLogicalPort);
 				mapElements.remove(nameInterface);
 			}

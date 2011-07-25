@@ -42,12 +42,11 @@
 	<module>net.i2cat.nexus.hsqldb</module> 
 	<module>net.i2cat.nexus.persistence</module>
 	<module>net.i2cat.nexus.platformmanager</module>
-	<module>net.i2cat.nexus.resources</module>   
-<!-- 	<module>net.i2cat.nexus.resourcemanager.soapendpoint</module>  -->
-	<module>net.i2cat.nexus.protocols.sessionmanager</module> 
 	<module>net.i2cat.mantychore.model</module> 
+	<module>net.i2cat.nexus.resources</module>   
+	<module>net.i2cat.nexus.protocols.sessionmanager</module> 
+	<module>net.i2cat.mantychore.fragment.velocity</module>
 	<module>net.i2cat.mantychore.actionsets.junos</module>
-  	<module>net.i2cat.mantychore.fragment.velocity</module>
    	<module>net.i2cat.mantychore.protocols.netconf</module>
   	<module>net.i2cat.mantychore.queuemanager</module>
   	<module>net.i2cat.mantychore.repository</module>

@@ -22,6 +22,12 @@
 		class="net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory">
 		 <property name="type" value="chassis" />
 	</bean>
+	
+	
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter"
+		class="net.i2cat.mantychore.capability.chassis.shell.completers.ResourceNameCompleter" />
+	
 
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="chassisCapabilityFactory"
@@ -33,6 +39,9 @@
 			<entry key="capability.version" value="1.0.0" />
 		</service-properties>
 	</service>
+	
+	
+	
 	
 		<!-- Provide commands to the Karaf shell -->
 	
@@ -48,6 +57,11 @@
 		</command>
 		<command name="chassis/showInterfaces">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.ShowInterfacesCommand" />
+		
+		<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		
 		<!--  up an down interfaces  -->
