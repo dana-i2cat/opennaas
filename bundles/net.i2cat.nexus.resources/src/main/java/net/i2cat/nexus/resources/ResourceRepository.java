@@ -14,6 +14,8 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorRepository;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -407,6 +409,20 @@ public class ResourceRepository implements IResourceRepository {
 
 		IResource resource = getResource(resourceId);
 
+		logger.debug("Checking there is at least one session context for this resource");
+		IProtocolSessionManager sessionManager;
+		try {
+			sessionManager = getProtocolSessionManager(resourceId);
+			if (sessionManager.getRegisteredContexts().isEmpty()) {
+				throw new ResourceException(
+						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
+			}
+		} catch (ResourceException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ResourceException("Error loading session manager: ", e);
+		}
+
 		logger.debug("  Obtaining capabilities...");
 		List<ICapability> oldCapabilities = resource.getCapabilities();
 		List<ICapability> capabilities = createCapabilities(resource);
@@ -666,4 +682,10 @@ public class ResourceRepository implements IResourceRepository {
 
 		descriptorRepository.delete(descriptor);
 	}
+
+	private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
+		IProtocolManager protocolManager = Activator.getProtocolManagerService();
+		return protocolManager.getProtocolSessionManager(resourceId);
+	}
+
 }

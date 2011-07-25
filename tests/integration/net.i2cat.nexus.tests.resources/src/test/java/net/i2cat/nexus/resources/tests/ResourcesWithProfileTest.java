@@ -20,6 +20,9 @@ import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.profile.ProfileDescriptor;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -55,8 +58,8 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
+					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+					);
 		return options;
 	}
 
@@ -128,6 +131,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceRepository.startResource(resource.getResourceIdentifier().getId());
 
 			// assert profile loading has been correct
@@ -139,10 +143,37 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 		} catch (ResourceException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
+		} catch (ProtocolException e) {
+			log.error("Error ocurred!!!", e);
+			Assert.fail(e.getMessage());
 		} finally {
 			clearRepo();
 		}
 
 	}
 
+	private void createProtocolForResource(String resourceId) throws ProtocolException {
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
+		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
+
+	}
+
+	/**
+	 * Configure the protocol to connect
+	 */
+	private ProtocolSessionContext newSessionContextNetconf() {
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("${protocol.uri}")) {
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, uri);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+		// ADDED
+		return protocolSessionContext;
+	}
 }

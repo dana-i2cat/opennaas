@@ -1,5 +1,6 @@
 package net.i2cat.nexus.resources.protocol;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -100,6 +101,13 @@ public interface IProtocolSessionManager {
 	 *            The protocol of the context that will be unregistered.
 	 */
 	void unregisterContext(String protocol);
+
+	/**
+	 * Returns the list of registered contexts.
+	 * 
+	 * @return
+	 */
+	List<ProtocolSessionContext> getRegisteredContexts();
 
 	/**
 	 * Destroys the given session, effectively disconnecting the protocol and releasing the lock.

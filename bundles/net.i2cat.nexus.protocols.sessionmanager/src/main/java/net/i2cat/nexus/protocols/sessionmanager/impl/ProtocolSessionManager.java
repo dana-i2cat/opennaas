@@ -90,6 +90,14 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return liveSessions.keySet();
 	}
 
+	public List<ProtocolSessionContext> getRegisteredContexts() {
+		List<ProtocolSessionContext> contexts = new ArrayList<ProtocolSessionContext>();
+		for (ProtocolSessionContext context : getRegisteredProtocolSessionContexts().values()) {
+			contexts.add(context);
+		}
+		return contexts;
+	}
+
 	public Map<String, ProtocolSessionContext> getRegisteredProtocolSessionContexts() {
 		return registeredContexts;
 	}

@@ -1,6 +1,7 @@
 package net.i2cat.nexus.resources;
 
 import net.i2cat.nexus.resources.profile.IProfileManager;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,6 +34,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IProfileManager getProfileManagerService() throws Exception {
 		log.debug("Calling ProfileManagerService");
 		return (IProfileManager) getServiceFromRegistry(context, IProfileManager.class.getName());
+	}
+
+	public static IProtocolManager getProtocolManagerService() throws Exception {
+		log.debug("Calling ProtocolManagerService");
+		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 
 }

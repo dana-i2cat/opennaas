@@ -118,7 +118,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			IResource resource = repository.createResource(resourceDescriptor);
 			Assert.assertFalse(repository.listResources().isEmpty());
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+			// createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			repository.removeResource(resource.getResourceIdentifier().getId());
 			Assert.assertTrue(repository.listResources().isEmpty());
@@ -153,10 +153,12 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 			Assert.assertFalse(repository.listResources().isEmpty());
 
+			createProtocolForResource(resource.getResourceIdentifier().getId());
+
 			/* start resource */
 			repository.startResource(resource.getResourceIdentifier().getId());
 			Assert.assertFalse(resource.getCapabilities().isEmpty());
-			Assert.assertNotNull(resource.getModel());
+			Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
 			// Assert.assertNotNull(resource.getProfile());
 
 			/* stop resource */
@@ -170,8 +172,6 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertFalse(repository.listResources().isEmpty());
 
 			/* remove resource */
-
-			createProtocolForResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 
 			Assert.assertTrue(resource.getCapabilities().isEmpty());

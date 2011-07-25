@@ -68,7 +68,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
-		resourceRepository = getOsgiService(IResourceRepository.class, 30000);
+		resourceRepository = getOsgiService(IResourceRepository.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
 
 		clearRepo();
@@ -124,6 +124,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			createProtocolForResource(resourceDescriptor.getId());
 			resourceRepository.startResource(resource.getResourceIdentifier().getId());
 
 			// assert profile loading has been correct
@@ -137,6 +138,9 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 			// TODO launch setInterface Action and assert DummyAction is executed instead of original one
 
 		} catch (ResourceException e) {
+			log.error("Error ocurred!!!", e);
+			Assert.fail(e.getMessage());
+		} catch (ProtocolException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
 		} finally {
