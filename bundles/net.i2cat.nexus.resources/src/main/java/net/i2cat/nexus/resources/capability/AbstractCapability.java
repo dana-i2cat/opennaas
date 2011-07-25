@@ -1,11 +1,14 @@
 package net.i2cat.nexus.resources.capability;
 
+import java.util.Vector;
+
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.Action;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionSet;
 import net.i2cat.nexus.resources.action.IActionSet;
+import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
 import net.i2cat.nexus.resources.descriptor.Information;
 import net.i2cat.nexus.resources.profile.IProfile;
@@ -195,5 +198,35 @@ public abstract class AbstractCapability implements ICapability {
 	protected abstract void deactivateCapability() throws CapabilityException;
 
 	protected abstract void shutdownCapability() throws CapabilityException;
+
+	/**
+	 * Sends to queue the actions that should be executed before this capability is operative.
+	 * 
+	 * @return
+	 */
+	public Response sendStartUpActions() {
+		try {
+
+			Response response = null;
+
+			if (getActionSet().getStartUpRefreshActionName() != null) {
+				if (getActionSet().getActionNames().contains(getActionSet().getStartUpRefreshActionName())) {
+					response = (Response) sendMessage(getActionSet().getStartUpRefreshActionName(), null);
+				} else {
+					Vector<String> errorMsgs = new Vector<String>();
+					errorMsgs
+							.add("Could not find action in capability actionset");
+					response = Response.errorResponse(getActionSet().getStartUpRefreshActionName(), errorMsgs);
+				}
+			}
+			return response;
+
+		} catch (CapabilityException e) {
+			Vector<String> errorMsgs = new Vector<String>();
+			errorMsgs
+					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
+			return Response.errorResponse("STARTUP_REFRESH_ACTION", errorMsgs);
+		}
+	}
 
 }

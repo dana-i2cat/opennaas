@@ -81,5 +81,4 @@ public class ChassisCapability extends AbstractCapability {
 			throw new CapabilityException(e);
 		}
 	}
-
 }

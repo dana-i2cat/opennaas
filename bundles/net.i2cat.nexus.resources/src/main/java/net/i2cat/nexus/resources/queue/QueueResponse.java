@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.nexus.resources.action.ActionResponse;
+import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
 import net.i2cat.nexus.resources.action.IAction;
 
 public class QueueResponse {
@@ -93,6 +94,9 @@ public class QueueResponse {
 		this.totalTime = totalTime;
 	}
 
+	public boolean isOk() {
+		return getConfirmResponse().getStatus().equals(STATUS.OK);
+	}
 	/* status connection */
 	// TODO ADD necessary parametes which we will need
 

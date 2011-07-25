@@ -1,23 +1,25 @@
+import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IActionSet;
 import net.i2cat.nexus.resources.capability.AbstractCapability;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MockCapability extends AbstractCapability {
+public class MockQueueCapability extends AbstractCapability {
 
 	public boolean	sentStartUp	= false;
 	public boolean	sentMessage	= false;
 
-	public MockCapability(CapabilityDescriptor descriptor) {
+	public MockQueueCapability(CapabilityDescriptor descriptor) {
 		super(descriptor);
 		// TODO Auto-generated constructor stub
 	}
 
-	Log	log	= LogFactory.getLog(MockCapability.class);
+	Log	log	= LogFactory.getLog(MockQueueCapability.class);
 
 	// @Override
 	// public State getState() {
@@ -83,7 +85,9 @@ public class MockCapability extends AbstractCapability {
 	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
 		log.info("MOCK CAPABILITY: send message!!");
 		sentMessage = true;
-		return Response.okResponse(idOperation);
+		QueueResponse response = new QueueResponse();
+		response.setConfirmResponse(ActionResponse.newOkAction(""));
+		return response;
 	}
 
 	@Override

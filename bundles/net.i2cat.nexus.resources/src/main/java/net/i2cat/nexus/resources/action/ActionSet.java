@@ -69,4 +69,10 @@ public class ActionSet implements IActionSet {
 		this.actionsetId = actionSetId;
 	}
 
+	@Override
+	public String getStartUpRefreshActionName() {
+		// No start-up refresh needed by default
+		return null;
+	}
+
 }

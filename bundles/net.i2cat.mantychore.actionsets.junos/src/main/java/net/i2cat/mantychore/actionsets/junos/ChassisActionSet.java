@@ -24,7 +24,6 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETVLAN, ConfigureVLANAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
-
 	}
 
 	@Override
@@ -36,5 +35,11 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.SETVLAN);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
 		return actionNames;
+	}
+	
+	@Override
+	public String getStartUpRefreshActionName() {
+		//FIXME: change when listInterfaces is complete
+		return ActionConstants.GETCONFIG;
 	}
 }

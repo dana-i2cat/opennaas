@@ -267,4 +267,10 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 	}
 
+	@Override
+	public Response sendStartUpActions() {
+		// there is no need of startup actions, queue is operative just after activation.
+		return Response.okResponse("");
+	}
+
 }

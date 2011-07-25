@@ -85,5 +85,4 @@ public class IPCapability extends AbstractCapability {
 
 		return Response.okResponse(idOperation);
 	}
-
 }

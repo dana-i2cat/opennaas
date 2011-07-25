@@ -58,4 +58,9 @@ public class MockCapability extends AbstractCapability {
 		super.actionSet = actionSet;
 
 	}
+
+	@Override
+	public Response sendStartUpActions() {
+		return Response.okResponse("");
+	}
 }
