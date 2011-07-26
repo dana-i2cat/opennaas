@@ -33,13 +33,28 @@
 		</service-properties>
 	</service>
 	
+	
+		<!-- Command completers -->
+	<bean id="resourceNameCompleter"
+		class="net.i2cat.mantychore.capability.ip.shell.completers.ResourceNameCompleter" />
+	
+	
 			<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
 		<command name="ipv4/list">
 			<action class="net.i2cat.mantychore.capability.ip.shell.ListInterfacesCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 		<command name="ipv4/setIP">
 			<action class="net.i2cat.mantychore.capability.ip.shell.SetIPv4Command" />
+		
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
 		</command>
 	</command-bundle>
 	

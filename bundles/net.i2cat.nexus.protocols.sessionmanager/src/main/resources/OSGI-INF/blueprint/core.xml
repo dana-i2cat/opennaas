@@ -4,16 +4,17 @@
 
 	<bean id="protocolManager" class="net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager" />
 
-	<!-- Command completers -->
-	<bean id="resourceNameCompleter"
-		class="net.i2cat.nexus.resources.shell.completers.ResourceNameCompleter" />
 
 	<!-- Listen for registration / deregistration of IProtocolSessionFactory services -->
 	<reference-list interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory" availability="optional">
 		<reference-listener ref="protocolManager"
 			bind-method="sessionFactoryAdded" unbind-method="sessionFactoryRemoved" />
 	</reference-list>
-
+	
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter"
+		class="net.i2cat.nexus.protocols.sessionmanager.shell.completers.ResourceNameCompleter" />
+	
 	<!-- Register a ProtocolManager as an OSGi Service -->
 	<service ref="protocolManager"
 		interface="net.i2cat.nexus.resources.protocol.IProtocolManager" />
