@@ -33,7 +33,10 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.command.CommandProcessor;
+//import org.osgi.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandProcessor;
+
+
 
 /**
  * Tests new chassis operations in interface. In this feature it is necessary to create two operations to configure the status interface. The

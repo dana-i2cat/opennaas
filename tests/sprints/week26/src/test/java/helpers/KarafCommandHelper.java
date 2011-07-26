@@ -5,8 +5,12 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.junit.Assert;
-import org.osgi.service.command.CommandProcessor;
-import org.osgi.service.command.CommandSession;
+//import org.osgi.service.command.CommandProcessor;
+//import org.osgi.service.command.CommandSession;
+import org.apache.felix.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandSession;
+
+
 
 public class KarafCommandHelper {
 

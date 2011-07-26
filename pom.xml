@@ -30,13 +30,18 @@
 
 	<!-- Custom Properties -->
 	<properties>
-		<activemq.version>5.4.0-fuse-00-00</activemq.version>
+		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
+		<activemq.version>5.5.0-fuse-00-27</activemq.version>
+		<cxf.version>2.4.0-fuse-00-27</cxf.version>
+		<karaf.version>2.2.0-fuse-00-43</karaf.version>
+		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
+		<!-- not sure we need to be so specific about the stuff below -->
 		<axiom.version>1.2.8</axiom.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.configuration.version>1.2</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cxf.version>2.2.9-fuse-01-00</cxf.version>
 		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
@@ -49,15 +54,10 @@
 		<hsqldb.version>1.8.0.9</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
-		<karaf.version>2.0.0-fuse-02-00</karaf.version>
-		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam.version>1.2.0</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
-		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
 		<servicemix.specs.version>1.6.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
