@@ -75,38 +75,36 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			}
 
 			ComputerSystem model = (ComputerSystem) resource.getModel();
-			printSymbol(horizontalSeparator);
-			printInfo(" [Interface name] 	[Peer Unit] 	[VLAN id] 	[STATE]	");
-			printSymbol(horizontalSeparator);
 
 			for (Object logicalDevice : model.getLogicalDevices()) {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
-					printSymbolWithoutDoubleLine(doubleTab);
+					printSymbol(bullet + " INTERFACE: " + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber());
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
-								printSymbolWithoutDoubleLine(doubleTab + Integer.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
+								printSymbolWithoutDoubleLine(doubleTab + "VLAN id: " + Integer
+										.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
 							}
 
 						}
-						printSymbol(doubleTab + ethernetPort.getOperationalStatus());
+						printSymbol(doubleTab + "STATE: " + ethernetPort.getOperationalStatus());
 					}
 
 				} else if (logicalDevice instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + lt.getElementName() + "." + lt.getPortNumber() + "]  ");
-					printSymbolWithoutDoubleLine(doubleTab + lt.getPeer_unit());
+					printSymbolWithoutDoubleLine(bullet + " INTERFACE: " + lt.getElementName() + "." + lt.getPortNumber());
+					printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + lt.getPeer_unit());
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
-								printSymbolWithoutDoubleLine(doubleTab + Integer.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
+								printSymbolWithoutDoubleLine(doubleTab + "VLAN id: " + Integer
+										.toString(((VLANEndpoint) protocolEndpoint).getVlanID()));
 
 							}
 						}
-						printSymbol(doubleTab + lt.getOperationalStatus());
+						printSymbol(doubleTab + "STATE: " + lt.getOperationalStatus());
 					}
 				}
 

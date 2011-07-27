@@ -35,11 +35,6 @@ public class ConfigureVLANAction extends JunosAction {
 			if (eth.getElementName() == null || eth.getElementName().isEmpty())
 				throw new ActionException("Not valid name for the interface");
 
-			// TODO
-			// maybe if there aren't subPort the user wants to set vlantaggin to entire interfce
-			// setTemplate("/VM_files/setvlantagging.vm");
-			// return true;
-
 			setTemplate("/VM_files/configureEthVLAN.vm");
 
 		} else if (params instanceof LogicalTunnelPort) {

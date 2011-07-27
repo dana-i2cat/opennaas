@@ -31,6 +31,8 @@
 	<interfaces>	
 		<interface>
 			<name>$param.ElementName</name>
+				
+			<vlan-tagging operation="merge"/>
 				<unit>					
 				
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE

@@ -76,7 +76,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 			printSymbol(horizontalSeparator);
-			printInfo(" [Interface name] 	IP/MASK			");
+			printSymbol(" [Interface name] 	IP/MASK			");
 			printSymbol(horizontalSeparator);
 
 			for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
@@ -84,14 +84,14 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
-					printSymbolWithoutDoubleLine(doubleTab);
+
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof IPProtocolEndpoint) {
 								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
 								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
 								if (ipv4 != null && mask != null) {
-									printSymbolWithoutDoubleLine(doubleTab + ipv4 + " / " + mask);
+									printSymbol(doubleTab + ipv4 + " / " + mask);
 								}
 							}
 
@@ -101,7 +101,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 				} else if (logicalDevice instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " [" + lt.getElementName() + "." + lt.getPortNumber() + "]  ");
-					// printSymbolWithoutDoubleLine(doubleTab + lt.getPeer_unit());
+
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof IPProtocolEndpoint) {
