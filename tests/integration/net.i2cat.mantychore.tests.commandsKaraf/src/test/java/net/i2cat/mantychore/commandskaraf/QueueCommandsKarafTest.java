@@ -29,8 +29,8 @@ import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-//import org.osgi.service.command.CommandProcessor;
-import org.apache.felix.service.command.CommandProcessor;
+import org.osgi.service.command.CommandProcessor;
+//import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class QueueCommandsKarafTest extends AbstractIntegrationTest {

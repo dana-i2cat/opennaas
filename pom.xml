@@ -31,7 +31,7 @@
 		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 		<activemq.version>5.5.0-fuse-00-27</activemq.version>
 		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<karaf.version>2.2.0-fuse-00-43</karaf.version>
+		<karaf.version>2.1.4-fuse-00-22</karaf.version><!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
 		<!-- not sure we need to be so specific about the stuff below -->
