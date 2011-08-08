@@ -53,8 +53,8 @@
 		<jaxb.impl.version>2.2.4_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam.version>1.2.0</pax.exam.version>
-		<pax.logging.version>1.5.3</pax.logging.version>
+		<pax.exam.version>1.2.4</pax.exam.version>
+		<pax.logging.version>1.6.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
 		<servicemix.specs.version>1.6.0</servicemix.specs.version>
