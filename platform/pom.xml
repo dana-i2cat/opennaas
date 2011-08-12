@@ -5,12 +5,12 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS platform</name>
 	<artifactId>platform</artifactId>
 	<groupId>org.opennaas</groupId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<!--  properties to use fuse  -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -67,6 +67,11 @@
 			<artifactId>org.apache.karaf.tooling.testing</artifactId>
 			<version>${karaf.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-karafbranding</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<!--
   | imported (non-local) bundles are listed here as dependencies | and
@@ -105,6 +110,23 @@
 							<outputDirectory>${target-platform.path}</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
 							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>copy-karafbranding</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.opennaas</groupId>
+									<artifactId>opennaas-core-karafbranding</artifactId>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${target-platform.path}/${servicemix.path}/lib</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 					</execution>
 					<!--<execution>
