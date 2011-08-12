@@ -12,6 +12,9 @@
 	<name>OpenNaaS :: Core :: JPA Persistence</name>
 	<version>1.0-SNAPSHOT</version>
 	<description>Dynamic JPA Persistence tools for Nexus</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.felix</groupId>

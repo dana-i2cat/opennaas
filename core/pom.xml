@@ -72,5 +72,6 @@
 	<modules>
 		<module>opennaas-core-hibernate</module>
 		<module>opennaas-core-persistence</module>
+		<module>opennaas-core-karafbranding</module>
 	</modules>
 </project>

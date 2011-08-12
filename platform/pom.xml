@@ -13,7 +13,8 @@
 	<version>1.0-SNAPSHOT</version>
 	<!--  properties to use fuse  -->
 	<properties>
-		<target-platform.path>target/mantychore</target-platform.path>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 		<karaf.version>2.1.4-fuse-00-22</karaf.version>
 		<!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
@@ -106,7 +107,7 @@
 							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
 						</configuration>
 					</execution>
-					<execution>
+					<!--<execution>
 						<id>get-nexus-feature</id>
 						<phase>package</phase>
 						<goals>
@@ -118,7 +119,6 @@
 									<artifactId>nexus-fuse</artifactId>
 									<groupId>net.i2cat.nexus</groupId>
 									<version>1.0.0-SNAPSHOT</version>
-									<!-- TODO: use variable project.version -->
 									<type>xml</type>
 									<classifier>features</classifier>
 								</artifactItem>
@@ -139,7 +139,6 @@
 									<artifactId>mantychore</artifactId>
 									<groupId>net.i2cat.mantychore</groupId>
 									<version>1.0.0-SNAPSHOT</version>
-									<!-- TODO: use variable project.version -->
 									<type>xml</type>
 									<classifier>features</classifier>
 								</artifactItem>
@@ -147,10 +146,10 @@
 							<outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
-					</execution>
+					</execution>-->
 				</executions>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.felix.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<version>1.4.0-fuse-02-00</version>
@@ -173,7 +172,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
@@ -192,7 +191,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>install-mantychore-configs</id>
+						<id>install-opennaas-configs</id>
 						<phase>package</phase>
 						<goals>
 							<goal>copy-resources</goal>

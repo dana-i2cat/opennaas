@@ -1,4 +1,6 @@
+*.swp
 .svn
 .project
 .settings
 *.class
+target/
