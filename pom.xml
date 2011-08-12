@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <!--
+	<!--
    | put company details here
   <organization>
     <name>...</name>
     <url>http://...</url>
   </organization>
   -->
-  <!--
+	<!--
    | put license details here
   <licenses>
     <license>
@@ -18,46 +18,46 @@
     </license>
   </licenses>
   -->
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.opennaas</groupId>
-  <artifactId>opennaas</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>OpenNaaS (OSGi project)</name>
-  <!--
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.opennaas</groupId>
+	<artifactId>opennaas</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>OpenNaaS (OSGi project)</name>
+	<!--
    | describe your project here
   -->
-  <description>
+	<description>
     Generated using Pax-Construct
   </description>
-  <properties>
-    <!--
+	<properties>
+		<!--
      | some example OSGi runtime properties
     <org.osgi.service.http.port>8080</org.osgi.service.http.port>
     <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>-->
-  </properties>
-  <packaging>pom</packaging>
-  <modules>
-    <!--<module>poms</module>
+	</properties>
+	<packaging>pom</packaging>
+	<modules>
+		<!--<module>poms</module>
     <module>provision</module>-->
-    <module>core</module>
-    <module>platform</module>
-  </modules>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.ops4j</groupId>
-        <artifactId>maven-pax-plugin</artifactId>
-        <version>1.5</version>
-        <configuration>
-          <!--
+		<module>core</module>
+		<module>platform</module>
+	</modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+					<!--
            | some example Pax-Runner settings
           -->
-          <provision>
-            <param>--platform=felix</param>
-          </provision>
-        </configuration>
-        <executions>
-          <!--
+					<provision>
+						<param>--platform=felix</param>
+					</provision>
+				</configuration>
+				<executions>
+					<!--
            | uncomment to auto-generate IDE files
           <execution>
             <id>ide-support</id>
@@ -66,8 +66,8 @@
             </goals>
           </execution>
           -->
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
