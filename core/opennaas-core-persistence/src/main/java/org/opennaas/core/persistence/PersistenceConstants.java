@@ -1,4 +1,4 @@
-package net.i2cat.nexus.persistence;
+package org.opennaas.core.persistence;
 /**
  * Constants for the service properties of EntityManagers registered
  * in the OSGi Registry.

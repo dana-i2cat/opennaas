@@ -1,4 +1,4 @@
-package net.i2cat.nexus.persistence;
+package org.opennaas.core.persistence;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

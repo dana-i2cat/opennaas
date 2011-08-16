@@ -55,7 +55,10 @@ public class HSQLDBServer implements InitializingBean, DisposableBean {
 
 		HsqlProperties configProps = new HsqlProperties(serverProperties);
 		if (configProps == null) {
+			logger.warn("we failed at getting an HSQL Server with serverProperties, trying to get one without");
 			configProps = new HsqlProperties();
+			if (configProps == null)
+				logger.error("we failed at getting an HSQL Server, period. Crash and burn from here on.");
 		}
 
 		ServerConfiguration.translateDefaultDatabaseProperty(configProps);

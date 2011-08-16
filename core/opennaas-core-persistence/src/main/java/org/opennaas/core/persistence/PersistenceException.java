@@ -1,4 +1,4 @@
-package net.i2cat.nexus.persistence;
+package org.opennaas.core.persistence;
 /**
  * 
  * @author Valery Abu-Eid (Dynamic Java.org)

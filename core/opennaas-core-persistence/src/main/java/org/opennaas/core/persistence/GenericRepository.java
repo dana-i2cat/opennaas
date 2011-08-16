@@ -1,4 +1,4 @@
-package net.i2cat.nexus.persistence;
+package org.opennaas.core.persistence;
 
 import java.io.Serializable;
 
