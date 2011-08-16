@@ -9,6 +9,10 @@
 	</parent>
 	<name>OpenNaaS :: Core</name>
 	<artifactId>opennaas-core</artifactId>
+	<properties>
+		<cxf.version>2.4.0-fuse-00-27</cxf.version>
+		<karaf.version>2.1.4-fuse-00-22</karaf.version>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -17,9 +21,29 @@
 				<version>1.1.2</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+				<version>1.1.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.shell</groupId>
+				<artifactId>org.apache.karaf.shell.console</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
 				<version>1.2.2_5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.specs</groupId>
+				<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+				<version>1.6.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dynamicjava.osgi</groupId>
@@ -93,6 +117,31 @@
 				<artifactId>pax-exam-junit</artifactId>
 				<version>1.2.4</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-databinding-aegis</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<repositories>
@@ -114,5 +163,6 @@
 		<module>opennaas-core-persistence</module>
 		<module>opennaas-core-hsqldb</module>
 		<module>opennaas-core-karafbranding</module>
+		<module>opennaas-core-platformmanager</module>
 	</modules>
 </project>
