@@ -9,8 +9,6 @@
 	</parent>
 	<name>OpenNaaS platform</name>
 	<artifactId>platform</artifactId>
-	<groupId>org.opennaas</groupId>
-	<version>1.0.0-SNAPSHOT</version>
 	<!--  properties to use fuse  -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
