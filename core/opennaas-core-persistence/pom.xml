@@ -9,7 +9,6 @@
 	<artifactId>opennaas-core-persistence</artifactId>
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Core :: JPA Persistence</name>
-	<version>1.0.0-SNAPSHOT</version>
 	<description>Dynamic JPA Persistence tools for Nexus</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

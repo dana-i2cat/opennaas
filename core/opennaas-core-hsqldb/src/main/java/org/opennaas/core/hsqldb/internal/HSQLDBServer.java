@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.hsqldb.Server;
+//import org.hsqldb.Server;
 import org.hsqldb.ServerConfiguration;
 import org.hsqldb.ServerConstants;
 import org.hsqldb.persist.HsqlProperties;
@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 public class HSQLDBServer implements InitializingBean, DisposableBean {
 
 	private static Log logger = LogFactory.getLog(HSQLDBServer.class);
-	private Server databaseServer;
+	//private Server databaseServer;
 
 	/**
 	 * Properties used to customize instance.
@@ -54,12 +54,12 @@ public class HSQLDBServer implements InitializingBean, DisposableBean {
 	public void afterPropertiesSet() throws Exception {
 
 		HsqlProperties configProps = new HsqlProperties(serverProperties);
-		if (configProps == null) {
+		/*if (configProps == null) {
 			logger.warn("we failed at getting an HSQL Server with serverProperties, trying to get one without");
 			configProps = new HsqlProperties();
 			if (configProps == null)
 				logger.error("we failed at getting an HSQL Server, period. Crash and burn from here on.");
-		}
+		}*/
 
 		ServerConfiguration.translateDefaultDatabaseProperty(configProps);
 

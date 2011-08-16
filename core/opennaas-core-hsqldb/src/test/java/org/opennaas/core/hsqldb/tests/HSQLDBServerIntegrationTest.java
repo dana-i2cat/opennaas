@@ -6,6 +6,7 @@ import org.springframework.test.AbstractDependencyInjectionSpringContextTests;
 
 import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 
+@SuppressWarnings("deprecation")
 public class HSQLDBServerIntegrationTest extends
 AbstractDependencyInjectionSpringContextTests {
 	    private HSQLDBServer server;

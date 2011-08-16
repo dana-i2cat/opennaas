@@ -3,7 +3,7 @@ package org.opennaas.core.hsqldb.tests;
 import java.util.Properties;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.junit.Before;
+//import org.junit.Before;
 import org.junit.Test;
 
 
