@@ -90,6 +90,11 @@
 				<artifactId>org.osgi.core</artifactId>
 				<version>4.2.0</version>
 			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-junit</artifactId>
+				<version>1.2.4</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->

@@ -1,6 +1,7 @@
+target/
+*.class
 *.swp
-.svn
+.classpath
 .project
 .settings
-*.class
-target/
+.svn

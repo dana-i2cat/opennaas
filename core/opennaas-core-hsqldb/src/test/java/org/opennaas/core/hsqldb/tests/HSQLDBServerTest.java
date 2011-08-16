@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.core.hsqldb.tests;
+package org.opennaas.core.hsqldb.tests;
 
 import java.util.Properties;
 
@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-import net.i2cat.nexus.hsqldb.internal.HSQLDBServer;
+import org.opennaas.core.hsqldb.internal.HSQLDBServer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

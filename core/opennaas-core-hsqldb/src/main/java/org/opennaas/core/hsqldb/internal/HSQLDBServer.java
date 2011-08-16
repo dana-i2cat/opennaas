@@ -1,4 +1,4 @@
-package net.i2cat.nexus.hsqldb.internal;
+package org.opennaas.core.hsqldb.internal;
 
 import java.sql.Connection;
 import java.sql.SQLException;

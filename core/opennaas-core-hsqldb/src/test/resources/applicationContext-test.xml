@@ -6,7 +6,7 @@
 		<property name="username" value="sa"/>
 		<property name="password" value=""/>
 	</bean>
-	<bean id="dataBase" class="net.i2cat.nexus.hsqldb.internal.HSQLDBServer" lazy-init="false">
+	<bean id="dataBase" class="org.opennaas.core.hsqldb.internal.HSQLDBServer" lazy-init="false">
 		<property name="dataSource">
 			<ref local="dataSource"/>
 		</property>
