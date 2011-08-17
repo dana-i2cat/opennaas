@@ -2,10 +2,10 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
 	<persistence-unit name="ResourceCore" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>net.i2cat.nexus.resources.descriptor.Information</class>
-		<class>net.i2cat.nexus.resources.descriptor.CapabilityProperty</class>
-		<class>net.i2cat.nexus.resources.descriptor.CapabilityDescriptor</class>
-		<class>net.i2cat.nexus.resources.descriptor.ResourceDescriptor</class>
+		<class>org.opennaas.core.resources.descriptor.Information</class>
+		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
+		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
+		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:file:databases/iaas/resources;hsqldb.default_table_type=cached"/>
@@ -20,10 +20,10 @@
 	</persistence-unit>
 	<persistence-unit name="ResourceCore-test" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		<class>net.i2cat.nexus.resources.descriptor.Information</class>
-		<class>net.i2cat.nexus.resources.descriptor.CapabilityProperty</class>
-		<class>net.i2cat.nexus.resources.descriptor.CapabilityDescriptor</class>
-		<class>net.i2cat.nexus.resources.descriptor.ResourceDescriptor</class>
+		<class>org.opennaas.core.resources.descriptor.Information</class>
+		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
+		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
+		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:unit-testing-jpa"/>
