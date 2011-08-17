@@ -15,10 +15,10 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
+			<artifactId>hibernate-entitymanager</artifactId>
 			<version>3.6.6.Final</version>
 			<!--<scope>compile</scope>
-			<optional>true</optional>-->
+			<optional>true</optional>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.transaction</groupId>
@@ -28,8 +28,14 @@
 					<groupId>commons-logging</groupId>
 					<artifactId>commons-logging</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions>-->
 		</dependency>
+		<!--<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>3.6.6.Final</version>
+			<scope>provided</scope>
+		</dependency>-->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jta_1.1_spec</artifactId>
