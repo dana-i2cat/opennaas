@@ -46,12 +46,10 @@ public abstract class AbstractCapability implements ICapability {
 		setState(State.INSTANTIATED);
 	}
 
-	@Override
 	public CapabilityDescriptor getCapabilityDescriptor() {
 		return descriptor;
 	}
 
-	@Override
 	public Information getCapabilityInformation() {
 		return descriptor.getCapabilityInformation();
 	}
@@ -61,7 +59,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @param resource
 	 */
-	@Override
 	public void setResource(IResource resource) {
 		this.resource = resource;
 	}
@@ -71,7 +68,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @return state enum object
 	 */
-	@Override
 	public State getState() {
 		return state;
 	}
@@ -79,7 +75,6 @@ public abstract class AbstractCapability implements ICapability {
 	/**
 	 * Sets the current capability state
 	 */
-	@Override
 	public void setState(State state) {
 		this.state = state;
 	}
@@ -89,7 +84,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @throws ResourceException
 	 */
-	@Override
 	public void initialize() throws CapabilityException {
 		initializeCapability();
 		state = State.INITIALIZED;
@@ -100,7 +94,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @throws ResourceException
 	 */
-	@Override
 	public void activate() throws CapabilityException {
 		activateCapability();
 		state = State.ACTIVE;
@@ -111,7 +104,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @throws ResourceException
 	 */
-	@Override
 	public void deactivate() throws CapabilityException {
 		deactivateCapability();
 		state = State.INACTIVE;
@@ -122,7 +114,6 @@ public abstract class AbstractCapability implements ICapability {
 	 * 
 	 * @throws ResourceException
 	 */
-	@Override
 	public void shutdown() throws CapabilityException {
 		shutdownCapability();
 		state = State.SHUTDOWN;
@@ -139,7 +130,6 @@ public abstract class AbstractCapability implements ICapability {
 		return builder.toString();
 	}
 
-	@Override
 	public void setCapabilityDescriptor(CapabilityDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}

@@ -8,7 +8,6 @@ import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 
 public class DummyAction extends Action {
 
-	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(getActionID());
@@ -19,7 +18,6 @@ public class DummyAction extends Action {
 		return actionResponse;
 	}
 
-	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		return true;
 	}

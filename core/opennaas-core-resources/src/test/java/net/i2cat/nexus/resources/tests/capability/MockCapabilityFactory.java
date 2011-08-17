@@ -33,7 +33,6 @@ public class MockCapabilityFactory extends AbstractCapabilityFactory {
 		return capabilityDescriptor;
 	}
 
-	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
 		MockCapability capability = new MockCapability(getMockCapabilityDescriptor());
 		capability.setCapabilityDescriptor(resource.getResourceDescriptor().getCapabilityDescriptor("MOCK"));

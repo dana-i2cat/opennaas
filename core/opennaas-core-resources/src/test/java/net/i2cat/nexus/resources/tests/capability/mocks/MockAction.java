@@ -17,13 +17,11 @@ public class MockAction extends Action {
 		this.actionID = actionID;
 	}
 
-	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		log.info("----> Executing action: MOCK ACTION");
 		return null;
 	}
 
-	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		// TODO Auto-generated method stub
 		return false;

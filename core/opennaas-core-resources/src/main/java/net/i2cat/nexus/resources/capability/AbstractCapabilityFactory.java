@@ -24,7 +24,6 @@ public abstract class AbstractCapabilityFactory implements ICapabilityFactory {
 	// FIXME Other method to has identified a factory??
 	private String							type		= "";
 
-	@Override
 	public ICapability create(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
 		ICapability capability = null;
 
@@ -71,12 +70,10 @@ public abstract class AbstractCapabilityFactory implements ICapabilityFactory {
 		this.validator = validator;
 	}
 
-	@Override
 	public String getType() {
 		return type;
 	}
 
-	@Override
 	public void setType(String type) {
 		this.type = type;
 	}

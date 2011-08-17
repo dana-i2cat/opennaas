@@ -42,7 +42,6 @@ public class MockCapability extends AbstractCapability {
 	// public void setResource(IResource resource) {
 	// }
 
-	@Override
 	public Response sendMessage(String idOperation, Object paramsModel) {
 		// TODO Auto-generated method stub
 		return null;

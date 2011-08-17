@@ -70,7 +70,6 @@ public class ResourceManager implements IResourceManager {
 	 * @returns the new resource
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceDescriptor.getInformation().getType());
 		IResource resource = repo.createResource(resourceDescriptor);
@@ -84,7 +83,6 @@ public class ResourceManager implements IResourceManager {
 	 *         value.
 	 * 
 	 */
-	@Override
 	public synchronized List<IResource> listResourcesByType(String type) {
 		List<IResource> result = new ArrayList<IResource>();
 
@@ -109,7 +107,6 @@ public class ResourceManager implements IResourceManager {
 	 * 
 	 * @return
 	 */
-	@Override
 	public synchronized List<IResource> listResources() {
 		logger.info("Resource Manager: listing the resources");
 		List<IResource> result = new ArrayList<IResource>();
@@ -127,7 +124,6 @@ public class ResourceManager implements IResourceManager {
 	 * @return the modified resource
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized IResource modifyResource(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor)
 			throws ResourceException {
 		IResource previousResource = getResource(resourceIdentifier);
@@ -148,7 +144,6 @@ public class ResourceManager implements IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized void removeResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		repo.removeResource(resourceIdentifier.getId());
@@ -160,7 +155,6 @@ public class ResourceManager implements IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized void startResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		repo.startResource(resourceIdentifier.getId());
@@ -172,7 +166,6 @@ public class ResourceManager implements IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized void stopResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		repo.stopResource(resourceIdentifier.getId());
@@ -184,14 +177,12 @@ public class ResourceManager implements IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		logger.info("Getting resourceId: " + resourceIdentifier.getId());
 		repo.forceStopResource(resourceIdentifier.getId());
 	}
 
-	@Override
 	public synchronized void exportResourceDescriptor(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		ResourceDescriptor resourceDescriptor = repo.getResource(resourceIdentifier.getId()).getResourceDescriptor();
@@ -213,7 +204,6 @@ public class ResourceManager implements IResourceManager {
 	 * @return the resource
 	 * @throws ResourceException
 	 */
-	@Override
 	public synchronized IResource getResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		return repo.getResource(resourceIdentifier.getId());
@@ -239,7 +229,6 @@ public class ResourceManager implements IResourceManager {
 	 * 
 	 * @return the ResourceIdentifier
 	 */
-	@Override
 	public IResourceIdentifier getIdentifierFromResourceName(String resourceType, String resourceName) throws ResourceException {
 		IResourceIdentifier identifier = null;
 		IResourceRepository repo = null;
@@ -271,7 +260,6 @@ public class ResourceManager implements IResourceManager {
 	 * 
 	 * @return the Name. If null didn't find a resource with this ID
 	 */
-	@Override
 	public String getNameFromResourceID(String ID) throws ResourceException {
 		String name = null;
 		IResourceRepository repo = null;

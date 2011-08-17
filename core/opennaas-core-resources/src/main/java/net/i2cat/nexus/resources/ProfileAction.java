@@ -7,13 +7,11 @@ import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 
 public class ProfileAction extends Action {
 
-	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		// TODO Auto-generated method stub
 		return false;

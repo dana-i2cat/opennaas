@@ -49,18 +49,15 @@ public class ResourceIdentifier implements IResourceIdentifier {
 		this.id = id;
 	}
 
-	@Override
 	@XmlTransient
 	public String getId() {
 		return id;
 	}
 
-	@Override
 	public String getType() {
 		return type;
 	}
 
-	@Override
 	@XmlTransient
 	public URI getURI() {
 		try {

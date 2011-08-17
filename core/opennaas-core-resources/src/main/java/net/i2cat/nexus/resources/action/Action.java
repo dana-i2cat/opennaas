@@ -17,32 +17,26 @@ public abstract class Action implements IAction {
 
 	protected Object			behaviorParams	= null;
 
-	@Override
 	public ManagedElement getModelToUpdate() {
 		return modelToUpdate;
 	}
 
-	@Override
 	public void setModelToUpdate(ManagedElement modelToUpdate) {
 		this.modelToUpdate = modelToUpdate;
 	}
 
-	@Override
 	public Object getParams() {
 		return params;
 	}
 
-	@Override
 	public void setParams(Object params) {
 		this.params = params;
 	}
 
-	@Override
 	public String getActionID() {
 		return actionID;
 	}
 
-	@Override
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
 	}

@@ -14,13 +14,11 @@ import net.i2cat.nexus.resources.descriptor.Information;
 public class InformationValidator implements Validator
 {
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public boolean supports(Class clazz) {
 		return Information.class.isAssignableFrom(clazz);
 	}
 
-	@Override
 	public void validate(Object obj, Errors e) {
 		ValidationUtils.rejectIfEmpty(e, "type", "field.empty", "type field cannot be empty");
 		ValidationUtils.rejectIfEmpty(e, "name", "field.empty", "name field cannot be empty");

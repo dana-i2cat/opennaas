@@ -22,7 +22,6 @@ public class CapabilityDescriptorValidator implements Validator
 	Errors informationErrors = null;
 	Errors descriptorErrors = null;
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public boolean supports(Class clazz) {
 		return CapabilityDescriptor.class.isAssignableFrom(clazz);
@@ -38,7 +37,6 @@ public class CapabilityDescriptorValidator implements Validator
 		validate(obj, descriptorErrors);
 	}
 	
-	@Override
 	public void validate(Object obj, Errors e) {
 		descriptorErrors = e;
 		ValidationUtils.rejectIfEmpty(descriptorErrors, "capabilityInformation", "field.empty",

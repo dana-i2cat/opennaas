@@ -36,7 +36,6 @@ public class ProfileManager implements IProfileManager {
 	 */
 	private Map<String, ProfileDescriptor>	profileDescriptors	= new HashMap<String, ProfileDescriptor>();
 
-	@Override
 	public void addProfile(IProfile profile) throws ResourceException {
 		String profileName = profile.getProfileDescriptor().getProfileName();
 		if (!profiles.containsKey(profileName)) {
@@ -47,7 +46,6 @@ public class ProfileManager implements IProfileManager {
 		}
 	}
 
-	@Override
 	public void removeProfile(String profileName) throws ResourceException {
 
 		if (registeredResources.containsKey(profileName)) {
@@ -63,7 +61,6 @@ public class ProfileManager implements IProfileManager {
 
 	}
 
-	@Override
 	public IProfile getProfile(String profileId) throws ResourceException {
 
 		if (!profiles.containsKey(profileId))
@@ -72,14 +69,12 @@ public class ProfileManager implements IProfileManager {
 		return profiles.get(profileId);
 	}
 
-	@Override
 	public List<ProfileDescriptor> listProfiles() {
 		List<ProfileDescriptor> descriptors = new ArrayList<ProfileDescriptor>();
 		descriptors.addAll(profileDescriptors.values());
 		return descriptors;
 	}
 
-	@Override
 	public void registerResource(String profileId, IResource resource) throws ResourceException {
 
 		if (!profiles.containsKey(profileId))
@@ -102,7 +97,6 @@ public class ProfileManager implements IProfileManager {
 		}
 	}
 
-	@Override
 	public void unregisterResource(String profileId, IResource resource) throws ResourceException {
 
 		if (!profiles.containsKey(profileId))
@@ -114,7 +108,6 @@ public class ProfileManager implements IProfileManager {
 		}
 	}
 
-	@Override
 	public List<IResource> getRegisteredResources(String profileId) throws ResourceException {
 
 		if (!profiles.containsKey(profileId))
