@@ -48,12 +48,11 @@
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
 		</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-	<version>4.8.2</version>
-    </dependency>
-
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+		</dependency>
 		<!-- 
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
