@@ -38,6 +38,8 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			logger.info("Building JPA EntityManager for unit tests");
 			emFactory = Persistence.createEntityManagerFactory("ResourceCore-test");
+			if(emFactory==null)
+				fail("Persistence.createEntityManagerFactory didn't give us one :(.");
 			em = emFactory.createEntityManager();
 		} catch (Exception ex) {
 			ex.printStackTrace();
