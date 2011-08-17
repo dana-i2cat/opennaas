@@ -1,4 +1,4 @@
-package net.i2cat.nexus.platformmanager.tests;
+package org.opennaas.core.platformmanager.tests;
 
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
