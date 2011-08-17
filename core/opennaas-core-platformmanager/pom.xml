@@ -104,7 +104,7 @@
 						<id>process-classes</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<className>net.i2cat.nexus.platformmanager.PlatformManagerWS</className>
+							<className>org.opennaas.core.platformmanager.PlatformManagerWS</className>
 							<outputFile>${basedir}/target/generated/wsdl/platformManager.wsdl</outputFile>
 							<genWsdl>true</genWsdl>
 							<soap12>true</soap12>
@@ -155,7 +155,7 @@
 							org.osgi.service.command,
 							*</Import-Package>
 						<Export-Package>
-							net.i2cat.nexus.platformmanager*;version="${project.version}", 
+							org.opennaas.core.platformmanager*;version="${project.version}", 
     						</Export-Package>
 						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
 						<DynamicImport-Package>org.apache.cxf.*</DynamicImport-Package>

@@ -3,7 +3,7 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="nexus/platform">
-			<action class="net.i2cat.nexus.platformmanager.shell.GetPlatformDetailsCommand"/>
+			<action class="org.opennaas.core.platformmanager.shell.GetPlatformDetailsCommand"/>
 		</command>
 	</command-bundle>
 </blueprint>

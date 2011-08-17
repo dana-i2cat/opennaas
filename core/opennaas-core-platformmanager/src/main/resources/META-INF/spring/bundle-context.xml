@@ -5,5 +5,5 @@
 	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml"/>
 	<import resource="classpath:META-INF/cxf/osgi/cxf-extension-osgi.xml"/>
 	<!-- Define the JAX-WS Endpoint from the previous bean -->
-	<jaxws:endpoint id="platformManagerService" implementor="net.i2cat.nexus.platformmanager.PlatformManagerWS" address="/PlatformManagerService"/>
+	<jaxws:endpoint id="platformManagerService" implementor="org.opennaas.core.platformmanager.PlatformManagerWS" address="/PlatformManagerService"/>
 </beans>

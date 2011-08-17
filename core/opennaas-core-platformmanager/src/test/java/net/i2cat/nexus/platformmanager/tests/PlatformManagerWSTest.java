@@ -6,12 +6,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.platformmanager.IPlatformManagerWS;
+import org.opennaas.core.platformmanager.Java;
+import org.opennaas.core.platformmanager.OperatingSystem;
+import org.opennaas.core.platformmanager.Platform;
+import org.opennaas.core.platformmanager.PlatformManagerWS;
 
-import net.i2cat.nexus.platformmanager.IPlatformManagerWS;
-import net.i2cat.nexus.platformmanager.Java;
-import net.i2cat.nexus.platformmanager.OperatingSystem;
-import net.i2cat.nexus.platformmanager.Platform;
-import net.i2cat.nexus.platformmanager.PlatformManagerWS;
 
 public class PlatformManagerWSTest {
 

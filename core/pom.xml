@@ -164,5 +164,6 @@
 		<module>opennaas-core-hsqldb</module>
 		<module>opennaas-core-karafbranding</module>
 		<module>opennaas-core-platformmanager</module>
+		<module>opennaas-core-resources</module>
 	</modules>
 </project>
