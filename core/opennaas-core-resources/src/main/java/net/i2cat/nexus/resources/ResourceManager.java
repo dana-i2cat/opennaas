@@ -40,7 +40,7 @@ public class ResourceManager implements IResourceManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void resourceRepositoryAdded(IResourceRepository serviceInstance, Map serviceProperties) {
+	public void resourceRepositoryAdded(IResourceRepository serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null && serviceProperties != null) {
 			logger.debug("New resource repository added for resources of type: " + serviceProperties.get("type"));
 
@@ -55,7 +55,7 @@ public class ResourceManager implements IResourceManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void resourceRepositoryRemoved(IResourceRepository serviceInstance, Map serviceProperties) {
+	public void resourceRepositoryRemoved(IResourceRepository serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null && serviceProperties != null) {
 			logger.debug("Existing resource repository removed :" + serviceInstance.toString() + " " + serviceProperties.get("type"));
 			// Remove it from the map

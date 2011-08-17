@@ -125,7 +125,7 @@ public class ProfileManager implements IProfileManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void profileAdded(IProfile serviceInstance, Map serviceProperties) {
+	public void profileAdded(IProfile serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null) {
 			logger.debug("New profile added for resources of type: " + serviceInstance.getProfileDescriptor().getResourceType());
 			try {
@@ -145,7 +145,7 @@ public class ProfileManager implements IProfileManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void profileRemoved(IProfile serviceInstance, Map serviceProperties) {
+	public void profileRemoved(IProfile serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null) {
 			logger.debug("Existing profile removed :" + serviceInstance.toString() + " " + serviceProperties.get("type"));
 			// Remove it from the map

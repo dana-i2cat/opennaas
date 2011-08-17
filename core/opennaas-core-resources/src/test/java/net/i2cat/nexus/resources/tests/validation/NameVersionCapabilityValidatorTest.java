@@ -62,7 +62,6 @@ public class NameVersionCapabilityValidatorTest {
 		printFieldErrors(validator.getErrors());
 	}
 
-	@SuppressWarnings("unchecked")
 	private void printFieldErrors(List<Errors> errors) {
 		for (int i = 0; i < errors.size(); i++) {
 			List<FieldError> fieldErrors = errors.get(i).getFieldErrors();

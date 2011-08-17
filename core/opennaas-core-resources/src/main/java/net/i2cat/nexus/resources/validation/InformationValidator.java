@@ -14,8 +14,7 @@ import net.i2cat.nexus.resources.descriptor.Information;
 public class InformationValidator implements Validator
 {
 
-	@SuppressWarnings("unchecked")
-	public boolean supports(Class clazz) {
+	public boolean supports(Class<?> clazz) {
 		return Information.class.isAssignableFrom(clazz);
 	}
 

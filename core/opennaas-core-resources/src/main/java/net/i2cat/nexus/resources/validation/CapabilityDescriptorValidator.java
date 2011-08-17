@@ -22,8 +22,7 @@ public class CapabilityDescriptorValidator implements Validator
 	Errors informationErrors = null;
 	Errors descriptorErrors = null;
 
-	@SuppressWarnings("unchecked")
-	public boolean supports(Class clazz) {
+	public boolean supports(Class<?> clazz) {
 		return CapabilityDescriptor.class.isAssignableFrom(clazz);
 	}
 

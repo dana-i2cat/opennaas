@@ -2,7 +2,6 @@ package net.i2cat.nexus.resources.tests.capability;
 
 import junit.framework.Assert;
 import net.i2cat.nexus.resources.ILifecycle;
-import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.Resource;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionSet;

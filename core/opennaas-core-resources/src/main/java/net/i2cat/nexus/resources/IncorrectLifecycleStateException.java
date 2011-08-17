@@ -9,6 +9,10 @@ import net.i2cat.nexus.resources.ILifecycle.State;
  */
 public class IncorrectLifecycleStateException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	State	resourceState;
 
 	public IncorrectLifecycleStateException() {
