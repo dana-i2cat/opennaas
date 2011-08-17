@@ -6,14 +6,13 @@ import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 /**
  * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
@@ -44,7 +43,7 @@ public class ResourceDescriptor {
 	 * necessary parameter to configure a ssh connection
 	 */
 	// TODO TO TEST!
-	@CollectionOfElements
+	@ElementCollection
 	Map<String, String>					properties			= new HashMap<String, String>();
 
 	@XmlElement(name = "capabilityDescriptors")
