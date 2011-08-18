@@ -15,12 +15,17 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<!-- This dep has to be here on the top or all shit breaks loose -->
+			<groupId>org.hibernate.java-persistence</groupId>
+			<artifactId>jpa-api</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_1.0_spec</artifactId>
+			<artifactId>geronimo-jpa_3.0_spec</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.dynamicjava.osgi</groupId>
@@ -30,10 +35,7 @@
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>service-binding-utils</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.dynamicjava.osgi</groupId>
-			<artifactId>dynamic-jpa</artifactId>
-		</dependency>
+		<!-- This deprecated garbage enforces persistence-api 1.0.2, which breaks persistence. <dependency><groupId>org.dynamicjava.osgi</groupId><artifactId>dynamic-jpa</artifactId></dependency>-->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hibernate</artifactId>

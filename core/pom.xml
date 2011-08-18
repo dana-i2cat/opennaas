@@ -17,8 +17,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-jpa_1.0_spec</artifactId>
-				<version>1.1.2</version>
+				<artifactId>geronimo-jpa_3.0_spec</artifactId>
+				<version>1.1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
@@ -141,6 +141,11 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.java-persistence</groupId>
+				<artifactId>jpa-api</artifactId>
+				<version>2.0-cr-1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
