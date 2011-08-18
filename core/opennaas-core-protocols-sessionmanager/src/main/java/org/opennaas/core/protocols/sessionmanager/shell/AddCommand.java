@@ -10,8 +10,8 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
- * List the device ids registere do the protocol manager
- * 
+ * List the device ids registered to the protocol manager
+ * FIXME: Is this really doing that? 
  * @author Pau Minoves
  * 
  */
