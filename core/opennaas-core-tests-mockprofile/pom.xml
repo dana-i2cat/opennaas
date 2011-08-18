@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!--  parent parameters  -->
+	<parent>
+		<artifactId>opennaas-core</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<!--  POM id -->
+	<artifactId>opennaas-core-tests-mockprofile</artifactId>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<name>OpenNaaS :: Core :: Mock Profile for testing</name>
+	<description>Nexus profile just for testing</description>
+	<packaging>bundle</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Import-Package>!${project.artifactId}.*,
+							*</Import-Package>
+						<Export-Package>
+							net.i2cat.nexus.tests;version="${project.version}",
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
