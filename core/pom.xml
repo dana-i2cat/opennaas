@@ -170,5 +170,6 @@
 		<module>opennaas-core-karafbranding</module>
 		<module>opennaas-core-platformmanager</module>
 		<module>opennaas-core-resources</module>
+		<module>opennaas-core-protocols-sessionmanager</module>
 	</modules>
 </project>
