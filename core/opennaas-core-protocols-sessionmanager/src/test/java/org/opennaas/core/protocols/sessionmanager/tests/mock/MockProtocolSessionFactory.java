@@ -1,9 +1,9 @@
 package org.opennaas.core.protocols.sessionmanager.tests.mock;
 
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,6 +1,6 @@
 package org.opennaas.core.protocols.sessionmanager;
 
-import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
+import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 
 /**
  * The protocol session listener will always be notified with this filter

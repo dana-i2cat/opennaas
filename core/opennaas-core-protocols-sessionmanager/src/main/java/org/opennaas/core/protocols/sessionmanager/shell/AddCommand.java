@@ -1,9 +1,9 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.protocol.IProtocolManager;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

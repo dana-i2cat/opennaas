@@ -9,14 +9,14 @@ import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSession.Status;
+import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
+import org.opennaas.core.resources.protocol.IProtocolSessionListener;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
