@@ -23,7 +23,7 @@ public class Platform {
 	
 	public static final String NORMAL     = "\u001b[0m";
 	public static final String BOLD       = "\u001b[1m";
-	public static final String RESOURCES = "net.i2cat.nexus.resources";
+	public static final String RESOURCES = "org.opennaas.core.resources";
 	
 	private OperatingSystem operatingSystem = null;
 	private Java java = null;
