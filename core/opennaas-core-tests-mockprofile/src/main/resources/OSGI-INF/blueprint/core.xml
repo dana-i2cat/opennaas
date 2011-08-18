@@ -3,5 +3,5 @@
 	<!-- Single point of entry to create/modify/update/get resources -->
 	<bean id="testProfile" class="org.opennaas.core.testprofile.Profile"/>
 	<!-- Register a ResourceManager as an OSGi Service -->
-	<service ref="testProfile" interface="net.i2cat.nexus.resources.profile.IProfile"/>
+	<service ref="testProfile" interface="org.opennaas.core.resources.profile.IProfile"/>
 </blueprint>

@@ -3,10 +3,10 @@ package org.opennaas.core.testprofile;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.profile.IProfile;
-import net.i2cat.nexus.resources.profile.ProfileDescriptor;
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.ProfileDescriptor;
 
 public class Profile implements IProfile {
 
