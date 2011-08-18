@@ -23,43 +23,35 @@ public class Profile implements IProfile {
 		fillProfile(overridenActionIds, suitableCapabilities, resourceType);
 	}
 
-	@Override
 	public String getProfileName() {
 		return profileName;
 	}
 
-	@Override
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
 	}
 
-	@Override
 	public void addActionSetForCapability(IActionSet actionSet, String idCapability) {
 		actionSets.put(idCapability, actionSet);
 	}
 
-	@Override
 	public IActionSet getActionSetForCapability(String idCapability) {
 
 		return actionSets.get(idCapability);
 	}
 
-	@Override
 	public void initModel(Object map) {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
 	public Map<String, IActionSet> getActionSets() {
 		return actionSets;
 	}
 
-	@Override
 	public void setActionSets(Map<String, IActionSet> actionSets) {
 		this.actionSets = actionSets;
 	}
 
-	@Override
 	public ProfileDescriptor getProfileDescriptor() {
 		return descriptor;
 	}
