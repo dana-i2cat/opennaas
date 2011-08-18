@@ -144,7 +144,7 @@ public class ProtocolManager implements IProtocolManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void sessionFactoryAdded(IProtocolSessionFactory serviceInstance, Map serviceProperties) {
+	public void sessionFactoryAdded(IProtocolSessionFactory serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null && serviceProperties != null) {
 			log.debug("New protocol session factory added for protocols: " + serviceProperties.get(ProtocolSessionContext.PROTOCOL));
 			protocolFactories.put((String) serviceProperties.get(ProtocolSessionContext.PROTOCOL), serviceInstance);
@@ -157,7 +157,7 @@ public class ProtocolManager implements IProtocolManager {
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
-	public void sessionFactoryRemoved(IProtocolSessionFactory serviceInstance, Map serviceProperties) {
+	public void sessionFactoryRemoved(IProtocolSessionFactory serviceInstance, Map<?, ?> serviceProperties) {
 		if (serviceInstance != null && serviceProperties != null) {
 			log.debug("Existing protocol session factory removed :"
 					+ serviceInstance.toString() + " "
