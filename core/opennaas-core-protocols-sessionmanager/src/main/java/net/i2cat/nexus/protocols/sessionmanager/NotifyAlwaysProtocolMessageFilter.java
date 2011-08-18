@@ -9,7 +9,6 @@ import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
  * 
  */
 public class NotifyAlwaysProtocolMessageFilter implements IProtocolMessageFilter {
-	@Override
 	public boolean notify(Object message) {
 		return true;
 	}

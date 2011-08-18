@@ -253,7 +253,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		}
 	}
 
-	@Override
 	public synchronized IProtocolSession obtainSessionByProtocol(String protocol, boolean lock) throws ProtocolException {
 
 		if (protocol == null)
@@ -266,7 +265,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return obtainSession(context, lock);
 	}
 
-	@Override
 	public synchronized IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException {
 
 		ProtocolPooled pooled = liveSessions.get(sessionId);
@@ -280,7 +278,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return pooled.getProtocolSession();
 	}
 
-	@Override
 	public synchronized IProtocolSession obtainSession(ProtocolSessionContext context, boolean lock) throws ProtocolException {
 
 		IProtocolSession session = null;

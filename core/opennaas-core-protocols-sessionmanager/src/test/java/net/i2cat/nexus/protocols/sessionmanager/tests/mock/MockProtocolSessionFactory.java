@@ -18,7 +18,6 @@ public class MockProtocolSessionFactory implements IProtocolSessionFactory {
 		logger.info("Mock Protocol Session Factory created");
 	}
 
-	@Override
 	public IProtocolSession createProtocolSession(String sessionID, ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 		IProtocolSession session = new MockProtocolSession();
 		session.setSessionId(sessionID);

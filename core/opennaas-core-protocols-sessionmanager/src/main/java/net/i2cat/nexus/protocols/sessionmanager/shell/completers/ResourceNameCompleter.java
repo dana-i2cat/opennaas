@@ -11,7 +11,6 @@ import org.apache.karaf.shell.console.completer.StringsCompleter;
 
 public class ResourceNameCompleter implements Completer {
 
-	@Override
 	public int complete(String arg0, int arg1, List<String> arg2) {
 		IResourceManager resourceManager = null;
 		List<IResource> list = null;
