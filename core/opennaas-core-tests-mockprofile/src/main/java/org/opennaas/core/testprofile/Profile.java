@@ -1,4 +1,4 @@
-package net.i2cat.nexus.testprofile;
+package org.opennaas.core.testprofile;
 
 import java.util.HashMap;
 import java.util.Map;

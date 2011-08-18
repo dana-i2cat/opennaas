@@ -1,4 +1,4 @@
-package net.i2cat.nexus.testprofile;
+package org.opennaas.core.testprofile;
 
 import net.i2cat.nexus.resources.action.Action;
 import net.i2cat.nexus.resources.action.ActionException;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Single point of entry to create/modify/update/get resources -->
-	<bean id="testProfile" class="net.i2cat.nexus.testprofile.Profile"/>
+	<bean id="testProfile" class="org.opennaas.core.testprofile.Profile"/>
 	<!-- Register a ResourceManager as an OSGi Service -->
 	<service ref="testProfile" interface="net.i2cat.nexus.resources.profile.IProfile"/>
 </blueprint>
