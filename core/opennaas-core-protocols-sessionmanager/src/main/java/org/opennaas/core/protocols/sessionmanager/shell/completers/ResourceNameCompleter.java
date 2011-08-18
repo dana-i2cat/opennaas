@@ -1,4 +1,4 @@
-package net.i2cat.nexus.protocols.sessionmanager.shell.completers;
+package org.opennaas.core.protocols.sessionmanager.shell.completers;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package net.i2cat.nexus.protocols.sessionmanager.impl;
+package org.opennaas.core.protocols.sessionmanager.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

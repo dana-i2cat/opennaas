@@ -1,10 +1,7 @@
-package net.i2cat.nexus.protocols.sessionmanager.tests;
+package org.opennaas.core.protocols.sessionmanager.tests;
 
 import java.util.HashMap;
 
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
-import net.i2cat.nexus.protocols.sessionmanager.tests.mock.MockProtocolSessionFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
@@ -14,6 +11,9 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.tests.mock.MockProtocolSessionFactory;
 
 public class ProtocolManagerTest {
 

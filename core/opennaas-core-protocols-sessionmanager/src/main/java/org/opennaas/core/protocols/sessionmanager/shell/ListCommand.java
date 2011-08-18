@@ -1,8 +1,7 @@
-package net.i2cat.nexus.protocols.sessionmanager.shell;
+package org.opennaas.core.protocols.sessionmanager.shell;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
@@ -11,6 +10,7 @@ import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
  * List the device ids registere do the protocol manager

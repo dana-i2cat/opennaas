@@ -1,4 +1,4 @@
-package net.i2cat.nexus.protocols.sessionmanager;
+package org.opennaas.core.protocols.sessionmanager;
 
 import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
 

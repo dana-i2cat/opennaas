@@ -1,4 +1,4 @@
-package net.i2cat.nexus.protocols.sessionmanager.tests.mock;
+package org.opennaas.core.protocols.sessionmanager.tests.mock;
 
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
