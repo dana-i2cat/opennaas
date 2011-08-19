@@ -14,8 +14,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
-		<karaf.version>2.1.4-fuse-00-22</karaf.version>
 		<!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
+		<karaf.version>2.1.4-fuse-00-22</karaf.version>
 		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 	</properties>
 	<repositories>
@@ -108,6 +108,7 @@
 							<outputDirectory>${target-platform.path}</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
 							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
+							<!--<chmod file="${target-platform.path}/${servicemix.path}/bin/*" perm="ugo+rx" />-->
 						</configuration>
 					</execution>
 					<execution>

@@ -10,6 +10,9 @@
 	<name>OpenNaaS :: Core :: Resources</name>
 	<description>OpenNaaS Resources Core Component </description>
 	<packaging>bundle</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>

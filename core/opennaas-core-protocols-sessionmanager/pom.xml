@@ -10,6 +10,9 @@
 	<name>OpenNaaS :: Core :: Protocol Session Manager </name>
 	<description>OpenNaaS Protocol Session Manager Classes</description>
 	<packaging>bundle</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
