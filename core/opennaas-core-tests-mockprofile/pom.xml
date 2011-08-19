@@ -42,8 +42,7 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
-						<Import-Package>!${project.artifactId}.*,
-							*</Import-Package>
+						<Import-Package>*</Import-Package>
 						<Export-Package>
 							org.opennaas.core.testprofile;version="${project.version}",
 						</Export-Package>
