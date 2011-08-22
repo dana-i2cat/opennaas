@@ -70,4 +70,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<distributionManagement>
+		<repository>
+			<id>i2cat</id>
+			<name>libs-snapshot-local</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+		</repository>
+	</distributionManagement>
 </project>
