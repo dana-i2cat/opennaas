@@ -1,165 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
- 
- <modelVersion>4.0.0</modelVersion>
-
- <packaging>pom</packaging>
- 
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
 	<parent>
 		<artifactId>base-mantychore</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-
-
 	<name>Mantychore platform</name>
 	<artifactId>platform</artifactId>
 	<groupId>net.i2cat.mantychore</groupId>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<!--  properties to use fuse  -->
 	<properties>
 		<target-platform.path>target/mantychore</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 	</properties>
-
-
- <!--
+	<!--
   | imported (non-local) bundles are listed here as dependencies | and
   will be deployed by pax:provision unless they are marked | with
   <optional>true</optional>
  -->
-
- <build>
-  <resources>
-   <resource>
-    <directory>${pom.basedir}/src/main/filtered-resources</directory>
-    <filtering>true</filtering>
-    <includes>
-     <include>**/*</include>
-    </includes>
-   </resource>
-  </resources>
-
-  <plugins>
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-dependency-plugin</artifactId>
-    <executions>
-     <execution>
-	  <id>unpack-apache-servicemix</id>
-      <phase>package</phase>
-      <goals>
-       <goal>unpack</goal>
-      </goals>
-      <configuration>
-			<artifactItems>
-				<artifactItem>
-					<groupId>org.apache.servicemix</groupId>
-					<artifactId>apache-servicemix</artifactId>
-					<version>${fuse.version}</version>
-				</artifactItem>
-			</artifactItems>
-       <outputDirectory>${target-platform.path}</outputDirectory>
-       <overWriteIfNewer>true</overWriteIfNewer>
-	   <excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
-      </configuration>
-     </execution>
-     <execution>
-      <id>get-nexus-feature</id>
-      <phase>package</phase>
-      <goals>
-       <goal>copy</goal>
-      </goals>
-      <configuration>
-       <artifactItems>
-        <artifactItem>
-		<artifactId>nexus-fuse</artifactId>
-		<groupId>net.i2cat.nexus</groupId>
-		<version>1.0.0-SNAPSHOT</version> <!-- TODO: use variable project.version -->
-         	<type>xml</type>
-         	<classifier>features</classifier>
-        </artifactItem>
-       </artifactItems>
-       <outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/nexus/nexus-fuse/1.0.0-SNAPSHOT/</outputDirectory>
-       <overWriteIfNewer>true</overWriteIfNewer>
-      </configuration>
-     </execution>
-     <execution>
-      <id>get-mantychore-feature</id>
-      <phase>package</phase>
-      <goals>
-       <goal>copy</goal>
-      </goals>
-      <configuration>
-       <artifactItems>
-        <artifactItem>
-		<artifactId>mantychore</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
-		<version>1.0.0-SNAPSHOT</version> <!-- TODO: use variable project.version -->
-        	<type>xml</type>
-        	 <classifier>features</classifier>
-        </artifactItem>
-       </artifactItems>
-       <outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
-       <overWriteIfNewer>true</overWriteIfNewer>
-      </configuration>
-     </execution>
-    </executions>
-   </plugin>
-   
-   <plugin>
-    <groupId>org.apache.felix.karaf.tooling</groupId>
-    <artifactId>features-maven-plugin</artifactId>
-    <executions>
-     <execution>
-      <id>add-features-to-repo</id>
-      <phase>generate-resources</phase>
-      <goals>
-       <goal>add-features-to-repo</goal>
-      </goals>
-      <configuration>
-       <descriptors>
-        <descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
-       </descriptors>
-       <features>
-        <feature>i2cat-mantychore-deps</feature>
-        <feature>i2cat-mantychore-core</feature>
-       </features>
-       <repository>${target-platform.path}/${servicemix.path}/system</repository>
-      </configuration>
-     </execution>
-    </executions>
-   </plugin>
-
-   <plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-resources-plugin</artifactId>
-    <version>2.4</version> 
-    <executions>
-     <!-- process the resources to resolve the version variables -->
-     <execution>
-      <id>filter-resources</id>
-      <goals>
-       <goal>resources</goal>
-      </goals>
-      <phase>process-resources</phase>
-      <configuration>
-       <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-       <encoding>UTF-8</encoding>
-      </configuration>
-     </execution>
-     
-     <execution>
-      <id>install-mantychore-configs</id>
-      <phase>package</phase>
-      <goals>
-       <goal>copy-resources</goal>
-      </goals>
-      <configuration>
-      <outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-	<!--  
+	<build>
+		<resources>
+			<resource>
+				<directory>${pom.basedir}/src/main/filtered-resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack-apache-servicemix</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.apache.servicemix</groupId>
+									<artifactId>apache-servicemix</artifactId>
+									<version>${fuse.version}</version>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${target-platform.path}</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
+							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-nexus-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<artifactId>nexus-fuse</artifactId>
+									<groupId>net.i2cat.nexus</groupId>
+									<version>1.0.0-SNAPSHOT</version>
+									<!-- TODO: use variable project.version -->
+									<type>xml</type>
+									<classifier>features</classifier>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/nexus/nexus-fuse/1.0.0-SNAPSHOT/</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+					<execution>
+						<id>get-mantychore-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<artifactId>mantychore</artifactId>
+									<groupId>net.i2cat.mantychore</groupId>
+									<version>1.0.0-SNAPSHOT</version>
+									<!-- TODO: use variable project.version -->
+									<type>xml</type>
+									<classifier>features</classifier>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
+							<overWriteIfNewer>true</overWriteIfNewer>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix.karaf.tooling</groupId>
+				<artifactId>features-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-features-to-repo</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-features-to-repo</goal>
+						</goals>
+						<configuration>
+							<descriptors>
+								<descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
+							</descriptors>
+							<features>
+								<feature>i2cat-mantychore-deps</feature>
+								<feature>i2cat-mantychore-core</feature>
+							</features>
+							<repository>${target-platform.path}/${servicemix.path}/system</repository>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<!-- process the resources to resolve the version variables -->
+					<execution>
+						<id>filter-resources</id>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+						<phase>process-resources</phase>
+						<configuration>
+							<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+							<encoding>UTF-8</encoding>
+						</configuration>
+					</execution>
+					<execution>
+						<id>install-mantychore-configs</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+							<!--  
       <resources>
 		  <resource>
 		    <directory>src/main/java</directory>
@@ -169,26 +157,19 @@
 		  </resource>
 	  </resources>
       -->
-       <overwrite>true</overwrite>
-       <outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-       <resources>
-        <resource>
-         <directory>target/classes</directory>
-        </resource>
-       </resources>
-      
-      </configuration>
-     </execution>
-    
-    
-    
-     <!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
+							<overwrite>true</overwrite>
+							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+							<resources>
+								<resource>
+									<directory>target/classes</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					<!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
      maven clean plugin... -->
-    </executions>
-   </plugin>
-   
-   
-  </plugins>
- </build>
-
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

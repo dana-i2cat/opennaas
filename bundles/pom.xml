@@ -1,59 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-  <modelVersion>4.0.0</modelVersion>
-
-  <packaging>pom</packaging>
-
-  <parent>
-    <artifactId>base-mantychore</artifactId>
-    <groupId>net.i2cat.mantychore</groupId>
-    <version>1.0.0-SNAPSHOT</version>
-  </parent>
-
-  <name>Mantychore Bundles</name>
-  <artifactId>mantychore-bundles</artifactId>
-  <groupId>net.i2cat.mantychore</groupId>
-  <version>1.0.0-SNAPSHOT</version>
-  
-  <dependencies>
-  	<dependency>
-		<groupId>org.apache.geronimo.specs</groupId>
-		<artifactId>geronimo-jpa_1.0_spec</artifactId>
- 	 </dependency>
-	 <dependency>
-		<groupId>org.easymock</groupId>
-		<artifactId>easymock</artifactId>
-		<scope>test</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.easymock</groupId>
-		<artifactId>easymockclassextension</artifactId>
-		<scope>test</scope>
-	</dependency>
-  </dependencies>
-
-  <!-- mvn build will only recurse on pom.xml inside this folders: -->
-
-  <!-- include your project here -->
-
-  <modules>
-   	<module>net.i2cat.nexus.hibernate</module>
-	<module>net.i2cat.nexus.hsqldb</module> 
-	<module>net.i2cat.nexus.persistence</module>
-	<module>net.i2cat.nexus.platformmanager</module>
-	<module>net.i2cat.mantychore.model</module> 
-	<module>net.i2cat.nexus.resources</module>   
-	<module>net.i2cat.nexus.protocols.sessionmanager</module> 
-	<module>net.i2cat.mantychore.fragment.velocity</module>
-	<module>net.i2cat.mantychore.actionsets.junos</module>
-   	<module>net.i2cat.mantychore.protocols.netconf</module>
-  	<module>net.i2cat.mantychore.queuemanager</module>
-  	<module>net.i2cat.mantychore.repository</module>
-  	<module>net.i2cat.mantychore.capability.chassis</module> 
-  	<module>net.i2cat.mantychore.capability.ip</module> 
-  	<module>net.i2cat.nexus.tests.mockprofile</module> 
- 
-  </modules>
-
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<parent>
+		<artifactId>base-mantychore</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<name>Mantychore Bundles</name>
+	<artifactId>mantychore-bundles</artifactId>
+	<groupId>net.i2cat.mantychore</groupId>
+	<version>1.0.0-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-jpa_1.0_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymockclassextension</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<!-- mvn build will only recurse on pom.xml inside this folders: -->
+	<!-- include your project here -->
+	<modules>
+		<module>net.i2cat.nexus.hibernate</module>
+		<module>net.i2cat.nexus.hsqldb</module>
+		<module>net.i2cat.nexus.persistence</module>
+		<module>net.i2cat.nexus.platformmanager</module>
+		<module>net.i2cat.mantychore.model</module>
+		<module>net.i2cat.nexus.resources</module>
+		<module>net.i2cat.nexus.protocols.sessionmanager</module>
+		<module>net.i2cat.mantychore.fragment.velocity</module>
+		<module>net.i2cat.mantychore.actionsets.junos</module>
+		<module>net.i2cat.mantychore.protocols.netconf</module>
+		<module>net.i2cat.mantychore.queuemanager</module>
+		<module>net.i2cat.mantychore.repository</module>
+		<module>net.i2cat.mantychore.capability.chassis</module>
+		<module>net.i2cat.mantychore.capability.ip</module>
+		<module>net.i2cat.nexus.tests.mockprofile</module>
+	</modules>
 </project>

@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<name>Nexus :: Protocol Session Manager </name>
 	<description>Nexus Protocol Session Manager Classes</description>
-
-
-
 	<packaging>bundle</packaging>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
 		<dependency>
-		<groupId>net.i2cat.nexus</groupId>
-		<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		
 		</dependency>
 	</dependencies>
-
 	<build>
 		<resources>
 			<resource>
@@ -45,7 +36,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -71,5 +61,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

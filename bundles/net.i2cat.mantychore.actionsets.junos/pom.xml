@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.actionsets</groupId>
 	<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-
-
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Mantychore ActionSet Junos</name>
 	<description>Mantychore ActionSet Junos Implementation</description>
-
 	<dependencies>
 		<!-- Internal Mantychore dependencies -->
 		<dependency>
@@ -40,13 +35,12 @@
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.fragment</groupId>
 			<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
-			<version>1.0.0-SNAPSHOT</version>	
+			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
 		<!--
 			specify the last version from xerces-impl to work with the digester
 			parser
@@ -77,7 +71,6 @@
 			<artifactId>commons-configuration</artifactId>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<resources>
 			<resource>
@@ -91,9 +84,7 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -126,5 +117,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

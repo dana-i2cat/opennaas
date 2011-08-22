@@ -1,42 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-
-<!-- Maven parent  -->
+	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.protocols</groupId>
 	<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	
-<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Mantychore Netconf Protocol</name>
 	<description>Mantychore Netconf Protocol Implementation</description>
-
-
 	<dependencies>
-		<dependency>	
+		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>commons-configuration</groupId>
-		    <artifactId>commons-configuration</artifactId>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-	</dependencies>		
-
+	</dependencies>
 	<build>
 		<resources>
 			<resource>
@@ -47,7 +40,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				
 			</plugin>
 			<!--
 				TOCHECK, IT INCLUDES PARAMETERS IN TESTS <plugin>
@@ -58,8 +50,6 @@
 				<buildDirectory>${project.build.directory}</buildDirectory> [...]
 				</systemPropertyVariables> </configuration> </plugin>
 			-->
-
-			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -77,9 +67,7 @@
 						</Export-Package>
 					</instructions>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

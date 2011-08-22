@@ -5,28 +5,23 @@
 		<artifactId>mantychore-tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<artifactId>itests-bundle-settings</artifactId>
 	<groupId>net.i2cat.mantychore.sprints</groupId>
 	<version>1.0.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore :: POMS :: Sprint tests</name>
 	<packaging>pom</packaging>
-
 	<!--  integration tests -->
 	<modules>
 		<module>week26</module>
 	</modules>
-
 	<!--  dependencies for integration tests -->
 	<dependencies>
-
 		<!-- JPA specs -->
 		<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_1.0_spec</artifactId>
 		</dependency>
-
 		<!-- Integration tests -->
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
@@ -50,5 +45,4 @@
 			<type>pom</type>
 		</dependency>
 	</dependencies>
-
 </project>

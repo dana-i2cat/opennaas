@@ -1,26 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
-	xmlns:osgi="http://www.springframework.org/schema/osgi"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
-	<import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
-	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml" />  
-	<import resource="classpath:META-INF/cxf/osgi/cxf-extension-osgi.xml" />
-	 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:osgi="http://www.springframework.org/schema/osgi" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/osgi http://www.springframework.org/schema/osgi/spring-osgi.xsd http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	<import resource="classpath:META-INF/cxf/cxf.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+	<import resource="classpath:META-INF/cxf/cxf-extension-http.xml"/>
+	<import resource="classpath:META-INF/cxf/osgi/cxf-extension-osgi.xml"/>
 	<!-- Get the reference to the OSGi Service for the Engine Manager -->
- 	<osgi:reference id="resourceManager"
-		interface="net.i2cat.nexus.resources.IResourceManager" />
-	
-    <!-- Instantiate the Service Class while injecting the Manager in the constructor -->
-	 <bean name="resourceManagerService" class="net.i2cat.nexus.resourcemanager.soapendpoint.ResourceManagerSOAPEndpoint">
+	<osgi:reference id="resourceManager" interface="net.i2cat.nexus.resources.IResourceManager"/>
+	<!-- Instantiate the Service Class while injecting the Manager in the constructor -->
+	<bean name="resourceManagerService" class="net.i2cat.nexus.resourcemanager.soapendpoint.ResourceManagerSOAPEndpoint">
 		<constructor-arg>
-			<ref bean="resourceManager" />
+			<ref bean="resourceManager"/>
 		</constructor-arg>
 	</bean>
 	<!-- Define the JAX-WS Endpoint from the previous bean -->
-	 <jaxws:endpoint id="resourceManagerSOAPEndpoint"
-		implementorClass="net.i2cat.nexus.resourcemanager.soapendpoint.ResourceManagerSOAPEndpoint"
-		implementor="#resourceManagerService" address="/ResourceManagerSOAPEndpoint" />
- 
+	<jaxws:endpoint id="resourceManagerSOAPEndpoint" implementorClass="net.i2cat.nexus.resourcemanager.soapendpoint.ResourceManagerSOAPEndpoint" implementor="#resourceManagerService" address="/ResourceManagerSOAPEndpoint"/>
 </beans>

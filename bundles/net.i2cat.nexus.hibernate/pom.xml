@@ -5,14 +5,12 @@
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.hibernate</artifactId>
 	<packaging>bundle</packaging>
 	<name>Nexus :: Hibernate</name>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -58,7 +56,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>

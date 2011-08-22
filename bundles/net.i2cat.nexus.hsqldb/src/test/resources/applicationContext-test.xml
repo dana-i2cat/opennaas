@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
-	http://www.springframework.org/schema/beans 
-	  http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
-
-
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="org.hsqldb.jdbcDriver" />
-		<property name="url" value="jdbc:hsqldb:mem:test" />
-		
-		<property name="username" value="sa" />
-		<property name="password" value="" />
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="  http://www.springframework.org/schema/beans     http://www.springframework.org/schema/beans/spring-beans.xsd  ">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+		<property name="url" value="jdbc:hsqldb:mem:test"/>
+		<property name="username" value="sa"/>
+		<property name="password" value=""/>
 	</bean>
-
-	<bean id="dataBase" class="net.i2cat.nexus.hsqldb.internal.HSQLDBServer"
-		lazy-init="false">
+	<bean id="dataBase" class="net.i2cat.nexus.hsqldb.internal.HSQLDBServer" lazy-init="false">
 		<property name="dataSource">
-			<ref local="dataSource" />
+			<ref local="dataSource"/>
 		</property>
 		<property name="serverProperties">
 			<props>
@@ -29,5 +18,4 @@
 			</props>
 		</property>
 	</bean>
-
 </beans>
