@@ -120,20 +120,22 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 
 		try {
 			IResource resource = repository.createResource(resourceDescriptor);
-			repository.startResource(resource.getResourceDescriptor().getId());
-			// resource.start();
 			createProtocolForResource(resource.getResourceIdentifier().getId());
+			repository.startResource(resource.getResourceDescriptor().getId());
 
 			ArrayList<String> response = KarafCommandHelper.executeCommand(
 					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
-			// assert command output no contains ERROR tag
+			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
+			
 			response = KarafCommandHelper.executeCommand("queue:listActions  " + resourceFriendlyID, commandprocessor);
-			// assert command output no contains ERROR tag
+			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
+			
 			response = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
-			// assert command output no contains ERROR tag
+			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
+			
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 

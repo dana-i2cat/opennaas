@@ -143,6 +143,9 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 			// add resource with profile1
 			resourceDescriptor.setProfileId(profile1.getProfileName());
 			IResource resource = repository.createResource(resourceDescriptor);
+			
+			createProtocolForResource(resource.getResourceDescriptor().getId());
+			
 			repository.startResource(resource.getResourceDescriptor().getId());
 
 			KarafCommandHelper.executeCommand("profile:list", commandprocessor);
@@ -208,10 +211,10 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 			resourceDescriptor.setProfileId(profile1.getProfileName());
 			IResource resource = repository.createResource(resourceDescriptor);
 
+			createProtocolForResource(resource.getResourceDescriptor().getId());
+			
 			// launch setInterface Action and assert DummyAction is executed instead of original one
 			repository.startResource(resource.getResourceIdentifier().getId());
-
-			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			ArrayList<String> response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
 
