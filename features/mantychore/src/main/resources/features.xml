@@ -18,7 +18,7 @@
 		</bundle>
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.hsqldb/1.0.0-SNAPSHOT
 		</bundle>
-		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.persistence/1.0.0-SNAPSHOT
+		<bundle>mvn:org.opennaas/opennaas-core-persistence/1.0.0-SNAPSHOT
 		</bundle>
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.platformmanager/1.0.0-SNAPSHOT
 		</bundle>

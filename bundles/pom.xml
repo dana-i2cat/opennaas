@@ -32,7 +32,7 @@
 	<modules>
 		<module>net.i2cat.nexus.hibernate</module>
 		<module>net.i2cat.nexus.hsqldb</module>
-		<module>net.i2cat.nexus.persistence</module>
+		<!--<module>net.i2cat.nexus.persistence</module>-->
 		<module>net.i2cat.nexus.platformmanager</module>
 		<module>net.i2cat.mantychore.model</module>
 		<module>net.i2cat.nexus.resources</module>
