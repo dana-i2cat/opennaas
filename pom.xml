@@ -635,6 +635,11 @@
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
 		</repository>
 		<repository>
+			<id>i2cat-snapshot</id>
+			<name>i2cat snapshots</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+		</repository>
+		<repository>
 			<id>springsource-external</id>
 			<name>SpringSource Enterprise Bundle Repository - External Bundle
 				Releases</name>
