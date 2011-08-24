@@ -15,7 +15,7 @@
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 		<!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
-		<karaf.version>2.1.4-fuse-00-22</karaf.version>
+		<karaf.version>2.2.0-fuse-00-43</karaf.version>
 		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 	</properties>
 	<repositories>
@@ -67,7 +67,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-karafbranding</artifactId>
+			<artifactId>karafbranding-opennaas</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
@@ -121,7 +121,7 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.opennaas</groupId>
-									<artifactId>opennaas-core-karafbranding</artifactId>
+									<artifactId>karafbranding-opennaas</artifactId>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}/${servicemix.path}/lib</outputDirectory>

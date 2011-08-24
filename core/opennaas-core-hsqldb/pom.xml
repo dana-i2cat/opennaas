@@ -57,8 +57,8 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${package.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${package.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"

@@ -11,7 +11,7 @@
 	<artifactId>opennaas-core</artifactId>
 	<properties>
 		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<karaf.version>2.1.4-fuse-00-22</karaf.version>
+		<karaf.version>2.2.0-fuse-00-43</karaf.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -174,10 +174,10 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<!-- include your project here -->
 	<modules>
+		<module>karafbranding-opennaas</module>
 		<module>opennaas-core-hibernate</module>
 		<module>opennaas-core-persistence</module>
 		<module>opennaas-core-hsqldb</module>
-		<module>opennaas-core-karafbranding</module>
 		<module>opennaas-core-platformmanager</module>
 		<module>opennaas-core-resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->

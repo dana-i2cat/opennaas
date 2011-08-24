@@ -6,7 +6,7 @@
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>opennaas-core-karafbranding</artifactId>
+	<artifactId>karafbranding-opennaas</artifactId>
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Core :: karaf branding</name>
 	<description>Branding of the karaf shell to suit our preferences</description>
