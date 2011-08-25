@@ -108,7 +108,7 @@
 							javassist.util.proxy,
 							javax.jms,
 							org.apache.activemq,
-							org.osgi.service.command,
+							<!--org.osgi.service.command,-->
 							*</Import-Package>
 						<Export-Package>org.opennaas.core.resources*;version="${project.version}"
 						</Export-Package>
