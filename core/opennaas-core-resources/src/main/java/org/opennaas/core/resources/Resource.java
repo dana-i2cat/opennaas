@@ -11,8 +11,6 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
 
-import net.i2cat.mantychore.model.ManagedElement;
-
 /**
  * Main resource class
  * 
@@ -39,7 +37,7 @@ public class Resource implements IResource {
 	/** The resource specific bootstapper class */
 	private IResourceBootstrapper	bootstrapper		= null;
 
-	private ManagedElement			model;
+	private IModel			model;
 
 	private IProfile				profile				= null;
 
@@ -236,14 +234,14 @@ public class Resource implements IResource {
 	 * @param model
 	 *            the model to set
 	 */
-	public void setModel(ManagedElement model) {
+	public void setModel(IModel model) {
 		this.model = model;
 	}
 
 	/**
 	 * @return the model
 	 */
-	public ManagedElement getModel() {
+	public IModel getModel() {
 		return model;
 	}
 

@@ -7,8 +7,6 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
 
-import net.i2cat.mantychore.model.ManagedElement;
-
 /**
  * The top level resource interface
  * 
@@ -89,9 +87,9 @@ public interface IResource extends ILifecycle {
 	 */
 	public void stop() throws ResourceException, CorruptStateException;
 
-	public void setModel(ManagedElement model);
+	public void setModel(IModel model);
 
-	public ManagedElement getModel();
+	public IModel getModel();
 
 	public IProfile getProfile();
 

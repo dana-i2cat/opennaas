@@ -100,11 +100,11 @@ public class ResourceDescriptor {
 		this.profileId = profileId;
 	}
 
-	// public ManagedElement getModel() {
+	// public IModel getModel() {
 	// return model;
 	// }
 	//
-	// public void setModel(ManagedElement model) {
+	// public void setModel(IModel model) {
 	// this.model = model;
 	// }
 }

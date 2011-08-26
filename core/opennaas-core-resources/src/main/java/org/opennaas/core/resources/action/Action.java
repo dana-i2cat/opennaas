@@ -1,9 +1,8 @@
 package org.opennaas.core.resources.action;
 
-import net.i2cat.mantychore.model.ManagedElement;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.IModel;
 
 public abstract class Action implements IAction {
 
@@ -11,17 +10,17 @@ public abstract class Action implements IAction {
 														.getLog(Action.class);
 
 	// FIXME what model is the entire model or the one for change from the command
-	protected ManagedElement	modelToUpdate;
+	protected IModel	modelToUpdate;
 	protected Object			params			= null;
 	protected String			actionID		= null;
 
 	protected Object			behaviorParams	= null;
 
-	public ManagedElement getModelToUpdate() {
+	public IModel getModelToUpdate() {
 		return modelToUpdate;
 	}
 
-	public void setModelToUpdate(ManagedElement modelToUpdate) {
+	public void setModelToUpdate(IModel modelToUpdate) {
 		this.modelToUpdate = modelToUpdate;
 	}
 

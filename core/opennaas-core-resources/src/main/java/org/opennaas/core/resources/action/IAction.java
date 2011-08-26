@@ -1,8 +1,7 @@
 package org.opennaas.core.resources.action;
 
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-
-import net.i2cat.mantychore.model.ManagedElement;
 
 /**
  * Basic interface all Action must implements
@@ -15,13 +14,13 @@ public interface IAction {
 	/**
 	 * 
 	 */
-	public ManagedElement getModelToUpdate();
+	public IModel getModelToUpdate();
 
 	/**
 	 * 
 	 */
 
-	public void setModelToUpdate(ManagedElement modelToUpdate);
+	public void setModelToUpdate(IModel modelToUpdate);
 
 	/**
 	 * 
