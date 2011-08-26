@@ -109,7 +109,7 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.core.platformmanager.PlatformManagerWS</className>
-							<outputFile>${basedir}/target/generated/wsdl/platformManager.wsdl</outputFile>
+							<!--<outputFile>${basedir}/target/generated/wsdl/platformManager.wsdl</outputFile>-->
 							<genWsdl>true</genWsdl>
 							<soap12>true</soap12>
 							<verbose>true</verbose>
