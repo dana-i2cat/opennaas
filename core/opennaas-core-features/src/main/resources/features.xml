@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	<feature name="opennaas-core-deps" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/1.0.1</bundle>
+		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/1.0.0</bundle>
+		<!--<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/1.0.0</bundle>
+		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/1.1.2</bundle>-->
+		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/1.8.0.10</bundle>
+		<bundle>mvn:org.springframework/spring-core/3.0.5.RELEASE</bundle>
+		<bundle>mvn:org.springframework/spring-beans/3.0.5.RELEASE</bundle>
+		<bundle>mvn:org.springframework/spring-context/3.0.5.RELEASE</bundle>
+		<feature>cxf</feature>
+		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/1.1.3</bundle>-->
+		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>-->
+		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_3.0_spec/1.1.1</bundle>
+		<feature>activemq</feature>
+		<bundle>mvn:org.apache.felix.gogo/org.apache.felix.gogo.runtime/0.4.0</bundle>
+	</feature>
+	<feature name="opennaas-core" version="1.0.0-SNAPSHOT">
+		<feature version="1.0.0-SNAPSHOT">opennaas-core-deps</feature>
+		<bundle>mvn:org.opennaas/opennaas-core-hibernate/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-persistence/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-resources/1.0.0-SNAPSHOT</bundle>
+		<!--  TODO IT IS NOTR USED IT IS AN EXAMPLE  -->
+		<!--
+			<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.resourcemanager.soapendpoint/1.0.0-SNAPSHOT</bundle>
+		-->
+		<bundle>mvn:org.opennaas/opennaas-core-protocols-sessionmanager/1.0.0-SNAPSHOT
+		</bundle>
+	</feature>
+	<feature name="i2cat-nexus-testprofile" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/1.0.0-SNAPSHOT
+		</bundle>
+	</feature>
+</features>

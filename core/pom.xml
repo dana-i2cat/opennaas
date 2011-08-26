@@ -174,6 +174,7 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<!-- include your project here -->
 	<modules>
+		<module>opennaas-core-features</module>
 		<module>karafbranding-opennaas</module>
 		<module>opennaas-core-hibernate</module>
 		<module>opennaas-core-persistence</module>
