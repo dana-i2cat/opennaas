@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @org.hibernate.annotations.NamedQueries( { @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
-	private static final long			serialVersionUID	= -8571009012048021984L;
+	//private static final long			serialVersionUID	= -8571009012048021984L;
 
 	@Id
 	private String						id;
