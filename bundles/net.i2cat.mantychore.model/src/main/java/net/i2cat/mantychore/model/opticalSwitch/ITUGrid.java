@@ -3,10 +3,10 @@ package net.i2cat.mantychore.model.opticalSwitch;
 /**
  * See ITU G.694.1
  * 
- * f (THz)= 196,5000 – n * 0,0125 <br/>
- * n = ( 196,5000 – f (THz) ) / 0,0125 <br/>
- * n = ( 196500,0 – c / lambda(nm) ) / 12'50 <br/>
- * lambda (nm) = c / (196500,0 – n * 12,50 ) <br/>
+ * f (THz)= 196,5000 n * 0,0125 <br/>
+ * n = ( 196,5000  f (THz) ) / 0,0125 <br/>
+ * n = ( 196500,0 c / lambda(nm) ) / 12'50 <br/>
+ * lambda (nm) = c / (196500,0  n * 12,50 ) <br/>
  * 
  * @author isart
  * 
