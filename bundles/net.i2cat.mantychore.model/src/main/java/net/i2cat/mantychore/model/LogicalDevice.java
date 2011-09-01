@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalDevice as well as methods comparable to the
@@ -52,6 +53,111 @@ public class LogicalDevice extends EnabledLogicalElement implements
 	// public List<System> getSystem() {
 	// return (List<System>) this.getToAssociatedElementsByType(SystemDevice.class);
 	// }
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011) <br>
+	 * Adds a connection between this and given LogicalDevice.
+	 * 
+	 * 
+	 * @param dstLogicalDevice
+	 * @return true if connection has been added, false otherwise.
+	 */
+	public boolean addDeviceConnection(LogicalDevice dstLogicalDevice) {
+
+		// check if it is already added
+		Association a = this.getFirstToAssociationByTypeAndElement(DeviceConnection.class, dstLogicalDevice);
+		if (a != null)
+			return false;
+
+		if (dstLogicalDevice == null)
+			return false;
+		return (DeviceConnection.link(this, dstLogicalDevice) != null);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Removes connection between this and given LogicalDevice.
+	 * 
+	 * @return true if connection has been removed, false otherwise.
+	 */
+	public boolean removeDeviceConnection(LogicalDevice dstLogicalDevice) {
+		if (dstLogicalDevice == null)
+			return false;
+		Association a = this.getFirstToAssociationByTypeAndElement(DeviceConnection.class, dstLogicalDevice);
+		if (a == null)
+			return false;
+		else {
+			a.unlink();
+			return true;
+		}
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Get LogicalDevices this Device is connected to.
+	 * 
+	 * @return list of LogicalDevices this is connected to.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<LogicalDevice> getOutgoingDeviceConnections() {
+		return (List<LogicalDevice>) this.getToAssociatedElementsByType(DeviceConnection.class);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Get LogicalDevices connected to this device.
+	 * 
+	 * @return list of LogicalDevices connected to this.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<LogicalDevice> getIncomingDeviceConnections() {
+		return (List<LogicalDevice>) this.getFromAssociatedElementsByType(DeviceConnection.class);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011) <br>
+	 * Adds given logicalPort to the association PortsOnDevice
+	 * 
+	 * @param logicalPort
+	 * @return
+	 */
+	public boolean addPortOnDevice(LogicalPort logicalPort) {
+
+		// TODO check if it is already added
+
+		if (logicalPort == null)
+			return false;
+		return (PortOnDevice.link(this, logicalPort) != null);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Removes given logicalPort from the association PortsOnDevice
+	 * 
+	 * @return
+	 */
+	public boolean removePortOnDevice(LogicalPort logicalPort) {
+		if (logicalPort == null)
+			return false;
+		Association a = this.getFirstToAssociationByTypeAndElement(PortOnDevice.class, logicalPort);
+		if (a == null)
+			return false;
+		else {
+			a.unlink();
+			return true;
+		}
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Get LogicalPorts associated with this through PortsOnDevice.
+	 * 
+	 * @return list of ports on this device
+	 */
+	@SuppressWarnings("unchecked")
+	public List<LogicalPort> getPortsOnDevice() {
+		return (List<LogicalPort>) this.getToAssociatedElementsByType(PortOnDevice.class);
+	}
 
 	/**
 	 * This constructor creates a LogicalDeviceBeanImpl Class which implements the LogicalDeviceBean Interface, and encapsulates the CIM class

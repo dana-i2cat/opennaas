@@ -140,8 +140,11 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
-			Assert.fail();
+			if (ExceptionUtils.getRootCause(e) != null){
+				log.error(ExceptionUtils.getRootCause(e).getMessage());
+				Assert.fail(ExceptionUtils.getRootCause(e).getMessage());
+			}
+			Assert.fail(e.getMessage());
 		}
 	}
 

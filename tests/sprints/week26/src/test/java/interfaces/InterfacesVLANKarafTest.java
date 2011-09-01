@@ -21,20 +21,21 @@ import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.service.command.CommandProcessor;
+
 //import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
@@ -46,6 +47,8 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
 	private IResourceManager	resourceManager;
+
+	private Boolean				isMock;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -60,7 +63,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -72,10 +75,17 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	public void createProtocolForResource(String resourceId) throws ProtocolException {
+	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
 
+		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
+
+		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void initTest() {
@@ -89,8 +99,9 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
+			clearRepo();
 			resource = resourceManager.createResource(resourceDescriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());
 
 			// call the command to initialize the model
@@ -107,7 +118,13 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	@After
+	public void clearRepo() throws ResourceException {
+		for (IResource resource : resourceManager.listResources()) {
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+	}
+
+	// @After
 	public void deleteResource() {
 		try {
 			resourceManager.stopResource(resource.getResourceIdentifier());
@@ -121,31 +138,48 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		} catch (ResourceException e) {
 			Assert.fail();
 		}
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 	}
 
 	@Test
 	public void setVLANtest() {
+
+		initBundles();
+
 		// SET ETH
 		int VLANid = 50;
-		String inter = "fe-0/3/1";
-		String subport = "30";
+		// For Real Router Test
+		// String inter = "fe-0/3/1";
+		// String subport = "30";
+
+		// For mock TEST
+		String inter = "fe-0/1/3";
+		String subport = "15";
 
 		try {
 			testingMethod(inter, subport, VLANid);
 		} catch (Exception e) {
+			deleteResource();
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		}
 
 		// SET LT
 		VLANid = 223;
-		inter = "lt-1/2/0";
-		subport = "121";
+
+		// For Real Router Test
+		// inter = "lt-1/2/0";
+		// subport = "121";
+
+		// For mock TEST
+		inter = "lt-0/1/2";
+		subport = "12";
 
 		try {
 			testingMethod(inter, subport, VLANid);
 		} catch (Exception e1) {
+			deleteResource();
 			e1.printStackTrace();
 			Assert.fail(e1.getLocalizedMessage());
 		}
@@ -157,54 +191,57 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
 
 		} catch (Exception e) {
+			deleteResource();
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
 
+		deleteResource();
 	}
 
 	public void checkModel(String inter, String port, int vlanid, IResource resource) {
 
 		Boolean found = false;
-
-		ComputerSystem system = (ComputerSystem) resource.getModel();
-		List<LogicalDevice> ld = system.getLogicalDevices();
-		Assert.assertNotNull(ld);
-		for (LogicalDevice l : ld) {
-			// Only check the modified interface
-			if (l.getElementName().equalsIgnoreCase(inter)) {
-				if (l instanceof EthernetPort) {
-					EthernetPort eth = (EthernetPort) l;
-					if (eth.getPortNumber() == Integer.parseInt(port)) {
-						found = true;
-						List<ProtocolEndpoint> pp = eth.getProtocolEndpoint();
-						Assert.assertNotNull(pp);
-						for (ProtocolEndpoint p : pp) {
-							if (p instanceof VLANEndpoint) {
-								Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+		if (!isMock) {
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			Assert.assertNotNull(ld);
+			for (LogicalDevice l : ld) {
+				// Only check the modified interface
+				if (l.getElementName().equalsIgnoreCase(inter)) {
+					if (l instanceof EthernetPort) {
+						EthernetPort eth = (EthernetPort) l;
+						if (eth.getPortNumber() == Integer.parseInt(port)) {
+							found = true;
+							List<ProtocolEndpoint> pp = eth.getProtocolEndpoint();
+							Assert.assertNotNull(pp);
+							for (ProtocolEndpoint p : pp) {
+								if (p instanceof VLANEndpoint) {
+									Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+								}
 							}
 						}
-					}
-				} else if (l instanceof LogicalTunnelPort) {
-					LogicalTunnelPort lt = (LogicalTunnelPort) l;
-					Assert.assertNotNull(lt.getPeer_unit());
-					if (lt.getPortNumber() == Integer.parseInt(port)) {
-						found = true;
-						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
-						Assert.assertNotNull(pp);
-						for (ProtocolEndpoint p : pp) {
-							if (p instanceof VLANEndpoint) {
-								Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+					} else if (l instanceof LogicalTunnelPort) {
+						LogicalTunnelPort lt = (LogicalTunnelPort) l;
+						Assert.assertNotNull(lt.getPeer_unit());
+						if (lt.getPortNumber() == Integer.parseInt(port)) {
+							found = true;
+							List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
+							Assert.assertNotNull(pp);
+							for (ProtocolEndpoint p : pp) {
+								if (p instanceof VLANEndpoint) {
+									Assert.assertEquals(vlanid, ((VLANEndpoint) p).getVlanID());
+								}
 							}
-						}
 
+						}
 					}
+
 				}
-
 			}
+			// Look if exits the interface to be checked
+			Assert.assertTrue(found);
 		}
-		// Look if exits the interface to be checked
-		Assert.assertTrue(found);
 
 	}
 

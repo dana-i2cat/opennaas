@@ -207,6 +207,7 @@ public class GenericJpaRepository<T, ID extends Serializable> implements
 	 */
 	public void delete(T entity) {
 		getEntityManager().remove(entity);
+		getEntityManager().flush();
 	}
 
 	/**
@@ -214,6 +215,7 @@ public class GenericJpaRepository<T, ID extends Serializable> implements
 	 */
 	public T save(T entity) {
 		final T savedEntity = getEntityManager().merge(entity);
+		getEntityManager().flush();
 		return savedEntity;
 	}
 }

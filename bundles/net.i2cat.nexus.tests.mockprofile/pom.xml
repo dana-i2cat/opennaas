@@ -1,27 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<!--  parent parameters  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
+
 	<!--  POM id -->
+
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.tests.mockprofile</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus :: Mock Profile for testing</name>
 	<description>Nexus profile just for testing</description>
 	<packaging>bundle</packaging>
+
 	<dependencies>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
+
 	<build>
 		<resources>
 			<resource>
@@ -32,12 +42,15 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+				
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<version>2.0.0</version>
-				<extensions>true</extensions>
+	<extensions>true</extensions>
 				<configuration>
 					<instructions>
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
@@ -52,4 +65,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

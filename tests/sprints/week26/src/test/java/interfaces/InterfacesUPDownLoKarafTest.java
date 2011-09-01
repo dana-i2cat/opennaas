@@ -12,11 +12,12 @@ import java.util.List;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
+import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
@@ -32,6 +33,7 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
+
 //import org.apache.felix.service.command.CommandProcessor;
 
 @SuppressWarnings("unused")
@@ -40,12 +42,13 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	static Log					log				= LogFactory
 														.getLog(InterfacesDownKarafTest.class);
-	IResourceRepository			repository;
+	IResourceManager			resourceManager;
 	String						resourceFriendlyID;
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
 	@Inject
 	BundleContext				bundleContext	= null;
+	private Boolean				isMock;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -66,22 +69,23 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
-		repository = getOsgiService(IResourceRepository.class, 50000);
+		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
 		initTest();
 
 	}
 
-	public void createProtocolForResource(String resourceId) throws ProtocolException {
-
+	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		String uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
 
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, protocolSessionContext);
+		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
+		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public void initTest() {
@@ -95,10 +99,11 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
 		try {
-			resource = repository.createResource(resourceDescriptor);
+			clearRepo();
+			resource = resourceManager.createResource(resourceDescriptor);
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
+			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
 
 			// call the command to initialize the model
 
@@ -114,12 +119,18 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 	}
 
+	public void clearRepo() throws ResourceException {
+		for (IResource resource : resourceManager.listResources()) {
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+	}
+
 	// @After
 	public void resetRepository() {
 
 		try {
-			repository.stopResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
+			resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
@@ -131,91 +142,98 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail();
 		}
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 	}
 
 	@Test
 	public void DownUPInterfaceLoTest() {
 		initBundles();
-		DownInterfaceLo();
-		UPInterfaceLo();
+		try {
+			DownInterfaceLo();
+			UPInterfaceLo();
+		} catch (Exception e) {
+			resetRepository();
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
 		resetRepository();
 	}
 
-	public void DownInterfaceLo() {
+	public void DownInterfaceLo() throws Exception {
 
-		try {
-			// chassis:setVLAN interface VLANid
-			List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0", commandprocessor);
-			log.info(response.get(0));
+		// try {
+		// chassis:setVLAN interface VLANid
+		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0", commandprocessor);
+		log.info(response.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
 
-			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			log.info(response1.get(0));
+		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		log.info(response1.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-			log.info(response2.get(0));
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		log.info(response2.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
 
-			ComputerSystem system = (ComputerSystem) resource.getModel();
-			List<LogicalDevice> ld = system.getLogicalDevices();
-			// for (LogicalDevice logicalDevice : ld) {
-			// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-			// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-			// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
-			// }
-			// }
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		ComputerSystem system = (ComputerSystem) resource.getModel();
+		List<LogicalDevice> ld = system.getLogicalDevices();
+		// for (LogicalDevice logicalDevice : ld) {
+		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
+		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+		// }
+		// }
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// Assert.fail(e.getMessage());
+		// }
 
 	}
 
-	public void UPInterfaceLo() {
+	public void UPInterfaceLo() throws Exception {
 
-		try {
-			// chassis:setVLAN interface VLANid
-			List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0", commandprocessor);
-			log.info(response.get(0));
+		// try {
+		// chassis:setVLAN interface VLANid
+		List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0", commandprocessor);
+		log.info(response.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
 
-			List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-			log.info(response1.get(0));
+		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		log.info(response1.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response1.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response1.get(1).isEmpty());
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces  -r " + resourceFriendlyID, commandprocessor);
-			log.info(response2.get(0));
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces  -r " + resourceFriendlyID, commandprocessor);
+		log.info(response2.get(0));
 
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response2.get(1).isEmpty());
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response2.get(1).isEmpty());
 
-			// // assert model updated
-			// ComputerSystem system = (ComputerSystem) resource.getModel();
-			// List<LogicalDevice> ld = system.getLogicalDevices();
-			// for (LogicalDevice logicalDevice : ld) {
-			// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-			// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-			// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
-			// }
-			// }
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		// // assert model updated
+		// ComputerSystem system = (ComputerSystem) resource.getModel();
+		// List<LogicalDevice> ld = system.getLogicalDevices();
+		// for (LogicalDevice logicalDevice : ld) {
+		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
+		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+		// }
+		// }
+		// } catch (Exception e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// Assert.fail(e.getMessage());
+		// }
 	}
 
 }

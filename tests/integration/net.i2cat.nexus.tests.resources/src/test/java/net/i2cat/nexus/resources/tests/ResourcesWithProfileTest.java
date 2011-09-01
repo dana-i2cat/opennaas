@@ -106,6 +106,8 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 	 */
 	@Test
 	public void createResourceWithProfile() {
+		
+		initBundles();
 
 		try {
 

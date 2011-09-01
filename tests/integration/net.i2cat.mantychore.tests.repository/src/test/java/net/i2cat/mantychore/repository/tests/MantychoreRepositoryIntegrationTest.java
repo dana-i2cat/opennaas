@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
@@ -27,6 +28,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,12 +101,39 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		repository = getOsgiService(IResourceRepository.class, 50000);
 
+		clearRepo();
+
 		log.info("INFO: Initialized!");
 
 	}
 
+	@After
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[repository.listResources().size()];
+		toRemove = repository.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			try {
+				if (resource.getState().equals(State.ACTIVE)) {
+					repository.stopResource(resource.getResourceIdentifier().getId());
+				}
+				repository.removeResource(resource.getResourceIdentifier().getId());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				Assert.fail(e.getLocalizedMessage());
+			}
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
 	@Test
 	public void createAndRemoveResource() {
+
+		clearRepo();
 
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
 
@@ -124,6 +153,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
+			clearRepo();
 			log.error("Exception!! ", e);
 			Assert.fail(e.getMessage());
 		}
@@ -132,6 +162,8 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 	@Test
 	public void StartAndStopResource() {
+
+		clearRepo();
 
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -180,6 +212,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
+			clearRepo();
 			log.error("Exception!! ", e);
 			Assert.fail(e.getMessage());
 		}
@@ -188,6 +221,8 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 	@Test
 	public void operationWithResource() {
+
+		clearRepo();
 
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
 
@@ -232,6 +267,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			repository.removeResource(resource.getResourceIdentifier().getId());
 
 		} catch (Exception e) {
+			clearRepo();
 			log.error("Exception!!", e);
 			Assert.fail(e.getMessage());
 		}

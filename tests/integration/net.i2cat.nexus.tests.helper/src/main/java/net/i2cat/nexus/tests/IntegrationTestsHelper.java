@@ -40,7 +40,7 @@ public class IntegrationTestsHelper {
 		/* specify log level */
 
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																							.value("INFO"));
+																							.value("DEBUG"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
 
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
@@ -67,8 +67,30 @@ public class IntegrationTestsHelper {
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
+	
+	public static Option[] getLuminisTestOptions() {
+		/* luminis features */
+		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES	= { "i2cat-luminis-core" };
+		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
+	}
+	public static Option[] getMantychoreLuminisTestOptions(){
 
-	public static String waitForAllBundlesActive(BundleContext bundleContext) {
+		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES	= { "i2cat-mantychore-core","i2cat-luminis-core" };		
+		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
+	}
+	public static Option[] getNexusTestOptions() {
+		/* luminis features */
+		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES	= { "i2cat-nexus" };
+		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
+	}
+	
+	public static void waitForAllBundlesActive(BundleContext bundleContext){
 		int MAX_RETRIES = 100;
 		Bundle b = null;
 		boolean active = true;
@@ -123,7 +145,6 @@ public class IntegrationTestsHelper {
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-		return strBundles;
 	}
 
 	public static String listBundles(BundleContext bundleContext) {

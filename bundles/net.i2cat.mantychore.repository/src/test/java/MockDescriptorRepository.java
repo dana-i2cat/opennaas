@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.core.persistence.GenericRepository;
+import net.i2cat.nexus.persistence.GenericRepository;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 
 /**

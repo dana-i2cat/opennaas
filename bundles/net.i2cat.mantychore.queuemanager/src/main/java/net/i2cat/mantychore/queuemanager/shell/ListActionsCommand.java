@@ -46,7 +46,11 @@ public class ListActionsCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
-
+			if (queue == null) {
+				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
+				return -1;
+			}
+			
 			List<IAction> listActions = (List<IAction>) queue.sendMessage(QueueConstants.GETQUEUE, null);
 
 			String[] titles = { "num", "actionID" };
@@ -70,24 +74,24 @@ public class ListActionsCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
-			}
-		}
-		throw new Exception("Error getting the capability");
-	}
-
-	private boolean validateResource(IResource resource) throws ResourceException {
-		if (resource == null)
-			throw new ResourceException("No resource found.");
-		if (resource.getModel() == null)
-			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
-		if (resource.getCapabilities() == null) {
-			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
-		}
-		return true;
-	}
+//	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+//		for (ICapability capability : capabilities) {
+//			if (capability.getCapabilityInformation().getType().equals(type)) {
+//				return capability;
+//			}
+//		}
+//		throw new Exception("Error getting the capability");
+//	}
+//
+//	private boolean validateResource(IResource resource) throws ResourceException {
+//		if (resource == null)
+//			throw new ResourceException("No resource found.");
+//		if (resource.getModel() == null)
+//			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+//		if (resource.getCapabilities() == null) {
+//			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+//		}
+//		return true;
+//	}
 
 }

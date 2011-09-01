@@ -123,6 +123,24 @@ public class ManagedElement implements Serializable {
 	}
 
 	/**
+	 * Returns the firsts Association from toAssociations that matches with association type and have the ManagedElement element as "to" element
+	 * 
+	 * @param clazz
+	 *            specific Association.class
+	 * @param element
+	 *            that represents the "to"
+	 * @return Association of type clazz that have I as a "from" and the element as "to"
+	 */
+	public Association getFirstToAssociationByTypeAndElement(Class<? extends Association> clazz, ManagedElement element) {
+		for (Association assoc : toAssociations)
+			if (clazz.isInstance(assoc))
+				if (assoc.getTo().equals(element))
+					return assoc;
+
+		return null;
+	}
+
+	/**
 	 * 
 	 * Add a new association to the vector toAssociation
 	 * 
@@ -163,6 +181,24 @@ public class ManagedElement implements Serializable {
 				return removeToAssociation(assoc);
 			}
 		return false;
+	}
+
+	/**
+	 * 
+	 * remove the specific association from the vector toAssociation that
+	 * 
+	 * have the ManagedElement element as a "to"
+	 * 
+	 * @param the
+	 *            ManagedElement that represents the "to" into the Association
+	 * 
+	 * @return true if association is removed from the vector, false otherwise
+	 * */
+	public boolean removeToAssociationByTypeAndElement(Class<? extends Association> clazz, ManagedElement element) {
+		Association assoc = getFirstToAssociationByTypeAndElement(clazz, element);
+		if (assoc == null)
+			return false;
+		return removeToAssociation(assoc);
 	}
 
 	/**
@@ -239,7 +275,7 @@ public class ManagedElement implements Serializable {
 	 *            Association.class
 	 * @return ManagedElement that represents the "from" of the fromAssociations
 	 */
-	public ManagedElement getFisrtsFromAssociatedElementByType(Class<? extends Association> clazz) {
+	public ManagedElement getFirstFromAssociatedElementByType(Class<? extends Association> clazz) {
 		ManagedElement element = null;
 
 		for (Association assoc : fromAssociations) {
@@ -262,6 +298,24 @@ public class ManagedElement implements Serializable {
 		for (Association assoc : fromAssociations)
 			if (assoc.getFrom().equals(element))
 				return assoc;
+
+		return null;
+	}
+
+	/**
+	 * Returns the firsts Association from fromAssociations that matches with association type and have the ManagedElement element as "from" element
+	 * 
+	 * @param clazz
+	 *            specific Association.class
+	 * @param element
+	 *            that represents the "from"
+	 * @return Association of type clazz that have I as a "to" and the element as "from"
+	 */
+	public Association getFirstFromAssociationByTypeAndElement(Class<? extends Association> clazz, ManagedElement element) {
+		for (Association assoc : fromAssociations)
+			if (clazz.isInstance(assoc))
+				if (assoc.getFrom().equals(element))
+					return assoc;
 
 		return null;
 	}

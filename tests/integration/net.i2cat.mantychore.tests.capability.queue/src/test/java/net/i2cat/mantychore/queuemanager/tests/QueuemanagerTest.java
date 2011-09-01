@@ -178,12 +178,12 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 
 	@Test
 	public void listActions() {
-		try {
-			before();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+//		try {
+//			before();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			Assert.fail(e.getLocalizedMessage());
+//		}
 		log.info("INFO: List actions");
 
 		IAction action = new MockAction();

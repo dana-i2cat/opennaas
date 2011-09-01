@@ -37,7 +37,7 @@ import org.osgi.framework.BundleContext;
 public class UseProfileBundleTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	static Log			log				= LogFactory.getLog(ResourcesWithProfileTest.class);
+	static Log			log				= LogFactory.getLog(UseProfileBundleTest.class);
 
 	IResourceRepository	resourceRepository;
 	IProfileManager		profileManager;
@@ -103,6 +103,8 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 	@Test
 	public void createResourceWithProfile() {
 
+		initBundles();
+		
 		try {
 
 			List<String> capabilities = new ArrayList<String>();

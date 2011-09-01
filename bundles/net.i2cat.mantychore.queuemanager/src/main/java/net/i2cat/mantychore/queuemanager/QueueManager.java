@@ -157,7 +157,8 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	}
 
 	private ActionResponse prepare(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
-		IAction prepareAction = getActionSet().obtainAction(QueueConstants.PREPARE);
+		IActionSet actionSet = getActionSet();
+		IAction prepareAction = actionSet.obtainAction(QueueConstants.PREPARE);
 		return prepareAction.execute(protocolSessionManager);
 	}
 

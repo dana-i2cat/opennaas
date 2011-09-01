@@ -43,7 +43,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 * @return The System element
 	 */
 	public System getSystem() {
-		return (System) this.getFisrtsFromAssociatedElementByType(HostedRoute.class);
+		return (System) this.getFirstFromAssociatedElementByType(HostedRoute.class);
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 * @return The ProtocolEndpoint element
 	 */
 	public ProtocolEndpoint getProtocolEndpoint() {
-		return (ProtocolEndpoint) this.getFisrtsFromAssociatedElementByType(RouteUsesEndpoint.class);
+		return (ProtocolEndpoint) this.getFirstFromAssociatedElementByType(RouteUsesEndpoint.class);
 	}
 
 	/**

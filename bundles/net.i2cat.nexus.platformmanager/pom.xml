@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.platformmanager</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+
 	<name>Nexus :: Platform Manager</name>
+
 	<packaging>bundle</packaging>
 	<description>Nexus Platform Manager</description>
 	<dependencies>
@@ -62,6 +67,7 @@
 			<artifactId>cxf-rt-databinding-aegis</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 	<build>
 		<resources>
@@ -76,7 +82,9 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
 			</plugin>
+
 			<!-- WSDL Generation -->
 			<plugin>
 				<groupId>org.apache.cxf</groupId>
@@ -111,6 +119,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -159,4 +168,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

@@ -97,17 +97,6 @@ public class SetIPv4Command extends GenericKarafCommand {
 		return null;
 	}
 
-	private boolean validateResource(IResource resource) throws ResourceException {
-		if (resource == null)
-			throw new ResourceException("No resource found.");
-		if (resource.getModel() == null)
-			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
-		if (resource.getCapabilities() == null) {
-			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
-		}
-		return true;
-	}
-
 	private Object validateParams(IResource resource) throws Exception {
 		if (splitInterfaces(interfaceName)) {
 
@@ -126,9 +115,8 @@ public class SetIPv4Command extends GenericKarafCommand {
 				if (device.getElementName().equalsIgnoreCase(name)) {
 					if (device instanceof NetworkPort) {
 						// TODO implement method clone
-						device.getElementName();
 						if (((NetworkPort) device).getPortNumber() == port) {
-							if (name.startsWith("lt")) {
+							if (device.getElementName().startsWith("lt")) {
 								LogicalTunnelPort lt = new LogicalTunnelPort();
 								LogicalTunnelPort ltOld = (LogicalTunnelPort) device;
 								lt.setElementName(ltOld.getElementName());

@@ -5,12 +5,14 @@
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.hibernate</artifactId>
 	<packaging>bundle</packaging>
 	<name>Nexus :: Hibernate</name>
 	<version>1.0.0-SNAPSHOT</version>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -56,6 +58,7 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -68,8 +71,8 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${pom.version}</Bundle-Version>
 						<Import-Package>org.hsqldb, javax.sql*, javax.naming*,
 							*;resolution:=optional</Import-Package>
 						<Embed-Dependency>*;scope=compile;inline=true;artifactId=!slf4j-api,!slf4j-log4j12</Embed-Dependency>
@@ -78,7 +81,6 @@
 						</_exportcontents>
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
-					<unpackBundle>true</unpackBundle>
 				</configuration>
 			</plugin>
 		</plugins>

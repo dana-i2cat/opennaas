@@ -60,6 +60,50 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 	}
 
 	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011) <br>
+	 * Adds given device to the association PortsOnDevice
+	 * 
+	 * @param logicalDevice
+	 * @return
+	 */
+	public boolean addDevice(LogicalDevice logicalDevice) {
+
+		// TODO check if it is allready added
+
+		if (logicalDevice == null)
+			return false;
+		return (PortOnDevice.link(logicalDevice, this) != null);
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Removes given device from the association PortsOnDevice
+	 * 
+	 * @return
+	 */
+	public boolean removeDevice(LogicalDevice logicalDevice) {
+		if (logicalDevice == null)
+			return false;
+		Association a = this.getFromAssociationByElement(logicalDevice);
+		if (a == null)
+			return false;
+		else {
+			a.unlink();
+			return true;
+		}
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (14/04/2011)<br>
+	 * Get Devices associated with this trhough PortsOnDevice.
+	 * 
+	 * @return list of devices having this port
+	 */
+	public List<LogicalDevice> getDevices() {
+		return (List<LogicalDevice>) this.getFromAssociatedElementsByType(PortOnDevice.class);
+	}
+
+	/**
 	 * This constructor creates a LogicalPortBeanImpl Class which implements the LogicalPortBean Interface, and encapsulates the CIM class LogicalPort
 	 * in a Java Bean. The CIM class LogicalPort is described as follows:
 	 * 

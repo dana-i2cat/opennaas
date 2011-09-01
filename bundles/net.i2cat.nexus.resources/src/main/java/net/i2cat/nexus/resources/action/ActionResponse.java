@@ -2,8 +2,10 @@ package net.i2cat.nexus.resources.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import net.i2cat.nexus.resources.command.Response;
+import net.i2cat.nexus.resources.command.Response.Status;
 
 public class ActionResponse {
 	public enum STATUS {
@@ -12,6 +14,7 @@ public class ActionResponse {
 
 	private STATUS			status		= STATUS.PENDING;
 	private String			actionID;
+	private String			information;
 	private List<Response>	responses	= new ArrayList<Response>();
 
 	public String getActionID() {
@@ -20,6 +23,14 @@ public class ActionResponse {
 
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
 	}
 
 	public List<Response> getResponses() {
@@ -48,7 +59,8 @@ public class ActionResponse {
 		actionResponse.setStatus(STATUS.PENDING);
 		return actionResponse;
 	}
-
+	
+	@Deprecated
 	public static ActionResponse newOkAction(String actionID) {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(actionID);
@@ -56,12 +68,44 @@ public class ActionResponse {
 		return actionResponse;
 	}
 
-	// public static ActionResponse configureAction(List<Response> responses) {
-	// ActionResponse actionResponse = new ActionResponse();
-	// for (Response response: responses) {
-	// response.getErrors()
-	//
-	// }
-	// }
+	public static ActionResponse okResponse(String actionID) {
+		ActionResponse actionResponse = new ActionResponse();
+		actionResponse.setActionID(actionID);
+		actionResponse.setStatus(STATUS.OK);
+		return actionResponse;
+	}
+
+	public static ActionResponse okResponse(String actionID, String information) {
+		ActionResponse response = okResponse(actionID);
+		response.setInformation(information);
+		return response;
+	}
+
+	public static ActionResponse okResponse(String actionID, String information, List<Response> responses) {
+		ActionResponse response = okResponse(actionID);
+		response.setInformation(information);
+		response.setResponses(responses);
+		return response;
+	}
+
+	public static ActionResponse errorResponse(String actionID) {
+		ActionResponse response = new ActionResponse();
+		response.setActionID(actionID);
+		response.setStatus(STATUS.ERROR);
+		return response;
+	}
+
+	public static ActionResponse errorResponse(String actionID, String information) {
+		ActionResponse response = errorResponse(actionID);
+		response.setInformation(information);
+		return response;
+	}
+
+	public static ActionResponse errorResponse(String actionID, String information, List<Response> responses) {
+		ActionResponse response = errorResponse(actionID);
+		response.setInformation(information);
+		response.setResponses(responses);
+		return response;
+	}
 
 }

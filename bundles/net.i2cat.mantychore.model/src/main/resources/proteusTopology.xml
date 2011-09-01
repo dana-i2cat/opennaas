@@ -1,0 +1,181 @@
+<?xml version = "1.0" encoding="UTF-8" standalone = "yes"?>
+<!DOCTYPE topology [
+	<!ELEMENT topology (nodes, connections)>
+	<!ELEMENT nodes (node*)>
+	<!ELEMENT node (chasis+)>
+	<!ELEMENT chasis (slot*)>
+	<!ELEMENT slot (ports)>
+	<!ELEMENT ports (port*)>
+	<!ELEMENT port (#PCDATA)>
+	
+	<!ELEMENT fibres (port*)>
+	
+	<!ELEMENT connections (connection*)>
+	<!ELEMENT connection EMPTY>
+	
+	<!ATTLIST node id ID #REQUIRED>
+	<!ATTLIST chasis number CDATA #REQUIRED>
+	<!ATTLIST slot number CDATA #REQUIRED>
+	<!ATTLIST port id ID #REQUIRED>
+	<!ATTLIST connection 
+		srcPort IDREF #IMPLIED
+		dstPort IDREF #IMPLIED>
+]>
+
+<topology>
+	<nodes>
+		<node id="pedrosa">
+			<chasis number="0">
+				<slot number="1">
+					<ports>
+						<port id="pedrosa-0-1-0">0</port>
+						<port id="pedrosa-0-1-1">1</port>
+						<port id="pedrosa-0-1-2">2</port>
+						<port id="pedrosa-0-1-3">3</port>
+						<port id="pedrosa-0-1-128">128</port>
+					</ports>
+				</slot>
+				<slot number="3">
+					<ports>
+						<port id="pedrosa-0-3-0">0</port>
+						<port id="pedrosa-0-3-1">1</port>
+						<port id="pedrosa-0-3-2">2</port>
+						<port id="pedrosa-0-3-3">3</port>
+						<port id="pedrosa-0-3-128">128</port>
+					</ports>
+				</slot>
+				<slot number="7">
+					<ports>
+						<port id="pedrosa-0-7-1">1</port>
+						<port id="pedrosa-0-7-2">2</port>
+					</ports>
+				</slot>
+				<slot number="11">
+					<ports>
+						<port id="pedrosa-0-11-1">1</port>
+						<port id="pedrosa-0-11-2">2</port>
+					</ports>
+				</slot>
+				<slot number="16">
+					<ports>
+						<port id="pedrosa-0-16-1">1</port>
+						<port id="pedrosa-0-16-2">2</port>
+						<port id="pedrosa-0-16-3">3</port>
+						<port id="pedrosa-0-16-4">4</port>
+						<port id="pedrosa-0-16-129">129</port>
+					</ports>
+				</slot>
+				<slot number="17">
+					<ports>
+						<port id="pedrosa-0-17-1">1</port>
+						<port id="pedrosa-0-17-2">2</port>
+						<port id="pedrosa-0-17-3">3</port>
+						<port id="pedrosa-0-17-4">4</port>
+						<port id="pedrosa-0-17-129">129</port>
+					</ports>
+				</slot>
+			</chasis>
+			<chasis number="1">
+				<slot number="0">
+					<ports>
+						<port id="pedrosa-1-0-1">1</port>
+						<port id="pedrosa-1-0-2">2</port>
+						<port id="pedrosa-1-0-3">3</port>
+						<port id="pedrosa-1-0-4">4</port>
+					</ports>
+				</slot>
+				<slot number="1">
+					<ports>
+						<port id="pedrosa-1-1-1">1</port>
+						<port id="pedrosa-1-1-2">2</port>
+						<port id="pedrosa-1-1-3">3</port>
+						<port id="pedrosa-1-1-4">4</port>
+					</ports>
+				</slot>
+			</chasis>
+		</node>
+	</nodes>
+<!-- DON'T USE FIBRES, IT'S A DIFFERENT SCOPE -->
+<!-- 	
+	<fibres>
+		<port id="fibre-omega-imi">0</port>
+		<port id="fibre-imi-omega">0</port>
+		<port id="fibre-imi-pedrosa">0</port>
+		<port id="fibre-pedrosa-imi">0</port>
+		<port id="fibre-pedrosa-omega">0</port>
+		<port id="fibre-omega-pedrosa">0</port>
+	</fibres>
+-->
+<connections>
+	<!-- OMEGA -->
+	<!-- using fibres
+	<connection srcPort="fibre-pedrosa-omega" dstPort="omega-0-1-in"/>
+	<connection srcPort="fibre-imi-omega" dstPort="omega-0-2-in"/>	
+	
+	<connection srcPort="omega-0-16-129" dstPort="fibre-omega-pedrosa"/>
+	<connection srcPort="omega-0-17-129" dstPort="fibre-omega-imi"/>
+	 -->
+	 
+	 <!-- roadm
+	<connection srcPort="omega-0-1-128" dstPort="omega-0-17-4"/>
+	<connection srcPort="omega-0-2-128" dstPort="omega-0-16-4"/>
+	-->
+	
+	<!-- roadm <-> optria
+	<connection srcPort="omega-1-2-c" dstPort="omega-0-17-1"/>
+	<connection srcPort="omega-1-2-b" dstPort="omega-0-16-1"/>
+	<connection srcPort="omega-1-5-c" dstPort="omega-0-17-3"/>
+	<connection srcPort="omega-1-5-b" dstPort="omega-0-16-3"/>
+	
+	<connection srcPort="omega-0-2-1" dstPort="omega-1-2-c"/>
+	<connection srcPort="omega-0-2-2" dstPort=""/> 
+	<connection srcPort="omega-0-2-3" dstPort="omega-1-5-c"/>
+	
+	<connection srcPort="omega-0-1-1" dstPort="omega-1-2-b"/>
+	<connection srcPort="omega-0-1-2" dstPort=""/>
+	<connection srcPort="omega-0-1-3" dstPort="omega-1-5-b"/>
+	-->
+	
+	<!-- IMI -->
+	<!-- using fibres
+	<connection srcPort="fibre-omega-imi" dstPort="imi-0-1-in"/>
+	<connection srcPort="fibre-pedrosa-imi" dstPort="imi-0-3-in"/>	
+	
+	<connection srcPort="imi-0-16-129" dstPort="fibre-imi-omega"/>
+	<connection srcPort="imi-0-17-129" dstPort="fibre-imi-pedrosa"/>
+	 -->
+	 
+	 <!-- roadm 
+	<connection srcPort="imi-0-1-128" dstPort="imi-0-17-4"/>
+	<connection srcPort="imi-0-3-128" dstPort="imi-0-16-4"/>
+	-->
+	<!--  roadm <-> optria 
+	<connection srcPort="imi-1-2-c" dstPort="imi-0-17-2"/>
+	<connection srcPort="imi-1-2-b" dstPort="imi-0-16-2"/>
+	<connection srcPort="imi-1-3-c" dstPort="imi-0-17-3"/>
+	<connection srcPort="imi-1-3-b" dstPort="imi-0-16-3"/>
+	
+	<connection srcPort="imi-0-1-1" dstPort=""/>
+	<connection srcPort="imi-0-1-2" dstPort="imi-1-2-b"/>
+	<connection srcPort="imi-0-1-3" dstPort="imi-1-3-b"/>
+	
+	<connection srcPort="imi-0-3-1" dstPort=""/>
+	<connection srcPort="imi-0-3-2" dstPort="imi-1-2-c"/>
+	<connection srcPort="imi-0-3-3" dstPort="imi-1-3-c"/>
+	-->
+	
+
+	<!-- PEDROSA -->
+	<!-- using fibres
+	<connection srcPort="fibre-imi-pedrosa" dstPort="pedrosa-0-1-in"/>
+	<connection srcPort="fibre-omega-pedrosa" dstPort="pedrosa-0-3-in"/>
+	
+	<connection srcPort="pedrosa-0-16-129" dstPort="fibre-pedrosa-imi"/>
+	<connection srcPort="pedrosa-0-17-129" dstPort="fibre-pedrosa-omega"/>
+	 -->
+	 
+	<connection srcPort="pedrosa-0-1-128" dstPort="pedrosa-0-17-4"/>
+	<connection srcPort="pedrosa-0-3-128" dstPort="pedrosa-0-16-4"/>
+	
+</connections>
+</topology>

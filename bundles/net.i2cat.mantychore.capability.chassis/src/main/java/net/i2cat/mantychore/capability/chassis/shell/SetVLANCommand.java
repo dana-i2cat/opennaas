@@ -79,17 +79,6 @@ public class SetVLANCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private boolean validateResource(IResource resource) throws ResourceException {
-		if (resource == null)
-			throw new ResourceException("No resource found.");
-		if (resource.getModel() == null)
-			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
-		if (resource.getCapabilities() == null) {
-			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
-		}
-		return true;
-	}
-
 	private Object validateParams(IResource resource) throws Exception {
 		if (splitInterfaces(subinterface)) {
 

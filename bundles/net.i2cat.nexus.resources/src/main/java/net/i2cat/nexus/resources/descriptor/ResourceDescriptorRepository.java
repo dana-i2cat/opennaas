@@ -6,8 +6,8 @@ import java.util.Map;
 
 import javax.persistence.RollbackException;
 
-import  org.opennaas.core.persistence.GenericOSGiJpaRepository;
-import org.opennaas.core.persistence.PersistenceException;
+import net.i2cat.nexus.persistence.GenericOSGiJpaRepository;
+import net.i2cat.nexus.persistence.PersistenceException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

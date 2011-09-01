@@ -35,6 +35,33 @@ public class NetworkPort extends LogicalPort implements Serializable {
 	}
 
 	/**
+	 * MANUALLY ADDED TO CIM (12/04/2011)<br>
+	 * Sets the LogicalModule that has this port as a ModulePort
+	 * 
+	 * @param logicalModule
+	 */
+	public void setModule(LogicalModule logicalModule) {
+
+		if (logicalModule != null) {
+			Association a = this.getFirstFromAssociationByTypeAndElement(ModulePort.class, logicalModule);
+			if (a != null)
+				a.unlink();
+
+			ModulePort.link(logicalModule, this);
+		}
+	}
+
+	/**
+	 * MANUALLY ADDED TO CIM (12/04/2011)<br>
+	 * Gets the LogicalModule that has this port as a ModulePort
+	 * 
+	 * @return LogicalModule that exports this NetworkPort
+	 */
+	public LogicalModule getModule() {
+		return (LogicalModule) this.getFirstFromAssociatedElementByType(ModulePort.class);
+	}
+
+	/**
 	 * This constructor creates a NetworkPortBeanImpl Class which implements the NetworkPortBean Interface, and encapsulates the CIM class NetworkPort
 	 * in a Java Bean. The CIM class NetworkPort is described as follows:
 	 * 

@@ -62,6 +62,7 @@ public class ResourceRepositoryTest {
 
 			// check that the resource descriptor has been added to the resource
 			assertNotNull(resource.getResourceDescriptor());
+			assertTrue(descriptor.equals(resource.getResourceDescriptor()));
 
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());
@@ -91,11 +92,17 @@ public class ResourceRepositoryTest {
 		}
 	}
 
+	@Test
 	public void testRemoveResource() {
 		try {
+
+			int previousSize = resourceRepository.listResources().size();
+
 			ResourceDescriptor descriptor = newResourceDescriptor("Resource Mock CreateRemove");
 			resourceRepository.createResource(descriptor);
 			resourceRepository.removeResource(descriptor.getId());
+
+			assertTrue(resourceRepository.listResources().size() == previousSize);
 
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.core.persistence.GenericRepository;
+import net.i2cat.nexus.persistence.GenericRepository;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.capability.ICapabilityFactory;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;

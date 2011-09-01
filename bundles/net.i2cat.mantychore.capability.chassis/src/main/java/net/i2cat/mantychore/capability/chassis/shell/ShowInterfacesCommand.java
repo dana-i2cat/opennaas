@@ -132,16 +132,4 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 		}
 		throw new Exception("Error getting the capability");
 	}
-
-	private boolean validateResource(IResource resource) throws ResourceException {
-		if (resource == null)
-			throw new ResourceException("No resource found.");
-		if (resource.getModel() == null)
-			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
-		if (resource.getCapabilities() == null) {
-			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
-		}
-		return true;
-	}
-
 }

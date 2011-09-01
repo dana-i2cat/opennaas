@@ -1,0 +1,184 @@
+package net.i2cat.luminis.protocols.wonesys.tests;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.OptionUtils.combine;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
+import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
+import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
+import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
+import net.i2cat.nexus.resources.command.CommandException;
+import net.i2cat.nexus.resources.command.Response;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Inject;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@RunWith(JUnit4TestRunner.class)
+public class SendCommandTest extends AbstractIntegrationTest {
+
+	static Logger			log				= LoggerFactory
+													.getLogger(SendCommandTest.class);
+
+	@Inject
+	private BundleContext	bundleContext;
+
+	private String			resourceId		= "Proteus-Pedrosa";
+	private String			hostIpAddress	= "10.10.80.11";
+	private String			hostPort		= "27773";
+
+	@Configuration
+	public static Option[] configure() {
+		return combine(
+						IntegrationTestsHelper.getLuminisTestOptions(),
+						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
+		);
+	}
+
+	public void loadBundles() {
+
+		assertNotNull(bundleContext);
+
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
+		assertNotNull(protocolManager);
+	}
+
+	@Test
+	public void sendCommmandTest() throws ProtocolException, CommandException {
+
+		loadBundles();
+
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+
+		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
+		sessionContext.addParameter("protocol.mock", "true");
+		try {
+			// get WonesysProtocolSession using ProtocolSessionManager
+			IProtocolSession protocolSession = getProtocolSession(resourceId, sessionContext);
+			if (protocolSession == null)
+				throw new ProtocolException("Could not get a valid ProtocolSession");
+
+			// create command
+			WonesysCommand command = new GetInventoryCommand();
+			command.initialize();
+
+			// send command & receive response
+			Object rawResponse = protocolSession.sendReceive(command.message());
+			WonesysResponse response = (WonesysResponse) command.checkResponse(rawResponse);
+
+			assertNotNull(response);
+
+			// assure response is correct
+			log.info("Received response " + response.getWonesysResponseMessage().toString());
+			if (response.getStatus() == Response.Status.OK) {
+				log.info("Response is OK");
+			} else if (response.getStatus() == Response.Status.ERROR) {
+				log.info("Response is ERROR");
+				assertTrue(response.getErrors().size() > 0);
+				for (String error : response.getErrors())
+					log.info(error);
+			}
+
+			List<int[]> model = new ArrayList<int[]>();
+
+			// command.parseResponse(response, model);
+			String responseData = response.getInformation();
+			int resultLength = 4 * 2;
+			int resultsCount = responseData.length() / resultLength;
+			String[] results = new String[resultsCount];
+			log.info("Node has " + resultsCount + " cards");
+
+			for (int i = 0; i < resultsCount; i++) {
+				results[i] = responseData.substring(i * resultLength, (i + 1) * resultLength);
+
+				String schasis = results[i].substring(0, 2);
+				String sslot = results[i].substring(2, 4);
+				String stype = results[i].substring(4, 6);
+				String ssubtype = results[i].substring(6, 8);
+
+				int chasis = Integer.parseInt(schasis, 16);
+				int slot = Integer.parseInt(sslot, 16);
+				int type = Integer.parseInt(stype, 16);
+				int subtype = Integer.parseInt(ssubtype, 16);
+
+				log.info("Chasis:" + chasis + " Slot:" + slot + " Type:" + type + " SubType:" + subtype);
+
+				model.add(new int[] { chasis, slot, type, subtype });
+			}
+
+			for (int[] card : model) {
+				if (card[2] == 11 &&
+						(card[3] == 1 || card[3] == 3)) {
+					command = new GetChannels(card[0], card[1]);
+					command.initialize();
+
+					rawResponse = protocolSession.sendReceive(command.message());
+					response = (WonesysResponse) command.checkResponse(rawResponse);
+
+					// assure response is correct
+					log.info("Received response " + response.getWonesysResponseMessage().toString());
+					if (response.getStatus() == Response.Status.OK) {
+						log.info("Response is OK");
+					} else if (response.getStatus() == Response.Status.ERROR) {
+						log.info("Response is ERROR");
+						assertTrue(response.getErrors().size() > 0);
+						for (String error : response.getErrors())
+							log.info(error);
+					}
+
+					log.info(response.getInformation());
+				}
+			}
+
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			throw e;
+		} catch (CommandException e) {
+			e.printStackTrace();
+			throw e;
+		}
+	}
+
+	private ProtocolSessionContext createWonesysProtocolSessionContext(String ip,
+			String port) {
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + ip + ":" + port);
+		return protocolSessionContext;
+	}
+
+	private IProtocolSession getProtocolSession(String resourceId, ProtocolSessionContext sessionContext) throws ProtocolException {
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		if (protocolManager == null)
+			return null;
+
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		return protocolSessionManager.obtainSession(sessionContext, true);
+	}
+
+}

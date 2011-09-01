@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!--  parent parameters  -->
+	<parent>		
+		  <artifactId>itests-bundle-settings</artifactId>
+  			<groupId>net.i2cat.mantychore</groupId>
+  			<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+
+	<!--  POM id -->
+
+	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
+	<artifactId>net.i2cat.luminis.tests.capability</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<name>Luminis capablity test</name>
+	<description>Luminis capability Implementation test</description>
+	<packaging>jar</packaging>
+	
+	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+		<dependency> 		
+			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+		
+		<!--  added dependencies to call capability -->
+		<dependency>
+			<groupId>net.i2cat.mantychore.model</groupId>
+			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		
+		<dependency> 		
+			<groupId>net.i2cat.luminis.capability</groupId>	
+			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency> 
+		
+
+		
+		<dependency>
+			<groupId>net.i2cat.luminis.actionsets</groupId>
+			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+<!--  manage dependencies  -->
+	<build>
+		
+		<plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.4.3</version>
+            <!--
+                    By default, the Surefire Plugin will automatically include all test classes with the following wildcard patterns:
+                    "**/Test*.java" - includes all of its subdirectory and all java filenames that start with "Test". "**/*Test.java" -
+                    includes all of its subdirectory and all java filenames that end with "Test". "**/*TestCase.java" - includes all of
+                    its subdirectory and all java filenames that end with "TestCase".
+                -->
+             <configuration>	
+		         <systemProperties>
+                     <property>
+                        <name>protocol.uri</name>
+                        <value>${protocol.uri}</value>
+                    </property>
+                </systemProperties>
+            </configuration> 
+		 </plugin>
+
+		<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
+				<!--
+					| enable improved OSGi compilation support for the bundle
+					life-cycle. | to switch back to the standard bundle life-cycle,
+					move this setting | down to the maven-bundle-plugin section
+				-->
+				<extensions>true</extensions>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
