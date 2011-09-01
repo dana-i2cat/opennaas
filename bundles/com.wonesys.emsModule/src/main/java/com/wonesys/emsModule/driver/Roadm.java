@@ -48,7 +48,7 @@ public class Roadm extends Driver {
             
         }
            
-        if(tipusAlarmaS.startsWith("0x01")) { //Fallo AlimentaciÃ³n ROADM (Capella)
+        if(tipusAlarmaS.startsWith("0x01")) { //Fallo Alimentación ROADM (Capella)
             list.add("ROADM_POWER");
         }
         else if(tipusAlarmaS.startsWith("0x02")) { //Fallo Procesador ROADM (Capella)

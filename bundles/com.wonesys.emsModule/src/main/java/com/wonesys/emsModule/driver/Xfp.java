@@ -33,7 +33,7 @@ public class Xfp extends Driver {
 			/*
 			 * Nota: Ya que en un mismo trap pueden haber varias alarmas, hay que mirar cada uno de los bits (aprox 64, 8 bytes)
 			 * 
-			 * Al determinar el tipo de alarma esta se aÃ±ade al vector, de forma que retornamos un vector con una, ninguna o varias alarmas.
+			 * Al determinar el tipo de alarma esta se añade al vector, de forma que retornamos un vector con una, ninguna o varias alarmas.
 			 */
 
 			if (str.startsWith("0x02")) { // SFPAlarm
