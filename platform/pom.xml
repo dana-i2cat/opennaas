@@ -125,10 +125,9 @@
         <descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
        </descriptors>
        <features>
-        <feature>i2cat-mantychore-deps</feature>
-        <feature>i2cat-mantychore-core</feature>
-        <feature>i2cat-luminis-deps</feature>
-        <feature>i2cat-luminis-core</feature>
+			
+       	  <feature>i2cat-mantychore-core</feature>
+          <feature>i2cat-luminis-core</feature>
        </features>
        <repository>${target-platform.path}/${servicemix.path}/system</repository>
       </configuration>
