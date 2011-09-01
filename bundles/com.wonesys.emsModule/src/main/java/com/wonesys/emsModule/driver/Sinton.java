@@ -139,12 +139,12 @@ public class Sinton extends Driver {
 		ArrayList<String> list = new ArrayList<String>();
 
 		/*
-		 * Bit 15 Reserved Bit 7 0 — Case Temperature normal 1 — Case Temperature above 70° C Bit 14 UART Error Bit 6 0 — Laser Currents Normal 1 —
-		 * Current exceeds end of life value Bit 13 IO Register Failure Bit 5 0 — Open loop operation selected 1 — Closed loop operation selected Bit
-		 * 12 Data Checksum Failure Bit 4 0 — DC and Clocks O.K. 1 — Reset or supply/clock failure Bit 11 Program Checksum Failure Bit 3 0 —
-		 * Wavelength Stable 1 — Wavelength Locking failure Bit 10 Boot Checksum Failure Bit 2 0 — Optical power normal 1 — Optical power low Bit 9 0
-		 * — No Aging Update Failure Bit 1 0 — Locker temperature stable 1 — Aging Update Failure 1 — Locker temperature unstable Bit 8 0 — Laser is
-		 * OFF Bit 0 0 — Laser temperature stable 1 — Laser is ON 1 — Laser temperature unstable
+		 * Bit 15 Reserved Bit 7 0  Case Temperature normal 1 Case Temperature above 70° C Bit 14 UART Error Bit 6 0  Laser Currents Normal 1 
+		 * Current exceeds end of life value Bit 13 IO Register Failure Bit 5 0  Open loop operation selected 1  Closed loop operation selected Bit
+		 * 12 Data Checksum Failure Bit 4 0  DC and Clocks O.K. 1  Reset or supply/clock failure Bit 11 Program Checksum Failure Bit 3 0 
+		 * Wavelength Stable 1  Wavelength Locking failure Bit 10 Boot Checksum Failure Bit 2 0  Optical power normal 1 Optical power low Bit 9 0
+		 * No Aging Update Failure Bit 1 0  Locker temperature stable 1  Aging Update Failure 1  Locker temperature unstable Bit 8 0  Laser is
+		 * OFF Bit 0 0 Laser temperature stable 1  Laser is ON 1 Laser temperature unstable
 		 */
 
 		int b = Integer.decode("0x" + bytes[1]);
