@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+import org.opennaas.core.resources.IModel;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedElement as well as methods comparable to the
@@ -17,7 +18,7 @@ import java.util.Vector;
  * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the CIM
  * Schema.
  */
-public class ManagedElement implements Serializable {
+public class ManagedElement extends IModel implements Serializable {
 
 	/**
 	 * These are the associations where I am the "from" element

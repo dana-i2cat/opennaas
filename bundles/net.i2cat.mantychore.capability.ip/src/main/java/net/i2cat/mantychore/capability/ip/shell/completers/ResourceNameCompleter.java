@@ -2,9 +2,9 @@ package net.i2cat.mantychore.capability.ip.shell.completers;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.Activator;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
+import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
 
 import org.apache.karaf.shell.console.Completer;
 import org.apache.karaf.shell.console.completer.StringsCompleter;

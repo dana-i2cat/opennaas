@@ -1,14 +1,13 @@
 package net.i2cat.mantychore.queuemanager;
 
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.helpers.MockActionFactory;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.queue.ModifyParams;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-
 import org.junit.Assert;
 import org.junit.Test;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.helpers.MockActionFactory;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.queue.ModifyParams;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 public class QueueOperationsTest {
 

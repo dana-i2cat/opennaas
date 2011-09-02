@@ -1,31 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-
-<!-- Maven parent  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.events</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	
-<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Nexus :: Events</name>
 	<description>Events mechanism using OSGi events</description>
-
-
 	<dependencies>
-	</dependencies>		
-
+	</dependencies>
 	<build>
 		<resources>
 			<resource>
@@ -53,8 +44,6 @@
 				<buildDirectory>${project.build.directory}</buildDirectory> [...]
 				</systemPropertyVariables> </configuration> </plugin>
 			-->
-
-			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -66,14 +55,11 @@
 						<Bundle-Version>${pom.version}</Bundle-Version>
 						<Export-Package>
 							${pom.artifactId}.*;version="${pom.version}"
-						</Export-Package> 
-						
+						</Export-Package>
 						<Bundle-Activator>net.i2cat.nexus.events.Activator</Bundle-Activator>
 					</instructions>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

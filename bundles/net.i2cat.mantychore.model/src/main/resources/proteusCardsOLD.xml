@@ -43,7 +43,7 @@
 		<name>PSROADM</name>
 		<allowsProtection>false</allowsProtection>
 		<port>129</port>
-			<portParameters>
+		<portParameters>
 			<param name="ITU Channel">1530.33</param>
 			<param name="ITU Channel">1531.12</param>
 			<param name="ITU Channel">1531.90</param>

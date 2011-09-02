@@ -3,17 +3,15 @@ package net.i2cat.mantychore.queuemanager.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "queue", name = "listActions", description = "List all the actions which are included in the queue.")
 public class ListActionsCommand extends GenericKarafCommand {

@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-
-<!-- Maven parent  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>net.i2cat.luminis.protocols</groupId>
 	<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	
-<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Luminis :: W-Onesys Protocol</name>
 	<description>Luminis W-Onesys Protocol Implementation</description>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
@@ -43,8 +35,7 @@
 			<systemPath>${basedir}/src/main/resources/lib/EMSModuleW-11.0-b16.jar</systemPath>
 			-->
 		</dependency>
-	</dependencies>		
-
+	</dependencies>
 	<build>
 		<resources>
 			<resource>
@@ -72,8 +63,6 @@
 				<buildDirectory>${project.build.directory}</buildDirectory> [...]
 				</systemPropertyVariables> </configuration> </plugin>
 			-->
-
-			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -98,7 +87,6 @@
 						<Export-Package>
 							${pom.artifactId}.*;version="${pom.version}"
 						</Export-Package>
-						
 						<!-- load EMSmodule library
 						<Bundle-ClassPath>.,
 									lib/EMSModuleW-11.0-b16.jar
@@ -106,14 +94,11 @@
     					<Embed-Directory>lib</Embed-Directory>
 						<Embed-Dependency>EMSmodule;scope=compile|runtime</Embed-Dependency>
 						 -->
-						 
-						 <!-- Specify Bundle-Activator -->
-						<Bundle-Activator>net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator</Bundle-Activator> 
+						<!-- Specify Bundle-Activator -->
+						<Bundle-Activator>net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator</Bundle-Activator>
 					</instructions>
 				</configuration>
-
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -2,11 +2,11 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.queue.QueueResponse;
 
 public interface IQueueManagerService {
 

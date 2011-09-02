@@ -1,28 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!--  parent parameters  -->
-	<parent>		
-		  <artifactId>itests-bundle-settings</artifactId>
-  			<groupId>net.i2cat.mantychore</groupId>
-  			<version>1.0.0-SNAPSHOT</version>
+	<parent>
+		<artifactId>itests-bundle-settings</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-
 	<!--  POM id -->
-
 	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.mantychore.tests.capability</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore capablity test</name>
 	<description>Mantychore capability Implementation test</description>
 	<packaging>jar</packaging>
-	
 	<dependencies>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
@@ -33,63 +25,57 @@
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency> 
-		<dependency> 		
+		</dependency>
+		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency> 
-		
+		</dependency>
 		<!--  added dependencies to call capability -->
-		<dependency> 		
-			<groupId>net.i2cat.mantychore.capability</groupId>	
+		<dependency>
+			<groupId>net.i2cat.mantychore.capability</groupId>
 			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
 		<dependency>
 			<groupId>net.i2cat.mantychore.actionsets</groupId>
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-
-		<dependency> 		
-			<groupId>net.i2cat.mantychore.capability</groupId>	
+		<dependency>
+			<groupId>net.i2cat.mantychore.capability</groupId>
 			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency> 
+		</dependency>
 	</dependencies>
-
-<!--  manage dependencies  -->
+	<!--  manage dependencies  -->
 	<build>
-		
 		<plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.4.3</version>
-            <!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<!--
                     By default, the Surefire Plugin will automatically include all test classes with the following wildcard patterns:
                     "**/Test*.java" - includes all of its subdirectory and all java filenames that start with "Test". "**/*Test.java" -
                     includes all of its subdirectory and all java filenames that end with "Test". "**/*TestCase.java" - includes all of
                     its subdirectory and all java filenames that end with "TestCase".
                 -->
-             <configuration>	
-		         <systemProperties>
-                     <property>
-                        <name>protocol.uri</name>
-                        <value>${protocol.uri}</value>
-                    </property>
-                </systemProperties>
-            </configuration> 
-		 </plugin>
-
-		<plugin>
+				<configuration>
+					<systemProperties>
+						<property>
+							<name>protocol.uri</name>
+							<value>${protocol.uri}</value>
+						</property>
+					</systemProperties>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
 				<version>1.4</version>
@@ -100,7 +86,6 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-		
 			<plugin>
 				<groupId>org.apache.servicemix.tooling</groupId>
 				<artifactId>depends-maven-plugin</artifactId>
@@ -115,5 +100,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
