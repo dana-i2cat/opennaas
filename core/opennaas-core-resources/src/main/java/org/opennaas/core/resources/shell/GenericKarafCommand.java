@@ -8,7 +8,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -187,6 +190,38 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return (IProtocolManager) getAllServices(IProtocolManager.class, null).get(0);
 	}
 
+	protected IResource getResourceFromFriendlyName(String resourceId) throws ResourceException {
+
+		IResourceManager manager = null;
+		try {
+			manager = getResourceManager();
+		} catch (Exception e) {
+			printError("Error getting resource manager.");
+			printError(e);
+			return null;
+		}
+		if (manager == null) {
+			printError("Error in manager.");
+			endcommand();
+			return null;
+		}
+
+		if (!splitResourceName(resourceId))
+			return null;
+
+		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
+		if (resourceIdentifier == null) {
+			printError("Error in identifier.");
+			endcommand();
+			return null;
+		}
+
+		IResource resource = manager.getResource(resourceIdentifier);
+		validateResource(resource);
+
+		return resource;
+	}
+
 	protected ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
@@ -194,5 +229,16 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 			}
 		}
 		throw new Exception("Error getting the capability");
+	}
+
+	protected boolean validateResource(IResource resource) throws ResourceException {
+		if (resource == null)
+			throw new ResourceException("No resource found.");
+		if (resource.getModel() == null)
+			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+		if (resource.getCapabilities() == null) {
+			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+		}
+		return true;
 	}
 }
