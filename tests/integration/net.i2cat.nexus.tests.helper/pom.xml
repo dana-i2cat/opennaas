@@ -39,8 +39,8 @@
 				<version>2.0.0</version>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>!net.i2cat.nexus.tests*,
 							org.slf4j,
 							org.ops4j.pax.exam, 
@@ -48,7 +48,7 @@
 							org.osgi.framework,
 						*</Import-Package>
 						<Export-Package>
-							net.i2cat.nexus.tests;version="${pom.version}",
+							net.i2cat.nexus.tests;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>

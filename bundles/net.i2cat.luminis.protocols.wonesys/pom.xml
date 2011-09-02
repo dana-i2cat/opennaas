@@ -70,22 +70,22 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${pom.artifactId}.*,
+							!${project.artifactId}.*,
 							!net.i2cat.luminis.transports,
 							!net.i2cat.luminis.transports.*,
 							org.slf4j;version="1.5.6",
-							com.wonesys.emsModule.*;version="${pom.version}",
-							net.i2cat.nexus.events;version="${pom.version}",
+							com.wonesys.emsModule.*;version="${project.version}",
+							net.i2cat.nexus.events;version="${project.version}",
 							*
 						</Import-Package>
 						<Private-Package>
 							net.i2cat.luminis.transports.wonesys
 						</Private-Package>
 						<Export-Package>
-							${pom.artifactId}.*;version="${pom.version}"
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
 						<!-- load EMSmodule library
 						<Bundle-ClassPath>.,

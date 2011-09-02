@@ -61,8 +61,8 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId} </Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId} </Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-Activator>net.i2cat.mantychore.capability.ip.Activator</Bundle-Activator>
 						<!--
 							| assume public classes are in the top package, and private
@@ -75,7 +75,7 @@
 							*
 							</Import-Package>
 						<Export-Package>
-							${project.artifactId};version="${pom.version}"
+							${project.artifactId};version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

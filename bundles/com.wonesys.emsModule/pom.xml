@@ -70,21 +70,21 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${pom.artifactId}.*,
+							!${project.artifactId}.*,
 							!javax.swing.*,
 							!javax.swing.tree.*,
 							!netscape.security.*,
 							!uk.co.westhawk.tablelayout,
 							<!--  
 							org.slf4j;version="1.5.6",
-							net.i2cat.nexus.protocols.sessionmanager;version="${pom.version}",
+							net.i2cat.nexus.protocols.sessionmanager;version="${project.version}",
 							-->
 							*</Import-Package>
 						<Export-Package>
-							${pom.artifactId}.*;version="${pom.version}"
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
 						<!-- put snmp library in /lib and import its packages-->
 						<Bundle-ClassPath>.,
