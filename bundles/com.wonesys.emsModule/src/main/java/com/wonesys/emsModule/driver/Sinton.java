@@ -139,7 +139,7 @@ public class Sinton extends Driver {
 		ArrayList<String> list = new ArrayList<String>();
 
 		/*
-		 * Bit 15 Reserved Bit 7 0  Case Temperature normal 1 Case Temperature above 70° C Bit 14 UART Error Bit 6 0  Laser Currents Normal 1 
+		 * Bit 15 Reserved Bit 7 0  Case Temperature normal 1 Case Temperature above 70°C Bit 14 UART Error Bit 6 0  Laser Currents Normal 1 
 		 * Current exceeds end of life value Bit 13 IO Register Failure Bit 5 0  Open loop operation selected 1  Closed loop operation selected Bit
 		 * 12 Data Checksum Failure Bit 4 0  DC and Clocks O.K. 1  Reset or supply/clock failure Bit 11 Program Checksum Failure Bit 3 0 
 		 * Wavelength Stable 1  Wavelength Locking failure Bit 10 Boot Checksum Failure Bit 2 0  Optical power normal 1 Optical power low Bit 9 0
@@ -173,7 +173,7 @@ public class Sinton extends Driver {
 
 		b = Integer.decode("0x" + bytes[2]);
 
-		if ((b & 0x80) > 0) { // Case Temperature above 70° C
+		if ((b & 0x80) > 0) { // Case Temperature above 70°C
 			list.add("SINTON_HIGH_TEMP");
 		}
 		if ((b & 0x40) > 0) { // Current exceeds end of life value
