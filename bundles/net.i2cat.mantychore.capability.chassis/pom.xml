@@ -14,6 +14,9 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Chassis Capability</name>
 	<description>Mantychore Chassis Capability Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>

@@ -14,6 +14,9 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Queue Manager</name>
 	<description>Mantychore Queue Manager Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<!--  it will be necessary to change the place the  -->
 		<dependency>
