@@ -10,7 +10,7 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
+import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.IAction;
@@ -46,7 +46,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	static Log			log				= LogFactory
 													.getLog(MantychoreRepositoryIntegrationTest.class);
 
-	IResourceRepository	repository;
+	IResourceManager	repository;
 
 	@Inject
 	BundleContext		bundleContext	= null;
@@ -99,7 +99,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
-		repository = getOsgiService(IResourceRepository.class, 50000);
+		repository = getOsgiService(IResourceManager.class, 50000);
 
 		clearRepo();
 
@@ -118,9 +118,9 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 		for (IResource resource : toRemove) {
 			try {
 				if (resource.getState().equals(State.ACTIVE)) {
-					repository.stopResource(resource.getResourceIdentifier().getId());
+					repository.stopResource(resource.getResourceIdentifier());
 				}
-				repository.removeResource(resource.getResourceIdentifier().getId());
+				repository.removeResource(resource.getResourceIdentifier());
 			} catch (ResourceException e) {
 				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
 				Assert.fail(e.getLocalizedMessage());
@@ -149,7 +149,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 			// createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			repository.removeResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier());
 			Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
@@ -188,13 +188,13 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			/* start resource */
-			repository.startResource(resource.getResourceIdentifier().getId());
+			repository.startResource(resource.getResourceIdentifier());
 			Assert.assertFalse(resource.getCapabilities().isEmpty());
 			Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
 			// Assert.assertNotNull(resource.getProfile());
 
 			/* stop resource */
-			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.stopResource(resource.getResourceIdentifier());
 
 			Assert.assertNotNull(resource.getResourceIdentifier());
 			Assert.assertNotNull(resource.getResourceDescriptor());
@@ -204,7 +204,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertFalse(repository.listResources().isEmpty());
 
 			/* remove resource */
-			repository.removeResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier());
 
 			Assert.assertTrue(resource.getCapabilities().isEmpty());
 			Assert.assertNull(resource.getModel());
@@ -237,7 +237,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			resource.setModel(new ComputerSystem());
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			repository.startResource(resource.getResourceIdentifier().getId());
+			repository.startResource(resource.getResourceIdentifier());
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), "chassis");
 			if (chassisCapability == null)
@@ -263,8 +263,8 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
 
-			repository.stopResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
+			repository.stopResource(resource.getResourceIdentifier());
+			repository.removeResource(resource.getResourceIdentifier());
 
 		} catch (Exception e) {
 			clearRepo();

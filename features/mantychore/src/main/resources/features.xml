@@ -86,6 +86,11 @@
 
     <feature name="i2cat-luminis-core" version="1.0.0-SNAPSHOT">
 		<feature version="1.0.0-SNAPSHOT">i2cat-luminis-deps</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-nexus</feature>
+		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/1.0.0-SNAPSHOT</bundle>
+		
+		
+		
 		<bundle>mvn:net.i2cat.luminis.protocols/net.i2cat.luminis.protocols.wonesys/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.luminis.actionsets/net.i2cat.luminis.actionsets.wonesys/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.luminis.capability/net.i2cat.luminis.capability.connections/1.0.0-SNAPSHOT</bundle>

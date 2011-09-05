@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
+import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.action.ActionSet;
 import net.i2cat.nexus.resources.action.IActionSet;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
@@ -45,7 +46,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 	static Log			log				= LogFactory.getLog(ResourcesWithProfileTest.class);
 
-	IResourceRepository	resourceRepository;
+	IResourceManager	resourceManager;
 	IProfileManager		profileManager;
 
 	@Inject
@@ -72,9 +73,8 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
-		resourceRepository = getOsgiService(IResourceRepository.class, 20000);
+		resourceManager = getOsgiService(IResourceManager.class, 20000);
 		profileManager = getOsgiService(IProfileManager.class, 20000);
-
 		clearRepo();
 
 		log.info("INFO: Initialized!");
@@ -85,16 +85,23 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 		log.info("Clearing resource repo");
 
-		IResource[] toRemove = new IResource[resourceRepository.listResources().size()];
-		toRemove = resourceRepository.listResources().toArray(toRemove);
+		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
 
 		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
 			try {
-				resourceRepository.stopResource(resource.getResourceIdentifier().getId());
-				resourceRepository.removeResource(resource.getResourceIdentifier().getId());
+				resourceManager.removeResource(resource.getResourceIdentifier());
 			} catch (ResourceException e) {
 				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
 			}
+
 		}
 
 		log.info("Resource repo cleared!");
@@ -106,7 +113,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 	 */
 	@Test
 	public void createResourceWithProfile() {
-		
+
 		initBundles();
 
 		try {
@@ -132,9 +139,9 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			// call createResource(resourceDescriptor)
-			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			IResource resource = resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resource.getResourceIdentifier().getId());
-			resourceRepository.startResource(resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
 
 			// assert profile loading has been correct
 			Assert.assertNotNull(resource.getProfile());

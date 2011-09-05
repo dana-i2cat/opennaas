@@ -132,7 +132,7 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			
 			Assert.fail();
 		}
 	}
