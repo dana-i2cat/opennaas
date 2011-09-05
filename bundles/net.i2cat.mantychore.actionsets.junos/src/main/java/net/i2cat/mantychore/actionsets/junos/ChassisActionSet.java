@@ -39,7 +39,11 @@ public class ChassisActionSet extends ActionSet {
 	
 	@Override
 	public String getStartUpRefreshActionName() {
-		//FIXME: change when listInterfaces is complete
+		/*
+		FIXME: change when listInterfaces is complete. 
+		BUG http://jira.i2cat.net:8080/browse/MANTYCHORE-214
+		It is necessary to change this command for its correct command
+		*/
 		return ActionConstants.GETCONFIG;
 	}
 }
