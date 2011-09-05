@@ -25,5 +25,10 @@ public class ConnectionsActionSet extends ActionSet {
 		actionNames.add(ActionConstants.REFRESHCONNECTIONS);
 		return actionNames;
 	}
+	
+	@Override
+	public String getStartUpRefreshActionName() {
+		return ActionConstants.REFRESHCONNECTIONS;
+	}
 
 }

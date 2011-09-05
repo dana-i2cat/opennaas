@@ -17,6 +17,7 @@
 	<!--  integration tests -->
 	<modules>
 		<module>week26</module>
+		<module>week35</module>
 	</modules>
 
 	<!--  dependencies for integration tests -->
