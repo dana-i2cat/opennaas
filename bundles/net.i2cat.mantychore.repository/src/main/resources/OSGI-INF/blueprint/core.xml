@@ -5,15 +5,15 @@
 	<!-- Get capability factories from the OSGi registry -->
 	<!--
 		<reference-list id="capabilityFactory"
-		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		interface="org.opennaas.core.resources.capability.ICapabilityFactory"
 		availability="mandatory"> <reference-listener
 		ref="mantychoreRepository" bind-method="capabilityFactoryAdded"
 		unbind-method="capabilityFactoryDeleted" /> </reference-list>
 	-->
 	<!-- TODO: make this automatically with a listener or similar -->
-	<reference id="chassisCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory" filter="(&amp;(capability=chassis)(capability.model=junos))"/>
-	<reference id="queueCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
-	<reference id="ipCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory" filter="(&amp;(capability=ipv4)(capability.model=junos))"/>
+	<reference id="chassisCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=chassis)(capability.model=junos))"/>
+	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
+	<reference id="ipCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=ipv4)(capability.model=junos))"/>
 	<bean id="mantychoreRepository" class="net.i2cat.mantychore.repository.MantychoreRepository" init-method="init">
 		<argument value="router"/>
 		<argument value="ResourceCore"/>
@@ -27,7 +27,7 @@
 		<property name="resourceBootstrapperFactory" ref="mantychoreBootstrapperFactory"/>
 		<property name="persistenceUnit" value="ResourceCore"/>
 	</bean>
-	<service ref="mantychoreRepository" interface="net.i2cat.nexus.resources.IResourceRepository">
+	<service ref="mantychoreRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>
 			<entry key="type" value="router"/>
 			<entry key="version" value="1.0.0"/>

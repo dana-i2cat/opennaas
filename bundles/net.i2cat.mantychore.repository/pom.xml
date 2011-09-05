@@ -15,10 +15,13 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Repository</name>
 	<description>Mantychore Repository Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -70,11 +73,10 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
-						<Import-Package>!${project.artifactId},org.slf4j;version="1.5.6",*
-						</Import-Package>
-						<Export-Package>
+						<Import-Package>org.slf4j;version="1.5.6",*</Import-Package>
+						<!--<Export-Package>
 						net.i2cat.luminis.ROADM.respository.*;version="${project.version}"
-						</Export-Package>
+						</Export-Package>-->
 					</instructions>
 				</configuration>
 			</plugin>
