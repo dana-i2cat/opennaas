@@ -15,6 +15,9 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Velocity Fragment</name>
 	<description>Mantychore Velocity Fragment Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>
