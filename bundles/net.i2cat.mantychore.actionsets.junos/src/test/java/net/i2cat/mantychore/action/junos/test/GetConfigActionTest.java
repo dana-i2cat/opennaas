@@ -16,9 +16,9 @@ import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

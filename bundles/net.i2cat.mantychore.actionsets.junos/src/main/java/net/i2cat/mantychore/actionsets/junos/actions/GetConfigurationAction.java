@@ -12,11 +12,11 @@ import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.Reply;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

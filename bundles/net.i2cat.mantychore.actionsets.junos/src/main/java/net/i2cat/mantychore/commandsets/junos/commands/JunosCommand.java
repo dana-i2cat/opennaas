@@ -5,9 +5,9 @@ import java.util.Vector;
 import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.Reply;
-import net.i2cat.nexus.resources.command.Command;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.command.Command;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

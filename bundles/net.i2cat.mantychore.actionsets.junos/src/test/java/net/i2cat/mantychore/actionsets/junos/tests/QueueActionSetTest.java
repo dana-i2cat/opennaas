@@ -3,8 +3,8 @@ package net.i2cat.mantychore.actionsets.junos.tests;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.QueueActionSet;
-import net.i2cat.nexus.resources.action.Action;
-import net.i2cat.nexus.resources.action.ActionException;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,10 +1,10 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.CommitNetconfCommand;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.queue.QueueConstants;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -15,6 +15,9 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Netconf Protocol</name>
 	<description>Mantychore Netconf Protocol Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -25,8 +28,8 @@
 			<artifactId>commons-configuration</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>

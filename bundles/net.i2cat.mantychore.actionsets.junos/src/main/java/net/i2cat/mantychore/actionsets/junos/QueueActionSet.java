@@ -7,8 +7,8 @@ import net.i2cat.mantychore.actionsets.junos.actions.ConfirmAction;
 import net.i2cat.mantychore.actionsets.junos.actions.IsAliveAction;
 import net.i2cat.mantychore.actionsets.junos.actions.PrepareAction;
 import net.i2cat.mantychore.actionsets.junos.actions.RestoreAction;
-import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.queue.QueueConstants;
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 public class QueueActionSet extends ActionSet {
 

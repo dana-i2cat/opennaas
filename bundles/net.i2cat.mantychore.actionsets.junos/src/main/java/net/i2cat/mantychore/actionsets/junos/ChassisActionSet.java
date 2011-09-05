@@ -8,7 +8,7 @@ import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
-import net.i2cat.nexus.resources.action.ActionSet;
+import org.opennaas.core.resources.action.ActionSet;
 
 @SuppressWarnings("serial")
 public class ChassisActionSet extends ActionSet {

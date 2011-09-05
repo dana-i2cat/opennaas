@@ -33,10 +33,8 @@
 		<module>net.i2cat.mantychore.capability.ip</module>
 		<module>net.i2cat.nexus.events</module>
 		<module>net.i2cat.mantychore.fragment.velocity</module>
-		<!--
-	<module>net.i2cat.mantychore.actionsets.junos</module>
-   	<module>net.i2cat.mantychore.protocols.netconf</module>
-   	-->
+		<module>net.i2cat.mantychore.protocols.netconf</module>
+		<module>net.i2cat.mantychore.actionsets.junos</module>
 		<module>net.i2cat.mantychore.queuemanager</module>
 		<!--
   	<module>net.i2cat.mantychore.repository</module>
