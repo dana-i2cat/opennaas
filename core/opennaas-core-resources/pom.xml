@@ -96,7 +96,7 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>org.opennaas.core.resources</Bundle-SymbolicName>
+						<Bundle-SymbolicName>opennaas-core-resources</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-Activator>org.opennaas.core.resources.Activator</Bundle-Activator>
 						<!--
