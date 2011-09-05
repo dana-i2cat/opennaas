@@ -7,7 +7,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.nexus.itests-bundle-settings</groupId>
+	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.tests.events</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -83,7 +83,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
