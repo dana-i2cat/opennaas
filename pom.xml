@@ -30,6 +30,8 @@
 
 	<!-- Custom Properties -->
 	<properties>
+	
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<activemq.version>5.4.0-fuse-00-00</activemq.version>
 		<axiom.version>1.2.8</axiom.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
@@ -610,9 +612,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<compilerArguments>
+				<!--  <compilerArguments>
             			<encoding>utf8</encoding>
-          			</compilerArguments>
+          			</compilerArguments>-->	
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
