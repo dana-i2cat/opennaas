@@ -23,7 +23,7 @@
 	<!-- Command completers -->
 	<bean id="resourceNameCompleter" class="net.i2cat.luminis.capability.connections.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="connectionsCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory">
+	<service ref="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="connections"/>
