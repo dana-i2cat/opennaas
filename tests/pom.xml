@@ -15,6 +15,6 @@
 	<name>Mantychore:: Tests</name>
 	<modules>
 		<module>integration</module>
-		<module>sprints</module>
+		<!--<module>sprints</module>-->
 	</modules>
 </project>

@@ -510,9 +510,9 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
 		<module>bundles</module>
-		<!--<module>features</module>
+		<module>features</module>
 		<module>tests</module>
-		<module>platform</module>
+		<!--<module>platform</module>
 		<module>assembly</module>-->
 	</modules>
 	<!--
@@ -563,7 +563,7 @@
 								</requireJavaVersion>
 								<!-- <requireOS> <family>unix</family> </requireOS> -->
 								<requireMavenVersion>
-									<version>2.2.1</version>
+									<version>3.0.3</version>
 								</requireMavenVersion>
 							</rules>
 						</configuration>

@@ -14,7 +14,9 @@
 	<packaging>bundle</packaging>
 	<name>Luminis :: Connections Capability</name>
 	<description>Luminis Connections Capability Implementation</description>
-	<properties><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<!-- mantychore dependencies -->
 		<!-- TODO clean pom when final structure of bundle is ready -->
