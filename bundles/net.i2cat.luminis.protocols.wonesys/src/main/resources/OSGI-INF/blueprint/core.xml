@@ -2,7 +2,7 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Access wonesys devices through this protocol -->
 	<bean id="wonesysProtocolSessionFactory" class="net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory"/>
-	<service ref="wonesysProtocolSessionFactory" interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory">
+	<service ref="wonesysProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
 		<service-properties>
 			<entry key="protocol" value="wonesys"/>
 			<entry key="protocol.version" value="1.0.0"/>

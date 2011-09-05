@@ -3,8 +3,8 @@ package net.i2cat.luminis.transports.wonesys;
 import java.io.IOException;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionContextUtils;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +27,7 @@ public class WonesysTransport implements ITransport {
 	 */
 	private HwdOp	hwdcontroller	= null;
 
-	public WonesysTransport(ProtocolSessionContext protocolSessionContext) throws net.i2cat.nexus.resources.protocol.ProtocolException {
+	public WonesysTransport(ProtocolSessionContext protocolSessionContext) throws org.opennaas.core.resources.protocol.ProtocolException {
 
 		this.hostIp = WonesysProtocolSessionContextUtils.getHost(protocolSessionContext);
 		this.port = WonesysProtocolSessionContextUtils.getPort(protocolSessionContext);

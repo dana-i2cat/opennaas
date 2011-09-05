@@ -15,10 +15,13 @@
 	<packaging>bundle</packaging>
 	<name>Luminis :: W-Onesys Protocol</name>
 	<description>Luminis W-Onesys Protocol Implementation</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -66,7 +69,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>1.4.2</version>
+				<version>2.3.5</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
@@ -74,8 +77,6 @@
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
 							!${project.artifactId}.*,
-							!net.i2cat.luminis.transports,
-							!net.i2cat.luminis.transports.*,
 							org.slf4j;version="1.5.6",
 							com.wonesys.emsModule.*;version="${project.version}",
 							net.i2cat.nexus.events;version="${project.version}",
