@@ -10,7 +10,6 @@
 	<name>Nexus FUSE features</name>
 	<artifactId>nexus-fuse</artifactId>
 	<groupId>net.i2cat.nexus</groupId>
-	<version>1.0.0-SNAPSHOT</version>
 	<build>
 		<!--  it specifies resources.  -->
 		<resources>

@@ -6,16 +6,14 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>itests-bundle-settings</artifactId>
-	<groupId>net.i2cat.mantychore</groupId>
-	<version>1.0.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore :: POMS :: Integration Test</name>
 	<packaging>pom</packaging>
 	<!--  integration tests -->
 	<modules>
 		<module>net.i2cat.nexus.tests.helper</module>
-		<!--
 		<module>net.i2cat.nexus.tests.events</module>
+		<!--
 		<module>net.i2cat.nexus.tests.resources</module>
 		<module>net.i2cat.mantychore.tests.capability</module>
 		<module>net.i2cat.mantychore.tests.repository</module>

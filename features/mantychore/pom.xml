@@ -9,8 +9,6 @@
 	</parent>
 	<name>Mantychore features</name>
 	<artifactId>mantychore</artifactId>
-	<groupId>net.i2cat.mantychore</groupId>
-	<version>1.0.0-SNAPSHOT</version>
 	<build>
 		<!--  it specifies resources.  -->
 		<resources>
