@@ -1,4 +1,4 @@
-package org.opennaas.core.resources.tests;
+package net.i2cat.nexus.resources.tests;
 
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;

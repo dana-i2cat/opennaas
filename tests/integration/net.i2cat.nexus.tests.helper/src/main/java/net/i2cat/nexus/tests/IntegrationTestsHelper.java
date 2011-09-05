@@ -53,10 +53,11 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getFuseTestOptions() {
 		/* fuse features */
-		String FUSE_FEATURES_REPO = "mvn:net.i2cat.nexus/nexus-fuse/1.0.0-SNAPSHOT/xml/features";
-		String[] FUSE_FEATURES = { "i2cat-nexus-fuse" };
+		//String FUSE_FEATURES_REPO = "mvn:net.i2cat.nexus/nexus-fuse/1.0.0-SNAPSHOT/xml/features";
+		//String[] FUSE_FEATURES = { "i2cat-nexus-fuse" };
+		String FUSE_FEATURES_REPO = "mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features";
+		String[] FUSE_FEATURES = { "opennaas-core" , "opennaas-core-deps" };
 		Option OPT_FUSE_FEATURES = scanFeatures(FUSE_FEATURES_REPO, FUSE_FEATURES);
-
 		return combine(getSimpleTestOptions(), OPT_FUSE_FEATURES);
 	}
 
@@ -65,7 +66,7 @@ public class IntegrationTestsHelper {
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
+		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES);
 	}
 	
 	public static Option[] getLuminisTestOptions() {
