@@ -110,7 +110,6 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 
 	}
 
-	// FIXME Before and After does not work with linux
 
 	@Before
 	public void before() throws ProtocolException, CapabilityException {

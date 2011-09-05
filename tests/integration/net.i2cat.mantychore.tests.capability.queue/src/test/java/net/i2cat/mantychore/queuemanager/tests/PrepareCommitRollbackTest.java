@@ -122,7 +122,6 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 
 	}
 
-	// FIXME Before and After does not work with linux
 
 	public void before() throws ProtocolException, CapabilityException {
 		initBundles();
