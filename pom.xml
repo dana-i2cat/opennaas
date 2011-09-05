@@ -51,7 +51,7 @@
 		<junit.version>4.5</junit.version>
 		<karaf.version>2.0.0-fuse-02-00</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
+		<netconf4j.version>0.0.2</netconf4j.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam.version>1.2.0</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>
