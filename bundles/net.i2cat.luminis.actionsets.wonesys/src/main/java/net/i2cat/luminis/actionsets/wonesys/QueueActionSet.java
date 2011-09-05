@@ -6,8 +6,8 @@ import net.i2cat.luminis.actionsets.wonesys.actions.ConfirmAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.IsAliveAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.PrepareAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RestoreAction;
-import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.queue.QueueConstants;
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 public class QueueActionSet extends ActionSet {
 

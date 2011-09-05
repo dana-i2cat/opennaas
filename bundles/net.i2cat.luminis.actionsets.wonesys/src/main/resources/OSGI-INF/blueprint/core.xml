@@ -3,7 +3,7 @@
 	<!--  	publish action set services  -->
 	<bean id="connectionsActionSet" class="net.i2cat.luminis.actionsets.wonesys.ConnectionsActionSet"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
-	<service ref="connectionsActionSet" interface="net.i2cat.nexus.resources.action.IActionSet">
+	<service ref="connectionsActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
 			<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="proteus"/>
@@ -14,7 +14,7 @@
 	<!--  	publish action set services  -->
 	<bean id="queueActionSet" class="net.i2cat.luminis.actionsets.wonesys.QueueActionSet"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
-	<service ref="queueActionSet" interface="net.i2cat.nexus.resources.action.IActionSet">
+	<service ref="queueActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
 			<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="proteus"/>

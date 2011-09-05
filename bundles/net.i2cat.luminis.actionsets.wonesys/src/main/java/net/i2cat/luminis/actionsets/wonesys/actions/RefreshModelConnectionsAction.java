@@ -28,14 +28,14 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import net.i2cat.mantychore.model.utils.OpticalSwitchCardFactory;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

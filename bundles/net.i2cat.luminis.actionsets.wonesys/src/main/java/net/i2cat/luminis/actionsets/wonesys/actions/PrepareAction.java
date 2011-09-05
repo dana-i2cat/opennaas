@@ -6,14 +6,14 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.resources.action.Action;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.queue.QueueConstants;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 public class PrepareAction extends Action {
 

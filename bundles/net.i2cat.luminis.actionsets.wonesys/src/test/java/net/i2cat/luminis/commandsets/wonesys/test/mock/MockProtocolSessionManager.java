@@ -2,10 +2,10 @@ package net.i2cat.luminis.commandsets.wonesys.test.mock;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionContextUtils;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class MockProtocolSessionManager extends ProtocolSessionManager {
 

@@ -40,8 +40,8 @@
 		<module>net.i2cat.luminis.ROADM.repository</module>
 		<module>com.wonesys.emsModule</module>
 		<module>net.i2cat.luminis.protocols.wonesys</module>
+		<module>net.i2cat.luminis.actionsets.wonesys</module>
 		<!--
- 		<module>net.i2cat.luminis.actionsets.wonesys</module>
  		<module>net.i2cat.luminis.capability.connections</module>
 		-->
 	</modules>

@@ -1,8 +1,8 @@
 package net.i2cat.luminis.commandsets.wonesys;
 
-import net.i2cat.nexus.resources.command.Command;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.command.Command;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
 
 public abstract class WonesysCommand extends Command {
 

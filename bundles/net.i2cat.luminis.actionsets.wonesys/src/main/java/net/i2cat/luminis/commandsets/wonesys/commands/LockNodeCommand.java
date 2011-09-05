@@ -2,8 +2,8 @@ package net.i2cat.luminis.commandsets.wonesys.commands;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
 
 public class LockNodeCommand extends WonesysCommand {
 

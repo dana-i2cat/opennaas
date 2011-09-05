@@ -5,8 +5,8 @@ import org.apache.commons.logging.LogFactory;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.NetworkPort;

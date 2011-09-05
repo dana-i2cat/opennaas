@@ -2,9 +2,9 @@ package net.i2cat.luminis.actionsets.wonesys.actions;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
-import net.i2cat.nexus.resources.action.Action;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.action.Action;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
 
 public abstract class WonesysAction extends Action {
 
