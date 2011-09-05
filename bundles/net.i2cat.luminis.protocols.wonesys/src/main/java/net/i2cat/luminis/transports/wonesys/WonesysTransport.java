@@ -46,7 +46,7 @@ public class WonesysTransport implements ITransport {
 		Object response = null;
 		try {
 			log.debug("Sending message to " + hostIp + ":" + port);
-			response = hwdcontroller.sendOpPort(toSend, hostIp, port);
+			response = hwdcontroller.sendOp(toSend);
 		} catch (IOException ioe) {
 			throw new WonesysTransportException(ioe);
 		}
@@ -55,10 +55,19 @@ public class WonesysTransport implements ITransport {
 
 	public void connect() throws WonesysTransportException {
 
+		try {
+			hwdcontroller.connect(hostIp, port);
+		} catch (IOException e) {
+			throw new WonesysTransportException(e);
+		}
 	}
 
 	public void disconnect() throws WonesysTransportException {
-
+		try {
+			hwdcontroller.disconnect();
+		} catch (IOException e) {
+			throw new WonesysTransportException(e);
+		}
 	}
 
 }

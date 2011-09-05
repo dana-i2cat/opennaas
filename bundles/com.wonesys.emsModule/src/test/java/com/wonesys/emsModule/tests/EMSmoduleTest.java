@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import uk.co.westhawk.snmp.pdu.OneTrapPduv1;
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
 import uk.co.westhawk.snmp.stack.AsnObject;
@@ -27,13 +26,10 @@ import uk.co.westhawk.snmp.stack.AsnObjectId;
 import uk.co.westhawk.snmp.stack.AsnOctets;
 import uk.co.westhawk.snmp.stack.AsnUnsInteger;
 import uk.co.westhawk.snmp.stack.PduException;
-import uk.co.westhawk.snmp.stack.SnmpConstants;
 import uk.co.westhawk.snmp.stack.SnmpContext;
 import uk.co.westhawk.snmp.stack.SnmpContextv2c;
-import uk.co.westhawk.snmp.stack.TrapPduv1;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
-import uk.co.westhawk.visual.BareGraph;
 
 import com.wonesys.emsModule.alarms.Alarm;
 import com.wonesys.emsModule.alarms.AlarmsControler;
@@ -203,15 +199,19 @@ public class EMSmoduleTest {
 
 			String ip = "10.10.80.11";
 			int port = 27773;
-			String command = createGetCommand();
+			hwd.connect(ip, port);
 
-			log.info("Sending Operation to HWD @ " + ip);
-			log.info(command);
-			log.info(hwd.sendOp(command, ip));
+			String command = createGetCommand();
 
 			log.info("Sending Operation to HWD @ " + ip + ":" + port);
 			log.info(command);
-			log.info(hwd.sendOpPort(command, ip, 27773));
+			log.info(hwd.sendOp(command));
+
+			log.info("Sending Operation to HWD @ " + ip + ":" + port);
+			log.info(command);
+			log.info(hwd.sendOp(command));
+
+			hwd.disconnect();
 		}
 
 		else if (entrada.equals("s")) {
