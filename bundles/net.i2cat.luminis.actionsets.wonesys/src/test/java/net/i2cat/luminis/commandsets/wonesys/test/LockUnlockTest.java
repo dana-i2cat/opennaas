@@ -1,15 +1,9 @@
 package net.i2cat.luminis.commandsets.wonesys.test;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Test;
-
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.LockNodeCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionContextUtils;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.nexus.resources.command.CommandException;
@@ -18,6 +12,11 @@ import net.i2cat.nexus.resources.command.Response.Status;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class LockUnlockTest {
 
@@ -165,12 +164,23 @@ public class LockUnlockTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testLockUnlockInDifferentSessions() {
 		try {
 
+			log.info("Testing LockUnlockInDifferentSessions ...");
+
 			WonesysProtocolSession session1 = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
 			WonesysProtocolSession session2 = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
+
+			if ((session1.getSessionContext().getSessionParameters().containsKey("protocol.mock") &&
+					session1.getSessionContext().getSessionParameters().get("protocol.mock").equals("true")) ||
+					(session2.getSessionContext().getSessionParameters().containsKey("protocol.mock") &&
+					session2.getSessionContext().getSessionParameters().get("protocol.mock").equals("true"))) {
+				// This test fails using mock device, as Proteus mock transport is not session aware
+				log.info("Skipping test: not supported using mock protocol.");
+				return;
+			}
 
 			ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 			opticalSwitch1.setName(resourceId);
@@ -243,8 +253,7 @@ public class LockUnlockTest {
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + ip + ":" + port);
-		protocolSessionContext.addParameter("protocol.mock",
-				"true");
+		protocolSessionContext.addParameter("protocol.mock", "true");
 		return protocolSessionContext;
 	}
 
