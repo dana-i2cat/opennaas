@@ -5,14 +5,14 @@
 	<!-- Get capability factories from the OSGi registry -->
 	<!--
 		<reference-list id="capabilityFactory"
-		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"
+		interface="org.opennaas.core.resources.capability.ICapabilityFactory"
 		availability="mandatory"> <reference-listener
 		ref="mantychoreRepository" bind-method="capabilityFactoryAdded"
 		unbind-method="capabilityFactoryDeleted" /> </reference-list>
 	-->
-	<reference id="queueCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
+	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
 	<!--  FIXME THE QUEUE HAVE TO WORK IN NEXUS, THE MODEL IS FOR NEXUS -->
-	<reference id="connectionsCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory" filter="(&amp;(capability=connections)(capability.model=proteus))"/>
+	<reference id="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=connections)(capability.model=proteus))"/>
 	<bean id="ROADMRepository" class="net.i2cat.luminis.ROADM.repository.ROADMRepository" init-method="init">
 		<argument value="roadm"/>
 		<argument value="ResourceCore"/>
@@ -25,7 +25,7 @@
 		<property name="resourceBootstrapperFactory" ref="roadmBootstrapperFactory"/>
 		<property name="persistenceUnit" value="ResourceCore"/>
 	</bean>
-	<service ref="ROADMRepository" interface="net.i2cat.nexus.resources.IResourceRepository">
+	<service ref="ROADMRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>
 			<entry key="type" value="roadm"/>
 			<entry key="version" value="1.0.0"/>

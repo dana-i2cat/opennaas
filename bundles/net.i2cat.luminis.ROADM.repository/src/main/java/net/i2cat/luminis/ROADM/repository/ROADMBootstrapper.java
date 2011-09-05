@@ -1,9 +1,9 @@
 package net.i2cat.luminis.ROADM.repository;
 
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceBootstrapper;
-import net.i2cat.nexus.resources.ResourceException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.ResourceException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
