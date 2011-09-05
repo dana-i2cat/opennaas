@@ -1,4 +1,4 @@
-package net.i2cat.nexus.resources.tests;
+package org.opennaas.core.resources.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
@@ -6,17 +6,17 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.profile.IProfile;
-import net.i2cat.nexus.resources.profile.IProfileManager;
-import net.i2cat.nexus.resources.profile.ProfileDescriptor;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfileManager;
+import org.opennaas.core.resources.profile.ProfileDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;

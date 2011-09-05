@@ -15,12 +15,10 @@
 	<name>Nexus:: Integrations Resources Tests</name>
 	<description>nexus resource integration test</description>
 	<packaging>jar</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.tests.mockprofile</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.resources</artifactId>
@@ -29,21 +27,6 @@
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.repository</groupId>
-			<artifactId>net.i2cat.mantychore.repository</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.capability</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
@@ -72,7 +55,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
 				<!--
 					| enable improved OSGi compilation support for the bundle
 					life-cycle. | to switch back to the standard bundle life-cycle,
