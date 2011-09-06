@@ -90,6 +90,9 @@ public class IntegrationTestsHelper {
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
 	
+	/**
+	 * Wait for all bundles to be active, tries to start non active bundles.
+	 */
 	public static void waitForAllBundlesActive(BundleContext bundleContext){
 		int MAX_RETRIES = 100;
 		Bundle b = null;
@@ -122,7 +125,7 @@ public class IntegrationTestsHelper {
 				}
 			}
 
-			if (active == true) {
+			if (active) {
 				break;
 			}
 
@@ -137,8 +140,12 @@ public class IntegrationTestsHelper {
 		}
 
 		strBundles = listBundles(bundleContext);
+		log.info("Detected " + fragments.size() + " fragments.");
 
-		log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+		if (active)
+			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+		else
+			log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
 
 		try {
 			Thread.sleep(15000);
@@ -146,6 +153,59 @@ public class IntegrationTestsHelper {
 			ex.printStackTrace();
 		}
 	}
+	
+//	/**
+//	 * Only waits, it doesn't try to start bundles (container will do)
+//	 */
+//	public static void waitForAllBundlesActive(BundleContext bundleContext){
+//		int MAX_RETRIES = 100;
+//		Bundle b = null;
+//		boolean active = true;
+//		List<Integer> fragments = new ArrayList<Integer>();
+//		String strBundles;
+//
+//		for (int i = 0; i < MAX_RETRIES; i++) {
+//			active = true;
+//			for (int j = 0; j < bundleContext.getBundles().length; j++) {
+//				if ( !isFragment(bundleContext.getBundles()[j]) && 
+//						bundleContext.getBundles()[j].getState() != Bundle.ACTIVE) {
+//					active = false;
+//				} else if (isFragment(bundleContext.getBundles()[j])) {
+//					if (! fragments.contains(j))
+//						fragments.add(j);
+//					if (bundleContext.getBundles()[j].getState() != Bundle.RESOLVED) 
+//						active = false;
+//				}
+//			}
+//			
+//			if (active == true) {
+//				break;
+//			}
+//			
+//			strBundles = listBundles(bundleContext);
+//			log.info("Waiting for the activation of all the bundles, this is the " + i + " try. Sleeping for 1 second");
+//			try {
+//				Thread.sleep(1000);
+//			} catch (InterruptedException ex) {
+//				ex.printStackTrace();
+//				break;
+//			}
+//		}
+//		
+//		strBundles = listBundles(bundleContext);
+//		log.info("Detected " + fragments.size() + " fragments.");
+//
+//		if (active)
+//			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+//		else
+//			log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+//		
+//		try {
+//			Thread.sleep(15000);
+//		} catch (InterruptedException ex) {
+//			ex.printStackTrace();
+//		}
+//	}
 
 	public static String listBundles(BundleContext bundleContext) {
 		Bundle b = null;
