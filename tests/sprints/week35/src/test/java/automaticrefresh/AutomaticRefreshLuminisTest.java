@@ -59,7 +59,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	public void getStartUpRefreshActionTest() {
 
 		try {
-
+			initBundles();
 			mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
 
 			ICapabilityFactory connectionFactory = getOsgiService(ICapabilityFactory.class, "capability=connections", 10000);
