@@ -46,7 +46,6 @@
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.actionsets</groupId>
