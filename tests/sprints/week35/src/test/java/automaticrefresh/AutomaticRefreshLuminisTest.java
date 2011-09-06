@@ -59,6 +59,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	public void getStartUpRefreshActionTest() {
 
 		try {
+			//TODO this initbundles guarantee that all the bundles are initialized. It is possible to work the test without this initbundles
 			initBundles();
 			mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
 
