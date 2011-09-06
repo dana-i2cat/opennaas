@@ -55,6 +55,7 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
+				<version>1.4</version>
 				<!--
 					| enable improved OSGi compilation support for the bundle
 					life-cycle. | to switch back to the standard bundle life-cycle,
@@ -103,7 +104,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

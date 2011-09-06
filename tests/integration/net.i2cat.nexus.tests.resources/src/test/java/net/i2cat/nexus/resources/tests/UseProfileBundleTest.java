@@ -50,10 +50,9 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 		Option[] options = combine(
 				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper"),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.mockprofile")
+				mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
+				/*mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.mockprofile")*/
+				mavenBundle().groupId("org.opennaas").artifactId("opennaas-core-tests-mockprofile")
 							// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 							);
 		return options;

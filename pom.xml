@@ -40,7 +40,7 @@
 		<hsqldb.version>1.8.0.9</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
-		<karaf.version>2.0.0-fuse-02-00</karaf.version>
+		<karaf.version>2.2.0-fuse-00-43</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
 		<osgi.version>4.2.0</osgi.version>
@@ -48,7 +48,7 @@
 		<pax.logging.version>1.5.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
+		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 		<servicemix.specs.version>1.6.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
@@ -562,9 +562,9 @@
 									<version>1.6</version>
 								</requireJavaVersion>
 								<!-- <requireOS> <family>unix</family> </requireOS> -->
-								<requireMavenVersion>
+								<!--<requireMavenVersion>
 									<version>3.0.3</version>
-								</requireMavenVersion>
+								</requireMavenVersion>-->
 							</rules>
 						</configuration>
 					</execution>

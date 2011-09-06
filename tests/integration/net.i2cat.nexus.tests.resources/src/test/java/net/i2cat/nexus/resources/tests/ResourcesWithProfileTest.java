@@ -53,11 +53,9 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-
+		log.warn("HERE HERE HERE LOOK HERE");
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
+				IntegrationTestsHelper.getMantychoreTestOptions(),mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
 					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 					);
 		return options;
