@@ -373,14 +373,15 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
-
-		// assert model updated
-		ComputerSystem system = (ComputerSystem) resource.getModel();
-		List<LogicalDevice> ld = system.getLogicalDevices();
-		for (LogicalDevice logicalDevice : ld) {
-			if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
-				LogicalPort logicalPort = (LogicalPort) logicalDevice;
-				Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+		if (!isMock) {
+			// assert model updated
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+				}
 			}
 		}
 		// } catch (Exception e) {
