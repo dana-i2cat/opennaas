@@ -14,7 +14,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
-public class CreateSubIntefaceCommand extends GenericKarafCommand {
+public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
 	private String	resourceId;
