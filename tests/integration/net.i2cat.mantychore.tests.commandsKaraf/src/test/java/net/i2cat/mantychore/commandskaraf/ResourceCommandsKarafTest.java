@@ -10,8 +10,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
@@ -89,9 +91,37 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 
-		log.info("INFO: Initialized!");
-		commandprocessor = getOsgiService(CommandProcessor.class);
+		clearRepo();
 
+		commandprocessor = getOsgiService(CommandProcessor.class);
+		log.info("INFO: Initialized!");
+
+	}
+
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
+			try {
+				resourceManager.removeResource(resource.getResourceIdentifier());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 	@Configuration
