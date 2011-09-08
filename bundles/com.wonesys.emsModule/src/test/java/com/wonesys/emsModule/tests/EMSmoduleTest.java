@@ -16,8 +16,8 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
@@ -42,7 +42,7 @@ import com.wonesys.emsModule.hwd.HwdOp;
  */
 public class EMSmoduleTest {
 
-	Logger						log			= LoggerFactory.getLogger(EMSmoduleTest.class);
+	Log						log			= LogFactory.getLog(EMSmoduleTest.class);
 
 	private static final int	ALARM_PORT	= 32162;
 

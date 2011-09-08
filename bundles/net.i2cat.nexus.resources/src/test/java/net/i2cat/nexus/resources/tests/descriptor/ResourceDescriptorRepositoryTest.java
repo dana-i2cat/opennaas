@@ -33,6 +33,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 			connection = DriverManager.getConnection("jdbc:hsqldb:mem:unit-testing-jpa", "sa", "");
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			logger.error("Exception in set up",ex);
 			fail("Exception during HSQL database startup.");
 		}
 		try {
@@ -41,6 +42,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 			em = emFactory.createEntityManager();
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			logger.error("Exception in set up",ex);
 			fail("Exception during JPA EntityManager instanciation.");
 		}
 	}
@@ -59,6 +61,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			connection.createStatement().execute("SHUTDOWN");
 		} catch (Exception ex) {
+			logger.error("Exception in set up",ex);
 		}
 	}
 

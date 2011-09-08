@@ -51,6 +51,22 @@
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
+        <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-api</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-log4j12</artifactId>
+         </dependency>
+         <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>log4j-over-slf4j</artifactId>
+         </dependency>
+
+
+
 		<!-- 
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
@@ -98,7 +114,6 @@
 							classes are under ".internal"
 						-->
 						<Import-Package>
-							org.slf4j;version="1.5.6",
 							org.hibernate.proxy,
 							org.hibernate,
 							org.hibernate.criterion,
@@ -108,6 +123,7 @@
 							javax.jms,
 							org.apache.activemq,
 							org.osgi.service.command,
+							org.slf4j;version="1.5.6",
 							*</Import-Package>
 						<Export-Package>net.i2cat.nexus.resources*;version="${pom.version}"
 						</Export-Package>
