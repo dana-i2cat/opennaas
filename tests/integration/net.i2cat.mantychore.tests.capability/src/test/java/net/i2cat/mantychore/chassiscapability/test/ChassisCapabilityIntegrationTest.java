@@ -141,7 +141,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			//log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}
