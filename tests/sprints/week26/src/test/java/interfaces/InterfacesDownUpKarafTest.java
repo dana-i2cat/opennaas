@@ -65,7 +65,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -127,7 +127,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		}
 	}
 
-	@After
+	// @After
 	public void resetRepository() {
 
 		try {
@@ -149,7 +149,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 	@Test
 	public void DownUpLogicalTunnel() {
-		// initBundles();
+		 initBundles();
 		String logicalTunnel = "lt-0/1/2";
 
 		try {
@@ -162,12 +162,12 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-		// resetRepository();
+		 resetRepository();
 	}
 
 	@Test
 	public void DownUpEthernet() {
-		// initBundles();
+		 initBundles();
 		// String ethernet = "fe-0/3/0";
 		// REal test
 		// String ethernet = "fe-0/0/1";
@@ -185,7 +185,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-		// resetRepository();
+		 resetRepository();
 	}
 
 	/**
