@@ -67,97 +67,35 @@ public class IntegrationTestsHelper {
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
-	
+
 	public static Option[] getLuminisTestOptions() {
 		/* luminis features */
-		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES	= { "i2cat-luminis-core" };
-		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES = { "i2cat-luminis-core" };
+		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
-	public static Option[] getMantychoreLuminisTestOptions(){
 
-		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES	= { "i2cat-mantychore-core","i2cat-luminis-core" };		
-		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+	public static Option[] getMantychoreLuminisTestOptions() {
+
+		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core", "i2cat-luminis-core" };
+		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
+
 	public static Option[] getNexusTestOptions() {
 		/* luminis features */
-		String	MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES	= { "i2cat-nexus" };
-		Option	OPT_MANTYCHORE_FEATURES	= scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
+		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
+		String[] MTCHORE_FEATURES = { "i2cat-nexus" };
+		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
-	
-//	/**
-//	 * Wait for all bundles to be active, tries to start non active bundles.
-//	 */
-//	public static void waitForAllBundlesActive(BundleContext bundleContext){
-//		int MAX_RETRIES = 100;
-//		Bundle b = null;
-//		boolean active = true;
-//		List<Integer> fragments = new ArrayList<Integer>();
-//		String strBundles;
-//
-//		for (int i = 0; i < MAX_RETRIES; i++) {
-//			active = true;
-//			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-//				if (!fragments.contains(new Integer(j))) {
-//					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED) {
-//						active = false;
-//						try {
-//							bundleContext.getBundles()[j].start();
-//						} catch (Exception ex) {
-//							ex.printStackTrace();
-//							if (ex.getMessage().indexOf("fragment") != -1) {
-//								fragments.add(new Integer(j));
-//
-//								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
-//								Enumeration headers = headers_dic.keys();
-//								log.info("Fragment headers:");
-//								while (headers.hasMoreElements()) {
-//									log.info(headers.nextElement());
-//								}
-//							}
-//						}
-//					}
-//				}
-//			}
-//
-//			if (active) {
-//				break;
-//			}
-//
-//			strBundles = listBundles(bundleContext);
-//			log.info("Waiting for the activation of all the bundles, this is the " + i + " try. Sleeping for 1 second");
-//			try {
-//				Thread.sleep(1000);
-//			} catch (InterruptedException ex) {
-//				ex.printStackTrace();
-//				break;
-//			}
-//		}
-//
-//		strBundles = listBundles(bundleContext);
-//		log.info("Detected " + fragments.size() + " fragments.");
-//
-//		if (active)
-//			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
-//		else
-//			log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
-//
-//		try {
-//			Thread.sleep(15000);
-//		} catch (InterruptedException ex) {
-//			ex.printStackTrace();
-//		}
-//	}
-	
+
 	/**
-	 * Only waits, it doesn't try to start bundles (container will do)
+	 * Wait for all bundles to be active, tries to start non active bundles.
 	 */
-	public static void waitForAllBundlesActive(BundleContext bundleContext){
+	public static void waitForAllBundlesActive(BundleContext bundleContext) {
 		int MAX_RETRIES = 100;
 		Bundle b = null;
 		boolean active = true;
@@ -167,21 +105,32 @@ public class IntegrationTestsHelper {
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			active = true;
 			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-				if ( !isFragment(bundleContext.getBundles()[j]) && 
-						bundleContext.getBundles()[j].getState() != Bundle.ACTIVE) {
-					active = false;
-				} else if (isFragment(bundleContext.getBundles()[j])) {
-					if (! fragments.contains(j))
-						fragments.add(j);
-					if (bundleContext.getBundles()[j].getState() != Bundle.RESOLVED) 
+				if (!fragments.contains(new Integer(j))) {
+					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED) {
 						active = false;
+						try {
+							bundleContext.getBundles()[j].start();
+						} catch (Exception ex) {
+							ex.printStackTrace();
+							if (ex.getMessage().indexOf("fragment") != -1) {
+								fragments.add(new Integer(j));
+
+								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
+								Enumeration headers = headers_dic.keys();
+								log.info("Fragment headers:");
+								while (headers.hasMoreElements()) {
+									log.info(headers.nextElement());
+								}
+							}
+						}
+					}
 				}
 			}
-			
-			if (active == true) {
+
+			if (active) {
 				break;
 			}
-			
+
 			strBundles = listBundles(bundleContext);
 			log.info("Waiting for the activation of all the bundles, this is the " + i + " try. Sleeping for 1 second");
 			try {
@@ -191,21 +140,83 @@ public class IntegrationTestsHelper {
 				break;
 			}
 		}
-		
+
 		strBundles = listBundles(bundleContext);
-		log.info("Detected " + fragments.size() + " fragments.");
+		String fragmentsNums = "";
+		for (Integer num : fragments) {
+			fragmentsNums += num.toString() + ", ";
+		}
+		log.info("Detected " + fragments.size() + " fragments: " + fragmentsNums);
 
 		if (active)
 			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
 		else
 			log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
-		
+
 		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
 	}
+
+	// /**
+	// * Only waits, it doesn't try to start bundles (container will do)
+	// */
+	// public static void waitForAllBundlesActive(BundleContext bundleContext) {
+	// int MAX_RETRIES = 100;
+	// Bundle b = null;
+	// boolean active = true;
+	// List<Integer> fragments = new ArrayList<Integer>();
+	// String strBundles;
+	//
+	// for (int i = 0; i < MAX_RETRIES; i++) {
+	// active = true;
+	// for (int j = 0; j < bundleContext.getBundles().length; j++) {
+	// if (!isFragment(bundleContext.getBundles()[j]) &&
+	// bundleContext.getBundles()[j].getState() != Bundle.ACTIVE) {
+	// active = false;
+	// } else if (isFragment(bundleContext.getBundles()[j])) {
+	// if (!fragments.contains(j))
+	// fragments.add(j);
+	// if (bundleContext.getBundles()[j].getState() != Bundle.RESOLVED)
+	// active = false;
+	// }
+	// }
+	//
+	// if (active == true) {
+	// break;
+	// }
+	//
+	// strBundles = listBundles(bundleContext);
+	// log.info("Waiting for the activation of all the bundles, this is the " + i + " try. Sleeping for 1 second");
+	// try {
+	// Thread.sleep(1000);
+	// } catch (InterruptedException ex) {
+	// ex.printStackTrace();
+	// break;
+	// }
+	// }
+	//
+	// strBundles = listBundles(bundleContext);
+	//
+	// String fragmentsNums = "";
+	// for (Integer num : fragments) {
+	// fragmentsNums += num.toString() + ", ";
+	// }
+	// log.info("Detected " + fragments.size() + " fragments: " + fragmentsNums);
+	//
+	// if (active)
+	// log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+	// else
+	// log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
+	//
+	// try {
+	// Thread.sleep(15000);
+	// } catch (InterruptedException ex) {
+	// ex.printStackTrace();
+	// }
+	// }
 
 	public static String listBundles(BundleContext bundleContext) {
 		Bundle b = null;
