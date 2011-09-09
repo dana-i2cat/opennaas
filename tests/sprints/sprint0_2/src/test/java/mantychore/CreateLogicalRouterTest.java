@@ -1,3 +1,4 @@
+package mantychore;
 public class CreateLogicalRouterTest {
 	/*
 	 * all types interfaces

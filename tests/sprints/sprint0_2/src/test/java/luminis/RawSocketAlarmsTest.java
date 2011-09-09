@@ -1,5 +1,9 @@
+package luminis;
+import org.junit.Test;
+
 public class RawSocketAlarmsTest {
 
+	@Test
 	public void alarmsReceivedTest() {
 		// open socket to the device
 		// generate alarm
@@ -7,6 +11,7 @@ public class RawSocketAlarmsTest {
 		// check listeners are notified
 	}
 
+	@Test
 	public void checkAlarmsAndCommandsTest() {
 		// open session
 		// simulate an alarm is received
@@ -16,6 +21,7 @@ public class RawSocketAlarmsTest {
 		// check command response hook is executed
 	}
 
+	@Test
 	public void checkAllAlarmsAreSupportedTest() {
 		// open session
 		// while (Alarm alarmInLuminis: allAlarmsInLuminis) {
@@ -26,6 +32,7 @@ public class RawSocketAlarmsTest {
 
 	}
 
+	@Test
 	public void checkAlarmsNotifyEventTest() {
 		// open session
 		// while (Alarm alarmInLuminis: allAlarmsInLuminis) {
@@ -37,6 +44,7 @@ public class RawSocketAlarmsTest {
 
 	}
 
+	@Test
 	public void checkNotifyEventChannelConfigChangedTest() {
 		// throw notify event for ChannelConfigChanged
 		// check that the refreshed model is executed

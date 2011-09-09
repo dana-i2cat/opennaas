@@ -1,3 +1,4 @@
+package mantychore;
 public class RemoveLogicalRouterTest {
 	
 	public void RemoveLogicalRouterAdminPhysical () {
