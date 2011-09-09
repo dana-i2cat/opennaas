@@ -62,10 +62,25 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	}
 
 	public void discoveryLogicalRoutersTest() {
+		// INIT TEST
 		// resource:create
+		// the start method has to create the LR router
 		// resource:start
+
 		// resource:list
+		// List<String> response = KarafCommandHelper.executeCommand("resource:list " ,
+		// commandprocessor);
+		// // assert command output no contains ERROR tag
+		// Assert.assertTrue(response.get(1).isEmpty());
+
 		// check logical routers are in the list
+		// Assert.assertTrue(response.get(0).contains(LRname);
+
+		// List<String> response = KarafCommandHelper.executeCommand("resource:info " +router:LRname,
+		// commandprocessor);
+		// // assert command output no contains ERROR tag
+		// Assert.assertTrue(response.get(1).isEmpty());
+
 		// check resource initialized
 		// check descriptors include IP capability
 
