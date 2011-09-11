@@ -58,6 +58,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 
 	public void logicalRouterConfigureInterfaceEthernetTest() {
 		// ipv4:setIP fe-0/0/1.1 192.168.1.2 255.255.255.0
+
 		// check that command fails if interface doesn't exist
 		// check updated interface if exists
 		// restore configuration
