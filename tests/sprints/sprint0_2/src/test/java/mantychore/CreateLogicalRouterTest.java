@@ -1,16 +1,28 @@
 package mantychore;
 
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.OptionUtils.combine;
+import helpers.IntegrationTestsHelper;
+import helpers.KarafCommandHelper;
+
+import java.util.List;
+
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.ops4j.pax.exam.Inject;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
 
 public class CreateLogicalRouterTest extends AbstractIntegrationTest {
-	static Log					log	= LogFactory
-											.getLog(CreateLogicalRouterTest.class);
+	static Log					log				= LogFactory
+														.getLog(CreateLogicalRouterTest.class);
 
 	String						resourceFriendlyID;
 	String						LRFriendlyID;
@@ -23,6 +35,23 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	/*
 	 * all types interfaces
 	 */
+	@Inject
+	BundleContext				bundleContext	= null;
+
+	@Configuration
+	public static Option[] configuration() throws Exception {
+
+		Option[] options = combine(
+				IntegrationTestsHelper.getMantychoreTestOptions(),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.tests.helper")
+								// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+								// ////////import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+
+								);
+
+		return options;
+	}
 
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
@@ -37,62 +66,83 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	public void createLogicalRouterTest() {
 		// chassis:createLogicalRouter R1 L1
-		// List<String> response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
-		// commandprocessor);
-		// // check logical router creation
-		// // assert command output no contains ERROR tag
-		// Assert.assertTrue(response.get(1).isEmpty());
-		//
-		// // check new LR is created on resources pool ( ResourceManager and ResourceRepo)
-		// response = KarafCommandHelper.executeCommand("resource:list",
-		// commandprocessor);
-		// Assert.assertTrue(response.get(0).contains(LRFriendlyID));
+		List<String> response;
+		try {
+			response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
+					commandprocessor);
+			// check logical router creation
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
-		// chassis:addInterface R1 L1 fe-0/0/1.1
-		// check that the interface is included in the L1
+			// check new LR is created on resources pool ( ResourceManager and ResourceRepo)
+			response = KarafCommandHelper.executeCommand("resource:list",
+					commandprocessor);
+			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
+
+			response = KarafCommandHelper.executeCommand("chassis:deleteLR " + resourceFriendlyID + " " + LRFriendlyID,
+					commandprocessor);
+			// check logical router is deleted
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			// chassis:addInterface R1 L1 fe-0/0/1.1
+			// check that the interface is included in the L1
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void listLogicalRoutersTest() {
 		// chassis:listLogicalRouters
 		// check if the command works
-		// List<String> response = KarafCommandHelper.executeCommand("chassis:listLR " + resourceFriendlyID,
-		// commandprocessor);
-		// // assert command output no contains ERROR tag
-		// Assert.assertTrue(response.get(1).isEmpty());
+		List<String> response;
+		try {
+			response = KarafCommandHelper.executeCommand("chassis:listLR " + resourceFriendlyID,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public void discoveryLogicalRoutersTest() {
-		// INIT TEST
-		// resource:create
-		// the start method has to create the LR router
-		// resource:start
 
-		// resource:list
-		// List<String> response = KarafCommandHelper.executeCommand("resource:list " ,
-		// commandprocessor);
-		// // assert command output no contains ERROR tag
-		// Assert.assertTrue(response.get(1).isEmpty());
+		try {
+			// INIT TEST
 
-		// check logical routers are in the list
-		// Assert.assertTrue(response.get(0).contains(LRname);
+			String LRname = "";
+			// resource:create
+			// the start method has to create the LR router
+			// resource:start
 
-		// List<String> response = KarafCommandHelper.executeCommand("resource:info " +router:LRname,
-		// commandprocessor);
-		// // assert command output no contains ERROR tag
-		// Assert.assertTrue(response.get(1).isEmpty());
+			// resource:list
+			List<String> response = KarafCommandHelper.executeCommand("resource:list ",
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
-		// check resource initialized
-		// check descriptors include IP capability
+			// check logical routers are in the list
+			Assert.assertTrue(response.get(0).contains(LRname));
 
-	}
+			response = KarafCommandHelper.executeCommand("resource:info " + "router:" + LRname,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
 
-	public void failAddCreateLogicalRouterTest() {
-		// chassis:createLogicalRouter R1 L1 fe-0/0/1.1 fe-0/0/1.3 fe-0/0/1.2
-		// check logical router creation
-		// resource:start L1
-		// chassis:addInterface R1 L1 fe-0/0/1.1
-		// test fail, cannot add new interfaces when the L1 resource is started
-		// restore configuration
+			// check resource initialized
+			// check descriptors include IP capability
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
