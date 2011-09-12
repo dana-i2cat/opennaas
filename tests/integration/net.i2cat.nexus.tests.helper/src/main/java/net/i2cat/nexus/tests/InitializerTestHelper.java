@@ -9,11 +9,7 @@ import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-
-import org.junit.Assert;
-
 
 public class InitializerTestHelper {
 	public static void removeResources(IResourceManager resourceManager) throws ResourceException {
@@ -23,29 +19,19 @@ public class InitializerTestHelper {
 		}
 	}
 
-
-	public static IResource initResource(String name, String type, ArrayList<String> capabilitiesId, IResourceManager resourceManager, IProtocolManager protocolManager, ProtocolSessionContext context) {
+	public static IResource initResource(String name, String type, ArrayList<String> capabilitiesId, IResourceManager resourceManager,
+			IProtocolManager protocolManager, ProtocolSessionContext context) throws Exception {
 		IResource resource = null;
-		
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory
-				.newResourceDescriptor(name,type, capabilitiesId);
-		try {
-			
-			resource = resourceManager.createResource(resourceDescriptor);
-			
-			//TODO Check this identifier
-			IProtocolSessionManager protocolSessionManager = protocolManager
-					.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(), context);
-	
+				.newResourceDescriptor(name, type, capabilitiesId);
 
-			
-			// call the command to initialize the model
-		} catch (ResourceException e) {
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			Assert.fail(e.getMessage());
-		}
+		resource = resourceManager.createResource(resourceDescriptor);
+
+		// TODO Check this identifier
+		IProtocolSessionManager protocolSessionManager = protocolManager
+				.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(), context);
+
 		return resource;
 
 	}
