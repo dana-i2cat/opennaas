@@ -16,6 +16,7 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.IResourceRepository;
@@ -220,10 +221,13 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.fail(e.getLocalizedMessage());
 		}
 	}
-
+	
+	
 	@Test
 	public void MakeRemoveConnectionsResourceTest() {
 
+		clearRepo();
+		
 		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
 
 		try {
@@ -356,6 +360,32 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 	}
 
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[repository.listResources().size()];
+		toRemove = repository.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					repository.stopResource(resource.getResourceIdentifier().getId());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
+			try {
+				repository.removeResource(resource.getResourceIdentifier().getId());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+
+		}
+
+		log.info("Resource repo cleared!");
+	}
+	
 	public ICapability getCapability(List<ICapability> capabilities, String type) {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
