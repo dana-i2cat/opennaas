@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Properties;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionContextUtils;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmConfigurator;
