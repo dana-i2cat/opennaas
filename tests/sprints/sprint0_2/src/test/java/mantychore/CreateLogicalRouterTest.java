@@ -189,7 +189,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 		try {
 			// initTest();
-
+			// need to find a LR name existing on the router
 			String LRname = "";
 
 			// resource:list

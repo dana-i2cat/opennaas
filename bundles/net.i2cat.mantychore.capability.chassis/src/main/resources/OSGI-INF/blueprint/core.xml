@@ -68,7 +68,14 @@
 				<null />
 			</completers>
 		</command>
+		<command name="chassis/createLogicalRouter">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateLogicalRouterCommand" />
 		
+		<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
+		</command>
 		<!--  up an down interfaces  -->
 		<command name="chassis/up">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.UpInterfaceCommand" />

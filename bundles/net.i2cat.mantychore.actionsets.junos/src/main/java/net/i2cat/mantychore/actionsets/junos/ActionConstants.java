@@ -14,5 +14,6 @@ public class ActionConstants {
 	public static final String	CREATESUBINTERFACE	= "createsubinterface";
 	public static final String	SETVLAN				= "setVLAN";
 	public static final String	CONFIGURESTATUS		= "configureStatus";
+	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
 
 }

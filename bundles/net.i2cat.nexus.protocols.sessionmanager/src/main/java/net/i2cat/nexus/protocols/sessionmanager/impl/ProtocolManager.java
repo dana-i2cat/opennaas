@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
 
 public class ProtocolManager implements IProtocolManager {
 
-	private final Log								log					= LogFactory.getLog(ProtocolManager.class);
+	private  Log								log					= LogFactory.getLog(ProtocolManager.class);
 
 	private Map<String, IProtocolSessionManager>	sessionManagers		= null;
 

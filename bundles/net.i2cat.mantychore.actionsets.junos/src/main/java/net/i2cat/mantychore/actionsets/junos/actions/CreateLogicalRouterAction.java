@@ -21,13 +21,17 @@ public class CreateLogicalRouterAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		return false;
+		// TODO Auto-generated method stub
+		if (!(params instanceof String))
+			return false;
+		return true;
 	}
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		try {
+			// not only check the params also it change the velocity template according to the interface
 			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
@@ -35,10 +39,13 @@ public class CreateLogicalRouterAction extends JunosAction {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
 		validateAction(actionResponse);
+
 	}
 
 	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -51,6 +58,7 @@ public class CreateLogicalRouterAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
+
 	}
 
 }
