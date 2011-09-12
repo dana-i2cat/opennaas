@@ -2,14 +2,30 @@ package mantychore;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.i2cat.mantychore.model.System;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.tests.InitializerTestHelper;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
+import net.i2cat.nexus.tests.ProtocolSessionHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -20,76 +36,129 @@ import org.osgi.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
-	static Log					log				= LogFactory
-															.getLog(RemoveLogicalRouterTest.class);
-	IResourceManager			resourceManager;
-	String						resourceFriendlyID;
-	IResource					resource;
-	private CommandProcessor	commandprocessor;
-	private boolean				isMock			= false;
+	static Log log = LogFactory.getLog(RemoveLogicalRouterTest.class);
+	private boolean isMock = false;
 	@Inject
-	BundleContext				bundleContext	= null;
+	BundleContext bundleContext = null;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-					IntegrationTestsHelper.getMantychoreTestOptions(),
-					mavenBundle().groupId("net.i2cat.nexus").artifactId(
-							"net.i2cat.nexus.tests.helper")
-									// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-									// ////////import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+				IntegrationTestsHelper.getMantychoreTestOptions(),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.tests.helper")
+		// ,
+		// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+		// ////////import static
+		// org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-									);
+		);
 
 		return options;
 	}
 
-	public void clearRepo() throws ResourceException {
-		for (IResource resource : resourceManager.listResources()) {
-			resourceManager.removeResource(resource.getResourceIdentifier());
+
+
+	public void RemoveLogicalRouterAdminPhysical() throws Exception{
+		IResourceManager resourceManager = null;
+		CommandProcessor commandprocessor = null;
+		IProtocolManager protocolManager = null;
+		
+		String name = "junosm20";
+		String type = "router";
+		String resourceFriendlyID = name +":"+ type;
+		
+		ArrayList<String> capabilitiesId = new ArrayList<String>();
+		capabilitiesId.add("chassis");
+		capabilitiesId.add("queue");
+		
+		ProtocolSessionContext protocolSessionContext =  ProtocolSessionHelper.newSessionContextNetconf();
+		String nameURI = ((String)protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
+		boolean isMock =  nameURI.startsWith("mock");
+				
+				
+		/* initialize bundles  */
+		log.info("Waiting to load all bundles");
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		log.info("Loaded all bundles");
+
+		/* init capability */
+
+		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
+		log.info("INFO: Initialized!");
+		resourceManager = getOsgiService(IResourceManager.class);
+
+		
+		commandprocessor = getOsgiService(CommandProcessor.class);
+		protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		
+		/* initialize resource to test*/
+		IResource resource = InitializerTestHelper.initResource(name,type,capabilitiesId,resourceManager,protocolManager,protocolSessionContext);
+		
+		//start resource
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		
+		// chassis:deleteLogicalRoute
+		String logicalRouterName = "Logical1";
+		List<String> response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
+					commandprocessor);
+		log.info(response.get(0));
+
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		log.info(response1.get(0));
+
+		// assert command output no contains ERROR tagInitializerTestHelper
+		Assert.assertTrue(response1.get(1).isEmpty());
+
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters" + resourceFriendlyID, commandprocessor);
+		log.info(response2.get(0));
+
+		// assert command output no contains ERROR tag
+		
+		Assert.assertTrue(response2.get(1).isEmpty());
+		// check chassis:listLogicalRouters from R1 does not includes L1
+		if (!isMock) {
+			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
+			boolean exist = checkExistLogicalRouter(physicalRouter,logicalRouterName);
+			Assert.assertFalse(exist);
+			
+		}
+
+		/* test resource */
+		try {
+			InitializerTestHelper.removeResources(resourceManager);
+		} catch (ResourceException e) {
+			Assert.fail(e.getMessage());
 		}
 	}
 
-	// public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
-	// IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-	//
-	// // ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
-	// IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
-	//
-	// if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
-	// return true;
-	// }
-	//
-	// return false;
-	// }
 
-	// public void initTest() {
-	//
-	// List<String> capabilities = new ArrayList<String>();
-	//
-	// capabilities.add("ipv4");
-	// capabilities.add("queue");
-	//
-	// ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
-	// resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
-	// try {
-	// clearRepo();
-	// resource = resourceManager.createResource(resourceDescriptor);
-	// isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
-	// resourceManager.startResource(resource.getResourceIdentifier());
-	//
-	// // call the command to initialize the model
-	// } catch (ResourceException e) {
-	// Assert.fail(e.getMessage());
-	// } catch (ProtocolException e) {
-	// Assert.fail(e.getMessage());
-	// }
-	//
-	// }
 
-	// @Before
-	public void initBundles() {
+	public void failRemoveCreateLogicalRouterTest() throws Exception {
+		IResourceManager resourceManager = null;
+		CommandProcessor commandprocessor = null;
+		IProtocolManager protocolManager = null;
+		
+		String name = "junosm20";
+		String type = "router";
+		String resourceFriendlyID = name +":"+ type;
+		
+		ArrayList<String> capabilitiesId = new ArrayList<String>();
+		capabilitiesId.add("chassis");
+		capabilitiesId.add("queue");
+		
+		ProtocolSessionContext protocolSessionContext =  ProtocolSessionHelper.newSessionContextNetconf();
+		String nameURI = ((String)protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
+		boolean isMock =  nameURI.startsWith("mock");
+				
+				
+		/* initialize bundles  */
+		
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
@@ -100,22 +169,87 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		resourceManager = getOsgiService(IResourceManager.class);
+		commandprocessor = getOsgiService(CommandProcessor.class);
+		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
 		log.info("INFO: Initialized!");
-		commandprocessor = getOsgiService(CommandProcessor.class);
-		// initTest();
+		
+		/* initialize resource to test*/
+		IResource resource = InitializerTestHelper.initResource(name,type,capabilitiesId,resourceManager,protocolManager,protocolSessionContext);
+		
+		// chassis:createlogicalrouter
+		String logicalRouterName = "Logical1";
+		String interfId2 = "fe-0/0/1.1";
+		String interfId1 = "fe-0/0/1.2";
+		String interfId3 = "fe-0/0/1.3";
+		List<String> response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
+		+ logicalRouterName+" "+interfId1+" "+interfId2+" "+interfId3,
+				commandprocessor);
+		log.info(response.get(0));
+		
+		
+		// check logical router creation
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters" + resourceFriendlyID, commandprocessor);
+		log.info(response2.get(0));
 
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response2.get(1).isEmpty());
+		
+		if (!isMock) {
+			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
+			boolean exist = checkExistLogicalRouter(physicalRouter,logicalRouterName);
+			Assert.assertTrue(exist);
+			
+		}
+		
+		
+		//start resource
+		resourceManager.startResource(resource.getResourceIdentifier());
+		
+		
+		// chassis:removeInterface R1 L1 fe-0/0/1.1 //TODO IMPLEMENT REMOVE INTERFACE??
+		List<String> response3 = KarafCommandHelper.executeCommand("chassis:removeInterface " + resourceFriendlyID+ " " + logicalRouterName + " " + interfId2,
+				commandprocessor);
+		log.info(response3.get(0));
+		
+		
+		// assert command output contains ERROR tag
+		Assert.assertFalse(!response3.get(1).isEmpty() && response3.get(1).contains("ERROR"));
+		
+		
+		// test fail, cannot add new interfaces when the L1 resource is started
+		// restore configuration
+		
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		
+		
+		List<String> response4 = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
+				commandprocessor);
+		log.info(response4.get(0));
+			
+	
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response4.get(1).isEmpty());
+		
+		try {
+			InitializerTestHelper.removeResources(resourceManager);
+		} catch (ResourceException e) {
+			Assert.fail(e.getMessage());
+		}
 	}
-
-	public void RemoveLogicalRouterAdminPhysical() {
-		// chassis:deleteLogicalRouter
-		// check chassis:listLogicalRouters from R1 does not includes L1
-
+	
+	public static boolean  checkExistLogicalRouter (ComputerSystem physicalRouter, String logicalRouterName) {
+		List<System> logicalRouters = physicalRouter.getSystems();
+		for (System logicalRouter: logicalRouters) {
+			if (logicalRouter.getName().equals(logicalRouterName)) return true;
+		}
+		return false;
 	}
-
+	
 	/**
-	 * This test is deprecated net/i2cat/nexus/resources/tests/ResourceManagerTest.java/testRemoveResource. This test is responsible for testing this
-	 * story
+	 * This test is deprecated
+	 * net/i2cat/nexus/resources/tests/ResourceManagerTest
+	 * .java/testRemoveResource. This test is responsible for testing this story
 	 * 
 	 * **/
 	@Deprecated
@@ -123,16 +257,6 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 		// resource:remove L1
 		// check that resource is not in the repo
 		// check chassis:listLogicalRouters from R1 does includes L1
-	}
-
-	public void failRemoveCreateLogicalRouterTest() {
-		// chassis:createLogicalRouter R1 L1 fe-0/0/1.1 fe-0/0/1.3 fe-0/0/1.2
-		// check logical router creation
-		// resource:start L1
-		// chassis:removeInterface R1 L1 fe-0/0/1.1
-		// test fail, cannot add new interfaces when the L1 resource is started
-		// restore configuration
-
 	}
 
 }
