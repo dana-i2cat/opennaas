@@ -3,18 +3,28 @@ package mantychore;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ILifecycle.State;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
+import net.i2cat.nexus.tests.ProtocolSessionHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Test;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -61,33 +71,87 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		log.info("Loaded all bundles");
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
-		// initTest();
+		initTest();
+	}
+
+	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
+		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+
+		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
+
+		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public void initTest() {
+		List<String> capabilities = new ArrayList<String>();
+
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
+		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
+		try {
+
+			resource = resourceManager.createResource(resourceDescriptor);
+			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
+
+			// call the command to initialize the model
+		} catch (ResourceException e) {
+			Assert.fail(e.getMessage());
+		} catch (ProtocolException e) {
+			Assert.fail(e.getMessage());
+		}
 
 	}
 
-	public void createLogicalRouterTest() {
+	public void deleteResource() {
+		try {
+			if (resourceManager.getResource(resource.getResourceIdentifier()).getState().equals(State.ACTIVE))
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
+			// call the command to initialize the model
+		} catch (ResourceException e) {
+			Assert.fail(e.getMessage());
+		}
+
+	}
+
+	@Test
+	public void createAndDeleteLogicalRouterTest() {
 		// chassis:createLogicalRouter R1 L1
 		List<String> response;
 		try {
 			response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
 					commandprocessor);
-			// check logical router creation
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			// check new LR is created on resources pool ( ResourceManager and ResourceRepo)
+			// check logical router creation
 			response = KarafCommandHelper.executeCommand("resource:list",
 					commandprocessor);
+			Assert.assertTrue(response.get(1).isEmpty());
+			// assert new LR is created on resources pool ( ResourceManager and ResourceRepo)
 			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
 
+			// delete LR
 			response = KarafCommandHelper.executeCommand("chassis:deleteLR " + resourceFriendlyID + " " + LRFriendlyID,
 					commandprocessor);
-			// check logical router is deleted
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			// chassis:addInterface R1 L1 fe-0/0/1.1
-			// check that the interface is included in the L1
+			// check logical router is deleted
+			// resource:list
+			response = KarafCommandHelper.executeCommand("resource:list ",
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertFalse(response.get(0).contains(LRFriendlyID));
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,11 +159,17 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	}
 
+	@Test
 	public void listLogicalRoutersTest() {
-		// chassis:listLogicalRouters
-		// check if the command works
+
 		List<String> response;
 		try {
+			response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			// chassis:listLogicalRouters
 			response = KarafCommandHelper.executeCommand("chassis:listLR " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
@@ -114,23 +184,20 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	}
 
+	@Test
 	public void discoveryLogicalRoutersTest() {
 
 		try {
-			// INIT TEST
+			// initTest();
 
 			String LRname = "";
-			// resource:create
-			// the start method has to create the LR router
-			// resource:start
 
 			// resource:list
 			List<String> response = KarafCommandHelper.executeCommand("resource:list ",
 					commandprocessor);
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
-
-			// check logical routers are in the list
+			// check that the logical router is on the list
 			Assert.assertTrue(response.get(0).contains(LRname));
 
 			response = KarafCommandHelper.executeCommand("resource:info " + "router:" + LRname,
@@ -139,54 +206,15 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 			Assert.assertTrue(response.get(1).isEmpty());
 
 			// check resource initialized
+			Assert.assertTrue(response.get(0).contains("INITIALIZED"));
 			// check descriptors include IP capability
+			Assert.assertTrue(response.get(0).contains("Ipv4"));
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
-
-	// public void testingMethod(String inter, String subport, int VLANid) throws Exception {
-	//
-	// // Obtain the previous IP/MASK make the rollback of the test
-	// int OldVLAN = getOldInterface(resource, inter, subport);
-	//
-	// // SET NEW VLAN
-	// responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
-	// , commandprocessor);
-	// // assert command output no contains ERROR tag
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	// responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
-	// // assert command output no contains ERROR tag
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	//
-	// // Check that the resource have the old VLAN in the model despite of have send the command
-	// checkModel(inter, subport, OldVLAN, resource);
-	//
-	// // REFRESH to fill up the model
-	// responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-	// // assert command output no contains ERROR tag
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	//
-	// // CHECK CHANGES IN THE INTERFACE with new VLAN
-	// checkModel(inter, subport, VLANid, resource);
-	//
-	// // ROLLBACK OF THE INTERFACE
-	// responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
-	// , commandprocessor);
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	// responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	//
-	// // REFRESH to fill up the model
-	// responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
-	// // assert command output no contains ERROR tag
-	// Assert.assertTrue(responseError.get(1).isEmpty());
-	//
-	// // CHECK THe ROLLBACK IS DONE
-	// checkModel(inter, subport, OldVLAN, resource);
-	//
-	// }
 
 }
