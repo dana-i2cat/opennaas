@@ -13,8 +13,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import uk.co.westhawk.snmp.event.TrapEvent;
 import uk.co.westhawk.snmp.event.TrapListener;
@@ -47,7 +47,7 @@ import uk.co.westhawk.snmp.stack.varbind;
 
 public class SnmpTrapListener implements TrapListener {
 
-	Logger					log							= LoggerFactory.getLogger(SnmpTrapListener.class);
+	Log					log							= LogFactory.getLog(SnmpTrapListener.class);
 
 	// Oid's
 	// General OIDs

@@ -10,8 +10,8 @@ import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ProfileManager implements IProfileManager {
 
-	Logger									logger				= LoggerFactory.getLogger(ProfileManager.class);
+	Log									logger				= LogFactory.getLog(ProfileManager.class);
 
 	/**
 	 * HashMap that contains for each ProfileId its associated Resources

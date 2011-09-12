@@ -296,6 +296,9 @@
 				<artifactId>commons-logging</artifactId>
 				<version>${commons.logging.version}</version>
 			</dependency>
+
+			<!-- All the projects should only work with the commons-logging. Unfortunately, there a set of library (third parties mainly), which it 
+				needs slf4j and pax-logging. For this reason, there have specified in the dependency management -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -327,6 +330,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+
 
 			<!-- Web services support -->
 			<dependency>
@@ -512,9 +516,14 @@
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+
 
 		<!-- Logging -->
-		<dependency>
+<!--		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -534,6 +543,7 @@
 			<groupId>org.ops4j.pax.logging</groupId>
 			<artifactId>pax-logging-service</artifactId>
 		</dependency>
+-->
 	</dependencies>
 
 	<!-- Modules configuration -->
