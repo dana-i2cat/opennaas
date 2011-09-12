@@ -2,13 +2,14 @@ package mantychore;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
-import helpers.KarafCommandHelper;
+
 
 import java.util.List;
 
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
