@@ -57,6 +57,7 @@ public class IntegrationTestsHelper {
 		//String[] FUSE_FEATURES = { "i2cat-nexus-fuse" };
 		String FUSE_FEATURES_REPO = "mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features";
 		String[] FUSE_FEATURES = { "opennaas-core" , "opennaas-core-deps" };
+		//String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_FUSE_FEATURES = scanFeatures(FUSE_FEATURES_REPO, FUSE_FEATURES);
 		return combine(getSimpleTestOptions(), OPT_FUSE_FEATURES);
 	}

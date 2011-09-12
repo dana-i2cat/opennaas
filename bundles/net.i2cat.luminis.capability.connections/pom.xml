@@ -21,7 +21,7 @@
 		<!-- mantychore dependencies -->
 		<!-- TODO clean pom when final structure of bundle is ready -->
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>net.i2cat.mantychore</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
