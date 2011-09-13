@@ -1,35 +1,31 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "createLR", description = "Create a logical router on a given resource.")
-public class CreateLogicalRouterCommand extends GenericKarafCommand {
+@Command(scope = "chassis", name = "listLogicalRouter", description = "List all logical resources of a given resource.")
+public class ListLogicalRouterCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the logical routers.", required = true, multiValued = false)
 	private String	resourceId;
-
-	@Argument(index = 1, name = "logicalRouter", description = "The logical router to be created.", required = true, multiValued = false)
-	private String	LRname;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("create  Logical Router");
+
+		initcommand("list logical router");
 
 		try {
 			IResourceManager manager = getResourceManager();
 
 			if (!splitResourceName(resourceId))
-				return -1;
+				return null;
 
 			IResourceIdentifier resourceIdentifier = null;
 
@@ -37,14 +33,27 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
 				endcommand();
-				return -1;
+				return null;
 			}
-			IResource resource = manager.getResource(resourceIdentifier);
-			validateResource(resource);
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			printInfo("Sending message to the queue");
 
-			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRname);
+			IResource resource = manager.getResource(resourceIdentifier);
+
+			validateResource(resource);
+
+			// TODO implement force refresh of the router configuration
+			// maybe asking (parser) only for logical router information
+
+			ComputerSystem model = (ComputerSystem) resource.getModel();
+
+			for (Object systemElement : model.getManagedSystemElements()) {
+				if (systemElement instanceof ComputerSystem) {
+					ComputerSystem logicalrouter = (ComputerSystem) systemElement;
+					// check that the element is a Logical Router
+					if (logicalrouter.getElementName().equalsIgnoreCase("logicalrouter")) {
+						printSymbol(bullet + "  " + logicalrouter.getName());
+					}
+				}
+			}
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -59,5 +68,4 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 		endcommand();
 		return null;
 	}
-
 }

@@ -98,7 +98,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	/**
 	 * Add a new SystemComponent association between managedSystemElement and this element
 	 * 
-	 * @param protocolEndpoint
+	 * @param managedSystemElement
 	 * @return
 	 */
 	public boolean addManagedSystemElement(ManagedSystemElement managedSystemElement) {
@@ -110,7 +110,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	/**
 	 * Remove the SystemComponent association (will be deleted) between the managedSystemElement and this element
 	 * 
-	 * @param protocolEndpoint
+	 * @param managedSystemElement
 	 * @return
 	 */
 	public boolean removeManagedSystemElement(ManagedSystemElement managedSystemElement) {
