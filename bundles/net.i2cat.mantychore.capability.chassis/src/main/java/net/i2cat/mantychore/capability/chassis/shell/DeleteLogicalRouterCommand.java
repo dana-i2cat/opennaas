@@ -2,7 +2,6 @@ package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
-import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -64,9 +63,7 @@ public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private ComputerSystem prepareParams() {
-		ComputerSystem logicalRouter = new ComputerSystem();
-		logicalRouter.setName(logicalRouterName);
-		return logicalRouter;
+	private String prepareParams() {
+		return logicalRouterName;
 	}
 }

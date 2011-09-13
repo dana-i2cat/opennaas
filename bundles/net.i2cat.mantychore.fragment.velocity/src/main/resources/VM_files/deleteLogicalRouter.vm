@@ -1,5 +1,5 @@
 <configuration>
 	<logical-systems operation="delete">	
-			<name>$param.Name</name>
+			<name>$param</name>
 	</logical-systems>	
 </configuration>
