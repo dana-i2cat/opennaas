@@ -211,7 +211,6 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	 * Implementation for the execution of a single action. Clean the queue, add an action and send the message
 	 */
 	private QueueResponse dummyExecute(Object action) throws CapabilityException {
-		empty();
 		queueAction((IAction) action);
 		return execute();
 	}
