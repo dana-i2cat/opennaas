@@ -19,41 +19,53 @@ public class RefreshResourceCommand extends GenericKarafCommand {
 	private String	resourceIDs;
 
 	@Override
-	protected Object doExecute() throws Exception {
+	protected Object doExecute() {
 		initcommand("create resource");
 
-		IResourceManager manager = getResourceManager();
+		IResourceManager manager;
+		try {
+			manager = getResourceManager();
 
-		if (!splitResourceName(resourceIDs))
-			return null;
+			if (!splitResourceName(resourceIDs))
+				return null;
 
-		IResource resource = null;
-		IResourceIdentifier identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
+			IResource resource = null;
+			IResourceIdentifier identifier;
+			try {
+				identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
-		if (identifier == null) {
-			printError("Error in identifier.");
-			endcommand();
-			return null;
-		}
+				if (identifier == null) {
+					printError("Error in identifier.");
+					endcommand();
+					return null;
+				}
 
-		resource = manager.getResource(identifier);
-		validateResource(resource);
+				resource = manager.getResource(identifier);
+				validateResource(resource);
 
-		// call the method to refresh each capability on resource
-		ICapability queueCapab = null;
-		for (ICapability capab : resource.getCapabilities()) {
-			if (capab instanceof AbstractCapability) {
-				if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
-					queueCapab = capab;
-				} else {
-					Response response = ((AbstractCapability) capab).sendStartUpActions();
-					if (!response.getStatus().equals(Status.OK)) {
-						throw new ResourceException();
+				// call the method to refresh each capability on resource
+				ICapability queueCapab = null;
+				for (ICapability capab : resource.getCapabilities()) {
+					if (capab instanceof AbstractCapability) {
+						if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
+							queueCapab = capab;
+						} else {
+							Response response = ((AbstractCapability) capab).sendStartUpActions();
+							if (!response.getStatus().equals(Status.OK)) {
+								throw new ResourceException();
+							}
+						}
 					}
 				}
+			} catch (ResourceException e) {
+				printError(e);
 			}
-		}
+		} catch (Exception e) {
 
+			printError(e);
+			printError("Error showing information of resource.");
+
+		}
 		endcommand();
 		return null;
 	}
