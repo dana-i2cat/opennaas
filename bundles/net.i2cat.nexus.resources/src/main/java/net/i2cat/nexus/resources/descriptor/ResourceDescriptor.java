@@ -1,5 +1,6 @@
 package net.i2cat.nexus.resources.descriptor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.CollectionOfElements;
  */
 @XmlRootElement
 @Entity
-@org.hibernate.annotations.NamedQueries( { @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
+@org.hibernate.annotations.NamedQueries({ @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
 	private static final long			serialVersionUID	= -8571009012048021984L;
@@ -99,6 +100,33 @@ public class ResourceDescriptor {
 
 	public void setProfileId(String profileId) {
 		this.profileId = profileId;
+	}
+
+	public boolean removeCapabilityDescriptor(String capabilityType) {
+		for (int i = 0; i < capabilityDescriptors.size(); i++) {
+			if (capabilityDescriptors.get(i).getCapabilityInformation()
+					.getType().equals(capabilityType)) {
+				capabilityDescriptors.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		resourceDescriptor.setId(id);
+		resourceDescriptor.setInformation((Information) information.clone());
+		resourceDescriptor.setProfileId(profileId);
+
+		List<CapabilityDescriptor> newCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		for (CapabilityDescriptor capabilityDescriptorToCopy : capabilityDescriptors) {
+			newCapabilityDescriptors.add((CapabilityDescriptor) capabilityDescriptorToCopy.clone());
+		}
+		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
+
+		return super.clone();
 	}
 
 	// public ManagedElement getModel() {

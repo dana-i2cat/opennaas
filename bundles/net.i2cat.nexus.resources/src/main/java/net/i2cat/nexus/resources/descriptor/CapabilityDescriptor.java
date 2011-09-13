@@ -120,4 +120,21 @@ public class CapabilityDescriptor {
 		}
 		return propertiesString;
 	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		capabilityDescriptor.setId(id);
+		capabilityDescriptor.setCapabilityInformation((Information) capabilityInformation.clone());
+		capabilityDescriptor.setEnabled(enabled);
+
+		List<CapabilityProperty> properties = new ArrayList<CapabilityProperty>();
+		for (CapabilityProperty propertyToCopy : capabilityProperties) {
+			properties.add((CapabilityProperty) propertyToCopy.clone());
+		}
+		capabilityDescriptor.setCapabilityProperties(properties);
+
+		return capabilityDescriptor;
+	}
 }
