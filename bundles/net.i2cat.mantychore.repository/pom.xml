@@ -75,10 +75,11 @@
 					<instructions>
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-Activator>net.i2cat.mantychore.repository.Activator</Bundle-Activator>
 						<Import-Package>!${pom.artifactId},org.slf4j;version="1.5.6",*
 						</Import-Package>
 						<Export-Package>
-						net.i2cat.luminis.ROADM.respository.*;version="${pom.version}"
+						net.i2cat.mantychore.repository.*;version="${pom.version}"
 						</Export-Package>					
 					</instructions>
 				</configuration>
