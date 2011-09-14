@@ -16,5 +16,6 @@ public class ActionConstants {
 	public static final String	CONFIGURESTATUS		= "configureStatus";
 	public static final String	DELETELOGICALROUTER	= "deleteLogicalRouter";
 	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
+	public static final String	GETLOGICALROUTERS	= "getLogicalRouters";
 
 }
