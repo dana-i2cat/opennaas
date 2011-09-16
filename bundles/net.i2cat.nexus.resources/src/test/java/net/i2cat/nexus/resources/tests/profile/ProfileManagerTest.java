@@ -12,6 +12,7 @@ import net.i2cat.nexus.resources.profile.IProfile;
 import net.i2cat.nexus.resources.profile.IProfileManager;
 import net.i2cat.nexus.resources.profile.ProfileDescriptor;
 import net.i2cat.nexus.resources.profile.ProfileManager;
+import net.i2cat.nexus.resources.tests.capability.MockActionSet;
 import net.i2cat.nexus.resources.tests.profile.mock.DummyAction;
 import net.i2cat.nexus.resources.tests.profile.mock.MockProfile;
 
@@ -115,7 +116,7 @@ public class ProfileManagerTest {
 
 	private IProfile createProfile(String profileName) {
 
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = new MockActionSet();
 
 		actionSet.setActionSetId("chassisProfileActionSet");
 		actionSet.putAction(actionId, DummyAction.class);

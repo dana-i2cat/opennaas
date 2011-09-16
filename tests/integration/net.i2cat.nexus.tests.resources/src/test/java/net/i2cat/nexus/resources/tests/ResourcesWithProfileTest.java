@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.action.ActionSet;
 import net.i2cat.nexus.resources.action.IActionSet;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
@@ -59,8 +59,8 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-					);
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
 		return options;
 	}
 
@@ -124,7 +124,6 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 			ProfileDescriptor profileDescriptor = ResourceDescriptorFactory.newProfileDescriptor("profile", "router");
 			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
-
 			/* specify profiles */
 			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
 			ActionSet actionSet = new ActionSet();

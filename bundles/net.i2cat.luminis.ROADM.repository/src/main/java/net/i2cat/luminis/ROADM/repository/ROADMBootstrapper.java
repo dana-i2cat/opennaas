@@ -37,7 +37,7 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 				if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
 					queueCapab = capab;
 				} else {
-					Response response = ((AbstractCapability) capab).sendStartUpActions();
+					Response response = ((AbstractCapability) capab).sendRefreshActions();
 					if (!response.getStatus().equals(Status.OK)) {
 						throw new ResourceException();
 					}

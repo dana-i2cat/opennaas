@@ -2,7 +2,6 @@ package net.i2cat.luminis.ROADM.repository.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.List;
 
@@ -15,15 +14,14 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitc
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-
 import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.IResourceRepository;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
+import net.i2cat.nexus.resources.action.IAction;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
@@ -221,13 +219,12 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.fail(e.getLocalizedMessage());
 		}
 	}
-	
-	
+
 	@Test
 	public void MakeRemoveConnectionsResourceTest() {
 
 		clearRepo();
-		
+
 		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
 
 		try {
@@ -385,7 +382,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 		log.info("Resource repo cleared!");
 	}
-	
+
 	public ICapability getCapability(List<ICapability> capabilities, String type) {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {

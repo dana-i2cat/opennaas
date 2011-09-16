@@ -1,5 +1,7 @@
 package net.i2cat.nexus.resources.capability;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.nexus.resources.IResource;
@@ -200,33 +202,59 @@ public abstract class AbstractCapability implements ICapability {
 	protected abstract void shutdownCapability() throws CapabilityException;
 
 	/**
-	 * Sends to queue the actions that should be executed before this capability is operative.
+	 * Sends to the queue necessary actions that should be executed before this capability is operative.
 	 * 
 	 * @return
 	 */
-	public Response sendStartUpActions() {
+	public Response sendRefreshActions() {
 		try {
 
-			Response response = null;
+			List<String> refreshActions = getActionSet().getRefreshActionName();
 
-			if (getActionSet().getStartUpRefreshActionName() != null) {
-				if (getActionSet().getActionNames().contains(getActionSet().getStartUpRefreshActionName())) {
-					response = (Response) sendMessage(getActionSet().getStartUpRefreshActionName(), null);
-				} else {
-					Vector<String> errorMsgs = new Vector<String>();
-					errorMsgs
-							.add("Could not find action in capability actionset");
-					response = Response.errorResponse(getActionSet().getStartUpRefreshActionName(), errorMsgs);
-				}
-			}
-			return response;
+			List<Response> responses = new ArrayList<Response>();
+			for (String refreshAction : refreshActions)
+				responses.add((Response) sendMessage(refreshAction, null));
+
+			return prepareResponse(responses);
 
 		} catch (CapabilityException e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse("STARTUP_REFRESH_ACTION", errorMsgs);
+			return prepareErrorMessage("STARTUP_REFRESH_ACTION", e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
 		}
+
+	}
+
+	private static final String	REFRESH	= "refresh";
+
+	private Response prepareResponse(List<Response> responses) {
+		Response responseRefresh = Response.okResponse(REFRESH);
+		Vector<String> errors = new Vector<String>();
+		for (Response response : responses) {
+			if (response.getStatus() == Response.Status.ERROR) {
+				errors.add(concatenateList(response.getErrors(), "\n"));
+			}
+		}
+		if (!errors.isEmpty()) {
+			responseRefresh = Response.errorResponse(REFRESH, errors);
+		}
+
+		return responseRefresh;
+	}
+
+	private Response prepareErrorMessage(String nameError, String message) {
+		Vector<String> errorMsgs = new Vector<String>();
+		errorMsgs.add(message);
+		return Response.errorResponse(nameError, errorMsgs);
+
+	}
+
+	private static String concatenateList(List<String> listStrings, String separator) {
+		String modifiedString = "";
+		String lastElement = listStrings.remove(listStrings.size() - 1);
+		for (String str : listStrings) {
+			modifiedString.concat(str + separator);
+		}
+		modifiedString.concat(lastElement);
+		return modifiedString;
 	}
 
 }

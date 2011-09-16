@@ -12,6 +12,8 @@ public class ActionSet implements IActionSet {
 	HashMap<String, Class<? extends Action>>	actions			= new HashMap<String, Class<? extends Action>>();
 	HashMap<String, Properties>					actionParams	= new HashMap<String, Properties>();
 
+	protected List<String>						refreshActions	= new ArrayList();
+
 	public Class<? extends Action> putAction(String key, Class<? extends Action> value) {
 		return actions.put(key, value);
 	}
@@ -69,10 +71,8 @@ public class ActionSet implements IActionSet {
 		this.actionsetId = actionSetId;
 	}
 
-	@Override
-	public String getStartUpRefreshActionName() {
-		// No start-up refresh needed by default
-		return null;
+	public List<String> getRefreshActionName() {
+		return refreshActions;
 	}
 
 }
