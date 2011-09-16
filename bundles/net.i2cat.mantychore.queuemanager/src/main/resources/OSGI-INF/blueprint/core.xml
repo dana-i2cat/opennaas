@@ -22,11 +22,8 @@
 		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" >
 		 <property name="type" value="queue" />
 	</bean>
+  
 
-<!--  
-	<bean id="resourceNameCompleter"
-		class="net.i2cat.nexus.resources.shell.completers.ResourceNameCompleter" />
--->
 	
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="queueManagerFactory"
@@ -39,27 +36,31 @@
 		</service-properties>
 	</service> 
 
+	<bean id="resourceNameCompleter"
+		class="net.i2cat.nexus.resources.shell.completers.ResourceNameCompleter" />
+
+
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">			
 		<command name="queue/listActions">
 				<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand" />
-<!-- 				<completers>
+ 			<completers>
 					<ref component-id="resourceNameCompleter" />
 					<null />
-				</completers>  -->
+				</completers> 
 			</command>
 			<command name="queue/execute">
 				<action class="net.i2cat.mantychore.queuemanager.shell.ExecuteCommand" />
-	<!-- 			<completers>
+	 			<completers>
 					<ref component-id="resourceNameCompleter" />
 					<null />
-				</completers> -->
+				</completers> 
 			</command>
 			<command name="queue/remove">
 				<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand" />
-	<!-- 			<completers>
+	 			<completers>
 					<ref component-id="resourceNameCompleter" />
 					<null />
-				</completers> -->
+				</completers> 
 			</command>
 	</command-bundle>
 	

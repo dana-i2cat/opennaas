@@ -23,99 +23,63 @@ import org.apache.commons.logging.LogFactory;
 public class MantychoreBootstrapper implements IResourceBootstrapper {
 	Log	log	= LogFactory.getLog(MantychoreRepository.class);
 
-	 @Override
-	 @Deprecated
-	 public void bootstrap(IResource resource) throws ResourceException {
-	 log.info("Loading bootstrap to start resource...");
-	 resource.setModel(new ComputerSystem());
-	
-	 log.debug("Executing capabilities startup...");
-	 ICapability queueCapab = null;
-	 for (ICapability capab : resource.getCapabilities()) {
-	 if (capab instanceof AbstractCapability) {
-	 if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
-	 queueCapab = capab;
-	 } else {
-	 Response response = ((AbstractCapability) capab).sendRefreshActions();
-	 if (!response.getStatus().equals(Status.OK)) {
-	 throw new ResourceException();
-	 }
-	 }
-	 }
-	 }
-	
-	 QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
-	 if (!response.isOk()) {
-	 // TODO IMPROVE ERROR REPORTING
-	 throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
-	 }
-	
-	 if (resource.getProfile() != null) {
-	 log.debug("Executing initModel from profile...");
-	 resource.getProfile().initModel(resource.getModel());
-	 }
-	
-	 }
 
-//	/**
-//	 * IMPORTANT THIS IMPLEMENTATION IS NOT TESTED WE ARE CHECKING IT
-//	 */
-//	public void bootstrap(IResource resource) throws ResourceException {
-//		log.info("Loading bootstrap to start resource...");
-//
-//		resource.setModel(new ComputerSystem());
-//		/* start its capabilities */
-//		for (ICapability capab : resource.getCapabilities()) {
-//
-//			/* abstract capabilities have to be initialized */
-//			if (capab instanceof AbstractCapability) {
-//				log.debug("Executing capabilities startup...");
-//				Response response = ((AbstractCapability) capab).sendRefreshActions();
-//				if (!response.getStatus().equals(Status.OK)) {
-//					throw new ResourceException();
-//				}
-//			}
-//		}
-//
-//		ICapability queueCapab = resource.getCapability(createQueueInformation());
-//		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
-//		if (!response.isOk()) {
-//			// TODO IMPROVE ERROR REPORTING
-//			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
-//		}
-//
-//		if (resource.getProfile() != null) {
-//			log.debug("Executing initModel from profile...");
-//			resource.getProfile().initModel(resource.getModel());
-//		}
-//
-//		/* the type resource is the same for all logical devices and for the physical device */
-//		String typeResource = resource.getResourceIdentifier().getType();
-//		IResourceManager resourceManager;
-//		try {
-//			resourceManager = Activator.getResourceManagerService();
-//		} catch (Exception e1) {
-//			throw new ResourceException("It was impossible get the Resource Manager Service to do execute the bootstrapper");
-//		}
-//		List<String> nameLogicalRouters = resource.getModel().getChildren();
-//
-//		/* intialize each resource */
-//		for (String nameResource : nameLogicalRouters) {
-//			try {
-//				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
-//			} catch (ResourceNotFoundException e) {
-//				log.error(e.getMessage());
-//				log.info("This resource is new, it have to be created");
-//				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
-//
-//				/* create new resources */
-//				resourceManager.createResource(newResourceDescriptor);
-//			}
-//		}
-//
-//		// FIXME If a resource is created, we have to delete the don't used resources
-//
-//	}
+	public void bootstrap(IResource resource) throws ResourceException {
+		log.info("Loading bootstrap to start resource...");
+
+		resource.setModel(new ComputerSystem());
+		/* start its capabilities */
+		for (ICapability capab : resource.getCapabilities()) {
+
+			/* abstract capabilities have to be initialized */
+			if (capab instanceof AbstractCapability) {
+				log.debug("Executing capabilities startup...");
+				Response response = ((AbstractCapability) capab).sendRefreshActions();
+				if (!response.getStatus().equals(Status.OK)) {
+					throw new ResourceException();
+				}
+			}
+		}
+
+		ICapability queueCapab = resource.getCapability(createQueueInformation());
+		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
+		if (!response.isOk()) {
+			// TODO IMPROVE ERROR REPORTING
+			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
+		}
+
+		if (resource.getProfile() != null) {
+			log.debug("Executing initModel from profile...");
+			resource.getProfile().initModel(resource.getModel());
+		}
+
+		/* the type resource is the same for all logical devices and for the physical device */
+		String typeResource = resource.getResourceIdentifier().getType();
+		IResourceManager resourceManager;
+		try {
+			resourceManager = Activator.getResourceManagerService();
+		} catch (Exception e1) {
+			throw new ResourceException("It was impossible get the Resource Manager Service to do execute the bootstrapper");
+		}
+		List<String> nameLogicalRouters = resource.getModel().getChildren();
+
+		/* intialize each resource */
+		for (String nameResource : nameLogicalRouters) {
+			try {
+				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
+			} catch (ResourceNotFoundException e) {
+				log.error(e.getMessage());
+				log.info("This resource is new, it have to be created");
+				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+
+				/* create new resources */
+				resourceManager.createResource(newResourceDescriptor);
+			}
+		}
+
+		// FIXME If a resource is created, we have to delete the don't used resources
+
+	}
 
 	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource) throws ResourceException {
 
