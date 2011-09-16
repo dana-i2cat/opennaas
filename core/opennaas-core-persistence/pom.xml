@@ -23,10 +23,14 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_3.0_spec</artifactId>
-		</dependency>
+			<artifactId>geronimo-jpa_2.0_spec</artifactId>
+		</dependency>-->
+               <dependency>
+                       <groupId>org.hibernate.java-persistence</groupId>
+                       <artifactId>jpa-api</artifactId>  
+               </dependency>  
 		<dependency>
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>classloading-utils</artifactId>
@@ -53,6 +57,12 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
+		</dependency>
+		<!-- most important dep ever -->
+		<dependency>
+			<groupId>org.dynamicjava.osgi</groupId>
+			<artifactId>dynamic-jpa</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 	<build>

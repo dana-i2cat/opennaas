@@ -11,8 +11,8 @@
 		<feature>karaf-framework</feature>
 		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/1.0.1</bundle>
 		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/1.0.0</bundle>
-		<!--<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/1.0.0</bundle>
-		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/1.1.2</bundle>-->
+		<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/1.0.0</bundle>
+		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/1.1.2</bundle>-->
 		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/1.8.0.10</bundle>
 		<bundle>mvn:org.springframework/spring-core/3.0.5.RELEASE</bundle>
 		<bundle>mvn:org.springframework/spring-beans/3.0.5.RELEASE</bundle>
@@ -20,7 +20,7 @@
 		<feature>cxf</feature>
 		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-ws-metadata_2.0_spec/1.1.3</bundle>-->
 		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jms_1.1_spec/1.1.1</bundle>-->
-		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_3.0_spec/1.1.1</bundle>
+		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_2.0_spec/1.1</bundle>-->
 		<feature>activemq</feature>
 		<bundle>mvn:org.apache.felix.gogo/org.apache.felix.gogo.runtime/0.4.0</bundle>
 		<!-- nexus events stuff -->
