@@ -12,7 +12,7 @@ import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "createLR", description = "Create a logical router on a given resource.")
+@Command(scope = "chassis", name = "createLogicalRouter", description = "Create a logical router on a given resource.")
 public class CreateLogicalRouterCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
@@ -51,7 +51,7 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 			endcommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error creating Logical router.");
 			printError(e);
 			endcommand();
 			return -1;

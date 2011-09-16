@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.ManagedSystemElement;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -42,28 +43,36 @@ public class ListLogicalRouterCommand extends GenericKarafCommand {
 
 			// TODO implement force refresh of the router configuration
 			// maybe asking (parser) only for logical router information
-
+			//
 			ComputerSystem model = (ComputerSystem) resource.getModel();
+			//
+			for (ManagedSystemElement systemElement : model.getManagedSystemElements()) {
 
-			for (Object systemElement : model.getManagedSystemElements()) {
 				if (systemElement instanceof ComputerSystem) {
 					ComputerSystem logicalrouter = (ComputerSystem) systemElement;
-					// check that the element is a Logical Router
-					if (logicalrouter.getElementName().equalsIgnoreCase("logicalrouter")) {
-						printSymbol(bullet + "  " + logicalrouter.getName());
-					}
+
+					printInfo(logicalrouter.getName());
 				}
 			}
+			// printInfo("Found " + model.getChildren().size() + " logical resources.");
+			// for (Object systemElement : model.getChildren()) {
+			// printSymbol(bullet + " " + (String) systemElement);
+			// if (systemElement instanceof ComputerSystem) {
+			// ComputerSystem logicalrouter = (ComputerSystem) systemElement;
+			// // check that the element is a Logical Router
+			// printInfo(logicalrouter.getName());
+			// }
+			// }
 
 		} catch (ResourceException e) {
 			printError(e);
 			endcommand();
-			return -1;
+			return null;
 		} catch (Exception e) {
 			printError("Error listing interfaces.");
 			printError(e);
 			endcommand();
-			return -1;
+			return null;
 		}
 		endcommand();
 		return null;

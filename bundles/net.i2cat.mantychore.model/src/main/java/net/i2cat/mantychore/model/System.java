@@ -126,6 +126,20 @@ public class System extends EnabledLogicalElement implements Serializable {
 		}
 	}
 
+	// TODO control the return value
+	public boolean removeAllremoveManagedSystemElementByType(Class<? extends ManagedElement> clazz) {
+		List<ManagedSystemElement> list = getManagedSystemElements();
+
+		for (ManagedSystemElement ld : list) {
+
+			if (clazz.isInstance(ld)) {
+				removeManagedSystemElement(ld);
+			}
+		}
+
+		return true;
+	}
+
 	/**
 	 * This method returns the list of ManagedSystemElement from the toAssociation vector that match with the type SystemComponent the association
 	 * wouldn't be deleted

@@ -1,12 +1,18 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
+import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
@@ -56,9 +62,6 @@ public class GetConfigurationAction extends JunosAction {
 		String message;
 		try {
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
-			DigesterEngine logicalInterfParser = new IPInterfaceParser();
-			// DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
-			logicalInterfParser.init();
 
 			/* getting interface information */
 			if (responseMessage instanceof Reply) {
@@ -67,6 +70,49 @@ public class GetConfigurationAction extends JunosAction {
 			} else {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
+			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
+			// --> to fill up logical router configuration
+			DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
+			listLogicalRoutersParser.init();
+			listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+			if (message != null) {
+
+				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(message.getBytes());
+
+				File newFile = new File("C:/Dev/configuration.xml");
+				FileOutputStream fos = new FileOutputStream(newFile);
+				int data;
+				while ((data = byteArrayInputStream.read()) != -1) {
+					char ch = (char) data;
+					fos.write(ch);
+				}
+				fos.flush();
+				fos.close();
+
+				FileWriter fstream = new FileWriter("C:/Dev/mapElements.xml");
+				BufferedWriter out = new BufferedWriter(fstream);
+				try {
+					out.write(((ListLogicalRoutersParser) listLogicalRoutersParser).toPrint());
+
+				} catch (Exception e) {
+
+				}
+
+				out.close();
+
+				for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
+
+					ComputerSystem system = new ComputerSystem();
+					system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
+					routerModel.addManagedSystemElement(system);
+				}
+			}
+			// to fill up logical router configuration<--
+
+			DigesterEngine logicalInterfParser = new IPInterfaceParser();
+			// DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
+			logicalInterfParser.init();
 
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 

@@ -70,8 +70,10 @@ public class ManagedSystemElement extends ManagedElement implements
 		List<String> nameChildren = new ArrayList<String>();
 		for (System system : getSystems()) {
 			// Check that it is a logical device | router
-			if (system instanceof ComputerSystem)
-				nameChildren.add(system.getName());
+			if (system instanceof ComputerSystem) {
+				ComputerSystem sys = (ComputerSystem) system;
+				nameChildren.add(sys.getName());
+			}
 		}
 
 		return nameChildren;
