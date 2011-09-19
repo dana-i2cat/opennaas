@@ -13,6 +13,6 @@
 	<name>Features respositories</name>
 	<modules>
 		<module>mantychore</module>
-		<module>nexus</module>
+		<!--<module>nexus</module>-->
 	</modules>
 </project>

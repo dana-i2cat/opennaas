@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
 	<repository>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</repository>
-	<feature name="i2cat-nexus-deps" version="1.0.0-SNAPSHOT">
-		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/${dynamicjava.classloading.version}</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/${dynamicjava.version}</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/${dynamicjava.version}</bundle>
-		<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/${geronimo.jpa.version}</bundle>
-		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
-	</feature>
 	<feature name="i2cat-nexus" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.events/1.0.0-SNAPSHOT</bundle>
 	</feature>
