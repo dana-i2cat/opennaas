@@ -27,10 +27,10 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 		</dependency>-->
-               <dependency>
-                       <groupId>org.hibernate.java-persistence</groupId>
-                       <artifactId>jpa-api</artifactId>  
-               </dependency>  
+		<dependency>
+			<groupId>org.hibernate.java-persistence</groupId>
+			<artifactId>jpa-api</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>classloading-utils</artifactId>
@@ -62,7 +62,6 @@
 		<dependency>
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>dynamic-jpa</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 	<build>
