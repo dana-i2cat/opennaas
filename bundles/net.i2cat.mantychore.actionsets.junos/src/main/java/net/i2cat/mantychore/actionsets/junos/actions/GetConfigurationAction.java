@@ -1,10 +1,6 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
-import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
@@ -71,49 +67,26 @@ public class GetConfigurationAction extends JunosAction {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
 			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
-			// --> to fill up logical router configuration
+
+			/* Parse routing options info */
 			DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
 			listLogicalRoutersParser.init();
 			listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
 			if (message != null) {
 
-				ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(message.getBytes());
-
-				File newFile = new File("C:/Dev/configuration.xml");
-				FileOutputStream fos = new FileOutputStream(newFile);
-				int data;
-				while ((data = byteArrayInputStream.read()) != -1) {
-					char ch = (char) data;
-					fos.write(ch);
-				}
-				fos.flush();
-				fos.close();
-
-				FileWriter fstream = new FileWriter("C:/Dev/mapElements.xml");
-				BufferedWriter out = new BufferedWriter(fstream);
-				try {
-					out.write(((ListLogicalRoutersParser) listLogicalRoutersParser).toPrint());
-
-				} catch (Exception e) {
-
-				}
-
-				out.close();
-
 				for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
 
 					ComputerSystem system = new ComputerSystem();
 					system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
-					routerModel.addManagedSystemElement(system);
+					routerModel.addSystem(system);
 				}
 			}
-			// to fill up logical router configuration<--
+			/* Parse LR info */
 
+			/* Parse interface options info */
 			DigesterEngine logicalInterfParser = new IPInterfaceParser();
-			// DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
 			logicalInterfParser.init();
-
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
 			// /TODO implements a better method to merge the elements in model
@@ -123,6 +96,7 @@ public class GetConfigurationAction extends JunosAction {
 			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
 				routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
 			}
+			/* Parse interface options info */
 
 			/* Parse routing options info */
 			DigesterEngine routingOptionsParser = new RoutingOptionsParser();
@@ -137,7 +111,7 @@ public class GetConfigurationAction extends JunosAction {
 					routerModel.addNextHopRoute(nh);
 				}
 			}
-
+			/* Parse routing options info */
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
