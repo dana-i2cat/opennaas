@@ -28,11 +28,6 @@
 	</modules>
 	<!--  dependencies for integration tests -->
 	<dependencies>
-		<!-- JPA specs -->
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_1.0_spec</artifactId>
-		</dependency>
 		<!-- Integration tests -->
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
