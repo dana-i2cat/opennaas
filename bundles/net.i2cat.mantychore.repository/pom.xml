@@ -72,7 +72,7 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
-						<Import-Package>org.slf4j;version="1.5.6",*</Import-Package>
+						<Import-Package>org.slf4j,*</Import-Package>
 						<!--<Export-Package>
 						net.i2cat.luminis.ROADM.respository.*;version="${project.version}"
 						</Export-Package>-->

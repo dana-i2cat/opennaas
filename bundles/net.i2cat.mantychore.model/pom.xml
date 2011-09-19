@@ -79,7 +79,7 @@
 						<Import-Package>!${project.artifactId}.*,
 							org.springmodules.*;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
 						<Export-Package>${project.artifactId};version="${project.version}"</Export-Package>-->
-						<Import-Package>!${project.artifactId}.*,org.slf4j;version="1.5.6",*</Import-Package>
+						<Import-Package>!${project.artifactId}.*,org.slf4j,*</Import-Package>
 						<Export-Package>${project.artifactId};version="${project.version}",
 							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>

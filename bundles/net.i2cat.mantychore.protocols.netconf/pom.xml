@@ -63,7 +63,7 @@
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${project.artifactId}.*,org.slf4j;version="1.5.6",
+							!${project.artifactId}.*,org.slf4j,
 							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
 							${project.artifactId}.*;version="${project.version}"
