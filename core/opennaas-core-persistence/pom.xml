@@ -94,7 +94,7 @@
 				<configuration>
 					<instructions><Bundle-SymbolicName>${project.artifactId}
 						</Bundle-SymbolicName><Bundle-Version>${project.version}</Bundle-Version><Bundle-Activator>org.opennaas.core.persistence.Activator</Bundle-Activator><Import-Package>org.osgi.framework, javax.persistence, org.dynamicjava.osgi.service_binding_utils, org.dynamicjava.osgi.class
-loading_utils, org.w3c.dom, javax.xml.parsers, org.slf4j;version="1.5.6", *</Import-Package>&gt;
+loading_utils, org.w3c.dom, javax.xml.parsers, org.slf4j, *</Import-Package>&gt;
 						<Export-Package>org.opennaas.core.persistence.*;version="${project.version}"</Export-Package>
 					</instructions>
 				</configuration>

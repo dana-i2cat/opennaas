@@ -63,7 +63,7 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>org.slf4j;version="1.5.6",*</Import-Package>
+						<Import-Package>org.slf4j,*</Import-Package>
 						<Private-Package>org.opennaas.core.hsqldb.internal</Private-Package>
 					</instructions>
 				</configuration>

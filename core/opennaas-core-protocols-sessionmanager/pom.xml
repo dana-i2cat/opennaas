@@ -56,7 +56,7 @@
 						<!-- | assume public classes are in the top package, and private classes 
 							are under ".internal" -->
 						<Export-Package>org.opennaas.core.protocols.sessionmanager*;version="${project.version}"</Export-Package>
-						<Import-Package>org.slf4j;version="1.5.6",
+						<Import-Package>org.slf4j,
 							org.apache.felix.service.command,
 							org.opennaas.core.resources,
 							*</Import-Package>
