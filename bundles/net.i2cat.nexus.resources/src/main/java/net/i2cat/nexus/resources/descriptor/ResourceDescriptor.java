@@ -126,7 +126,7 @@ public class ResourceDescriptor {
 		}
 		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
 
-		return super.clone();
+		return resourceDescriptor;
 	}
 
 	// public ManagedElement getModel() {
