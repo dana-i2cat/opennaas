@@ -12,7 +12,7 @@
 	<!--  integration tests -->
 	<modules>
 		<module>net.i2cat.nexus.tests.helper</module>
-		<module>net.i2cat.nexus.tests.events</module>
+		<!--<module>net.i2cat.nexus.tests.events</module>-->
 		<module>net.i2cat.nexus.tests.resources</module>
 		<!--
 		<module>net.i2cat.mantychore.tests.capability</module>

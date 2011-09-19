@@ -126,6 +126,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 			// call createResource(resourceDescriptor)
 			IResource resource = resourceRepository.createResource(resourceDescriptor);
 			createProtocolForResource(resourceDescriptor.getId());
+			log.info("UseProfileBundleTest: resource. getResourceIdentifier.getId gives us: " + resource.getResourceIdentifier().getId());
 			resourceRepository.startResource(resource.getResourceIdentifier().getId());
 
 			// assert profile loading has been correct
