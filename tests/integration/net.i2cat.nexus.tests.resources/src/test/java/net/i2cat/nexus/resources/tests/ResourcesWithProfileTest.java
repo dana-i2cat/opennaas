@@ -29,9 +29,7 @@ import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -64,7 +62,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -80,7 +78,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 		log.info("INFO: Initialized!");
 	}
 
-	@After
+	// @After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");

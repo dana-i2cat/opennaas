@@ -64,18 +64,18 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
 		/* intialize each resource */
-		for (String nameResource : nameLogicalRouters) {
-			try {
-				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
-			} catch (ResourceNotFoundException e) {
-				log.error(e.getMessage());
-				log.info("This resource is new, it have to be created");
-				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+//		for (String nameResource : nameLogicalRouters) {
+//			try {
+//				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
+//			} catch (ResourceNotFoundException e) {
+//				log.error(e.getMessage());
+//				log.info("This resource is new, it have to be created");
+//				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
 
 				/* create new resources */
-				resourceManager.createResource(newResourceDescriptor);
-			}
-		}
+//				resourceManager.createResource(newResourceDescriptor);
+//			}
+//		}
 
 		// FIXME If a resource is created, we have to delete the don't used resources
 

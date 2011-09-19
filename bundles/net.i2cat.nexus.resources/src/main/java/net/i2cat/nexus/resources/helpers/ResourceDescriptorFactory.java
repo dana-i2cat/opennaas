@@ -29,7 +29,7 @@ public class ResourceDescriptorFactory {
 		Map<String, String> properties = new HashMap<String, String>();
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		for (String capability : capabilities) {
-			capabilityDescriptors.add(newCapabilityDescriptor(capability.toString(), "junos"));
+			capabilityDescriptors.add(newCapabilityDescriptor(capability, "junos"));
 		}
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
@@ -45,7 +45,7 @@ public class ResourceDescriptorFactory {
 		information.setType(type);
 		information.setName(name);
 		resourceDescriptor.setInformation(information);
-		ResourceIdentifier id = new ResourceIdentifier();
+		ResourceIdentifier id = new ResourceIdentifier(type);
 		resourceDescriptor.setId(id.getId());
 
 		return resourceDescriptor;
@@ -80,7 +80,6 @@ public class ResourceDescriptorFactory {
 	public static CapabilityDescriptor newCapabilityDescriptor(String type, String model) {
 
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
 		if (uri == null || uri.equals("")) {
