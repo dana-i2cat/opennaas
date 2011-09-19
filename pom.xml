@@ -546,7 +546,7 @@
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
 				<version>1.0</version>
@@ -561,15 +561,15 @@
 								<requireJavaVersion>
 									<version>1.6</version>
 								</requireJavaVersion>
-								<!-- <requireOS> <family>unix</family> </requireOS> -->
-								<!--<requireMavenVersion>
+								<requireOS> <family>unix</family> </requireOS>
+								<requireMavenVersion>
 									<version>3.0.3</version>
-								</requireMavenVersion>-->
+								</requireMavenVersion>
 							</rules>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
