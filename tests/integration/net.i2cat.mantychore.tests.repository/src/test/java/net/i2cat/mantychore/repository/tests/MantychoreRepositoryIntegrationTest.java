@@ -134,7 +134,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	}
 
 	@Test
-	public void createAndRemoveResource() {
+	public void createAndRemoveResourceTest() {
 
 		clearRepo();
 
@@ -164,7 +164,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	}
 
 	@Test
-	public void StartAndStopResource() {
+	public void StartAndStopResourceTest() {
 
 		clearRepo();
 
@@ -223,7 +223,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	}
 
 	@Test
-	public void operationWithResource() {
+	public void operationWithResourceTest() {
 
 		clearRepo();
 
@@ -300,10 +300,10 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			resource.setModel(new ComputerSystem());
 
 			/* first test, check that the resource has created all the logical resources and they have an initialized model */
-			checkExistLogicalResourcesTest(resourceManager, resource, bundleContext);
+			existLogicalResourcesTest(resourceManager, resource, bundleContext);
 
 			// FIXME TO TEST
-			if (!isMockTest())
+			if (!isMock())
 				checkUpdatedExistLogicalResourcesTest(resourceManager, resource, bundleContext);
 
 		} catch (Exception e) {
@@ -314,12 +314,12 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 	}
 
-	private static boolean isMockTest() {
+	private static boolean isMock() {
 		String uri = java.lang.System.getProperty("protocol.uri");
 		return (uri == null || uri.equals("${protocol.uri}"));
 	}
 
-	private void checkExistLogicalResourcesTest(IResourceManager resourceManager, IResource resource, BundleContext context)
+	private void existLogicalResourcesTest(IResourceManager resourceManager, IResource resource, BundleContext context)
 			throws ProtocolException, ResourceException {
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		resourceManager.startResource(resource.getResourceIdentifier());
