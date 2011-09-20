@@ -6,6 +6,7 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
@@ -24,19 +25,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.command.CommandProcessor;
 
+@RunWith(JUnit4TestRunner.class)
 public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	static Log					log				= LogFactory
 														.getLog(CreateLogicalRouterTest.class);
 
 	String						resourceFriendlyID;
-	String						LRFriendlyID;
+	String						LRFriendlyID	= "pepito";
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
 	private IResourceManager	resourceManager;
@@ -56,28 +61,30 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-								// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-								// ////////import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// ////////import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-								);
+				);
 
 		return options;
 	}
 
+	@Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
-		// IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		/* Wait for the activation of all tLogicalROuterhe bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
-		initTest();
+		initResource();
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
 		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
 		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
@@ -87,10 +94,12 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		return false;
 	}
 
-	public void initTest() {
+	public void initResource() {
+
+		clearRepo();
 		List<String> capabilities = new ArrayList<String>();
 
-		capabilities.add("ipv4");
+		capabilities.add("chassis");
 		capabilities.add("queue");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
@@ -110,53 +119,88 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	}
 
-	public void deleteResource() {
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
+			try {
+				resourceManager.removeResource(resource.getResourceIdentifier());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
+	// @Test
+	public void createLogicalRouterTest() {
+		// chassis:createLogicalRouter R1 L1
+		List<String> response;
 		try {
-			if (resourceManager.getResource(resource.getResourceIdentifier()).getState().equals(State.ACTIVE))
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			resourceManager.removeResource(resource.getResourceIdentifier());
-			// call the command to initialize the model
-		} catch (ResourceException e) {
+
+			response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " " + LRFriendlyID,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+			response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
+					commandprocessor);
+			Assert.assertTrue(response.get(1).isEmpty());
+			// check logical router creation
+			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
+					commandprocessor);
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
 
 	}
 
-	@Test
-	public void createAndDeleteLogicalRouterTest() {
-		// chassis:createLogicalRouter R1 L1
+	// @Test
+	public void deleteLogicalRouterTest() {
 		List<String> response;
 		try {
-			response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
-					commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			// check logical router creation
-			response = KarafCommandHelper.executeCommand("resource:list",
-					commandprocessor);
-			Assert.assertTrue(response.get(1).isEmpty());
-			// assert new LR is created on resources pool ( ResourceManager and ResourceRepo)
-			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
 
 			// delete LR
-			response = KarafCommandHelper.executeCommand("chassis:deleteLR " + resourceFriendlyID + " " + LRFriendlyID,
+			response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + LRFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
+					commandprocessor);
 			Assert.assertTrue(response.get(1).isEmpty());
 
 			// check logical router is deleted
-			// resource:list
-			response = KarafCommandHelper.executeCommand("resource:list ",
+			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
-			Assert.assertFalse(response.get(0).contains(LRFriendlyID));
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			Assert.assertFalse(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
-
 	}
 
 	@Test
@@ -164,33 +208,35 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 		List<String> response;
 		try {
-			response = KarafCommandHelper.executeCommand("chassis:createLR " + resourceFriendlyID + " " + LRFriendlyID,
-					commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
+			if (isMock) {
+				LRFriendlyID = "routerV2";
+			} else {
+				LRFriendlyID = "pepito";
+			}
 			// chassis:listLogicalRouters
-			response = KarafCommandHelper.executeCommand("chassis:listLR " + resourceFriendlyID,
+			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
 
+			Assert.assertTrue(response.get(1).isEmpty());
+			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Assert.fail(e.getMessage());
 		}
 
 	}
 
-	@Test
+	// @Test
 	public void discoveryLogicalRoutersTest() {
 
 		try {
-			// initTest();
+			// initResource();
 			// need to find a LR name existing on the router
-			String LRname = "";
+			String LRname = "pepito";
 
 			// resource:list
 			List<String> response = KarafCommandHelper.executeCommand("resource:list ",

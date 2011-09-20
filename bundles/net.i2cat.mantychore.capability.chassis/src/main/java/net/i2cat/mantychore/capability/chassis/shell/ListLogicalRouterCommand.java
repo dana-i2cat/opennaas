@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.ManagedSystemElement;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -45,24 +44,11 @@ public class ListLogicalRouterCommand extends GenericKarafCommand {
 			// maybe asking (parser) only for logical router information
 			//
 			ComputerSystem model = (ComputerSystem) resource.getModel();
-			//
-			for (ManagedSystemElement systemElement : model.getManagedSystemElements()) {
 
-				if (systemElement instanceof ComputerSystem) {
-					ComputerSystem logicalrouter = (ComputerSystem) systemElement;
-
-					printInfo(logicalrouter.getName());
-				}
+			printInfo("Found " + model.getChildren().size() + " logical resources.");
+			for (Object systemElement : model.getChildren()) {
+				printSymbol(bullet + " " + (String) systemElement);
 			}
-			// printInfo("Found " + model.getChildren().size() + " logical resources.");
-			// for (Object systemElement : model.getChildren()) {
-			// printSymbol(bullet + " " + (String) systemElement);
-			// if (systemElement instanceof ComputerSystem) {
-			// ComputerSystem logicalrouter = (ComputerSystem) systemElement;
-			// // check that the element is a Logical Router
-			// printInfo(logicalrouter.getName());
-			// }
-			// }
 
 		} catch (ResourceException e) {
 			printError(e);

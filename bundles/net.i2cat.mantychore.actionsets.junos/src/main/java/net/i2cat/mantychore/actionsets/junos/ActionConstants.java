@@ -18,4 +18,6 @@ public class ActionConstants {
 	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
 	public static final String	GETLOGICALROUTERS	= "getLogicalRouters";
 
+	public static final String	LISTLOGICALROUTER	= "listLogicalRouter";
+
 }
