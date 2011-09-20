@@ -25,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -69,7 +68,6 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all tLogicalROuterhe bundles */
@@ -77,7 +75,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		log.info("Loaded all bundles");
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
-		initResource();
+
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
@@ -145,8 +143,11 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		log.info("Resource repo cleared!");
 	}
 
-	// @Test
+	@Test
 	public void createLogicalRouterTest() {
+
+		initBundles();
+		initResource();
 		// chassis:createLogicalRouter R1 L1
 		List<String> response;
 		try {
@@ -173,39 +174,10 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	}
 
-	// @Test
-	public void deleteLogicalRouterTest() {
-		List<String> response;
-		try {
-
-			// delete LR
-			response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + LRFriendlyID,
-					commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
-					commandprocessor);
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			// check logical router is deleted
-			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
-					commandprocessor);
-			// assert command output no contains ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
-
-			Assert.assertFalse(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-	}
-
 	@Test
 	public void listLogicalRoutersTest() {
-
+		initBundles();
+		initResource();
 		List<String> response;
 		try {
 			if (isMock) {
@@ -232,7 +204,8 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	@Test
 	public void discoveryLogicalRoutersTest() {
-
+		initBundles();
+		initResource();
 		try {
 			String LRname = null;
 			// initResource();
