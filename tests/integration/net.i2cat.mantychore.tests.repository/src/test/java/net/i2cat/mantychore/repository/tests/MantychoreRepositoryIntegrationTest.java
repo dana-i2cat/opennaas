@@ -133,35 +133,35 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 		log.info("Resource repo cleared!");
 	}
 
-//	@Test
-//	public void createAndRemoveResourceTest() {
-//
-//		clearRepo();
-//
-//		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
-//
-//		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-//		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
-//		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
-//
-//		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-//
-//		try {
-//			IResource resource = resourceManager.createResource(resourceDescriptor);
-//			Assert.assertFalse(resourceManager.listResources().isEmpty());
-//
-//			// createProtocolForResource(resource.getResourceIdentifier().getId());
-//
-//			resourceManager.removeResource(resource.getResourceIdentifier());
-//			Assert.assertTrue(resourceManager.listResources().isEmpty());
-//
-//		} catch (Exception e) {
-//			clearRepo();
-//			log.error("Exception!! ", e);
-//			Assert.fail(e.getMessage());
-//		}
-//
-//	}
+	@Test
+	public void createAndRemoveResourceTest() {
+
+		clearRepo();
+
+		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+		try {
+			IResource resource = resourceManager.createResource(resourceDescriptor);
+			Assert.assertFalse(resourceManager.listResources().isEmpty());
+
+			// createProtocolForResource(resource.getResourceIdentifier().getId());
+
+			resourceManager.removeResource(resource.getResourceIdentifier());
+			Assert.assertTrue(resourceManager.listResources().isEmpty());
+
+		} catch (Exception e) {
+			clearRepo();
+			log.error("Exception!! ", e);
+			Assert.fail(e.getMessage());
+		}
+
+	}
 
 	@Test
 	public void StartAndStopResourceTest() {
