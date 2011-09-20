@@ -12,6 +12,7 @@ import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import net.i2cat.luminis.transports.wonesys.mock.ProteusMock;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
@@ -111,56 +112,31 @@ public class WonesysCommandsParseTest {
 	}
 
 	@Test
-	public void testROADMCommandsParsingInMock() {
-		try {
-
-			log.info("testROADMCommandsParsing with Mock-------------------------");
-
-			WonesysProtocolSession session = (WonesysProtocolSession) getMockSession(resourceId, hostIpAddress, hostPort);
-			testROADMCommandsParsing(session);
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-	}
-
-	// @Test
-	public void testROADMCommandsParsingInReal() {
+	public void testROADMCommandsParsing() {
 
 		try {
 
-			log.info("testROADMCommandsParsing-----------------------------------");
-
-			WonesysProtocolSession session = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
-			testROADMCommandsParsing(session);
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-
-	}
-
-	public void testROADMCommandsParsing(WonesysProtocolSession session) {
-
-		try {
+			ProteusMock proteus = new ProteusMock();
 
 			ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 			opticalSwitch1.setName(resourceId);
 
 			// lockNode
-			// WonesysCommand c = new LockNodeCommand();
-			// c.initialize();
-			// String response = (String) session.sendReceive(c.message());
-			// Response resp = c.checkResponse(response);
-			// c.parseResponse(resp, opticalSwitch1);
-
-			// getInventory
-			WonesysCommand c = new GetInventoryCommand();
+			WonesysCommand c = new LockNodeCommand();
 			c.initialize();
-			String response = (String) session.sendReceive(c.message());
+			// Common workflow follows
+			// String response = (String) session.sendReceive(c.message());
+			// but this is a unit test
+			String response = (String) proteus.execCommand((String) c.message());
 			Response resp = c.checkResponse(response);
 			c.parseResponse(resp, opticalSwitch1);
 
+			// getInventory
+			c = new GetInventoryCommand();
+			c.initialize();
+			response = (String) proteus.execCommand((String) c.message());
+			resp = c.checkResponse(response);
+			c.parseResponse(resp, opticalSwitch1);
 			Assert.assertTrue(opticalSwitch1.getLogicalDevices().size() > 0);
 
 			// for each ROADM drop card
@@ -181,7 +157,7 @@ public class WonesysCommandsParseTest {
 						// getChannelPlan
 						c = new GetChannelPlan(chassis, slot);
 						c.initialize();
-						response = (String) session.sendReceive(c.message());
+						response = (String) proteus.execCommand((String) c.message());
 
 						resp = c.checkResponse(response);
 						c.parseResponse(resp, opticalSwitch1);
@@ -199,7 +175,7 @@ public class WonesysCommandsParseTest {
 						// getChannels
 						c = new GetChannels(chassis, slot);
 						c.initialize();
-						response = (String) session.sendReceive(c.message());
+						response = (String) proteus.execCommand((String) c.message());
 						resp = c.checkResponse(response);
 						c.parseResponse(resp, opticalSwitch1);
 
@@ -221,7 +197,7 @@ public class WonesysCommandsParseTest {
 							log.debug("ChannelInfo for channel " + channel.getNumChannel());
 							c = new GetChannelInfo(chassis, slot, channel.getNumChannel());
 							c.initialize();
-							response = (String) session.sendReceive(c.message());
+							response = (String) proteus.execCommand((String) c.message());
 							resp = c.checkResponse(response);
 							c.parseResponse(resp, opticalSwitch1);
 						}
@@ -252,7 +228,7 @@ public class WonesysCommandsParseTest {
 						log.info("Testing SetChannel....");
 						c = new SetChannel(chassis, slot, dwdmChannel, setDstPort.getPortNumber());
 						c.initialize();
-						response = (String) session.sendReceive(c.message());
+						response = (String) proteus.execCommand((String) c.message());
 						resp = c.checkResponse(response);
 						c.parseResponse(resp, opticalSwitch1);
 
@@ -330,7 +306,7 @@ public class WonesysCommandsParseTest {
 						// setChannel as before
 						c = new SetChannel(chassis, slot, dwdmChannel, 0);
 						c.initialize();
-						response = (String) session.sendReceive(c.message());
+						response = (String) proteus.execCommand((String) c.message());
 						resp = c.checkResponse(response);
 						c.parseResponse(resp, opticalSwitch1);
 
@@ -347,20 +323,12 @@ public class WonesysCommandsParseTest {
 			}
 
 			// unlockNode
-			// c = new UnlockNodeCommand();
-			// c.initialize();
-			// response = (String) session.sendReceive(c.message());
-			// resp = c.checkResponse(response);
-			// c.parseResponse(resp, opticalSwitch1);
+			c = new UnlockNodeCommand();
+			c.initialize();
+			response = (String) proteus.execCommand((String) c.message());
+			resp = c.checkResponse(response);
+			c.parseResponse(resp, opticalSwitch1);
 
-		} catch (ProtocolException e) {
-			log.error("Error happened!!!!", e);
-			try {
-				// executeUnlock();
-			} catch (Exception e1) {
-				log.error("Error executing unlock !!!!", e1);
-			}
-			Assert.fail();
 		} catch (CommandException e) {
 			log.error("Error happened!!!!", e);
 			try {

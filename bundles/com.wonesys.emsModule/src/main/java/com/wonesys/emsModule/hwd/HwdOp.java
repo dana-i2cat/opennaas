@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -22,27 +24,23 @@ import java.net.Socket;
  */
 public class HwdOp {
 
-	private static final int	DEFAULT_PORT	= 27773;
-	private static final int	DEFAULT_TIMEOUT	= 1000;
+	public static final int					DEFAULT_PORT	= 27773;
+	public static final int					DEFAULT_TIMEOUT	= 1000;
 
-	private Socket				sock;
+	private Socket							sock;
+	private List<IMessageArrivalListener>	listeners		= new ArrayList<IMessageArrivalListener>();
 
 	public HwdOp() {
 		sock = new Socket();
 	}
 
-	public void connect(String ip) throws IOException {
-
-		int timeout = DEFAULT_TIMEOUT;
-
-		// Bind to a local ephemeral port
-		sock.bind(null);
-		sock.connect(new InetSocketAddress(ip, DEFAULT_PORT), timeout);
-
-		// TODO attach reader to receive async alarms
+	public void connect(String ip, IMessageArrivalListener listener) throws IOException {
+		connect(ip, DEFAULT_PORT, listener);
 	}
 
-	public void connect(String ip, int port) throws IOException {
+	public void connect(String ip, int port, IMessageArrivalListener listener) throws IOException {
+
+		registerListener(listener);
 
 		int timeout = DEFAULT_TIMEOUT;
 
@@ -50,7 +48,10 @@ public class HwdOp {
 		sock.bind(null);
 		sock.connect(new InetSocketAddress(ip, port), timeout);
 
-		// TODO attach reader to receive async alarms
+		// attach reader to receive async msgs
+		SocketReader reader = new SocketReader();
+		reader.start();
+
 	}
 
 	public void disconnect() throws IOException {
@@ -58,47 +59,81 @@ public class HwdOp {
 			sock.close();
 	}
 
-	public String sendOp(String operation) throws IOException {
+	public void sendOp(String operation) throws IOException {
 
-		String outS = "";
 		byte[] bts = new BigInteger(operation, 16).toByteArray();
 
-		// Your code goes here
 		OutputStream out = sock.getOutputStream();
-		InputStream in = sock.getInputStream();
 
 		out.write(bts);
 		out.flush();
+	}
 
-		// start del read
+	public void registerListener(IMessageArrivalListener listener) {
+		if (listener != null && !listeners.contains(listener))
+			listeners.add(listener);
+	}
 
-		int timeout = DEFAULT_TIMEOUT;
-		// Timer timeoutControl = new Timer(timeout);
-		// timeoutControl.start();
+	public void unregisterListener(IMessageArrivalListener listener) {
+		listeners.remove(listener);
+	}
 
-		int i;
-		byte[] buffer = new byte[256];
+	public void notifyListeners(String message) {
+		for (int i = listeners.size() - 1; i >= 0; i--) {
+			listeners.get(i).messageReceived(message);
+		}
+	}
 
-		// while ((i = in.read(buffer)) != 0){
+	public void notifyErrorToListeners(Exception e) {
+		for (int i = listeners.size() - 1; i >= 0; i--) {
+			listeners.get(i).errorHappened(e);
+		}
+	}
 
-		i = in.read(buffer);
+	class SocketReader extends Thread {
 
-		String salida = ""; //$NON-NLS-1$
+		public void run() {
 
-		for (int j = 0; j < i; j++) {
-			byte o = buffer[j];
-			if ((o < 0x10) && (o >= 0))
-				salida += "0"; //$NON-NLS-1$
-			String bite = Integer.toHexString(o);
-			if (bite.length() > 2)
-				salida += bite.substring(bite.length() - 2);
-			else
-				salida += bite;
+			try {
+				InputStream in = sock.getInputStream();
+
+				while (!sock.isClosed()) {
+					String message = readMessage(in);
+					if (!message.equals("")) {
+						notifyListeners(message);
+					}
+				}
+			} catch (IOException e1) {
+				notifyErrorToListeners(e1);
+			}
 		}
 
-		outS += salida;
-		// }
-		return outS;
+		private String readMessage(InputStream in) throws IOException {
+
+			String outS = "";
+			byte[] buffer = new byte[256];
+
+			// while ((i = in.read(buffer)) != 0){
+
+			int i = in.read(buffer);
+
+			String salida = ""; //$NON-NLS-1$
+
+			for (int j = 0; j < i; j++) {
+				byte o = buffer[j];
+				if ((o < 0x10) && (o >= 0))
+					salida += "0"; //$NON-NLS-1$
+				String bite = Integer.toHexString(o);
+				if (bite.length() > 2)
+					salida += bite.substring(bite.length() - 2);
+				else
+					salida += bite;
+			}
+
+			outS += salida;
+			// }
+			return outS;
+		}
 	}
 
 }

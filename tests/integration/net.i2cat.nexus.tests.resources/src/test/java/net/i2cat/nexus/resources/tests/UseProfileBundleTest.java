@@ -60,7 +60,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	//@Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -77,7 +77,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		log.info("INFO: Initialized!");
 	}
 
-	@After
+	//@After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");

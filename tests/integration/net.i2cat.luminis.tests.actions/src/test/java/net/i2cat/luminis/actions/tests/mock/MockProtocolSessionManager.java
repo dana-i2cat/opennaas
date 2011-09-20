@@ -1,9 +1,8 @@
-package net.i2cat.luminis.actions.tests;
+package net.i2cat.luminis.actions.tests.mock;
 
 import java.util.List;
 import java.util.Set;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
@@ -76,18 +75,11 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 	}
 
 	public IProtocolSession newMockWonesysProtocolSession() {
+
 		ProtocolSessionContext sessionContext = new ProtocolSessionContext();
 		sessionContext.addParameter("protocol.mock", "true");
 
-		WonesysProtocolSession wonesysProtocolSession = null;
-		try {
-			wonesysProtocolSession = new WonesysProtocolSession(sessionContext, "1");
-		} catch (ProtocolException e) {
-			// NEVER CAN HAPPEN
-			e.printStackTrace();
-		}
-
-		return wonesysProtocolSession;
+		return new SessionMock(sessionContext, "01");
 	}
 
 	@Override

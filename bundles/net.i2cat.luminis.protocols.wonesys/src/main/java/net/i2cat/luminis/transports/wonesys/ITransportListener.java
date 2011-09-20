@@ -1,13 +1,7 @@
 package net.i2cat.luminis.transports.wonesys;
 
-public interface ITransportListener {
+import org.osgi.service.event.EventHandler;
 
-	/**
-	 * Event telling a message has been received.
-	 * 
-	 * @param message
-	 */
-	public void messageReceived(Object message);
+public interface ITransportListener extends EventHandler {
 
-	public void errorHappened(Exception e);
 }

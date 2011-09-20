@@ -1,8 +1,12 @@
 package net.i2cat.luminis.actions.tests;
 
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.OptionUtils.combine;
+
 import java.util.HashMap;
 import java.util.List;
 
+import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RefreshModelConnectionsAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
@@ -19,33 +23,67 @@ import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.action.ActionException;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
 import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.command.Response.Status;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-public class ConnectionActionsIntegrationTest {
+@RunWith(JUnit4TestRunner.class)
+public class ConnectionActionsIntegrationTest extends AbstractIntegrationTest {
 
 	Log				log			= LogFactory.getLog(ConnectionActionsIntegrationTest.class);
 
 	private String	resourceId	= "pedrosa";
 
+	@Configuration
+	public static Option[] configuration() throws Exception {
+
+		Option[] options = combine(
+				IntegrationTestsHelper.getLuminisTestOptions(),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.tests.helper"),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.events")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
+
+		return options;
+	}
+
+	public void initBundles() {
+		log.info("Waiting to load all bundles");
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		log.info("Loaded all bundles");
+
+		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
+
+		log.info("INFO: Initialized!");
+	}
+
 	@Test
 	public void testRefreshMakeAndRemoveConnectionsWithMock() {
+
+		initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);
@@ -64,6 +102,8 @@ public class ConnectionActionsIntegrationTest {
 
 	// @Test
 	public void testRefreshMakeAndRemoveConnectionsReal() {
+
+		initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);

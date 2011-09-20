@@ -1,4 +1,4 @@
-package net.i2cat.luminis.commandsets.wonesys.test.mock;
+package net.i2cat.luminis.actions.tests.mock;
 
 import net.i2cat.luminis.transports.wonesys.mock.ProteusMock;
 import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
@@ -14,7 +14,7 @@ public class SessionMock implements IProtocolSession {
 	private ProtocolSessionContext	protocolSessionContext	= null;
 	private String					sessionID				= null;
 
-	public SessionMock(ProtocolSessionContext protocolSessionContext, String sessionID) throws ProtocolException {
+	public SessionMock(ProtocolSessionContext protocolSessionContext, String sessionID) {
 		this.protocolSessionContext = protocolSessionContext;
 		this.sessionID = sessionID;
 	}
@@ -73,5 +73,4 @@ public class SessionMock implements IProtocolSession {
 		this.sessionID = sessionID;
 
 	}
-
 }

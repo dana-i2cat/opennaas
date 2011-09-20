@@ -1,5 +1,6 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -12,6 +13,7 @@ import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
 import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
+import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.nexus.resources.command.CommandException;
 import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
@@ -49,7 +51,8 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	public static Option[] configure() {
 		return combine(
 						IntegrationTestsHelper.getLuminisTestOptions(),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
+						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.events")
 		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
 		);
 	}
@@ -66,12 +69,19 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void sendCommmandTest() throws ProtocolException, CommandException {
+	public void testSendMultipleMessages() throws ProtocolException {
 
 		loadBundles();
 
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		sendMultipleMessages(1);
+
+		sendMultipleMessages(5);
+	}
+
+	@Test
+	public void sendCommmandTest() throws ProtocolException, CommandException {
+
+		loadBundles();
 
 		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		sessionContext.addParameter("protocol.mock", "true");
@@ -162,6 +172,38 @@ public class SendCommandTest extends AbstractIntegrationTest {
 		}
 	}
 
+	private void sendMultipleMessages(int numMessagesToSend) throws ProtocolException {
+
+		ProtocolSessionContext protocolSessionContext1 = createWonesysProtocolSessionContext(
+				hostIpAddress, hostPort);
+		// use mock transport
+		protocolSessionContext1.addParameter("protocol.mock", "true");
+
+		String sessionId1 = "1";
+
+		Object command = createGetCommand();
+
+		WonesysProtocolSessionFactory factory = new WonesysProtocolSessionFactory();
+		try {
+
+			IProtocolSession protocolSession = factory.createProtocolSession(
+					sessionId1, protocolSessionContext1);
+			protocolSession.connect();
+			for (int i = 0; i < numMessagesToSend; i++) {
+				log.info("Sending message... " + command);
+				Object response = protocolSession.sendReceive(command);
+				log.info("Received response: " + (String) response);
+				assertNotNull(response);
+				assertFalse(response.equals(""));
+			}
+			protocolSession.disconnect();
+
+		} catch (ProtocolException e) {
+			log.info("Failed to send message!", e);
+			throw e;
+		}
+	}
+
 	private ProtocolSessionContext createWonesysProtocolSessionContext(String ip,
 			String port) {
 
@@ -179,6 +221,31 @@ public class SendCommandTest extends AbstractIntegrationTest {
 
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
 		return protocolSessionManager.obtainSession(sessionContext, true);
+	}
+
+	private Object createGetCommand() {
+		// getInventory command
+		String cmd = "5910ffffffffff01ffffffff0000";
+		String xor = getXOR(cmd);
+
+		cmd += xor + "00";
+
+		return cmd;
+	}
+
+	private String getXOR(String cmd) {
+
+		int xor = Integer.parseInt(cmd.substring(0, 2), 16)
+				^ Integer.parseInt(cmd.substring(2, 4), 16);
+		for (int i = 4; i <= cmd.length() - 2; i++) {
+			xor = xor ^ Integer.parseInt(cmd.substring(i, i + 2), 16);
+			i++;
+		}
+		String hxor = Integer.toHexString(xor);
+		if (hxor.length() < 2) {
+			hxor = "0" + hxor;
+		}
+		return hxor;
 	}
 
 }

@@ -32,15 +32,15 @@ public class WonesysProtocolTest {
 
 	private long	alarmWaittime	= 5 * 1000;
 
-	@Test
-	public void testSendMessage() throws ProtocolException {
-		sendMultipleMessages(1);
-	}
-
-	@Test
-	public void testSendMultipleMessages() throws ProtocolException {
-		sendMultipleMessages(5);
-	}
+	// @Test
+	// public void testSendMessage() throws ProtocolException {
+	// sendMultipleMessages(1);
+	// }
+	//
+	// @Test
+	// public void testSendMultipleMessages() throws ProtocolException {
+	// sendMultipleMessages(5);
+	// }
 
 	@Test
 	public void testConfigureAlarms() throws IOException {

@@ -40,7 +40,7 @@ public class IntegrationTestsHelper {
 		/* specify log level */
 
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																							.value("DEBUG"));
+																							.value("INFO"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
 
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS

@@ -1,36 +1,36 @@
 package net.i2cat.luminis.protocols.wonesys;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
+import net.i2cat.nexus.events.IEventManager;
+import net.i2cat.nexus.resources.AbstractActivator;
+import net.i2cat.nexus.resources.ActivatorException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceReference;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventHandler;
 import org.osgi.framework.ServiceRegistration;
 
 /**
- * Allows net.i2cat.luminis.protocols.wonesys bundle to become context aware.
- * BundleContext is needed for some tasks like event management.
+ * Allows net.i2cat.luminis.protocols.wonesys bundle to become context aware. BundleContext is needed for some tasks like event management.
  * 
- * In order to BundlerActivator to be called from osgi container it needs to be
- * registered in the bundle manifest file.
+ * In order to BundlerActivator to be called from osgi container it needs to be registered in the bundle manifest file.
  * 
  * @author isart
  * 
  */
-public class WonesysProtocolBundleActivator implements BundleActivator {
+public class WonesysProtocolBundleActivator extends AbstractActivator implements BundleActivator {
 
-	private static BundleContext bundleContext = null;
-	private static HashMap<Integer, ServiceRegistration> registeredServices = new HashMap<Integer, ServiceRegistration>();
+	static Log												log					= LogFactory.getLog(WonesysProtocolBundleActivator.class);
+
+	private static BundleContext							bundleContext		= null;
+	private static HashMap<Integer, ServiceRegistration>	registeredServices	= new HashMap<Integer, ServiceRegistration>();
 
 	@Override
 	public void start(BundleContext context) throws Exception {
 		bundleContext = context;
-		
+
 	}
 
 	@Override
@@ -41,22 +41,28 @@ public class WonesysProtocolBundleActivator implements BundleActivator {
 	public static BundleContext getBundleContext() {
 		return bundleContext;
 	}
-	
-//	public static EventAdmin getEventAdmin() {
-//		ServiceReference reference = bundleContext.getServiceReference(EventAdmin.class.getName());
-//		return (EventAdmin) bundleContext.getService(reference);
-//	}
-//	
-//	public static int registerService(String serviceName, Object service, Dictionary<String, Object> properties){
-//		ServiceRegistration registration = bundleContext.registerService(serviceName, service, properties); 
-//		registeredServices.put(registeredServices.size()+1, registration);
-//		return registeredServices.size();
-//	}
-//	
-//	public static void unregisterService (int serviceID){
-//		ServiceRegistration registration = registeredServices.get(serviceID);
-//		registration.unregister();
-//		registeredServices.remove(serviceID);
-//	}
+
+	// public static EventAdmin getEventAdmin() {
+	// ServiceReference reference = bundleContext.getServiceReference(EventAdmin.class.getName());
+	// return (EventAdmin) bundleContext.getService(reference);
+	// }
+	//
+	// public static int registerService(String serviceName, Object service, Dictionary<String, Object> properties){
+	// ServiceRegistration registration = bundleContext.registerService(serviceName, service, properties);
+	// registeredServices.put(registeredServices.size()+1, registration);
+	// return registeredServices.size();
+	// }
+	//
+	// public static void unregisterService (int serviceID){
+	// ServiceRegistration registration = registeredServices.get(serviceID);
+	// registration.unregister();
+	// registeredServices.remove(serviceID);
+	// }
+
+	public static IEventManager getEventManagerService() throws ActivatorException {
+		log.debug("Calling EventManager");
+		log.debug("Params: context=" + bundleContext + " class=" + IEventManager.class.getName());
+		return (IEventManager) getServiceFromRegistry(bundleContext, IEventManager.class.getName());
+	}
 
 }

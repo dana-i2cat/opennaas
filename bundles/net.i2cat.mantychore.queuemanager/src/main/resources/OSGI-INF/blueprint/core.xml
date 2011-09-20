@@ -22,9 +22,7 @@
 		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" >
 		 <property name="type" value="queue" />
 	</bean>
-  
 
-	
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="queueManagerFactory"
 		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"> 

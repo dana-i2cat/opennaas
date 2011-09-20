@@ -2,7 +2,6 @@ package net.i2cat.nexus.resources.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,7 +1,5 @@
 package net.i2cat.luminis.commandsets.wonesys.test.mock;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionContextUtils;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
@@ -22,7 +20,7 @@ public class MockProtocolSessionManager extends ProtocolSessionManager {
 		if (protocol == null)
 			throw new ProtocolException("Requested protocol is null.");
 
-		WonesysProtocolSession session = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
+		IProtocolSession session = getSession(resourceId, hostIpAddress, hostPort);
 
 		session.connect();
 		return session;
@@ -53,9 +51,7 @@ public class MockProtocolSessionManager extends ProtocolSessionManager {
 	}
 
 	private IProtocolSession getProtocolSession(String resourceId, ProtocolSessionContext sessionContext) throws ProtocolException {
-		WonesysProtocolSession session = new SessionMock(sessionContext, resourceId + "01");
-
-		session.connect();
+		IProtocolSession session = new SessionMock(sessionContext, resourceId + "01");
 		return session;
 	}
 

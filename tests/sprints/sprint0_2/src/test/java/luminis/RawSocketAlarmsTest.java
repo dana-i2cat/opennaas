@@ -4,6 +4,8 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -28,11 +30,15 @@ import org.osgi.service.event.EventHandler;
 
 public class RawSocketAlarmsTest extends AbstractIntegrationTest implements EventHandler {
 
-	static Log					log				= LogFactory.getLog(RawSocketAlarmsTest.class);
+	static Log					log						= LogFactory.getLog(RawSocketAlarmsTest.class);
 
-	private boolean				alarmReceived	= false;
-	private int					alarmCounter	= 0;
-	private List<WonesysAlarm>	receivedAlarms	= new ArrayList<WonesysAlarm>();
+	private boolean				alarmReceived			= false;
+	private int					alarmCounter			= 0;
+	private List<WonesysAlarm>	receivedAlarms			= new ArrayList<WonesysAlarm>();
+
+	/** copied from RawSocketTransport */
+	public static final String	MSG_RCVD_EVENT_TOPIC	= "net/i2cat/luminis/transports/wonesys/rawsocket/MESSAGE_RCV";
+	public static final String	MESSAGE_PROPERTY_NAME	= "message";
 
 	private IEventManager		eventManager;
 
@@ -68,7 +74,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 		initBundles();
 
-		String alarmTopic = "net/i2cat/luminis/protocols/wonesys/alarms/RECEIVED";
+		String alarmTopic = WonesysProtocolSession.ALARM_RCVD_EVENT_TOPIC;
 
 		EventFilter filter = new EventFilter(alarmTopic);
 		eventManager.registerEventHandler(this, filter);
@@ -84,7 +90,11 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			// generate alarm
 			String alarm = "FFFF0100011700FF0300"; // PSROADM ERROR
-			// session.messageReceived(alarm);
+			Dictionary<String, Object> properties = new Hashtable<String, Object>();
+			properties.put(MESSAGE_PROPERTY_NAME, alarm);
+			Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
+
+			session.handleEvent(event);
 
 			try {
 				Thread.sleep(1000);
@@ -138,7 +148,11 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			// generate alarm
 			String alarm = "FFFF0100011700FF0300"; // PSROADM ERROR
-			// session.messageReceived(alarm);
+			Dictionary<String, Object> properties = new Hashtable<String, Object>();
+			properties.put(MESSAGE_PROPERTY_NAME, alarm);
+			Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
+
+			session.handleEvent(event);
 
 			try {
 				Thread.sleep(1000);
@@ -153,7 +167,11 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			// FIXME XOR is incorrect
 			String commandResponse = "59100117FFFF0B02FFFFFFFF0100000100"; // Set channel resp (OK)
-			// session.messageReceived(commandResponse);
+			properties = new Hashtable<String, Object>();
+			properties.put(MESSAGE_PROPERTY_NAME, commandResponse);
+			event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
+
+			session.handleEvent(event);
 
 			try {
 				Thread.sleep(1000);
@@ -240,7 +258,13 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 			session = new WonesysProtocolSession(protocolSessionContext, "session1");
 
 			String chassisSlot = "0117";
-			// session.messageReceived("FFFF0000" + chassis + slot + "01FF80");
+			String message = "FFFF0000" + chassis + slot + "01FF80";
+
+			Dictionary<String, Object> properties = new Hashtable<String, Object>();
+			properties.put(MESSAGE_PROPERTY_NAME, message);
+			Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
+
+			session.handleEvent(event);
 
 			// TODO check model has been refreshed
 
@@ -273,9 +297,13 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		try {
 			session = new WonesysProtocolSession(protocolSessionContext, "session1");
 
-			String chassisSlot = "0117";
 			String alarmMessage = "FFFF0000" + chassis + slot + "01FF80";
-			// session.messageReceived(alarmMessage);
+
+			Dictionary<String, Object> properties = new Hashtable<String, Object>();
+			properties.put(MESSAGE_PROPERTY_NAME, alarmMessage);
+			Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
+
+			session.handleEvent(event);
 
 			// TODO check alarm history for given device contains generated alarm
 

@@ -1,4 +1,4 @@
-package net.i2cat.luminis.transports.wonesys;
+package net.i2cat.luminis.transports.wonesys.mock;
 
 import java.util.HashMap;
 
