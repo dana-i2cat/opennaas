@@ -105,59 +105,59 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 		log.info("Resource repo cleared!");
 	}
-
-	/**
-	 * Creates a resource indicating a profileId in its descriptor. Checks profile is loaded correctly and profile actions are called instead of
-	 * original ones.
-	 */
-	@Test
-	public void createResourceWithProfile() {
-
-		initBundles();
-
-		try {
-
-			List<String> capabilities = new ArrayList<String>();
-			capabilities.add("chassis");
-			capabilities.add("queue");
-
-			ProfileDescriptor profileDescriptor = ResourceDescriptorFactory.newProfileDescriptor("profile", "router");
-			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
-			/* specify profiles */
-			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
-			ActionSet actionSet = new ActionSet();
-			actionSet.putAction("setIPv4", MockAction.class);
-
-			actionSets.put("chassis", actionSet);
-
-			IProfile profile = MockProfileFactory.newMockProfilefactory(profileDescriptor, actionSets);
-
-			profileManager.addProfile(profile);
-
-			resourceDescriptor.setProfileId(profile.getProfileName());
-
-			// call createResource(resourceDescriptor)
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			resourceManager.startResource(resource.getResourceIdentifier());
-
-			// assert profile loading has been correct
-			Assert.assertNotNull(resource.getProfile());
-			Assert.assertTrue(resource.getProfile().equals(profile));
-
-			// // TODO launch setInterface Action and assert DummyAction is executed instead of original one
-
-		} catch (ResourceException e) {
-			log.error("Error ocurred!!!", e);
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			log.error("Error ocurred!!!", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
-		}
-
-	}
+//
+//	/**
+//	 * Creates a resource indicating a profileId in its descriptor. Checks profile is loaded correctly and profile actions are called instead of
+//	 * original ones.
+//	 */
+//	@Test
+//	public void createResourceWithProfile() {
+//
+//		initBundles();
+//
+//		try {
+//
+//			List<String> capabilities = new ArrayList<String>();
+//			capabilities.add("chassis");
+//			capabilities.add("queue");
+//
+//			ProfileDescriptor profileDescriptor = ResourceDescriptorFactory.newProfileDescriptor("profile", "router");
+//			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
+//			/* specify profiles */
+//			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
+//			ActionSet actionSet = new ActionSet();
+//			actionSet.putAction("setIPv4", MockAction.class);
+//
+//			actionSets.put("chassis", actionSet);
+//
+//			IProfile profile = MockProfileFactory.newMockProfilefactory(profileDescriptor, actionSets);
+//
+//			profileManager.addProfile(profile);
+//
+//			resourceDescriptor.setProfileId(profile.getProfileName());
+//
+//			// call createResource(resourceDescriptor)
+//			IResource resource = resourceManager.createResource(resourceDescriptor);
+//			createProtocolForResource(resource.getResourceIdentifier().getId());
+//			resourceManager.startResource(resource.getResourceIdentifier());
+//
+//			// assert profile loading has been correct
+//			Assert.assertNotNull(resource.getProfile());
+//			Assert.assertTrue(resource.getProfile().equals(profile));
+//
+//			// // TODO launch setInterface Action and assert DummyAction is executed instead of original one
+//
+//		} catch (ResourceException e) {
+//			log.error("Error ocurred!!!", e);
+//			Assert.fail(e.getMessage());
+//		} catch (ProtocolException e) {
+//			log.error("Error ocurred!!!", e);
+//			Assert.fail(e.getMessage());
+//		} finally {
+//			clearRepo();
+//		}
+//
+//	}
 
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
