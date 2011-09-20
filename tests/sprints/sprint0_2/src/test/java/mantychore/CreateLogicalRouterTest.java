@@ -230,13 +230,17 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 	}
 
-	// @Test
+	@Test
 	public void discoveryLogicalRoutersTest() {
 
 		try {
+			String LRname = null;
 			// initResource();
-			// need to find a LR name existing on the router
-			String LRname = "pepito";
+			if (isMock) {
+				LRname = "routerV2";
+			} else {
+				LRname = "pepito";
+			}
 
 			// resource:list
 			List<String> response = KarafCommandHelper.executeCommand("resource:list ",
@@ -254,7 +258,6 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 			// check resource initialized
 			Assert.assertTrue(response.get(0).contains("INITIALIZED"));
 			// check descriptors include IP capability
-			Assert.assertTrue(response.get(0).contains("Ipv4"));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

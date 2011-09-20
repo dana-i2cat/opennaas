@@ -7,14 +7,14 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.ManagedSystemElement;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.System;
 
 public class CheckHelper {
 
 	public static boolean checkExistLogicalRouter(ComputerSystem physicalRouter, String logicalRouterName) {
-		List<ManagedSystemElement> logicalRouters = physicalRouter.getManagedSystemElements();
-		for (ManagedSystemElement logicalRouter : logicalRouters) {
+		List<net.i2cat.mantychore.model.System> logicalRouters = physicalRouter.getSystems();
+		for (System logicalRouter : logicalRouters) {
 			if (logicalRouter.getName().equals(logicalRouterName))
 				return true;
 		}

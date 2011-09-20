@@ -79,6 +79,7 @@ public class GetConfigurationAction extends JunosAction {
 
 					ComputerSystem system = new ComputerSystem();
 					system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
+					// routerModel.addManagedSystemElement(system);
 					routerModel.addSystem(system);
 				}
 			}

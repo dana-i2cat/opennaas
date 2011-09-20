@@ -6,7 +6,6 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -63,20 +62,6 @@ public class ManagedSystemElement extends ManagedElement implements
 	@SuppressWarnings("unchecked")
 	public List<System> getSystems() {
 		return (List<System>) this.getFromAssociatedElementsByType(SystemComponent.class);
-	}
-
-	@Override
-	public List<String> getChildren() {
-		List<String> nameChildren = new ArrayList<String>();
-		for (System system : getSystems()) {
-			// Check that it is a logical device | router
-			if (system instanceof ComputerSystem) {
-				ComputerSystem sys = (ComputerSystem) system;
-				nameChildren.add(sys.getName());
-			}
-		}
-
-		return nameChildren;
 	}
 
 	/**
