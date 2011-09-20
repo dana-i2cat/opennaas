@@ -27,24 +27,24 @@
 		<commons.configuration.version>1.2</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cxf.version>2.2.9-fuse-01-00</cxf.version>
-		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
+		<cxf.version>2.4.0-fuse-00-27</cxf.version>
+		<cxf.java2ws.plugin.version>2.4.0-fuse-00-27</cxf.java2ws.plugin.version><!-- -->
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
-		<easymock.version>2.5.2</easymock.version>
+		<easymock.version>3.0</easymock.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
-		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
+		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
-		<hibernate.version>3.4.0.GA</hibernate.version>
-		<hsqldb.version>1.8.0.9</hsqldb.version>
+		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
 		<karaf.version>2.2.0-fuse-00-43</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
-		<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>
+		<netconf4j.version>0.0.2</netconf4j.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam.version>1.2.0</pax.exam.version>
+		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
@@ -54,7 +54,7 @@
 		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.0</spring.osgi.version>
-		<spring.version>3.0.3.RELEASE</spring.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 		<xbean.version>3.7</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
@@ -125,7 +125,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-jpa_1.0_spec</artifactId>
+				<artifactId>geronimo-jpa_2.0_spec</artifactId>
 				<version>${geronimo.jpa.version}</version>
 			</dependency>
 			<dependency>
