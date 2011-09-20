@@ -28,7 +28,7 @@
 		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:net.i2cat.mantychore.fragment/net.i2cat.mantychore.fragment.velocity/1.0.0-SNAPSHOT</bundle>
+		<!--<bundle>mvn:net.i2cat.mantychore.fragment/net.i2cat.mantychore.fragment.velocity/1.0.0-SNAPSHOT</bundle>-->
 		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.chassis/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.ip/1.0.0-SNAPSHOT</bundle>
