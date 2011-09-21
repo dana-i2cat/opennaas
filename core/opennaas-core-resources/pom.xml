@@ -115,7 +115,8 @@
 							org.apache.activemq,
 							<!--org.osgi.service.command,-->
 							*</Import-Package>
-						<Export-Package>org.opennaas.core.resources*;version="${project.version}"
+						<Export-Package>org.opennaas.core.resources,org.opennaas.core.resources.*;version="${project.version}"
+
 						</Export-Package>
 						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
 					</instructions>
