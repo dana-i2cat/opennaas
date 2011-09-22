@@ -28,7 +28,8 @@
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
 		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<cxf.java2ws.plugin.version>2.4.0-fuse-00-27</cxf.java2ws.plugin.version><!-- -->
+		<cxf.java2ws.plugin.version>2.4.0-fuse-00-27</cxf.java2ws.plugin.version>
+		<!-- -->
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
 		<easymock.version>3.0</easymock.version>
@@ -43,6 +44,7 @@
 		<karaf.version>2.2.0-fuse-00-43</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
+		<!--<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>-->
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>

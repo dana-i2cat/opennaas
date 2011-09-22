@@ -3,6 +3,8 @@ package net.i2cat.nexus.tests;
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
@@ -42,11 +44,12 @@ public class IntegrationTestsHelper {
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
 																							.value("DEBUG"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
+		Option OPT_NOVERIFY = vmOption("-noverify");
 
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 											, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				, waitForFrameworkStartup() // wait for a length of time
-				, equinox(), REPOS);
+				, equinox(), REPOS, OPT_NOVERIFY);
 
 		return optssimpleTest;
 	}

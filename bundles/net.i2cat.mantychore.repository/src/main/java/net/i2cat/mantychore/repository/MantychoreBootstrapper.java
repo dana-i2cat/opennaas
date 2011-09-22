@@ -25,6 +25,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		log.debug("Executing capabilities startup...");
 		ICapability queueCapab = null;
 		for (ICapability capab : resource.getCapabilities()) {
+			log.debug("Found a capability in the resource.");
 			if (capab instanceof AbstractCapability) {
 				if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
 					queueCapab = capab;
@@ -36,7 +37,6 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 				}
 			}
 		}
-
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING
