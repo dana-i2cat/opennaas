@@ -16,21 +16,21 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;

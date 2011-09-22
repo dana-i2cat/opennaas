@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.i2cat.nexus.resources.ResourceIdentifier;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
-import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.CapabilityProperty;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

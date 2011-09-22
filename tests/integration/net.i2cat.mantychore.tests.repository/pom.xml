@@ -9,7 +9,6 @@
 	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.mantychore.tests.repository</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore repository test</name>
