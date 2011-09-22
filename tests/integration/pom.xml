@@ -17,9 +17,9 @@
 		<!--<module>net.i2cat.mantychore.tests.capability</module>-->
 		<module>net.i2cat.mantychore.tests.repository</module>
 		<module>net.i2cat.mantychore.tests.capability.queue</module>
-		<!--
-		<module>net.i2cat.mantychore.tests.commandsKaraf</module>
+		<!--<module>net.i2cat.mantychore.tests.commandsKaraf</module>-->
 		<module>net.i2cat.luminis.tests.protocols.wonesys</module>
+		<!--
 		<module>net.i2cat.luminis.tests.actions</module>
 		<module>net.i2cat.luminis.tests.capability</module>
 		<module>net.i2cat.luminis.tests.repository</module>
