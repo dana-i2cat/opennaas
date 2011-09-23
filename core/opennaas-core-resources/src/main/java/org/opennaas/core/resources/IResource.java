@@ -74,7 +74,7 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Start the Resource. The resource must already be instantiated and in the initialized state. This method will perform the necessary
-	 * bootstrapping to transistion from INITIALIZED to ACTIVE State
+	 * bootstrapping to transition from INITIALIZED to ACTIVE State
 	 * 
 	 * @throws CorruptStateException
 	 */
