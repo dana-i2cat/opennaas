@@ -106,6 +106,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		log.info(response.get(0));
 
 		// check logical router creation
+		//FIXME listLogicalRouter or listLogicalRouters!!!
 		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters" + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
 
