@@ -42,7 +42,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
 			</plugin>
 			<!--
 				TOCHECK, IT INCLUDES PARAMETERS IN TESTS <plugin>

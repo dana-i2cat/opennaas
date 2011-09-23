@@ -33,7 +33,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;

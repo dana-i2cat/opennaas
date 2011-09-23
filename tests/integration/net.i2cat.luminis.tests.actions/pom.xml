@@ -11,7 +11,7 @@
 	<artifactId>net.i2cat.luminis.tests.actions</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Liminis ROADM action test</name>
+	<name>Luminis ROADM action test</name>
 	<description>Luminis ROADM action test</description>
 	<packaging>jar</packaging>
 	<dependencies>
