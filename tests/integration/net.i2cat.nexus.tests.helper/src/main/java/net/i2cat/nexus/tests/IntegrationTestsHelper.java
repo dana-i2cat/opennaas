@@ -96,7 +96,7 @@ public class IntegrationTestsHelper {
 	}
 	
 	public static void waitForAllBundlesActive(BundleContext bundleContext){
-		int MAX_RETRIES = 100;
+		int MAX_RETRIES = 10;
 		Bundle b = null;
 		boolean active = true;
 		List<Integer> fragments = new ArrayList<Integer>();
