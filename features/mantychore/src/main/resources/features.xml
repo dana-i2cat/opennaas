@@ -3,13 +3,9 @@
 	<repository>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</repository>
 	<feature name="i2cat-nexus" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.events/1.0.0-SNAPSHOT</bundle>
-	</feature>
-	<feature name="i2cat-mantychore-deps" version="1.0.0-SNAPSHOT">
 		<!--  general dependencies -->
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/1.8.0</bundle>
 		<!--  dependency for common configurations -->
-		<!--  necessary dependency for digester library of netconf4j-->
-		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
 		<!-- 		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle -->
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/3.2.1_1-fuse</bundle>
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.digester/1.8.0</bundle>
@@ -21,9 +17,12 @@
 		<bundle>mvn:commons-configuration/commons-configuration/1.6</bundle>
 		<bundle>mvn:commons-io/commons-io/1.4</bundle>
 		<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>
-		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.2</bundle>
-		<!--<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.1-SNAPSHOT</bundle>-->
 		<bundle>mvn:org.apache.neethi/neethi/3.0.1</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-deps" version="1.0.0-SNAPSHOT">
+		<!--  necessary dependency for digester library of netconf4j-->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
+		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.2</bundle>
 	</feature>
 	<feature name="i2cat-mantychore-Base" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/1.0.0-SNAPSHOT</bundle>
