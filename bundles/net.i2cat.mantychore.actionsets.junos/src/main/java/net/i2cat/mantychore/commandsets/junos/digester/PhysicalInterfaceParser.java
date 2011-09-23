@@ -56,9 +56,9 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 		String[] nameAndUnit = name.split(".");
 		if (nameAndUnit.length == 1) {
-			networkPort.setElementName(name);
+			networkPort.setName(name);
 		} else {
-			networkPort.setElementName(nameAndUnit[0]);
+			networkPort.setName(nameAndUnit[0]);
 			int portNumber = -1;
 			try {
 				portNumber = Integer.parseInt(nameAndUnit[1]);
@@ -73,12 +73,12 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 
 	public void addInterface(NetworkPort networkPort) {
 		int numPort = networkPort.getPortNumber();
-		String nameInterface = networkPort.getElementName();
+		String nameInterface = networkPort.getName();
 		if (numPort != -1) {
 			nameInterface = nameInterface + "." + numPort;
 		}
 
-		if (networkPort.getElementName().startsWith("lt")) {
+		if (networkPort.getName().startsWith("lt")) {
 			LogicalTunnelPort logicalTunnel = (LogicalTunnelPort) networkPort;
 			if (mapElements.containsKey(nameInterface)) {
 				LogicalTunnelPort hashLogicalPort = (LogicalTunnelPort) mapElements.get(nameInterface);
@@ -200,7 +200,7 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 		for (String key : mapElements.keySet()) {
 			NetworkPort port = (NetworkPort) mapElements.get(key);
 			str += "- NetworkPort: " + '\n';
-			str += port.getElementName() + '\n';
+			str += port.getName() + '\n';
 			str += port.getPermanentAddress() + '\n';
 			str += String.valueOf(port.isFullDuplex()) + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';

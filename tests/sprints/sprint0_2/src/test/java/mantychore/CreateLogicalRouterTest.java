@@ -25,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -68,6 +69,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		return options;
 	}
 
+	@Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all tLogicalROuterhe bundles */
@@ -166,12 +168,13 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 
+			Assert.assertFalse(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-
 	}
 
 	@Test

@@ -83,7 +83,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getElementName() + "." + ethernetPort.getPortNumber() + "]  ");
+					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getName() + "." + ethernetPort.getPortNumber() + "]  ");
 
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
@@ -100,7 +100,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 				} else if (logicalDevice instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + lt.getElementName() + "." + lt.getPortNumber() + "]  ");
+					printSymbolWithoutDoubleLine(bullet + " [" + lt.getName() + "." + lt.getPortNumber() + "]  ");
 
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {

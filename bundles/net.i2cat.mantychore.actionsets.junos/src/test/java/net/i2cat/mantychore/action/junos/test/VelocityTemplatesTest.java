@@ -88,7 +88,7 @@ public class VelocityTemplatesTest {
 	public LogicalTunnelPort newParamsInterfaceLT() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
-		ltp.setElementName("lt-0/3/2");
+		ltp.setName("lt-0/3/2");
 		ltp.setPeer_unit(101);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");

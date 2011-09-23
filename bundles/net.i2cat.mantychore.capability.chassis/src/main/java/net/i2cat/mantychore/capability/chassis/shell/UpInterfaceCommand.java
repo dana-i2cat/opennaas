@@ -66,7 +66,7 @@ public class UpInterfaceCommand extends GenericKarafCommand {
 
 	private Object prepareConfigureStatusParams(String nameInterface) {
 		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setElementName(nameInterface);
+		logicalPort.setName(nameInterface);
 		logicalPort.setOperationalStatus(OperationalStatus.OK);
 		return logicalPort;
 	}

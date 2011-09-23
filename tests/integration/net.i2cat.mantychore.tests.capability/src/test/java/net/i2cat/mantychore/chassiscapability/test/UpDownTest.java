@@ -158,7 +158,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 		while (iterator.hasNext()) {
 			LogicalDevice logicalDevice = (LogicalDevice) iterator.next();
-			if (logicalDevice.getElementName().equals(nameInterface))
+			if (logicalDevice.getName().equals(nameInterface))
 				return logicalDevice;
 		}
 
@@ -230,7 +230,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 	private Object newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
 
 		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setElementName(interfaceName);
+		logicalPort.setName(interfaceName);
 		logicalPort.setOperationalStatus(status);
 		return logicalPort;
 	}

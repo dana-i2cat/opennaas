@@ -35,7 +35,7 @@
 <configuration>
 	<interfaces>	
 		<interface>
-			<name>$param.ElementName</name>
+			<name>$param.Name</name>
 				<unit operation="replace">					
 				
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE

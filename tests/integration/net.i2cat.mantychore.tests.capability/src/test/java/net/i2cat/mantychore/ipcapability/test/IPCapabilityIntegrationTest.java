@@ -140,7 +140,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			if (ExceptionUtils.getRootCause(e) != null){
+			if (ExceptionUtils.getRootCause(e) != null) {
 				log.error(ExceptionUtils.getRootCause(e).getMessage());
 				Assert.fail(ExceptionUtils.getRootCause(e).getMessage());
 			}
@@ -194,7 +194,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName(name);
+		eth.setName(name);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address(ipName);
 		ip.setSubnetMask(mask);

@@ -21,7 +21,7 @@ public class ParamCreationHelper {
 	public Object newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/3/2");
+		eth.setName("fe-0/3/2");
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
 		ip.setSubnetMask("255.255.255.0");
@@ -35,7 +35,7 @@ public class ParamCreationHelper {
 	public Object newParamsInterfaceLT() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		ltp.setElementName("lt-0/3/2");
+		ltp.setName("lt-0/3/2");
 		ltp.setPeer_unit(101);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
@@ -51,7 +51,7 @@ public class ParamCreationHelper {
 	public Object newParamsInterfaceLT_VLAN() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
-		ltp.setElementName("lt-0/3/2");
+		ltp.setName("lt-0/3/2");
 		ltp.setPeer_unit(101);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
@@ -66,7 +66,7 @@ public class ParamCreationHelper {
 	public Object newParamsInterfaceEtherVLAN() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
-		eth.setElementName("fe-0/3/2");
+		eth.setName("fe-0/3/2");
 		eth.setPortNumber(2);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");

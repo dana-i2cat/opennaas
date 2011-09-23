@@ -63,10 +63,13 @@ public class SetIPv4Command extends GenericKarafCommand {
 			validateResource(resource);
 			printInfo("Preparing the message for setting the interface: ");
 			Object params = validateParams(resource);
+
 			if (params == null) {
 				endcommand();
 				return null;
 			}
+
+			/* check if it uses logical router */
 
 			if (!validateIPAddress(ipv4)) {
 				printError("Ip format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
@@ -97,7 +100,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 		return null;
 	}
 
-	private Object validateParams(IResource resource) throws Exception {
+	private LogicalDevice validateParams(IResource resource) throws Exception {
 		if (splitInterfaces(interfaceName)) {
 
 			String name = argsInterface[0];
@@ -112,14 +115,14 @@ public class SetIPv4Command extends GenericKarafCommand {
 			List<LogicalDevice> ld = routerModel.getLogicalDevices();
 			for (LogicalDevice device : ld) {
 				// the interface is found on the model
-				if (device.getElementName().equalsIgnoreCase(name)) {
+				if (device.getName().equalsIgnoreCase(name)) {
 					if (device instanceof NetworkPort) {
 						// TODO implement method clone
 						if (((NetworkPort) device).getPortNumber() == port) {
-							if (device.getElementName().startsWith("lt")) {
+							if (device.getName().startsWith("lt")) {
 								LogicalTunnelPort lt = new LogicalTunnelPort();
 								LogicalTunnelPort ltOld = (LogicalTunnelPort) device;
-								lt.setElementName(ltOld.getElementName());
+								lt.setName(ltOld.getName());
 								lt.setPortNumber(ltOld.getPortNumber());
 								lt.setPeer_unit(ltOld.getPeer_unit());
 								lt.setLinkTechnology(LinkTechnology.OTHER);
@@ -127,19 +130,19 @@ public class SetIPv4Command extends GenericKarafCommand {
 								ip.setIPv4Address(ipv4);
 								ip.setSubnetMask(mask);
 								lt.addProtocolEndpoint(ip);
-								printInfo("[" + lt.getElementName() + "." + lt.getPortNumber() + "]  " + ipv4 + " / " + mask);
+								printInfo("[" + lt.getName() + "." + lt.getPortNumber() + "]  " + ipv4 + " / " + mask);
 								return lt;
 							} else {
 								EthernetPort ethOld = (EthernetPort) device;
 								EthernetPort eth = new EthernetPort();
-								eth.setElementName(ethOld.getElementName());
+								eth.setName(ethOld.getName());
 								eth.setPortNumber(ethOld.getPortNumber());
 								eth.setLinkTechnology(LinkTechnology.OTHER);
 								IPProtocolEndpoint ip = new IPProtocolEndpoint();
 								ip.setIPv4Address(ipv4);
 								ip.setSubnetMask(mask);
 								eth.addProtocolEndpoint(ip);
-								printInfo("[" + eth.getElementName() + "." + eth.getPortNumber() + "]  " + ipv4 + " / " + mask);
+								printInfo("[" + eth.getName() + "." + eth.getPortNumber() + "]  " + ipv4 + " / " + mask);
 
 								return eth;
 							}

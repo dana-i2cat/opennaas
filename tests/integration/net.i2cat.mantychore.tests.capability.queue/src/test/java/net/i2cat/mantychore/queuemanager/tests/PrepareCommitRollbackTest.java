@@ -122,7 +122,6 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 
 	}
 
-
 	public void before() throws ProtocolException, CapabilityException {
 		initBundles();
 		log.info("INFO: Before test, getting queue...");
@@ -139,7 +138,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	private Object newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/1/2");
+		eth.setName("fe-0/1/2");
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
 		ip.setSubnetMask("255.255.255.0");

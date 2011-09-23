@@ -1,7 +1,11 @@
 package net.i2cat.mantychore.capability.ip;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.ManagedSystemElement;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.nexus.resources.ActivatorException;
 import net.i2cat.nexus.resources.action.IAction;
@@ -10,6 +14,7 @@ import net.i2cat.nexus.resources.capability.AbstractCapability;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.command.Response;
 import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
 
 import org.apache.commons.logging.Log;
@@ -72,6 +77,13 @@ public class IPCapability extends AbstractCapability {
 		try {
 			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
 			IAction action = createAction(idOperation);
+
+			// Add logical router access
+			if (params != null &&
+					isALogicalRouter()) {
+				addParamsForLogicalRouters(params);
+			}
+
 			action.setParams(params);
 			action.setModelToUpdate(resource.getModel());
 			queueManager.queueAction(action);
@@ -84,5 +96,57 @@ public class IPCapability extends AbstractCapability {
 		}
 
 		return Response.okResponse(idOperation);
+	}
+
+	private void addParamsForLogicalRouters(Object params) {
+		if (params == null)
+			return;
+		((ManagedSystemElement) params).setElementName(resource.getResourceDescriptor().getInformation().getName());
+	}
+
+	public boolean isALogicalRouter() {
+		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
+		/* Check that the logical router exists */
+		if (resourceDescriptor == null || resourceDescriptor.getProperties() == null)
+			return false;
+
+		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null && resourceDescriptor
+				.getProperties()
+				.get(ResourceDescriptor.VIRTUAL).equals("true"));
+	}
+
+	/**
+	 * Override to use refreshActions for chassis capability in Junos
+	 * */
+	public Response sendRefreshActions() {
+		List<String> refreshActions;
+		try {
+			refreshActions = this.getActionSet().getRefreshActionName();
+		} catch (CapabilityException e) {
+			return prepareErrorMessage("STARTUP_REFRESH_ACTION", e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
+		}
+
+		List params = new ArrayList();
+		boolean isLogical = isALogicalRouter();
+
+		for (int index = 0; index < refreshActions.size(); index++) {
+			if (isLogical) {
+				ComputerSystem param = new ComputerSystem();
+				addParamsForLogicalRouters(param);
+				params.add(param);
+
+			}
+
+		}
+
+		return super.sendRefreshActions(params);
+
+	}
+
+	private Response prepareErrorMessage(String nameError, String message) {
+		Vector<String> errorMsgs = new Vector<String>();
+		errorMsgs.add(message);
+		return Response.errorResponse(nameError, errorMsgs);
+
 	}
 }

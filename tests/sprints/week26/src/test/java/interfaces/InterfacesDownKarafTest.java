@@ -198,7 +198,7 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 				ComputerSystem system = (ComputerSystem) resource.getModel();
 				List<LogicalDevice> ld = system.getLogicalDevices();
 				for (LogicalDevice logicalDevice : ld) {
-					if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+					if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
 						LogicalPort logicalPort = (LogicalPort) logicalDevice;
 						Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 					}
@@ -247,7 +247,7 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 				ComputerSystem system = (ComputerSystem) resource.getModel();
 				List<LogicalDevice> ld = system.getLogicalDevices();
 				for (LogicalDevice logicalDevice : ld) {
-					if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+					if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
 						LogicalPort logicalPort = (LogicalPort) logicalDevice;
 						Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 					}

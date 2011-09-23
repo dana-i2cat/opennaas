@@ -1,7 +1,7 @@
 <configuration>
 	<interfaces>	
 		<interface>
-			<name>$param.ElementName</name>
+			<name>$param.Name</name>
 		<interface>
 	<interfaces>	
 <configuration>

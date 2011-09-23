@@ -13,6 +13,7 @@ public class ActionSet implements IActionSet {
 	HashMap<String, Properties>					actionParams	= new HashMap<String, Properties>();
 
 	protected List<String>						refreshActions	= new ArrayList();
+	protected Object							refreshParam	= null;
 
 	public Class<? extends Action> putAction(String key, Class<? extends Action> value) {
 		return actions.put(key, value);

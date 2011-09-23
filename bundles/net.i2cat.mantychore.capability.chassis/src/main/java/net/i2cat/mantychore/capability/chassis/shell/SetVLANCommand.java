@@ -9,8 +9,8 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
+import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
@@ -61,6 +61,7 @@ public class SetVLANCommand extends GenericKarafCommand {
 			if (params == null) {
 				return null;
 			}
+
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.SETVLAN, params);
@@ -79,6 +80,13 @@ public class SetVLANCommand extends GenericKarafCommand {
 		return null;
 	}
 
+	/**
+	 * TODO This method have two reponsabilities and it is larger, it have to be refactorized
+	 * 
+	 * @param resource
+	 * @return
+	 * @throws Exception
+	 */
 	private Object validateParams(IResource resource) throws Exception {
 		if (splitInterfaces(subinterface)) {
 
@@ -96,15 +104,15 @@ public class SetVLANCommand extends GenericKarafCommand {
 			List<LogicalDevice> ld = routerModel.getLogicalDevices();
 			for (LogicalDevice device : ld) {
 				// the interface is found on the model
-				if (device.getElementName().equalsIgnoreCase(name)) {
+				if (device.getName().equalsIgnoreCase(name)) {
 					if (device instanceof NetworkPort) {
 						// TODO implement method clone
-						device.getElementName();
+						device.getName();
 						if (((NetworkPort) device).getPortNumber() == port) {
 							if (name.startsWith("lt")) {
 								LogicalTunnelPort lt = new LogicalTunnelPort();
 								LogicalTunnelPort ltOld = (LogicalTunnelPort) device;
-								lt.setElementName(ltOld.getElementName());
+								lt.setName(ltOld.getName());
 								lt.setPortNumber(ltOld.getPortNumber());
 								lt.setPeer_unit(ltOld.getPeer_unit());
 								lt.setLinkTechnology(LinkTechnology.OTHER);
@@ -115,7 +123,7 @@ public class SetVLANCommand extends GenericKarafCommand {
 							} else {
 								EthernetPort ethOld = (EthernetPort) device;
 								EthernetPort eth = new EthernetPort();
-								eth.setElementName(ethOld.getElementName());
+								eth.setName(ethOld.getName());
 								eth.setPortNumber(ethOld.getPortNumber());
 								eth.setLinkTechnology(LinkTechnology.OTHER);
 								VLANEndpoint vlan = new VLANEndpoint();
@@ -132,4 +140,5 @@ public class SetVLANCommand extends GenericKarafCommand {
 		return null;
 
 	}
+
 }

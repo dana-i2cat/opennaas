@@ -122,11 +122,7 @@ public class GetConfigurationAction extends JunosAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		// For this Action params are not allowed
-		if (params == null)
-			return true;
-		else {
-			throw new ActionException("The Action " + getActionID() + " don't accept params");
-		}
+		return true;
 	}
 
 	public void prepareMessage() throws ActionException {

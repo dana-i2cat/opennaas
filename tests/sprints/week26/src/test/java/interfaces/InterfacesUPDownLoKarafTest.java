@@ -189,7 +189,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 		if (!isMock) {
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
 					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 				}
@@ -224,7 +224,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
 					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
 				}

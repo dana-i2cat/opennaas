@@ -59,7 +59,7 @@ public class SystemModelTest {
 	public LogicalDevice newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/3/2");
+		eth.setName("fe-0/3/2");
 		eth.setPortNumber(100);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");

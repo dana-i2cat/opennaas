@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
@@ -67,6 +69,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			try {
 				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
 			} catch (ResourceNotFoundException e) {
+				// TODO If the resource exists what it is our decision?
 				log.error(e.getMessage());
 				log.info("This resource is new, it have to be created");
 				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
@@ -91,6 +94,11 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			newResourceDescriptor.removeCapabilityDescriptor("chassis");
 			// Wet set the resource name
 			newResourceDescriptor.getInformation().setName(nameResource);
+
+			/* added virtual description */
+			Map<String, String> properties = new HashMap<String, String>();
+			properties.put(ResourceDescriptor.VIRTUAL, "true");
+			newResourceDescriptor.setProperties(properties);
 
 			return newResourceDescriptor;
 		} catch (Exception e) {

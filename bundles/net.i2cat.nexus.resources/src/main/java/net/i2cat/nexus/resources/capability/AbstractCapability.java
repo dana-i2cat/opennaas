@@ -202,18 +202,33 @@ public abstract class AbstractCapability implements ICapability {
 	protected abstract void shutdownCapability() throws CapabilityException;
 
 	/**
+	 * Method if it is not necessasry to use params to send Refresh Actions
+	 * */
+	public Response sendRefreshActions() {
+		return this.sendRefreshActions(new ArrayList());
+	}
+
+	/**
 	 * Sends to the queue necessary actions that should be executed before this capability is operative.
 	 * 
 	 * @return
 	 */
-	public Response sendRefreshActions() {
+	public Response sendRefreshActions(List params) {
 		try {
 
 			List<String> refreshActions = getActionSet().getRefreshActionName();
 
 			List<Response> responses = new ArrayList<Response>();
-			for (String refreshAction : refreshActions)
-				responses.add((Response) sendMessage(refreshAction, null));
+			int numAction = 1;
+			for (String refreshAction : refreshActions) {
+
+				Object param = null;
+				// Check if it exists an available action
+				if (params.size() >= numAction)
+					param = params.get(numAction - 1);
+
+				responses.add((Response) sendMessage(refreshAction, param));
+			}
 
 			return prepareResponse(responses);
 
