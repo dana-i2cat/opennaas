@@ -14,6 +14,8 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -80,7 +82,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 		/* initialize model */
 
 		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
+		mockResource.setModel((IModel) new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");

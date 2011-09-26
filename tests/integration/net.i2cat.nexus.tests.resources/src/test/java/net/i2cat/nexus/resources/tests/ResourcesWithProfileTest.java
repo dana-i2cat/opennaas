@@ -136,7 +136,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 			// assert profile loading has been correct
 			Assert.assertNotNull(resource.getProfile());
-			//Assert.assertTrue(resource.getProfile().equals(profile));
+			Assert.assertTrue(resource.getProfile().equals(profile));
 
 			// // TODO launch setInterface Action and assert DummyAction is executed instead of original one
 

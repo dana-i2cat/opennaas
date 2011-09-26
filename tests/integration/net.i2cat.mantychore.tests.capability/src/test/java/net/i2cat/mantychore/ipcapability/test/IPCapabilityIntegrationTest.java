@@ -13,6 +13,8 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -81,7 +83,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
+		mockResource.setModel((IModel) new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("ipv4");

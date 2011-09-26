@@ -14,6 +14,8 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.VLANEndpoint;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -82,7 +84,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		/* initialize model */
 
 		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
+		mockResource.setModel((IModel) new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
@@ -176,11 +178,15 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETVLAN, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
-
+			
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+			
 			Assert.assertTrue(queue.size() == 4);
+			//debug crap
+			log.warn("FFFF: About to implode.");
+			//next line implodes.
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-
+			
 			Assert.assertTrue(queueResponse.getResponses().size() == 4);
 
 			Assert.assertTrue(queueResponse.getResponses().get(0).getStatus() == ActionResponse.STATUS.OK);
