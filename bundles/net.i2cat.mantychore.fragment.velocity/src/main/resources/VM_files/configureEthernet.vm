@@ -2,6 +2,13 @@
 ###########                       MACROS                            ###########
 ###############################################################################
 
+#macro ( isLogicalRouter $element $resp )
+	#set( $resp = "false" )
+	#if($element.ElementName)
+		#set( $resp = "true" )
+	#end
+#end
+
 #macro (isEthernet $element $resp)
 	#set( $resp = "false" )
 	#if($element.LinkTechnology.toString() == "ETHERNET")
@@ -33,6 +40,12 @@
 ###############################################################################
 
 <configuration>
+	#set( $logicalRouter = "true" )
+	#isLogicalRouter( $param $logicalRouter)
+	#if($logicalRouter == "true")
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
@@ -68,6 +81,8 @@
 				#end
 			</unit>
 		</interface>	
-
 	</interfaces>
+	#if($logicalRouter == "true")
+		</logical-systems>
+	#end		
 </configuration>

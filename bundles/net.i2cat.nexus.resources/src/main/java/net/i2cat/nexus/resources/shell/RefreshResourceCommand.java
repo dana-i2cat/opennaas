@@ -1,6 +1,8 @@
 package net.i2cat.nexus.resources.shell;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.resources.IResource;
@@ -24,18 +26,24 @@ import org.apache.felix.gogo.commands.Command;
 public class RefreshResourceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "A space delimited list of resource type and name.", required = true, multiValued = false)
-	private String	resourceIDs;
+	private String	resourceId;
 
 	@Override
 	protected Object doExecute() {
-		initcommand("create resource");
+		printInitCommand("create resource");
 
 		IResourceManager manager;
 		try {
 			manager = getResourceManager();
 
-			if (!splitResourceName(resourceIDs))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResource resource = null;
 			IResourceIdentifier identifier;
@@ -44,7 +52,7 @@ public class RefreshResourceCommand extends GenericKarafCommand {
 
 				if (identifier == null) {
 					printError("Error in identifier.");
-					endcommand();
+					printEndCommand();
 					return null;
 				}
 
@@ -107,7 +115,7 @@ public class RefreshResourceCommand extends GenericKarafCommand {
 			printError("Error showing information of resource.");
 
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 
@@ -122,6 +130,11 @@ public class RefreshResourceCommand extends GenericKarafCommand {
 			newResourceDescriptor.removeCapabilityDescriptor("chassis");
 			// Wet set the resource name
 			newResourceDescriptor.getInformation().setName(nameResource);
+
+			/* added virtual description */
+			Map<String, String> properties = new HashMap<String, String>();
+			properties.put(ResourceDescriptor.VIRTUAL, "true");
+			newResourceDescriptor.setProperties(properties);
 
 			return newResourceDescriptor;
 		} catch (Exception e) {

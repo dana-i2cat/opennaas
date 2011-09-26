@@ -11,7 +11,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "listLogicalRouter", description = "List all logical resources of a given resource.")
-public class ListLogicalRouterCommand extends GenericKarafCommand {
+public class ListLogicalRoutersCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the logical routers.", required = true, multiValued = false)
 	private String	resourceId;
@@ -19,20 +19,26 @@ public class ListLogicalRouterCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("list logical router");
+		printInitCommand("list logical router");
 
 		try {
 			IResourceManager manager = getResourceManager();
 
-			if (!splitResourceName(resourceId))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 
@@ -52,15 +58,15 @@ public class ListLogicalRouterCommand extends GenericKarafCommand {
 
 		} catch (ResourceException e) {
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return null;
 		} catch (Exception e) {
 			printError("Error listing interfaces.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return null;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

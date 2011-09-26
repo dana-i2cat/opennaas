@@ -10,6 +10,7 @@ import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
@@ -36,20 +37,30 @@ public class SetVLANCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("set VLAN");
+		printInitCommand("set VLAN");
 
 		try {
 			IResourceManager manager = getResourceManager();
 
-			if (!splitResourceName(resourceId))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
-			IResourceIdentifier resourceIdentifier = null;
+			String[] paramsInterface = splitInterfaces(subinterface);
 
-			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
+			// FIXME It is necessary to setvlans in loopback if we want configure LRs
+			if (isLoopback(paramsInterface[1]))
+				throw new Exception("Not allowed VLAN configuration for loopback interface");
+
+			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 
@@ -57,87 +68,137 @@ public class SetVLANCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			Object params = validateParams(resource);
-			if (params == null) {
-				return null;
-			}
+			ComputerSystem routerModel = ((ComputerSystem) resource.getModel());
+			int pos = containsInterface(paramsInterface[0], routerModel);
+			if (pos == -1)
+				throw new Exception("The Physical router don't have the interface");
 
+			LogicalDevice logicalDevice = routerModel.getLogicalDevices().get(pos);
+			if (!(logicalDevice instanceof NetworkPort))
+				throw new Exception("It is not a correct interface to configure");
+
+			NetworkPort params = copyNetworkPort((NetworkPort) logicalDevice, Integer.parseInt(paramsInterface[1]));
+			addVlanId(params, vlanId);
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.SETVLAN, params);
 
 		} catch (ResourceException e) {
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return null;
 		} catch (Exception e) {
 			printError("Error listing interfaces.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return null;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 
-	/**
-	 * TODO This method have two reponsabilities and it is larger, it have to be refactorized
-	 * 
-	 * @param resource
-	 * @return
-	 * @throws Exception
-	 */
-	private Object validateParams(IResource resource) throws Exception {
-		if (splitInterfaces(subinterface)) {
+	private void addVlanId(NetworkPort params, int vlanId) {
+		List<ProtocolEndpoint> protocolEndpoints = params.getProtocolEndpoint();
+		// ADD VLAN ID
 
-			String name = argsInterface[0];
-
-			if (name.startsWith("lo")) {
-				printError("Not allowed VLAN configuration for loopback interface");
-				endcommand();
-				return null;
+		// EQUALS IS NOT IMPLEMENTED, WE HAVE TO DELETE THE ELEMENT WITH A INDEX
+		int index = 0;
+		for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
+			if (protocolEndpoint instanceof VLANEndpoint) {
+				ProtocolEndpoint endpointToRemove = params.getProtocolEndpoint().get(index);
+				params.removeProtocolEndpoint(endpointToRemove);
+				break;
 			}
+			index++;
+		}
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(vlanId);
+		params.cleanProtocolEndpoint();
+		params.addProtocolEndpoint(vlanEndpoint);
 
-			int port = Integer.parseInt(argsInterface[1]);
-			ComputerSystem routerModel = (ComputerSystem) resource.getModel();
+	}
 
-			List<LogicalDevice> ld = routerModel.getLogicalDevices();
-			for (LogicalDevice device : ld) {
-				// the interface is found on the model
-				if (device.getName().equalsIgnoreCase(name)) {
-					if (device instanceof NetworkPort) {
-						// TODO implement method clone
-						device.getName();
-						if (((NetworkPort) device).getPortNumber() == port) {
-							if (name.startsWith("lt")) {
-								LogicalTunnelPort lt = new LogicalTunnelPort();
-								LogicalTunnelPort ltOld = (LogicalTunnelPort) device;
-								lt.setName(ltOld.getName());
-								lt.setPortNumber(ltOld.getPortNumber());
-								lt.setPeer_unit(ltOld.getPeer_unit());
-								lt.setLinkTechnology(LinkTechnology.OTHER);
-								VLANEndpoint vlan = new VLANEndpoint();
-								vlan.setVlanID(vlanId);
-								lt.addProtocolEndpoint(vlan);
-								return lt;
-							} else {
-								EthernetPort ethOld = (EthernetPort) device;
-								EthernetPort eth = new EthernetPort();
-								eth.setName(ethOld.getName());
-								eth.setPortNumber(ethOld.getPortNumber());
-								eth.setLinkTechnology(LinkTechnology.OTHER);
-								VLANEndpoint vlan = new VLANEndpoint();
-								vlan.setVlanID(vlanId);
-								eth.addProtocolEndpoint(vlan);
-								return eth;
-							}
+	private int containsSubInterface(String nameInterface, int portNumber, ComputerSystem routerModel) {
+		int pos = 0;
+		for (LogicalDevice logicalDevice : routerModel.getLogicalDevices()) {
+			if (logicalDevice.getName().equals(nameInterface)) {
+				if (logicalDevice instanceof NetworkPort) {
+					if (((NetworkPort) logicalDevice).getPortNumber() == portNumber)
+						return pos;
+				} else
+					return pos;
+			}
+			pos++;
+		}
+		return -1;
 
-						}
-					}
-				}
+	}
+
+	private int containsInterface(String nameInterface, ComputerSystem routerModel) {
+		int pos = 0;
+		for (LogicalDevice logicalDevice : routerModel.getLogicalDevices()) {
+			if (logicalDevice.getName().equals(nameInterface)) {
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
+
+	}
+
+	private boolean isLoopback(String name) {
+		return name.startsWith("lo");
+
+	}
+
+	public NetworkPort copyNetworkPort(NetworkPort toCopy, int portNumber) {
+		// String name = toCopy.getName();
+		NetworkPort networkPortCloned = null;
+		if (toCopy.getName().startsWith("lt")) {
+			LogicalTunnelPort lt = new LogicalTunnelPort();
+			LogicalTunnelPort ltOld = (LogicalTunnelPort) toCopy;
+			// params
+			lt.setName(ltOld.getName());
+			lt.setPortNumber(portNumber);
+			lt.setPeer_unit(ltOld.getPeer_unit());
+			lt.setLinkTechnology(LinkTechnology.OTHER);
+			networkPortCloned = lt;
+		} else {
+			EthernetPort ethOld = (EthernetPort) toCopy;
+			EthernetPort eth = new EthernetPort();
+			eth.setName(ethOld.getName());
+			eth.setPortNumber(portNumber);
+			eth.setLinkTechnology(LinkTechnology.OTHER);
+			networkPortCloned = eth;
+		}
+
+		boolean vlanFound = true;
+		VLANEndpoint vlanEndpointToCopy = null;
+		try {
+			vlanEndpointToCopy = (VLANEndpoint) getVLANEnpoint(networkPortCloned.getProtocolEndpoint());
+		} catch (Exception e) {
+			vlanFound = false;
+		}
+
+		if (vlanFound) {
+			VLANEndpoint vlan = new VLANEndpoint();
+			vlan.setVlanID(vlanEndpointToCopy.getVlanID());
+			// FIXME NOT USED CLONE!!
+
+			networkPortCloned.addProtocolEndpoint(vlan);
+		}
+
+		return networkPortCloned;
+
+	}
+
+	public VLANEndpoint getVLANEnpoint(List<ProtocolEndpoint> protocolEndpoints) throws Exception {
+		for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
+			if (protocolEndpoint instanceof VLANEndpoint) {
+				return (VLANEndpoint) protocolEndpoint;
 			}
 		}
-		return null;
+		throw new Exception("VLANEnpoint don't found");
 
 	}
 

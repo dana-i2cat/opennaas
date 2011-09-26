@@ -22,19 +22,19 @@ public class ListResourcesCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("list resources");
+		printInitCommand("list resources");
 		try {
 			IResourceManager manager = getResourceManager();
 			List<IResource> resources = manager.listResourcesByType(resourceType);
 			// if resourceType is null return all the resources
 			if (resources == null) {
 				printError("Didn't find a repository of this type.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 			if (resources.isEmpty()) {
 				printInfo("There are no resources registered.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 
@@ -70,7 +70,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 			printError("Error listing Resource. ");
 
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

@@ -6,7 +6,6 @@ import net.i2cat.mantychore.queuemanager.QueueManager;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.command.Response;
@@ -30,14 +29,19 @@ public class ExecuteCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("Execute all actions in queue");
+		printInitCommand("Execute all actions in queue");
 
 		try {
 			IResourceManager manager = getResourceManager();
 
-			/* validate resource id */
-			if (!splitResourceName(resourceId))
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
 				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
@@ -45,7 +49,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 			/* validate resource identifier */
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return -1;
 			}
 
@@ -56,7 +60,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
 				return -1;
 			}
-			
+
 			printSymbol("Executing actions...");
 			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
 			printSymbol("Executed in " + queueResponse.getTotalTime() + " ms");
@@ -70,10 +74,10 @@ public class ExecuteCommand extends GenericKarafCommand {
 		} catch (Exception e) {
 			printError("Error getting queue.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 
@@ -143,24 +147,24 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 	}
 
-//	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-//		for (ICapability capability : capabilities) {
-//			if (capability.getCapabilityInformation().getType().equals(type)) {
-//				return capability;
-//			}
-//		}
-//		throw new Exception("Error getting the capability");
-//	}
-//
-//	private boolean validateResource(IResource resource) throws ResourceException {
-//		if (resource == null)
-//			throw new ResourceException("No resource found.");
-//		if (resource.getModel() == null)
-//			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
-//		if (resource.getCapabilities() == null) {
-//			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
-//		}
-//		return true;
-//	}
+	// public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+	// for (ICapability capability : capabilities) {
+	// if (capability.getCapabilityInformation().getType().equals(type)) {
+	// return capability;
+	// }
+	// }
+	// throw new Exception("Error getting the capability");
+	// }
+	//
+	// private boolean validateResource(IResource resource) throws ResourceException {
+	// if (resource == null)
+	// throw new ResourceException("No resource found.");
+	// if (resource.getModel() == null)
+	// throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+	// if (resource.getCapabilities() == null) {
+	// throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+	// }
+	// return true;
+	// }
 
 }

@@ -12,6 +12,13 @@ import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
 public class InitializerTestHelper {
+	public static void stopResources(IResourceManager resourceManager) throws ResourceException {
+		/* delete used resources in the resource Manager */
+		for (IResource resource : resourceManager.listResources()) {
+			resourceManager.stopResource(resource.getResourceIdentifier());
+		}
+	}
+
 	public static void removeResources(IResourceManager resourceManager) throws ResourceException {
 		/* delete used resources in the resource Manager */
 		for (IResource resource : resourceManager.listResources()) {

@@ -81,10 +81,7 @@ public class ConfigureVLANAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
 		try {
-			// IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
-			// Map<String, Object> extraParams = new HashMap<String, Object>();
-			// extraParams.put("ipUtilsHelper", ipUtilsHelper);
-			setVelocityMessage(prepareVelocityCommand(params, template, null/* extraParams */));
+			setVelocityMessage(prepareVelocityCommand(params, template));
 
 		} catch (Exception e) {
 			throw new ActionException(e);

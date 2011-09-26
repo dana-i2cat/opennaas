@@ -36,21 +36,27 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("listing resource interfaces");
+		printInitCommand("listing resource interfaces");
 
 		try {
 			IResourceManager manager = getResourceManager();
 			printInfo("Listing interfaces...");
 
-			if (!splitResourceName(resourceId))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 
@@ -120,15 +126,15 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 		} catch (ResourceException e) {
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		} catch (Exception e) {
 			printError("Error listing interfaces.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

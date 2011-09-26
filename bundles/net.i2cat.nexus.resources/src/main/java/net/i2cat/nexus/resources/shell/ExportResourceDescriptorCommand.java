@@ -27,13 +27,18 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("export resource descriptor");
+		printInitCommand("export resource descriptor");
 
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
-			if (!splitResourceName(resourceId)) {
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
 			}
 
 			IResourceIdentifier identifier = null;
@@ -65,7 +70,7 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 			printError("Error exporting Resource.");
 
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

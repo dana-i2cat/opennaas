@@ -1,5 +1,7 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
+import java.util.List;
+
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.nexus.resources.IResource;
@@ -16,27 +18,35 @@ import org.apache.felix.gogo.commands.Command;
 public class CreateLogicalRouterCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
-	private String	resourceId;
+	private String			resourceId;
 
 	@Argument(index = 1, name = "logicalRouter", description = "The logical router to be created.", required = true, multiValued = false)
-	private String	LRname;
+	private String			LRname;
+
+	@Argument(index = 2, name = "subinterfaces", description = "Optional list of subinterfaces to add", required = false, multiValued = true)
+	private List<String>	subinterfaces;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("create  Logical Router");
+		printInitCommand("create  Logical Router");
 
 		try {
 			IResourceManager manager = getResourceManager();
-
-			if (!splitResourceName(resourceId))
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
 				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return -1;
 			}
 			IResource resource = manager.getResource(resourceIdentifier);
@@ -46,18 +56,40 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 
 			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRname);
 
+			/* add interfaces */
+			if (subinterfaces != null) {
+				for (String interf : subinterfaces) {
+					AddInterfaceCommand addInterface = new AddInterfaceCommand();
+					try {
+						addInterface.setBundleContext(super.getBundleContext());
+						addInterface.setInterfaceName(interf);
+						addInterface.setPhysicalResourceId(resourceId);
+						addInterface.setLogicalResourceId("router:" + LRname);
+						addInterface.setCheckTargetResource(false);
+					} catch (Exception e) {
+						printError(e);
+					}
+					try {
+						addInterface.doExecute();
+					} catch (Exception e) {
+						printError("Problem to add interfaces in interface " + interf + " ...");
+					}
+
+				}
+
+			}
+
 		} catch (ResourceException e) {
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		} catch (Exception e) {
 			printError("Error creating Logical router.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
-
 }

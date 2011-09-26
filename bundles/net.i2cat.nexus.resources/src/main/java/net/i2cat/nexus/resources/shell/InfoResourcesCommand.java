@@ -3,11 +3,11 @@ package net.i2cat.nexus.resources.shell;
 import java.util.HashMap;
 import java.util.List;
 
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceManager;
-import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.descriptor.Information;
 
@@ -28,14 +28,20 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("information resource");
+		printInitCommand("information resource");
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
 			for (String id : resourceIDs) {
 
-				if (!splitResourceName(id))
-					return null;
+				String[] argsRouterName = new String[2];
+				try {
+					argsRouterName = splitResourceName(id);
+				} catch (Exception e) {
+					printError(e.getMessage());
+					printEndCommand();
+					return -1;
+				}
 
 				IResourceIdentifier identifier = null;
 				IResource resource = null;
@@ -90,7 +96,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 			printError("Error showing information of resource.");
 
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

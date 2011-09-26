@@ -16,8 +16,11 @@ public class ActionConstants {
 	public static final String	CONFIGURESTATUS		= "configureStatus";
 	public static final String	DELETELOGICALROUTER	= "deleteLogicalRouter";
 	public static final String	CREATELOGICALROUTER	= "createLogicalRouter";
+
+	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS	= "getLogicalRouters";
 
+	// TODO LISTLOGICALROUTER!!!
 	public static final String	LISTLOGICALROUTER	= "listLogicalRouter";
 
 }

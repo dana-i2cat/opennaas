@@ -6,8 +6,8 @@ import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
@@ -37,7 +37,7 @@ public class ListCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("list protocols");
+		printInitCommand("list protocols");
 		protocolManager = getProtocolManager();
 		IResourceManager manager = getResourceManager();
 
@@ -46,14 +46,20 @@ public class ListCommand extends GenericKarafCommand {
 			for (String protocol : protocolManager.getAllSessionFactories()) {
 				printInfo(protocol);
 			}
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
 		if (resourceId != null && !resourceId.equalsIgnoreCase("")) {
 
-			if (!splitResourceName(resourceId))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
@@ -61,7 +67,7 @@ public class ListCommand extends GenericKarafCommand {
 
 			if (protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds().isEmpty()) {
 				printInfo(argsRouterName[1] + " didn't have any live session. Use protocol:add command to active.");
-				endcommand();
+				printEndCommand();
 				return null;
 			}
 
@@ -84,7 +90,7 @@ public class ListCommand extends GenericKarafCommand {
 					printInfo(doubleTab + " Session ID: " + session + " STATUS: " + sessionStatus + " (Not used in: " + age + ")");
 				}
 			}
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
@@ -121,7 +127,7 @@ public class ListCommand extends GenericKarafCommand {
 			// FIXME if there aren't any live session need to print info message
 
 		}
-		endcommand();
+		printEndCommand();
 
 		return null;
 	}

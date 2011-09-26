@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
 import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
@@ -153,7 +153,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		// chassis:createLogicalRouter R1 L1
 		List<String> response;
 		try {
-
+			LRFriendlyID = "cpe1";
 			response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " " + LRFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
@@ -166,7 +166,8 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 					commandprocessor);
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+			if (!isMock)
+				Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -177,25 +178,54 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	}
 
 	@Test
+	public void deleteLogicalRouterTest() {
+		List<String> response;
+		try {
+			LRFriendlyID = "cpe1";
+			// delete LR
+			response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + LRFriendlyID,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
+					commandprocessor);
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			// check logical router is deleted
+			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
+					commandprocessor);
+			// assert command output no contains ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			if (!isMock)
+				Assert.assertFalse(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail(e.getMessage());
+		}
+	}
+
+	@Test
 	public void listLogicalRoutersTest() {
 		initBundles();
 		initResource();
 		List<String> response;
 		try {
-			if (isMock) {
-				LRFriendlyID = "routerV2";
-			} else {
-				LRFriendlyID = "pepito";
-			}
+			LRFriendlyID = "cpe1";
 			// chassis:listLogicalRouters
-			//FIXME LIST LOGICAL ROUTERS OR LISTLOGICAL ROUTER???
 			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
 
 			Assert.assertTrue(response.get(1).isEmpty());
-			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
-			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
+			if (!isMock) {
+				Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+				Assert.assertTrue(response.get(0).contains(LRFriendlyID));
+
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -210,21 +240,17 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		initBundles();
 		initResource();
 		try {
-			String LRname = null;
-			// initResource();
-			if (isMock) {
-				LRname = "routerV2";
-			} else {
-				LRname = "pepito";
-			}
+			String LRname = "cpe1";
 
 			// resource:list
 			List<String> response = KarafCommandHelper.executeCommand("resource:list ",
 					commandprocessor);
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
+
 			// check that the logical router is on the list
-			Assert.assertTrue(response.get(0).contains(LRname));
+			if (!isMock)
+				Assert.assertTrue(response.get(0).contains(LRname));
 
 			response = KarafCommandHelper.executeCommand("resource:info " + "router:" + LRname,
 					commandprocessor);
@@ -232,7 +258,8 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 			Assert.assertTrue(response.get(1).isEmpty());
 
 			// check resource initialized
-			Assert.assertTrue(response.get(0).contains("INITIALIZED"));
+			if (!isMock)
+				Assert.assertTrue(response.get(0).contains("INITIALIZED"));
 			// check descriptors include IP capability
 
 		} catch (Exception e) {

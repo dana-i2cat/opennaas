@@ -48,6 +48,26 @@ public class LogicalPort extends LogicalDevice implements Serializable {
 		}
 	}
 
+	public boolean cleanProtocolEndpoint() {
+
+		for (ProtocolEndpoint protocolEndpoint : getProtocolEndpoint()) {
+			boolean result = this.removeProtocolEndpoint(protocolEndpoint);
+			if (result == false)
+				return false;
+		}
+		return true;
+
+	}
+
+	public void setProtocolEndpoints(List<ProtocolEndpoint> protocolEndpoints) {
+
+		this.cleanProtocolEndpoint();
+		for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
+			this.addProtocolEndpoint(protocolEndpoint);
+		}
+
+	}
+
 	/**
 	 * This method returns the list of ProtocolEndpoint from the toAssociation vector that match with the type PortImplementsEndpoint the association
 	 * wouldn't be deleted

@@ -24,20 +24,26 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("DOWN interface");
+		printInitCommand("DOWN interface");
 
 		try {
 			IResourceManager manager = getResourceManager();
 
-			if (!splitResourceName(resourceId))
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
 				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
 				printError("Error in identifier.");
-				endcommand();
+				printEndCommand();
 				return -1;
 			}
 
@@ -50,15 +56,15 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 
 		} catch (ResourceException e) {
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		} catch (Exception e) {
 			printError("Error listing interfaces.");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return -1;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

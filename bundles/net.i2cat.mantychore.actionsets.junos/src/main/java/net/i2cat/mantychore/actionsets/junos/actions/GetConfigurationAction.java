@@ -130,7 +130,7 @@ public class GetConfigurationAction extends JunosAction {
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		checkParams(params);
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template, null));
+			setVelocityMessage(prepareVelocityCommand(params, template));
 		} catch (Exception e) {
 			throw new ActionException();
 		}

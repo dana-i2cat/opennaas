@@ -27,14 +27,20 @@ public abstract class JunosAction extends Action {
 		velocityEngine = new VelocityEngine();
 	}
 
+	public String prepareVelocityCommand(Object params, String template) throws ResourceNotFoundException,
+			ParseErrorException, Exception {
+		velocityEngine.setParam(params);
+		velocityEngine.setTemplate(template);
+		String command = velocityEngine.mergeTemplate();
+		return command;
+	}
+
 	public String prepareVelocityCommand(Object params, String template, Map<String, Object> extraParams) throws ResourceNotFoundException,
 			ParseErrorException, Exception {
 		velocityEngine.setParam(params);
 		velocityEngine.setTemplate(template);
-		if (extraParams != null) {
-			for (String name : extraParams.keySet())
-				velocityEngine.addExtraParam(name, extraParams.get(name));
-		}
+		for (String name : extraParams.keySet())
+			velocityEngine.addExtraParam(name, extraParams.get(name));
 		String command = velocityEngine.mergeTemplate();
 		return command;
 	}

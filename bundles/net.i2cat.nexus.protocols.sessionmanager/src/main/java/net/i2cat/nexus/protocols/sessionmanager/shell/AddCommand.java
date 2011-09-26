@@ -3,8 +3,8 @@ package net.i2cat.nexus.protocols.sessionmanager.shell;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -29,10 +29,16 @@ public class AddCommand extends GenericKarafCommand {
 
 		IResourceManager manager = getResourceManager();
 
-		initcommand("adding protocol");
-		if (!splitResourceName(resourceId))
-			return null;
+		printInitCommand("adding protocol");
 
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
+		}
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 		IProtocolManager protocolManager = getProtocolManager();
@@ -42,7 +48,7 @@ public class AddCommand extends GenericKarafCommand {
 		} else {
 			printError("Protocol not added");
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

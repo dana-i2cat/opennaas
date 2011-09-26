@@ -127,10 +127,10 @@ public class ResourceDescriptor {
 			newCapabilityDescriptors.add((CapabilityDescriptor) capabilityDescriptorToCopy.clone());
 		}
 		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
+		resourceDescriptor.setProperties((HashMap<String, String>) ((HashMap) properties).clone());
 
 		return resourceDescriptor;
 	}
-
 	// public ManagedElement getModel() {
 	// return model;
 	// }
