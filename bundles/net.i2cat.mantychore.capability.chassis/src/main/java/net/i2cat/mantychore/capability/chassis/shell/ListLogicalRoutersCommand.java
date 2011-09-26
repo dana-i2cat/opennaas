@@ -51,8 +51,8 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 			//
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 
-			printInfo("Found " + model.getChildren().size() + " logical resources.");
-			for (Object systemElement : model.getChildren()) {
+			printInfo("Found " + model.getManagedSystemElements().size() + " logical resources.");
+			for (Object systemElement : model.getManagedSystemElements()) {
 				printSymbol(bullet + " " + (String) systemElement);
 			}
 
