@@ -168,13 +168,12 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 			Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 
-			Assert.assertFalse(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
-
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
+
 	}
 
 	@Test
@@ -189,7 +188,8 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 				LRFriendlyID = "pepito";
 			}
 			// chassis:listLogicalRouters
-			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
+			//FIXME LIST LOGICAL ROUTERS OR LISTLOGICAL ROUTER???
+			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
 
