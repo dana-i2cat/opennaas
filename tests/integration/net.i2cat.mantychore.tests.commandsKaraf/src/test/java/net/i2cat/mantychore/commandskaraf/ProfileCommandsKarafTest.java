@@ -93,7 +93,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 

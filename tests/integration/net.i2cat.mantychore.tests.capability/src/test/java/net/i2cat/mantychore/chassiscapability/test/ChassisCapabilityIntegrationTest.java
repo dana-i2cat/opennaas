@@ -100,9 +100,10 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
+		log.warn("FFFF test setup uri: "+uri+"Length: "+uri.length());
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 
 		protocolSessionContext.addParameter(
@@ -186,7 +187,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			log.warn("FFFF: About to implode.");
 			//next line implodes.
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			
+			log.warn("FFFF: Survived.");
 			Assert.assertTrue(queueResponse.getResponses().size() == 4);
 
 			Assert.assertTrue(queueResponse.getResponses().get(0).getStatus() == ActionResponse.STATUS.OK);

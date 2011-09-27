@@ -49,8 +49,10 @@ public class NetconfProtocolSession implements IProtocolSession {
 		this.status = Status.DISCONNECTED_BY_USER;
 
 		try {
-
 			String uri = (String) protocolSessionContext.getSessionParameters().get("protocol.uri");
+			if ((uri == null)||(uri.length() == 0)) {
+				throw new ProtocolException("Mantychore protocols NETCONF: Couldn't get protocol.uri from protocolSessionContext.");
+			}
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);

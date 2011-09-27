@@ -512,7 +512,7 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	private ProtocolSessionContext newWonesysSessionContext() {
 		// String uri = System.getProperty("protocol.uri");
-		// if (uri == null || uri.equals("${protocol.uri}")) {
+		// if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 		// uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		// }
 

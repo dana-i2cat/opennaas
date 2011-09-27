@@ -39,8 +39,8 @@ public class MockResource implements IResource {
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("")) {
-			log.info("INFO: Getting uri param from terminal");
+		if (uri == null || uri.isEmpty()) {
+			log.info("INFO: No uri param, using default.");
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 
