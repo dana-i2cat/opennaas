@@ -15,7 +15,7 @@ import org.apache.felix.gogo.commands.Command;
 @Command(scope = "chassis", name = "deleteLogicalRouter", description = "Create a subinterface on a given resource.")
 public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource owning the Logical Router to delete.", required = true, multiValued = false)
 	private String	resourceId;
 
 	@Argument(index = 1, name = "logicalRouterId", description = "The logical router to be deleted.", required = true, multiValued = false)

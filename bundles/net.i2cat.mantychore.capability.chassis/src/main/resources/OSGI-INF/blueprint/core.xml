@@ -117,7 +117,7 @@
 				<null />
 			</completers>
 		</command>
-		<command name="chassis/listLogicalRouters">
+		<command name="chassis/listLogicalRouter">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.ListLogicalRoutersCommand" />
 		
 		<completers>

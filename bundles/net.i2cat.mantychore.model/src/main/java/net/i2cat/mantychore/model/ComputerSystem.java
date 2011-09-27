@@ -92,7 +92,7 @@ public class ComputerSystem extends System implements Serializable {
 	public List<String> getChildren() {
 		List<String> nameChildren = new ArrayList<String>();
 
-		for (System system : getSystems()) {
+		for (ManagedSystemElement system : getManagedSystemElements()) {
 			// Check that it is a logical device | router
 			if (system instanceof ComputerSystem) {
 				ComputerSystem sys = (ComputerSystem) system;
