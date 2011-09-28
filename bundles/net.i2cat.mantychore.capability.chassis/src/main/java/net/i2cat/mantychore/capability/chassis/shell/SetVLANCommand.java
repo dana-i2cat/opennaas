@@ -54,7 +54,7 @@ public class SetVLANCommand extends GenericKarafCommand {
 			String[] paramsInterface = splitInterfaces(subinterface);
 
 			// FIXME It is necessary to setvlans in loopback if we want configure LRs
-			if (isLoopback(paramsInterface[1]))
+			if (isLoopback(paramsInterface[0]))
 				throw new Exception("Not allowed VLAN configuration for loopback interface");
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
