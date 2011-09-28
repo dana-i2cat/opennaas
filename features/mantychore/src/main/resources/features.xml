@@ -18,6 +18,8 @@
 		<bundle>mvn:commons-io/commons-io/1.4</bundle>
 		<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>
 		<bundle>mvn:org.apache.neethi/neethi/3.0.1</bundle>
+		<!-- Events wants this -->
+		<bundle>mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
 	</feature>
 	<feature name="i2cat-mantychore-deps" version="1.0.0-SNAPSHOT">
 		<!--  necessary dependency for digester library of netconf4j-->
