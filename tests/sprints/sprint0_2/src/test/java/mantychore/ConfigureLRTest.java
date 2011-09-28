@@ -7,16 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.nexus.resources.ILifecycle.State;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.ILifecycle.State;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ProtocolSessionHelper;
@@ -37,14 +38,14 @@ import org.osgi.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class ConfigureLRTest extends AbstractIntegrationTest {
-	static Log		log				= LogFactory
-														.getLog(ConfigureLRTest.class);
+	static Log					log				= LogFactory
+															.getLog(ConfigureLRTest.class);
 
 	@Inject
-	BundleContext	bundleContext	= null;
+	BundleContext				bundleContext	= null;
 
 	String						resourceFriendlyID;
-	String						LRFriendlyID	= "pepito";
+	String						logicalRouterName;
 	IResource					resource;
 	private CommandProcessor	commandprocessor;
 	private IResourceManager	resourceManager;
@@ -90,6 +91,32 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		return false;
 	}
 
+	public void initResource() {
+
+		clearRepo();
+		List<String> capabilities = new ArrayList<String>();
+
+		capabilities.add("chassis");
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
+		resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
+		try {
+
+			resource = resourceManager.createResource(resourceDescriptor);
+			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
+
+			// call the command to initialize the model
+		} catch (ResourceException e) {
+			Assert.fail(e.getMessage());
+		} catch (ProtocolException e) {
+			Assert.fail(e.getMessage());
+		}
+
+	}
+
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");
@@ -119,48 +146,19 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 	@Test
 	public void ConfigureInterfaceInterfaceTest() throws Exception {
 		initBundles();
+		initResource();
 
-		IResourceManager resourceManager = null;
-		CommandProcessor commandprocessor = null;
-		IProtocolManager protocolManager = null;
+		List<String> response;
+		List<String> response1;
 
-		String name = "junosm20";
-		String type = "router";
-		String resourceFriendlyID = type + ":" + name;
-
-		ArrayList<String> capabilitiesId = new ArrayList<String>();
-		capabilitiesId.add("chassis");
-		capabilitiesId.add("ipv4");
-		capabilitiesId.add("queue");
-
-		ProtocolSessionContext protocolSessionContext = ProtocolSessionHelper.newSessionContextNetconf();
-		String nameURI = ((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
-		boolean isMock = nameURI.startsWith("mock");
-
-		/* initialize bundles */
-
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
-		resourceManager = getOsgiService(IResourceManager.class);
-		commandprocessor = getOsgiService(CommandProcessor.class);
-		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-
-		log.info("INFO: Initialized!");
-
-		/* initialize resource to test */
-		IResource resource = InitializerTestHelper.initResource(name, type, capabilitiesId, resourceManager, protocolManager, protocolSessionContext);
-		// start resource
-		resourceManager.startResource(resource.getResourceIdentifier());
+		if (isMock) {
+			logicalRouterName = "routerV2";
+		} else {
+			logicalRouterName = "pepito";
+		}
 
 		// chassis:createlogicalrouter
-		String logicalRouterName = "cpe1";
+
 		String interfId2 = "fe-0/1/3.1";
 		String interfId1 = "lt-0/1/2.12";
 		String interfId3 = "lo0.1";
@@ -171,13 +169,12 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		// correct
 		// You should have a different command o extra flag to create this resource (in the resource:create??). Also, you have to specify its
 		// capabilities
-		List<String> response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
+		response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
 				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3,
 				commandprocessor);
-		log.info(response.get(0));
 
 		// check logical router creation
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -192,10 +189,10 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 
 		// check logical router creation
 		List<String> response7 = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID, commandprocessor);
-		log.info(response7.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response7.get(1).isEmpty());
+		Assert.assertFalse(resource.getModel().getChildren().isEmpty());
 
 		// HOW GET WE A VIRTUAL RESOURCE, WE DON'T HAVE ANY METHOD TO SEARCH????
 		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName("router", logicalRouterName);
