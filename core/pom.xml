@@ -11,7 +11,7 @@
 	<artifactId>opennaas-core</artifactId>
 	<properties>
 		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<karaf.version>2.2.0-fuse-00-43</karaf.version>
+		<karaf.version>2.2.2-fuse-00-08</karaf.version>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
