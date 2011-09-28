@@ -2,7 +2,6 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import org.apache.felix.service.command.CommandProcessor;
 import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
 import helpers.ProtocolSessionHelper;
@@ -187,7 +186,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 		// set LO
 		try {
-			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.0 1",
+			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.1 1",
 					commandprocessor);
 			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
 
