@@ -47,10 +47,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
 	}
 
 	/**
@@ -81,7 +78,8 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			if (ExceptionUtils.getRootCause(e) != null)
+				log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}
