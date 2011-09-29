@@ -51,27 +51,29 @@ public class ResourceDescriptorFactory {
 		return resourceDescriptor;
 	}
 
-	public static ResourceDescriptor newResourceDescriptorProteus(String name, String type, List<String> capabilities) {
+	public static ResourceDescriptor newResourceDescriptorProteus(String resourceName, String resourceType, List<String> capabilities) {
+
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		Map<String, String> properties = new HashMap<String, String>();
+
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-
-		capabilityDescriptors.add(newCapabilityDescriptor("connections", "proteus"));
-		capabilityDescriptors.add(newCapabilityDescriptor("queue", "junos"));
-
+		for (String capability : capabilities) {
+			capabilityDescriptors.add(newCapabilityDescriptorProteus(capability, "proteus"));
+		}
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 		// /* FIXME PUT PROTOCOL_URI IN RESOURCE DESCRIPTOR CONSTANTS */
+		// Map<String, String> properties = new HashMap<String, String>();
 		// properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
 		// "user:pass@host.net:2212");
+		// resourceDescriptor.setProperties(properties);
 
-		resourceDescriptor.setProperties(properties);
-		ResourceIdentifier identifier = new ResourceIdentifier(type);
+		ResourceIdentifier identifier = new ResourceIdentifier(resourceType);
 		resourceDescriptor.setId(identifier.getId());
+
 		/* information. It is only necessary to add type */
 		Information information = new Information();
-		information.setType(type);
-		information.setName(name);
+		information.setType(resourceType);
+		information.setName(resourceName);
 		resourceDescriptor.setInformation(information);
 
 		return resourceDescriptor;
@@ -86,9 +88,27 @@ public class ResourceDescriptorFactory {
 			log.info("INFO: Getting uri param from terminal");
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
+		return newCapabilityDescriptor(type, model, "10.10", "netconf", uri);
+	}
+
+	public static CapabilityDescriptor newCapabilityDescriptorProteus(String type, String model) {
+
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("")) {
+			log.info("INFO: Getting uri param from terminal");
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+		return newCapabilityDescriptor(type, model, "1.0", "wonesys", uri);
+	}
+
+	public static CapabilityDescriptor newCapabilityDescriptor(String type, String model, String version, String protocol, String protocolUri) {
+
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
 		CapabilityProperty property = new CapabilityProperty(
-				ResourceDescriptorConstants.PROTOCOL_URI, uri);
+				ResourceDescriptorConstants.PROTOCOL_URI, protocolUri);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
@@ -96,11 +116,11 @@ public class ResourceDescriptorFactory {
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
+				ResourceDescriptorConstants.ACTION_VERSION, version);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		property = new CapabilityProperty(ProtocolSessionContext.PROTOCOL,
-				"netconf");
+				protocol);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
