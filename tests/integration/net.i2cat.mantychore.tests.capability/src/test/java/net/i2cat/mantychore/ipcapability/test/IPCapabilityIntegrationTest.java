@@ -77,8 +77,6 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
@@ -150,10 +148,9 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}

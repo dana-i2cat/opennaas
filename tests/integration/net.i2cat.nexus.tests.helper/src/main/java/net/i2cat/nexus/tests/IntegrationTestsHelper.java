@@ -96,6 +96,9 @@ public class IntegrationTestsHelper {
 	 * Wait for all bundles to be active, tries to start non active bundles.
 	 */
 	public static void waitForAllBundlesActive(BundleContext bundleContext) {
+
+		log.info("Waiting for activation of all bundles");
+
 		int MAX_RETRIES = 100;
 		Bundle b = null;
 		boolean active = true;
@@ -132,7 +135,7 @@ public class IntegrationTestsHelper {
 			}
 
 			strBundles = listBundles(bundleContext);
-			log.info("Waiting for the activation of all the bundles, this is the " + i + " try. Sleeping for 1 second");
+			log.info("Waiting for activation of all bundles, this is the " + i + " try. Sleeping for 1 second");
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException ex) {

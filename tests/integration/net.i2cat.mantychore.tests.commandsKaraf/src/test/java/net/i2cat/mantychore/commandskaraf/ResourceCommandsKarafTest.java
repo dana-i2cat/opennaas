@@ -81,19 +81,14 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
+		commandprocessor = getOsgiService(CommandProcessor.class);
 
 		clearRepo();
 
-		commandprocessor = getOsgiService(CommandProcessor.class);
 		log.info("INFO: Initialized!");
 
 	}

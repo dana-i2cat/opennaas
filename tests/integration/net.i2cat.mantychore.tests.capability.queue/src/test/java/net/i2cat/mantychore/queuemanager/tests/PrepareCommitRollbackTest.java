@@ -95,16 +95,10 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() throws ProtocolException {
-		log.info("Waiting to load all bundles");
+		
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
-		/* initialize model */
+		
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());

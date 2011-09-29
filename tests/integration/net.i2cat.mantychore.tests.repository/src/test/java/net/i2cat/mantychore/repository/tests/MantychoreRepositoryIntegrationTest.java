@@ -93,21 +93,15 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 	@Before
 	public void initBundles() throws ResourceException {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
 
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
+		/* init services */
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 
 		clearRepo();
 
 		log.info("INFO: Initialized!");
-
 	}
 
 	@After

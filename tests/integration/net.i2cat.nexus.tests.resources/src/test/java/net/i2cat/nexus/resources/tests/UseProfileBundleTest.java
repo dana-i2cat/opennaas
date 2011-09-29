@@ -62,12 +62,8 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 	//@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);

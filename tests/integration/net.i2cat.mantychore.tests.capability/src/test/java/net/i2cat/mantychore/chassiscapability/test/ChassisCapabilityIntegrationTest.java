@@ -76,7 +76,6 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
 
@@ -147,10 +146,10 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
+		
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}

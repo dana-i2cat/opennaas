@@ -75,10 +75,8 @@ public class UpDownTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
-
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
@@ -145,10 +143,9 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}
