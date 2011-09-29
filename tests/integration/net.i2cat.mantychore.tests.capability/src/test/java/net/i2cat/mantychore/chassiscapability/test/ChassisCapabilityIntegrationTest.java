@@ -30,7 +30,6 @@ import net.i2cat.nexus.resources.queue.QueueConstants;
 import net.i2cat.nexus.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
@@ -77,7 +76,6 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
 
@@ -140,18 +138,18 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error(e.getMessage());
-			//log.error(ExceptionUtils.getRootCause(e).getMessage());
+			log.error(e.getMessage(), e);
+			// log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
+		
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}
@@ -221,7 +219,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName(name);
+		eth.setName(name);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address(ipName);
 		ip.setSubnetMask(mask);
@@ -232,7 +230,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public Object newParamsInterfaceEthernetPort(String name, int port) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName(name);
+		eth.setName(name);
 		eth.setPortNumber(port);
 
 		return eth;
@@ -241,7 +239,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public Object newParamsInterfaceEthernetPortVLAN(String name, int port, int vlanID) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
-		eth.setElementName(name);
+		eth.setName(name);
 		eth.setPortNumber(port);
 
 		VLANEndpoint vlan = new VLANEndpoint();

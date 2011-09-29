@@ -1,22 +1,14 @@
 package net.i2cat.luminis.capability.connections.shell;
 
-import java.util.List;
-
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.capability.connections.Activator;
 import net.i2cat.luminis.capability.connections.ConnectionsCapability;
 import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.resources.ActivatorException;
 import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.capability.CapabilityException;
 import net.i2cat.nexus.resources.capability.ICapability;
 import net.i2cat.nexus.resources.command.Response;
@@ -38,7 +30,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("get inventory of resource :" + resourceId);
+		printInitCommand("get inventory of resource :" + resourceId);
 
 		try {
 
@@ -52,7 +44,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 				ICapability capability = getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
 				if (capability == null) {
 					printError("Error getting the capability");
-					endcommand();
+					printEndCommand();
 					return "";
 				}
 				Response response = (Response) capability.sendMessage(ActionConstants.REFRESHCONNECTIONS, null);
@@ -61,7 +53,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 					for (String errorMsg : response.getErrors()) {
 						printError(errorMsg);
 					}
-					endcommand();
+					printEndCommand();
 					return "";
 				}
 
@@ -69,7 +61,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 				QueueResponse queueResponse = executeQueue(resource);
 				if (!queueResponse.isOk()) {
 					printError("Errors executing queue!");
-					endcommand();
+					printEndCommand();
 					return "";
 				}
 
@@ -81,10 +73,10 @@ public class GetInventoryCommand extends GenericKarafCommand {
 		} catch (Exception e) {
 			printError("Error refresing!");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return "";
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

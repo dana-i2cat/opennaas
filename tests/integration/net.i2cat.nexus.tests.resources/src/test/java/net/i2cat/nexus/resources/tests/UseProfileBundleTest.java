@@ -60,14 +60,10 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	//@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
@@ -77,7 +73,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		log.info("INFO: Initialized!");
 	}
 
-	@After
+	//@After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");

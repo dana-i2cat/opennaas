@@ -109,7 +109,7 @@ public class ConfigureStatusTest {
 	private Object newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
 
 		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setElementName(interfaceName);
+		logicalPort.setName(interfaceName);
 		logicalPort.setOperationalStatus(status);
 		return logicalPort;
 	}

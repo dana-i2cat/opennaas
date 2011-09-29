@@ -1,0 +1,21 @@
+
+### It is not used !! it is deprecated
+<configuration>
+	#set( $logicalRouter = "true" )
+	#isLogicalRouter( $param $logicalRouter)
+	#if($logicalRouter == "true")
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+<interfaces>
+	<interface>
+		<name>$param.Name</name>
+		<unit operation="delete">
+		<name>$param.PortNumber</name>
+		</unit>
+	</interface>
+</interfaces>
+	#if($logicalRouter == "true")
+		</logical-systems>
+	#end
+</configuration>

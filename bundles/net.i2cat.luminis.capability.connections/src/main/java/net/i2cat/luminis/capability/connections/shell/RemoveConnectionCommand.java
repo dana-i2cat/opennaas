@@ -5,7 +5,6 @@ import net.i2cat.luminis.capability.connections.ConnectionsCapability;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.capability.ICapability;
@@ -34,7 +33,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("remove connection between: (" + portSource + ",l=" + lambdaSource + "),(" + portTarget + ",l=" + lambdaTarget + ")");
+		printInitCommand("remove connection between: (" + portSource + ",l=" + lambdaSource + "),(" + portTarget + ",l=" + lambdaTarget + ")");
 
 		try {
 
@@ -45,7 +44,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 			ICapability capability = getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
 			if (capability == null) {
 				printError("Error getting the capability");
-				endcommand();
+				printEndCommand();
 				return "";
 			}
 
@@ -58,17 +57,17 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 				for (String errorMsg : response.getErrors()) {
 					printError(errorMsg);
 				}
-				endcommand();
+				printEndCommand();
 				return "";
 			}
 
 		} catch (Exception e) {
 			printError("Error in remove connection");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return "";
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

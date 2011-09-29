@@ -4,8 +4,6 @@ import java.util.Vector;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
@@ -17,7 +15,7 @@ import net.i2cat.nexus.resources.action.ActionResponse;
 import net.i2cat.nexus.resources.action.ActionResponse.STATUS;
 import net.i2cat.nexus.resources.command.CommandException;
 import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 
@@ -47,9 +45,9 @@ public class RemoveConnectionAction extends Action {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(this.actionID);
 		/* get protocol */
-		WonesysProtocolSession protocol = null;
+		IProtocolSession protocol = null;
 		try {
-			protocol = (WonesysProtocolSession) protocolSessionManager.obtainSessionByProtocol("wonesys", false);
+			protocol = protocolSessionManager.obtainSessionByProtocol("wonesys", false);
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
 		}

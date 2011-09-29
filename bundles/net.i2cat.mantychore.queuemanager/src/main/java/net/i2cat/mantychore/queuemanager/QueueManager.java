@@ -207,6 +207,14 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		return actions;
 	}
 
+	/**
+	 * Implementation for the execution of a single action. Clean the queue, add an action and send the message
+	 */
+	private QueueResponse dummyExecute(Object action) throws CapabilityException {
+		queueAction((IAction) action);
+		return execute();
+	}
+
 	@Override
 	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
 		log.debug("Sending message to Queue Capability");
@@ -218,6 +226,8 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 				return getQueue();
 			} else if (idOperation.equals(QueueConstants.MODIFY)) {
 				return modify(params);
+			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
+				return dummyExecute(params);
 			}
 
 		} catch (CapabilityException e) {
@@ -269,7 +279,7 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 	}
 
 	@Override
-	public Response sendStartUpActions() {
+	public Response sendRefreshActions() {
 		// there is no need of startup actions, queue is operative just after activation.
 		return Response.okResponse("");
 	}

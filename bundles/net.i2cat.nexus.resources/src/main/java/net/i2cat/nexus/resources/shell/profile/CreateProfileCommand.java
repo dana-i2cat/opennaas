@@ -29,7 +29,7 @@ public class CreateProfileCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("profile info");
+		printInitCommand("profile info");
 
 		IProfileManager manager = getProfileManager();
 		IProfile profile = null;

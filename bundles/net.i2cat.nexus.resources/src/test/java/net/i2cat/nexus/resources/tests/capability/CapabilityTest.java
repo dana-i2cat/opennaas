@@ -2,7 +2,6 @@ package net.i2cat.nexus.resources.tests.capability;
 
 import junit.framework.Assert;
 import net.i2cat.nexus.resources.ILifecycle;
-import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.Resource;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.action.ActionSet;
@@ -32,7 +31,7 @@ public class CapabilityTest {
 	public static void setUp() {
 
 		/* init Profile */
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = new MockActionSet();
 		MockAction mockAction = new MockAction();
 		actionSet.putAction(actionIdMock, mockAction.getClass());
 
@@ -50,7 +49,7 @@ public class CapabilityTest {
 		capability.setResource(resource);
 
 		/* init actionSet */
-		ActionSet actionSetCapability = new ActionSet();
+		ActionSet actionSetCapability = new MockActionSet();
 		MockCapAction actionCapability = new MockCapAction();
 		actionSetCapability.putAction(actionIdCapability, actionCapability.getClass());
 

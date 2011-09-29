@@ -10,7 +10,6 @@
   		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-
 	<!--  POM id -->
 
 	<groupId>net.i2cat.nexus</groupId>
@@ -23,6 +22,18 @@
 	<description>Nexus Integration test helper</description>
 	<packaging>bundle</packaging>
 	
+	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
 
 	<build>

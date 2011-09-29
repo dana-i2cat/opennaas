@@ -32,7 +32,7 @@ public class ConfigureVLANAction extends JunosAction {
 
 			EthernetPort eth = (EthernetPort) params;
 
-			if (eth.getElementName() == null || eth.getElementName().isEmpty())
+			if (eth.getName() == null || eth.getName().isEmpty())
 				throw new ActionException("Not valid name for the interface");
 
 			setTemplate("/VM_files/configureEthVLAN.vm");
@@ -40,7 +40,7 @@ public class ConfigureVLANAction extends JunosAction {
 		} else if (params instanceof LogicalTunnelPort) {
 			LogicalTunnelPort lt = (LogicalTunnelPort) params;
 
-			if (lt.getElementName() == null || lt.getElementName().isEmpty() || !lt.getElementName().startsWith("lt"))
+			if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
 				throw new ActionException("Not valid name for the interface");
 
 			setTemplate("/VM_files/configureLogicalTunnelVLAN.vm");
@@ -81,10 +81,7 @@ public class ConfigureVLANAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
 		try {
-			// IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
-			// Map<String, Object> extraParams = new HashMap<String, Object>();
-			// extraParams.put("ipUtilsHelper", ipUtilsHelper);
-			setVelocityMessage(prepareVelocityCommand(params, template, null/* extraParams */));
+			setVelocityMessage(prepareVelocityCommand(params, template));
 
 		} catch (Exception e) {
 			throw new ActionException(e);

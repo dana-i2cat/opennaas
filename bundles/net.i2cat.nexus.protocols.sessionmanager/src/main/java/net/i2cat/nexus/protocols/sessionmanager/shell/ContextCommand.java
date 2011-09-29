@@ -3,9 +3,9 @@ package net.i2cat.nexus.protocols.sessionmanager.shell;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -36,15 +36,21 @@ public class ContextCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 
 		IResourceManager manager = getResourceManager();
-		if(optionRemove){
-			initcommand("Remove context");
+		if (optionRemove) {
+			printInitCommand("Remove context");
+		} else {
+			printInitCommand("Adding context");
 		}
-		else{
-			initcommand("Adding context");
+
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
 		}
-		
-		if (!splitResourceName(resourceId))
-			return null;
+
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 		IProtocolManager protocolManager = getProtocolManager();
@@ -54,7 +60,7 @@ public class ContextCommand extends GenericKarafCommand {
 			ProtocolSessionContext context = new ProtocolSessionContext();
 			context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
 			sessionManager.unregisterContext(protocol);
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
@@ -64,14 +70,14 @@ public class ContextCommand extends GenericKarafCommand {
 				printInfo("protocol = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL)
 							+ ", uri = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
 			}
-			
-			endcommand();
+
+			printEndCommand();
 			return null;
 		}
 
 		if (uri == null || uri.contentEquals("")) {
 			printError("You must specify a [uri] to register.");
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
@@ -80,7 +86,7 @@ public class ContextCommand extends GenericKarafCommand {
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
 		sessionManager.registerContext(context);
 		printInfo("Context registered.");
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

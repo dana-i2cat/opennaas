@@ -28,7 +28,6 @@ public class ConfigureStatusAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
 			// not only check the params also it change the velocity template according to the interface
-
 			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));

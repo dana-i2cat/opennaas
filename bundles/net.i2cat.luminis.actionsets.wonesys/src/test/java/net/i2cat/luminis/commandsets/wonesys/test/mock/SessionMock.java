@@ -1,18 +1,22 @@
 package net.i2cat.luminis.commandsets.wonesys.test.mock;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
+import net.i2cat.luminis.transports.wonesys.mock.ProteusMock;
 import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
 import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
 import net.i2cat.nexus.resources.protocol.ProtocolException;
 import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 
-public class SessionMock extends WonesysProtocolSession {
+public class SessionMock implements IProtocolSession {
 
-	ProteusMock	proteus	= new ProteusMock();
+	ProteusMock						proteus					= new ProteusMock();
+
+	private ProtocolSessionContext	protocolSessionContext	= null;
+	private String					sessionID				= null;
 
 	public SessionMock(ProtocolSessionContext protocolSessionContext, String sessionID) throws ProtocolException {
-		super(protocolSessionContext, sessionID);
-
+		this.protocolSessionContext = protocolSessionContext;
+		this.sessionID = sessionID;
 	}
 
 	public Status getStatus() {
@@ -45,6 +49,28 @@ public class SessionMock extends WonesysProtocolSession {
 
 	public void unregisterProtocolSessionListener(IProtocolSessionListener listener, String idListener) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ProtocolSessionContext getSessionContext() {
+		return protocolSessionContext;
+	}
+
+	@Override
+	public String getSessionId() {
+		return sessionID;
+	}
+
+	@Override
+	public void setSessionContext(ProtocolSessionContext sessionContext) {
+		this.protocolSessionContext = sessionContext;
+
+	}
+
+	@Override
+	public void setSessionId(String sessionID) {
+		this.sessionID = sessionID;
 
 	}
 

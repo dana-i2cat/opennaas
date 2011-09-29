@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
@@ -17,7 +18,7 @@ import java.util.Vector;
  * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the CIM
  * Schema.
  */
-public class ManagedElement implements Serializable {
+public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * These are the associations where I am the "from" element
@@ -532,5 +533,12 @@ public class ManagedElement implements Serializable {
 
 		this.elementName = elementName;
 	} // setElementName
+
+	@Override
+	public List<String> getChildren() {
+
+		/* ManagedElement do not include these relations */
+		return new ArrayList<String>();
+	}
 
 } // Class ManagedElement

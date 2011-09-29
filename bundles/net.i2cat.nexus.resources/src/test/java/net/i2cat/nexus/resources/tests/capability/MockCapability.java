@@ -60,7 +60,7 @@ public class MockCapability extends AbstractCapability {
 	}
 
 	@Override
-	public Response sendStartUpActions() {
+	public Response sendRefreshActions() {
 		return Response.okResponse("");
 	}
 }

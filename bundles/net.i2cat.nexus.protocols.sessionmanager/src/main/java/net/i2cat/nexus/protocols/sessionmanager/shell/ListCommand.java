@@ -5,8 +5,10 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSession.Status;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -35,60 +37,98 @@ public class ListCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("list protocols");
+		printInitCommand("list protocols");
 		protocolManager = getProtocolManager();
 		IResourceManager manager = getResourceManager();
 
 		if (optionProtocols) {
-			if (verbose)
-				printInfo("Supported protocols:");
+			printInfo("Supported protocols:");
 			for (String protocol : protocolManager.getAllSessionFactories()) {
 				printInfo(protocol);
 			}
+			printEndCommand();
 			return null;
 		}
 
 		if (resourceId != null && !resourceId.equalsIgnoreCase("")) {
 
-			if (!splitResourceName(resourceId))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (verbose)
-				printInfo(argsRouterName[1] + ":");
-			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
-				printInfo(simpleTab + session);
+
+			ProtocolSessionManager sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceIdentifier.getId());
+
+			if (protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds().isEmpty()) {
+				printInfo(argsRouterName[1] + " didn't have any live session. Use protocol:add command to active.");
+				printEndCommand();
+				return null;
 			}
+
+			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
+				ProtocolSessionContext context = sessionManager.obtainSessionById(session, sessionManager.isLocked(session))
+						.getSessionContext();
+				printInfo(doubleTab + "Protocol: " + context.getSessionParameters().get(context.PROTOCOL));
+				if (verbose) {
+					String age;
+					long millis;
+
+					if (sessionManager.isLocked(session)) {
+						age = "(locked)";
+					} else {
+						millis = System.currentTimeMillis() - sessionManager.getSessionlastUsed(session);
+						age = MILLISECONDS.toMinutes(millis) + ":" + (MILLISECONDS.toSeconds(millis) - MINUTES.toSeconds(MILLISECONDS
+								.toMinutes(millis)));
+					}
+					Status sessionStatus = sessionManager.obtainSessionById(session, sessionManager.isLocked(session)).getStatus();
+					printInfo(doubleTab + " Session ID: " + session + " STATUS: " + sessionStatus + " (Not used in: " + age + ")");
+				}
+			}
+			printEndCommand();
 			return null;
 		}
-		if (verbose)
-			printInfo("Protocol sessions:");
+
 		for (String device : protocolManager.getAllResourceIds()) {
-			// TODO how to print the names here
-			String name = manager.getNameFromResourceID(device);
-			printInfo(name + ":");
 
 			ProtocolSessionManager sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(device);
 
-			for (String session : sessionManager.getAllProtocolSessionIds()) {
+			if (!sessionManager.getAllProtocolSessionIds().isEmpty()) {
+				String name = manager.getNameFromResourceID(device);
+				printInfo(name);
+				sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(device);
+				for (String session : sessionManager.getAllProtocolSessionIds()) {
 
-				String age;
-				long millis;
+					ProtocolSessionContext context = sessionManager.obtainSessionById(session, sessionManager.isLocked(session))
+							.getSessionContext();
+					printInfo(doubleTab + "Protocol: " + context.getSessionParameters().get(context.PROTOCOL));
 
-				if (sessionManager.isLocked(session)) {
-					age = "(locked)";
-				} else {
-					millis = System.currentTimeMillis() - sessionManager.getSessionlastUsed(session);
-					age = MILLISECONDS.toMinutes(millis) + ":" + (MILLISECONDS.toSeconds(millis) - MINUTES.toSeconds(MILLISECONDS
-							.toMinutes(millis)));
+					if (verbose) {
+						String age;
+						long millis;
+
+						if (sessionManager.isLocked(session)) {
+							age = "(locked)";
+						} else {
+							millis = System.currentTimeMillis() - sessionManager.getSessionlastUsed(session);
+							age = MILLISECONDS.toMinutes(millis) + ":" + (MILLISECONDS.toSeconds(millis) - MINUTES.toSeconds(MILLISECONDS
+									.toMinutes(millis)));
+						}
+						Status sessionStatus = sessionManager.obtainSessionById(session, sessionManager.isLocked(session)).getStatus();
+						printInfo(doubleTab + " Session ID: " + session + " STATUS: " + sessionStatus + " (Not used in: " + age + ")");
+					}
 				}
-
-				printInfo(simpleTab + session + " (Not used in: " + age + ")");
 			}
+			// FIXME if there aren't any live session need to print info message
+
 		}
-		endcommand();
+		printEndCommand();
 
 		return null;
 	}
-
 }

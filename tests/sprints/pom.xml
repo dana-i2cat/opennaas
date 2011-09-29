@@ -18,6 +18,7 @@
 	<modules>
 		<module>week26</module>
 		<module>week35</module>
+		<module>sprint0_2</module>
 	</modules>
 
 	<!--  dependencies for integration tests -->

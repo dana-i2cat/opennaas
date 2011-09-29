@@ -95,16 +95,10 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() throws ProtocolException {
-		log.info("Waiting to load all bundles");
+		
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
-		/* initialize model */
+		
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
@@ -122,7 +116,6 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 
 	}
 
-
 	public void before() throws ProtocolException, CapabilityException {
 		initBundles();
 		log.info("INFO: Before test, getting queue...");
@@ -139,7 +132,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	private Object newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/1/2");
+		eth.setName("fe-0/1/2");
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
 		ip.setSubnetMask("255.255.255.0");

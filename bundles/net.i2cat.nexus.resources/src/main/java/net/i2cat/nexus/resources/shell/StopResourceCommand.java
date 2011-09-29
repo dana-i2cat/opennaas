@@ -2,14 +2,14 @@ package net.i2cat.nexus.resources.shell;
 
 import java.util.List;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-
 import net.i2cat.nexus.resources.IResourceIdentifier;
 import net.i2cat.nexus.resources.IncorrectLifecycleStateException;
 import net.i2cat.nexus.resources.ResourceException;
 import net.i2cat.nexus.resources.ResourceManager;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
 /**
  * Stop one or more resources
@@ -29,13 +29,19 @@ public class StopResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("resource stop");
+		printInitCommand("resource stop");
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
 
-				if (!splitResourceName(id))
-					return null;
+				String[] argsRouterName = new String[2];
+				try {
+					argsRouterName = splitResourceName(id);
+				} catch (Exception e) {
+					printError(e.getMessage());
+					printEndCommand();
+					return -1;
+				}
 
 				IResourceIdentifier identifier = null;
 				try {
@@ -74,7 +80,7 @@ public class StopResourceCommand extends GenericKarafCommand {
 			printError("An error occurred stopping the resource.");
 			printError(e);
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 
 	}

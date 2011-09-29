@@ -9,7 +9,6 @@
 	<service ref="connectionsActionSet"
 		interface="net.i2cat.nexus.resources.action.IActionSet">
 		<service-properties>
-		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="proteus" />
 			<entry key="actionset.capability" value="connections" /> 
 			<entry key="actionset.version" value="1.0" />
@@ -24,9 +23,21 @@
 	<service ref="queueActionSet"
 		interface="net.i2cat.nexus.resources.action.IActionSet">
 		<service-properties>
-		<!--  identify the junos actionset -->
 			<entry key="actionset.name" value="proteus" /> <!--  queue have to be changed -->
 			<entry key="actionset.capability" value="queue" /> 
+			<entry key="actionset.version" value="1.0" />
+		</service-properties>
+	</service>
+	
+	<bean id="monitoringActionSet"
+		class="net.i2cat.luminis.actionsets.wonesys.MonitoringActionSet" />
+	
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="monitoringActionSet"
+		interface="net.i2cat.nexus.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="proteus" /> <!--  queue have to be changed -->
+			<entry key="actionset.capability" value="monitoring" /> 
 			<entry key="actionset.version" value="1.0" />
 		</service-properties>
 	</service>

@@ -24,8 +24,14 @@
 
 <topology>
 	<nodes>
+	<!-- 
+		<node id="omega">
+		</node>
+		<node id="imi">
+		</node>
+	-->
 		<node id="pedrosa">
-			<chasis number="0">
+			<chasis number="0">	<!-- PROTEUS -->
 				<slot number="1">
 					<ports>
 						<port id="pedrosa-0-1-0">0</port>
@@ -75,7 +81,7 @@
 					</ports>
 				</slot>
 			</chasis>
-			<chasis number="1">
+			<chasis number="1"> <!-- OPTRIA -->
 				<slot number="0">
 					<ports>
 						<port id="pedrosa-1-0-1">1</port>
@@ -110,7 +116,7 @@
 	<!-- OMEGA -->
 	<!-- using fibres
 	<connection srcPort="fibre-pedrosa-omega" dstPort="omega-0-1-in"/>
-	<connection srcPort="fibre-imi-omega" dstPort="omega-0-2-in"/>	
+	<connection srcPort="fibre-imi-omega" dstPort="omega-0-3-in"/>	
 	
 	<connection srcPort="omega-0-16-129" dstPort="fibre-omega-pedrosa"/>
 	<connection srcPort="omega-0-17-129" dstPort="fibre-omega-imi"/>
@@ -118,7 +124,7 @@
 	 
 	 <!-- roadm
 	<connection srcPort="omega-0-1-128" dstPort="omega-0-17-4"/>
-	<connection srcPort="omega-0-2-128" dstPort="omega-0-16-4"/>
+	<connection srcPort="omega-0-3-128" dstPort="omega-0-16-4"/>
 	-->
 	
 	<!-- roadm <-> optria
@@ -127,9 +133,9 @@
 	<connection srcPort="omega-1-5-c" dstPort="omega-0-17-3"/>
 	<connection srcPort="omega-1-5-b" dstPort="omega-0-16-3"/>
 	
-	<connection srcPort="omega-0-2-1" dstPort="omega-1-2-c"/>
-	<connection srcPort="omega-0-2-2" dstPort=""/> 
-	<connection srcPort="omega-0-2-3" dstPort="omega-1-5-c"/>
+	<connection srcPort="omega-0-3-1" dstPort="omega-1-2-c"/>
+	<connection srcPort="omega-0-3-2" dstPort=""/> 
+	<connection srcPort="omega-0-3-3" dstPort="omega-1-5-c"/>
 	
 	<connection srcPort="omega-0-1-1" dstPort="omega-1-2-b"/>
 	<connection srcPort="omega-0-1-2" dstPort=""/>

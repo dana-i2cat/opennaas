@@ -28,7 +28,7 @@ import org.junit.Test;
 public class GetConfigActionTest {
 
 	private static GetConfigurationAction	action;
-	Log										log	= LogFactory.getLog(GetConfigActionTest.class);
+	private static Log						log	= LogFactory.getLog(GetConfigActionTest.class);
 	static ActionTestHelper					helper;
 	static ProtocolSessionManager			protocolsessionmanager;
 
@@ -59,7 +59,7 @@ public class GetConfigActionTest {
 
 	@Test
 	public void testExecute() {
-
+		System.out.println("TEST EXECUTE");
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 		} catch (ActionException e) {
@@ -77,12 +77,12 @@ public class GetConfigActionTest {
 			LogicalPort lp = (LogicalPort) device;
 			if (device instanceof LogicalTunnelPort) {
 				LogicalTunnelPort lt = (LogicalTunnelPort) device;
-				log.info("LogicalTunnelPort: " + lt.getElementName());
+				log.info("LogicalTunnelPort: " + lt.getName());
 				log.info("Peer unit " + lt.getPeer_unit());
 				log.info("Unit " + lt.getPortNumber());
 			} else if (device instanceof EthernetPort) {
 				EthernetPort ep = (EthernetPort) device;
-				log.info("EthernetPort: " + ep.getElementName());
+				log.info("EthernetPort: " + ep.getName());
 				log.info("Unit " + ep.getPortNumber());
 			} else {
 				log.info("No such class considered ");
@@ -99,6 +99,17 @@ public class GetConfigActionTest {
 			}
 
 		}
+
+		System.out.println("Found " + routerModel.getChildren().size() + " logical resources.");
+		for (Object systemElement : routerModel.getChildren()) {
+			System.out.println((String) systemElement);
+			if (systemElement instanceof ComputerSystem) {
+				ComputerSystem logicalrouter = (ComputerSystem) systemElement;
+				// check that the element is a Logical Router
+				System.out.println(logicalrouter.getName());
+			}
+		}
+
 	}
 
 	/**

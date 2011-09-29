@@ -11,6 +11,8 @@ import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.nexus.resources.IResource;
 import net.i2cat.nexus.resources.IResourceManager;
 import net.i2cat.nexus.resources.ResourceException;
@@ -48,7 +50,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 	private CommandProcessor	commandprocessor;
 	@Inject
 	BundleContext				bundleContext	= null;
-	private Boolean				isMock;
+	private Boolean				isMock			= false;
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -142,7 +144,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail();
 		}
-		Assert.assertTrue(resourceManager.listResources().isEmpty());
+		// Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 	}
 
@@ -184,18 +186,16 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 		ComputerSystem system = (ComputerSystem) resource.getModel();
 		List<LogicalDevice> ld = system.getLogicalDevices();
-		// for (LogicalDevice logicalDevice : ld) {
-		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
-		// }
-		// }
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// Assert.fail(e.getMessage());
-		// }
 
+		if (!isMock) {
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+				}
+			}
+
+		}
 	}
 
 	public void UPInterfaceLo() throws Exception {
@@ -219,21 +219,18 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response2.get(1).isEmpty());
+		if (!isMock) {
+			// assert model updated
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+				}
+			}
 
-		// // assert model updated
-		// ComputerSystem system = (ComputerSystem) resource.getModel();
-		// List<LogicalDevice> ld = system.getLogicalDevices();
-		// for (LogicalDevice logicalDevice : ld) {
-		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
-		// }
-		// }
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// Assert.fail(e.getMessage());
-		// }
+		}
 	}
 
 }

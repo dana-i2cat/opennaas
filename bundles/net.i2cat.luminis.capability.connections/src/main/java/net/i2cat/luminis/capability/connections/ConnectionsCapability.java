@@ -30,11 +30,6 @@ public class ConnectionsCapability extends AbstractCapability {
 	}
 
 	@Override
-	protected void initializeCapability() throws CapabilityException {
-
-	}
-
-	@Override
 	public Object sendMessage(String idOperation, Object params) {
 		log.debug("Sending message to Connections Capability");
 		try {
@@ -55,6 +50,11 @@ public class ConnectionsCapability extends AbstractCapability {
 	}
 
 	@Override
+	protected void initializeCapability() throws CapabilityException {
+
+	}
+
+	@Override
 	protected void activateCapability() throws CapabilityException {
 
 	}
@@ -69,6 +69,7 @@ public class ConnectionsCapability extends AbstractCapability {
 
 	}
 
+	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);

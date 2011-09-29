@@ -90,11 +90,11 @@ public class IPInterfaceParser extends DigesterEngine {
 	}
 
 	public void addInterface(EthernetPort ethernetPort) {
-		String location = ethernetPort.getElementName() + Integer.toString(ethernetPort.getPortNumber());
+		String location = ethernetPort.getName() + Integer.toString(ethernetPort.getPortNumber());
 
 		if (flagLT) {
 			LogicalTunnelPort lt = new LogicalTunnelPort();
-			lt.setElementName(ethernetPort.getElementName());
+			lt.setName(ethernetPort.getName());
 			lt.setPortNumber(ethernetPort.getPortNumber());
 			lt.setPeer_unit(peerUnit);
 			/* set status */
@@ -135,7 +135,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		assert !location.equals("") : "LogicalInterfaceParser: location have to be defined";
 		/* fill identifier parameters */
 		// ethernetPort.setOtherPortType(location + "." + name);
-		ethernetPort.setElementName(location);
+		ethernetPort.setName(location);
 		ethernetPort.setPortNumber(Integer.parseInt(name));
 
 	}
@@ -195,7 +195,7 @@ public class IPInterfaceParser extends DigesterEngine {
 
 			if (element instanceof NetworkPort) {
 				NetworkPort networkPort = (NetworkPort) element;
-				String name = networkPort.getElementName(); // always it have one element
+				String name = networkPort.getName(); // always it have one element
 
 				OperationalStatus status = OperationalStatus.OK;
 				if (mapStatus.containsKey(name))
@@ -217,7 +217,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		for (String key : mapElements.keySet()) {
 			NetworkPort port = (NetworkPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';
-			str += port.getElementName() + '\n';
+			str += port.getName() + '\n';
 			str += port.getPermanentAddress() + '\n';
 			str += String.valueOf(port.getMaxSpeed()) + '\n';
 			str += port.getDescription() + '\n';

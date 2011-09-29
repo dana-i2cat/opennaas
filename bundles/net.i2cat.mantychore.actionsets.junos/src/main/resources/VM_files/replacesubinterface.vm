@@ -3,7 +3,7 @@
 	#foreach($element in $param)
 	#if("EthernetPort"==($element.getClass().getSimpleName()))		
 	<interface>
-		<name>$element.ElementName</name>
+		<name>$element.Name</name>
 		<unit operation="replace">
 		<name>0</name>
 		##<name>$element.PortNumber</name>

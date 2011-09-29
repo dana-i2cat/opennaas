@@ -30,6 +30,7 @@ public class MockResource implements IResource {
 	ManagedElement				model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
+	IResourceIdentifier			resourceIdentifier;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
@@ -169,7 +170,7 @@ public class MockResource implements IResource {
 	@Override
 	public IResourceIdentifier getResourceIdentifier() {
 		log.info("get Resource Identifier...");
-		return null;
+		return resourceIdentifier;
 	}
 
 	@Override
@@ -186,8 +187,9 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public void setResourceIdentifier(IResourceIdentifier arg0) {
+	public void setResourceIdentifier(IResourceIdentifier identifier) {
 		log.info("set Resource Identifier...");
+		resourceIdentifier = identifier;
 
 	}
 

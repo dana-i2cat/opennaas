@@ -19,6 +19,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
+import java.util.List;
 
 @RunWith(JUnit4TestRunner.class)
 public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
@@ -28,7 +29,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	@Inject
 	BundleContext				bundleContext	= null;
 
-	private String				startupActionName;
+	private List<String>				startupActionNames;
 	private AbstractCapability	connectionsCapability;
 	IResource					mockResource	= new MockResource();
 
@@ -46,10 +47,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
 	}
 
 	/**
@@ -74,13 +72,14 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(connectionsCapability);
 			connectionsCapability.initialize();
 
-			Assert.assertNotNull(connectionsCapability.getActionSet().getStartUpRefreshActionName());
-			startupActionName = connectionsCapability.getActionSet().getStartUpRefreshActionName();
+			Assert.assertFalse(connectionsCapability.getActionSet().getRefreshActionName().isEmpty());
+			startupActionNames = connectionsCapability.getActionSet().getRefreshActionName();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			if (ExceptionUtils.getRootCause(e) != null)
+				log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}

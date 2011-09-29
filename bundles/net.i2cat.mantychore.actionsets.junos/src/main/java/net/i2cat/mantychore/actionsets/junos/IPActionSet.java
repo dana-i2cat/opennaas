@@ -12,6 +12,10 @@ public class IPActionSet extends ActionSet {
 		super.setActionSetId("ipActionSet");
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 		this.putAction(ActionConstants.SETIPv4, SetIPv4Action.class);
+
+		/* add refresh actions */
+		this.refreshActions.add(ActionConstants.GETCONFIG);
+
 	}
 
 	@Override
@@ -21,14 +25,5 @@ public class IPActionSet extends ActionSet {
 		actionNames.add(ActionConstants.SETIPv4);
 		return actionNames;
 	}
-	
-	@Override
-	public String getStartUpRefreshActionName() {
-		/*
-		FIXME: change when listInterfaces is complete. 
-		BUG http://jira.i2cat.net:8080/browse/MANTYCHORE-214
-		It is necessary to change this command for its correct command
-		*/
-		return ActionConstants.GETCONFIG;
-	}
+
 }

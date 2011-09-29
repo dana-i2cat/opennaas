@@ -4,7 +4,7 @@
 ##	#foreach($element in $param)
 ##	#if("Ethernetport"==$element.getClass().getSimpleName())		
 	<interface>
-		<name>$param.ElementName</name>
+		<name>$param.Name</name>
 		<unit>
 		<name>$param.PortNumber</name>
 		</unit>

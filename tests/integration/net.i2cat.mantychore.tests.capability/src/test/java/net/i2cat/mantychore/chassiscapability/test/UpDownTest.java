@@ -75,10 +75,8 @@ public class UpDownTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		/* initialize model */
-
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
@@ -145,10 +143,9 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}
@@ -158,7 +155,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 		while (iterator.hasNext()) {
 			LogicalDevice logicalDevice = (LogicalDevice) iterator.next();
-			if (logicalDevice.getElementName().equals(nameInterface))
+			if (logicalDevice.getName().equals(nameInterface))
 				return logicalDevice;
 		}
 
@@ -230,7 +227,7 @@ public class UpDownTest extends AbstractIntegrationTest {
 	private Object newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
 
 		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setElementName(interfaceName);
+		logicalPort.setName(interfaceName);
 		logicalPort.setOperationalStatus(status);
 		return logicalPort;
 	}

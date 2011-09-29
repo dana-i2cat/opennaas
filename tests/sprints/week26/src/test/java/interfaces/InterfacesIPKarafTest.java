@@ -117,7 +117,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 		} catch (ResourceException e) {
 			Assert.fail();
 		}
-		Assert.assertTrue(resourceManager.listResources().isEmpty());
+		// Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 	}
 
@@ -316,7 +316,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(ld);
 			for (LogicalDevice l : ld) {
 				// Only check the modified interface
-				if (l.getElementName().equalsIgnoreCase(inter)) {
+				if (l.getName().equalsIgnoreCase(inter)) {
 					if (l instanceof EthernetPort) {
 						EthernetPort eth = (EthernetPort) l;
 						if (eth.getPortNumber() == Integer.parseInt(port)) {
@@ -361,7 +361,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 		Assert.assertNotNull(ld);
 		for (LogicalDevice l : ld) {
 			// Only check the modified interface
-			if (l.getElementName().equalsIgnoreCase(inter)) {
+			if (l.getName().equalsIgnoreCase(inter)) {
 
 				if (l instanceof EthernetPort) {
 					EthernetPort eth = (EthernetPort) l;

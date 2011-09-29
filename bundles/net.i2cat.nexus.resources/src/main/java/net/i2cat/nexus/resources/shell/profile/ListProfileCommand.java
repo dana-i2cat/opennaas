@@ -14,7 +14,7 @@ public class ListProfileCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("profile list");
+		printInitCommand("profile list");
 
 		IProfileManager manager = getProfileManager();
 		List<ProfileDescriptor> listProfiles = manager.listProfiles();
@@ -27,7 +27,7 @@ public class ListProfileCommand extends GenericKarafCommand {
 			printInfo("Profile " + profileDesc.getProfileName() + " suitable for resource type : " + profileDesc
 					.getResourceType());
 		}
-		endcommand();
+		printEndCommand();
 
 		return null;
 	}

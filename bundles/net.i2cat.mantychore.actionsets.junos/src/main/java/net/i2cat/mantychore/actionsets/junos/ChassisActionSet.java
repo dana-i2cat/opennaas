@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
+import net.i2cat.mantychore.actionsets.junos.actions.CreateLogicalRouterAction;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.DeleteLogicalRouterAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.nexus.resources.action.ActionSet;
@@ -24,6 +26,13 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETVLAN, ConfigureVLANAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
+
+		/* logical routers */
+		this.putAction(ActionConstants.CREATELOGICALROUTER, CreateLogicalRouterAction.class);
+		this.putAction(ActionConstants.DELETELOGICALROUTER, DeleteLogicalRouterAction.class);
+		/* add refresh actions */
+		this.refreshActions.add(ActionConstants.GETCONFIG);
+
 	}
 
 	@Override
@@ -34,16 +43,10 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.CREATESUBINTERFACE);
 		actionNames.add(ActionConstants.SETVLAN);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
+		/* Logical router operations */
+		actionNames.add(ActionConstants.CREATELOGICALROUTER);
+		actionNames.add(ActionConstants.DELETELOGICALROUTER);
+
 		return actionNames;
-	}
-	
-	@Override
-	public String getStartUpRefreshActionName() {
-		/*
-		FIXME: change when listInterfaces is complete. 
-		BUG http://jira.i2cat.net:8080/browse/MANTYCHORE-214
-		It is necessary to change this command for its correct command
-		*/
-		return ActionConstants.GETCONFIG;
 	}
 }

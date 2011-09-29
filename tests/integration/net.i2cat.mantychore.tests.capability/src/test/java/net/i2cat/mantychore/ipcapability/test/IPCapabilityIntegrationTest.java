@@ -77,8 +77,6 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	public void initResource() {
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
@@ -140,7 +138,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			if (ExceptionUtils.getRootCause(e) != null){
+			if (ExceptionUtils.getRootCause(e) != null) {
 				log.error(ExceptionUtils.getRootCause(e).getMessage());
 				Assert.fail(ExceptionUtils.getRootCause(e).getMessage());
 			}
@@ -150,10 +148,9 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}
@@ -194,7 +191,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName(name);
+		eth.setName(name);
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address(ipName);
 		ip.setSubnetMask(mask);

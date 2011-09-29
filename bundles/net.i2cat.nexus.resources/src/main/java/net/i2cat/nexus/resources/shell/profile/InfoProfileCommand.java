@@ -26,7 +26,7 @@ public class InfoProfileCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("profile information");
+		printInitCommand("profile information");
 		boolean find;
 		IProfileManager manager = getProfileManager();
 		List<ProfileDescriptor> profiles = manager.listProfiles();
@@ -76,7 +76,7 @@ public class InfoProfileCommand extends GenericKarafCommand {
 				printError("Wrong profile id: " + profileName);
 			}
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

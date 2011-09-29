@@ -23,14 +23,20 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("remove resource");
+		printInitCommand("remove resource");
 
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
 
-				if (!splitResourceName(id))
-					return null;
+				String[] argsRouterName = new String[2];
+				try {
+					argsRouterName = splitResourceName(id);
+				} catch (Exception e) {
+					printError(e.getMessage());
+					printEndCommand();
+					return -1;
+				}
 
 				IResourceIdentifier identifier = null;
 				try {
@@ -58,7 +64,7 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 			printError("Error removing Resource.");
 			printError(e);
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 
