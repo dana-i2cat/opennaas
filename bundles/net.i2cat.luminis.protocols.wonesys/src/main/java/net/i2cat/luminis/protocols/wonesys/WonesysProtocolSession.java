@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.listeners.CommandResponseListener;
+import net.i2cat.luminis.protocols.wonesys.listeners.RawSocketAlarmListener;
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;
@@ -37,7 +38,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	public static final String						SESSION_ID_PROPERTY			= "sessionId";
 
 	/** The logger **/
-	Log												log							= LogFactory.getLog(WonesysProtocolSession.class);
+	public static Log								log							= LogFactory.getLog(WonesysProtocolSession.class);
 
 	/**
 	 * Contains information about the protocol capability configuration: transport, host, port, ...
@@ -55,7 +56,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	private long									timeout;
 	CommandResponseListener							responseListener;
 
-	// RawSocketAlarmListener rawSocketAlarmListener;
+	RawSocketAlarmListener							rawSocketAlarmListener;
 
 	public WonesysProtocolSession(ProtocolSessionContext protocolSessionContext, String sessionID) throws ProtocolException {
 
@@ -65,6 +66,8 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 		this.protocolSessionContext = protocolSessionContext;
 		this.sessionID = sessionID;
 		this.status = Status.DISCONNECTED_BY_USER;
+
+		log.debug("Initializing transport");
 		/* is mock or not */
 		String isMock = (String) protocolSessionContext.getSessionParameters().get("protocol.mock");
 		if (isMock != null && isMock.equals("true"))
@@ -80,11 +83,12 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 		// register session as a transport listener
 		// this session will receive all events from its wonesysTransport
+		log.info("Registering session as a transport listener");
 		registerToTransport(this, RawSocketTransport.ALL_EVENTS_TOPIC);
 
-		// TODO create and register alarmListener
-		// rawSocketAlarmListener = new RawSocketAlarmListener(sessionID);
-		// registerToTransport(rawSocketAlarmListener, RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
+		log.info("Registering alarm listener");
+		rawSocketAlarmListener = new RawSocketAlarmListener(sessionID);
+		registerToTransport(rawSocketAlarmListener, RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
 	}
 
 	@Override
@@ -246,6 +250,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 	@Override
 	public void handleEvent(Event event) {
+		log.debug("Event received");
 		if (event.getTopic().equals(RawSocketTransport.MSG_RCVD_EVENT_TOPIC)) {
 			String message = (String) event.getProperty(RawSocketTransport.MESSAGE_PROPERTY_NAME);
 			if (message != null) {
