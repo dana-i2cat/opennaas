@@ -4,6 +4,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,10 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
+import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 
 /**
  * Spring week 26 <br/>
@@ -491,7 +495,6 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	}
 
-	@Configuration
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
@@ -504,6 +507,16 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 		return options;
 	}
 
+	@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configuration(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+			}
+		});
+	}
+	
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newWonesysSessionContext());

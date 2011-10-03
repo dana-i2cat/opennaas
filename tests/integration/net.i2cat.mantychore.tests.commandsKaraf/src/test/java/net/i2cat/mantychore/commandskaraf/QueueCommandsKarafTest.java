@@ -5,6 +5,7 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
+import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
@@ -93,7 +97,6 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 
 	}
 
-	@Configuration
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
@@ -106,6 +109,16 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
+	@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configuration(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+			}
+		});
+	}
+	
 	@Test
 	public void SetAndGetInterfacesCommandTest() {
 		initBundles();
