@@ -34,10 +34,10 @@
 			<groupId>org.apache.karaf.tooling</groupId>
 			<artifactId>org.apache.karaf.tooling.testing</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
 			<type>pom</type>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 </project>
