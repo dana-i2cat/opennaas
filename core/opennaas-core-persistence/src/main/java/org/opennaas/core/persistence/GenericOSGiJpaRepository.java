@@ -38,7 +38,21 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 	}
 
 	public void initializeEntityManager() throws Exception {
-		entityManagerFactory = getEntityManagerFactoryFromOSGiRegistry(persistenceUnit);
+
+		try {
+			/*
+			 * FIXME We have to find a better method to do this to get the entityManager. It tries 10 times to try to get the persistence. The
+			 * persistence bundle spends more time because it is to need the config file persistence.xml which it needs more time to finish it.
+			 */
+			entityManagerFactory = waitForEntityManager(persistenceUnit);
+			if (entityManagerFactory == null)
+				throw new PersistenceException();
+
+			logger.debug("DESCRIPTION. Entity manager: " + entityManagerFactory);
+		} catch (PersistenceException e) {
+			logger.debug("PersistenceException: " + e.getMessage());
+			throw new Exception(e);
+		}
 		setEntityManager(entityManagerFactory.createEntityManager());
 	}
 
@@ -51,6 +65,8 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 					.getName(), createFilterProperties(persistenceUnit));
 		} catch (InvalidSyntaxException e) {
 			e.printStackTrace();
+			logger.error("InvalidSyntaxException:" + e.getMessage());
+
 			return null;
 		}
 
@@ -59,9 +75,30 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 					Activator.getBundleContext(), filter);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			logger.error("InterruptedException:" + e.getMessage());
 		}
 
 		return entityManagerFactory;
+	}
+
+	public EntityManagerFactory waitForEntityManager(String persistenceUnit) {
+		int MAX_RETRIES = 10;
+		boolean active = false;
+
+		for (int i = 0; i < MAX_RETRIES; i++) {
+			EntityManagerFactory entityManagerFactory = getEntityManagerFactoryFromOSGiRegistry(persistenceUnit);
+			active = (null != entityManagerFactory);
+			if (active == true) {
+				return entityManagerFactory;
+			}
+			logger.info("Waiting for the activation of Entity Manager");
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	private Properties createFilterProperties(String persistenceUnit) {
