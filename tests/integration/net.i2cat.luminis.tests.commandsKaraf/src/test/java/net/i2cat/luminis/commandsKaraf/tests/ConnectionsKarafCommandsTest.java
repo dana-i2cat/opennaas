@@ -4,7 +4,9 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -542,7 +544,11 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	public Object executeCommand(String command) throws Exception {
 		// Run some commands to make sure they are installed properly
 		CommandProcessor cp = getOsgiService(CommandProcessor.class);
-		CommandSession cs = cp.createSession(System.in, System.out, System.err);
+		ByteArrayOutputStream outputError = new ByteArrayOutputStream();
+		PrintStream psE = new PrintStream(outputError);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(output);
+		CommandSession cs = cp.createSession(System.in, ps, psE);
 		Object commandOutput = null;
 		try {
 			commandOutput = cs.execute(command);
