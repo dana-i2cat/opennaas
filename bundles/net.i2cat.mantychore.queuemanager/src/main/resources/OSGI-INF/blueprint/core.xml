@@ -20,7 +20,6 @@
 	<bean id="queueManagerFactory" class="net.i2cat.mantychore.queuemanager.QueueManagerFactory">
 		<property name="type" value="queue"/>
 	</bean>
-
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="queueManagerFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -29,32 +28,30 @@
 			<entry key="capability.model" value="junos"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
-	</service>	
-		<!-- Command completers -->
-  	<bean id="resourceNameCompleter"
-		class="net.i2cat.mantychore.queuemanager.shell.completers.ResourceNameCompleter" /> 
-
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">			
+	</service>
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.queuemanager.shell.completers.ResourceNameCompleter"/>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="queue/listActions">
-				<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand" />
-  				<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+			<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 		<command name="queue/execute">
 			<action class="net.i2cat.mantychore.queuemanager.shell.ExecuteCommand"/>
-			 			<completers>
-					<ref component-id="resourceNameCompleter" />
-					<null />
-				</completers>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="queue/remove">
 			<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand"/>
-			 			<completers>
-					<ref component-id="resourceNameCompleter" />
-					<null />
-				</completers>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 	</command-bundle>
 </blueprint>

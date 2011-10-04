@@ -5,9 +5,9 @@
 	<!-- Register an Junos action factory as an OSGi Service -->
 	<service ref="connectionsActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
-			<entry key="actionset.name" value="proteus" />
-			<entry key="actionset.capability" value="connections" /> 
-			<entry key="actionset.version" value="1.0" />
+			<entry key="actionset.name" value="proteus"/>
+			<entry key="actionset.capability" value="connections"/>
+			<entry key="actionset.version" value="1.0"/>
 		</service-properties>
 	</service>
 	<!--  	publish action set services  -->
@@ -22,15 +22,14 @@
 			<entry key="actionset.version" value="1.0"/>
 		</service-properties>
 	</service>
-	<bean id="monitoringActionSet"
-		class="net.i2cat.luminis.actionsets.wonesys.MonitoringActionSet" />
+	<bean id="monitoringActionSet" class="net.i2cat.luminis.actionsets.wonesys.MonitoringActionSet"/>
 	<!-- Register an Junos action factory as an OSGi Service -->
-	<service ref="monitoringActionSet"
-		interface="org.opennaas.core.resources.action.IActionSet">
+	<service ref="monitoringActionSet" interface="org.opennaas.core.resources.action.IActionSet">
 		<service-properties>
-			<entry key="actionset.name" value="proteus" /> <!--  queue have to be changed -->
-			<entry key="actionset.capability" value="monitoring" /> 
-			<entry key="actionset.version" value="1.0" />
+			<entry key="actionset.name" value="proteus"/>
+			<!--  queue have to be changed -->
+			<entry key="actionset.capability" value="monitoring"/>
+			<entry key="actionset.version" value="1.0"/>
 		</service-properties>
 	</service>
 </blueprint>
