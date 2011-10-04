@@ -6,7 +6,9 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
+import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
@@ -56,9 +58,6 @@ public class GetConfigurationAction extends JunosAction {
 		String message;
 		try {
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
-			DigesterEngine logicalInterfParser = new IPInterfaceParser();
-			// DigesterEngine logicalInterfParser = new IPConfigurationInterfaceParser();
-			logicalInterfParser.init();
 
 			/* getting interface information */
 			if (responseMessage instanceof Reply) {
@@ -67,7 +66,27 @@ public class GetConfigurationAction extends JunosAction {
 			} else {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
+			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
 
+			/* Parse routing options info */
+			DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
+			listLogicalRoutersParser.init();
+			listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+			if (message != null) {
+
+				for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
+
+					ComputerSystem system = new ComputerSystem();
+					system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
+					routerModel.addManagedSystemElement(system);
+				}
+			}
+			/* Parse LR info */
+
+			/* Parse interface options info */
+			DigesterEngine logicalInterfParser = new IPInterfaceParser();
+			logicalInterfParser.init();
 			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
 			// /TODO implements a better method to merge the elements in model
@@ -77,6 +96,7 @@ public class GetConfigurationAction extends JunosAction {
 			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
 				routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
 			}
+			/* Parse interface options info */
 
 			/* Parse routing options info */
 			DigesterEngine routingOptionsParser = new RoutingOptionsParser();
@@ -91,7 +111,7 @@ public class GetConfigurationAction extends JunosAction {
 					routerModel.addNextHopRoute(nh);
 				}
 			}
-
+			/* Parse routing options info */
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
@@ -101,11 +121,7 @@ public class GetConfigurationAction extends JunosAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		// For this Action params are not allowed
-		if (params == null)
-			return true;
-		else {
-			throw new ActionException("The Action " + getActionID() + " don't accept params");
-		}
+		return true;
 	}
 
 	public void prepareMessage() throws ActionException {
@@ -113,7 +129,7 @@ public class GetConfigurationAction extends JunosAction {
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		checkParams(params);
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template, null));
+			setVelocityMessage(prepareVelocityCommand(params, template));
 		} catch (Exception e) {
 			throw new ActionException();
 		}

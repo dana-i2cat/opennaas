@@ -42,7 +42,7 @@ public class DeleteSubInterfaceActionTest {
 		action.setModelToUpdate(new ComputerSystem());
 		// elements to delete
 		EthernetPort eth = new EthernetPort();
-		eth.setElementName("fe-0/0/2");
+		eth.setName("fe-0/0/2");
 		eth.setPortNumber(13);
 
 		action.setParams(eth);

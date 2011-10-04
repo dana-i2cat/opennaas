@@ -101,7 +101,6 @@ public class CorruptedAction extends Action {
 
 	@Override
 	public boolean checkParams(Object arg0) throws ActionException {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

@@ -15,7 +15,7 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitc
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
@@ -108,15 +108,9 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() throws ResourceException {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
+	
 		log.info("Getting services...");
 
 		repository = getOsgiService(IResourceRepository.class, "type=roadm", 50000);
@@ -189,7 +183,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resource.getCapabilities().isEmpty());
 			Assert.assertNull(resource.getModel());
 			Assert.assertNull(resource.getProfile());
-			Assert.assertTrue(repository.listResources().isEmpty());
+//			Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
 			log.error("Exception!! ", e);
@@ -223,6 +217,8 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 	@Test
 	public void MakeRemoveConnectionsResourceTest() {
+
+		clearRepo();
 
 		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
 
@@ -347,13 +343,39 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resource.getCapabilities().isEmpty());
 			Assert.assertNull(resource.getModel());
 			Assert.assertNull(resource.getProfile());
-			Assert.assertTrue(repository.listResources().isEmpty());
+//			Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
 			log.error("Exception!! ", e);
 			Assert.fail(e.getMessage());
 		}
 
+	}
+
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[repository.listResources().size()];
+		toRemove = repository.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					repository.stopResource(resource.getResourceIdentifier().getId());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
+			try {
+				repository.removeResource(resource.getResourceIdentifier().getId());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+			}
+
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 	public ICapability getCapability(List<ICapability> capabilities, String type) {

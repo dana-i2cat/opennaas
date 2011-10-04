@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * It is used to parse different messages
  * 
- * @author Carlos Báez Ruiz
+ * @author Carlos BAez Ruiz
  * 
  */
 public class IPUtilsHelper {

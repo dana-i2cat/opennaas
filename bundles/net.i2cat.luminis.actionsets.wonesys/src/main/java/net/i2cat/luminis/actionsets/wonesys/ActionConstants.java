@@ -7,4 +7,8 @@ public class ActionConstants {
 	public final static String	GETINVENTORY		= "getInventory";
 	public final static String	LOCKNODE			= "lockNode";
 	public final static String	UNLOCKNODE			= "unlockNode";
+
+	public final static String	PROCESSALARM		= "processAlarm";
+	public final static String	REGISTER			= "registerAsListener";
+
 }

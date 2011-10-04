@@ -38,5 +38,6 @@
 		<module>net.i2cat.luminis.protocols.wonesys</module>
 		<module>net.i2cat.luminis.actionsets.wonesys</module>
 		<module>net.i2cat.luminis.capability.connections</module>
+		<module>net.i2cat.luminis.capability.monitoring</module>
 	</modules>
 </project>

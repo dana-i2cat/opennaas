@@ -3,13 +3,13 @@ package net.i2cat.luminis.actions.tests;
 import java.io.IOException;
 import java.util.HashMap;
 
+import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
@@ -343,7 +343,7 @@ public class MakeConnectionTest {
 		Assert.assertTrue(actionResponse.getStatus().equals(STATUS.OK));
 	}
 
-	public ProtocolSessionManager getProtocolSessionManager() throws ProtocolException {
+	private ProtocolSessionManager getProtocolSessionManager() throws ProtocolException {
 
 		ProtocolManager protocolManager = new ProtocolManager();
 		ProtocolSessionManager protocolSessionManager = null;

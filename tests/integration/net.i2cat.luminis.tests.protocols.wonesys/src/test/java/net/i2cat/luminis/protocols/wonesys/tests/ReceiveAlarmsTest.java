@@ -41,7 +41,7 @@ import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
-import com.wonesys.emsModule.alarms.Alarm;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 
 @RunWith(JUnit4TestRunner.class)
 public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventHandler {
@@ -157,7 +157,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	}
 
 	private void checkAnyAlarmReceived(WonesysAlarmEvent wevent) {
-		Alarm a = wevent.getAlarm();
+		WonesysAlarm a = wevent.getAlarm();
 		assertNotNull(a);
 		log.info("Alarm received: " + a.toString());
 		this.alarmReceived = true;

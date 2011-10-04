@@ -3,10 +3,10 @@ package net.i2cat.luminis.actionsets.wonesys.actions;
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 
@@ -31,7 +31,7 @@ public class UnlockNodeAction extends WonesysAction {
 
 		try {
 			/* get protocol */
-			WonesysProtocolSession protocol = (WonesysProtocolSession) protocolSessionManager.obtainSessionByProtocol("wonesys", false);
+			IProtocolSession protocol = protocolSessionManager.obtainSessionByProtocol("wonesys", false);
 
 			WonesysCommand c = new UnlockNodeCommand();
 			c.initialize();

@@ -85,6 +85,7 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator>net.i2cat.luminis.actionsets.wonesys.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<!--  TODO Is it necessary to check the ${project.artifactId}.actions -->
 						<Export-Package>

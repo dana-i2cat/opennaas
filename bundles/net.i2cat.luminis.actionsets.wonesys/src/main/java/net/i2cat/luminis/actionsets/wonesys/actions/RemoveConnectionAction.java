@@ -4,8 +4,6 @@ import java.util.Vector;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
@@ -18,6 +16,7 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 
@@ -47,9 +46,9 @@ public class RemoveConnectionAction extends Action {
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(this.actionID);
 		/* get protocol */
-		WonesysProtocolSession protocol = null;
+		IProtocolSession protocol = null;
 		try {
-			protocol = (WonesysProtocolSession) protocolSessionManager.obtainSessionByProtocol("wonesys", false);
+			protocol = protocolSessionManager.obtainSessionByProtocol("wonesys", false);
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
 		}

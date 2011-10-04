@@ -78,7 +78,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		});
 	}
 	
-	@Before
+	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
 		/* Wait for the activation of all the bundles */
@@ -140,7 +140,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		}
 	}
 
-	@After
+	// @After
 	public void resetRepository() {
 
 		try {
@@ -157,12 +157,12 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		}
-		Assert.assertTrue(resourceManager.listResources().isEmpty());
+		// Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
 
 	@Test
 	public void DownUpLogicalTunnel() {
-		// initBundles();
+		initBundles();
 		String logicalTunnel = "lt-0/1/2";
 
 		try {
@@ -175,12 +175,12 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-		// resetRepository();
+		resetRepository();
 	}
 
 	@Test
 	public void DownUpEthernet() {
-		// initBundles();
+		initBundles();
 		// String ethernet = "fe-0/3/0";
 		// REal test
 		// String ethernet = "fe-0/0/1";
@@ -198,7 +198,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-		// resetRepository();
+		resetRepository();
 	}
 
 	/**
@@ -247,7 +247,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
 					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 				}
@@ -295,7 +295,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			for (LogicalDevice logicalDevice : ld) {
-				if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
 					LogicalPort logicalPort = (LogicalPort) logicalDevice;
 					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
 				}
@@ -343,7 +343,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 				ComputerSystem system = (ComputerSystem) resource.getModel();
 				List<LogicalDevice> ld = system.getLogicalDevices();
 				for (LogicalDevice logicalDevice : ld) {
-					if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
+					if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
 						LogicalPort logicalPort = (LogicalPort) logicalDevice;
 						Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
 					}
@@ -386,14 +386,15 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
-
-		// assert model updated
-		ComputerSystem system = (ComputerSystem) resource.getModel();
-		List<LogicalDevice> ld = system.getLogicalDevices();
-		for (LogicalDevice logicalDevice : ld) {
-			if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals(interfaceToConfigure)) {
-				LogicalPort logicalPort = (LogicalPort) logicalDevice;
-				Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+		if (!isMock) {
+			// assert model updated
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals(interfaceToConfigure)) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+				}
 			}
 		}
 		// } catch (Exception e) {

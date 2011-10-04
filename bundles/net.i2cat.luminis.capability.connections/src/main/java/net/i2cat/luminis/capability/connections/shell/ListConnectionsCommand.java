@@ -17,7 +17,7 @@ public class ListConnectionsCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("list connections of resource :" + resourceId);
+		printInitCommand("list connections of resource :" + resourceId);
 
 		try {
 
@@ -30,10 +30,10 @@ public class ListConnectionsCommand extends GenericKarafCommand {
 		} catch (Exception e) {
 			printError("Error in make connection");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return "";
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 
 	}

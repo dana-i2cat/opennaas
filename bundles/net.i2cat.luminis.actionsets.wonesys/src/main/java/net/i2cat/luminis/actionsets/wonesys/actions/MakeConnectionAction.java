@@ -1,12 +1,8 @@
 package net.i2cat.luminis.actionsets.wonesys.actions;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
@@ -25,8 +21,12 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class MakeConnectionAction extends Action {
 
@@ -47,7 +47,7 @@ public class MakeConnectionAction extends Action {
 
 		try {
 			/* get protocol */
-			WonesysProtocolSession protocol = (WonesysProtocolSession) protocolSessionManager.obtainSessionByProtocol("wonesys", false);
+			IProtocolSession protocol = protocolSessionManager.obtainSessionByProtocol("wonesys", false);
 
 			/* get params */
 			FiberConnection connection = loadParams((FiberConnection) params, (ProteusOpticalSwitch) modelToUpdate);
@@ -78,12 +78,12 @@ public class MakeConnectionAction extends Action {
 		}
 	}
 
-	private ActionResponse makeConnectionWithDifferentLambda(FiberConnection connection, WonesysProtocolSession protocol) {
+	private ActionResponse makeConnectionWithDifferentLambda(FiberConnection connection, IProtocolSession protocol) {
 		// TODO NOT SUPPORTED YET
 		return ActionResponse.errorResponse("Could not make connection. Connections with different lambdas are not supported.");
 	}
 
-	private ActionResponse makeConnectionWithSameLambda(FiberConnection connection, WonesysProtocolSession protocol) throws ActionException {
+	private ActionResponse makeConnectionWithSameLambda(FiberConnection connection, IProtocolSession protocol) throws ActionException {
 
 		ActionResponse response = ActionResponse.okResponse(getActionID());
 
@@ -116,7 +116,7 @@ public class MakeConnectionAction extends Action {
 		return response;
 	}
 
-	private Response makeConnectionInCard(FCPort srcPort, FCPort dstPort, double lambda, WonesysProtocolSession protocol)
+	private Response makeConnectionInCard(FCPort srcPort, FCPort dstPort, double lambda, IProtocolSession protocol)
 			throws ActionException {
 
 		try {

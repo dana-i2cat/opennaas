@@ -15,7 +15,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-//TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE HAVE TO BE FILL 
+//TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE SHOULD BE FILLED 
 public class CapabilityHelper {
 	static Log	log	= LogFactory
 							.getLog(CapabilityHelper.class);

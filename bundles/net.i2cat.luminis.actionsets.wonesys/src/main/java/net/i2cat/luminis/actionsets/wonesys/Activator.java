@@ -1,0 +1,38 @@
+package net.i2cat.luminis.actionsets.wonesys;
+
+import net.i2cat.nexus.events.IEventManager;
+import net.i2cat.nexus.resources.AbstractActivator;
+import net.i2cat.nexus.resources.ActivatorException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+
+public class Activator extends AbstractActivator implements BundleActivator {
+
+	static Log						log				= LogFactory.getLog(Activator.class);
+
+	private static BundleContext	bundleContext	= null;
+
+	@Override
+	public void start(BundleContext context) throws Exception {
+		bundleContext = context;
+	}
+
+	@Override
+	public void stop(BundleContext context) throws Exception {
+		Activator.bundleContext = null;
+	}
+
+	public static BundleContext getBundleContext() {
+		return bundleContext;
+	}
+
+	public static IEventManager getEventManagerService() throws ActivatorException {
+		log.debug("Calling EventManager");
+		log.debug("Params: context=" + bundleContext + " class=" + IEventManager.class.getName());
+		return (IEventManager) getServiceFromRegistry(bundleContext, IEventManager.class.getName());
+	}
+
+}

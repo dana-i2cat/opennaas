@@ -42,6 +42,7 @@ public class ActionTestHelper {
 		String uri = System.getProperty("protocol.uri");
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+
 		}
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
@@ -61,12 +62,11 @@ public class ActionTestHelper {
 	public Object newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setElementName("fe-0/3/2");
+		eth.setName("fe-0/3/2");
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address("192.168.32.1");
 		ip.setSubnetMask("255.255.255.0");
 		eth.addProtocolEndpoint(ip);
-		System.out.println(eth.getLinkTechnology().toString());
 		return eth;
 	}
 }

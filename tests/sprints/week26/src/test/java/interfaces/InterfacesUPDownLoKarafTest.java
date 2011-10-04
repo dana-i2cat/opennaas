@@ -52,7 +52,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 	private CommandProcessor	commandprocessor;
 	@Inject
 	BundleContext				bundleContext	= null;
-	private Boolean				isMock;
+	private Boolean				isMock			= false;
 
 	public static Option[] configuration() throws Exception {
 
@@ -155,7 +155,7 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			Assert.fail();
 		}
-		Assert.assertTrue(resourceManager.listResources().isEmpty());
+		// Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 	}
 
@@ -197,18 +197,16 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 		ComputerSystem system = (ComputerSystem) resource.getModel();
 		List<LogicalDevice> ld = system.getLogicalDevices();
-		// for (LogicalDevice logicalDevice : ld) {
-		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
-		// }
-		// }
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// Assert.fail(e.getMessage());
-		// }
 
+		if (!isMock) {
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.STOPPED);
+				}
+			}
+
+		}
 	}
 
 	public void UPInterfaceLo() throws Exception {
@@ -232,21 +230,18 @@ public class InterfacesUPDownLoKarafTest extends AbstractIntegrationTest {
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response2.get(1).isEmpty());
+		if (!isMock) {
+			// assert model updated
+			ComputerSystem system = (ComputerSystem) resource.getModel();
+			List<LogicalDevice> ld = system.getLogicalDevices();
+			for (LogicalDevice logicalDevice : ld) {
+				if (logicalDevice instanceof LogicalPort && logicalDevice.getName().equals("lo0.0")) {
+					LogicalPort logicalPort = (LogicalPort) logicalDevice;
+					Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
+				}
+			}
 
-		// // assert model updated
-		// ComputerSystem system = (ComputerSystem) resource.getModel();
-		// List<LogicalDevice> ld = system.getLogicalDevices();
-		// for (LogicalDevice logicalDevice : ld) {
-		// if (logicalDevice instanceof LogicalPort && logicalDevice.getElementName().equals("lo0.0")) {
-		// LogicalPort logicalPort = (LogicalPort) logicalDevice;
-		// Assert.assertTrue(logicalPort.getOperationalStatus() == OperationalStatus.OK);
-		// }
-		// }
-		// } catch (Exception e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// Assert.fail(e.getMessage());
-		// }
+		}
 	}
 
 }

@@ -32,7 +32,21 @@
 		</service-properties>
 	</service>
 	<!-- Provide commands to the Karaf shell -->
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
+		<command name="chassis/addInterface">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.AddInterfaceCommand" />
+			<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
+		</command>
+		<command name="chassis/removeInterface">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveInterfaceCommand" />
+		<completers>
+				<ref component-id="resourceNameCompleter" />
+				<null />
+			</completers>
+		</command>	
 		<command name="chassis/createSubInterface">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand"/>
 		</command>

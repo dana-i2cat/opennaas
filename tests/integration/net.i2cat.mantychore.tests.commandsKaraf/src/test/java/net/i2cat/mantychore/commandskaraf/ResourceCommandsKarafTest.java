@@ -13,6 +13,7 @@ import java.util.List;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -83,18 +84,15 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
+		commandprocessor = getOsgiService(CommandProcessor.class);
+
+		clearRepo();
 
 		log.info("INFO: Initialized!");
-		commandprocessor = getOsgiService(CommandProcessor.class);
 
 	}
 

@@ -77,8 +77,6 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 
 	public void initResource() throws Exception {
 
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
 		OpticalSwitchFactory switchFactory = new OpticalSwitchFactory();
 
 		/* initialize model */
@@ -134,17 +132,17 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			log.error(ExceptionUtils.getRootCause(e).getMessage());
+			
 			Assert.fail();
 		}
 	}
 
 	@Before
 	public void initBundles() throws Exception {
-		log.info("Waiting to load all bundles");
+		
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
+		
 		initResource();
 		initCapability();
 	}

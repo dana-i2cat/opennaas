@@ -76,7 +76,7 @@ public class ConfirmActionTest {
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
 		for (LogicalDevice device : ld) {
 			EthernetPort ep = (EthernetPort) device;
-			log.info(ep.getElementName());
+			log.info(ep.getName());
 		}
 	}
 

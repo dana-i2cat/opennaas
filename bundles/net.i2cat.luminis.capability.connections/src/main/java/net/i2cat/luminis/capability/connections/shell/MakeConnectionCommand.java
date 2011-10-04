@@ -33,7 +33,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("make connection between: (" + portSource + ",l=" + lambdaSource + "),(" + portTarget + ",l=" + lambdaTarget + ")");
+		printInitCommand("make connection between: (" + portSource + ",l=" + lambdaSource + "),(" + portTarget + ",l=" + lambdaTarget + ")");
 
 		try {
 
@@ -44,7 +44,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 			ICapability capability = getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
 			if (capability == null) {
 				printError("Error getting the capability");
-				endcommand();
+				printEndCommand();
 				return "";
 			}
 
@@ -56,17 +56,17 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 				for (String errorMsg : response.getErrors()) {
 					printError(errorMsg);
 				}
-				endcommand();
+				printEndCommand();
 				return "";
 			}
 
 		} catch (Exception e) {
 			printError("Error in make connection");
 			printError(e);
-			endcommand();
+			printEndCommand();
 			return "";
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

@@ -50,7 +50,7 @@ public class CreateSubInterfaceAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template, null));
+			setVelocityMessage(prepareVelocityCommand(params, template));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

@@ -1,0 +1,67 @@
+package automaticrefresh;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.i2cat.nexus.resources.ResourceIdentifier;
+import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
+import net.i2cat.nexus.resources.descriptor.Information;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+//TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE SHOULD BE FILLED 
+public class CapabilityHelper {
+	static Log	log	= LogFactory
+							.getLog(CapabilityHelper.class);
+
+	public static ResourceDescriptor newResourceDescriptor(String type) {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		Map<String, String> properties = new HashMap<String, String>();
+
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+
+		capabilityDescriptors.add(newCapabilityDescriptorProteus("connections"));
+		capabilityDescriptors.add(newCapabilityDescriptorProteus("queue"));
+
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+		/* FIXME PUT PROTOCOL_URI IN RESOURCE DESCRIPTOR CONSTANTS */
+		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
+				"user:pass@host.net:2212");
+
+		resourceDescriptor.setProperties(properties);
+		ResourceIdentifier identifier = new ResourceIdentifier(type);
+		resourceDescriptor.setId(identifier.getId());
+		/* information. It is only necessary to add type */
+		Information information = new Information();
+		information.setType(type);
+		information.setName("Switch Test");
+		resourceDescriptor.setInformation(information);
+
+		return resourceDescriptor;
+	}
+
+	public static CapabilityDescriptor newCapabilityDescriptorProteus(String type) {
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		CapabilityProperty property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_NAME, "proteus");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_VERSION, "1.0");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		Information capabilityInformation = new Information();
+		capabilityInformation.setType(type);
+		capabilityDescriptor.setCapabilityInformation(capabilityInformation);
+
+		return capabilityDescriptor;
+	}
+}

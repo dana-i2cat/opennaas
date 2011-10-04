@@ -16,10 +16,9 @@ import java.util.Collection;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import uk.co.westhawk.snmp.pdu.OneTrapPduv1;
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
 import uk.co.westhawk.snmp.stack.AsnObject;
@@ -27,31 +26,35 @@ import uk.co.westhawk.snmp.stack.AsnObjectId;
 import uk.co.westhawk.snmp.stack.AsnOctets;
 import uk.co.westhawk.snmp.stack.AsnUnsInteger;
 import uk.co.westhawk.snmp.stack.PduException;
-import uk.co.westhawk.snmp.stack.SnmpConstants;
 import uk.co.westhawk.snmp.stack.SnmpContext;
 import uk.co.westhawk.snmp.stack.SnmpContextv2c;
-import uk.co.westhawk.snmp.stack.TrapPduv1;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
-import uk.co.westhawk.visual.BareGraph;
 
 import com.wonesys.emsModule.alarms.Alarm;
 import com.wonesys.emsModule.alarms.AlarmsControler;
 import com.wonesys.emsModule.hwd.HwdOp;
+import com.wonesys.emsModule.hwd.IMessageArrivalListener;
 
 /**
  * 
  * @author mbeltran
  * @author Isart Canyameres @ Fundació i2cat
  */
-public class EMSmoduleTest {
+public class EMSmoduleTest implements IMessageArrivalListener {
 
-	Logger						log			= LoggerFactory.getLogger(EMSmoduleTest.class);
+	Log						log			= LogFactory.getLog(EMSmoduleTest.class);
 
 	private static final int	ALARM_PORT	= 32162;
 
 	AlarmsControler				alamsControler;
 	SnmpContext					snmpContext;
+	String						message		= "";
+	Object						mutex		= new Object();
+
+	boolean						connected	= false;
+	boolean						closed		= false;
+	Exception					error		= null;
 
 	/** Creates a new instance of this class */
 	public EMSmoduleTest() {
@@ -60,11 +63,14 @@ public class EMSmoduleTest {
 	}
 
 	@Test
-	public void libTest() throws IOException {
+	public void libTest() throws Exception {
 
 		try {
 
 			executa("hwd");
+			if (error != null) {
+				Assert.fail(error.getLocalizedMessage());
+			}
 
 			executa("s");
 			checkAlarmPortIsOpened();
@@ -75,6 +81,10 @@ public class EMSmoduleTest {
 			executa("l");
 			snmpContext.destroy();
 		} catch (IOException e) {
+			// just to display error when test fails
+			log.error("IOException", e);
+			throw e;
+		} catch (Exception e) {
 			// just to display error when test fails
 			log.error("IOException", e);
 			throw e;
@@ -195,7 +205,7 @@ public class EMSmoduleTest {
 		}
 	}
 
-	private void executa(String entrada) throws IOException {
+	private void executa(String entrada) throws Exception {
 
 		if (entrada.equals("hwd")) {
 
@@ -203,15 +213,28 @@ public class EMSmoduleTest {
 
 			String ip = "10.10.80.11";
 			int port = 27773;
-			String command = createGetCommand();
+			hwd.connect(ip, port, this);
+			connected = true;
 
-			log.info("Sending Operation to HWD @ " + ip);
-			log.info(command);
-			log.info(hwd.sendOp(command, ip));
+			String command = createGetCommand();
 
 			log.info("Sending Operation to HWD @ " + ip + ":" + port);
 			log.info(command);
-			log.info(hwd.sendOpPort(command, ip, 27773));
+			hwd.sendOp(command);
+			String response = waitForMessageArrival();
+			Assert.assertFalse(response.equals(""));
+			log.info(response);
+
+			log.info("Sending Operation to HWD @ " + ip + ":" + port);
+			log.info(command);
+			hwd.sendOp(command);
+			response = waitForMessageArrival();
+			Assert.assertFalse(response.equals(""));
+			log.info(response);
+
+			hwd.disconnect();
+			connected = false;
+			closed = true;
 		}
 
 		else if (entrada.equals("s")) {
@@ -245,33 +268,29 @@ public class EMSmoduleTest {
 
 	private String createGetCommand() {
 		// getInventory command
-		String cmd = "5910ffffffffff01ffffffff0000";
-		String xor = getXOR(cmd);
-
-		cmd += xor + "00";
-
-		return cmd;
+		return "5910ffffffffff01ffffffff0000b700";
 	}
 
-	private String getXOR(String cmd) {
-
-		int xor = Integer.parseInt(cmd.substring(0, 2), 16) ^ Integer.parseInt(cmd.substring(2, 4), 16);
-		for (int i = 4; i <= cmd.length() - 2; i++) {
-			xor = xor ^ Integer.parseInt(cmd.substring(i, i + 2), 16);
-			i++;
-		}
-		String hxor = Integer.toHexString(xor);
-		if (hxor.length() < 2) {
-			hxor = "0" + hxor;
-		}
-		return hxor;
-	}
+	// private String getXOR(String cmd) {
+	//
+	// int xor = Integer.parseInt(cmd.substring(0, 2), 16) ^ Integer.parseInt(cmd.substring(2, 4), 16);
+	// for (int i = 4; i <= cmd.length() - 2; i++) {
+	// xor = xor ^ Integer.parseInt(cmd.substring(i, i + 2), 16);
+	// i++;
+	// }
+	// String hxor = Integer.toHexString(xor);
+	// if (hxor.length() < 2) {
+	// hxor = "0" + hxor;
+	// }
+	// return hxor;
+	// }
 
 	/**
 	 * @param args
 	 *            the command line arguments
+	 * @throws Exception
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 
 		EMSmoduleTest main = new EMSmoduleTest();
 
@@ -305,6 +324,34 @@ public class EMSmoduleTest {
 		System.out.println("Gracias por usar EMS Module");
 
 		System.exit(0);
+	}
+
+	public String waitForMessageArrival() throws Exception {
+		synchronized (mutex) {
+			message = "";
+			mutex.wait(30000);
+			if (message.equals(""))
+				throw new Exception("Timeout waiting for message arrival");
+			return message.toString();
+		}
+	}
+
+	@Override
+	public void messageReceived(String message) {
+		synchronized (mutex) {
+			this.message = message;
+			mutex.notify();
+		}
+	}
+
+	@Override
+	public void errorHappened(Exception e) {
+		if (connected) {
+			log.error("Error happened on async reader", e);
+			error = e;
+		} else if (!closed) {
+			log.warn("Error happened on async reader", e);
+		}
 	}
 
 }

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
@@ -39,7 +40,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 
 	static Log			log				= LogFactory.getLog(UseProfileBundleTest.class);
 
-	IResourceRepository	resourceRepository;
+	IResourceManager	resourceManager;
 	IProfileManager		profileManager;
 
 	@Inject
@@ -58,16 +59,12 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		return options;
 	}
 
-	@Before
+	//@Before
 	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
 
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
-		resourceRepository = getOsgiService(IResourceRepository.class, 50000);
+		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
 
 		clearRepo();
@@ -75,18 +72,25 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		log.info("INFO: Initialized!");
 	}
 
-	@After
+	//@After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");
 
-		IResource[] toRemove = new IResource[resourceRepository.listResources().size()];
-		toRemove = resourceRepository.listResources().toArray(toRemove);
+		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
 
 		for (IResource resource : toRemove) {
+
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
+				}
+			}
 			try {
-				resourceRepository.stopResource(resource.getResourceIdentifier().getId());
-				resourceRepository.removeResource(resource.getResourceIdentifier().getId());
+				resourceManager.removeResource(resource.getResourceIdentifier());
 			} catch (ResourceException e) {
 				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
 			}
@@ -103,7 +107,7 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 	public void createResourceWithProfile() {
 
 		initBundles();
-		
+
 		try {
 
 			List<String> capabilities = new ArrayList<String>();
@@ -124,10 +128,10 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			// call createResource(resourceDescriptor)
-			IResource resource = resourceRepository.createResource(resourceDescriptor);
+			IResource resource = resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resourceDescriptor.getId());
-			log.info("UseProfileBundleTest: resource. getResourceIdentifier.getId gives us: " + resource.getResourceIdentifier().getId());
-			resourceRepository.startResource(resource.getResourceIdentifier().getId());
+			//log.info("UseProfileBundleTest: resource. getResourceIdentifier.getId gives us: " + resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
 
 			// assert profile loading has been correct
 			Assert.assertNotNull(resource.getProfile());

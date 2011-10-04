@@ -2,6 +2,7 @@ package net.i2cat.luminis.actions.tests;
 
 import java.io.IOException;
 
+import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
 import net.i2cat.mantychore.model.FCPort;

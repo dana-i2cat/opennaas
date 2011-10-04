@@ -2,12 +2,12 @@ package net.i2cat.nexus.events;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Activator implements BundleActivator {
 
-	Logger							log				= LoggerFactory.getLogger(Activator.class);
+	Log							log				= LogFactory.getLog(Activator.class);
 
 	private static BundleContext	bundleContext	= null;
 

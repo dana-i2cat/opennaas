@@ -9,8 +9,8 @@ import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
+import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
@@ -138,7 +138,7 @@ public class ConfigureVLANActionTest {
 	public EthernetPort newParamEthernetPort(String elementname, int portNumber, int vlanID) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(LinkTechnology.OTHER);// VLAN
-		eth.setElementName(elementname);
+		eth.setName(elementname);
 		eth.setPortNumber(portNumber);
 
 		VLANEndpoint vlan = new VLANEndpoint();
@@ -149,7 +149,7 @@ public class ConfigureVLANActionTest {
 
 	public LogicalTunnelPort newParamLogicalTunnetPort(String elementname, int portNumber, long peer_unit, int vlanID) {
 		LogicalTunnelPort lt = new LogicalTunnelPort();
-		lt.setElementName(elementname);
+		lt.setName(elementname);
 
 		lt.setPortNumber(portNumber);
 		lt.setPeer_unit(peer_unit);

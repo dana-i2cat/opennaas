@@ -11,8 +11,8 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * This class is intended to manage events, using EventAdmin service as a helper. In order for a class to receive events, it must implement
@@ -26,7 +26,7 @@ public class EventManager implements IEventManager {
 
 	// protected BundleContext bundleContext;
 
-	Logger											log					= LoggerFactory.getLogger(EventManager.class);
+	Log											log					= LogFactory.getLog(EventManager.class);
 
 	protected HashMap<Integer, ServiceRegistration>	registeredServices	= new HashMap<Integer, ServiceRegistration>();
 	protected int									serviceID			= 0;

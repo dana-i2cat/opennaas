@@ -2,6 +2,14 @@
 ###########                       MACROS                            ###########
 ###############################################################################
 
+#macro ( isLogicalRouter $element $resp )
+	#set( $resp = "false" )
+	#if($element.ElementName)
+		#set( $resp = "true" )
+	#end
+#end
+
+
 #macro ( isEthernet $element $resp )
 	#set( $resp = "false" )
 	#if($element.LinkTechnology.toString() == "ETHERNET")
@@ -33,9 +41,16 @@
 ###############################################################################
 
 <configuration>
+	#set( $logicalRouter = "true" )
+	#isLogicalRouter( $param $logicalRouter)
+	#if($logicalRouter == "true")
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+
 	<interfaces>	
 		<interface>
-			<name>$param.ElementName</name>
+			<name>$param.Name</name>
 				<unit operation="replace">					
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 					<name>$param.PortNumber</name>
@@ -65,6 +80,8 @@
 					#end					
 			</unit>
 		</interface>	
-
 	</interfaces>
+		#if($logicalRouter == "true")
+		</logical-systems>
+	#end
 </configuration>

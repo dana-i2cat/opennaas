@@ -1,7 +1,6 @@
 package net.i2cat.luminis.actionsets.wonesys.actions;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
@@ -11,13 +10,9 @@ import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannelPlan;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
-import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.ITUGrid;
@@ -25,8 +20,8 @@ import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
+import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchCardFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -34,6 +29,7 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 
@@ -69,7 +65,7 @@ public class RefreshModelConnectionsAction extends WonesysAction {
 		actionResponse.setActionID(actionID);
 		try {
 			/* get protocol */
-			WonesysProtocolSession protocol = (WonesysProtocolSession) protocolSessionManager.obtainSessionByProtocol("wonesys", false);
+			IProtocolSession protocol = protocolSessionManager.obtainSessionByProtocol("wonesys", false);
 
 			// getInventory
 			WonesysCommand c = new GetInventoryCommand();
