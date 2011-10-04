@@ -2,10 +2,10 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -29,12 +29,18 @@ public class InfoCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("protocols information");
+		printInitCommand("protocols information");
 
 		IResourceManager manager = getResourceManager();
 
-		if (!splitResourceName(resourceId))
-			return null;
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
+		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
@@ -61,7 +67,7 @@ public class InfoCommand extends GenericKarafCommand {
 		printInfo("Protocol session self-description");
 
 		printInfo(protocolSession.toString());
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

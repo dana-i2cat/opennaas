@@ -2,8 +2,8 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -29,10 +29,16 @@ public class AddCommand extends GenericKarafCommand {
 
 		IResourceManager manager = getResourceManager();
 
-		initcommand("adding protocol");
-		if (!splitResourceName(resourceId))
-			return null;
+		printInitCommand("adding protocol");
 
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
+		}
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
 		IProtocolManager protocolManager = getProtocolManager();
@@ -42,7 +48,7 @@ public class AddCommand extends GenericKarafCommand {
 		} else {
 			printError("Protocol not added");
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

@@ -2,8 +2,8 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -29,10 +29,16 @@ public class PurgeCommand extends GenericKarafCommand {
 
 		IResourceManager manager = getResourceManager();
 
-		initcommand("purge protocol");
+		printInitCommand("purge protocol");
 
-		if (!splitResourceName(resourceId))
-			return null;
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
+		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
@@ -44,7 +50,7 @@ public class PurgeCommand extends GenericKarafCommand {
 		else
 			sessionManager.purgeOldSessions();
 
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

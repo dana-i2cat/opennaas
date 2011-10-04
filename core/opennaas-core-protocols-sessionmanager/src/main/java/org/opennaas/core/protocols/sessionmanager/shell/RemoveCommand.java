@@ -2,9 +2,9 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -30,11 +30,17 @@ public class RemoveCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("remove protocol");
+		printInitCommand("remove protocol");
 		IProtocolManager protocolManager = getProtocolManager();
 		IResourceManager manager = getResourceManager();
-		if (!splitResourceName(resourceId))
-			return null;
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printEndCommand();
+			return -1;
+		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 
@@ -49,7 +55,7 @@ public class RemoveCommand extends GenericKarafCommand {
 			}
 		} else
 			sessionManager.destroyProtocolSession(sessionId);
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 
