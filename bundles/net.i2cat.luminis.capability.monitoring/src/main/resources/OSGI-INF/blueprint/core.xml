@@ -22,7 +22,7 @@
 	</bean>
 	<!-- Command completers -->
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="monitoringCapabilityFactory" interface="net.i2cat.nexus.resources.capability.ICapabilityFactory">
+	<service ref="monitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="monitoring"/>

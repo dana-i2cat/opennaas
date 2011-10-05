@@ -3,10 +3,10 @@ package net.i2cat.luminis.actions.tests.mock;
 import java.util.List;
 import java.util.Set;
 
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class MockProtocolSessionManager implements IProtocolSessionManager {
 

@@ -7,17 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ILifecycle.State;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ProtocolSessionHelper;
@@ -34,7 +34,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class ConfigureLRTest extends AbstractIntegrationTest {

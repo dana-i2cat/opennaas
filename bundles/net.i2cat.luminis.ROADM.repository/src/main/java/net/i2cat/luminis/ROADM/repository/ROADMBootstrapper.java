@@ -2,15 +2,17 @@ package net.i2cat.luminis.ROADM.repository;
 
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,7 +20,7 @@ import org.apache.commons.logging.LogFactory;
 public class ROADMBootstrapper implements IResourceBootstrapper {
 	Log						log	= LogFactory.getLog(ROADMBootstrapper.class);
 
-	private ManagedElement	oldModel;
+	private IModel	oldModel;
 
 	@Override
 	public void bootstrap(IResource resource) throws ResourceException {

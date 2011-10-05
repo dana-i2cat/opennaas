@@ -669,11 +669,11 @@
 			<name>Fuse Source releases</name>
 			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>java</id>
 			<name>Java.net releases</name>
 			<url>http://download.java.net/maven/2/</url>
-		</repository>
+		</repository>-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>

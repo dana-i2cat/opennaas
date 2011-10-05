@@ -1,7 +1,7 @@
 package net.i2cat.mantychore.repository;
 
-import net.i2cat.nexus.resources.AbstractActivator;
-import net.i2cat.nexus.resources.IResourceManager;
+import org.opennaas.core.resources.AbstractActivator;
+import org.opennaas.core.resources.IResourceManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

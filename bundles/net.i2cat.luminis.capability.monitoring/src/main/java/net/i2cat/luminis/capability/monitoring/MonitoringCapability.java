@@ -4,16 +4,16 @@ import java.util.Vector;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.resources.ActivatorException;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

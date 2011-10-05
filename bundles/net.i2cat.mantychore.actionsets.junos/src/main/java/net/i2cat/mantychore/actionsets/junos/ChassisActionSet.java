@@ -37,7 +37,6 @@ public class ChassisActionSet extends ActionSet {
 		return actionNames;
 	}
 	
-	@Override
 	public String getStartUpRefreshActionName() {
 		//FIXME: change when listInterfaces is complete
 		return ActionConstants.GETCONFIG;

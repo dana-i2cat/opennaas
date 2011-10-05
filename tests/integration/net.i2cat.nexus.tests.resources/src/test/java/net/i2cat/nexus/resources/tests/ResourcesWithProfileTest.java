@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;

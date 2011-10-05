@@ -12,6 +12,9 @@ import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;

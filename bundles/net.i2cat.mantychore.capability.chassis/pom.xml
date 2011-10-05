@@ -24,29 +24,6 @@
 			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
 		</dependency>
 		<!-- mantychore dependencies -->
-		<!-- TODO clean pom when final structure of bundle is ready -->
-		<!--<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>org.opennaas.core.resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>-->
-		<!--somehow contains nexus-resources -->
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
@@ -62,10 +39,6 @@
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.karaf.shell</groupId>
-			<artifactId>org.apache.karaf.shell.console</artifactId>
-		</dependency>-->
 	</dependencies>
 	<build>
 		<resources>

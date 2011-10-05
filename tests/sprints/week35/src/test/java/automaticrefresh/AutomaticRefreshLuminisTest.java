@@ -3,14 +3,14 @@ package automaticrefresh;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.IntegrationTestsHelper;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.hibernate.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -2,14 +2,14 @@ package net.i2cat.nexus.tests;
 
 import java.util.ArrayList;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class InitializerTestHelper {
 	public static void stopResources(IResourceManager resourceManager) throws ResourceException {

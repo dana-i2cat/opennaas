@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.repository;
 
-5import java.util.HashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +9,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
