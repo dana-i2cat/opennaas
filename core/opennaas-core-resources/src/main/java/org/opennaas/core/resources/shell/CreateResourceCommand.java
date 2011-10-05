@@ -46,7 +46,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("create resource");
+		printInitCommand("create resource");
 
 		IResourceManager manager = getResourceManager();
 
@@ -69,7 +69,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		} else {
 			printInfo("Created " + counter + " resource/s from " + totalFiles);
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 
 	}

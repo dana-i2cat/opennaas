@@ -250,7 +250,7 @@ public class ResourceManager implements IResourceManager {
 			}
 		}
 		if (identifier == null) {
-			throw new ResourceException("Didn't find a resource with name: " + resourceName + " in the repository.");
+			throw new ResourceNotFoundException("Didn't find a resource with name: " + resourceName + " in the repository.");
 		}
 		return identifier;
 	}

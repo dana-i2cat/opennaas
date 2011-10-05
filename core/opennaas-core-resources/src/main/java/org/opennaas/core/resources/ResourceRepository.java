@@ -413,18 +413,21 @@ public class ResourceRepository implements IResourceRepository {
 			throw new ResourceException("Error loading session manager: ", e);
 		}
 
+		/* prepare capabilities */
 		logger.debug("  Obtaining capabilities...");
 		List<ICapability> oldCapabilities = resource.getCapabilities();
 		List<ICapability> capabilities = createCapabilities(resource);
 		resource.setCapabilities(capabilities);
 		logger.debug("  Capabilities obtained. Loading bootstrapper...");
 
+		/* prepare bootstrapper */
 		IResourceBootstrapper oldBootstrapper = resource.getBootstrapper();
 		if (bootstrapperFactory != null) {
 			resource.setBootstrapper(bootstrapperFactory.createResourceBootstrapper());
 		}
 		logger.debug("  Bootstrapper loaded");
 
+		/* get profile id and load profile from its bundle */
 		IProfile oldProfile = resource.getProfile();
 		if (!resource.getResourceDescriptor().getProfileId().isEmpty()) {
 			logger.debug("  Loading profile...");

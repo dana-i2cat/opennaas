@@ -7,24 +7,22 @@ import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlAttribute;
 
 /**
- * Property for capability. Used by the CapabilityDescriptor to provide the properties
- * needed to instantiate the capability
+ * Property for capability. Used by the CapabilityDescriptor to provide the properties needed to instantiate the capability
  * 
  * @author Mathieu Lemay (ITI)
  * 
  */
 @Entity
-public class CapabilityProperty
-{
+public class CapabilityProperty {
 	@Id
 	@GeneratedValue
-	private long id;
-	
-	@Basic
-	private String name;
+	private long	id;
 
 	@Basic
-	private String value;
+	private String	name;
+
+	@Basic
+	private String	value;
 
 	public CapabilityProperty() {
 
@@ -59,5 +57,14 @@ public class CapabilityProperty
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		CapabilityProperty capabilityProperty = new CapabilityProperty();
+		capabilityProperty.setId(id);
+		capabilityProperty.setName(name);
+		capabilityProperty.setValue(value);
+		return capabilityProperty;
 	}
 }

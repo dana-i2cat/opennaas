@@ -27,7 +27,7 @@ public class RemoveProfileCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("remove profile");
+		printInitCommand("remove profile");
 
 		IProfileManager manager = getProfileManager();
 		try {
@@ -38,7 +38,7 @@ public class RemoveProfileCommand extends GenericKarafCommand {
 			printError(e);
 			throw e;
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }

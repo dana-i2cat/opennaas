@@ -17,6 +17,7 @@ import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.profile.ProfileManager;
+import org.opennaas.core.resources.tests.capability.MockActionSet;
 import org.opennaas.core.resources.tests.profile.mock.DummyAction;
 import org.opennaas.core.resources.tests.profile.mock.MockProfile;
 
@@ -115,7 +116,7 @@ public class ProfileManagerTest {
 
 	private IProfile createProfile(String profileName) {
 
-		ActionSet actionSet = new ActionSet();
+		ActionSet actionSet = new MockActionSet();
 
 		actionSet.setActionSetId("chassisProfileActionSet");
 		actionSet.putAction(actionId, DummyAction.class);

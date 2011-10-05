@@ -48,5 +48,12 @@ public interface IAction {
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 			throws ActionException;
 
+	/**
+	 * What it is the utility for this method
+	 * 
+	 * @param params
+	 * @return
+	 * @throws ActionException
+	 */
 	public boolean checkParams(Object params) throws ActionException;
 }

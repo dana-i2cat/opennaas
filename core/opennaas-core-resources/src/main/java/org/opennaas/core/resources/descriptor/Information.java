@@ -11,20 +11,19 @@ import javax.persistence.Embeddable;
  */
 
 @Embeddable
-public class Information
-{
+public class Information {
 	/** The type of information **/
 	@Basic
-	private String type;
+	private String	type;
 	/** The name or alias **/
 	@Basic
-	private String name;
+	private String	name;
 	/** The version **/
 	@Basic
-	private String version;
+	private String	version;
 	/** Description **/
 	@Basic
-	private String description;
+	private String	description;
 
 	public Information() {
 	}
@@ -67,6 +66,16 @@ public class Information
 		this.description = description;
 	}
 
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Information information = new Information();
+		information.setDescription(description);
+		information.setName(name);
+		information.setType(type);
+		information.setVersion(version);
+		return information;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -99,20 +108,17 @@ public class Information
 		if (name == null) {
 			if (other.name != null)
 				return false;
-		}
-		else if (!name.equals(other.name))
+		} else if (!name.equals(other.name))
 			return false;
 		if (type == null) {
 			if (other.type != null)
 				return false;
-		}
-		else if (!type.equals(other.type))
+		} else if (!type.equals(other.type))
 			return false;
 		if (version == null) {
 			if (other.version != null)
 				return false;
-		}
-		else if (!version.equals(other.version))
+		} else if (!version.equals(other.version))
 			return false;
 		return true;
 	}

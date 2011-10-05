@@ -1,5 +1,7 @@
 package org.opennaas.core.resources.capability;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -190,33 +192,77 @@ public abstract class AbstractCapability implements ICapability {
 	protected abstract void shutdownCapability() throws CapabilityException;
 
 	/**
-	 * Sends to queue the actions that should be executed before this capability is operative.
+	 * Method if it is not necessasry to use params to send Refresh Actions
+	 * */
+	public Response sendRefreshActions() {
+		return this.sendRefreshActions(new ArrayList());
+	}
+
+	/**
+	 * Sends to the queue necessary actions that should be executed before this capability is operative.
 	 * 
 	 * @return
 	 */
-	public Response sendStartUpActions() {
+	public Response sendRefreshActions(List params) {
 		try {
 
-			Response response = null;
+			List<String> refreshActions = getActionSet().getRefreshActionName();
 
-			if (getActionSet().getStartUpRefreshActionName() != null) {
-				if (getActionSet().getActionNames().contains(getActionSet().getStartUpRefreshActionName())) {
-					response = (Response) sendMessage(getActionSet().getStartUpRefreshActionName(), null);
-				} else {
-					Vector<String> errorMsgs = new Vector<String>();
-					errorMsgs
-							.add("Could not find action in capability actionset");
-					response = Response.errorResponse(getActionSet().getStartUpRefreshActionName(), errorMsgs);
-				}
+			// TODO TO IMPROVE
+			// this.resource.setModel(null);
+
+			List<Response> responses = new ArrayList<Response>();
+			int numAction = 1;
+			for (String refreshAction : refreshActions) {
+
+				Object param = null;
+				// Check if it exists an available action
+				if (params.size() >= numAction)
+					param = params.get(numAction - 1);
+
+				responses.add((Response) sendMessage(refreshAction, param));
 			}
-			return response;
+
+			return prepareResponse(responses);
 
 		} catch (CapabilityException e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse("STARTUP_REFRESH_ACTION", errorMsgs);
+			return prepareErrorMessage("STARTUP_REFRESH_ACTION", e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
 		}
+
+	}
+
+	private static final String	REFRESH	= "refresh";
+
+	private Response prepareResponse(List<Response> responses) {
+		Response responseRefresh = Response.okResponse(REFRESH);
+		Vector<String> errors = new Vector<String>();
+		for (Response response : responses) {
+			if (response.getStatus() == Response.Status.ERROR) {
+				errors.add(concatenateList(response.getErrors(), "\n"));
+			}
+		}
+		if (!errors.isEmpty()) {
+			responseRefresh = Response.errorResponse(REFRESH, errors);
+		}
+
+		return responseRefresh;
+	}
+
+	private Response prepareErrorMessage(String nameError, String message) {
+		Vector<String> errorMsgs = new Vector<String>();
+		errorMsgs.add(message);
+		return Response.errorResponse(nameError, errorMsgs);
+
+	}
+
+	private static String concatenateList(List<String> listStrings, String separator) {
+		String modifiedString = "";
+		String lastElement = listStrings.remove(listStrings.size() - 1);
+		for (String str : listStrings) {
+			modifiedString.concat(str + separator);
+		}
+		modifiedString.concat(lastElement);
+		return modifiedString;
 	}
 
 }

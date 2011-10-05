@@ -29,13 +29,19 @@ public class StopResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("resource stop");
+		printInitCommand("resource stop");
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
 
-				if (!splitResourceName(id))
-					return null;
+				String[] argsRouterName = new String[2];
+				try {
+					argsRouterName = splitResourceName(id);
+				} catch (Exception e) {
+					printError(e.getMessage());
+					printEndCommand();
+					return -1;
+				}
 
 				IResourceIdentifier identifier = null;
 				try {
@@ -74,7 +80,7 @@ public class StopResourceCommand extends GenericKarafCommand {
 			printError("An error occurred stopping the resource.");
 			printError(e);
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 
 	}

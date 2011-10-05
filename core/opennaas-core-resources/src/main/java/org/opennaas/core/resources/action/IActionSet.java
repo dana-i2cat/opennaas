@@ -13,9 +13,9 @@ public interface IActionSet {
 	/**
 	 * Returns the name of the action that is called to start up capabilities using actions in this actionset. This action should update the model
 	 * allowing all actions in this actionSet to be operative. An action with this signature should be available through
-	 * obtainAction(getStartUpRefreshActionName()), unless getStartUpRefreshActionName() returns null
+	 * obtainAction(getRefreshActionName()), unless getStartUpRefreshActionName() returns null
 	 */
-	public String getStartUpRefreshActionName();
+	public List<String> getRefreshActionName();
 
 	/**
 	 * 

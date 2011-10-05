@@ -23,7 +23,6 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	protected PrintStream	err					= System.err;
 	protected int			counter				= 0;
 	protected int			totalFiles			= 0;
-	protected String[]		argsRouterName		= null;
 	protected String[]		argsInterface		= null;
 	// Messages
 	protected String		error				= "[ERROR] ";
@@ -41,7 +40,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	protected String		horizontalSeparator	= "|------------------------------------------------------------------|";
 	protected String		titleFrame			= "=";
 
-	public void initcommand(String commandName) {
+	public void printInitCommand(String commandName) {
 
 		String title = " Executing " + commandName + " command ";
 
@@ -72,7 +71,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		printSymbol(horizontalSeparator);
 	}
 
-	public void endcommand() {
+	public void printEndCommand() {
 		printSymbol(doubleLine);
 	}
 
@@ -108,46 +107,44 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		out.printf(format, symbol);
 	}
 
-	public boolean splitResourceName(String complexName) {
+	public String[] splitResourceName(String complexName) throws Exception
+
+	{
+		String[] argsRouterName = new String[2];
 		argsRouterName = complexName.split(":");
 		if (argsRouterName.length != 2) {
-			printError("Invalid resourceId.");
-			printError("ResourceId must have the format [resourceType:resourceName]");
-			endcommand();
-			return false;
+			Exception excep = new Exception("Invalid resourceId" + '\n' + "ResourceId must have the format [resourceType:resourceName]");
+			throw excep;
 		}
 		if (argsRouterName[0].equalsIgnoreCase("")) {
-			printError("Invalid resource type.");
-			printError("[resourceType] can not be null");
-			endcommand();
-			return false;
+			Exception excep = new Exception("Invalid resource type." + '\n' + "[resourceType] can not be null");
+			throw excep;
 		}
 		if (argsRouterName[1].equalsIgnoreCase("")) {
-			printError("Invalid resource name.");
-			printError("[resourceName] can not be null");
-			endcommand();
-			return false;
+			Exception excep = new Exception("Invalid resource name." + '\n' + "[resourceType] can not be null");
+			throw excep;
 		}
+		return argsRouterName;
 
-		return true;
 	}
 
-	public boolean splitInterfaces(String complexInterface) {
+	public String[] splitInterfaces(String complexInterface) throws Exception {
+		String[] argsInterface = new String[2];
 		try {
+
 			argsInterface = complexInterface.split("\\.");
 			if (argsInterface.length != 2) {
-				printError("Invalid format in interface name.");
-				endcommand();
-				return false;
+				Exception excep = new Exception("Invalid format in interface name.");
+				throw excep;
 			}
 
 		} catch (Exception e) {
 			// throw new Exception("Bad interface name.", e);
 			printError("Error reading the interface name.");
-			endcommand();
-			return false;
+			Exception excep = new Exception("Error reading the interface name.");
+			throw excep;
 		}
-		return true;
+		return argsInterface;
 	}
 
 	public void printTable(String[] titles, String[][] values, int sizeWords) {
@@ -190,6 +187,13 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return (IProtocolManager) getAllServices(IProtocolManager.class, null).get(0);
 	}
 
+	/**
+	 * TODO A method don't have to return null!!! REFACTOR
+	 * 
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
 	protected IResource getResourceFromFriendlyName(String resourceId) throws ResourceException {
 
 		IResourceManager manager = null;
@@ -202,17 +206,21 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		}
 		if (manager == null) {
 			printError("Error in manager.");
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
-		if (!splitResourceName(resourceId))
+		String[] argsRouterName = new String[2];
+		try {
+			argsRouterName = splitResourceName(resourceId);
+		} catch (Exception e) {
 			return null;
+		}
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 		if (resourceIdentifier == null) {
 			printError("Error in identifier.");
-			endcommand();
+			printEndCommand();
 			return null;
 		}
 
@@ -231,13 +239,26 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		throw new Exception("Error getting the capability");
 	}
 
+	protected boolean containsCapability(List<ICapability> capabilities, String type) throws Exception {
+		for (ICapability capability : capabilities) {
+			if (capability.getCapabilityInformation().getType().equals(type)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static final String	NORESOURCEFOUND				= "No resource found.";
+	public static final String	NOTMODELINITIALIZED			= "The resource didn't have a model initialized. Start the resource first.";
+	public static final String	NOTCAPABILITIESINITIALIZED	= "The resource didn't have the capabilities initialized. Start the resource first.";
+
 	protected boolean validateResource(IResource resource) throws ResourceException {
 		if (resource == null)
-			throw new ResourceException("No resource found.");
+			throw new ResourceException(NORESOURCEFOUND);
 		if (resource.getModel() == null)
-			throw new ResourceException("The resource didn't have a model initialized. Start the resource first.");
+			throw new ResourceException(NOTMODELINITIALIZED);
 		if (resource.getCapabilities() == null) {
-			throw new ResourceException("The resource didn't have the capabilities initialized. Start the resource first.");
+			throw new ResourceException(NOTCAPABILITIESINITIALIZED);
 		}
 		return true;
 	}

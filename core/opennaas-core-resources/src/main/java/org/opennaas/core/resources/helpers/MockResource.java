@@ -29,6 +29,7 @@ public class MockResource implements IResource {
 	IModel				model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
+	IResourceIdentifier			resourceIdentifier;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
@@ -154,7 +155,7 @@ public class MockResource implements IResource {
 
 	public IResourceIdentifier getResourceIdentifier() {
 		log.info("get Resource Identifier...");
-		return null;
+		return resourceIdentifier;
 	}
 
 	public void setCapabilities(List<ICapability> arg0) {
@@ -167,10 +168,11 @@ public class MockResource implements IResource {
 		this.resourceDescriptor = resourceDescriptor;
 
 	}
-
-	public void setResourceIdentifier(IResourceIdentifier arg0) {
+	
+	@Override
+	public void setResourceIdentifier(IResourceIdentifier identifier) {
 		log.info("set Resource Identifier...");
-
+		resourceIdentifier = identifier;
 	}
 
 	public void start() throws ResourceException {

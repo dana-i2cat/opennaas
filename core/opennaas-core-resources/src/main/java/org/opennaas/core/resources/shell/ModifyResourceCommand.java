@@ -24,7 +24,7 @@ import org.xml.sax.SAXException;
 public class ModifyResourceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The name of the existing resource to modify ", required = true, multiValued = false)
-	private String	name;
+	private String	resourceId;
 	@Argument(index = 1, name = "path or url", description = "THe file path or url to new resource descriptor", required = true, multiValued = false)
 	private String	filename;
 
@@ -36,7 +36,7 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		initcommand("modify resource");
+		printInitCommand("modify resource");
 
 		IResourceManager manager = getResourceManager();
 
@@ -44,8 +44,14 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 
 		if (descriptor != null) {
 
-			if (!splitResourceName(name))
-				return null;
+			String[] argsRouterName = new String[2];
+			try {
+				argsRouterName = splitResourceName(resourceId);
+			} catch (Exception e) {
+				printError(e.getMessage());
+				printEndCommand();
+				return -1;
+			}
 
 			IResourceIdentifier resourceIdentifier = null;
 			try {
@@ -67,7 +73,7 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 			}
 		}
 
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 

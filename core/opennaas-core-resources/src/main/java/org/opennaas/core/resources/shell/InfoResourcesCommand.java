@@ -28,14 +28,20 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		initcommand("information resource");
+		printInitCommand("information resource");
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
 			for (String id : resourceIDs) {
 
-				if (!splitResourceName(id))
-					return null;
+				String[] argsRouterName = new String[2];
+				try {
+					argsRouterName = splitResourceName(id);
+				} catch (Exception e) {
+					printError(e.getMessage());
+					printEndCommand();
+					return -1;
+				}
 
 				IResourceIdentifier identifier = null;
 				IResource resource = null;
@@ -90,7 +96,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 			printError("Error showing information of resource.");
 
 		}
-		endcommand();
+		printEndCommand();
 		return null;
 	}
 }
