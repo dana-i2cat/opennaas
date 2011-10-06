@@ -6,18 +6,20 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.model.ManagedElement;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceBootstrapper;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
-import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
-import net.i2cat.nexus.resources.profile.IProfile;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.CapabilityProperty;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +29,7 @@ public class MockResource implements IResource {
 														.getLog(MockResource.class);
 
 	Map<String, ICapability>	capabilities	= new HashMap<String, ICapability>();
-	ManagedElement				model;
+	IModel				model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
 
@@ -37,8 +39,8 @@ public class MockResource implements IResource {
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("")) {
-			log.info("INFO: Getting uri param from terminal");
+		if (uri == null || uri.isEmpty()) {
+			log.info("INFO: No uri param, using default.");
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 
@@ -101,15 +103,14 @@ public class MockResource implements IResource {
 		return capabilities.get(info.getName());
 	}
 
-	public ManagedElement getModel() {
+	public IModel getModel() {
 		log.info("get Model...");
-		return model;
+		return (IModel) model;
 	}
 
-	public void setModel(ManagedElement model) {
+	public void setModel(IModel model) {
 		log.info("set Model...");
 		this.model = model;
-
 	}
 
 	public void activate() throws ResourceException {

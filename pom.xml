@@ -1,75 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
-	<modelVersion>4.0.0</modelVersion> <!-- pom.xml version -->
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!-- pom.xml version -->
 	<!-- POM id -->
 	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>base-mantychore</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-
 	<!-- Maven configuration -->
-
 	<!--
 		Enforced by maven-enforcer-plugin below <prerequisites>
 		<maven>2.0.9</maven> </prerequisites>
 	-->
-
 	<packaging>pom</packaging>
-
 	<!-- Administrative information -->
 	<name>Mantychore</name>
 	<url>http://www.mantychore.eu/</url>
-
 	<organization>
 		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
 		<url>http://www.i2cat.net/en</url>
 	</organization>
-
 	<!-- Custom Properties -->
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	
 		<activemq.version>5.4.0-fuse-00-00</activemq.version>
 		<axiom.version>1.2.8</axiom.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.configuration.version>1.2</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cxf.version>2.2.9-fuse-01-00</cxf.version>
-		<cxf.java2ws.plugin.version>2.2.9</cxf.java2ws.plugin.version>
+		<cxf.version>2.4.0-fuse-00-27</cxf.version>
+		<cxf.java2ws.plugin.version>2.4.0-fuse-00-27</cxf.java2ws.plugin.version>
+		<!-- -->
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
-		<easymock.version>2.5.2</easymock.version>
+		<easymock.version>3.0</easymock.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
-		<geronimo.jpa.version>1.1.2</geronimo.jpa.version>
+		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
-		<hibernate.version>3.4.0.GA</hibernate.version>
-		<hsqldb.version>1.8.0.9</hsqldb.version>
+		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
-		<karaf.version>2.0.0-fuse-02-00</karaf.version>
+		<karaf.version>2.2.2-fuse-00-08</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
+		<!--<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>-->
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam.version>1.2.0</pax.exam.version>
+		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.logging.version>1.5.3</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.3.0-fuse-01-00</servicemix.version>
+		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 		<servicemix.specs.version>1.6.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
-		<slf4j.version>1.5.6</slf4j.version>
+		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.0</spring.osgi.version>
-		<spring.version>3.0.3.RELEASE</spring.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 		<xbean.version>3.7</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
-
 	<dependencyManagement>
 		<dependencies>
 			<!-- Netconf4j -->
@@ -78,10 +68,7 @@
 				<artifactId>netconf4j</artifactId>
 				<version>${netconf4j.version}</version>
 			</dependency>
-
 			<!-- Digester, velocity and deps -->
-
-
 			<dependency>
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
@@ -112,7 +99,6 @@
 				<artifactId>geronimo-jta_1.1_spec</artifactId>
 				<version>${geronimo.jta.version}</version>
 			</dependency>
-
 			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
 			<dependency>
 				<groupId>org.dynamicjava.osgi</groupId>
@@ -141,7 +127,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-jpa_1.0_spec</artifactId>
+				<artifactId>geronimo-jpa_2.0_spec</artifactId>
 				<version>${geronimo.jpa.version}</version>
 			</dependency>
 			<dependency>
@@ -149,7 +135,6 @@
 				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
 				<version>${commons.dbcp.version}</version>
 			</dependency>
-
 			<!-- OSGI API -->
 			<dependency>
 				<groupId>org.osgi</groupId>
@@ -161,7 +146,6 @@
 				<artifactId>org.osgi.compendium</artifactId>
 				<version>${osgi.version}</version>
 			</dependency>
-
 			<!-- Karaf -->
 			<dependency>
 				<groupId>org.apache.karaf.shell</groupId>
@@ -183,7 +167,6 @@
 				<artifactId>org.apache.karaf.jaas.modules</artifactId>
 				<version>${karaf.version}</version>
 			</dependency>
-
 			<!-- Spring Framework -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -230,7 +213,6 @@
 				<artifactId>spring-tx</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-
 			<!-- Spring DM -->
 			<dependency>
 				<groupId>org.springframework.osgi</groupId>
@@ -262,7 +244,6 @@
 				<artifactId>spring-osgi-io</artifactId>
 				<version>${spring.osgi.version}</version>
 			</dependency>
-
 			<!-- Active MQ -->
 			<dependency>
 				<groupId>org.apache.activemq</groupId>
@@ -289,16 +270,12 @@
 				<artifactId>activemq-console</artifactId>
 				<version>${activemq.version}</version>
 			</dependency>
-
 			<!-- Logging -->
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
 				<version>${commons.logging.version}</version>
 			</dependency>
-
-			<!-- All the projects should only work with the commons-logging. Unfortunately, there a set of library (third parties mainly), which it 
-				needs slf4j and pax-logging. For this reason, there have specified in the dependency management -->
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
@@ -330,8 +307,6 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
-
 			<!-- Web services support -->
 			<dependency>
 				<groupId>org.apache.servicemix.specs</groupId>
@@ -439,7 +414,6 @@
 				<artifactId>xbean-spring</artifactId>
 				<version>${xbean.version}</version>
 			</dependency>
-
 			<!-- Unit tests -->
 			<dependency>
 				<groupId>junit</groupId>
@@ -456,7 +430,6 @@
 				<artifactId>easymockclassextension</artifactId>
 				<version>${easymock.version}</version>
 			</dependency>
-
 			<!-- Integration tests -->
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
@@ -483,7 +456,6 @@
 				<artifactId>org.apache.karaf.tooling.testing</artifactId>
 				<version>${karaf.version}</version>
 			</dependency>
-
 			<!-- Features -->
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
@@ -493,7 +465,6 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
 	<dependencies>
 		<!-- OSGI API -->
 		<dependency>
@@ -504,7 +475,6 @@
 			<groupId>org.osgi</groupId>
 			<artifactId>org.osgi.compendium</artifactId>
 		</dependency>
-
 		<!-- Unit tests -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -516,14 +486,8 @@
 			<artifactId>easymock</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-		</dependency>
-
-
 		<!-- Logging -->
-<!--		<dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -543,9 +507,7 @@
 			<groupId>org.ops4j.pax.logging</groupId>
 			<artifactId>pax-logging-service</artifactId>
 		</dependency>
--->
 	</dependencies>
-
 	<!-- Modules configuration -->
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
@@ -553,24 +515,19 @@
 		<module>features</module>
 		<module>tests</module>
 		<module>platform</module>
-		<module>assembly</module>
+		<!--<module>assembly</module>-->
 	</modules>
-
 	<!--
 		<licenses> <license> <name>GNU Lesser General Public License</name>
 		<url>http://www.gnu.org/licenses/lgpl.html</url> </license>
 		</licenses>
 	-->
-
-
-
 	<!-- Build information -->
 	<!--
 		Enforce Java5 - See:
 		http://maven.apache.org/plugins/maven-enforcer-plugin/
 	-->
 	<build>
-
 		<!--
 			<pluginManagement> <plugins> <plugin>
 			<groupId>com.google.code.maven-license-plugin</groupId>
@@ -586,17 +543,15 @@
 				<goal>jar-no-fork</goal> </goals> </execution> </executions>
 				</plugin>
 			-->
-
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
-
-			<plugin>
+			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>1.0</version>
 				<executions>
 					<execution>
 						<id>enforce-versions</id>
@@ -608,55 +563,51 @@
 								<requireJavaVersion>
 									<version>1.6</version>
 								</requireJavaVersion>
-								<!-- <requireOS> <family>unix</family> </requireOS> -->
+								<requireOS> <family>unix</family> </requireOS>
 								<requireMavenVersion>
-									<version>2.2.1</version>
+									<version>3.0.3</version>
 								</requireMavenVersion>
 							</rules>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-				<encoding>UTF-8</encoding>
-				<!--  <compilerArguments>
-            			<encoding>utf8</encoding>
-          			</compilerArguments>-->	
 					<source>1.6</source>
 					<target>1.6</target>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 	<!-- SCM configuration -->
 	<scm>
 		<connection>scm:svn:http://svn.i2cat.com/repos/manticore/</connection>
 		<developerConnection>scm:svn:http://svn.i2cat.com/repos/manticore/</developerConnection>
 		<url>scm:svn:http://svn.i2cat.com/repos/manticore</url>
 	</scm>
-
 	<!-- Reporting configuration -->
 	<reporting>
 		<plugins>
 			<!-- Javadoc -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
 			</plugin>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jxr-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.4</version>
 			</plugin>
-
 			<!-- Unit Test Report -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -670,14 +621,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
-
 	<repositories>
-
-		<repository>
-			<id>maven.i2cat.net</id>
-			<name>maven.i2cat.net-snapshots</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
-		</repository>
 		<repository>
 			<id>maven.i2cat.net</id>
 			<name>maven.i2cat.net-releases</name>
@@ -687,6 +631,11 @@
 			<id>i2cat</id>
 			<name>i2cat maven repository</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+		</repository>
+		<repository>
+			<id>i2cat libs-snapshot-local</id>
+			<name>maven.i2cat.net-snapshots</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
 		</repository>
 		<repository>
 			<id>springsource-external</id>
@@ -720,21 +669,12 @@
 			<name>Fuse Source releases</name>
 			<url>http://repo.fusesource.com/maven2/</url>
 		</repository>
-		<repository>
+		<!--<repository>
 			<id>java</id>
 			<name>Java.net releases</name>
 			<url>http://download.java.net/maven/2/</url>
-		</repository>
+		</repository>-->
 	</repositories>
-	
-
-    
-    
-
-	
-
-
-
 	<pluginRepositories>
 		<pluginRepository>
 			<id>central</id>
@@ -751,13 +691,10 @@
 			</releases>
 		</pluginRepository>
 	</pluginRepositories>
-
-
 	<distributionManagement>
 		<site>
 			<id>dev.manticore.i2cat.net</id>
 			<url>file://var/www/site/</url>
 		</site>
 	</distributionManagement>
-
 </project>

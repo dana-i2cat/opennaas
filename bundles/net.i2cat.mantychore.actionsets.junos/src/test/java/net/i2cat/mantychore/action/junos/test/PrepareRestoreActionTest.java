@@ -6,12 +6,12 @@ import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.actions.PrepareAction;
 import net.i2cat.mantychore.actionsets.junos.actions.RestoreAction;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.resources.queue.QueueConstants;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

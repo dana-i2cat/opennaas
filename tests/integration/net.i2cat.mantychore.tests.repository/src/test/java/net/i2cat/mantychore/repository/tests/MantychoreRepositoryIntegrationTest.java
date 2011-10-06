@@ -9,23 +9,23 @@ import java.util.List;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.System;
-import net.i2cat.nexus.resources.ILifecycle.State;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ResourceNotFoundException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -71,7 +71,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = java.lang.System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 
@@ -102,6 +102,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 		clearRepo();
 
 		log.info("INFO: Initialized!");
+
 	}
 
 	@After
@@ -318,7 +319,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 	private static boolean isMock() {
 		String uri = java.lang.System.getProperty("protocol.uri");
-		return (uri == null || uri.equals("${protocol.uri}"));
+		return (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty());
 	}
 
 	private void existLogicalResourcesTest(IResourceManager resourceManager, IResource resource, BundleContext context)

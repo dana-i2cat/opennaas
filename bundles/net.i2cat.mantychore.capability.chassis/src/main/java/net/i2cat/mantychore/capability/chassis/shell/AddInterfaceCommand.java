@@ -12,12 +12,12 @@ import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.nexus.resources.ILifecycle;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.ILifecycle;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

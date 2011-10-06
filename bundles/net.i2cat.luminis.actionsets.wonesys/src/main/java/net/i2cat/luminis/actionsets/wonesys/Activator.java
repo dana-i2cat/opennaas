@@ -1,8 +1,8 @@
 package net.i2cat.luminis.actionsets.wonesys;
 
 import net.i2cat.nexus.events.IEventManager;
-import net.i2cat.nexus.resources.AbstractActivator;
-import net.i2cat.nexus.resources.ActivatorException;
+import org.opennaas.core.resources.AbstractActivator;
+import org.opennaas.core.resources.ActivatorException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-<bean id="netconfProtocolSessionFactory" 
-	class="net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory"/>
-	<service ref="netconfProtocolSessionFactory"
-		interface="net.i2cat.nexus.resources.protocol.IProtocolSessionFactory" >
+	<bean id="netconfProtocolSessionFactory" class="net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory"/>
+	<service ref="netconfProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
 		<service-properties>
-				<!--  identify the model router. It is generic for any router -->
-			<entry key="protocol" value="netconf" />
-			<entry key="protocol.version" value="1.0.0" />
+			<!--  identify the model router. It is generic for any router -->
+			<entry key="protocol" value="netconf"/>
+			<entry key="protocol.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 </blueprint>

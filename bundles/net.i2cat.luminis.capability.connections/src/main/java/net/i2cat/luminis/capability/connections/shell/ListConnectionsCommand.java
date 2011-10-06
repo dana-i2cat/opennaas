@@ -2,8 +2,8 @@ package net.i2cat.luminis.capability.connections.shell;
 
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

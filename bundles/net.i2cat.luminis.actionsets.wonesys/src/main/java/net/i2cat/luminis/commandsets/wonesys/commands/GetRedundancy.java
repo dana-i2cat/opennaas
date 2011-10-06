@@ -1,7 +1,7 @@
 package net.i2cat.luminis.commandsets.wonesys.commands;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
-import net.i2cat.nexus.resources.command.CommandException;
+import org.opennaas.core.resources.command.CommandException;
 
 public class GetRedundancy extends WonesysCommand {
 

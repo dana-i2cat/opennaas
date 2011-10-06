@@ -13,20 +13,22 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.capability.ICapabilityFactory;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.MockResource;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.MockResource;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -79,7 +81,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	public void initResource() {
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
+		mockResource.setModel((IModel) new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("ipv4");
@@ -94,7 +96,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 

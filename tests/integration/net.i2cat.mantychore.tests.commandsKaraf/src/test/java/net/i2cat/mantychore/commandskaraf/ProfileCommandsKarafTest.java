@@ -5,24 +5,25 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.MockProfile;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.profile.IProfile;
-import net.i2cat.nexus.resources.profile.IProfileManager;
-import net.i2cat.nexus.resources.profile.ProfileDescriptor;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.MockProfile;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfileManager;
+import org.opennaas.core.resources.profile.ProfileDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 
@@ -32,10 +33,13 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.service.command.CommandProcessor;
+import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
+import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
+import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
@@ -49,7 +53,6 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 	private CommandProcessor	commandprocessor;
 
-	@Configuration
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
@@ -62,6 +65,16 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 		return options;
 	}
 
+	@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configuration(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+			}
+		});
+	}
+	
 	public void initBundles() {
 		
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
@@ -89,7 +102,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 

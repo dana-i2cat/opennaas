@@ -1,7 +1,7 @@
 package net.i2cat.luminis.commandsets.wonesys.commands.optr.optr2g5exc_pm;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
-import net.i2cat.nexus.resources.command.CommandException;
+import org.opennaas.core.resources.command.CommandException;
 
 public class GetSFPInfoSDH extends WonesysCommand {
 

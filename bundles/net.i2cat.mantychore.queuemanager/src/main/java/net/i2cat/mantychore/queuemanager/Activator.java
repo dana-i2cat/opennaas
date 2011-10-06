@@ -2,14 +2,13 @@ package net.i2cat.mantychore.queuemanager;
 
 import java.util.Properties;
 
-import net.i2cat.nexus.resources.AbstractActivator;
-import net.i2cat.nexus.resources.ActivatorException;
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.AbstractActivator;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;

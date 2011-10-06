@@ -1,8 +1,8 @@
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

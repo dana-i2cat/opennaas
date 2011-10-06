@@ -1,11 +1,11 @@
 package net.i2cat.luminis.ROADM.repository;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.Information;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

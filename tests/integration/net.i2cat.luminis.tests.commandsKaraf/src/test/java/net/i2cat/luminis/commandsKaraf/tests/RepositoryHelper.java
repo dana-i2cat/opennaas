@@ -3,12 +3,12 @@ package net.i2cat.luminis.commandsKaraf.tests;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.CapabilityProperty;
-import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.CapabilityProperty;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,7 +56,7 @@ public class RepositoryHelper {
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("")) {
+		if (uri == null || uri.equals("") || uri.isEmpty()) {
 			log.info("INFO: Getting uri param from terminal");
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}

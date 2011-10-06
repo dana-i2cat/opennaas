@@ -3,8 +3,8 @@ package net.i2cat.luminis.ROADM.repository;
 import java.util.List;
 import java.util.Map;
 
-import net.i2cat.nexus.persistence.GenericRepository;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.persistence.GenericRepository;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
  * A DescriptorRepository not doing persistence, nor doing nothing at all.

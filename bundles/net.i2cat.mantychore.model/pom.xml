@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	
 	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.model</groupId>
 	<artifactId>net.i2cat.mantychore.model</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Mantychore Model</name>
 	<description>Mantychore Model Implementation</description>
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<!--  dependencies  -->
 	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
-
 	<build>
 		<resources>
 			<resource>
@@ -39,7 +39,6 @@
 			-->
 		</resources>
 		<plugins>
-		
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -53,11 +52,10 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>						
+			</plugin>
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -70,27 +68,23 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-<!-- 
-						<Import-Package>!${pom.artifactId}.*,
+						<!-- 
+						<Import-Package>!${project.artifactId}.*,
 							org.springmodules.*;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
-						<Export-Package>${pom.artifactId};version="${pom.version}"</Export-Package>-->
-						
-						<Import-Package>!${pom.artifactId}.*,org.slf4j;version="1.5.6",*</Import-Package>
-						<Export-Package>${pom.artifactId};version="${pom.version}",
-							${pom.artifactId}.*;version="${pom.version}"
+						<Export-Package>${project.artifactId};version="${project.version}"</Export-Package>-->
+						<Import-Package>!${project.artifactId}.*,org.slf4j,*</Import-Package>
+						<Export-Package>${project.artifactId};version="${project.version}",
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-
-
 </project>

@@ -2,11 +2,11 @@ package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.ManagedSystemElement;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

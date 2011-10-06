@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-
-<!-- Maven parent  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>net.i2cat.luminis.protocols</groupId>
 	<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	
-<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>Luminis :: W-Onesys Protocol</name>
 	<description>Luminis W-Onesys Protocol Implementation</description>
-
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -38,13 +32,8 @@
 			<groupId>com.wonesys</groupId>
 			<artifactId>com.wonesys.emsModule</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
-			<!-- Use this to include the .jar from the src tree 
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/lib/EMSModuleW-11.0-b16.jar</systemPath>
-			-->
 		</dependency>
-	</dependencies>		
-
+	</dependencies>
 	<build>
 		<resources>
 			<resource>
@@ -55,7 +44,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
 				<!--
 					| enable improved OSGi compilation support for the bundle
 					life-cycle. | to switch back to the standard bundle life-cycle,
@@ -63,60 +51,62 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-			<!--
-				TOCHECK, IT INCLUDES PARAMETERS IN TESTS <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.6</version> <configuration> <systemPropertyVariables>
-				<propertyName>propertyValue</propertyName>
-				<buildDirectory>${project.build.directory}</buildDirectory> [...]
-				</systemPropertyVariables> </configuration> </plugin>
-			-->
-
-			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>1.4.2</version>
+				<version>2.3.5</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${pom.artifactId}.*,
-							!net.i2cat.luminis.transports,
-							!net.i2cat.luminis.transports.*,
-							com.wonesys.emsModule.*;version="${pom.version}",
-							net.i2cat.nexus.events;version="${pom.version}",
+							org.slf4j,
+							com.wonesys.emsModule.*;version="${project.version}",
+							net.i2cat.nexus.events;version="${project.version}",
 							*
 						</Import-Package>
-						 <!-- 
-						 <Private-Package>
-							net.i2cat.luminis.transports.wonesys
-						</Private-Package>
-						 -->
 						<Export-Package>
-							${pom.artifactId};version="${pom.version}",
-							${pom.artifactId}.*;version="${pom.version}",
-							net.i2cat.luminis.transports*,
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
-						
-						<!-- load EMSmodule library
-						<Bundle-ClassPath>.,
-									lib/EMSModuleW-11.0-b16.jar
-						</Bundle-ClassPath>
-    					<Embed-Directory>lib</Embed-Directory>
-						<Embed-Dependency>EMSmodule;scope=compile|runtime</Embed-Dependency>
-						 -->
-						 
-						 <!-- Specify Bundle-Activator -->
-						<Bundle-Activator>net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator</Bundle-Activator> 
+						<Bundle-Activator>net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator</Bundle-Activator>
 					</instructions>
 				</configuration>
-
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.ops4j</groupId>
+										<artifactId>
+											maven-pax-plugin
+										</artifactId>
+										<versionRange>
+											[1.5,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
 </project>

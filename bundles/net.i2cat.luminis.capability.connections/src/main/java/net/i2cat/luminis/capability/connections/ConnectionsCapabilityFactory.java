@@ -1,10 +1,10 @@
 package net.i2cat.luminis.capability.connections;
 
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.capability.AbstractCapabilityFactory;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
 public class ConnectionsCapabilityFactory extends AbstractCapabilityFactory {
 

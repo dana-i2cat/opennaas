@@ -8,28 +8,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.i2cat.nexus.resources.ILifecycle.State;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.action.ActionSet;
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.MockAction;
-import net.i2cat.nexus.resources.helpers.MockProfileFactory;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.profile.IProfile;
-import net.i2cat.nexus.resources.profile.IProfileManager;
-import net.i2cat.nexus.resources.profile.ProfileDescriptor;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.MockAction;
+import org.opennaas.core.resources.helpers.MockProfileFactory;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfileManager;
+import org.opennaas.core.resources.profile.ProfileDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
@@ -52,12 +55,10 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-
+		//log.warn("HERE HERE HERE LOOK HERE");
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-						//, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				IntegrationTestsHelper.getMantychoreTestOptions(),mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
+					 //, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 					);
 		return options;
 	}
@@ -69,6 +70,7 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 
 		resourceManager = getOsgiService(IResourceManager.class, 20000);
 		profileManager = getOsgiService(IProfileManager.class, 20000);
+
 		clearRepo();
 
 		log.info("INFO: Initialized!");
@@ -95,7 +97,6 @@ public class ResourcesWithProfileTest extends AbstractIntegrationTest {
 			} catch (ResourceException e) {
 				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
 			}
-
 		}
 
 		log.info("Resource repo cleared!");

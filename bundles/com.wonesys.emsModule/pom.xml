@@ -1,44 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
-
-<!-- Maven parent  -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-<!--  POM id -->
+	<!--  POM id -->
 	<groupId>com.wonesys</groupId>
 	<artifactId>com.wonesys.emsModule</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	
-<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
 	<name>W-onesys :: EMSModule</name>
 	<description>W-Onesys library for communication with devices</description>
-
-
-
 	<dependencies>
 		<dependency>
-    		<groupId>westhawk</groupId>
-   			 <artifactId>snmp</artifactId>
-    		<version>4_13</version>
+			<groupId>westhawk</groupId>
+			<artifactId>snmp</artifactId>
+			<version>4_13</version>
 		</dependency>
-	</dependencies>		
-
+	</dependencies>
 	<!-- Skip this bundle tests @ mvn install
 		to force test execution use mvn install -DskipTests=false
 	 -->
 	<properties>
-   		<skipTests>true</skipTests>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<skipTests>true</skipTests>
 	</properties>
-
 	<build>
 		<resources>
 			<resource>
@@ -49,7 +38,7 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
+				<!--<version>1.4</version>-->
 				<!--
 					| enable improved OSGi compilation support for the bundle
 					life-cycle. | to switch back to the standard bundle life-cycle,
@@ -57,16 +46,14 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-			
-			
 			<plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-surefire-plugin</artifactId>
-		        <version>2.6</version>
-		        <configuration>
-		          <skipTests>${skipTests}</skipTests>
-        		</configuration>
-  			</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<skipTests>${skipTests}</skipTests>
+				</configuration>
+			</plugin>
 			<!--
 				TOCHECK, IT INCLUDES PARAMETERS IN TESTS <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -76,46 +63,71 @@
 				<buildDirectory>${project.build.directory}</buildDirectory> [...]
 				</systemPropertyVariables> </configuration> </plugin>
 			-->
-
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>1.4.2</version>
+				<version>2.3.5</version>
 				<extensions>true</extensions>
-				
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${pom.artifactId}.*,
 							!javax.swing.*,
-							!javax.swing.tree.*,
 							!netscape.security.*,
 							!uk.co.westhawk.tablelayout,
 							<!--  
 							org.slf4j;version="1.5.6",
-							net.i2cat.nexus.protocols.sessionmanager;version="${pom.version}",
+							net.i2cat.nexus.protocols.sessionmanager;version="${project.version}",
 							-->
 							*</Import-Package>
 						<Export-Package>
-							${pom.artifactId}.*;version="${pom.version}"
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
-						
 						<!-- put snmp library in /lib and import its packages-->
-						<Bundle-ClassPath>.,
+						<!--<Bundle-ClassPath>.,
 							lib/snmp-4_13.jar
-						</Bundle-ClassPath>
-    					<Embed-Directory>lib</Embed-Directory>
-
+						</Bundle-ClassPath>-->
+						<Embed-Directory>lib</Embed-Directory>
 						<Embed-Dependency>snmp;scope=compile|runtime</Embed-Dependency>
-<!--  						<Embed-Transitive>true</Embed-Transitive> -->
-						
+						<!--  						<Embed-Transitive>true</Embed-Transitive> -->
 					</instructions>
 				</configuration>
-
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.ops4j</groupId>
+										<artifactId>
+											maven-pax-plugin
+										</artifactId>
+										<versionRange>
+											[1.5,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
 </project>

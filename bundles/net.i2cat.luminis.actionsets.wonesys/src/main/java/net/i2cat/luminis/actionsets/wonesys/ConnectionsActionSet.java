@@ -6,7 +6,7 @@ import java.util.List;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RefreshModelConnectionsAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
-import net.i2cat.nexus.resources.action.ActionSet;
+import org.opennaas.core.resources.action.ActionSet;
 
 public class ConnectionsActionSet extends ActionSet {
 	public ConnectionsActionSet() {

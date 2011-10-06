@@ -1,6 +1,6 @@
 package net.i2cat.nexus.tests;
 
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class ProtocolSessionHelper {
 

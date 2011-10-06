@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.SetIPv4Action;
-import net.i2cat.nexus.resources.action.ActionSet;
+import org.opennaas.core.resources.action.ActionSet;
 
 public class IPActionSet extends ActionSet {
 	public IPActionSet() {

@@ -6,24 +6,23 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
-import net.i2cat.nexus.resources.ActivatorException;
-import net.i2cat.nexus.resources.action.ActionException;
-import net.i2cat.nexus.resources.action.ActionResponse;
-import net.i2cat.nexus.resources.action.IAction;
-import net.i2cat.nexus.resources.action.IActionSet;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.CapabilityException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.descriptor.CapabilityDescriptor;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptorConstants;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.queue.ModifyParams;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.queue.ModifyParams;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 
 public class QueueManager extends AbstractCapability implements IQueueManagerService {
 

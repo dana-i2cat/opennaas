@@ -3,7 +3,7 @@ package net.i2cat.luminis.commandsets.wonesys;
 import java.util.List;
 import java.util.Vector;
 
-import net.i2cat.nexus.resources.command.Response;
+import org.opennaas.core.resources.command.Response;
 
 public class WonesysResponse extends Response {
 

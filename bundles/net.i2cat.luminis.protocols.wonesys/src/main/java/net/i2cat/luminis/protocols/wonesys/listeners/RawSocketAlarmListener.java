@@ -7,8 +7,8 @@ import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmFactory;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.resources.ActivatorException;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>net.i2cat.mantychore</groupId>
 		<artifactId>mantychore-tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<artifactId>itests-bundle-settings</artifactId>
-	<groupId>net.i2cat.mantychore</groupId>
-	<version>1.0.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore :: POMS :: Integration Test</name>
 	<packaging>pom</packaging>
-
 	<!--  integration tests -->
 	<modules>
 		<module>net.i2cat.nexus.tests.helper</module>
 		<module>net.i2cat.nexus.tests.events</module>
-		<module>net.i2cat.nexus.tests.resources</module>  
+		<module>net.i2cat.nexus.tests.resources</module>
 		<module>net.i2cat.mantychore.tests.capability</module>
 		<module>net.i2cat.mantychore.tests.repository</module>
 		<module>net.i2cat.mantychore.tests.capability.queue</module>
@@ -29,16 +24,8 @@
 		<module>net.i2cat.luminis.tests.repository</module>
 		<module>net.i2cat.luminis.tests.commandsKaraf</module>
 	</modules>
-
 	<!--  dependencies for integration tests -->
 	<dependencies>
-
-		<!-- JPA specs -->
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-jpa_1.0_spec</artifactId>
-		</dependency>
-
 		<!-- Integration tests -->
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
@@ -56,11 +43,10 @@
 			<groupId>org.apache.karaf.tooling</groupId>
 			<artifactId>org.apache.karaf.tooling.testing</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
 			<type>pom</type>
-		</dependency>
+		</dependency>-->
 	</dependencies>
-
 </project>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!--
+<!--
 
 		Licensed to the Apache Software Foundation (ASF) under one or more
 		contributor license agreements. See the NOTICE file distributed with
@@ -16,50 +16,42 @@
 		License.
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-
 	<!-- Factory that creates a queue manager (not import as a capability) -->
-	<bean  id="queueManagerFactory"
-		class="net.i2cat.mantychore.queuemanager.QueueManagerFactory" >
-		 <property name="type" value="queue" />
+	<bean id="queueManagerFactory" class="net.i2cat.mantychore.queuemanager.QueueManagerFactory">
+		<property name="type" value="queue"/>
 	</bean>
-
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="queueManagerFactory"
-		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory"> 
-	 	<service-properties>
-	 		<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="queue" />
-			<entry key="capability.model" value="junos" />
-			<entry key="capability.version" value="1.0.0" />
+	<service ref="queueManagerFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="queue"/>
+			<entry key="capability.model" value="junos"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
-	</service> 
-	
-		<!-- Command completers -->
-  	<bean id="resourceNameCompleter"
-		class="net.i2cat.mantychore.queuemanager.shell.completers.ResourceNameCompleter" /> 
-
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">			
+	</service>
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.queuemanager.shell.completers.ResourceNameCompleter"/>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="queue/listActions">
-				<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand" />
-  				<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+			<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
-			</command>
-			<command name="queue/execute">
-				<action class="net.i2cat.mantychore.queuemanager.shell.ExecuteCommand" />
-				<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+		</command>
+		<command name="queue/execute">
+			<action class="net.i2cat.mantychore.queuemanager.shell.ExecuteCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
-			</command>
-			<command name="queue/remove">
-				<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand" />
-	  			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+		</command>
+		<command name="queue/remove">
+			<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
-			</command>
+		</command>
 	</command-bundle>
-	
 </blueprint>

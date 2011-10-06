@@ -13,8 +13,8 @@ import net.i2cat.luminis.transports.wonesys.WonesysTransportException;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 import net.i2cat.nexus.events.EventFilter;
 import net.i2cat.nexus.events.IEventManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;

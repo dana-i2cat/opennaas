@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!--
+<!--
 
 		Licensed to the Apache Software Foundation (ASF) under one or more
 		contributor license agreements. See the NOTICE file distributed with
@@ -16,59 +16,49 @@
 		License.
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-
 	<!-- Factory that creates protocol capabilities -->
-	<bean  id="connectionsCapabilityFactory"
-		class="net.i2cat.luminis.capability.connections.ConnectionsCapabilityFactory">
-		 <property name="type" value="connections" />
+	<bean id="connectionsCapabilityFactory" class="net.i2cat.luminis.capability.connections.ConnectionsCapabilityFactory">
+		<property name="type" value="connections"/>
 	</bean>
-
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter"
-		class="net.i2cat.luminis.capability.connections.shell.completers.ResourceNameCompleter" />
-
-
-
-
+	<bean id="resourceNameCompleter" class="net.i2cat.luminis.capability.connections.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="connectionsCapabilityFactory"
-		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory">
-	 	<service-properties>
-	 		<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="connections" />
-			<entry key="capability.model" value="proteus" />
-			<entry key="capability.version" value="1.0.0" />
+	<service ref="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="connections"/>
+			<entry key="capability.model" value="proteus"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
-	
-		<!-- Provide commands to the Karaf shell -->
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="connections/list">
-			<action class="net.i2cat.luminis.capability.connections.shell.ListConnectionsCommand" />
+			<action class="net.i2cat.luminis.capability.connections.shell.ListConnectionsCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 		<command name="connections/getInventory">
-			<action class="net.i2cat.luminis.capability.connections.shell.GetInventoryCommand" />
+			<action class="net.i2cat.luminis.capability.connections.shell.GetInventoryCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 		<command name="connections/makeConnection">
-			<action class="net.i2cat.luminis.capability.connections.shell.MakeConnectionCommand" />
+			<action class="net.i2cat.luminis.capability.connections.shell.MakeConnectionCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 		<command name="connections/removeConnection">
-			<action class="net.i2cat.luminis.capability.connections.shell.RemoveConnectionCommand" />
+			<action class="net.i2cat.luminis.capability.connections.shell.RemoveConnectionCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 	</command-bundle>

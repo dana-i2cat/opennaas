@@ -5,19 +5,19 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceBootstrapper;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.ResourceNotFoundException;
-import net.i2cat.nexus.resources.capability.AbstractCapability;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.command.Response.Status;
-import net.i2cat.nexus.resources.descriptor.Information;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.queue.QueueConstants;
-import net.i2cat.nexus.resources.queue.QueueResponse;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,11 +27,12 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
-
 		resource.setModel(new ComputerSystem());
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
 
+			/* abstract capabilities have to be initialized */
+			log.debug("Found a capability in the resource.");
 			/* abstract capabilities have to be initialized */
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
@@ -41,7 +42,6 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 				}
 			}
 		}
-
 		ICapability queueCapab = resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
@@ -132,5 +132,4 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		// TODO REVERT BOOTSTRAP IN ITS CHILDREN
 		resource.setModel(null);
 	}
-
 }

@@ -14,13 +14,13 @@ import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
 import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
-import net.i2cat.nexus.resources.command.CommandException;
-import net.i2cat.nexus.resources.command.Response;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
@@ -51,8 +51,7 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	public static Option[] configure() {
 		return combine(
 						IntegrationTestsHelper.getLuminisTestOptions(),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.events")
+						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
 		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
 		);
 	}
@@ -79,9 +78,12 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void sendCommmandTest() throws ProtocolException, CommandException {
+	public void sendCommandTest() throws ProtocolException, CommandException {
 
 		loadBundles();
+
+		/* Wait for the activation of all the bundles */
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		sessionContext.addParameter("protocol.mock", "true");

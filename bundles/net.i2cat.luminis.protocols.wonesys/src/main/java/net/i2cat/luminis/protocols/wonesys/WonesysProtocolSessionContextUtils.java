@@ -6,7 +6,7 @@ import java.util.Map;
 
 import javax.xml.ws.ProtocolException;
 
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class WonesysProtocolSessionContextUtils {
 

@@ -12,11 +12,11 @@ import net.i2cat.netconf.errors.TransportException;
 import net.i2cat.netconf.errors.TransportNotImplementedException;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.RPCElement;
-import net.i2cat.nexus.resources.protocol.IProtocolMessageFilter;
-import net.i2cat.nexus.resources.protocol.IProtocolSession;
-import net.i2cat.nexus.resources.protocol.IProtocolSessionListener;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionListener;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.logging.Log;
@@ -49,8 +49,10 @@ public class NetconfProtocolSession implements IProtocolSession {
 		this.status = Status.DISCONNECTED_BY_USER;
 
 		try {
-
 			String uri = (String) protocolSessionContext.getSessionParameters().get("protocol.uri");
+			if ((uri == null)||(uri.length() == 0)) {
+				throw new ProtocolException("Mantychore protocols NETCONF: Couldn't get protocol.uri from protocolSessionContext.");
+			}
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);

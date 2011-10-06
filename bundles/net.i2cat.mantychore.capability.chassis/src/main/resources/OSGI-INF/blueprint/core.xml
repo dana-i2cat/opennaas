@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!--
+<!--
 
 		Licensed to the Apache Software Foundation (ASF) under one or more
 		contributor license agreements. See the NOTICE file distributed with
@@ -16,123 +16,63 @@
 		License.
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-
 	<!-- Factory that creates protocol capabilities -->
-	<bean  id="chassisCapabilityFactory"
-		class="net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory">
-		 <property name="type" value="chassis" />
+	<bean id="chassisCapabilityFactory" class="net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory">
+		<property name="type" value="chassis"/>
 	</bean>
-	
-	
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter"
-		class="net.i2cat.mantychore.capability.chassis.shell.completers.ResourceNameCompleter" />
-	
-
+	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.capability.chassis.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="chassisCapabilityFactory"
-		interface="net.i2cat.nexus.resources.capability.ICapabilityFactory">
-	 	<service-properties>
-	 		<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="chassis" />
-			<entry key="capability.model" value="junos" />
-			<entry key="capability.version" value="1.0.0" />
+	<service ref="chassisCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="chassis"/>
+			<entry key="capability.model" value="junos"/>
+			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
-	
-	
-	
-	
-	
-	
-	
-		<!-- Provide commands to the Karaf shell -->
-		
-		
-
-	
-		<!--  TODO TEST THESE TWO COMMANDS -->
-<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0" >
-
-
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="chassis/addInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.AddInterfaceCommand" />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.AddInterfaceCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
-		
 		<command name="chassis/removeInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveInterfaceCommand" />
-		
-		<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
-
-			
 		<command name="chassis/createSubInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand" />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand"/>
 		</command>
 		<command name="chassis/deleteSubInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteSubInterfaceCommand" />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteSubInterfaceCommand"/>
 		</command>
-		
-		
 		<command name="chassis/setVLAN">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.SetVLANCommand" />
-	<completers>
-		<ref component-id="resourceNameCompleter" />
-		<null />
-	</completers>
-		
+			<action class="net.i2cat.mantychore.capability.chassis.shell.SetVLANCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/showInterfaces">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.ShowInterfacesCommand" />
-		
-		<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.ShowInterfacesCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
-		
-		
-		<!--  create and delete logical router  -->
-		<command name="chassis/createLogicalRouter">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateLogicalRouterCommand" />
-		
-		<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
-			</completers>
-		</command>
-		
-		<command name="chassis/deleteLogicalRouter">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteLogicalRouterCommand" />
-		
-		<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
-			</completers>
-		</command>
-		<command name="chassis/listLogicalRouter">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.ListLogicalRoutersCommand" />
-		
-		<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
-			</completers>
-		</command>
-		
 		<!--  up an down interfaces  -->
 		<command name="chassis/up">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.UpInterfaceCommand" />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.UpInterfaceCommand"/>
 		</command>
 		<command name="chassis/down">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DownInterfaceCommand" />
+			<action class="net.i2cat.mantychore.capability.chassis.shell.DownInterfaceCommand"/>
 		</command>
 	</command-bundle>
-
 </blueprint>

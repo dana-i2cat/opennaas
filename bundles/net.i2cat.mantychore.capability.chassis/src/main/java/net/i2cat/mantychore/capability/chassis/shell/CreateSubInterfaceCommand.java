@@ -3,18 +3,18 @@ package net.i2cat.mantychore.capability.chassis.shell;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.capability.ICapability;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
-public class CreateSubIntefaceCommand extends GenericKarafCommand {
+public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
 	private String	resourceId;

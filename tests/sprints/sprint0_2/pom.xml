@@ -1,30 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!--  parent parameters  -->
 	<parent>
 		<artifactId>itests-bundle-settings</artifactId>
 		<groupId>net.i2cat.mantychore.sprints</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
-
 	<!--  POM id -->
-
 	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.mantychore.tests.sprints.sprint0_2</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Sprint 0.2 - Mantychore test</name>
 	<description>Sprint 0.2 - Mantychore test</description>
 	<packaging>jar</packaging>
-
 	<dependencies>
-	<dependency>
+		<dependency>
 			<groupId>net.i2cat.luminis.protocols</groupId>
 			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -78,13 +69,9 @@
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
-
 	</dependencies>
-
 	<!--  manage dependencies  -->
 	<build>
-
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -108,8 +95,6 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-
-
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
@@ -121,7 +106,6 @@
 				-->
 				<extensions>true</extensions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.servicemix.tooling</groupId>
 				<artifactId>depends-maven-plugin</artifactId>
@@ -134,8 +118,43 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.servicemix.tooling
+										</groupId>
+										<artifactId>
+											depends-maven-plugin
+										</artifactId>
+										<versionRange>
+											[1.2,)
+										</versionRange>
+										<goals>
+											<goal>
+												generate-depends-file
+											</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
-
 </project>

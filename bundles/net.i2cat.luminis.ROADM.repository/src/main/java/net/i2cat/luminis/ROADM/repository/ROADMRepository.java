@@ -1,7 +1,7 @@
 package net.i2cat.luminis.ROADM.repository;
 
-import net.i2cat.nexus.resources.ResourceRepository;
-import net.i2cat.nexus.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.ResourceRepository;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

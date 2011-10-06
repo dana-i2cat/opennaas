@@ -4,7 +4,7 @@ import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.SetIPv4Action;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

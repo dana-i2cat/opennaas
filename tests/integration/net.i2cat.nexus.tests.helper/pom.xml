@@ -1,73 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!--  parent parameters  -->
-	<parent>		
+	<parent>
 		<artifactId>itests-bundle-settings</artifactId>
-  		<groupId>net.i2cat.mantychore</groupId>
-  		<version>1.0.0-SNAPSHOT</version>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-
 	<!--  POM id -->
-
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus :: Integration Test Helper</name>
 	<description>Nexus Integration test helper</description>
 	<packaging>bundle</packaging>
-	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.resources</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-features</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.protocols.sessionmanager</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.gogo.runtime</artifactId>
+			<version>0.6.1</version>
+		</dependency>
 	</dependencies>
-
-
 	<build>
-	
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
-				<!-- <extensions>true</extensions> -->
 			</plugin>
-			
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.0.0</version>
+				<version>2.3.5</version>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${pom.version}</Bundle-Version>
-						<Import-Package>!net.i2cat.nexus.tests*,
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Import-Package>
 							org.slf4j,
 							org.ops4j.pax.exam, 
 							org.apache.karaf.testing,
 							org.osgi.framework,
 						*</Import-Package>
 						<Export-Package>
-							net.i2cat.nexus.tests;version="${pom.version}",
-						</Export-Package>					
+							net.i2cat.nexus.tests.*;version="${project.version}",
+						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

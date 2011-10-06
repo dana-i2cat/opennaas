@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
-import net.i2cat.nexus.resources.IResource;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.IResourceRepository;
-import net.i2cat.nexus.resources.ResourceException;
-import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
-import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
-import net.i2cat.nexus.resources.protocol.IProtocolManager;
-import net.i2cat.nexus.resources.protocol.ProtocolException;
-import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -117,7 +117,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.INITIALIZED, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 
 			List<IResource> resources = rm.listResourcesByType("router");
 			Assert.assertFalse(resources.isEmpty());
@@ -146,14 +146,14 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 
 			IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			Assert.assertNotNull(resource);
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.INITIALIZED, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 
 			rm.startResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 
 			resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			Assert.assertNotNull(resource);
 
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.ACTIVE, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
 
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
@@ -167,13 +167,13 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 
 			IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			Assert.assertNotNull(resource);
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.ACTIVE, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
 
 			rm.stopResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 			Assert.assertNotNull(resource);
 
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.INITIALIZED, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
@@ -210,7 +210,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 
 			Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
-			Assert.assertEquals(net.i2cat.nexus.resources.ILifecycle.State.INITIALIZED, resource.getState());
+			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 
 			List<IResource> resources = rm.listResourcesByType("router");
 			Assert.assertFalse(resources.isEmpty());

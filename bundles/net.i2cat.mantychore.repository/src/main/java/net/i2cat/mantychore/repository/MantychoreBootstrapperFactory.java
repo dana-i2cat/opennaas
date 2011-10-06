@@ -1,7 +1,7 @@
 package net.i2cat.mantychore.repository;
 
-import net.i2cat.nexus.resources.IResourceBootstrapper;
-import net.i2cat.nexus.resources.IResourceBootstrapperFactory;
+import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.IResourceBootstrapperFactory;
 
 public class MantychoreBootstrapperFactory implements IResourceBootstrapperFactory {
 

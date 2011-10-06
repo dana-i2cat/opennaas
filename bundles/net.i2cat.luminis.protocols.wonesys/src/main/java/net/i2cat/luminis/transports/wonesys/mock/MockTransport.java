@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.resources.ActivatorException;
+import org.opennaas.core.resources.ActivatorException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,8 +1,10 @@
 package net.i2cat.nexus.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.equinox;
+import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.repositories;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.scanFeatures;
@@ -40,23 +42,27 @@ public class IntegrationTestsHelper {
 		/* specify log level */
 
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																							.value("INFO"));
+				//.value("INFO"));
+				.value("DEBUG"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
+		Option OPT_NOVERIFY = vmOption("-noverify");
 
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 											, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				, waitForFrameworkStartup() // wait for a length of time
-				, equinox(), REPOS);
+				, felix(), REPOS, OPT_NOVERIFY);
 
 		return optssimpleTest;
 	}
 
 	public static Option[] getFuseTestOptions() {
 		/* fuse features */
-		String FUSE_FEATURES_REPO = "mvn:net.i2cat.nexus/nexus-fuse/1.0.0-SNAPSHOT/xml/features";
-		String[] FUSE_FEATURES = { "i2cat-nexus-fuse" };
+		//String FUSE_FEATURES_REPO = "mvn:net.i2cat.nexus/nexus-fuse/1.0.0-SNAPSHOT/xml/features";
+		//String[] FUSE_FEATURES = { "i2cat-nexus-fuse" };
+		String FUSE_FEATURES_REPO = "mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features";
+		String[] FUSE_FEATURES = { "opennaas-core" , "opennaas-core-deps" };
+		//String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_FUSE_FEATURES = scanFeatures(FUSE_FEATURES_REPO, FUSE_FEATURES);
-
 		return combine(getSimpleTestOptions(), OPT_FUSE_FEATURES);
 	}
 
@@ -65,7 +71,7 @@ public class IntegrationTestsHelper {
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
+		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES);
 	}
 
 	public static Option[] getLuminisTestOptions() {
@@ -99,7 +105,7 @@ public class IntegrationTestsHelper {
 
 		log.info("Waiting for activation of all bundles");
 
-		int MAX_RETRIES = 100;
+		int MAX_RETRIES = 20;
 		Bundle b = null;
 		boolean active = true;
 		List<Integer> fragments = new ArrayList<Integer>();
