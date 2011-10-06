@@ -42,7 +42,8 @@ public class IntegrationTestsHelper {
 		/* specify log level */
 
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-																							.value("INFO"));
+				//.value("INFO"));
+				.value("DEBUG"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
 		Option OPT_NOVERIFY = vmOption("-noverify");
 
@@ -104,7 +105,7 @@ public class IntegrationTestsHelper {
 
 		log.info("Waiting for activation of all bundles");
 
-		int MAX_RETRIES = 10;
+		int MAX_RETRIES = 20;
 		Bundle b = null;
 		boolean active = true;
 		List<Integer> fragments = new ArrayList<Integer>();

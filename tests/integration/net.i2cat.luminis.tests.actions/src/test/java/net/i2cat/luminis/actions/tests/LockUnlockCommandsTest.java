@@ -113,10 +113,10 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 
 		} catch (ProtocolException e) {
 			log.error("Error happened!!!!", e);
-			Assert.fail();
+			Assert.fail(e.getLocalizedMessage());
 		} catch (CommandException e) {
 			log.error("Error happened!!!!", e);
-			Assert.fail();
+			Assert.fail(e.getLocalizedMessage());
 		}
 	}
 
