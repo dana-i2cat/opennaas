@@ -2,8 +2,10 @@ package net.i2cat.luminis.capability.monitoring;
 
 import java.util.Vector;
 
-import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+import net.i2cat.nexus.events.EventFilter;
+import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -12,8 +14,6 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.queue.QueueResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,11 +22,14 @@ import org.osgi.service.event.EventHandler;
 
 public class MonitoringCapability extends AbstractCapability implements EventHandler {
 
-	static Log					log				= LogFactory.getLog(MonitoringCapability.class);
+	static Log					log						= LogFactory.getLog(MonitoringCapability.class);
 
-	public static final String	CAPABILITY_NAME	= "monitoring";
+	public static final String	CAPABILITY_NAME			= "monitoring";
 
-	private String				resourceId		= "";
+	public static final String	PROCESS_ALARM_ACTION	= "processAlarmAction";
+
+	private String				resourceId				= "";
+	private int					registrationNumber;
 
 	public MonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -36,21 +39,24 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 	@Override
 	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
+
 		log.debug("Sending message to Monitoring Capability");
-
 		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
 			IAction action = createAction(idOperation);
-
-			Object[] newParams = new Object[2];
-			newParams[0] = params;
-			newParams[1] = this;
-			action.setParams(newParams);
-
+			action.setParams(params);
 			action.setModelToUpdate(resource.getModel());
 
-			// FIXME Actions of this capability should skip queue and be executed directly
-			queueManager.queueAction(action);
+			// skip the queue and execute directly
+			ActionResponse response = action.execute(null);
+
+			if (response.getStatus().equals(ActionResponse.STATUS.OK)) {
+				return Response.okResponse(idOperation);
+			} else {
+				Vector<String> errorMsgs = new Vector<String>();
+				errorMsgs
+						.add(response.getInformation());
+				return Response.errorResponse(idOperation, errorMsgs);
+			}
 
 		} catch (Exception e) {
 			Vector<String> errorMsgs = new Vector<String>();
@@ -58,8 +64,6 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
-
-		return Response.okResponse(idOperation);
 	}
 
 	@Override
@@ -76,14 +80,12 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 	@Override
 	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		registerAsCapabilityAlarmListener();
 	}
 
 	@Override
 	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		unregisterAsCapabilityAlarmListener();
 	}
 
 	@Override
@@ -98,32 +100,55 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 	}
 
-	@Override
-	public void handleEvent(Event event) {
-		log.info("Monitoring capability received a message!");
-		Response resp;
+	private void registerAsCapabilityAlarmListener() throws CapabilityException {
+		log.debug("Registering as CapabilityAlarm listener");
+
 		try {
-			resp = (Response) sendMessage(ActionConstants.PROCESSALARM, event);
-			if (resp.getStatus().equals(Response.Status.ERROR)) {
-				log.error("Error queuing alarm processing action! " + resp.getInformation());
-			} else {
-				log.info("Alarm processing action queued! " + resp.getInformation());
-			}
-			QueueResponse response = Activator.getQueueManagerService(resourceId).execute();
 
-			if (!response.isOk()) {
-				log.error("Error processing alarm! " + response.toString());
-			} else {
-				log.info("Alarm processing finished! " + response.toString());
-			}
+			// create filter to listen to CapabilityAlarms
+			Properties filterProperties = new Properties();
+			filterProperties.put(CapabilityAlarm.RESOURCE_ID_PROPERTY, resourceId);
+			EventFilter filter = new EventFilter(new String[] { CapabilityAlarm.TOPIC }, filterProperties);
 
-		} catch (CapabilityException e) {
-			log.error("Error processing alarm! " + e.getLocalizedMessage());
-		} catch (ProtocolException e) {
-			log.error("Error processing alarm! " + e.getLocalizedMessage());
+			IEventManager eventManager = Activator.getEventManagerService();
+			registrationNumber = eventManager.registerEventHandler(this, filter);
+
+			log.debug("Registered as CapabilityAlarm listener!");
+
 		} catch (ActivatorException e) {
-			log.error("Error processing alarm! Could not exec queue. " + e.getLocalizedMessage());
+			throw new CapabilityException("Failed to register as alarm listener", e);
 		}
 	}
 
+	private void unregisterAsCapabilityAlarmListener() throws CapabilityException {
+		log.debug("Unregistering as CapabilityAlarm listener");
+		try {
+			IEventManager eventManager = Activator.getEventManagerService();
+			eventManager.unregisterHandler(registrationNumber);
+			log.debug("Unregistered as CapabilityAlarm listener!");
+
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to unregister as CapabilityAlarm listener", e);
+		}
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		log.debug("Monitoring capability received an alarm!");
+
+		try {
+
+			Response response = (Response) sendMessage(MonitoringCapability.PROCESS_ALARM_ACTION, event);
+			if (response.getStatus().equals(Response.Status.OK)) {
+				log.info("Alarm processed");
+			} else {
+				log.error("Error processing alarm: " + response.getErrors());
+			}
+
+		} catch (CapabilityException e) {
+			log.error("Error processing alarm", e);
+		} catch (Exception e) {
+			log.error("Error processing alarm", e);
+		}
+	}
 }

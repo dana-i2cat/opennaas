@@ -28,7 +28,7 @@
 			<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="connections"/>
 			<entry key="capability.model" value="proteus"/>
-			<entry key="capability.version" value="1.0.0"/>
+			<entry key="capability.version" value="1.0"/>
 		</service-properties>
 	</service>
 	<!-- Provide commands to the Karaf shell -->

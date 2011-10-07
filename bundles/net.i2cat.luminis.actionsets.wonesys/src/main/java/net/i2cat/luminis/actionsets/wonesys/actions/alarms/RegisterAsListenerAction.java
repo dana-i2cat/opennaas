@@ -1,4 +1,4 @@
-package net.i2cat.luminis.actionsets.wonesys.actions;
+package net.i2cat.luminis.actionsets.wonesys.actions.alarms;
 
 import java.util.Properties;
 
@@ -7,13 +7,13 @@ import net.i2cat.luminis.actionsets.wonesys.Activator;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.nexus.events.EventFilter;
 import net.i2cat.nexus.events.IEventManager;
-import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.action.Action;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.ActivatorException;
+import net.i2cat.nexus.resources.action.Action;
+import net.i2cat.nexus.resources.action.ActionException;
+import net.i2cat.nexus.resources.action.ActionResponse;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

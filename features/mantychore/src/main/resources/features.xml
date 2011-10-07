@@ -3,6 +3,7 @@
 	<repository>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</repository>
 	<feature name="i2cat-nexus" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.events/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.alarms.repository/1.0.0-SNAPSHOT</bundle>
 		<!--  general dependencies -->
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/1.8.0</bundle>
 		<!--  dependency for common configurations -->

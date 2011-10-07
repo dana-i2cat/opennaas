@@ -12,22 +12,24 @@ import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.nexus.events.EventFilter;
 import net.i2cat.nexus.events.IEventManager;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.resources.IResource;
+import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import net.i2cat.nexus.resources.capability.ICapabilityFactory;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -38,9 +40,9 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
-public class RawSocketAlarmToResourceAlarm extends AbstractIntegrationTest implements EventHandler {
+public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest implements EventHandler {
 
-	static Log			log				= LogFactory.getLog(RawSocketAlarmToResourceAlarm.class);
+	static Log			log				= LogFactory.getLog(RawSocketAlarmToResourceAlarmTest.class);
 
 	@Inject
 	BundleContext		bundleContext	= null;
@@ -74,12 +76,14 @@ public class RawSocketAlarmToResourceAlarm extends AbstractIntegrationTest imple
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
+		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 5000);
+		Assert.assertNotNull(monitoringFactory);
 	}
 
 	/**
 	 * Check a TransportAlarm is transformed into a ResourceAlarm
 	 */
-	// @Test
+	@Test
 	public void checkTransportAlarmTriggersResourceAlarmTest() {
 
 		initBundles();
@@ -157,6 +161,7 @@ public class RawSocketAlarmToResourceAlarm extends AbstractIntegrationTest imple
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("connections");
 		capabilities.add("monitoring");
+		capabilities.add("queue");
 		return ResourceDescriptorFactory.newResourceDescriptorProteus("TestProteus", "roadm", capabilities);
 	}
 

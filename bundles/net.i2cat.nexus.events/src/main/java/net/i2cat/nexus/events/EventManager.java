@@ -62,6 +62,7 @@ public class EventManager implements IEventManager {
 	}
 
 	public void publishEvent(Event event) {
+		log.debug("Publishing event");
 		getEventAdmin().postEvent(event);
 	}
 

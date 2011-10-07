@@ -10,5 +10,7 @@ public class ActionConstants {
 
 	public final static String	PROCESSALARM		= "processAlarm";
 	public final static String	REGISTER			= "registerAsListener";
+	public final static String	GET_ALARMS			= "listAlarms";
+	public final static String	CLEAR_ALARMS		= "clearAlarms";
 
 }

@@ -3,12 +3,12 @@ package net.i2cat.luminis.protocols.wonesys.listeners;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmFactory;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.alarms.SessionAlarm;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,7 +55,7 @@ public class RawSocketAlarmListener implements EventHandler {
 
 		Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
 
-		properties.put(WonesysProtocolSession.SESSION_ID_PROPERTY, sessionId);
+		properties.put(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
 
 		WonesysAlarm alarm = WonesysAlarmFactory.createAlarm(properties);
 		publishEvent(alarm);

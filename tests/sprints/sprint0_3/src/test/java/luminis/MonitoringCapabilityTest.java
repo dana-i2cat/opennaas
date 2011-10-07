@@ -8,35 +8,31 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.nexus.events.EventFilter;
 import net.i2cat.nexus.events.IEventManager;
-import org.opennaas.core.resources.CorruptStateException;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.IncorrectLifecycleStateException;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ResourceIdentifier;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.opennaas.core.resources.helpers.MockResource;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.core.resources.queue.QueueResponse;
+import net.i2cat.nexus.resources.ILifecycle;
+import net.i2cat.nexus.resources.IResource;
+import net.i2cat.nexus.resources.IResourceIdentifier;
+import net.i2cat.nexus.resources.IResourceManager;
+import net.i2cat.nexus.resources.ResourceException;
+import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import net.i2cat.nexus.resources.capability.CapabilityException;
+import net.i2cat.nexus.resources.capability.ICapabilityFactory;
+import net.i2cat.nexus.resources.descriptor.ResourceDescriptor;
+import net.i2cat.nexus.resources.helpers.ResourceDescriptorFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -49,17 +45,18 @@ import org.osgi.service.event.EventHandler;
 @RunWith(JUnit4TestRunner.class)
 public class MonitoringCapabilityTest extends AbstractIntegrationTest implements EventHandler {
 
-	static Log			log				= LogFactory.getLog(MonitoringCapabilityTest.class);
+	static Log				log				= LogFactory.getLog(MonitoringCapabilityTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	BundleContext			bundleContext	= null;
 
-	IEventManager		eventManager;
-	IResourceManager	resourceManager;
-	IProtocolManager	protocolManager;
+	IEventManager			eventManager;
+	IResourceManager		resourceManager;
+	IProtocolManager		protocolManager;
+	IProtocolSessionManager	sessionManager;
 
-	boolean				alarmReceived;
-	final Object		lock			= new Object();
+	boolean					alarmReceived;
+	final Object			lock			= new Object();
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -83,21 +80,49 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
+		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 10000);
+		Assert.assertNotNull(monitoringFactory);
+
 	}
 
-	public IResource initResource() {
-		MockResource mockResource = new MockResource();
+	private IResource initResource() throws ResourceException, ProtocolException {
 
-		List<String> capabilities = new ArrayList<String>();
-		capabilities.add("queue");
-		capabilities.add("monitoring");
-		mockResource.setResourceDescriptor(ResourceDescriptorFactory.newResourceDescriptorProteus("MockProteus", "proteus", capabilities));
-		mockResource.setResourceIdentifier(new ResourceIdentifier("proteus", mockResource.getResourceDescriptor().getId()));
+		removeResourceFromRepo();
 
-		return mockResource;
+		IResource resource = resourceManager.createResource(createResourceDescriptorWithConnectionsAndMonitoring());
+
+		try {
+			sessionManager = protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(),
+					newWonesysSessionContextMock());
+
+			resourceManager.startResource(resource.getResourceIdentifier());
+
+		} catch (ProtocolException e) {
+			resourceManager.removeResource(resource.getResourceIdentifier());
+			throw e;
+		}
+
+		return resource;
 	}
 
-	// @Test
+	private void removeResourceFromRepo() throws ResourceException {
+
+		IResourceIdentifier id;
+		try {
+			id = resourceManager.getIdentifierFromResourceName("TestProteus", "roadm");
+		} catch (ResourceException e) {
+			// nothing to remove
+			return;
+		}
+
+		IResource resource = resourceManager.getResource(id);
+		if (resource.getState().equals(ILifecycle.State.ACTIVE))
+			resourceManager.stopResource(id);
+
+		resourceManager.removeResource(id);
+	}
+
+	@Test
 	public void test() {
 
 		initBundles();
@@ -106,38 +131,25 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 
 			IResource mockResource = initResource();
 
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
-			ICapability queueCapability = queueManagerFactory.create(mockResource);
-
-			IProtocolSessionManager sessionManager = protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceIdentifier()
-					.getId(),
-					newWonesysSessionContextMock());
-
-			// get Monitoring Capability
-			ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 10000);
-			ICapability monitoringCapability = monitoringFactory.create(mockResource);
-			monitoringCapability.initialize();
-
-			// register this as a ResourceAlarm listener
 			int registrationNum = registerAsResourceAlarmListener(this);
 
-			// launch register action
 			alarmReceived = false;
-			monitoringCapability.sendMessage(ActionConstants.REGISTER, new Object());
-
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
 
 			// generate WonesysAlarm
 			generateAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
 
-			// check ResourceAlarm is generated (ProcessAlarmAction generates it)
+			// check ResourceAlarm is generated (monitoringCapability generates it)
 			synchronized (lock) {
-				lock.wait(30000);
+				log.debug("Waiting for alarm");
+				lock.wait(10000);
+				log.debug("Finished waiting");
 				Assert.assertTrue(alarmReceived);
 			}
 
 			unregisterAsListener(registrationNum);
+
+			resourceManager.stopResource(mockResource.getResourceIdentifier());
+			resourceManager.removeResource(mockResource.getResourceIdentifier());
 
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -149,12 +161,6 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (IncorrectLifecycleStateException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (CorruptStateException e) {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		}
@@ -185,6 +191,13 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		eventManager.unregisterHandler(registrationNum);
 	}
 
+	private ResourceDescriptor createResourceDescriptorWithConnectionsAndMonitoring() {
+		List<String> capabilities = new ArrayList<String>();
+		capabilities.add("monitoring");
+		capabilities.add("queue");
+		return ResourceDescriptorFactory.newResourceDescriptorProteus("TestProteus", "roadm", capabilities);
+	}
+
 	/**
 	 * Generates a WonesysAlarm
 	 * 
@@ -203,7 +216,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 
 		WonesysAlarm alarm = new WonesysAlarm(prop);
 
-		log.debug("Generating WonesysAlarm in session: " + session.getSessionId());
+		log.info("Generating WonesysAlarm in session: " + session.getSessionId());
 		eventManager.publishEvent(alarm);
 	}
 

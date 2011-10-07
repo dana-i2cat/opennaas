@@ -13,6 +13,7 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.core.resources.action.ActionResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,7 +53,23 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING
-			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
+			String errorString = "";
+			for (ActionResponse response1 : response.getResponses()) {
+				if (response1.getStatus().equals(ActionResponse.STATUS.ERROR)) {
+					errorString += "Action " + response1.getActionID() + " failed: " + response1.getInformation() + "\n";
+				}
+			}
+			if (response.getPrepareResponse().getStatus().equals(ActionResponse.STATUS.ERROR)) {
+				errorString += "Action " + response.getPrepareResponse().getActionID() + " failed: " + response.getPrepareResponse().getInformation() + "\n";
+			}
+			if (response.getConfirmResponse().getStatus().equals(ActionResponse.STATUS.ERROR)) {
+				errorString += "Action " + response.getConfirmResponse().getActionID() + " failed: " + response.getConfirmResponse().getInformation() + "\n";
+			}
+			if (response.getRestoreResponse().getStatus().equals(ActionResponse.STATUS.ERROR)) {
+				errorString += "Action " + response.getRestoreResponse().getActionID() + " failed: " + response.getRestoreResponse().getInformation() + "\n";
+			}
+
+			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions. " + errorString);
 		}
 
 		if (resource.getProfile() != null) {

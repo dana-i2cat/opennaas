@@ -1,0 +1,181 @@
+package luminis;
+
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.OptionUtils.combine;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import junit.framework.Assert;
+import luminis.mock.MockSessionFactory;
+import net.i2cat.nexus.events.EventFilter;
+import net.i2cat.nexus.events.IEventManager;
+import net.i2cat.nexus.protocols.sessionmanager.impl.ProtocolManager;
+import net.i2cat.nexus.resources.alarms.CapabilityAlarm;
+import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import net.i2cat.nexus.resources.alarms.SessionAlarm;
+import net.i2cat.nexus.resources.protocol.IProtocolManager;
+import net.i2cat.nexus.resources.protocol.IProtocolSession;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionFactory;
+import net.i2cat.nexus.resources.protocol.IProtocolSessionManager;
+import net.i2cat.nexus.resources.protocol.ProtocolException;
+import net.i2cat.nexus.resources.protocol.ProtocolSessionContext;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
+
+@RunWith(JUnit4TestRunner.class)
+public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest implements EventHandler {
+
+	static Log			log				= LogFactory.getLog(AlarmsInProtocolSessionManagerTest.class);
+
+	final Object		lock			= new Object();
+	List<Event>			receivedEvents	= new ArrayList<Event>();
+
+	IEventManager		eventManager;
+	IProtocolManager	protocolManager;
+
+	@Configuration
+	public static Option[] configuration() throws Exception {
+
+		Option[] options = combine(
+				IntegrationTestsHelper.getLuminisTestOptions(),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.events"),
+				mavenBundle().groupId("net.i2cat.nexus").artifactId(
+						"net.i2cat.nexus.tests.helper")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				);
+
+		return options;
+	}
+
+	private void initBundles() {
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+
+		eventManager = getOsgiService(IEventManager.class, 5000);
+		protocolManager = getOsgiService(IProtocolManager.class, 5000);
+	}
+
+	/**
+	 * Check a TransportAlarm is transformed into a ResourceAlarm
+	 */
+	@Test
+	public void checkSessionAlarmTriggersCapabilityAlarmTest() {
+
+		initBundles();
+
+		try {
+
+			String resourceId = "TestResourceId";
+
+			IProtocolSessionFactory factory = new MockSessionFactory();
+			Map serviceProperties = new HashMap<String, String>();
+			serviceProperties.put(ProtocolSessionContext.PROTOCOL, "mock");
+
+			((ProtocolManager) protocolManager).sessionFactoryAdded(factory, serviceProperties);
+
+			// create session
+			ProtocolSessionContext sessionContext = newWonesysSessionContextMock();
+
+			IProtocolSessionManager sessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId,
+					sessionContext);
+			IProtocolSession session = sessionManager.obtainSession(sessionContext, false);
+
+			// register this as ResourceAlarm listener
+			int registrationNum = registerAsCapabilityAlarmListener(this);
+
+			receivedEvents.clear();
+
+			// generate Alarm
+			generateAlarm(session);
+
+			// check CapabilityAlarm has arrived in less than 30s
+			synchronized (lock) {
+				try {
+					lock.wait(30000);
+					Assert.assertFalse(receivedEvents.isEmpty());
+				} catch (InterruptedException e) {
+					Assert.fail("Interrupted while waiting for events");
+				}
+			}
+
+			for (Event alarm : receivedEvents) {
+				Assert.assertEquals(resourceId, (String) alarm.getProperty(CapabilityAlarm.RESOURCE_ID_PROPERTY));
+				Event sessionAlarm = (Event) alarm.getProperty(CapabilityAlarm.CAUSE_PROPERTY);
+				Assert.assertTrue(sessionAlarm instanceof SessionAlarm);
+
+				Assert.assertEquals(session.getSessionId(), sessionAlarm.getProperty(SessionAlarm.SESSION_ID_PROPERTY));
+			}
+
+			unregisterAsListener(registrationNum);
+
+			sessionManager.destroyProtocolSession(session.getSessionId());
+
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
+		}
+	}
+
+	private int registerAsCapabilityAlarmListener(EventHandler handler) {
+		EventFilter filter = new EventFilter(ResourceAlarm.TOPIC);
+		return eventManager.registerEventHandler(handler, filter);
+	}
+
+	private void unregisterAsListener(int registrationNum) {
+		eventManager.unregisterHandler(registrationNum);
+	}
+
+	@Override
+	public void handleEvent(Event event) {
+		synchronized (lock) {
+			receivedEvents.add(event);
+			lock.notify();
+		}
+	}
+
+	/**
+	 * Generates a WonesysAlarm
+	 * 
+	 * @param session
+	 */
+	private void generateAlarm(IProtocolSession session) {
+
+		Properties prop = new Properties();
+		prop.put(SessionAlarm.SESSION_ID_PROPERTY, session.getSessionId());
+
+		SessionAlarm alarm = new SessionAlarm(prop);
+
+		log.debug("Generating SessionAlarm in session: " + session.getSessionId());
+		eventManager.publishEvent(alarm);
+	}
+
+	/**
+	 * Configure the protocol to connect
+	 */
+	private ProtocolSessionContext newWonesysSessionContextMock() {
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+
+		protocolSessionContext.addParameter(
+				"protocol.mock", "true");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"mock");
+		// ADDED
+		return protocolSessionContext;
+	}
+
+}

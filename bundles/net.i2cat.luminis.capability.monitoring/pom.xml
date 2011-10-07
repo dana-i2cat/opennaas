@@ -15,7 +15,6 @@
 	<name>Luminis :: Monitoring Capability</name>
 	<description>Monitoring Capability Implementation</description>
 	<dependencies>
-		<!-- mantychore dependencies -->
 		<!-- TODO clean pom when final structure of bundle is ready -->
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
@@ -35,6 +34,16 @@
 		<dependency>
 			<groupId>net.i2cat.luminis.actionsets</groupId>
 			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.events</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.protocols</groupId>
+			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!--  auxiliar methods to use with commands -->

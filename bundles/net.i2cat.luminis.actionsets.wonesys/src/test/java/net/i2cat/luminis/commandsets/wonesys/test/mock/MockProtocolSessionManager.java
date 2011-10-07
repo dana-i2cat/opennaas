@@ -7,9 +7,11 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class MockProtocolSessionManager extends ProtocolSessionManager {
 
-	private String	resourceId		= "pedrosa";
-	private String	hostIpAddress	= "10.10.80.11";
-	private String	hostPort		= "27773";
+	private String				resourceId		= "pedrosa";
+	private String				hostIpAddress	= "10.10.80.11";
+	private String				hostPort		= "27773";
+
+	private IProtocolSession	session			= null;
 
 	public MockProtocolSessionManager(String deviceID) {
 		super(deviceID);
@@ -29,9 +31,8 @@ public class MockProtocolSessionManager extends ProtocolSessionManager {
 
 	private IProtocolSession getSession(String resourceId, String hostIpAddress, String hostPort) throws ProtocolException {
 
-		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
-
 		// get WonesysProtocolSession using ProtocolSessionManager
+		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		IProtocolSession protocolSession = getProtocolSession(resourceId, sessionContext);
 		if (protocolSession == null)
 			throw new ProtocolException("Could not get a valid ProtocolSession");
@@ -51,7 +52,10 @@ public class MockProtocolSessionManager extends ProtocolSessionManager {
 	}
 
 	private IProtocolSession getProtocolSession(String resourceId, ProtocolSessionContext sessionContext) throws ProtocolException {
-		IProtocolSession session = new SessionMock(sessionContext, resourceId + "01");
+
+		if (session == null)
+			session = new SessionMock(sessionContext, resourceId + "01");
+
 		return session;
 	}
 

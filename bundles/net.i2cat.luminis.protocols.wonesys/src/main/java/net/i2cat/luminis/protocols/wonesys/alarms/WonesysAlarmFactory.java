@@ -3,6 +3,8 @@ package net.i2cat.luminis.protocols.wonesys.alarms;
 import java.util.Date;
 import java.util.Properties;
 
+import org.osgi.service.event.Event;
+
 import com.wonesys.emsModule.alarms.Alarm;
 
 public class WonesysAlarmFactory {
@@ -13,6 +15,20 @@ public class WonesysAlarmFactory {
 	// }
 
 	public static WonesysAlarm createAlarm(Properties properties) {
+		return new WonesysAlarm(properties);
+	}
+
+	/**
+	 * Assumes given event contains all WonesysAlarm required properties
+	 * 
+	 * @param event
+	 * @return
+	 */
+	public static WonesysAlarm createAlarm(Event event) {
+		Properties properties = new Properties();
+		for (String name : event.getPropertyNames()) {
+			properties.put(name, event.getProperty(name));
+		}
 		return new WonesysAlarm(properties);
 	}
 

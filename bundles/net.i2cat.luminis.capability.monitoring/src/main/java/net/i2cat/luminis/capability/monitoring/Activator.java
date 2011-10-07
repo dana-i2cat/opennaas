@@ -3,10 +3,12 @@ package net.i2cat.luminis.capability.monitoring;
 import java.util.Properties;
 
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+import net.i2cat.nexus.events.IEventManager;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.protocol.IProtocolManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,9 +43,6 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		}
 	}
 
-	/*
-	 * necessary to get some capability type
-	 */
 	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
 		Properties properties = new Properties();
 		properties.put(ResourceDescriptorConstants.CAPABILITY, "queue");
@@ -76,6 +75,17 @@ public class Activator extends AbstractActivator implements BundleActivator {
 				.put(ResourceDescriptorConstants.ACTION_VERSION, version);
 
 		return createServiceFilter(IActionSet.class.getName(), properties);
+	}
+
+	public static IEventManager getEventManagerService() throws ActivatorException {
+		log.debug("Calling EventManager");
+		// log.debug("Params: context=" + context + " class=" + IEventManager.class.getName());
+		return (IEventManager) getServiceFromRegistry(context, IEventManager.class.getName());
+	}
+
+	public static IProtocolManager getProtocolManagerService(String resourceId) throws ActivatorException {
+		log.debug("Calling EventManager");
+		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 
 }

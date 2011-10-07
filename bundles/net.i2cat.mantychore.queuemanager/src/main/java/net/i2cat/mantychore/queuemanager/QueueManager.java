@@ -23,6 +23,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 public class QueueManager extends AbstractCapability implements IQueueManagerService {
 
@@ -77,73 +78,118 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 		QueueResponse queueResponse = QueueResponse.newQueueResponse(queue);
 
+		/* get protocol session manager */
 		IProtocolSessionManager protocolSessionManager = null;
 		try {
 			IProtocolManager protocolManager = Activator.getProtocolManagerService();
 			protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			throw new CapabilityException(e);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
 
-			/* Always i have to be one response */
+		/* prepare action */
+		try {
 			log.debug("Preparing queue");
 			ActionResponse prepareResponse = prepare(protocolSessionManager);
-
-			/* status for actionResponse */
 			queueResponse.setPrepareResponse(prepareResponse);
 			log.debug("Prepared!");
-
-		} catch (Exception e1) {
+		} catch (ActionException e1) {
 			throw new CapabilityException(e1);
 		}
 
-		try {
-			int numAction = 0;
-			for (IAction action : queue) {
-				/* use pool for get protocol session */
-				log.debug("getting protocol session...");
-				log.debug("Executing action: " + action.getActionID());
-				log.debug("Trying to print params:" + action.getParams());
-				ActionResponse actionResponse = action.execute(protocolSessionManager);
-				queueResponse.getResponses().set(numAction, actionResponse);
-				numAction++;
-				/* The action response didn't work, we need to do a restore */
-				if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
-					throw new Exception();
+		boolean errorInPrepare = false;
+		if (queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.ERROR) {
+			errorInPrepare = true;
+		}
 
+		// note that restore should not be executed if there's been an error in prepare
+		if (!errorInPrepare) {
+
+			/* execute queued actions */
+			try {
+				queueResponse = executeQueuedActions(queueResponse, protocolSessionManager);
+			} catch (ActionException e) {
+				throw new CapabilityException(e);
 			}
 
-			/* commit action */
-			log.debug("Confirming actions");
-			ActionResponse confirmResponse = confirm(protocolSessionManager);
-			queueResponse.setConfirmResponse(confirmResponse);
-			log.debug("Confirmed!");
+			/* Look for errors */
+			boolean errorHappened = false;
+			for (ActionResponse actionResponse : queueResponse.getResponses()) {
+				if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR) {
+					errorHappened = true;
+					break;
+				}
+			}
 
-			/* clear queue */
-			queue.clear();
-			log.debug("clearing queue");
+			if (!errorHappened) {
+				try {
+					/* commit action */
+					log.debug("Confirming actions");
+					ActionResponse confirmResponse = confirm(protocolSessionManager);
+					queueResponse.setConfirmResponse(confirmResponse);
+					log.debug("Confirmed!");
 
-			/* stop time */
-			stopTime = java.lang.System.currentTimeMillis();
-			queueResponse.setTotalTime(stopTime - startTime);
+					if (confirmResponse.getStatus() == ActionResponse.STATUS.ERROR)
+						errorHappened = true;
 
-			return queueResponse;
-		} catch (Exception e1) {
-			/* FIXME, IT IS IMPOSSIBLE TO THROW THIS EXCEPTION WITHOUT BACKUP. IT COULD CORRUPT CONFIGURATION */
-			assert protocolSessionManager != null;
-			try {
-				ActionResponse restoreResponse = restore(protocolSessionManager);
-				queueResponse.setRestoreResponse(restoreResponse);
-				empty();
+				} catch (ActionException e) {
+					throw new CapabilityException(e);
+				}
+			}
 
-				stopTime = java.lang.System.currentTimeMillis();
-				queueResponse.setTotalTime(stopTime - startTime);
-
-				return queueResponse;
-			} catch (Exception e2) {
-				throw new CapabilityException(e2);
-
+			if (errorHappened) {
+				/* restore action */
+				assert protocolSessionManager != null;
+				try {
+					log.debug("Restoring queue");
+					ActionResponse restoreResponse = restore(protocolSessionManager);
+					queueResponse.setRestoreResponse(restoreResponse);
+					log.debug("Restored!");
+				} catch (ActionException e) {
+					throw new CapabilityException(e);
+				}
 			}
 
 		}
 
+		empty();
+
+		/* stop time */
+		stopTime = java.lang.System.currentTimeMillis();
+		queueResponse.setTotalTime(stopTime - startTime);
+
+		return queueResponse;
+	}
+
+	/**
+	 * @param queueResponse
+	 *            to complete with actionResponses
+	 * @param protocolSessionManager
+	 *            to use in actions execution
+	 * @return given queueResponse with executed actions responses.
+	 * @throws ActionException
+	 *             if an Action throws it during its execution
+	 */
+	private QueueResponse executeQueuedActions(QueueResponse queueResponse, IProtocolSessionManager protocolSessionManager) throws ActionException {
+
+		int numAction = 0;
+		for (IAction action : queue) {
+			/* use pool for get protocol session */
+			log.debug("getting protocol session...");
+			log.debug("Executing action: " + action.getActionID());
+			log.debug("Trying to print params:" + action.getParams());
+			ActionResponse actionResponse = action.execute(protocolSessionManager);
+			queueResponse.getResponses().set(numAction, actionResponse);
+			numAction++;
+
+			// If an action returned error, queue should stop executing actions.
+			// Restore mechanism should be activated in this case.
+			if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
+				break;
+		}
+		return queueResponse;
 	}
 
 	private ActionResponse confirm(IProtocolSessionManager protocolSessionManager) throws ActionException, CapabilityException {
