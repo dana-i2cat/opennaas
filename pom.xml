@@ -660,7 +660,7 @@
 			<url>http://repository.ops4j.org/maven2</url>
 		</repository>
 		<repository>
-			<id>DyanmicJava</id>
+			<id>DynamicJava</id>
 			<name>DynamicJava Repository</name>
 			<url>http://maven.dynamicjava.org/</url>
 		</repository>
