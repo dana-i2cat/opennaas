@@ -15,7 +15,7 @@ import org.osgi.service.event.Event;
  */
 public class ResourceAlarm extends Event {
 
-	public static final String	TOPIC					= "org.opennaas.core/resources/resource/alarms/RECEIVED";
+	public static final String	TOPIC					= "org/opennaas/core/resources/resource/alarms/RECEIVED";
 
 	public static final String	RESOURCE_ID_PROPERTY	= "resourceId";
 	public static final String	ALARM_CODE_PROPERTY		= "alarmCode";
