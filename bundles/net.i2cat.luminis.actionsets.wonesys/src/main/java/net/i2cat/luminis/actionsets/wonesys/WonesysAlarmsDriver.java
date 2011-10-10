@@ -8,7 +8,7 @@ import net.i2cat.mantychore.model.IModel;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
-import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 public class WonesysAlarmsDriver {
 

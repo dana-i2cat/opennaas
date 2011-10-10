@@ -1,6 +1,6 @@
 package net.i2cat.nexus.alarms.repository;
 
-import net.i2cat.nexus.resources.AbstractActivator;
+import org.opennaas.core.resources.AbstractActivator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

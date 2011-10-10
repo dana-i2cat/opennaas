@@ -2,7 +2,7 @@ package net.i2cat.luminis.protocols.wonesys.alarms;
 
 import java.util.Properties;
 
-import net.i2cat.nexus.resources.alarms.SessionAlarm;
+import org.opennaas.core.resources.alarms.SessionAlarm;
 
 public class WonesysAlarm extends SessionAlarm {
 

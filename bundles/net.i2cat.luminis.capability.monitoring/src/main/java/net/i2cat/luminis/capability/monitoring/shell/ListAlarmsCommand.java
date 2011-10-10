@@ -2,12 +2,12 @@ package net.i2cat.luminis.capability.monitoring.shell;
 
 import java.util.List;
 
-import net.i2cat.nexus.resources.IResourceIdentifier;
-import net.i2cat.nexus.resources.IResourceManager;
-import net.i2cat.nexus.resources.ResourceManager;
-import net.i2cat.nexus.resources.alarms.IAlarmsRepository;
-import net.i2cat.nexus.resources.alarms.ResourceAlarm;
-import net.i2cat.nexus.resources.shell.GenericKarafCommand;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceManager;
+import org.opennaas.core.resources.alarms.IAlarmsRepository;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;

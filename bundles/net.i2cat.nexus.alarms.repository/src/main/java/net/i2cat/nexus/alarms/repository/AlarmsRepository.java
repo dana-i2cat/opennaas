@@ -9,9 +9,9 @@ import java.util.UUID;
 
 import net.i2cat.nexus.events.EventFilter;
 import net.i2cat.nexus.events.IEventManager;
-import net.i2cat.nexus.resources.ResourceNotFoundException;
-import net.i2cat.nexus.resources.alarms.IAlarmsRepository;
-import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.alarms.IAlarmsRepository;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

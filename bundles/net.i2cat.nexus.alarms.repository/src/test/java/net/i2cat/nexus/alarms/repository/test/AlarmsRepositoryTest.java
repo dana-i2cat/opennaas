@@ -5,8 +5,8 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import net.i2cat.nexus.alarms.repository.AlarmsRepository;
-import net.i2cat.nexus.resources.ResourceNotFoundException;
-import net.i2cat.nexus.resources.alarms.ResourceAlarm;
+import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 import org.junit.Before;
 import org.junit.Test;

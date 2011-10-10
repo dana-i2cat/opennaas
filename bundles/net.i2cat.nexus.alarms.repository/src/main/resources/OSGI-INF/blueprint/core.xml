@@ -2,7 +2,7 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<bean id="alarmsRepository" class="net.i2cat.nexus.alarms.repository.AlarmsRepository">
 	</bean>
-	<service ref="alarmsRepository" interface="net.i2cat.nexus.resources.alarms.IAlarmsRepository">
+	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository">
 
 	</service>
 	<reference-list id="eventManager" interface="net.i2cat.nexus.events.IEventManager" availability="optional">
