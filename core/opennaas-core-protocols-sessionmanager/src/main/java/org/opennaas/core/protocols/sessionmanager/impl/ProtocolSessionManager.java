@@ -10,9 +10,8 @@ import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
-import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.SessionAlarm;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
