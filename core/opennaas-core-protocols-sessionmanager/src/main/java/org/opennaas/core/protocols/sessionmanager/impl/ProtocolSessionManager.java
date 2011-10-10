@@ -405,8 +405,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	/**
-	 * Blueprint callback (executed when EventManager is available)
-	 * 
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {
