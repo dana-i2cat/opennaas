@@ -22,31 +22,15 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hsqldb</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-persistence</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hibernate</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
 		</dependency>
-		<!-- TODO: WTF? We seriously shouldn't depend on mantychore -->
-		<!--<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>-->
 		<dependency>
 			<groupId>org.easymock</groupId>
 			<artifactId>easymock</artifactId>
@@ -62,13 +46,6 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.opennaas.core</groupId>
-			<artifactId>org.opennaas.core.protocols.sessionmanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency> 
-		-->
 	</dependencies>
 	<build>
 		<resources>
@@ -113,9 +90,7 @@
 							javassist.util.proxy,
 							javax.jms,
 							org.apache.activemq,
-							<!--org.osgi.service.command,-->
 							*</Import-Package>
-						<!--<Export-Package>org.opennaas.core.resources,org.opennaas.core.resources.*;version="${project.version}"</Export-Package>-->
 						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
 					</instructions>
 				</configuration>
