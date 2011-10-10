@@ -1,4 +1,4 @@
-package org.opennaas.core.events.tests;
+package net.i2cat.nexus.events.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
