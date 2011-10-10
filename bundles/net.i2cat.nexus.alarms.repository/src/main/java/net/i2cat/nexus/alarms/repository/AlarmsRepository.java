@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.alarms.ResourceAlarm;

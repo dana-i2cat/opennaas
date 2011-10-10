@@ -5,7 +5,7 @@
 	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository">
 
 	</service>
-	<reference-list id="eventManager" interface="net.i2cat.nexus.events.IEventManager" availability="optional">
+	<reference-list id="eventManager" interface="org.opennaas.core.events.IEventManager" availability="optional">
 		<reference-listener ref="alarmsRepository" bind-method="setEventManager"/>
 	</reference-list>
 </blueprint>
