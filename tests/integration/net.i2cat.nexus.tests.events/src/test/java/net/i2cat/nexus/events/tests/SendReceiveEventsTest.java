@@ -1,4 +1,4 @@
-package net.i2cat.nexus.events.tests;
+package org.opennaas.core.events.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -6,20 +6,24 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
+import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
+import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
@@ -42,7 +46,6 @@ public class SendReceiveEventsTest extends AbstractIntegrationTest {
 	String					filterPropertyName	= "aPropertyName";
 	String					filterPropertyValue	= "aPropertyValue";
 
-	@Configuration
 	public static Option[] configure() {
 		return combine(
 				IntegrationTestsHelper.getNexusTestOptions(),
@@ -55,6 +58,16 @@ public class SendReceiveEventsTest extends AbstractIntegrationTest {
 		);
 	}
 
+	@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configure(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+			}
+		});
+	}
+	
 	@Test
 	public void registerHandlerAndPublishEventTest() {
 
