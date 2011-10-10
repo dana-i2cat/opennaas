@@ -4,10 +4,11 @@ import java.util.Date;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.mantychore.model.IModel;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
 
 public class WonesysAlarmsDriver {

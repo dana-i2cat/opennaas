@@ -3,6 +3,7 @@ package api;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
+import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -19,7 +20,7 @@ public class ProtocolSessionHelper {
 		try {
 			protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
 			ProtocolSessionContext netconfContext = newSessionContextNetconf();
-			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
+			protocolManager.sessionFactoryAdded((IProtocolSessionFactory) new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{
 					put(ProtocolSessionContext.PROTOCOL, "netconf");
 				}

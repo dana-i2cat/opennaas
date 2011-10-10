@@ -1,5 +1,6 @@
 package net.i2cat.luminis.capability.monitoring;
 
+import java.util.Properties;
 import java.util.Vector;
 
 import net.i2cat.nexus.events.EventFilter;

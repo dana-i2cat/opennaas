@@ -183,13 +183,16 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 			resourceManager.stopResource(resource.getResourceIdentifier());
 			resourceManager.removeResource(resource.getResourceIdentifier());
 
+		} catch (ResourceNotFoundException e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
 		} catch (ResourceException e) {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
-		}
+		} 
 	}
 
 	/**

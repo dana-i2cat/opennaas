@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.i2cat.luminis.actionsets.wonesys.actions.alarms.ProcessAlarmAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RefreshModelConnectionsAction;
-import net.i2cat.luminis.actionsets.wonesys.actions.RegisterAsListenerAction;
 import org.opennaas.core.resources.action.ActionSet;
 
 public class MonitoringActionSet extends ActionSet {
