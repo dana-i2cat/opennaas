@@ -14,7 +14,7 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
-import net.i2cat.nexus.events.EventFilter;
+import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.resources.ActivatorException;
 
 import org.apache.commons.logging.Log;

@@ -10,8 +10,8 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -60,7 +60,7 @@ public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest i
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.events"),
+						"org.opennaas.core.events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")

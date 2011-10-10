@@ -63,7 +63,7 @@
 						<Import-Package>
 							org.slf4j,
 							com.wonesys.emsModule.*;version="${project.version}",
-							net.i2cat.nexus.events;version="${project.version}",
+							org.opennaas.core.events;version="${project.version}",
 							*
 						</Import-Package>
 						<Export-Package>

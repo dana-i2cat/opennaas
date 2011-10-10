@@ -13,8 +13,8 @@ import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -56,7 +56,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.events"),
+						"org.opennaas.core.events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")

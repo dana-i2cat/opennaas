@@ -11,8 +11,8 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import luminis.mock.MockSessionFactory;
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
@@ -53,7 +53,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.events"),
+						"org.opennaas.core.events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
