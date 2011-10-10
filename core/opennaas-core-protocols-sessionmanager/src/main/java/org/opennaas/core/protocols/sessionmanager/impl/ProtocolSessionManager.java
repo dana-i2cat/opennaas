@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.i2cat.nexus.events.EventFilter;
+import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.alarms.CapabilityAlarm;
+import org.opennaas.core.resources.alarms.SessionAlarm;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSession.Status;
@@ -20,20 +26,28 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
 
-public class ProtocolSessionManager implements IProtocolSessionManager, IProtocolSessionListener, IProtocolMessageFilter {
+public class ProtocolSessionManager implements IProtocolSessionManager, IProtocolSessionListener, IProtocolMessageFilter, EventHandler {
 
-	private String								resourceID				= null;
-	private Map<String, ProtocolPooled>			liveSessions			= null;
-	private Map<String, ProtocolSessionContext>	liveSessionContexts		= null;
-	private Map<String, ProtocolSessionContext>	registeredContexts		= null;
-	private List<String>						lockedProtocolSessions	= null;
-	private ProtocolManager						protocolManager			= null;
+	private String								resourceID									= null;
+	private Map<String, ProtocolPooled>			liveSessions								= null;
+	private Map<String, ProtocolSessionContext>	liveSessionContexts							= null;
+	private Map<String, ProtocolSessionContext>	registeredContexts							= null;
+	private List<String>						lockedProtocolSessions						= null;
+	private ProtocolManager						protocolManager								= null;
+	private IEventManager						eventManager;
 
-	Log											log						= LogFactory.getLog(ProtocolSessionManager.class);
+	Log											log											= LogFactory.getLog(ProtocolSessionManager.class);
+
+	/**
+	 * key: sessionId value: registration number
+	 */
+	private Map<String, Integer>				sessionEventsListenerRegistrationNumbers	= new HashMap<String, Integer>();
 
 	// TODO get this from the configuration
-	private static long							expirationTime			= 3000 * 1000;										// milis
+	private static long							expirationTime								= 3000 * 1000;										// milis
 
 	class ProtocolPooled {
 		private long				lastUsed;
@@ -129,6 +143,12 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		/* Activate listener */
 		protocolSession.registerProtocolSessionListener(this, this, sessionID);
+		try {
+			registerAsSessionAlarmListener(this, sessionID);
+		} catch (ProtocolException e) {
+			throw new ProtocolException("Failed to register as session alarms listener for session " + sessionID, e);
+		}
+
 		liveSessions.put(sessionID, new ProtocolPooled(protocolSession, now));
 		liveSessionContexts.put(sessionID, protocolSessionContext);
 		protocolSession.connect();
@@ -157,6 +177,12 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		liveSessions.remove(sessionID);
 		liveSessionContexts.remove(sessionID);
 		protocolSession.unregisterProtocolSessionListener(this, sessionID);
+		try {
+			unregisterAsSessionAlarmListener(this, sessionID);
+		} catch (ProtocolException e) {
+			// ignored (even if unregistration fails, no events can be received as session is destroyed)
+			log.warn("Failed to unregister as session alarms listener for session " + sessionID + " No events can be received as session is destroyed.");
+		}
 
 		lockedProtocolSessions.remove(sessionID);
 	}
@@ -340,4 +366,61 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		return false;
 	}
+
+	private void registerAsSessionAlarmListener(EventHandler handler, String sessionId) throws ProtocolException {
+
+		Properties filterProperties = new Properties();
+		filterProperties.put(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
+		EventFilter filter = new EventFilter(new String[] { SessionAlarm.TOPIC }, filterProperties);
+
+		int registrationNum = getEventManager().registerEventHandler(this, filter);
+		sessionEventsListenerRegistrationNumbers.put(sessionId, registrationNum);
+
+	}
+
+	private void unregisterAsSessionAlarmListener(EventHandler handler, String sessionId) throws ProtocolException {
+		getEventManager().unregisterHandler(sessionEventsListenerRegistrationNumbers.get(sessionId));
+	}
+
+	/**
+	 * Callback called when events are received
+	 */
+	@Override
+	public void handleEvent(Event event) {
+		if (event instanceof SessionAlarm) {
+			Properties prop = new Properties();
+			prop.put(CapabilityAlarm.RESOURCE_ID_PROPERTY, getResourceID());
+			prop.put(CapabilityAlarm.CAUSE_PROPERTY, event);
+
+			CapabilityAlarm alarm = new CapabilityAlarm(prop);
+			try {
+				publish(alarm);
+			} catch (ProtocolException e) {
+				log.error("Failed to publish alarm for resource: " + getResourceID(), e);
+			}
+		}
+	}
+
+	private void publish(Event event) throws ProtocolException {
+		getEventManager().publishEvent(event);
+	}
+
+	/**
+	 * Blueprint callback (executed when EventManager is available)
+	 * 
+	 * @param eventManager
+	 */
+	public void setEventManager(IEventManager eventManager) {
+		this.eventManager = eventManager;
+
+	}
+	
+	
+	private IEventManager getEventManager() throws ProtocolException {
+		if (this.eventManager == null)
+			throw new ProtocolException("No eventManager found!");
+		
+		return this.eventManager;
+	}
+	
 }

@@ -81,8 +81,7 @@ public class ResourceDescriptorFactory {
 
 	public static CapabilityDescriptor newCapabilityDescriptor(String type, String model) {
 
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		// TODO IS THERE A BETTER METHOD TO PASS THE URI?
 		String uri = System.getProperty("protocol.uri");
 		if (uri == null || uri.equals("")) {
 			log.info("INFO: Getting uri param from terminal");
@@ -93,8 +92,7 @@ public class ResourceDescriptorFactory {
 
 	public static CapabilityDescriptor newCapabilityDescriptorProteus(String type, String model) {
 
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
+		// TODO IS THERE A BETTER METHOD TO PASS THE URI?
 		String uri = System.getProperty("protocol.uri");
 		if (uri == null || uri.equals("")) {
 			log.info("INFO: Getting uri param from terminal");

@@ -24,6 +24,11 @@
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.events</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8.2</version>
