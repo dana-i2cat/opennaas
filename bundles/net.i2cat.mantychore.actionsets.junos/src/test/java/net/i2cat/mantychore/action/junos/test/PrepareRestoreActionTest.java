@@ -3,6 +3,7 @@ package net.i2cat.mantychore.action.junos.test;
 import java.util.HashMap;
 
 import junit.framework.Assert;
+import mock.MockEventManager;
 import net.i2cat.mantychore.actionsets.junos.actions.PrepareAction;
 import net.i2cat.mantychore.actionsets.junos.actions.RestoreAction;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
@@ -36,6 +37,7 @@ public class PrepareRestoreActionTest {
 		protocolManager = new ProtocolManager();
 		try {
 			protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
+			protocolSessionManager.setEventManager(new MockEventManager());
 			netconfContext = newSessionContextNetconf();
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{

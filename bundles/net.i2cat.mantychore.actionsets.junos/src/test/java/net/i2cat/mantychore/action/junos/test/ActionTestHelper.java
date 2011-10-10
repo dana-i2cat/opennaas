@@ -2,6 +2,7 @@ package net.i2cat.mantychore.action.junos.test;
 
 import java.util.HashMap;
 
+import mock.MockEventManager;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
@@ -21,6 +22,7 @@ public class ActionTestHelper {
 		ProtocolSessionManager protocolSessionManager = null;
 		try {
 			protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
+			protocolSessionManager.setEventManager(new MockEventManager());
 			ProtocolSessionContext netconfContext = newSessionContextNetconf();
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{

@@ -3,6 +3,7 @@ package net.i2cat.mantychore.action.junos.test;
 import java.util.HashMap;
 
 import junit.framework.Assert;
+import mock.MockEventManager;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateLogicalRouterAction;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -36,6 +37,7 @@ public class CreateLogicalRouterActionTest {
 		protocolManager = new ProtocolManager();
 		try {
 			protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
+			protocolSessionManager.setEventManager(new MockEventManager());
 			netconfContext = newSessionContextNetconf();
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{

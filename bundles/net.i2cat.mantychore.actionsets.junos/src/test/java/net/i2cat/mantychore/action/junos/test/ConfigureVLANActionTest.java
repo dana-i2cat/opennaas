@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import junit.framework.Assert;
+import mock.MockEventManager;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -42,6 +43,7 @@ public class ConfigureVLANActionTest {
 		protocolManager = new ProtocolManager();
 		try {
 			protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
+			protocolSessionManager.setEventManager(new MockEventManager());
 			netconfContext = newSessionContextNetconf();
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{
