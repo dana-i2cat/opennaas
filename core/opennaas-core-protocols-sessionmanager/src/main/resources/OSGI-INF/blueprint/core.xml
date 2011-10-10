@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager"/>
-	<!-- Listen for registration / deregistration of IProtocolSessionFactory services -->
+	<!-- Listen for registration / unregistering of IProtocolSessionFactory services -->
 	<reference-list interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory" availability="optional">
 		<reference-listener ref="protocolManager" bind-method="sessionFactoryAdded" unbind-method="sessionFactoryRemoved"/>
 	</reference-list>
