@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
@@ -20,6 +21,8 @@ public class ProtocolManager implements IProtocolManager {
 	private  Log								log					= LogFactory.getLog(ProtocolManager.class);
 
 	private Map<String, IProtocolSessionManager>	sessionManagers		= null;
+	private IEventManager						eventManager;
+	
 
 	/**
 	 * Stores the protocolFactories present in the platform, indexed by the protocol id
@@ -39,6 +42,7 @@ public class ProtocolManager implements IProtocolManager {
 
 		ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceID);
 		protocolSessionManager.setProtocolManager(this);
+		protocolSessionManager.setEventManager(getEventManager());
 
 		sessionManagers.put(resourceID, protocolSessionManager);
 
@@ -75,6 +79,7 @@ public class ProtocolManager implements IProtocolManager {
 
 			ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceId);
 			protocolSessionManager.setProtocolManager(this);
+			protocolSessionManager.setEventManager(getEventManager());
 			protocolSessionManager.registerContext(context);
 
 			sessionManagers.put(resourceId, protocolSessionManager);
@@ -164,6 +169,20 @@ public class ProtocolManager implements IProtocolManager {
 					+ serviceProperties.get(ProtocolSessionContext.PROTOCOL));
 			protocolFactories.remove(serviceProperties.get(ProtocolSessionContext.PROTOCOL));
 		}
+	}
+	
+	/**
+	 * Blueprint callback (executed when EventManager is available)
+	 * 
+	 * @param eventManager
+	 */
+	public void setEventManager(IEventManager eventManager) {
+		this.eventManager = eventManager;
+
+	}
+	
+	private IEventManager getEventManager() throws ProtocolException {
+		return this.eventManager;
 	}
 
 }
