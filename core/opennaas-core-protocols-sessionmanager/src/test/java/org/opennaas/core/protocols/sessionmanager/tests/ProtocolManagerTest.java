@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.tests.mock.MockEventManager;
 import org.opennaas.core.protocols.sessionmanager.tests.mock.MockProtocolSessionFactory;
 
 public class ProtocolManagerTest {
@@ -31,7 +32,9 @@ public class ProtocolManagerTest {
 
 		protocolManager = new ProtocolManager();
 		protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
-
+		//trick to avoid registration as alarm listener errors
+		protocolSessionManager.setEventManager(new MockEventManager());
+	
 		netconfContext = new ProtocolSessionContext();
 		netconfContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		netconfContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@server");
@@ -176,6 +179,8 @@ public class ProtocolManagerTest {
 		netconfContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@serve");
 
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceIdTwo, netconfContext);
+		//trick to avoid registration as alarm listener errors
+		((ProtocolSessionManager) protocolSessionManager).setEventManager(new MockEventManager());
 		IProtocolSession protocolSession = protocolSessionManager.obtainSessionByProtocol("netconf", false);
 		String protocol = (String) protocolSession.getSessionContext().getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
 		String protocol_uri = (String) protocolSession.getSessionContext().getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
