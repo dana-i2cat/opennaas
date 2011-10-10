@@ -12,7 +12,7 @@ public class WonesysProtocolSessionContextUtils {
 	public static final String	HOST_IP_ADDRESS	= "protocol.hostip";
 	public static final String	HOST_PORT		= "protocol.hostport";
 
-	public static String getHost(ProtocolSessionContext protocolSessionContext) {
+	public static String getHost(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		/*
 		 * URI = [scheme:][//authority][path][?query][#fragment]; authority = [user-info@]host[:port]
@@ -36,7 +36,7 @@ public class WonesysProtocolSessionContextUtils {
 		}
 	}
 
-	public static int getPort(ProtocolSessionContext protocolSessionContext) {
+	public static int getPort(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		Map<String, Object> params = protocolSessionContext.getSessionParameters();
 		String uriStr = (String) params.get(ProtocolSessionContext.PROTOCOL_URI);
