@@ -12,6 +12,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -185,6 +186,10 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	protected IProtocolManager getProtocolManager() throws Exception {
 		return (IProtocolManager) getAllServices(IProtocolManager.class, null).get(0);
+	}
+
+	protected IAlarmsRepository getAlarmsRepository() throws Exception {
+		return (IAlarmsRepository) getAllServices(IAlarmsRepository.class, null).get(0);
 	}
 
 	/**

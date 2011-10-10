@@ -100,10 +100,28 @@ public interface IResourceManager {
 	 */
 	public void exportResourceDescriptor(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException;
 
+	/**
+	 * 
+	 * @param resourceType
+	 * @param resourceName
+	 * @return
+	 * @throws ResourceException
+	 */
 	public IResourceIdentifier getIdentifierFromResourceName(String resourceType, String resourceName) throws ResourceException;
 
+	/**
+	 * 
+	 * @param ID
+	 * @return
+	 * @throws ResourceException
+	 */
 	public String getNameFromResourceID(String ID) throws ResourceException;
 
+	/**
+	 * 
+	 * @param resourceIdentifier
+	 * @throws ResourceException
+	 */
 	public void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 }
