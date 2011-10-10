@@ -9,7 +9,7 @@
 	<bean id="resourceNameCompleter" class="org.opennaas.core.protocols.sessionmanager.shell.completers.ResourceNameCompleter"/>
 	<!-- Register a ProtocolManager as an OSGi Service -->
 	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager"/>
-	<reference-list id="eventManager" interface="net.i2cat.nexus.events.IEventManager" availability="optional">
+	<reference-list id="eventManager" interface="org.opennaas.core.events.IEventManager" availability="optional">
 		<reference-listener ref="protocolManager" bind-method="setEventManager"/>
 	</reference-list>
 	<!-- Provide commands to the Karaf shell -->
