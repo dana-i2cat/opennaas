@@ -7,7 +7,7 @@ import org.osgi.service.event.Event;
 
 public class CapabilityAlarm extends Event {
 
-	public static final String	TOPIC					= "org.opennaas.core/resources/capabilities/alarms/RECEIVED";
+	public static final String	TOPIC					= "org/opennaas/core/resources/capabilities/alarms/RECEIVED";
 
 	/**
 	 * ResourceId of the resource this alarm refers to
