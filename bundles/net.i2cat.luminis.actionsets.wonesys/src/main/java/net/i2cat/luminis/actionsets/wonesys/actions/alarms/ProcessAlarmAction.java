@@ -4,7 +4,7 @@ import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.luminis.actionsets.wonesys.Activator;
 import net.i2cat.luminis.actionsets.wonesys.WonesysAlarmsDriver;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
