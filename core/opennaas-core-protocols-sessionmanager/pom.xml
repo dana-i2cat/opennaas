@@ -64,7 +64,7 @@
 						<Import-Package>org.slf4j,
 							org.apache.felix.service.command,
 							org.opennaas.core.resources,
-							*</Import-Package>
+							</Import-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>
