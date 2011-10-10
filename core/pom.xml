@@ -113,6 +113,11 @@
 				<version>4.2.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>4.2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
 				<artifactId>pax-exam-junit</artifactId>
 				<version>1.2.4</version>
@@ -179,6 +184,7 @@
 		<module>opennaas-core-hibernate</module>
 		<module>opennaas-core-persistence</module>
 		<module>opennaas-core-hsqldb</module>
+		<module>opennaas-core-events</module>
 		<module>opennaas-core-platformmanager</module>
 		<module>opennaas-core-resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->

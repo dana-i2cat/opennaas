@@ -67,10 +67,10 @@
 			</completers>
 		</command>
 		<command name="resource/refresh">
-			<action class="org.opennaas.core.resources.shell.RefreshResourceCommand" />
+			<action class="org.opennaas.core.resources.shell.RefreshResourceCommand"/>
 			<completers>
-				<ref component-id="resourceNameCompleter" />
-				<null />
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
 			</completers>
 		</command>
 		<!--
