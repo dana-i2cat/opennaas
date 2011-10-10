@@ -44,6 +44,7 @@
 		<bundle>mvn:org.opennaas/opennaas-core-hibernate/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-persistence/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-events/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-resources/1.0.0-SNAPSHOT</bundle>
 		<!--  TODO IT IS NOTR USED IT IS AN EXAMPLE  -->
