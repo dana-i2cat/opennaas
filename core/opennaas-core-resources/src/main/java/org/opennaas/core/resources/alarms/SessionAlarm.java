@@ -7,7 +7,7 @@ import org.osgi.service.event.Event;
 
 public class SessionAlarm extends Event {
 
-	public static final String	TOPIC				= "org.opennaas.core/resources/sessions/alarms/RECEIVED";
+	public static final String	TOPIC				= "org/opennaas/core/resources/sessions/alarms/RECEIVED";
 
 	/**
 	 * ResourceId of the resource this alarm refers to
