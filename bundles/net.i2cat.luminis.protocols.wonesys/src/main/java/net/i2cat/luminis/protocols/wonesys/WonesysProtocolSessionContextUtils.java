@@ -4,8 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
-import javax.xml.ws.ProtocolException;
-
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class WonesysProtocolSessionContextUtils {

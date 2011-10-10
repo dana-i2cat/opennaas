@@ -1,7 +1,7 @@
 package net.i2cat.luminis.protocols.wonesys.alarms;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
-import net.i2cat.nexus.events.EventManager;
+import org.opennaas.core.events.EventManager;
 
 import org.osgi.framework.BundleContext;
 

@@ -12,8 +12,9 @@ import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;
 import net.i2cat.luminis.transports.wonesys.mock.MockTransport;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;

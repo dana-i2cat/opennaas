@@ -2,7 +2,7 @@ package net.i2cat.luminis.protocols.wonesys.alarms;
 
 import java.util.Properties;
 
-import net.i2cat.nexus.events.EventFilter;
+import org.opennaas.core.events.EventFilter;
 
 /**
  * Filter matching wonesys alarms

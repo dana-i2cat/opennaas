@@ -11,7 +11,9 @@ import java.util.Properties;
 import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
-import net.i2cat.nexus.events.IEventManager;
+
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -125,7 +127,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 		alarmConfig.configureAlarms(alarmProperties);
 		alarmConfig.enableAlarms();
 
-		WonesysAlarmEventFilter filter = new WonesysAlarmEventFilter();
+		EventFilter filter = new WonesysAlarmEventFilter();
 		int serviceID = eventManager.registerEventHandler(this, filter);
 
 		triggerAlarm();
