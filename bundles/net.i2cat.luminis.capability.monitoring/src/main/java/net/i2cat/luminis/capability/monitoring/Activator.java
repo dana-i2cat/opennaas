@@ -3,7 +3,7 @@ package net.i2cat.luminis.capability.monitoring;
 import java.util.Properties;
 
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;

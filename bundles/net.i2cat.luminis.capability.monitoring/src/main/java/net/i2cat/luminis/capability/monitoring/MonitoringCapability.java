@@ -3,8 +3,8 @@ package net.i2cat.luminis.capability.monitoring;
 import java.util.Properties;
 import java.util.Vector;
 
-import net.i2cat.nexus.events.EventFilter;
-import net.i2cat.nexus.events.IEventManager;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.ActivatorException;
