@@ -3,6 +3,7 @@ package mantychore;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,10 +29,13 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
+import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.osgi.framework.BundleContext;
 import org.apache.felix.service.command.CommandProcessor;
 
@@ -48,7 +52,6 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 	@Inject
 	BundleContext				bundleContext	= null;
 
-	@Configuration
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
@@ -63,6 +66,16 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 				);
 
 		return options;
+	}
+	
+	@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configuration(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+			}
+		});
 	}
 
 	public void initBundles() {
