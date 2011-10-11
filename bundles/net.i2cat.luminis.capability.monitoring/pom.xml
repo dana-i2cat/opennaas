@@ -87,7 +87,7 @@
 						-->
 						<Import-Package>!${project.artifactId}.*,
   							org.apache.activemq,
-							org.osgi.service.command, <!--  necessary to do karaf commands -->
+							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
 							*
 							</Import-Package>
 						<Export-Package>

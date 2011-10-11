@@ -10,20 +10,21 @@
 		ref="mantychoreRepository" bind-method="capabilityFactoryAdded"
 		unbind-method="capabilityFactoryDeleted" /> </reference-list>
 	-->
-	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
-	<!--  FIXME THE QUEUE HAVE TO WORK IN NEXUS, THE MODEL IS FOR NEXUS -->
-	<reference id="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=connections)(capability.model=proteus))"/>
-	<reference id="monitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=monitoring)(capability.model=proteus))"/>
+
+  	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
+   	<reference id="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=connections)(capability.model=proteus))"/>
+ 	<reference id="monitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=monitoring)(capability.model=proteus))"/>
+
 	<bean id="ROADMRepository" class="net.i2cat.luminis.ROADM.repository.ROADMRepository" init-method="init">
 		<argument value="roadm"/>
 		<argument value="ResourceCore"/>
-		<property name="capabilityFactories">
-			<map>
-				<entry key="queue" value-ref="queueCapabilityFactory"/>
+  		<property name="capabilityFactories">
+		<map>
+ 				<entry key="queue" value-ref="queueCapabilityFactory"/>
 				<entry key="connections" value-ref="connectionsCapabilityFactory"/>
-				<entry key="monitoring" value-ref="monitoringCapabilityFactory"/>
+				<entry key="monitoring" value-ref="monitoringCapabilityFactory"/>  
 			</map>
-		</property>
+		</property> 
 		<property name="resourceBootstrapperFactory" ref="roadmBootstrapperFactory"/>
 		<property name="persistenceUnit" value="ResourceCore"/>
 	</bean>
