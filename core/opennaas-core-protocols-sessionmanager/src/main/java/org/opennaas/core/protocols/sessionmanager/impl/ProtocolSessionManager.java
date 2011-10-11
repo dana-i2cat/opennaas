@@ -386,6 +386,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	 */
 	@Override
 	public void handleEvent(Event event) {
+		log.debug("ProtocolSessionManager received an event");
 		if (event instanceof SessionAlarm) {
 			Properties prop = new Properties();
 			prop.put(CapabilityAlarm.RESOURCE_ID_PROPERTY, getResourceID());
@@ -409,7 +410,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	 */
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
-
 	}
 	
 	
