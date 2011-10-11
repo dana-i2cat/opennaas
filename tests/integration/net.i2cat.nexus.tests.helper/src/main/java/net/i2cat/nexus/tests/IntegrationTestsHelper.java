@@ -93,7 +93,7 @@ public class IntegrationTestsHelper {
 	public static Option[] getNexusTestOptions() {
 		/* luminis features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
-		String[] MTCHORE_FEATURES = { "i2cat-nexus" };
+		String[] MTCHORE_FEATURES = { "i2cat-commons" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getFuseTestOptions(), OPT_MANTYCHORE_FEATURES); // service
 	}
