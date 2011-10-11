@@ -12,6 +12,7 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.ResourceNotFoundException;
@@ -60,8 +61,8 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 
 		Option[] options = combine(
 					IntegrationTestsHelper.getLuminisTestOptions(),
-					mavenBundle().groupId("net.i2cat.nexus").artifactId(
-							"org.opennaas.core.events"),
+					mavenBundle().groupId("org.opennaas").artifactId(
+					"opennaas-core-events"),
 					mavenBundle().groupId("net.i2cat.nexus").artifactId(
 							"net.i2cat.nexus.tests.helper")
 
@@ -78,6 +79,8 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		alarmRepo = getOsgiService(IAlarmsRepository.class, 5000);
+		IResourceRepository roadmRepo = getOsgiService(IResourceRepository.class, "type=roadm", 5000);
+		Assert.assertNotNull(roadmRepo);
 	}
 
 	public IResource initResource() throws ResourceException {

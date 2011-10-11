@@ -59,8 +59,8 @@ public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest i
 
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"org.opennaas.core.events"),
+				mavenBundle().groupId("org.opennaas").artifactId(
+				"opennaas-core-events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
