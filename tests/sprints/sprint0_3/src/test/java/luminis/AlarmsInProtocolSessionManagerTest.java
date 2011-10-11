@@ -14,8 +14,8 @@ import luminis.mock.MockSessionFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.alarms.SessionAlarm;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -69,11 +69,76 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 	}
 
+	
+	@Test
+	public void checkHandleSessionAlarmTriggersCapabilityAlarmTest() {
+		
+		initBundles();
+
+		try {
+
+			String resourceId = "TestResourceId";
+
+			IProtocolSessionFactory factory = new MockSessionFactory();
+			Map serviceProperties = new HashMap<String, String>();
+			serviceProperties.put(ProtocolSessionContext.PROTOCOL, "mock");
+
+			((ProtocolManager) protocolManager).sessionFactoryAdded(factory, serviceProperties);
+
+			// create session
+			ProtocolSessionContext sessionContext = newWonesysSessionContextMock();
+
+			ProtocolSessionManager sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManagerWithContext(resourceId,
+					sessionContext);
+			IProtocolSession session = sessionManager.obtainSession(sessionContext, false);
+
+			// register this as ResourceAlarm listener
+			int registrationNum = registerAsCapabilityAlarmListener(this);
+
+			receivedEvents.clear();
+
+			// generate Session Alarm
+			Event newSessionAlarm = generateAlarm(session);
+			
+			// sessionManager should handle SessionAlarm and generate a CapabilityAlarm
+			sessionManager.handleEvent(newSessionAlarm);
+
+			// check CapabilityAlarm has arrived in less than 30s
+			synchronized (lock) {
+				try {
+					lock.wait(30000);
+					Assert.assertFalse(receivedEvents.isEmpty());
+				} catch (InterruptedException e) {
+					Assert.fail("Interrupted while waiting for events");
+				}
+			}
+
+			for (Event alarm : receivedEvents) {
+				Assert.assertEquals(resourceId, (String) alarm.getProperty(CapabilityAlarm.RESOURCE_ID_PROPERTY));
+				Event sessionAlarm = (Event) alarm.getProperty(CapabilityAlarm.CAUSE_PROPERTY);
+				Assert.assertTrue(sessionAlarm instanceof SessionAlarm);
+				Assert.assertEquals(session.getSessionId(), sessionAlarm.getProperty(SessionAlarm.SESSION_ID_PROPERTY));
+			}
+
+			unregisterAsListener(registrationNum);
+
+			sessionManager.destroyProtocolSession(session.getSessionId());
+
+		} catch (ProtocolException e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
+		}
+		
+		
+	}
+	
+	
+	
 	/**
 	 * Check a TransportAlarm is transformed into a ResourceAlarm
 	 */
 	@Test
-	public void checkSessionAlarmTriggersCapabilityAlarmTest() {
+	public void checkSessionAlarmTriggersCapabilityAlarmTest2() {
 
 		initBundles();
 
@@ -99,10 +164,11 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 
 			receivedEvents.clear();
 
-			// generate Alarm
-			generateAlarm(session);
+			// generate Session Alarm
+			generateAndPublishAlarm(session);
 
 			// check CapabilityAlarm has arrived in less than 30s
+			// sessionManager should handle SessionAlarm and generate a CapabilityAlarm
 			synchronized (lock) {
 				try {
 					lock.wait(30000);
@@ -131,7 +197,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 	}
 
 	private int registerAsCapabilityAlarmListener(EventHandler handler) {
-		EventFilter filter = new EventFilter(ResourceAlarm.TOPIC);
+		EventFilter filter = new EventFilter(CapabilityAlarm.TOPIC);
 		return eventManager.registerEventHandler(handler, filter);
 	}
 
@@ -143,24 +209,35 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 	public void handleEvent(Event event) {
 		synchronized (lock) {
 			receivedEvents.add(event);
-			lock.notify();
+			lock.notifyAll();
 		}
 	}
 
+	
+	
 	/**
 	 * Generates a WonesysAlarm
 	 * 
 	 * @param session
 	 */
-	private void generateAlarm(IProtocolSession session) {
+	private void generateAndPublishAlarm(IProtocolSession session) {
+		log.debug("Generating SessionAlarm in session: " + session.getSessionId());
+		eventManager.publishEvent(generateAlarm(session));
+	}
+	
+	/**
+	 * Generates a WonesysAlarm
+	 * 
+	 * @param session
+	 */
+	private Event generateAlarm(IProtocolSession session) {
 
 		Properties prop = new Properties();
 		prop.put(SessionAlarm.SESSION_ID_PROPERTY, session.getSessionId());
 
 		SessionAlarm alarm = new SessionAlarm(prop);
 
-		log.debug("Generating SessionAlarm in session: " + session.getSessionId());
-		eventManager.publishEvent(alarm);
+		return alarm;
 	}
 
 	/**
