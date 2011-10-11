@@ -1,6 +1,6 @@
 package net.i2cat.nexus.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.felix;
+import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
@@ -50,7 +50,7 @@ public class IntegrationTestsHelper {
 		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 											, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
 				, waitForFrameworkStartup() // wait for a length of time
-				, felix(), REPOS, OPT_NOVERIFY);
+				, equinox(), REPOS, OPT_NOVERIFY);
 
 		return optssimpleTest;
 	}
