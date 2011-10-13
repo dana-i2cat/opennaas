@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -46,6 +47,8 @@ public class RawSocketTransport {
 	public static final String		MESSAGE_PROPERTY_NAME					= "message";
 	public static final String		ERROR_PROPERTY_NAME						= "error";
 	public static final String		TRANSPORT_ID_PROPERTY_NAME				= "transportid";
+	public static final String		ARRIVAL_TIME_PROPERTY_NAME					= "arrivalTime";
+	
 
 	public static final int			DEFAULT_PORT							= 27773;
 	public static final int			DEFAULT_TIMEOUT							= 1000;
@@ -141,6 +144,7 @@ public class RawSocketTransport {
 	protected Event createEvent(String eventTopic, String message) {
 		Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, getTransportID());
+		properties.put(RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME, new Date().getTime());
 		if (message != null)
 			properties.put(MESSAGE_PROPERTY_NAME, message);
 
@@ -150,6 +154,7 @@ public class RawSocketTransport {
 	protected Event createErrorEvent(String eventTopic, Exception err) {
 		Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, getTransportID());
+		properties.put(RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME, new Date().getTime());
 		if (err != null)
 			properties.put(ERROR_PROPERTY_NAME, err);
 

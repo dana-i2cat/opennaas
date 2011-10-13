@@ -4,6 +4,7 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -15,6 +16,7 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -44,11 +46,14 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	public static final String	MSG_RCVD_EVENT_TOPIC		= RawSocketTransport.MSG_RCVD_EVENT_TOPIC;
 	public static final String	MESSAGE_PROPERTY_NAME		= RawSocketTransport.MESSAGE_PROPERTY_NAME;
 	public static final String	TRANSPORT_ID_PROPERTY_NAME	= RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME;
-
+	public static final String	ARRIVAL_TIME_PROPERTY_NAME	= RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME;
+	
 	private IEventManager		eventManager;
 
 	@Inject
 	BundleContext				bundleContext				= null;
+	
+	private final Object lock = new Object();
 
 	@Configuration
 	public static Option[] configuration() throws Exception {
@@ -72,141 +77,124 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		eventManager = getOsgiService(IEventManager.class, 2000);
 	}
 
+	private TestInitInfo setUp() throws ProtocolException {
+		
+		initBundles();
+		
+		String sessionID = "session1";
+
+		String alarmTopic = WonesysAlarm.TOPIC;
+		Properties properties = new Properties();
+		properties.put(WonesysAlarm.SESSION_ID_PROPERTY, sessionID);
+
+		EventFilter filter = new EventFilter(alarmTopic);
+		int regNum = eventManager.registerEventHandler(this, filter);
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter("protocol.mock", "true");
+
+		WonesysProtocolSession session;
+		
+		session = new WonesysProtocolSession(protocolSessionContext, sessionID);
+		session.connect();
+		
+		TestInitInfo initInfo = new TestInitInfo();
+		initInfo.session = session;
+		initInfo.regNum = regNum;
+		
+		return initInfo;
+	}
+	
+	private void tearDown(TestInitInfo initInfo) throws ProtocolException {
+		eventManager.unregisterHandler(initInfo.regNum);
+		initInfo.session.disconnect();
+	}
+	
+	
 	/**
 	 * Test to group all tests in this class, loading container only once.
+	 * @throws ProtocolException 
 	 */
 	@Test
-	public void allRawSocketAlarmsTest() {
+	public void allRawSocketAlarmsTest() throws ProtocolException {
 
-		initBundles();
-
-		alarmsReceivedTest();
-		checkAlarmsAndCommandsTest();
-		// checkAllAlarmsAreSupportedTest();
-		// checkEventChannelConfigChangedTest();
-		// checkAlarmsStoredInAlarmHistory();
-
+			TestInitInfo initInfo = setUp();
+			
+			alarmsReceivedTest(initInfo);
+			checkAlarmsAndCommandsTest(initInfo);
+			// checkAllAlarmsAreSupportedTest();
+			// checkEventChannelConfigChangedTest();
+			// checkAlarmsStoredInAlarmHistory();
+		
+			tearDown(initInfo);
 	}
 
 	/**
 	 * Test that WonesysProtocol receives alarms correctly from transport and notifies listeners upon alarm reception.
 	 */
-	// @Test
-	public void alarmsReceivedTest() {
+	public void alarmsReceivedTest(TestInitInfo initInfo) {
 
-		// initBundles();
-		String sessionID = "session1";
-
-		String alarmTopic = WonesysProtocolSession.ALARM_RCVD_EVENT_TOPIC;
-		Properties properties = new Properties();
-		properties.put(WonesysProtocolSession.SESSION_ID_PROPERTY, sessionID);
-
-		EventFilter filter = new EventFilter(alarmTopic);
-		eventManager.registerEventHandler(this, filter);
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.mock", "true");
-
-		WonesysProtocolSession session;
 		try {
-			session = new WonesysProtocolSession(protocolSessionContext, sessionID);
-			session.connect();
-
+			
 			alarmReceived = false;
 
-			generateAlarm(session);
+			generateAlarm(initInfo.session);
 
-			try {
-				Thread.sleep(30000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			synchronized (lock) {
+				lock.wait(3000);
+				// check that the alarm is received & listeners are notified
+				Assert.assertTrue(alarmReceived);
 			}
-
-			// check that the alarm is received & listeners are notified
-			Assert.assertTrue(alarmReceived);
-
-			session.disconnect();
-
+			
 			alarmReceived = false;
-
-		} catch (ProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			Assert.fail(e1.getLocalizedMessage());
+			alarmCounter = 0;
+			receivedAlarms.clear();
+			
+		} catch (InterruptedException e) {
+			Assert.fail("Interrupted!");
 		}
 	}
 
-	@Override
-	public void handleEvent(Event event) {
-		// TODO check received event is the alarm we have just triggered
-		alarmReceived = true;
-		alarmCounter++;
-		receivedAlarms.add((WonesysAlarm) event);
-	}
-
 	/**
-	 * Tests that WonesysProtocolSession distinguishes between alarms and command responses.
+	 * Tests that WonesysProtocolSession distinguishes between alarms and command responses, and only rises and alarm when alarms are received.
 	 */
-	// @Test
-	public void checkAlarmsAndCommandsTest() {
+	public void checkAlarmsAndCommandsTest(TestInitInfo initInfo) {
 
-		// initBundles();
-
-		String sessionID = "session1";
-
-		String alarmTopic = WonesysProtocolSession.ALARM_RCVD_EVENT_TOPIC;
-		Properties properties = new Properties();
-		properties.put(WonesysProtocolSession.SESSION_ID_PROPERTY, sessionID);
-
-		EventFilter filter = new EventFilter(alarmTopic);
-		eventManager.registerEventHandler(this, filter);
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		protocolSessionContext.addParameter("protocol.mock", "true");
-
-		WonesysProtocolSession session;
 		try {
-			session = new WonesysProtocolSession(protocolSessionContext, sessionID);
-			session.connect();
-
+		
 			alarmReceived = false;
+			alarmCounter = 0;
+			receivedAlarms.clear();
 
-			generateAlarm(session);
+			generateAlarm(initInfo.session);
 
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			synchronized (lock) {
+				lock.wait(3000);
+				// check that the alarm is received & listeners are notified
+				Assert.assertTrue(alarmReceived);
 			}
-
-			// check that the alarm is received & listeners are notified
-			Assert.assertTrue(alarmReceived);
 
 			alarmReceived = false;
 
 			// generate command response
 			// FIXME XOR is incorrect
 			String commandResponse = "59100117FFFF0B02FFFFFFFF0100000100"; // Set channel resp (OK)
-			Dictionary<String, Object> properties1 = new Hashtable<String, Object>();
-			properties1.put(MESSAGE_PROPERTY_NAME, commandResponse);
-			Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties1);
-
-			eventManager.publishEvent(event);
-			log.debug("Command response generated");
-
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			generateRawSocketEvent(initInfo.session.getWonesysTransport().getTransportID(), commandResponse);
+			
+			synchronized (lock) {
+				lock.wait(3000);
+				// check that no alarm has been received
+				Assert.assertFalse(alarmReceived);
 			}
-
-			// check that no alarm has been received
-			Assert.assertFalse(alarmReceived);
-
-		} catch (ProtocolException e2) {
-			e2.printStackTrace();
-			Assert.fail(e2.getLocalizedMessage());
+			
+			Assert.assertTrue(alarmCounter == 1);
+			
+			alarmReceived = false;
+			alarmCounter = 0;
+			receivedAlarms.clear();
+		
+		} catch (InterruptedException e) {
+			Assert.fail("Interrupted!");
 		}
 	}
 
@@ -290,7 +278,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 			String chassisSlot = "0117";
 			String message = "FFFF0000" + chassis + slot + "01FF80";
 
-			generateAlarm(session, message);
+			generateRawSocketEvent(session.getWonesysTransport().getTransportID(), message);
 
 			// TODO check model has been refreshed
 
@@ -327,7 +315,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			String alarmMessage = "FFFF0000" + chassis + slot + "01FF80";
 
-			generateAlarm(session, alarmMessage);
+			generateRawSocketEvent(session.getWonesysTransport().getTransportID(), alarmMessage);
 
 			// TODO check alarm history for given device contains generated alarm
 
@@ -339,21 +327,41 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		}
 
 	}
+	
+	@Override
+	public void handleEvent(Event event) {
+		// TODO check received event is the alarm we have just triggered
+		synchronized (lock) {
+			alarmReceived = true;
+			alarmCounter++;
+			receivedAlarms.add((WonesysAlarm) event);
+			lock.notify();
+		}
+	}
 
 	private void generateAlarm(WonesysProtocolSession session) {
 		String alarmMessage = "FFFF0100011700FF0300"; // PSROADM ERROR
-		generateAlarm(session, alarmMessage);
+		generateRawSocketEvent(session.getWonesysTransport().getTransportID(), alarmMessage);
 	}
 
-	private void generateAlarm(WonesysProtocolSession session, String message) {
+	private void generateRawSocketEvent(String transportId, String message) {
 
 		Dictionary<String, Object> properties = new Hashtable<String, Object>();
 		properties.put(MESSAGE_PROPERTY_NAME, message);
-		properties.put(TRANSPORT_ID_PROPERTY_NAME, session.getWonesysTransport().getTransportID());
+		properties.put(TRANSPORT_ID_PROPERTY_NAME, transportId);
+		long creationTime = new Date().getTime();
+		properties.put(ARRIVAL_TIME_PROPERTY_NAME, creationTime);
+		
 		Event event = new Event(MSG_RCVD_EVENT_TOPIC, properties);
 
 		eventManager.publishEvent(event);
-		log.debug("Alarm generated!");
+		log.debug("RawSocketTransport Event generated! " + message + " at " + creationTime);
+	}
+	
+	
+	class TestInitInfo {
+		public WonesysProtocolSession session;
+		public int regNum;
 	}
 
 }

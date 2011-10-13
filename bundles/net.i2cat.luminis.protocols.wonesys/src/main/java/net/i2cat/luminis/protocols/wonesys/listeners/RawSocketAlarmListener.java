@@ -1,5 +1,6 @@
 package net.i2cat.luminis.protocols.wonesys.listeners;
 
+import java.util.Date;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
@@ -20,9 +21,13 @@ public class RawSocketAlarmListener implements EventHandler {
 	public static Log	log	= LogFactory.getLog(RawSocketAlarmListener.class);
 
 	private String		sessionId;
+	
+	private long creationTime;
 
 	public RawSocketAlarmListener(String sessionID) {
 		this.sessionId = sessionID;
+		creationTime = new Date().getTime();
+		
 		log.info("Created RawSocketAlarmListener for session: " + sessionId);
 	}
 
@@ -33,11 +38,24 @@ public class RawSocketAlarmListener implements EventHandler {
 		String message = (String) event.getProperty(RawSocketTransport.MESSAGE_PROPERTY_NAME);
 		if (message != null) {
 			if (isAlarm(message)) {
-				try {
-					log.info("Session received an alarm: " + message);
-					createAndPublishAlarm(message);
-				} catch (ProtocolException e) {
-					log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system", e);
+				
+				boolean isOld = false;
+				Long arrivalTime = (Long) event.getProperty(RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME);
+				if (arrivalTime != null) {
+					if (arrivalTime < creationTime)
+						isOld = true;
+				}
+				
+				//Only publish if event arrived after listener creation
+				if (!isOld){
+					try {
+						log.info("Session received an alarm: " + message + " created in " + arrivalTime);
+						createAndPublishAlarm(message);
+					} catch (ProtocolException e) {
+						log.error("Error publishing received alarm: " + message + ". Received alarm will be unavailable for the rest of the system", e);
+					}
+				} else {
+					log.debug("Skipping old alarm: " + message);
 				}
 			}
 		}
