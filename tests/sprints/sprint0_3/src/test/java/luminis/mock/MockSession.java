@@ -6,10 +6,16 @@ import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
+/**
+ * MockSession incapable of sending messages nor using listeners
+ * @author isart
+ *
+ */
 public class MockSession implements IProtocolSession {
 
 	String					sessionID;
 	ProtocolSessionContext	protocolSessionContext;
+	Status status = Status.DISCONNECTED_BY_USER;
 
 	public MockSession(String sessionID, ProtocolSessionContext protocolSessionContext) {
 		this.sessionID = sessionID;
@@ -24,13 +30,13 @@ public class MockSession implements IProtocolSession {
 
 	@Override
 	public void connect() throws ProtocolException {
-		// TODO Auto-generated method stub
+		status = Status.CONNECTED;
 
 	}
 
 	@Override
 	public void disconnect() throws ProtocolException {
-		// TODO Auto-generated method stub
+		status = Status.DISCONNECTED_BY_USER;
 
 	}
 
@@ -41,14 +47,13 @@ public class MockSession implements IProtocolSession {
 
 	@Override
 	public String getSessionId() {
-
 		return sessionID;
 	}
 
 	@Override
 	public Status getStatus() {
 		// TODO Auto-generated method stub
-		return null;
+		return status;
 	}
 
 	@Override
