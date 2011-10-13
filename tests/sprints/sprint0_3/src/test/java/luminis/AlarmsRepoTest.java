@@ -108,10 +108,6 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		} catch (InterruptedException e) {
 			Assert.fail("Interrupted!");
 		}
-
-
-		
-		
 		
 		List<ResourceAlarm> alarms;
 		try {
@@ -179,8 +175,9 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 				Assert.fail("Interrupted!");
 			}
 
-			// Check alarmRepo has an alarm
+			// Check alarmRepo has an alarm (only one)
 			List<ResourceAlarm> alarms = alarmRepo.getResourceAlarms(resource.getResourceIdentifier().getId());
+			Assert.assertFalse(alarms.isEmpty());
 			Assert.assertTrue(alarms.size() == 1);
 			
 			resourceManager.stopResource(resource.getResourceIdentifier());

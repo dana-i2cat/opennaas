@@ -16,6 +16,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
@@ -79,15 +80,18 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		eventManager = getOsgiService(IEventManager.class, 5000);
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-
+		
 		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 10000);
 		Assert.assertNotNull(monitoringFactory);
-
+		
+		String filter = "(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))";
+		IActionSet actionSet = getOsgiService(IActionSet.class, filter, 5000);
+		Assert.assertNotNull(actionSet);
 	}
 
 	private IResource initResource() throws ResourceException, ProtocolException {
 
-		removeResourceFromRepo();
+		removeResourcesFromRepo();
 
 		IResource resource = resourceManager.createResource(createResourceDescriptorWithConnectionsAndMonitoring());
 
@@ -105,21 +109,15 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		return resource;
 	}
 
-	private void removeResourceFromRepo() throws ResourceException {
+	private void removeResourcesFromRepo() throws ResourceException {
 
-		IResourceIdentifier id;
-		try {
-			id = resourceManager.getIdentifierFromResourceName("TestProteus", "roadm");
-		} catch (ResourceException e) {
-			// nothing to remove
-			return;
+		List<IResource> resources = resourceManager.listResourcesByType("roadm");
+		for (int i=resources.size()-1; i>=0; i-- ){
+			IResource resource = resources.get(i);
+			if (resource.getState().equals(ILifecycle.State.ACTIVE))
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
-
-		IResource resource = resourceManager.getResource(id);
-		if (resource.getState().equals(ILifecycle.State.ACTIVE))
-			resourceManager.stopResource(id);
-
-		resourceManager.removeResource(id);
 	}
 
 	@Test
@@ -136,7 +134,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 			alarmReceived = false;
 
 			// generate WonesysAlarm
-			generateAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
+			generateWonesysAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
 
 			// check ResourceAlarm is generated (monitoringCapability generates it)
 			synchronized (lock) {
@@ -203,7 +201,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 	 * 
 	 * @param session
 	 */
-	private void generateAlarm(IProtocolSession session) {
+	private void generateWonesysAlarm(IProtocolSession session) {
 		int chassis = 0;
 		int slot = 1;
 

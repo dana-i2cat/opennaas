@@ -3,11 +3,14 @@ package net.i2cat.luminis.capability.monitoring;
 import java.util.Properties;
 import java.util.Vector;
 
+import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -27,7 +30,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 	public static final String	CAPABILITY_NAME			= "monitoring";
 
-	public static final String	PROCESS_ALARM_ACTION	= "processAlarmAction";
+	public static final String	PROCESS_ALARM_ACTION	= "processAlarm";
 
 	private String				resourceId				= "";
 	private int					registrationNumber;
@@ -47,18 +50,18 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 			action.setParams(params);
 			action.setModelToUpdate(resource.getModel());
 
-			// skip the queue and execute directly
-			ActionResponse response = action.execute(null);
-
-			if (response.getStatus().equals(ActionResponse.STATUS.OK)) {
-				return Response.okResponse(idOperation);
+			if (idOperation.equals(MonitoringCapability.PROCESS_ALARM_ACTION)) {
+				log.debug("Executing MonitoringCapability.PROCESS_ALARM_ACTION");
+				//execute directly, skipping queue
+				return executeAction(action, idOperation);
+				
 			} else {
-				Vector<String> errorMsgs = new Vector<String>();
-				errorMsgs
-						.add(response.getInformation());
-				return Response.errorResponse(idOperation, errorMsgs);
+				//queue action
+				IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
+				queueManager.queueAction(action);
+				return Response.okResponse(idOperation);
 			}
-
+			
 		} catch (Exception e) {
 			Vector<String> errorMsgs = new Vector<String>();
 			errorMsgs
@@ -71,7 +74,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-
+		
 		try {
 			return Activator.getMonitoringActionSetService(name, version);
 		} catch (ActivatorException e) {
@@ -100,6 +103,32 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		// TODO Auto-generated method stub
 
 	}
+	
+	/**
+	 * Executes given action directly, without passing it to the queue.
+	 * Given action will be executed with no ProtocolSessionManager (null)
+	 * @param action
+	 * @return Response telling if action has gone ok or not
+	 * @throws ActionException
+	 */
+	private Response executeAction(IAction action, String idOperation) throws ActionException {
+		
+		log.debug("Executing action " + idOperation +"...");
+		
+		// skip the queue and execute directly
+		ActionResponse response = action.execute(null);
+
+		if (response.getStatus().equals(ActionResponse.STATUS.OK)) {
+			return Response.okResponse(idOperation);
+		} else {
+			Vector<String> errorMsgs = new Vector<String>();
+			errorMsgs
+					.add(response.getInformation());
+			return Response.errorResponse(idOperation, errorMsgs);
+		}
+	}
+	
+	
 
 	private void registerAsCapabilityAlarmListener() throws CapabilityException {
 		log.debug("Registering as CapabilityAlarm listener");
@@ -143,12 +172,14 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 			if (response.getStatus().equals(Response.Status.OK)) {
 				log.info("Alarm processed");
 			} else {
-				log.error("Error processing alarm: " + response.getErrors());
+				log.error("Error processing alarm: PROCESS_ALARM_ACTION returned error " + response.getErrors());
 			}
 
 		} catch (CapabilityException e) {
+			log.error(e);
 			log.error("Error processing alarm", e);
 		} catch (Exception e) {
+			log.error(e);
 			log.error("Error processing alarm", e);
 		}
 	}
