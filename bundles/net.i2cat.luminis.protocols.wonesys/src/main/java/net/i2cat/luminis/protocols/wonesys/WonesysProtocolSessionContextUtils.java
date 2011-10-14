@@ -56,4 +56,25 @@ public class WonesysProtocolSessionContextUtils {
 		}
 	}
 
+	public static boolean isMock(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
+
+		Map<String, Object> params = protocolSessionContext.getSessionParameters();
+		String uriStr = (String) params.get(ProtocolSessionContext.PROTOCOL_URI);
+
+		if (uriStr == null) {
+			throw new ProtocolException("Invalid ProtocolSessionContext. It should contain a protocol uri.");
+		}
+
+		try {
+
+			URI uri = new URI(uriStr);
+
+			String path = uri.getPath();
+
+			return false;
+		} catch (URISyntaxException e) {
+			throw new ProtocolException(e);
+		}
+	}
+
 }
