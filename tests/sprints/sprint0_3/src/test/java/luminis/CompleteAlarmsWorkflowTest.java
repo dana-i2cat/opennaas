@@ -20,6 +20,7 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -88,6 +89,14 @@ public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
 	private TestInitInfo setUp() throws ResourceException, ProtocolException {
 		
 		initBundles();
+		
+		//clear resource repo
+		List<IResource> resources = resourceManager.listResources();
+		for (IResource resource : resources){
+			if (resource.getState().equals(ILifecycle.State.ACTIVE))
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.stopResource(resource.getResourceIdentifier());
+		}
 		
 		IResource resource = resourceManager.createResource(createResourceDescriptorWithMonitoring());
 		
