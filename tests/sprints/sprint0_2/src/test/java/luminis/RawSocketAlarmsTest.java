@@ -16,7 +16,6 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -120,13 +119,17 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			TestInitInfo initInfo = setUp();
 			
-			alarmsReceivedTest(initInfo);
-			checkAlarmsAndCommandsTest(initInfo);
+			try {
+				alarmsReceivedTest(initInfo);
+				checkAlarmsAndCommandsTest(initInfo);
 			// checkAllAlarmsAreSupportedTest();
 			// checkEventChannelConfigChangedTest();
 			// checkAlarmsStoredInAlarmHistory();
-		
-			tearDown(initInfo);
+			} catch(Exception e) {
+				Assert.fail(e.getLocalizedMessage());
+			} finally {
+				tearDown(initInfo);
+			}
 	}
 
 	/**
@@ -275,7 +278,6 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 			session.connect();
 
-			String chassisSlot = "0117";
 			String message = "FFFF0000" + chassis + slot + "01FF80";
 
 			generateRawSocketEvent(session.getWonesysTransport().getTransportID(), message);
