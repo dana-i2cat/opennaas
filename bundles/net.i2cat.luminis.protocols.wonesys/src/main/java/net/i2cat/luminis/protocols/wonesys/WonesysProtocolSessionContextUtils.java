@@ -2,6 +2,7 @@ package net.i2cat.luminis.protocols.wonesys;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -59,22 +60,57 @@ public class WonesysProtocolSessionContextUtils {
 	public static boolean isMock(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		Map<String, Object> params = protocolSessionContext.getSessionParameters();
+		
+		// check if contains sessionParameter protocol.mock = true
+		String isMock = (String) protocolSessionContext.getSessionParameters().get("protocol.mock");
+		if (isMock != null && isMock.equals("true")) {
+			return true;
+		}
+		
 		String uriStr = (String) params.get(ProtocolSessionContext.PROTOCOL_URI);
-
 		if (uriStr == null) {
 			throw new ProtocolException("Invalid ProtocolSessionContext. It should contain a protocol uri.");
 		}
-
+		
+		//check if URIs query contains mock=true
 		try {
 
 			URI uri = new URI(uriStr);
-
-			String path = uri.getPath();
-
+			String query = uri.getQuery();
+			
+			if (query.startsWith("?"))
+				query = query.substring(1);
+			
+			if (query.isEmpty())
+				return false;
+			
+			Map<String, String> queryParams = getQueryMap(query);
+			
+			if (queryParams.containsKey("mock")){
+				return queryParams.get("mock").equals("true");
+			}
 			return false;
+			
 		} catch (URISyntaxException e) {
 			throw new ProtocolException(e);
 		}
 	}
+	
+	
+	private static Map<String, String> getQueryMap(String query) {
+	    String[] params = query.split("&");
+	    Map<String, String> map = new HashMap<String, String>();
+	    for (String param : params)
+	    {
+	    	String[] nameValue = param.split("=");
+	    	if (nameValue.length == 2) {
+	    		String name = nameValue[0];
+		        String value = nameValue[1];
+		        map.put(name, value);
+	    	}
+	    }
+	    return map;
+	}
+
 
 }

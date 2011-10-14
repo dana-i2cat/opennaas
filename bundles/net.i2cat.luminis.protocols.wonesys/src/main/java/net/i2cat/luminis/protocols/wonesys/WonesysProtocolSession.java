@@ -69,9 +69,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 		log.debug("Initializing transport");
 		/* is mock or not */
-		String isMock = (String) protocolSessionContext.getSessionParameters().get("protocol.mock");
-		if ((isMock != null && isMock.equals("true"))
-				|| (new WonesysProtocolSessionContextUtils()).isMock(protocolSessionContext))
+		if ( WonesysProtocolSessionContextUtils.isMock(protocolSessionContext) )
 			wonesysTransport = new MockTransport();
 		else
 			wonesysTransport = new WonesysTransport(protocolSessionContext);
