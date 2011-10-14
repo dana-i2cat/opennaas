@@ -2,7 +2,6 @@ package luminis;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +42,8 @@ import org.osgi.service.event.Event;
 
 @RunWith(JUnit4TestRunner.class)
 public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
-
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+	
 	static Log			log				= LogFactory.getLog(CompleteAlarmsWorkflowTest.class);
 
 	@Inject
@@ -66,7 +66,7 @@ public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
 				"opennaas-core-events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 
 		return options;
