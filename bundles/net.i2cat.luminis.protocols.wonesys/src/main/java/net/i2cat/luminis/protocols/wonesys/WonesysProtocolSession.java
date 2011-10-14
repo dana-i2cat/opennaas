@@ -13,6 +13,8 @@ import net.i2cat.luminis.transports.wonesys.WonesysTransport;
 import net.i2cat.luminis.transports.wonesys.mock.MockTransport;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
@@ -21,9 +23,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -71,7 +70,8 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 		log.debug("Initializing transport");
 		/* is mock or not */
 		String isMock = (String) protocolSessionContext.getSessionParameters().get("protocol.mock");
-		if (isMock != null && isMock.equals("true"))
+		if ((isMock != null && isMock.equals("true"))
+				|| (new WonesysProtocolSessionContextUtils()).isMock(protocolSessionContext))
 			wonesysTransport = new MockTransport();
 		else
 			wonesysTransport = new WonesysTransport(protocolSessionContext);
