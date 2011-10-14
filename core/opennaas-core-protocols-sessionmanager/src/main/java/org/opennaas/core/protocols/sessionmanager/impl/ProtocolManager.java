@@ -178,7 +178,12 @@ public class ProtocolManager implements IProtocolManager {
 	 */
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
-
+		
+		for (IProtocolSessionManager sessionManager: sessionManagers.values()){
+			if (sessionManager instanceof ProtocolSessionManager){
+				((ProtocolSessionManager)sessionManager).setEventManager(eventManager);
+			}
+		}
 	}
 	
 	private IEventManager getEventManager() throws ProtocolException {
