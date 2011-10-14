@@ -2,15 +2,14 @@ package net.i2cat.luminis.capability.monitoring.shell;
 
 import java.util.List;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 /**
  * Lists alarms per resource
@@ -33,10 +32,10 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 			IAlarmsRepository alarmsRepo = getAlarmsRepository();
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
-			for (String id : resourceIDs) {
+			for (String friendlyId : resourceIDs) {
 				String resourceId;
 				try {
-					resourceId = getResourceId(id, manager);
+					resourceId = getResourceId(friendlyId, manager);
 				} catch (Exception e) {
 					printError(e);
 					printEndCommand();
@@ -45,14 +44,14 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 
 				if (resourceId != null) {
 
-					printInfo("Resource ID: " + id);
+					printInfo("Resource ID: " + friendlyId);
 					printSymbol(horizontalSeparator);
 
 					List<ResourceAlarm> alarms = alarmsRepo.getResourceAlarms(resourceId);
 					printAlarms(alarms);
 
 				} else {
-					printError("The resource " + id + " is not found on repository.");
+					printError("The resource " + friendlyId + " is not found on repository.");
 				}
 				printSymbol(underLine);
 			}

@@ -31,4 +31,20 @@
 		</service-properties>
 	</service>
 	<!-- Provide commands to the Karaf shell -->
+		<!-- Command completers -->
+	<bean id="resourceNameCompleter" class="net.i2cat.luminis.capability.monitoring.shell.completers.ResourceNameCompleter"/>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="alarm/list">
+			<action class="net.i2cat.luminis.capability.monitoring.shell.ListAlarmsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers> 
+		</command>
+		<command name="alarm/clear">
+			<action class="net.i2cat.luminis.capability.monitoring.shell.ClearAlarmsCommand"/>
+		</command>
+	</command-bundle>
+	
 </blueprint>
