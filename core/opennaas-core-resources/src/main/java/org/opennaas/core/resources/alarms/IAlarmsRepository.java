@@ -39,5 +39,11 @@ public interface IAlarmsRepository {
 	 * Removes all alarms from repository
 	 */
 	public void clear();
+	
+	/**
+	 * Remove alarms concerning resource with given resourceid
+	 * @param resourceId
+	 */
+	public void clearResourceAlarms(String resourceId);
 
 }
