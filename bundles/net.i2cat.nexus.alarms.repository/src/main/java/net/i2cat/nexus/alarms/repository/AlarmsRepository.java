@@ -72,6 +72,16 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 		alarmsRepository.clear();
 
 	}
+	
+	@Override
+	public void clearResourceAlarms(String resourceId) {
+		
+		List<AlarmElement> alarmElems = alarmsRepository.get(resourceId);
+		if (alarmElems != null) {
+			alarmsRepository.remove(resourceId);
+		}
+		log.debug("Alarms cleared for resource " + resourceId);
+	}
 
 	@Override
 	public ResourceAlarm getAlarmById(String alarmId) throws ResourceNotFoundException {
@@ -85,7 +95,7 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 			}
 
 		}
-		throw new ResourceNotFoundException("Not found alarm in repository");
+		throw new ResourceNotFoundException("Alarm not found in repository");
 	}
 
 	@Override
