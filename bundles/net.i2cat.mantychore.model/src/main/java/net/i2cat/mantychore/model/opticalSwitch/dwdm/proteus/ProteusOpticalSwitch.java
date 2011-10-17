@@ -22,7 +22,8 @@ public class ProteusOpticalSwitch extends net.i2cat.mantychore.model.System {
 	/**
 	 * Returns ProteusOpticalSwitchCard identifyied with given chasis and slot, or null if there is no such card.
 	 * 
-	 * @param opticalSwitch
+	 * @param chasis
+	 * @param slot
 	 * @return
 	 */
 	public ProteusOpticalSwitchCard getCard(int chasis, int slot) {
