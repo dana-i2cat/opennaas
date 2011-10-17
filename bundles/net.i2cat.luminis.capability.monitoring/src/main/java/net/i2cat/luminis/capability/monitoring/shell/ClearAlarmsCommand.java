@@ -8,13 +8,13 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.alarms.IAlarmsRepository;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Lists alarms per resource
  * 
- * @author Isart Canyameres
- * 
+ * @author Carlos Baez
  */
 @Command(scope = "alarms", name = "clear", description = "Clear alarms")
 public class ClearAlarmsCommand extends GenericKarafCommand {
@@ -32,7 +32,7 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
 			/* Clear alarms for all the resources */
-			if (resourceIDs == null && resourceIDs.size() == 0) {
+			if (resourceIDs == null || resourceIDs.size() == 0) {
 				alarmsRepo.clear();
 				printEndCommand();
 				return null;
@@ -49,12 +49,9 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 				}
 
 				if (resourceId != null) {
-
-					printInfo("Resource ID: " + friendlyId);
-					printSymbol(horizontalSeparator);
-
-					// List<ResourceAlarm> alarms = alarmsRepo.getResourceAlarms(resourceId);
-					// alarmsRepo.clearResourceAlarms(resourceId);
+					alarmsRepo.clearResourceAlarms(resourceId);
+					printInfo("Cleared alarms for resource: " + friendlyId);
+					
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
