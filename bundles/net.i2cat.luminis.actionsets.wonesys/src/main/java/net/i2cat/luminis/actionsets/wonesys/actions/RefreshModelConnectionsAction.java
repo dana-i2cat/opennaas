@@ -166,6 +166,7 @@ public class RefreshModelConnectionsAction extends WonesysAction {
 				((ProteusOpticalSwitch) model).removeLogicalDevice(oldLogicalDevices.get(i));
 			}
 		}
+		((ProteusOpticalSwitch) model).getFiberConnections().clear();
 		
 		OpticalSwitchCardFactory factory;
 		try {
