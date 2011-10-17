@@ -159,6 +159,14 @@ public class RefreshModelConnectionsAction extends WonesysAction {
 				throw new CommandException("Command Failed");
 		}
 
+		//remove old model
+		List<LogicalDevice> oldLogicalDevices = ((ProteusOpticalSwitch) model).getLogicalDevices();
+		for (int i= oldLogicalDevices.size() -1; i>=0; i--){
+			if (oldLogicalDevices.get(i) instanceof ProteusOpticalSwitchCard){
+				((ProteusOpticalSwitch) model).removeLogicalDevice(oldLogicalDevices.get(i));
+			}
+		}
+		
 		OpticalSwitchCardFactory factory;
 		try {
 			factory = new OpticalSwitchCardFactory();
