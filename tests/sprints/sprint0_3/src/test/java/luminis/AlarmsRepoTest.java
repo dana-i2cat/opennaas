@@ -235,7 +235,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 	/**
 	 * Generates a ResourceAlarm
 	 * 
-	 * @param session
+	 * @param resourceId
 	 */
 	private ResourceAlarm generateResourceAlarm(String resourceId) {
 
