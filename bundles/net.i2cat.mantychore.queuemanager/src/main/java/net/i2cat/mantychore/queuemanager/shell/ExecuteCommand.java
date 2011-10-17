@@ -30,6 +30,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		printInitCommand("Execute all actions in queue");
 
+		ICapability queue;
 		try {
 			IResourceManager manager = getResourceManager();
 
@@ -54,12 +55,21 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			if (queue == null) {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
 				return -1;
 			}
-
+			
+		} catch (Exception e) {
+			printError("Error getting queue.");
+			printError(e);
+			printEndCommand();
+			return -1;
+		}
+		
+		
+		try{
 			printSymbol("Executing actions...");
 			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
 			printSymbol("Executed in " + queueResponse.getTotalTime() + " ms");
@@ -71,7 +81,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 			}
 
 		} catch (Exception e) {
-			printError("Error getting queue.");
+			printError("Error executing queue.");
 			printError(e);
 			printEndCommand();
 			return -1;
