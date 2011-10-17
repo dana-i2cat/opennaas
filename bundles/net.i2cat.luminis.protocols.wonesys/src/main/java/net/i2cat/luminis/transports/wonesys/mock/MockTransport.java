@@ -6,17 +6,23 @@ import java.util.Hashtable;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import org.opennaas.core.resources.ActivatorException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
 import org.osgi.service.event.Event;
 
 public class MockTransport implements ITransport {
 
+	private int	period		= 2;
+
 	Log			log			= LogFactory.getLog(RawSocketTransport.class);
 
-	ProteusMock	proteusMock	= new ProteusMock();
+	ProteusMock	proteusMock	= null;
+
+	public MockTransport() {
+		proteusMock = new ProteusMock(this);
+	}
 
 	// private List<ITransportListener> listeners = new ArrayList<ITransportListener>();
 
@@ -34,16 +40,8 @@ public class MockTransport implements ITransport {
 		notifyListeners(response);
 	}
 
-	@Override
-	public void connect() throws Exception {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void disconnect() throws Exception {
-		// TODO Auto-generated method stub
-
+	public void setTimerPeriod(int period) {
+		this.period = period;
 	}
 
 	// public void registerListener(ITransportListener listener) {
@@ -84,6 +82,18 @@ public class MockTransport implements ITransport {
 	@Override
 	public String getTransportID() {
 		return "mockTransportID";
+	}
+
+	@Override
+	public void connect() throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void disconnect() throws Exception {
+		// TODO Auto-generated method stub
+
 	}
 
 }

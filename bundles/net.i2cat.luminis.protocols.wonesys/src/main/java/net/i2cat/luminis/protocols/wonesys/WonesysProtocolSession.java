@@ -69,7 +69,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 		log.debug("Initializing transport");
 		/* is mock or not */
-		if ( WonesysProtocolSessionContextUtils.isMock(protocolSessionContext) )
+		if (WonesysProtocolSessionContextUtils.isMock(protocolSessionContext))
 			wonesysTransport = new MockTransport();
 		else
 			wonesysTransport = new WonesysTransport(protocolSessionContext);
@@ -248,15 +248,13 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	}
 
 	@Override
+	/**
+	 * This method manages events. This method is responsible to manage two type of alarms, ERROR_EVENT and CMD_RCVD. Other type of alarms are managed for 
+	 * RAWSocketAlarmListener
+	 */
 	public void handleEvent(Event event) {
 		log.debug("Event received");
-		if (event.getTopic().equals(RawSocketTransport.MSG_RCVD_EVENT_TOPIC)) {
-			String message = (String) event.getProperty(RawSocketTransport.MESSAGE_PROPERTY_NAME);
-			if (message != null) {
-				// TODO notify private listeners (command and alarm listener)
-				log.info("Session received a message!!!!");
-			}
-		} else if (event.getTopic().equals(RawSocketTransport.ERROR_EVENT_TOPIC)) {
+		if (event.getTopic().equals(RawSocketTransport.ERROR_EVENT_TOPIC)) {
 			Exception error = (Exception) event.getProperty(RawSocketTransport.ERROR_PROPERTY_NAME);
 			if (error != null) {
 				errorHappened(error);
@@ -266,9 +264,6 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 			if (response != null) {
 				commandReceived(response);
 			}
-		} else if (event.getTopic().equals(ALARM_RCVD_EVENT_TOPIC)) {
-			// TODO publish alarm in EventManager
-
 		}
 	}
 

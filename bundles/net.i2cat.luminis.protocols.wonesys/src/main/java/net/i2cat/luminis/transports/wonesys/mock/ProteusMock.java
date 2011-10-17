@@ -19,6 +19,11 @@ public class ProteusMock {
 												"00", "00", "00", "00", "00" };
 
 	HashMap<String, String[]>	cardsChannels	= new HashMap<String, String[]>();
+	MockTransport				mockTransport	= null;
+
+	public ProteusMock(MockTransport mockTransport) {
+		this.mockTransport = mockTransport;
+	}
 
 	public Object execCommand(String message) {
 
@@ -106,6 +111,8 @@ public class ProteusMock {
 			response += "010000"; // datalength (0100) + data (00)
 			response += getXOR(response) + "00";
 
+			String alarmMessage = "FFFF0000" + cardID + "01FF80";
+			mockTransport.notifyListeners(alarmMessage);
 		}
 
 		return response;
