@@ -9,7 +9,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class SessionMock implements IProtocolSession {
 
-	ProteusMock						proteus					= new ProteusMock();
+	ProteusMock						proteus					= new ProteusMock(null);
 
 	private ProtocolSessionContext	protocolSessionContext	= null;
 	private String					sessionID				= null;

@@ -111,8 +111,10 @@ public class ProteusMock {
 			response += "010000"; // datalength (0100) + data (00)
 			response += getXOR(response) + "00";
 
-			String alarmMessage = "FFFF0000" + cardID + "01FF80";
-			mockTransport.notifyListeners(alarmMessage);
+			if (mockTransport != null){
+				String alarmMessage = "FFFF0000" + cardID + "01FF80";
+				mockTransport.notifyListeners(alarmMessage);
+			}
 		}
 
 		return response;
