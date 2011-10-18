@@ -10,7 +10,7 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.hibernate.exception.ExceptionUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,7 +78,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			if (ExceptionUtils.getRootCause(e) != null)
+			if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
 				log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
