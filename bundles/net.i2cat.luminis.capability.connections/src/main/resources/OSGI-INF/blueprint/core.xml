@@ -61,5 +61,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="connections/getChannels">
+			<action class="net.i2cat.luminis.capability.connections.shell.GetChannelsCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
