@@ -13,6 +13,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "connections", name = "removeConnection", description = "Removes a connection between given ports af given resource")
 public class RemoveConnectionCommand extends GenericKarafCommand {
@@ -30,6 +31,9 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 	@Argument(index = 4, name = "outputlambda", description = "Output lambda (wavelength in nm)", required = true, multiValued = false)
 	private String	lambdaTarget;
 
+	@Option(name = "--useChannelNumbers", aliases={"-n"}, description="Tells command to read inputLambda and outputLambda as integers representing the channelNumber, instead of their original meaning")
+	private boolean useChannelNum = false;
+	
 	@Override
 	protected Object doExecute() throws Exception {
 
@@ -93,11 +97,16 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 		dstPort.setPortNumber(Integer.parseInt(dstPortId[2]));
 
 		DWDMChannel srcFiberChannel = new DWDMChannel();
-		srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
-
 		DWDMChannel dstFiberChannel = new DWDMChannel();
-		dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
-
+		
+		if (!useChannelNum) {
+			srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
+			dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
+		} else {
+			srcFiberChannel.setNumChannel(Integer.parseInt(lambdaSource));
+			dstFiberChannel.setNumChannel(Integer.parseInt(lambdaTarget));
+		}
+		
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
 

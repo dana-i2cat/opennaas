@@ -13,6 +13,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "connections", name = "makeConnection", description = "Makes a connection between given ports af given resource, and configures which lambda enters and which gets out of the connection.")
 public class MakeConnectionCommand extends GenericKarafCommand {
@@ -24,16 +25,23 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 	@Argument(index = 2, name = "inputlambda", description = "Input lambda (wavelength in nm)", required = true, multiValued = false)
 	private String	lambdaSource;
 
-	@Argument(index = 3, name = "porttarget", description = "Connection target port (output)", required = true, multiValued = false)
+	@Argument(index = 3, name = "targetport", description = "Connection target port (output)", required = true, multiValued = false)
 	private String	portTarget;
 
 	@Argument(index = 4, name = "outputlambda", description = "Output lambda (wavelength in nm)", required = true, multiValued = false)
 	private String	lambdaTarget;
 
+	@Option(name = "--useChannelNumbers", aliases={"-n"}, description="Tells command to read inputLambda and outputLambda as integers representing the channelNumber, instead of their original meaning")
+	private boolean useChannelNum = false;
+
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("make connection between: (" + portSource + ",l=" + lambdaSource + "),(" + portTarget + ",l=" + lambdaTarget + ")");
+		String channelInput = "l";
+		if (useChannelNum)
+			channelInput = "n";
+		
+		printInitCommand("make connection between: (" + portSource + "," + channelInput + "=" + lambdaSource + "),(" + portTarget + "," + channelInput + "=" + lambdaTarget + ")");
 
 		try {
 
@@ -92,11 +100,16 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 		dstPort.setPortNumber(Integer.parseInt(dstPortId[2]));
 
 		DWDMChannel srcFiberChannel = new DWDMChannel();
-		srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
-
 		DWDMChannel dstFiberChannel = new DWDMChannel();
-		dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
-
+		
+		if (!useChannelNum) {
+			srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
+			dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
+		} else {
+			srcFiberChannel.setNumChannel(Integer.parseInt(lambdaSource));
+			dstFiberChannel.setNumChannel(Integer.parseInt(lambdaTarget));
+		}
+		
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
 
