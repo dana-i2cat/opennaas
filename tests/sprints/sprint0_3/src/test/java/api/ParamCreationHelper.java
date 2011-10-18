@@ -11,7 +11,7 @@ public class ParamCreationHelper {
 	/*
 	 * test of an interface ethernet without vlan encapsulation
 	 */
-	public Object newParamsInterfaceEthernet() {
+	public static Object newParamsInterfaceEthernet() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName("fe-0/3/2");
@@ -25,7 +25,7 @@ public class ParamCreationHelper {
 	/*
 	 * test of an interface ethernet without vlan encapsulation
 	 */
-	public Object newParamsInterfaceLT() {
+	public static Object newParamsInterfaceLT() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		ltp.setName("lt-0/3/2");
@@ -41,7 +41,7 @@ public class ParamCreationHelper {
 	/*
 	 * test of an interface ethernet without vlan encapsulation
 	 */
-	public Object newParamsInterfaceLT_VLAN() {
+	public static Object newParamsInterfaceLT_VLAN() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
 		ltp.setName("lt-0/3/2");
@@ -56,7 +56,7 @@ public class ParamCreationHelper {
 		return ltp;
 	}
 
-	public Object newParamsInterfaceEtherVLAN() {
+	public static Object newParamsInterfaceEtherVLAN() {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
 		eth.setName("fe-0/3/2");
