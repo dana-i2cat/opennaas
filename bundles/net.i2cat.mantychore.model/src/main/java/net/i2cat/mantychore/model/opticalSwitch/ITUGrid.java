@@ -28,11 +28,15 @@ public class ITUGrid {
 	}
 
 	public double getFrequencyFromLambda(double lambda) {
-		return c / (lambda * 1000);
+		//assure frequency has only 4 decimals
+		double freq = c / lambda;
+		long roudedFreq = Math.round(freq);
+		double realFreq = roudedFreq / 1000.0;
+		return realFreq;
 	}
 
 	public double getLambdaFromFrequency(double frequency) {
-		return c / (frequency * 1000);
+		return c / (frequency * 1000.0);
 	}
 
 	public int getNumberOfChannels() {
