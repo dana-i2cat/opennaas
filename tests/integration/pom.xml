@@ -22,7 +22,8 @@
 		<module>net.i2cat.luminis.tests.actions</module>
 		<module>net.i2cat.luminis.tests.capability</module>
 		<module>net.i2cat.luminis.tests.repository</module>
-		<module>net.i2cat.luminis.tests.commandsKaraf</module>
+<!--  	<module>net.i2cat.luminis.tests.commandsKaraf</module> -->
+		<module>?</module>
 	</modules>
 	<!--  dependencies for integration tests -->
 	<dependencies>
