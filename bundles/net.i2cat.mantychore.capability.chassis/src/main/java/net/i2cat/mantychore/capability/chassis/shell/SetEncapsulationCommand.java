@@ -23,7 +23,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "setVLAN", description = "Set a VLAN id in a given interface.")
-public class SetVLANCommand extends GenericKarafCommand {
+public class SetEncapsulationCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
 	private String	resourceId;
@@ -81,7 +81,7 @@ public class SetVLANCommand extends GenericKarafCommand {
 			addVlanId(params, vlanId);
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.SETVLAN, params);
+			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, params);
 
 		} catch (ResourceException e) {
 			printError(e);

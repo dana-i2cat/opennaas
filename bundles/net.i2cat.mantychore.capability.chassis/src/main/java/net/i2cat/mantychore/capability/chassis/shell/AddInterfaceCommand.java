@@ -12,15 +12,15 @@ import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "addInterface", description = "Add an new subinterface in a logical router")
 public class AddInterfaceCommand extends GenericKarafCommand {
@@ -90,7 +90,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
 			deviceCopied.setElementName(targetResourceName[1]);
 
-			chassisCapability.sendMessage(ActionConstants.SETVLAN, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);

@@ -11,17 +11,17 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ConfigureVLANAction extends JunosAction {
+public class ConfigureEncapsulationAction extends JunosAction {
 
-	Log	log	= LogFactory.getLog(ConfigureVLANAction.class);
+	Log	log	= LogFactory.getLog(ConfigureEncapsulationAction.class);
 
-	public ConfigureVLANAction() {
+	public ConfigureEncapsulationAction() {
 		super();
 		initialize();
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.SETVLAN);
+		this.setActionID(ActionConstants.SETENCAPSULATION);
 		setTemplate("");
 		this.protocolName = "netconf";
 	}

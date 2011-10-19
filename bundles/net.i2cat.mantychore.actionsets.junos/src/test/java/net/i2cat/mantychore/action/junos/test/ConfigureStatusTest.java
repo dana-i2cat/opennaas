@@ -11,6 +11,11 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -19,14 +24,9 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 public class ConfigureStatusTest {
 	static ConfigureStatusAction	action;
-	Log								log			= LogFactory.getLog(ConfigureVLANActionTest.class);
+	Log								log			= LogFactory.getLog(ConfigureStatusTest.class);
 	static String					resourceId	= "RandomDevice";
 
 	static ProtocolManager			protocolManager;

@@ -12,15 +12,15 @@ import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "removeInterface", description = "Remove a subinterface from a logical router")
 public class RemoveInterfaceCommand extends GenericKarafCommand {
@@ -88,7 +88,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
 			deviceCopied.setElementName(null); // reset logical device
 
-			chassisCapability.sendMessage(ActionConstants.SETVLAN, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);

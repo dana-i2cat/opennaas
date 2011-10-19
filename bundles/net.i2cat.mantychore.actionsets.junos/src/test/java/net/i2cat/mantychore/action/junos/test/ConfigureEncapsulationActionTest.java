@@ -6,13 +6,18 @@ import java.util.List;
 import junit.framework.Assert;
 import mock.MockEventManager;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.ConfigureVLANAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ConfigureEncapsulationAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -21,24 +26,19 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
-import org.junit.Test;
+public class ConfigureEncapsulationActionTest {
+	static ConfigureEncapsulationAction	action;
+	Log									log			= LogFactory.getLog(ConfigureEncapsulationActionTest.class);
+	static String						resourceId	= "RandomDevice";
 
-public class ConfigureVLANActionTest {
-	static ConfigureVLANAction		action;
-	Log								log			= LogFactory.getLog(ConfigureVLANActionTest.class);
-	static String					resourceId	= "RandomDevice";
+	static ProtocolManager				protocolManager;
+	static ProtocolSessionManager		protocolSessionManager;
 
-	static ProtocolManager			protocolManager;
-	static ProtocolSessionManager	protocolSessionManager;
-
-	static ProtocolSessionContext	netconfContext;
+	static ProtocolSessionContext		netconfContext;
 
 	@BeforeClass
 	public static void init() {
-		action = new ConfigureVLANAction();
+		action = new ConfigureEncapsulationAction();
 		action.setModelToUpdate(new ComputerSystem());
 		protocolManager = new ProtocolManager();
 		try {
@@ -58,7 +58,7 @@ public class ConfigureVLANActionTest {
 
 	@Test
 	public void TestActionID() {
-		Assert.assertEquals("Wrong ActionID", ActionConstants.SETVLAN, action.getActionID());
+		Assert.assertEquals("Wrong ActionID", ActionConstants.SETENCAPSULATION, action.getActionID());
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public class ConfigureVLANActionTest {
 			action.setParams(newParamEthernetPort("fe-0/3/2", 4, 3));
 			ActionResponse response = action.execute(protocolSessionManager);
 
-			Assert.assertEquals(ActionConstants.SETVLAN, response.getActionID());
+			Assert.assertEquals(ActionConstants.SETENCAPSULATION, response.getActionID());
 			List<Response> responses = response.getResponses();
 			for (Response resp : responses) {
 				Assert.assertEquals(Response.Status.OK, resp.getStatus());
@@ -124,7 +124,7 @@ public class ConfigureVLANActionTest {
 			action.setParams(newParamLogicalTunnetPort("lt-0/1/2", 12, 2, 3));
 			ActionResponse response = action.execute(protocolSessionManager);
 
-			Assert.assertEquals(ActionConstants.SETVLAN, response.getActionID());
+			Assert.assertEquals(ActionConstants.SETENCAPSULATION, response.getActionID());
 			List<Response> responses = response.getResponses();
 			for (Response resp : responses) {
 				Assert.assertEquals(Response.Status.OK, resp.getStatus());
