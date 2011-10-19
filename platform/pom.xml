@@ -170,7 +170,7 @@
 					</execution>-->
 				</executions>
 			</plugin>
-			<!--<plugin>
+			<plugin>
 				<groupId>org.apache.felix.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<version>1.4.0-fuse-02-00</version>
@@ -183,17 +183,17 @@
 						</goals>
 						<configuration>
 							<descriptors>
-								<descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</descriptor>
 							</descriptors>
 							<features>
-								<feature>i2cat-mantychore-deps</feature>
-								<feature>i2cat-mantychore-core</feature>
+								<feature>opennaas-core-deps</feature>
+								<feature>opennaas-core</feature>
 							</features>
 							<repository>${target-platform.path}/${servicemix.path}/system</repository>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
