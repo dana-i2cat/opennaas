@@ -252,15 +252,8 @@ public class MakeConnectionAction extends Action {
 					"There is no such port in model: Chassis: " + connectionRequest.getSrcCard().getChasis() + " Slot: " + connectionRequest
 							.getSrcCard().getSlot() + " PortNumber : " + connectionRequest.getSrcPort().getPortNumber());
 
-		DWDMChannel srcFiberChannel = (DWDMChannel) connectionRequest.getSrcFiberChannel();
-		// it is equals in the src and in the destination channel
-		double srcLambda = srcFiberChannel.getLambda();
-		if (srcLambda == 0.0)
-			throw new ActionException("Invalid lambda: " + srcLambda);
-
-		// FIXME what if it's not a valid lambda????
-		int srcChannelNum = ((WDMChannelPlan) srcCard.getChannelPlan()).getChannelNumberFromLambda(srcLambda);
-		srcFiberChannel = (DWDMChannel) ((WDMChannelPlan) srcCard.getChannelPlan()).getChannel(srcChannelNum);
+		DWDMChannel srcFiberChannel = loadCompleteDWDMChannel((DWDMChannel) connectionRequest.getSrcFiberChannel(), srcCard);
+		
 
 		// connection dst
 		ProteusOpticalSwitchCard dstCard = opticalSwitch.getCard(connectionRequest.getDstCard().getChasis(), connectionRequest.getDstCard()
@@ -276,15 +269,8 @@ public class MakeConnectionAction extends Action {
 					"There is no such port in model: Chassis: " + connectionRequest.getDstCard().getChasis() + " Slot: " + connectionRequest
 							.getDstCard().getSlot() + " PortNumber : " + connectionRequest.getDstPort().getPortNumber());
 
-		DWDMChannel dstFiberChannel = (DWDMChannel) connectionRequest.getDstFiberChannel();
-		double dstLambda = dstFiberChannel.getLambda();
-		if (dstLambda == 0.0)
-			throw new ActionException("Invalid lambda: " + dstLambda);
-
-		// FIXME what if it's not a valid lambda????
-		int dstChannelNum = ((WDMChannelPlan) dstCard.getChannelPlan()).getChannelNumberFromLambda(dstLambda);
-		dstFiberChannel = (DWDMChannel) ((WDMChannelPlan) dstCard.getChannelPlan()).getChannel(dstChannelNum);
-
+		DWDMChannel dstFiberChannel = loadCompleteDWDMChannel((DWDMChannel) connectionRequest.getDstFiberChannel(), dstCard);
+		
 		FiberConnection connection = new FiberConnection();
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
@@ -300,6 +286,58 @@ public class MakeConnectionAction extends Action {
 						.getDstPort().getPortNumber() + "-" + connection.getDstFiberChannel().getNumChannel());
 
 		return connection;
+	}
+	
+	/**
+	 * Loads existent DWDMChannel from request.
+	 * Tries to load it from request lambda. If lambda is not set, loads it from request channelNum.
+	 * 
+	 * @param request
+	 * @param card 
+	 * @return
+	 * @throws ActionException
+	 */
+	private static DWDMChannel loadCompleteDWDMChannel(DWDMChannel request, ProteusOpticalSwitchCard card) throws ActionException {
+		
+		int channelNum = request.getNumChannel();
+		
+		if (request.getLambda() != 0.0) {
+			//load from lambda
+			
+			// FIXME what if it's not a valid lambda????
+			channelNum = ((WDMChannelPlan) card.getChannelPlan()).getChannelNumberFromLambda(request.getLambda());
+		}
+		
+		//check channelNum is a valid one
+		int[] allChannelsNum = ((WDMChannelPlan) card.getChannelPlan()).getAllChannelsNum();
+		boolean found = false;
+		int position = -1;
+		for (int i = 0; i< allChannelsNum.length; i++){
+			if (allChannelsNum[i] == channelNum){
+				position = i;
+				found = true;
+				break;
+			} else {
+				if (allChannelsNum[i] > channelNum){
+					position = i;
+					//allChannelsNum is an ordered list (allChannelsNum[i] < allChannelsNum[i+1])
+					break;
+				}
+			}
+		}
+		
+		if (!found){
+			log.debug("Could not find specified channel. Looking for channel " + channelNum + ". Found " + allChannelsNum[position] + " and gap is " +  ((WDMChannelPlan) card.getChannelPlan()).getChannelGap());
+			throw new ActionException("Invalid connectionRequest: Could not find specified channel");
+		}
+		
+		DWDMChannel completeChannel = (DWDMChannel) ((WDMChannelPlan) card.getChannelPlan()).getChannel(channelNum);
+		
+		if (completeChannel == null) {
+			throw new ActionException("Invalid connectionRequest: Could not find specified channel");
+		}
+		
+		return completeChannel;
 	}
 
 	/**********************
