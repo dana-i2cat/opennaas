@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
-	<repository>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</repository>
 	<feature name="i2cat-commons" version="1.0.0-SNAPSHOT">
-		<feature version="1.0.0-SNAPSHOT">opennaas-core</feature>
 		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.alarms.repository/1.0.0-SNAPSHOT</bundle>
 		<!--  general dependencies -->
 		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/1.8.0</bundle>
