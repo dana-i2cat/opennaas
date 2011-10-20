@@ -12,7 +12,7 @@
 	<!--  properties to use fuse  -->
 	<properties>
 		<target-platform.path>target/mantychore</target-platform.path>
-		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
+		<opennaas.path>opennaas-1.0.0-SNAPSHOT</opennaas.path>
 	</properties>
 	<!--
   | imported (non-local) bundles are listed here as dependencies | and
@@ -35,7 +35,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>unpack-apache-servicemix</id>
+						<id>unpack-opennaas</id>
 						<phase>package</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -43,35 +43,14 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>org.apache.servicemix</groupId>
-									<artifactId>apache-servicemix</artifactId>
-									<version>${fuse.version}</version>
+									<groupId>org.opennaas</groupId>
+									<artifactId>opennaas-assembly</artifactId>
+									<version>1.0.0-SNAPSHOT</version>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
 							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
-						</configuration>
-					</execution>
-					<execution>
-						<id>get-opennaas-feature</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<artifactId>opennaas-core-features</artifactId>
-									<groupId>org.opennaas</groupId>
-									<version>1.0.0-SNAPSHOT</version>
-									<!-- TODO: use variable project.version -->
-									<type>xml</type>
-									<classifier>features</classifier>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${target-platform.path}/${servicemix.path}/system/org/opennaas/opennaas-core-features/1.0.0-SNAPSHOT/</outputDirectory>
-							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 					</execution>
 					<execution>
@@ -91,7 +70,7 @@
 									<classifier>features</classifier>
 								</artifactItem>
 							</artifactItems>
-							<outputDirectory>${target-platform.path}/${servicemix.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
+							<outputDirectory>${target-platform.path}/${opennaas.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
 						</configuration>
 					</execution>
@@ -117,7 +96,7 @@
 								<feature>i2cat-luminis-deps</feature>
 								<feature>i2cat-luminis-core</feature>
 							</features>
-							<repository>${target-platform.path}/${servicemix.path}/system</repository>
+							<repository>${target-platform.path}/${opennaas.path}/system</repository>
 						</configuration>
 					</execution>
 				</executions>
@@ -146,7 +125,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+							<outputDirectory>${target-platform.path}/${opennaas.path}</outputDirectory>
 							<!--  
       <resources>
 		  <resource>
@@ -158,7 +137,7 @@
 	  </resources>
       -->
 							<overwrite>true</overwrite>
-							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
+							<outputDirectory>${target-platform.path}/${opennaas.path}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>target/classes</directory>
