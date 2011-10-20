@@ -44,13 +44,13 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.opennaas</groupId>
-									<artifactId>opennaas-assembly</artifactId>
+									<artifactId>assembly</artifactId>
 									<version>1.0.0-SNAPSHOT</version>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
+							<excludes>**\/bin\/opennaas,**\/bin\/opennaas.bat</excludes>
 						</configuration>
 					</execution>
 					<execution>
