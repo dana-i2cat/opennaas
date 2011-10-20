@@ -174,7 +174,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETVLAN, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			
