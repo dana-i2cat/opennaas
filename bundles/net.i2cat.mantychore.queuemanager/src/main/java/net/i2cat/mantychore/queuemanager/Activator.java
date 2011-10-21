@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -35,6 +36,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public static IProtocolManager getProtocolManagerService() throws ActivatorException {
 		log.debug("Calling QueueManagerService");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
+	}
+	
+	public static IResourceManager getResourceManagerService() throws ActivatorException {
+		log.debug("Calling ResourceManager");
+		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());
 	}
 
 	public static IActionSet getQueueActionSet(String name, String version, String protocol) throws ActivatorException {
