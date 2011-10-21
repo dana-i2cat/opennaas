@@ -18,6 +18,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * This class is the entry point to the resource for resource clients.
  * 
  * @author Eduard Grasa
+ * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
 public class ResourceManager implements IResourceManager {
@@ -276,5 +277,19 @@ public class ResourceManager implements IResourceManager {
 		}
 
 		return name;
+	}
+
+	@Override
+	public IResource getResourceById(String resourceId)
+			throws ResourceException {
+		//FIXME: resourceIds are supposed to be GUIDs, however nobody ever verifies that there aren't collisions.
+		IResource resource = null;
+		for(IResourceRepository repo: resourceRepositories.values()){
+			try{
+				resource = repo.getResource(resourceId);
+				break;
+			} catch (ResourceException e) {}
+		}
+		return resource;
 	}
 }

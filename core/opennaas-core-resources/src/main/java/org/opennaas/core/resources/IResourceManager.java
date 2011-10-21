@@ -10,6 +10,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * to their events creating, modifying and removing resources
  * 
  * @author Eduard Grasa
+ * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
 public interface IResourceManager {
@@ -75,6 +76,14 @@ public interface IResourceManager {
 	 */
 	public IResource getResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	/**
+	 * Get an existing resource
+	 * @param resourceId resource's resourceId
+	 * @return the resource
+	 * @throws ResourceException
+	 */
+	public IResource getResourceById(String resourceId) throws ResourceException;
+	
 	/**
 	 * Start an existing resource
 	 * 
