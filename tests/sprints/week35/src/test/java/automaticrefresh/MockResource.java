@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.i2cat.mantychore.model.ManagedElement;
 
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
@@ -29,7 +28,7 @@ public class MockResource implements IResource {
 														.getLog(MockResource.class);
 
 	Map<String, ICapability>	capabilities	= new HashMap<String, ICapability>();
-	ManagedElement				model;
+	IModel				model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
 
@@ -103,15 +102,14 @@ public class MockResource implements IResource {
 		return capabilities.get(info.getName());
 	}
 
-	public ManagedElement getModel() {
+	public IModel getModel() {
 		log.info("get Model...");
 		return model;
 	}
 
-	public void setModel(ManagedElement model) {
+	public void setModel(IModel model) {
 		log.info("set Model...");
 		this.model = model;
-
 	}
 
 	public void activate() throws ResourceException {
@@ -203,12 +201,6 @@ public class MockResource implements IResource {
 	public void setBootstrapper(IResourceBootstrapper arg0) {
 		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void setModel(IModel arg0) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
