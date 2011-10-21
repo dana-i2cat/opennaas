@@ -1,7 +1,5 @@
 package net.i2cat.mantychore.queuemanager;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,29 +11,24 @@ import java.util.Vector;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.core.resources.protocol.ProtocolException;
 
 public class QueueManager extends AbstractCapability implements IQueueManagerService {
 
@@ -149,92 +142,11 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 				} catch (ActionException e) {
 					throw new CapabilityException(e);
 				}
-				//We do a model refresh here.
-				//FIXME: Not sure we should do this here.
-				/* FIXME: Should we always do this? It might be wise for actions to have a "needs refresh" characteristic
-				 * FIXME: FUCK. This isn't good. This is recursive. Capabilities do exec queues which call this again... and I'm tired. I'm gonna sleep.
-				 * which can be true or not depending on the action. At the time of writing this, only when an action that
-				 * creates/deletes logical routers is in the queue at all do we really need to refresh the model.
-				 */
-				/*if (!errorHappened) {		
-					IResourceManager manager;
-					try {
-						try {
-							manager = Activator.getResourceManagerService();
-						} catch (ActivatorException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-							throw new CapabilityException("Can't get ResourceManagerService!");
-						}
-						//resource.getResourceDescriptor() = manager.getResourceById(resourceId);
-						//FIXME: validateResource(resource);
-						// call the method to refresh each capability on resource
-						//resource.setModel(new ComputerSystem());
-						//resource.setModel((IModel) new Object());
-						try {
-							resource.setModel(resource.getModel().getClass().newInstance());
-							//Class clazz = resource.getModel().getClass();							
-							//log.error(clazz.getCanonicalName());
-							//Constructor constructor = clazz.getConstructor();
-							//log.error(constructor);
-							//IModel model = (IModel)constructor.newInstance(null);
-							//resource.setModel(model);
-						} catch (InstantiationException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IllegalAccessException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (SecurityException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						log.error(resource.getModel().getClass().getCanonicalName());
-						// start its capabilities
-						for (ICapability capab : resource.getCapabilities()) {
-							// abstract capabilities have to be initialized
-							if (capab instanceof AbstractCapability) {
-								log.debug("Executing capabilities startup...");
-								Response response = ((AbstractCapability) capab).sendRefreshActions();
-								if (!response.getStatus().equals(Status.OK)) {
-									throw new CapabilityException("model refresh, when calling sendRefreshActions");
-								}
-							}
-						}
-						ICapability queueCapab = resource.getCapability(createQueueInformation());
-						QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
-						if (!response.isOk()) {
-							// TODO IMPROVE ERROR REPORTING
-							throw new CapabilityException("Error during capabilities startup. Failed to execute startUp actions.");
-						}
-						if (resource.getProfile() != null) {
-							log.debug("Executing initModel from profile...");
-							resource.getProfile().initModel(resource.getModel());
-						}
-						// the type resource is the same for all logical devices and for the physical device
-						String typeResource = resource.getResourceIdentifier().getType();
-						List<String> nameLogicalRouters = resource.getModel().getChildren();
-						// initialize each resource
-						for (String nameResource : nameLogicalRouters) {
-							try {
-								manager.getIdentifierFromResourceName(typeResource, nameResource);
-							} catch (ResourceNotFoundException e) {
-								log.error(e.getMessage());
-								log.info("Since this resource didn't exist, it has to be created.");
-								ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
-		
-								// create new resources
-								manager.createResource(newResourceDescriptor);
-							}
-						}
-					} catch (ResourceException e) {
-						log.error("QueueManager's Refresh-after-queue-exec failed thanks to a ResourceException!");
-					}
-				}*/
-				//end of former Refresh as Karaf Command in OpenNaaS's Resources.
+
+				// refresh command, it is not tested
+				// IT IS NECESSARY TO TEST THIS PART!!
+				// refreshResource(queueResponse, protocolSessionManager);
+
 			}
 			if (errorHappened) {
 				// restore action
@@ -259,9 +171,79 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 
 		return queueResponse;
 	}
-	//Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
+
+	/**
+	 * TODO TO TEST!! Method to refresh resource and its capabilities.
+	 * 
+	 * @param queueResponse
+	 * @param protocolSessionManager
+	 * @throws CapabilityException
+	 */
+	// private void refreshResource(QueueResponse queueResponse, IProtocolSessionManager protocolSessionManager) throws CapabilityException {
+	// IResourceManager manager;
+	// try {
+	// manager = Activator.getResourceManagerService();
+	// } catch (ActivatorException e1) {
+	// // TODO Auto-generated catch block
+	// e1.printStackTrace();
+	// throw new CapabilityException("Can't get ResourceManagerService!");
+	// }
+	// try {
+	// resource.setModel(resource.getModel().getClass().newInstance());
+	// } catch (Exception e) {
+	// throw new CapabilityException(e);
+	// }
+	// log.error(resource.getModel().getClass().getCanonicalName());
+	// // start its capabilities
+	// for (ICapability capab : resource.getCapabilities()) {
+	// // abstract capabilities have to be initialized
+	// if (capab instanceof AbstractCapability) {
+	// log.debug("Executing capabilities startup...");
+	// Response response = ((AbstractCapability) capab).sendRefreshActions();
+	// if (!response.getStatus().equals(Status.OK)) {
+	// throw new CapabilityException("model refresh, when calling sendRefreshActions");
+	// }
+	// }
+	// }
+	//
+	// ActionResponse refreshResponse = confirm(protocolSessionManager);
+	//
+	// if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
+	// throw new CapabilityException("Error during capabilities startup. Failed to execute startUp actions.");
+	// }
+	//
+	// if (resource.getProfile() != null) {
+	// log.debug("Executing initModel from profile...");
+	// resource.getProfile().initModel(resource.getModel());
+	// }
+	// // the type resource is the same for all logical devices and for the physical device
+	// String typeResource = resource.getResourceIdentifier().getType();
+	// List<String> nameLogicalRouters = resource.getModel().getChildren();
+	// // initialize each resource
+	// try {
+	// for (String nameResource : nameLogicalRouters) {
+	// try {
+	// manager.getIdentifierFromResourceName(typeResource, nameResource);
+	// } catch (ResourceNotFoundException e) {
+	// log.error(e.getMessage());
+	// log.info("Since this resource didn't exist, it has to be created.");
+	// ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+	// // create new resources
+	// manager.createResource(newResourceDescriptor);
+	//
+	// }
+	// }
+	// } catch (ResourceException e) {
+	// throw new CapabilityException(e);
+	// }
+	//
+	// queueResponse.setRefreshResponse(refreshResponse);
+	//
+	// }
+
+	// Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
 	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource) throws ResourceException {
-		
+
 		try {
 			ResourceDescriptor newResourceDescriptor = (ResourceDescriptor) resourceDescriptor.clone();
 
@@ -289,8 +271,9 @@ public class QueueManager extends AbstractCapability implements IQueueManagerSer
 		information.setType("queue");
 		return information;
 	}
-	//end of Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
-	
+
+	// end of Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
+
 	/**
 	 * @param queueResponse
 	 *            to complete with actionResponses
