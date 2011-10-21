@@ -47,6 +47,21 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="chassis/createLogicalRouter">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateLogicalRouterCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="chassis/deleteLogicalRouter">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteLogicalRouterCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		
 		<command name="chassis/createSubInterface">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand"/>
 		</command>
