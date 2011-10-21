@@ -78,16 +78,19 @@ public class WonesysProtocolSessionContextUtils {
 			URI uri = new URI(uriStr);
 			String query = uri.getQuery();
 			
-			if (query.startsWith("?"))
-				query = query.substring(1);
+			if (query != null) {
 			
-			if (query.isEmpty())
-				return false;
-			
-			Map<String, String> queryParams = getQueryMap(query);
-			
-			if (queryParams.containsKey("mock")){
-				return queryParams.get("mock").equals("true");
+				if (query.startsWith("?"))
+					query = query.substring(1);
+				
+				if (query.isEmpty())
+					return false;
+				
+				Map<String, String> queryParams = getQueryMap(query);
+				
+				if (queryParams.containsKey("mock")){
+					return queryParams.get("mock").equals("true");
+				}
 			}
 			return false;
 			
