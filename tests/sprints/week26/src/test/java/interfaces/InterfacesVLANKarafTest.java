@@ -199,7 +199,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 
 		// set LO
 		try {
-			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " lo0.1 1",
+			List<String> responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " lo0.1 1",
 					commandprocessor);
 			Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
 
@@ -308,7 +308,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		int OldVLAN = getOldInterface(resource, inter, subport);
 
 		// SET NEW VLAN
-		responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
+		responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
 					, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
@@ -328,7 +328,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		checkModel(inter, subport, VLANid, resource);
 
 		// ROLLBACK OF THE INTERFACE
-		responseError = KarafCommandHelper.executeCommand("chassis:setVLAN " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
+		responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
 							, commandprocessor);
 		Assert.assertTrue(responseError.get(1).isEmpty());
 		responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
