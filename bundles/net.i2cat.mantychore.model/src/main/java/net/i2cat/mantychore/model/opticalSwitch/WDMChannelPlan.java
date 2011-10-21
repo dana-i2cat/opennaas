@@ -196,8 +196,13 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	private List<FiberChannel> generateChannels() {
-
-		int numberOfChannels = (int) ((maxFreq - minFreq) / guardInterval);
+		// assure only 4 decimals are taken into account
+		// use operations wuth ints as doubles are not exact
+		long maxFreqRounded = Math.round(maxFreq * 10000);
+		long minFreqRounded = Math.round(minFreq * 10000);
+		long guardIntervalRounded = Math.round(guardInterval * 10000);
+		
+		int numberOfChannels = (int) ((maxFreqRounded - minFreqRounded) / guardIntervalRounded);
 		List<FiberChannel> allChannels = new ArrayList<FiberChannel>(numberOfChannels);
 
 		int firstChannelNum = getFirstChannel();
