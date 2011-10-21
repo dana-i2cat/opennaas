@@ -20,18 +20,32 @@ public class ITUGrid {
 	private static final double	guardInterval	= 0.0125;		// THz
 
 	public double getFrequencyFromChannelNum(int channelNum) {
-		return initialFreq - (channelNum * guardInterval);
+		//assure only 4 decimals are used (operations with doubles may not be exact!)
+		int initFreq = (int) Math.round(initialFreq * 10000);
+		int guardInterval = (int) Math.round(ITUGrid.guardInterval * 10000);
+		
+		int freq = initFreq - (channelNum * guardInterval);
+		double realFreq = freq / 10000.0;
+		return realFreq;
 	}
 
 	public int getChannelNumberFromFrequency(double frequency) {
-		return (int) ((initialFreq - frequency) / guardInterval);
+		
+		//assure only 4 decimals are used (operations with doubles may not be exact!)
+		int freq = (int) Math.round(frequency * 10000);
+		int initFreq = (int) Math.round(initialFreq * 10000);
+		int guardInterval = (int) Math.round(ITUGrid.guardInterval * 10000);
+		
+		long channelNum = (initFreq - freq) / guardInterval;
+		return (int) channelNum;
 	}
 
 	public double getFrequencyFromLambda(double lambda) {
 		//assure frequency has only 4 decimals
 		double freq = c / lambda;
-		long roudedFreq = Math.round(freq);
-		double realFreq = roudedFreq / 1000.0;
+		long roundedFreq = Math.round(freq * 10000);
+		roundedFreq = roundedFreq / 10000;
+		double realFreq = roundedFreq / 1000.0;
 		return realFreq;
 	}
 
@@ -40,7 +54,12 @@ public class ITUGrid {
 	}
 
 	public int getNumberOfChannels() {
-		return (int) ((initialFreq - finalFreq) / guardInterval);
+		//assure operations use only 4 decimals
+		int initFreq = (int) Math.round(initialFreq * 10000);
+		int endFreq = (int) Math.round(finalFreq * 10000);
+		int guardInterval = (int) Math.round(ITUGrid.guardInterval * 10000);
+		
+		return (int) ((initFreq - endFreq) / guardInterval);
 	}
 
 	public double[] getAllChannelsFreq() {
