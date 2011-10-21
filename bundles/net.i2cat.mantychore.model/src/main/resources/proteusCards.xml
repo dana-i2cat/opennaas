@@ -43,7 +43,7 @@
 		<allowsProtection>TRUE</allowsProtection>
 		<!-- <cardType>10GigabitEthernetWAN_PHY</cardType> -->
 		<port>?</port>
-		<cardType>OPRT25GPM</cardType>
+		<cardType>OPTR25GPM</cardType>
 	</card>
 	<card type="11" subtype="2,32">
 		<name>PSROADM</name>
