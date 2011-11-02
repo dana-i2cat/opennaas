@@ -2,8 +2,6 @@ package net.i2cat.luminis.ROADM.repository.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
 import java.util.List;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;

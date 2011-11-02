@@ -12,7 +12,6 @@ import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.SetChannel;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
-import net.i2cat.luminis.transports.wonesys.mock.MockTransport;
 import net.i2cat.luminis.transports.wonesys.mock.ProteusMock;
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;

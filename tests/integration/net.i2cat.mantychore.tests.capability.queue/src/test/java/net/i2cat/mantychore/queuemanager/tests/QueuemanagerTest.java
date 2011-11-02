@@ -53,7 +53,6 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 
 	@Configuration
 	public static Option[] configure() {
-
 		Option[] options = combine(
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
@@ -62,6 +61,16 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 				);
 		return options;
 	}
+	
+	/*@Configuration
+	public Option[] additionalConfiguration() throws Exception {
+		return combine(configure(), new Customizer() {
+			@Override
+			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.opennaas.core.resources.protocol.*;status=provisional").build();
+			}
+		});
+	}*/
 
 	/**
 	 * Configure the protocol to connect

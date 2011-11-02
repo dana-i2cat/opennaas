@@ -2,14 +2,11 @@ package net.i2cat.luminis.capability.connections.test;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.mantychore.model.FCPort;
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
@@ -35,7 +32,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;

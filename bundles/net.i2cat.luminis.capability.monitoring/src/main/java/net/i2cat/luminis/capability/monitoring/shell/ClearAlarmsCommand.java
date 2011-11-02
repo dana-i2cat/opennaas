@@ -8,7 +8,6 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.alarms.IAlarmsRepository;
-import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**

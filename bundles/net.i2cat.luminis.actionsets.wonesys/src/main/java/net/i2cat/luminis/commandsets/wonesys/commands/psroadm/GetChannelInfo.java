@@ -5,7 +5,6 @@ import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.opticalSwitch.FiberChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 

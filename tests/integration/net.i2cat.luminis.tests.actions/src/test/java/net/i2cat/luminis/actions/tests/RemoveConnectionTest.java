@@ -17,7 +17,6 @@ import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
 import org.apache.commons.logging.Log;

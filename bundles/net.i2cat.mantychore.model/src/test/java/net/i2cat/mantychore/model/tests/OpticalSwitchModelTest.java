@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.model.tests;
 
 import junit.framework.Assert;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.ITUGrid;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 

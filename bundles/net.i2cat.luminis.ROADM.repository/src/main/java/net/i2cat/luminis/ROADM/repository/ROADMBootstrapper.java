@@ -1,6 +1,5 @@
 package net.i2cat.luminis.ROADM.repository;
 
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
 import org.opennaas.core.resources.IModel;

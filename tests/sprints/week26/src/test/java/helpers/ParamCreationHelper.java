@@ -1,16 +1,9 @@
 package helpers;
-import java.util.HashMap;
-
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class ParamCreationHelper {
 

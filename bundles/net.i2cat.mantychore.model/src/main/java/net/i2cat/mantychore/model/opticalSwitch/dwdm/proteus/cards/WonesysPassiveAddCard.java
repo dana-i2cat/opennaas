@@ -1,16 +1,10 @@
 package net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.i2cat.mantychore.model.FCPort;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberChannel;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.IDWDMPassiveAddCard;
 
 /**
  * Represents a card that has all ports redirected to the commonPort, and can not be configured. A passive Add card allows adding to a dstPort ALL
