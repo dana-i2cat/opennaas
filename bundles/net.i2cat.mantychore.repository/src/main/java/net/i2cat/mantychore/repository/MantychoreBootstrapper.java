@@ -28,6 +28,10 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 		resource.setModel(new ComputerSystem());
+		
+		if (isALogicalRouter(resource))
+			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
+		
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
 
@@ -131,5 +135,15 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	public void revertBootstrap(IResource resource) throws ResourceException {
 		// TODO REVERT BOOTSTRAP IN ITS CHILDREN
 		resource.setModel(null);
+	}
+	
+	private boolean isALogicalRouter(IResource resource) {
+		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
+		/* Check that the logical router exists */
+		if (resourceDescriptor == null || resourceDescriptor.getProperties() == null)
+			return false;
+
+		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null
+				&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
 	}
 }

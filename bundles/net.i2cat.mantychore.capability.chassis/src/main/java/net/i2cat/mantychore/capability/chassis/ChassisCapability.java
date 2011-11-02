@@ -47,10 +47,10 @@ public class ChassisCapability extends AbstractCapability {
 			IAction action = createAction(idOperation);
 
 			// Add logical router access
-			if (params != null &&
-					isALogicalRouter()) {
-				addParamsForLogicalRouters(params);
-			}
+//			if (params != null &&
+//					isALogicalRouter()) {
+//				addParamsForLogicalRouters(params);
+//			}
 
 			action.setParams(params);
 			action.setModelToUpdate(resource.getModel());
@@ -66,11 +66,11 @@ public class ChassisCapability extends AbstractCapability {
 		return Response.okResponse(idOperation);
 	}
 
-	private void addParamsForLogicalRouters(Object params) {
-		if (params == null)
-			return;
-		((ManagedSystemElement) params).setElementName(resource.getResourceDescriptor().getInformation().getName());
-	}
+//	private void addParamsForLogicalRouters(Object params) {
+//		if (params == null)
+//			return;
+//		((ManagedSystemElement) params).setElementName(resource.getResourceDescriptor().getInformation().getName());
+//	}
 
 	public boolean isALogicalRouter() {
 		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
@@ -111,32 +111,32 @@ public class ChassisCapability extends AbstractCapability {
 		}
 	}
 
-	/**
-	 * Override to use refreshActions for chassis capability in Junos
-	 * */
-	public Response sendRefreshActions() {
-		List<String> refreshActions;
-		try {
-			refreshActions = this.getActionSet().getRefreshActionName();
-		} catch (CapabilityException e) {
-			return prepareErrorMessage("STARTUP_REFRESH_ACTION", e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-		}
-
-		List params = new ArrayList();
-		boolean isLogical = isALogicalRouter();
-
-		for (int index = 0; index < refreshActions.size(); index++) {
-			if (isLogical) {
-				ComputerSystem param = new ComputerSystem();
-				addParamsForLogicalRouters(param);
-				params.add(param);
-
-			}
-		}
-
-		return super.sendRefreshActions(params);
-
-	}
+//	/**
+//	 * Override to use refreshActions for chassis capability in Junos
+//	 * */
+//	public Response sendRefreshActions() {
+//		List<String> refreshActions;
+//		try {
+//			refreshActions = this.getActionSet().getRefreshActionName();
+//		} catch (CapabilityException e) {
+//			return prepareErrorMessage("STARTUP_REFRESH_ACTION", e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
+//		}
+//
+//		List params = new ArrayList();
+//		boolean isLogical = isALogicalRouter();
+//
+//		for (int index = 0; index < refreshActions.size(); index++) {
+//			if (isLogical) {
+//				ComputerSystem param = new ComputerSystem();
+//				addParamsForLogicalRouters(param);
+//				params.add(param);
+//
+//			}
+//		}
+//
+//		return super.sendRefreshActions(params);
+//
+//	}
 
 	private Response prepareErrorMessage(String nameError, String message) {
 		Vector<String> errorMsgs = new Vector<String>();
