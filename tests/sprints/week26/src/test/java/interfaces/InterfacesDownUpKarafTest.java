@@ -47,7 +47,7 @@ import org.apache.felix.service.command.CommandProcessor;
 public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	static Log					log				= LogFactory
-														.getLog(InterfacesDownKarafTest.class);
+														.getLog(InterfacesDownUpKarafTest.class);
 	IResourceManager			resourceManager;
 	String						resourceFriendlyID;
 	IResource					resource;
@@ -59,7 +59,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
+				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")

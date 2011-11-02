@@ -70,7 +70,7 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
+				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 					// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")

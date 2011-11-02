@@ -1,6 +1,7 @@
 package net.i2cat.nexus.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.equinox;
+import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
 import static org.ops4j.pax.exam.CoreOptions.waitForFrameworkStartup;
 import static org.ops4j.pax.exam.OptionUtils.combine;
@@ -24,8 +25,13 @@ import org.osgi.framework.BundleContext;
 public class IntegrationTestsHelper {
 
 	private static Log	log	= LogFactory.getLog(IntegrationTestsHelper.class);
-
-	public static Option[] getSimpleTestOptions() {
+	
+	public static final String EQUINOX_CONTAINER = "equinox";
+	public static final String FELIX_CONTAINER = "felix";
+	public static final String DEFAULT_CONTAINER = EQUINOX_CONTAINER;
+	
+	
+	public static Option[] getSimpleTestOptions(String containerName) {
 		String WORKING_DIRECTORY = "target/paxrunner/features/";
 		// Option REPOS = repositories("http://repo.fusesource.com/maven2",
 		// "http://repository.springsource.com/maven/bundles/external",
@@ -46,13 +52,30 @@ public class IntegrationTestsHelper {
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
 		Option OPT_NOVERIFY = vmOption("-noverify");
 
-		Option[] optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
-											, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
-				, waitForFrameworkStartup() // wait for a length of time
-				, equinox(), REPOS, OPT_NOVERIFY);
+		Option[] optssimpleTest;
+		
+		if (containerName.equals(FELIX_CONTAINER)) {
+			optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
+					, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
+					, waitForFrameworkStartup() // wait for a length of time
+					, felix(), REPOS, OPT_NOVERIFY);
+		} else if (containerName.equals(EQUINOX_CONTAINER)) {
+			optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
+					, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
+					, waitForFrameworkStartup() // wait for a length of time
+					, equinox(), REPOS, OPT_NOVERIFY);
+		} else {
+			// INVALID CONTAINER SPECIFIED
+			// use equinox
+			optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
+					, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
+					, waitForFrameworkStartup() // wait for a length of time
+					, equinox(), REPOS, OPT_NOVERIFY);
+		}
+		
 		return optssimpleTest;
 	}
-
+	
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
 	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
@@ -61,38 +84,38 @@ public class IntegrationTestsHelper {
 	// return combine(getSimpleTestOptions(), OPT_SERVICE_MIX_FEATURES);
 	// }
 
-	public static Option[] getKarafFrameworkOptions() {
+	public static Option[] getKarafFrameworkOptions(String containerName) {
 		/* fuse features */
 		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "karaf-framework" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
-		return combine(getSimpleTestOptions(), OPT_SERVICE_MIX_FEATURES);
+		return combine(getSimpleTestOptions(containerName), OPT_SERVICE_MIX_FEATURES);
 	}
 
-	public static Option[] getConfigOptions() {
+	public static Option[] getConfigOptions(String containerName) {
 		/* fuse features */
 		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "config" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
-		return combine(getKarafFrameworkOptions(), OPT_SERVICE_MIX_FEATURES);
+		return combine(getKarafFrameworkOptions(containerName), OPT_SERVICE_MIX_FEATURES);
 	}
 
-	public static Option[] getCXFOptions() {
+	public static Option[] getCXFOptions(String containerName) {
 		/* Opennaas features */
 		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
 		String[] OPENNAAS_FEATURES = { "cxf" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
-		return combine(getConfigOptions(), OPT_OPENNAAS_FEATURES);
+		return combine(getConfigOptions(containerName), OPT_OPENNAAS_FEATURES);
 	}
 
-	public static Option[] getActiveMQOptions() {
+	public static Option[] getActiveMQOptions(String containerName) {
 		/* Opennaas features */
 		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.activemq/activemq-karaf/5.5.0-fuse-00-43/xml/features";
 		String[] OPENNAAS_FEATURES = { "activemq" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
-		return combine(getCXFOptions(), OPT_OPENNAAS_FEATURES);
+		return combine(getCXFOptions(containerName), OPT_OPENNAAS_FEATURES);
 	}
 
 	// public static Option[] getFuseOptions() {
@@ -103,47 +126,67 @@ public class IntegrationTestsHelper {
 	// return combine(getActiveMQOptions(), OPT_SERVICE_MIX_FEATURES);
 	// }
 
-	public static Option[] getOpennaasOptions() {
+	public static Option[] getOpennaasOptions(String containerName) {
 		/* Opennaas features */
 		String OPENNAAS_FEATURE_REPO = "mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features";
 		String[] OPENNAAS_FEATURES = { "opennaas-core", "opennaas-core-deps" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
-		return combine(getActiveMQOptions(), OPT_OPENNAAS_FEATURES);
+		return combine(getActiveMQOptions(containerName), OPT_OPENNAAS_FEATURES);
 	}
 
-	public static Option[] getMantychoreTestOptions() {
+	public static Option[] getMantychoreTestOptions(String containerName) {
 		/* mantychore features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getOpennaasOptions(), OPT_MANTYCHORE_FEATURES);
+		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES);
 	}
 
-	public static Option[] getLuminisTestOptions() {
+	public static Option[] getLuminisTestOptions(String containerName) {
 		/* luminis features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-luminis-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getOpennaasOptions(), OPT_MANTYCHORE_FEATURES); // service
+		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES); // service
 	}
 
-	public static Option[] getMantychoreLuminisTestOptions() {
+	public static Option[] getMantychoreLuminisTestOptions(String containerName) {
 
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-mantychore-core", "i2cat-luminis-core" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getOpennaasOptions(), OPT_MANTYCHORE_FEATURES); // service
+		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES); // service
 	}
 
-	public static Option[] getNexusTestOptions() {
+	public static Option[] getNexusTestOptions(String containerName) {
 		/* luminis features */
 		String MTCHORE_FEATURES_REPO = "mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features";
 		String[] MTCHORE_FEATURES = { "i2cat-commons" };
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
-		return combine(getOpennaasOptions(), OPT_MANTYCHORE_FEATURES); // service
+		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES); // service
+	}
+	
+	public static Option[] getOpennaasOptions() {
+		return getOpennaasOptions(DEFAULT_CONTAINER);
 	}
 
+	public static Option[] getMantychoreTestOptions() {
+		return getMantychoreTestOptions(DEFAULT_CONTAINER);
+	}
+
+	public static Option[] getLuminisTestOptions() {
+		return getLuminisTestOptions(DEFAULT_CONTAINER);
+	}
+
+	public static Option[] getMantychoreLuminisTestOptions() {
+		return getMantychoreLuminisTestOptions(DEFAULT_CONTAINER);
+	}
+
+	public static Option[] getNexusTestOptions() {
+		return getNexusTestOptions(DEFAULT_CONTAINER);
+	}
+	
 	/**
 	 * Wait for all bundles to be active, tries to start non active bundles.
 	 */

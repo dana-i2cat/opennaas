@@ -1,6 +1,7 @@
 package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.IntegrationTestsHelper;
 import helpers.KarafCommandHelper;
@@ -66,10 +67,10 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
+				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 
 		return options;
