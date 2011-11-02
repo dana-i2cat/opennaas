@@ -47,8 +47,8 @@ public class IntegrationTestsHelper {
 		/* specify log level */
 
 		Option[] HELPER_DEFAULT_OPTIONS = Helper.getDefaultOptions(systemProperty("org.ops4j.pax.logging.DefaultServiceLog.level")
-				// .value("INFO"));
-				.value("DEBUG"));
+				.value("INFO"));
+				//.value("DEBUG"));
 		Option OPT_WORKING_DIRECTORY = workingDirectory(WORKING_DIRECTORY);
 		Option OPT_NOVERIFY = vmOption("-noverify");
 
