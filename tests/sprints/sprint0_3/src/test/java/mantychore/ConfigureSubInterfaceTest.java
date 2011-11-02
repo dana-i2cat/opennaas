@@ -13,6 +13,8 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -28,6 +30,7 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import api.CheckParametersHelper;
@@ -42,9 +45,12 @@ import api.ResourceHelper;
  * 
  */
 
-// @RunWith(JUnit4TestRunner.class)
+//@RunWith(JUnit4TestRunner.class)
 public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
+	@Inject
+	BundleContext				bundleContext	= null;
+	
 	boolean				isMock;
 	ResourceDescriptor	resourceDescriptor;
 	IResource			resource		= null;
@@ -52,9 +58,6 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	String				type;
 	IResourceManager	resourceManager;
 	IProfileManager		profileManager;
-
-	@Inject
-	BundleContext		bundleContext	= null;
 
 	@Configuration
 	public static Option[] configure() {
@@ -69,14 +72,9 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	}
 
 	public ConfigureSubInterfaceTest() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-		profileManager = getOsgiService(IProfileManager.class, 30000);
 		this.type = "router";
 		this.deviceID = "junos";
 		this.isMock = true;
-
 	}
 
 	/**
@@ -88,6 +86,11 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 */
 	public void setUp() throws ResourceException, ProtocolException {
 
+		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+
+		resourceManager = getOsgiService(IResourceManager.class, 50000);
+		profileManager = getOsgiService(IProfileManager.class, 30000);
+		
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("queue");
@@ -119,8 +122,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	}
 
-	// @Test
-	public void ConfigureSubInterfaceTest() {
+//	@Test
+	public void configureSubInterfaceTest() {
 		try {
 			setUp();
 		} catch (Exception e) {
@@ -146,6 +149,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 		/* send action */
 		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		if (posChassis == -1)
+			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEthernet();
 		try {
@@ -156,12 +161,16 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 		/* execute action */
 		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		if (posQueue == -1)
+			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
+		
+		//TODO check queue response is OK
 
 		/* refresh model */
 		try {
@@ -185,6 +194,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	public void subInterfaceConfigurationTest() {
 		/* send action */
 		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		if (posChassis == -1)
+			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEtherVLAN();
 		try {
@@ -201,12 +212,16 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 		/* execute action */
 		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		if (posQueue == -1)
+			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
+		
+		//TODO check queue response is OK
 
 		/* refresh model */
 		try {
