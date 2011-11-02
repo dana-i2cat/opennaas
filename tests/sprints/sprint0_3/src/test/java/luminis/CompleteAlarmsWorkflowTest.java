@@ -95,7 +95,7 @@ public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
 		for (IResource resource : resources){
 			if (resource.getState().equals(ILifecycle.State.ACTIVE))
 				resourceManager.stopResource(resource.getResourceIdentifier());
-			resourceManager.stopResource(resource.getResourceIdentifier());
+			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
 		
 		IResource resource = resourceManager.createResource(createResourceDescriptorWithMonitoring());
