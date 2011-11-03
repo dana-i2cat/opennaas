@@ -21,6 +21,9 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 1, name = "subInterface", description = "The interface to be created.", required = true, multiValued = false)
 	private String	subinterface;
+	
+	@Argument(index = 2, name = "description", description = "Description of the interface to be created.", required = false, multiValued = false)
+	private String	description = "";
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -75,6 +78,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		EthernetPort eth = new EthernetPort();
 		eth.setName(args[0]);
 		eth.setPortNumber(Integer.parseInt(args[1]));
+		eth.setDescription(description);
 		return eth;
 	}
 }
