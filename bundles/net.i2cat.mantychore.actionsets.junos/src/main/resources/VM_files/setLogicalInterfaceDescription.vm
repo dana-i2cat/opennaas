@@ -1,0 +1,11 @@
+<configuration>
+<interfaces>
+	<interface>
+		<name>$param.Name</name>
+		<unit>
+			<name>$param.PortNumber</name>
+			<description>$param.description</description>
+		</unit>
+	</interface>
+</interfaces>
+</configuration>
