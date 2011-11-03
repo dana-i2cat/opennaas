@@ -14,6 +14,7 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.Reply;
 import org.opennaas.core.resources.action.ActionException;
@@ -133,12 +134,9 @@ public class GetConfigurationAction extends JunosAction {
 		try {
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
-				Map<String, Object> extraParams = new HashMap<String, Object>(); 
-				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
-				setVelocityMessage(prepareVelocityCommand(params, template, extraParams)); 
-			} else { 
-				setVelocityMessage(prepareVelocityCommand(params, template)); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
 			}
+			setVelocityMessage(prepareVelocityCommand(params, template)); 
 		} catch (Exception e) {
 			throw new ActionException();
 		}

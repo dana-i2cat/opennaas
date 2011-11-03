@@ -6,6 +6,7 @@ import java.util.Map;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.ManagedElement;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -60,12 +61,9 @@ public class DeleteSubInterfaceAction extends JunosAction {
 		try {
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
-				Map<String, Object> extraParams = new HashMap<String, Object>(); 
-				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
-				setVelocityMessage(prepareVelocityCommand(params, template, extraParams)); 
-			} else { 
-				setVelocityMessage(prepareVelocityCommand(params, template)); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
 			}
+			setVelocityMessage(prepareVelocityCommand(params, template)); 
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

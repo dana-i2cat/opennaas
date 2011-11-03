@@ -8,6 +8,8 @@ import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.ManagedElement;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -87,12 +89,9 @@ public class ConfigureEncapsulationAction extends JunosAction {
 		try {
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
-				Map<String, Object> extraParams = new HashMap<String, Object>(); 
-				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
-				setVelocityMessage(prepareVelocityCommand(params, template, extraParams)); 
-			} else { 
-				setVelocityMessage(prepareVelocityCommand(params, template)); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName());
 			}
+			setVelocityMessage(prepareVelocityCommand(params, template)); 
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

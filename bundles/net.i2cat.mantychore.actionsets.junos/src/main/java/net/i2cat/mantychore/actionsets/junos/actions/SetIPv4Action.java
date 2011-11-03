@@ -7,6 +7,7 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.ManagedElement;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -54,7 +55,7 @@ public class SetIPv4Action extends JunosAction {
 
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
-				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
 			}
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
