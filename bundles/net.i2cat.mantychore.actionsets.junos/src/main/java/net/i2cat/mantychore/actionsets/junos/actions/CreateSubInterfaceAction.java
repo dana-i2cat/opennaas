@@ -1,7 +1,12 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
+import net.i2cat.mantychore.model.ComputerSystem;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -50,7 +55,14 @@ public class CreateSubInterfaceAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template));
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+				//is logicalRouter, add LRName param
+				Map<String, Object> extraParams = new HashMap<String, Object>(); 
+				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
+				setVelocityMessage(prepareVelocityCommand(params, template, extraParams)); 
+			} else { 
+				setVelocityMessage(prepareVelocityCommand(params, template)); 
+			}
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

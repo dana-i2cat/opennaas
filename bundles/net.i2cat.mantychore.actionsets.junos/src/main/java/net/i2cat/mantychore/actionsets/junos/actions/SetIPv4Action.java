@@ -6,6 +6,8 @@ import java.util.Map;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
+import net.i2cat.mantychore.model.ComputerSystem;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -50,6 +52,10 @@ public class SetIPv4Action extends JunosAction {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("ipUtilsHelper", ipUtilsHelper);
 
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+				//is logicalRouter, add LRName param
+				extraParams.put("LRName", ((ComputerSystem)modelToUpdate).getElementName()); 
+			}
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
