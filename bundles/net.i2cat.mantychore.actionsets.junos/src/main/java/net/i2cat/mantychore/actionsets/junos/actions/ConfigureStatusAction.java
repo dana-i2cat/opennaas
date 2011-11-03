@@ -7,6 +7,7 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;

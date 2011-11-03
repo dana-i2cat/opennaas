@@ -1,8 +1,5 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -10,12 +7,11 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class ConfigureEncapsulationAction extends JunosAction {
 

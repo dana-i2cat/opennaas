@@ -1,8 +1,6 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
@@ -17,14 +15,14 @@ import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.Reply;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class GetConfigurationAction extends JunosAction {
 	Log	logger	= LogFactory.getLog(GetConfigurationAction.class);

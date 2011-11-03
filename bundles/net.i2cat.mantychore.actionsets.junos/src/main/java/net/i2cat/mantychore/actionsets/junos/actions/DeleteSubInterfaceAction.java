@@ -1,8 +1,5 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;

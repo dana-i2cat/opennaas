@@ -1,13 +1,13 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.CommitNetconfCommand;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.queue.QueueConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class ConfirmAction extends JunosAction {
 
