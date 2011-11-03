@@ -67,6 +67,9 @@
 							<vlan-id operation="merge">$vlanId</vlan-id>
 							## <VLAN-TAGGING/> !! WE HAVE TO ADD VLAN-TAGGING
 						#end
+					#end
+					#if($param.description)
+					<description>$param.description</description>
 					#end										
 			</unit>
 		</interface>	
