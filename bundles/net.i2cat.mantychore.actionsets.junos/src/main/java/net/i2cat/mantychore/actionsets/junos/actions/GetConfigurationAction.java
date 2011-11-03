@@ -56,6 +56,12 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
+		/* the model have to be null and we have to initialize */
+		
+		//FIXME This "if" is important because it resets the model if we want to update it
+		if (model == null) model = new ComputerSystem();
+		
+		
 		String message;
 		try {
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;

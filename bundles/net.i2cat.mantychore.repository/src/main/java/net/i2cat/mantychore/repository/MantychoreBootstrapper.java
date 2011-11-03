@@ -46,6 +46,8 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 				}
 			}
 		}
+		
+		
 		ICapability queueCapab = resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {

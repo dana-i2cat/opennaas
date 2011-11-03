@@ -40,9 +40,4 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
 		return actionNames;
 	}
-
-	public String getStartUpRefreshActionName() {
-		// FIXME: change when listInterfaces is complete
-		return ActionConstants.GETCONFIG;
-	}
 }
