@@ -8,6 +8,7 @@ import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceDescriptionAction;
 
 import org.opennaas.core.resources.action.ActionSet;
 
@@ -25,6 +26,7 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETENCAPSULATION, ConfigureEncapsulationAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
+		this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
 	}
 
 	@Override
@@ -35,6 +37,7 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.CREATESUBINTERFACE);
 		actionNames.add(ActionConstants.SETENCAPSULATION);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
+		actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
 		return actionNames;
 	}
 
