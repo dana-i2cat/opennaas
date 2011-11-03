@@ -3,6 +3,8 @@ package net.i2cat.mantychore.actionsets.junos.actions;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedElement;
 
 import org.opennaas.core.resources.action.ActionException;
@@ -21,11 +23,17 @@ public class SetInterfaceDescriptionAction extends JunosAction {
 		this.protocolName = "netconf";
 	}
 
+	/**
+	 * Params must be a LogicalPort.
+	 * If it represents a logialInterface, then 
+	 * 
+	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
-		setTemplate(true?"/VM_files/setLogicalInterfaceDescription.vm":"/VM_files/setInterfaceDescription.vm");
-		return false;
+		if (params == null || !(params instanceof LogicalPort))
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		setTemplate((params instanceof EthernetPort)?"/VM_files/setLogicalInterfaceDescription.vm":"/VM_files/setInterfaceDescription.vm");
+		return true;
 	}
 
 	@Override
