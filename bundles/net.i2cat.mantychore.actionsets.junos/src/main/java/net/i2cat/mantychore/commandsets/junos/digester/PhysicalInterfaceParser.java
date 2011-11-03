@@ -30,6 +30,7 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
 			addObjectCreate("*/interface-information/physical-interface", NetworkPort.class);
 			addMyRule("*/interface-information/physical-interface/name", "setName", 0);
+			addMyRule("*/interface-information/physical-interface/description", "setDescription", 0);
 			addCallMethod("*/interface-information/physical-interface/current-physical-address", "setPermanentAddress", 0);
 
 			addMyRule("*/interface-information/physical-interface/link-level-type", "setLinkTechnologyParser", 0);
@@ -69,6 +70,11 @@ public class PhysicalInterfaceParser extends DigesterEngine {
 			networkPort.setPortNumber(portNumber);
 		}
 
+	}
+	
+	public void setDescription(String description) {
+		NetworkPort networkPort = (NetworkPort) peek();
+		networkPort.setDescription(description);
 	}
 
 	public void addInterface(NetworkPort networkPort) {
