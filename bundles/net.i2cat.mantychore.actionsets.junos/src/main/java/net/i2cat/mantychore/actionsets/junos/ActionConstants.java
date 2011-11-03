@@ -12,6 +12,7 @@ public class ActionConstants {
 	// Chassis ActionSET
 	public static final String	DELETESUBINTERFACE	= "deletesubinterface";
 	public static final String	CREATESUBINTERFACE	= "createsubinterface";
+	public static final String  CONFIGURESUBINTERFACE = "configureSubInterface";
 	public static final String	SETENCAPSULATION	= "setEncapsulation";
 	public static final String	CONFIGURESTATUS		= "configureStatus";
 	public static final String	DELETELOGICALROUTER	= "deleteLogicalRouter";
