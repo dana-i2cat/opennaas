@@ -15,6 +15,8 @@ public class QueueResponse {
 	public ActionResponse	confirmResponse	= new ActionResponse();
 
 	public ActionResponse	restoreResponse	= new ActionResponse();
+	
+	public ActionResponse 	refreshResponse = new ActionResponse();
 
 	Vector<ActionResponse>	responses		= new Vector<ActionResponse>();
 
@@ -85,6 +87,14 @@ public class QueueResponse {
 
 	public void setRestoreResponse(ActionResponse restoreResponse) {
 		this.restoreResponse = restoreResponse;
+	}
+	
+	public ActionResponse getResfreshResponse(){
+		return refreshResponse;
+	}
+	
+	public void setResfreshResponse(ActionResponse refreshResponse){
+		this.refreshResponse = refreshResponse;
 	}
 
 	public long getTotalTime() {
