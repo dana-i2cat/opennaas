@@ -7,6 +7,9 @@
 		<name>$param.Name</name>
 		<unit>
 		<name>$param.PortNumber</name>
+		#if($param.description)
+		<description>$param.description</description>
+		#end
 		</unit>
 	</interface>
 ##	#end

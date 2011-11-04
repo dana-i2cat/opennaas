@@ -45,7 +45,6 @@
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
-				
 				## FIXME logical routers can't contain vlan-tagging tag...
 				#if($logicalRouter == "false")	
 					<vlan-tagging operation="merge"/>
