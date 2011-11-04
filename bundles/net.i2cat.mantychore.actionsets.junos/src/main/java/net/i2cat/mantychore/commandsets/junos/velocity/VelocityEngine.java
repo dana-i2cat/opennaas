@@ -54,6 +54,10 @@ public class VelocityEngine {
 
 		VelocityContext ctx = new VelocityContext();
 		ctx.put(PARAM_CONSTANT, param);
+		
+		/* add null tool  */
+		NullTool nullTool = new NullTool();
+		ctx.put("NullTool",nullTool);
 
 		for (String key : extraParams.keySet())
 			ctx.put(key, extraParams.get(key));

@@ -1,7 +1,7 @@
 #macro ( isLogicalRouter $element $resp )
-	#set( $resp = "true" )	
-	#if ((! $element) && ("$!element" == ""))
-		#set( $resp = "false" )
+	#set( $resp = "false" )	
+	#if (NullTool.isNotNull($element) )
+		#set( $resp = "true" )
 	#end
 #end
 
