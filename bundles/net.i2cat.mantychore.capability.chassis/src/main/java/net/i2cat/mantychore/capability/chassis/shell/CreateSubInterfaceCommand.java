@@ -57,7 +57,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, prepareParams());
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);

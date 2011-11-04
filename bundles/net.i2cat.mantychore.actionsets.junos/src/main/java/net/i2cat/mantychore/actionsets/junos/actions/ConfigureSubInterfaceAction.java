@@ -10,7 +10,12 @@ import net.i2cat.mantychore.model.ManagedElement;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
-
+/**
+ * Configures a subinterface with given params.
+ * If given subinterface doesn't exist it is created.If it already exists, overrides it with given data.
+ * 
+ * @param params: EthernetPort or LogicalTunnelPort identifying the subinterface to configure and containing all data to configure it.
+ */
 public class ConfigureSubInterfaceAction extends JunosAction {
 
 	public ConfigureSubInterfaceAction() {
