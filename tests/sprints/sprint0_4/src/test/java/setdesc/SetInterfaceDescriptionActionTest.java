@@ -153,7 +153,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
 				chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 			} catch (CapabilityException e) {
-				Assert.fail("Impossible send message: " + e.getMessage());
+				Assert.fail("It was impossible to send the following message: " + e.getMessage());
 			}
 
 			/* execute action */
@@ -191,7 +191,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 				Assert.assertTrue(response.isOk());
 			} catch (CapabilityException e) {
-				Assert.fail("Impossible send message: " + e.getMessage());
+				Assert.fail("It was impossible to send the following message: " + e.getMessage());
 			}
 		}
 
@@ -212,7 +212,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 			try {
 				chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 			} catch (CapabilityException e) {
-				Assert.fail("Impossible send message: " + e.getMessage());
+				Assert.fail("It was impossible to send the following message: " + e.getMessage());
 			}
 
 			/* execute action */
@@ -224,14 +224,14 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 				Assert.assertTrue(response.isOk());
 			} catch (CapabilityException e) {
-				Assert.fail("Impossible send message: " + e.getMessage());
+				Assert.fail("It was impossible to send the following message: " + e.getMessage());
 			}
 
 			/* refresh model */
 			try {
 				chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 			} catch (CapabilityException e) {
-				Assert.fail("Impossible send message: " + e.getMessage());
+				Assert.fail("It was impossible to send the following message: " + e.getMessage());
 			}
 
 			if (isMock)
