@@ -15,6 +15,8 @@ public class QueueResponse {
 	public ActionResponse	confirmResponse	= new ActionResponse();
 
 	public ActionResponse	restoreResponse	= new ActionResponse();
+	
+	public ActionResponse	refreshResponse	= new ActionResponse();
 
 	Vector<ActionResponse>	responses		= new Vector<ActionResponse>();
 
@@ -69,6 +71,8 @@ public class QueueResponse {
 		queueResponse.setPrepareResponse(ActionResponse.newPendingAction(QueueConstants.PREPARE));
 		queueResponse.setConfirmResponse(ActionResponse.newPendingAction(QueueConstants.CONFIRM));
 		queueResponse.setRestoreResponse(ActionResponse.newPendingAction(QueueConstants.RESTORE));
+		queueResponse.setRefreshResponse(ActionResponse.newPendingAction(QueueConstants.REFRESH));
+
 
 		Vector<ActionResponse> responses = new Vector<ActionResponse>();
 		for (IAction action : actions)
@@ -78,6 +82,16 @@ public class QueueResponse {
 		return queueResponse;
 
 	}
+
+	public void setRefreshResponse(ActionResponse refreshResponse) {
+		this.refreshResponse = refreshResponse;
+		
+	}
+	
+	public ActionResponse getRefreshResponse() {
+		return refreshResponse;
+	}
+
 
 	public ActionResponse getRestoreResponse() {
 		return restoreResponse;
