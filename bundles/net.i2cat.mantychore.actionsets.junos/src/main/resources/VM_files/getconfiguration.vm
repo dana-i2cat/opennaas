@@ -15,5 +15,4 @@
 	#if($logicalRouter == "true")
 		</logical-systems>
 	#end
-
 </configuration>

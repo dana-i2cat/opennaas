@@ -1,11 +1,9 @@
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
-	#if (null.isNotNull($element) )
+	#if (NullTool.isNotNull($element) )
 		#set( $resp = "true" )
 	#end
 #end
-
 
 <configuration>
 	#set( $logicalRouter = "true" )
@@ -14,7 +12,6 @@
 		<logical-systems>
 			<name>$param.ElementName</name>
 	#end
-	
 	#if($logicalRouter == "true")
 		</logical-systems>
 	#end
