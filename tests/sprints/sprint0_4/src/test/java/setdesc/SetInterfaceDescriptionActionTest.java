@@ -182,6 +182,9 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 			int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) resource.getModel(), ethernetPort);
 			Assert.assertTrue(pos != -1);
 			
+			String desc = ((EthernetPort)((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
+			Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
+			
 			//delete created sub interface
 			try {
 				chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
@@ -237,6 +240,9 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 			/* check the update model, it is only possible to check it with a real router */
 			int pos = CheckParametersHelper.containsInterface((ComputerSystem) resource.getModel(), logicalPort);
 			Assert.assertTrue(pos != -1);
+			
+			String desc = ((LogicalPort)((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
+			Assert.assertTrue(desc.equals(logicalPort.getDescription()));
 
 		}
 
