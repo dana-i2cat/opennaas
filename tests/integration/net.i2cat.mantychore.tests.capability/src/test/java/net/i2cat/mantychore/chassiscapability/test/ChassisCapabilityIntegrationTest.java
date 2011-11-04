@@ -12,6 +12,7 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
@@ -101,7 +102,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
-		log.warn("FFFF test setup uri: "+uri+"Length: "+uri.length());
+		log.debug("FFFF test setup uri: "+uri+"Length: "+uri.length());
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 
 		protocolSessionContext.addParameter(
@@ -178,15 +179,19 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
 			
-			Assert.assertTrue(queue.size() == 4);
-			//debug crap
-			log.warn("FFFF: About to implode.");
-			//next line implodes.
+			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceLogicalPort("fe-0/1/0"));
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+			
+			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);			
+			Assert.assertTrue(queue.size() == 6);
+			
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			log.warn("FFFF: Survived.");
-			Assert.assertTrue(queueResponse.getResponses().size() == 4);
+			Assert.assertTrue(queueResponse.getResponses().size() == 6);
 
 			Assert.assertTrue(queueResponse.getResponses().get(0).getStatus() == ActionResponse.STATUS.OK);
 			for (Response response : queueResponse.getResponses().get(0).getResponses()) {
@@ -207,7 +212,17 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			for (Response response : queueResponse.getResponses().get(3).getResponses()) {
 				Assert.assertTrue(response.getStatus() == Response.Status.OK);
 			}
-
+			
+			Assert.assertTrue(queueResponse.getResponses().get(4).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(4).getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
+			
+			Assert.assertTrue(queueResponse.getResponses().get(5).getStatus() == ActionResponse.STATUS.OK);
+			for (Response response : queueResponse.getResponses().get(5).getResponses()) {
+				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			}
+			
 			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
 
 			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
@@ -215,12 +230,10 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
-
 		} catch (CapabilityException e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
-
 	}
 
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
@@ -239,7 +252,18 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName(name);
 		eth.setPortNumber(port);
-
+		//ugly crap which should work
+		eth.setDescription("capability test");
+		return eth;
+	}
+	
+	public Object newParamsInterfaceLogicalPort(String name) {
+		LogicalPort eth = new LogicalPort();
+		//eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
+		eth.setName(name);
+		//eth.setPortNumber(port);
+		//ugly crap which should work
+		eth.setDescription("capability test description phy");
 		return eth;
 	}
 
@@ -248,10 +272,12 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
 		eth.setName(name);
 		eth.setPortNumber(port);
-
+		//vlan specific
 		VLANEndpoint vlan = new VLANEndpoint();
 		vlan.setVlanID(vlanID);
 		eth.addProtocolEndpoint(vlan);
+		//ugly crap which should work
+		eth.setDescription("capability test vlan");
 		return eth;
 	}
 }
