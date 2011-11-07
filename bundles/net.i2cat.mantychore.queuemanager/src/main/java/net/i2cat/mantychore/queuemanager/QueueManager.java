@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
+import net.i2cat.mantychore.model.ComputerSystem;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -172,12 +174,39 @@ public class QueueManager extends AbstractCapability implements
 
 		}
 		
-		/* refresh operation */
-		refreshResource(queueResponse,protocolSessionManager);
-
-		
 		/* empty queue */
 		empty();
+
+		
+		/* refresh operation */
+		//refreshResource(queueResponse,protocolSessionManager);
+		//reset info from resource. TODO use bootstrapper to reset the resource
+		resource.setModel(new ComputerSystem());
+//		resource.setModel(null);
+		sendRefresh();
+		
+		try {
+			executeRefreshActions(protocolSessionManager);
+		} catch (ActionException e) {
+			throw new CapabilityException(e);
+		}
+		ActionResponse refreshResponse = confirm(protocolSessionManager);
+		
+		
+		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
+			throw new CapabilityException(
+				"Error during capabilities startup. Failed to execute startUp actions.");
+		}
+		
+		queueResponse.setRefreshResponse(refreshResponse);
+
+		if (resource.getProfile() != null) {
+			log.debug("Executing initModel from profile...");
+			resource.getProfile().initModel(resource.getModel());
+		}
+
+		
+		initVirtualResources ();
 
 		/* stop time */
 		stopTime = java.lang.System.currentTimeMillis();
@@ -185,17 +214,28 @@ public class QueueManager extends AbstractCapability implements
 
 		return queueResponse;
 	}
-
-	/**
-	 * TODO TO TEST!! Method to refresh resource and its capabilities.
-	 * 
-	 * @param queueResponse
-	 * @param protocolSessionManager
-	 * @throws CapabilityException
-	 */
-	private void refreshResource(QueueResponse queueResponse,
-			IProtocolSessionManager protocolSessionManager)
-			throws CapabilityException {
+	
+	
+	private void sendRefresh () throws CapabilityException  {
+		for (ICapability capab : resource.getCapabilities()) {
+		// abstract capabilities have to be initialized
+		if (capab instanceof AbstractCapability) {
+			log.debug("Executing capabilities startup...");
+			Response response = ((AbstractCapability) capab)
+					.sendRefreshActions();
+			if (!response.getStatus().equals(Status.OK)) {
+				throw new CapabilityException(
+						"model refresh, when calling sendRefreshActions");
+			}
+		}
+	}		
+		
+	}
+	
+	private void initVirtualResources () throws CapabilityException {
+		String typeResource = resource.getResourceIdentifier().getType();
+		List<String> nameLogicalRouters = resource.getModel().getChildren();
+		
 		IResourceManager manager;
 		try {
 			manager = Activator.getResourceManagerService();
@@ -205,39 +245,7 @@ public class QueueManager extends AbstractCapability implements
 			throw new CapabilityException("Can't get ResourceManagerService!");
 		}
 		
-		//TODO WHERE CAN WE INITIALIZE THE MODEL??
-		resource.setModel(null);
-
-		// start its capabilities
-		for (ICapability capab : resource.getCapabilities()) {
-			// abstract capabilities have to be initialized
-			if (capab instanceof AbstractCapability) {
-				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab)
-						.sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
-					throw new CapabilityException(
-							"model refresh, when calling sendRefreshActions");
-				}
-			}
-		}
-
-		ActionResponse refreshResponse = confirm(protocolSessionManager);
-
-		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
-			throw new CapabilityException(
-					"Error during capabilities startup. Failed to execute startUp actions.");
-		}
-
-		if (resource.getProfile() != null) {
-			log.debug("Executing initModel from profile...");
-			resource.getProfile().initModel(resource.getModel());
-		}
-		// the type resource is the same for all logical devices and for the
-		// physical device
-		String typeResource = resource.getResourceIdentifier().getType();
-		List<String> nameLogicalRouters = resource.getModel().getChildren();
-		// initialize each resource
+		// initialize each resource		
 		try {
 			for (String nameResource : nameLogicalRouters) {
 				try {
@@ -256,10 +264,83 @@ public class QueueManager extends AbstractCapability implements
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
-
-		queueResponse.setRefreshResponse(refreshResponse);
-
+		
 	}
+
+//	/**
+//	 * TODO TO TEST!! Method to refresh resource and its capabilities.
+//	 * 
+//	 * @param queueResponse
+//	 * @param protocolSessionManager
+//	 * @throws CapabilityException
+//	 */
+//	private void refreshResource(QueueResponse queueResponse,
+//			IProtocolSessionManager protocolSessionManager)
+//			throws CapabilityException {
+//		IResourceManager manager;
+//		try {
+//			manager = Activator.getResourceManagerService();
+//		} catch (ActivatorException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//			throw new CapabilityException("Can't get ResourceManagerService!");
+//		}
+//		
+//		//TODO WHERE CAN WE INITIALIZE THE MODEL??
+//		resource.setModel(null);
+//
+//		// start its capabilities
+//		for (ICapability capab : resource.getCapabilities()) {
+//			// abstract capabilities have to be initialized
+//			if (capab instanceof AbstractCapability) {
+//				log.debug("Executing capabilities startup...");
+//				Response response = ((AbstractCapability) capab)
+//						.sendRefreshActions();
+//				if (!response.getStatus().equals(Status.OK)) {
+//					throw new CapabilityException(
+//							"model refresh, when calling sendRefreshActions");
+//				}
+//			}
+//		}
+//
+//		ActionResponse refreshResponse = confirm(protocolSessionManager);
+//
+//		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
+//			throw new CapabilityException(
+//					"Error during capabilities startup. Failed to execute startUp actions.");
+//		}
+//
+//		if (resource.getProfile() != null) {
+//			log.debug("Executing initModel from profile...");
+//			resource.getProfile().initModel(resource.getModel());
+//		}
+//		// the type resource is the same for all logical devices and for the
+//		// physical device
+//		String typeResource = resource.getResourceIdentifier().getType();
+//		List<String> nameLogicalRouters = resource.getModel().getChildren();
+//		// initialize each resource
+//		try {
+//			for (String nameResource : nameLogicalRouters) {
+//				try {
+//					manager.getIdentifierFromResourceName(typeResource,
+//							nameResource);
+//				} catch (ResourceNotFoundException e) {
+//					log.error(e.getMessage());
+//					log.info("Since this resource didn't exist, it has to be created.");
+//					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(
+//							resource.getResourceDescriptor(), nameResource);
+//					// create new resources
+//					manager.createResource(newResourceDescriptor);
+//
+//				}
+//			}
+//		} catch (ResourceException e) {
+//			throw new CapabilityException(e);
+//		}
+//
+//		queueResponse.setRefreshResponse(refreshResponse);
+//
+//	}
 
 	
 	//FIXME this parameters shouldn't be in the queue because it is an opennaas module
@@ -331,6 +412,23 @@ public class QueueManager extends AbstractCapability implements
 				break;
 		}
 		return queueResponse;
+	}
+	
+	private void executeRefreshActions (IProtocolSessionManager protocolSessionManager) throws ActionException {
+		for (IAction action : queue) {
+			/* use pool for get protocol session */
+			log.debug("getting protocol session...");
+			log.debug("Executing action: " + action.getActionID());
+			log.debug("Trying to print params:" + action.getParams());
+			ActionResponse actionResponse = action
+					.execute(protocolSessionManager);
+
+			// If an action returned error, queue should stop executing actions.
+			// Restore mechanism should be activated in this case.
+			if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
+				break;
+		}
+		
 	}
 
 	private ActionResponse confirm(

@@ -59,7 +59,12 @@ public class GetConfigurationAction extends JunosAction {
 		/* the model have to be null and we have to initialize */
 		
 		//FIXME This "if" is important because it resets the model if we want to update it
-		if (model == null) model = new ComputerSystem();
+//		if (model == null) 
+//			 { 
+//				model = new ComputerSystem();
+//			 
+//			 }
+		if (this.modelToUpdate == null ) this.modelToUpdate = new ComputerSystem();
 		
 		
 		String message;

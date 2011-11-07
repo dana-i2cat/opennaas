@@ -53,11 +53,13 @@ public class VelocityEngine {
 		Template tpl = Velocity.getTemplate(template);
 
 		VelocityContext ctx = new VelocityContext();
+		if (param == null) param = "null";
 		ctx.put(PARAM_CONSTANT, param);
 		
-		/* add null tool  */
-		NullTool nullTool = new NullTool();
-		ctx.put("NullTool",nullTool);
+		//TODO fix problem to get params
+//		/* add null tool  */
+//		NullTool nullTool = new NullTool();
+//		ctx.put("NullTool",nullTool);
 
 		for (String key : extraParams.keySet())
 			ctx.put(key, extraParams.get(key));
