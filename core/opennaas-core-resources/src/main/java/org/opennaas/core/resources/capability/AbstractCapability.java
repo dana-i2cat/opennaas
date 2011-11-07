@@ -211,9 +211,8 @@ public abstract class AbstractCapability implements ICapability {
 			List<Response> responses = new ArrayList<Response>();
 			int numAction = 0;
 			for (String refreshAction : refreshActions) {
-				Object param =  new Object();
-
-				if (params.size()>=numAction) {
+				Object param =  null;
+				if (params.size()>numAction) {
 					param = params.get(numAction);
 					numAction++;
 				} else {
