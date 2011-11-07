@@ -22,5 +22,7 @@ public interface IResourceBootstrapper {
 	 * @throws ResourceException
 	 */
 	public void revertBootstrap(IResource resource) throws ResourceException;
+	
+	public void resetModel (IResource resource) throws ResourceException;
 
 }

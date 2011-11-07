@@ -16,7 +16,11 @@ public class QueueResponse {
 
 	public ActionResponse	restoreResponse	= new ActionResponse();
 	
+<<<<<<< HEAD
 	public ActionResponse	refreshResponse	= new ActionResponse();
+=======
+	public ActionResponse 	refreshResponse = new ActionResponse();
+>>>>>>> 261e57ac1536eb760532e05c39b7b28ef5c15bea
 
 	Vector<ActionResponse>	responses		= new Vector<ActionResponse>();
 
@@ -99,6 +103,14 @@ public class QueueResponse {
 
 	public void setRestoreResponse(ActionResponse restoreResponse) {
 		this.restoreResponse = restoreResponse;
+	}
+	
+	public ActionResponse getResfreshResponse(){
+		return refreshResponse;
+	}
+	
+	public void setResfreshResponse(ActionResponse refreshResponse){
+		this.refreshResponse = refreshResponse;
 	}
 
 	public long getTotalTime() {

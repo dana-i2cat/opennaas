@@ -41,6 +41,7 @@
     <module>provision</module>-->
 		<module>core</module>
 		<module>platform</module>
+		<module>assembly</module>
 	</modules>
 	<build>
 		<plugins>
