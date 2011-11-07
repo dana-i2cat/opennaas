@@ -190,19 +190,22 @@ public class QueueManager extends AbstractCapability implements
 		sendRefresh();
 		
 		try {
-			executeRefreshActions(protocolSessionManager);
+			ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
+			queueResponse.setRefreshResponse(refreshResponse);
 		} catch (ActionException e) {
 			throw new CapabilityException(e);
 		}
-		ActionResponse refreshResponse = confirm(protocolSessionManager);
+		
+		//TODO It is necessary a refresh command
+//		ActionResponse refreshResponse = confirm(protocolSessionManager);
+		
+//		
+//		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
+//			throw new CapabilityException(
+//				"Error during capabilities startup. Failed to execute startUp actions.");
+//		}
 		
 		
-		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
-			throw new CapabilityException(
-				"Error during capabilities startup. Failed to execute startUp actions.");
-		}
-		
-		queueResponse.setRefreshResponse(refreshResponse);
 
 		if (resource.getProfile() != null) {
 			log.debug("Executing initModel from profile...");
@@ -216,6 +219,7 @@ public class QueueManager extends AbstractCapability implements
 		stopTime = java.lang.System.currentTimeMillis();
 		queueResponse.setTotalTime(stopTime - startTime);
 
+		empty();		
 		return queueResponse;
 	}
 	
@@ -270,81 +274,6 @@ public class QueueManager extends AbstractCapability implements
 		}
 		
 	}
-
-//	/**
-//	 * TODO TO TEST!! Method to refresh resource and its capabilities.
-//	 * 
-//	 * @param queueResponse
-//	 * @param protocolSessionManager
-//	 * @throws CapabilityException
-//	 */
-//	private void refreshResource(QueueResponse queueResponse,
-//			IProtocolSessionManager protocolSessionManager)
-//			throws CapabilityException {
-//		IResourceManager manager;
-//		try {
-//			manager = Activator.getResourceManagerService();
-//		} catch (ActivatorException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//			throw new CapabilityException("Can't get ResourceManagerService!");
-//		}
-//		
-//		//TODO WHERE CAN WE INITIALIZE THE MODEL??
-//		resource.setModel(null);
-//
-//		// start its capabilities
-//		for (ICapability capab : resource.getCapabilities()) {
-//			// abstract capabilities have to be initialized
-//			if (capab instanceof AbstractCapability) {
-//				log.debug("Executing capabilities startup...");
-//				Response response = ((AbstractCapability) capab)
-//						.sendRefreshActions();
-//				if (!response.getStatus().equals(Status.OK)) {
-//					throw new CapabilityException(
-//							"model refresh, when calling sendRefreshActions");
-//				}
-//			}
-//		}
-//
-//		ActionResponse refreshResponse = confirm(protocolSessionManager);
-//
-//		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
-//			throw new CapabilityException(
-//					"Error during capabilities startup. Failed to execute startUp actions.");
-//		}
-//
-//		if (resource.getProfile() != null) {
-//			log.debug("Executing initModel from profile...");
-//			resource.getProfile().initModel(resource.getModel());
-//		}
-//		// the type resource is the same for all logical devices and for the
-//		// physical device
-//		String typeResource = resource.getResourceIdentifier().getType();
-//		List<String> nameLogicalRouters = resource.getModel().getChildren();
-//		// initialize each resource
-//		try {
-//			for (String nameResource : nameLogicalRouters) {
-//				try {
-//					manager.getIdentifierFromResourceName(typeResource,
-//							nameResource);
-//				} catch (ResourceNotFoundException e) {
-//					log.error(e.getMessage());
-//					log.info("Since this resource didn't exist, it has to be created.");
-//					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(
-//							resource.getResourceDescriptor(), nameResource);
-//					// create new resources
-//					manager.createResource(newResourceDescriptor);
-//
-//				}
-//			}
-//		} catch (ResourceException e) {
-//			throw new CapabilityException(e);
-//		}
-//
-//		queueResponse.setRefreshResponse(refreshResponse);
-//
-//	}
 
 	
 	//FIXME this parameters shouldn't be in the queue because it is an opennaas module
@@ -418,7 +347,8 @@ public class QueueManager extends AbstractCapability implements
 		return queueResponse;
 	}
 	
-	private void executeRefreshActions (IProtocolSessionManager protocolSessionManager) throws ActionException {
+	private ActionResponse executeRefreshActions (IProtocolSessionManager protocolSessionManager) throws ActionException {
+		ActionResponse refreshResponse = ActionResponse.okResponse(QueueConstants.REFRESH);
 		for (IAction action : queue) {
 			/* use pool for get protocol session */
 			log.debug("getting protocol session...");
@@ -429,9 +359,11 @@ public class QueueManager extends AbstractCapability implements
 
 			// If an action returned error, queue should stop executing actions.
 			// Restore mechanism should be activated in this case.
-			if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR)
-				break;
+			if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR) {
+				return actionResponse;
+			}
 		}
+		return refreshResponse;
 		
 	}
 
