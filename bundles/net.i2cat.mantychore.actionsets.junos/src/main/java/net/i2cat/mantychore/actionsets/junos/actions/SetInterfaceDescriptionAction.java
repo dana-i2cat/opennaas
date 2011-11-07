@@ -25,8 +25,10 @@ public class SetInterfaceDescriptionAction extends JunosAction {
 
 	/**
 	 * Params must be a LogicalPort.
-	 * If it represents a logialInterface, then 
+	 * Action template is chosen depending of params being a physical interface or a subinterface (logical)
 	 * 
+	 * @param params: LogicalPort whose description to set
+	 * @throws ActionException if params is null or is not a LogicalPort
 	 */
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
@@ -58,6 +60,7 @@ public class SetInterfaceDescriptionAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
+		checkParams(params);
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {

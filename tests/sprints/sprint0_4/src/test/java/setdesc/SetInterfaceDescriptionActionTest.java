@@ -1,6 +1,7 @@
 package setdesc;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.CheckParametersHelper;
 import helpers.ProtocolSessionHelper;
@@ -41,7 +42,7 @@ import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
 public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
-
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	@Inject
 	BundleContext				bundleContext	= null;
 	
@@ -60,7 +61,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		return options;
 	}
@@ -90,7 +91,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, type, capabilities);
 		resource = resourceManager.createResource(resourceDescriptor);
 		createProtocolForResource(resource.getResourceIdentifier().getId());
-
+		resourceManager.startResource(resource.getResourceIdentifier());
 	}
 
 	/**
