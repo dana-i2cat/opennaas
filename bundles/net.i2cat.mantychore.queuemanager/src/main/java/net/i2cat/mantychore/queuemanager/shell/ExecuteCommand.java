@@ -104,6 +104,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 		}
 
 		printActionResponseExtended(queueResponse.getConfirmResponse());
+		printActionResponseExtended(queueResponse.getRefreshResponse());
 
 	}
 
@@ -122,6 +123,8 @@ public class ExecuteCommand extends GenericKarafCommand {
 		}
 
 		printActionResponseBrief(queueResponse.getConfirmResponse());
+		printActionResponseBrief(queueResponse.getRefreshResponse());
+		
 
 	}
 
