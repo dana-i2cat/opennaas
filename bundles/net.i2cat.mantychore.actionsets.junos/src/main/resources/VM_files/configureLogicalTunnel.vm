@@ -51,11 +51,11 @@
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
-				<unit operation="replace">					
+				<unit operation="replace">
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 					<name>$param.PortNumber</name>
 					# THIS PEER UNIT IT IS GET FROM THE MODEL
-					<peer-unit>$param.Peer_unit</peer-unit>					
+					<peer-unit>$param.Peer_unit</peer-unit>
 					#set( $ethernet = "true" )
 					#isEthernet( $param $ethernet)
 					#if($ethernet == "true")
@@ -67,10 +67,10 @@
 						#if($isvlan == "true")
 							<encapsulation>vlan</encapsulation>
 						#end
-					#end										
+					#end
 					#set( $isIPConfig = "false" )
 					#hasIPConfiguration($param $isIPConfig)
-					#if( $isIPConfig == "true" )		
+					#if( $isIPConfig == "true" )
 						<family>
 							<inet>
 								<address>
@@ -78,9 +78,9 @@
 								</address>
 							</inet>
 						</family>	
-					#end					
+					#end
 			</unit>
-		</interface>	
+		</interface>
 	</interfaces>
 		#if($logicalRouter == "true")
 		</logical-systems>

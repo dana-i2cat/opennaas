@@ -6,7 +6,7 @@
 			##We want disable an interface
 			 <disable/>
 		#else
-			##We want enable an interface	 
+			##We want enable an interface
 			<disable operation="delete"></disable>
 		#end
 	</interface>

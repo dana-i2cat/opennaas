@@ -1,14 +1,9 @@
-
-
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
 	#if($element.ElementName)
 		#set( $resp = "true" )
 	#end
 #end
-
-
 
 #macro (isPeerUnit $element $resp $peerUnit)
 	#set( $resp = "false" )
@@ -38,7 +33,7 @@
 				<name>$param.PortNumber</name>	
 					#if("LogicalTunnelPort"==$param.getClass().getSimpleName())
 					<peer-unit>$param.Peer_unit</peer-unit>	
-					#end										
+					#end
 				<family>
 					<inet operation="replace">
 						<address>

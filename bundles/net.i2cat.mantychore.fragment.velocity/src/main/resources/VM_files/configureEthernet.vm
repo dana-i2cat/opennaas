@@ -49,7 +49,7 @@
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
-				<unit operation="replace">					
+				<unit operation="replace">
 				
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 
@@ -58,15 +58,15 @@
 					#if($ethernet == "true")
 						<name>0</name>
 					#else
-						<name>$param.PortNumber</name>				
+						<name>$param.PortNumber</name>
 						#set( $isvlan = "false" )
 						#set( $vlanId = "" )	
-						#isVLAN($param $isvlan $vlanId)			
+						#isVLAN($param $isvlan $vlanId)
 						#if($isvlan == "true")
 							<vlan-id>$vlanId<vlan-id>
 							## <VLAN-TAGGING/> !! WE HAVE TO ADD VLAN-TAGGING
 						#end
-					#end										
+					#end
 					
 				#set( $isIPConfig = "false" )
 				#hasIPConfiguration($param $isIPConfig)

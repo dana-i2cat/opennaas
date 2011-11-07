@@ -1,4 +1,3 @@
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
 	#if($element.ElementName)

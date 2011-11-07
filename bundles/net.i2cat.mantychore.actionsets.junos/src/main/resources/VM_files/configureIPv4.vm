@@ -1,14 +1,9 @@
-
-
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
 	#if($element.ElementName)
 		#set( $resp = "true" )
 	#end
 #end
-
-
 
 #macro (isPeerUnit $element $resp $peerUnit)
 	#set( $resp = "false" )
@@ -34,20 +29,20 @@
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
-				<unit>					
-				<name>$param.PortNumber</name>	
+				<unit>
+				<name>$param.PortNumber</name>
 					#if("LogicalTunnelPort"==$param.getClass().getSimpleName())
-					<peer-unit>$param.Peer_unit</peer-unit>	
-					#end										
+					<peer-unit>$param.Peer_unit</peer-unit>
+					#end
 				<family>
 					<inet operation="replace">
 						<address>
 							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
 						</address>
 					</inet>
-				</family>	
+				</family>
 			</unit>
-		</interface>	
+		</interface>
 	</interfaces>
 	#if($logicalRouter == "true")
 		</logical-systems>

@@ -4,5 +4,5 @@
 			<name>$param.Name</name>
 			<vlan-tagging/>
 		<interface>
-	<interfaces>	
+	<interfaces>
 <configuration>
