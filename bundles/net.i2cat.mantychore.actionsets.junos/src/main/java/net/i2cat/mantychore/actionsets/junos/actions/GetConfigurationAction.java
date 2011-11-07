@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import java.io.ByteArrayInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
@@ -141,13 +143,17 @@ public class GetConfigurationAction extends JunosAction {
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		checkParams(params);
 		try {
+			Object velocityParams = params;
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
-				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+				if (velocityParams == null)
+					velocityParams = new ComputerSystem();
+				
+				((ManagedElement)velocityParams).setElementName(((ComputerSystem)modelToUpdate).getElementName());
 			}
-			setVelocityMessage(prepareVelocityCommand(params, template)); 
+			setVelocityMessage(prepareVelocityCommand(velocityParams, template)); 
 		} catch (Exception e) {
-			throw new ActionException();
+			throw new ActionException(e);
 		}
 	}
 
