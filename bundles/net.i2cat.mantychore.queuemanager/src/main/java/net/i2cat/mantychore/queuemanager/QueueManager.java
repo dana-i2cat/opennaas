@@ -260,6 +260,7 @@ public class QueueManager extends AbstractCapability implements
 					manager.getIdentifierFromResourceName(typeResource,
 							nameResource);
 				} catch (ResourceNotFoundException e) {
+					//TODO WHO IS IT THE RESPONSIBLE TO CREATE A CHILD VIRTUAL RESOURCE
 					log.error(e.getMessage());
 					log.info("Since this resource didn't exist, it has to be created.");
 					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(

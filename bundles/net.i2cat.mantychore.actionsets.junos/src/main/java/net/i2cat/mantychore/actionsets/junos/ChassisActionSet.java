@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureEncapsulationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
+import net.i2cat.mantychore.actionsets.junos.actions.CreateLogicalRouterAction;
 import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.DeleteLogicalRouterAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceDescriptionAction;
@@ -27,6 +29,9 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.SETENCAPSULATION, ConfigureEncapsulationAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
 		this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
+		this.putAction(ActionConstants.CREATELOGICALROUTER, CreateLogicalRouterAction.class);
+		this.putAction(ActionConstants.DELETELOGICALROUTER, DeleteLogicalRouterAction.class);
+
 	}
 
 	@Override
@@ -38,6 +43,9 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.SETENCAPSULATION);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
 		actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
+		actionNames.add(ActionConstants.CREATELOGICALROUTER);
+		actionNames.add(ActionConstants.DELETELOGICALROUTER);
+
 		return actionNames;
 	}
 }

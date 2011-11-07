@@ -6,9 +6,11 @@ protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:junos20
 
 chassis:createlogicalrouter router:junos20 logicalTest1
+chassis:createlogicalrouter router:junos20 logicalTest2
 resource:list
 
 chassis:deletelogicalrouter router:junos20 logicalTest1
+chassis:createlogicalrouter router:junos20 logicalTest2
 resource:list
 
 
