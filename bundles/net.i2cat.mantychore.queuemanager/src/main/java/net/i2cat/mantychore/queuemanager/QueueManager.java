@@ -181,8 +181,12 @@ public class QueueManager extends AbstractCapability implements
 		/* refresh operation */
 		//refreshResource(queueResponse,protocolSessionManager);
 		//reset info from resource. TODO use bootstrapper to reset the resource
-		resource.setModel(new ComputerSystem());
-//		resource.setModel(null);
+//		resource.setModel(new ComputerSystem());
+		try  {
+			resource.getBootstrapper().resetModel(resource);			
+		} catch (ResourceException resourceExcept) {
+			log.warn("The resource couldn't reset its model...");
+		}
 		sendRefresh();
 		
 		try {

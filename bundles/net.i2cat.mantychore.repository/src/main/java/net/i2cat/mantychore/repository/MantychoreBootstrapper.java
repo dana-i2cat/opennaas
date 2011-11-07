@@ -25,16 +25,20 @@ import org.apache.commons.logging.LogFactory;
 public class MantychoreBootstrapper implements IResourceBootstrapper {
 	Log	log	= LogFactory.getLog(MantychoreRepository.class);
 
-	public void bootstrap(IResource resource) throws ResourceException {
-		log.info("Loading bootstrap to start resource...");
-		resource.setModel(new ComputerSystem());
-		
+	public void resetModel (IResource resource) throws ResourceException {
+		resource.setModel(new ComputerSystem());		
 		if (isALogicalRouter(resource))
 			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 		
+	}
+
+	
+	public void bootstrap(IResource resource) throws ResourceException {
+		log.info("Loading bootstrap to start resource...");
+		resetModel(resource);
+		
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
-
 			/* abstract capabilities have to be initialized */
 			log.debug("Found a capability in the resource.");
 			/* abstract capabilities have to be initialized */
