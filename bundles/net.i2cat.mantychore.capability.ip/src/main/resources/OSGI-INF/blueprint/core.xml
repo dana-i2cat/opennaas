@@ -48,7 +48,7 @@
 			</completers>
 		</command>
 		<command name="ipv4/setInterfaceDescription">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.SetInterfaceDescriptionCommand"/>
+			<action class="net.i2cat.mantychore.capability.ip.shell.SetInterfaceDescriptionCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
