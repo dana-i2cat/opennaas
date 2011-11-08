@@ -22,7 +22,6 @@ public class CreateLogicalRouterAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
 		if (!(params instanceof String))
 			return false;
 		return true;

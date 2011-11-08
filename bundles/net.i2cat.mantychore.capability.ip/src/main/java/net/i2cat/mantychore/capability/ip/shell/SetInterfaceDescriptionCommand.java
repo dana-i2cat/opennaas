@@ -1,7 +1,7 @@
-package net.i2cat.mantychore.capability.chassis.shell;
+package net.i2cat.mantychore.capability.ip.shell;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
+import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalPort;
 
@@ -55,9 +55,9 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
+			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
 			printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
+			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);

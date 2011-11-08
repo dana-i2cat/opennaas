@@ -1,4 +1,4 @@
-package setdesc;
+package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
@@ -85,8 +85,20 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
 		
+		// Reset repository
+		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE))
+				resourceManager.stopResource(resource.getResourceIdentifier());
+
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+		
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
+		capabilities.add("ipv4");
 		capabilities.add("queue");
 		resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, type, capabilities);
 		resource = resourceManager.createResource(resourceDescriptor);
@@ -101,7 +113,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 	 * 
 	 */
 	public void tearDown() throws ResourceException {
-
+		
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
 		toRemove = resourceManager.listResources().toArray(toRemove);
@@ -143,6 +155,11 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		
+		int posIpv4 = ResourceHelper.containsCapability(resource, "ipv4");
+		if (posIpv4 == -1)
+			Assert.fail("Could not get ipv4 capability for given resource");
+		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
+		
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName("fe-0/3/2");
 		ethernetPort.setPortNumber(2);
@@ -150,7 +167,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		
 		try {
 			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
-			chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("It was impossible to send the following message: " + e.getMessage());
 		}
@@ -204,12 +221,17 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		
+		int posIpv4 = ResourceHelper.containsCapability(resource, "ipv4");
+		if (posIpv4 == -1)
+			Assert.fail("Could not get ipv4 capability for given resource");
+		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
+		
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		
 		try {
-			chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
+			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 		} catch (CapabilityException e) {
 			Assert.fail("It was impossible to send the following message: " + e.getMessage());
 		}
@@ -258,5 +280,21 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				isMock = true;
 			}
 		}
+	}
+	
+	private QueueResponse executeQueue(IResource resource){
+		/* execute action */
+		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		if (posQueue == -1)
+			Assert.fail("Could not get Queue capability for given resource");
+		ICapability queueCapability = resource.getCapabilities().get(posQueue);
+		QueueResponse response = null;
+		try {
+			response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			Assert.assertTrue(response.isOk());
+		} catch (CapabilityException e) {
+			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+		}
+		return response;
 	}
 }

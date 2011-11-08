@@ -21,7 +21,9 @@ public class DeleteLogicalRouterAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		return false;
+		if (!(params instanceof String))
+			return false;
+		return true;
 	}
 
 	@Override

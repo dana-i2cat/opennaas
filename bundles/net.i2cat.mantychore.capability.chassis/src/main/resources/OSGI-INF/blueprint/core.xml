@@ -95,12 +95,5 @@
 		<command name="chassis/down">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.DownInterfaceCommand"/>
 		</command>
-		<command name="chassis/setInterfaceDescription">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.SetInterfaceDescriptionCommand"/>
-			<completers>
-				<ref component-id="resourceNameCompleter"/>
-				<null/>
-			</completers>
-		</command>
 	</command-bundle>
 </blueprint>

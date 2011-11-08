@@ -74,7 +74,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		}
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
-		/* intialize each resource */
+		/* initialize each resource */
 		for (String nameResource : nameLogicalRouters) {
 			try {
 				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);

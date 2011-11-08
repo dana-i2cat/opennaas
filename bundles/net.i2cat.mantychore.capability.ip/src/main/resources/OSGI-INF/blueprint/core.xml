@@ -47,5 +47,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="ipv4/setInterfaceDescription">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.SetInterfaceDescriptionCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>

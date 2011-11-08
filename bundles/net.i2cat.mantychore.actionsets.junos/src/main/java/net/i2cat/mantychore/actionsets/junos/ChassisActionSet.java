@@ -28,7 +28,7 @@ public class ChassisActionSet extends ActionSet {
 		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETENCAPSULATION, ConfigureEncapsulationAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
-		this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
+		//this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
 		this.putAction(ActionConstants.CREATELOGICALROUTER, CreateLogicalRouterAction.class);
 		this.putAction(ActionConstants.DELETELOGICALROUTER, DeleteLogicalRouterAction.class);
 
@@ -42,7 +42,7 @@ public class ChassisActionSet extends ActionSet {
 		actionNames.add(ActionConstants.CREATESUBINTERFACE);
 		actionNames.add(ActionConstants.SETENCAPSULATION);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
-		actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
+		//actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
 		actionNames.add(ActionConstants.CREATELOGICALROUTER);
 		actionNames.add(ActionConstants.DELETELOGICALROUTER);
 
