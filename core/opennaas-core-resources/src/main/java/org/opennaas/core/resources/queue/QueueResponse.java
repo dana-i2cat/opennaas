@@ -108,7 +108,7 @@ public class QueueResponse {
 	}
 
 	public boolean isOk() {
-		return getConfirmResponse().getStatus().equals(STATUS.OK);
+		return getConfirmResponse().getStatus().equals(STATUS.OK) && getRefreshResponse().getStatus().equals(STATUS.OK);
 	}
 	/* status connection */
 	// TODO ADD necessary parametes which we will need
