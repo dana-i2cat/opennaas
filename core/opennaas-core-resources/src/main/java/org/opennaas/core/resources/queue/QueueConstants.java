@@ -5,6 +5,7 @@ public class QueueConstants {
 	public static final String	ISALIVE			= "isAlive";
 	public static final String	PREPARE			= "prepare";
 	public static final String	RESTORE			= "restore";
+	public static final String	REFRESH			= "refresh";
 	public static final String	EXECUTE			= "execute";
 	public static final String	GETQUEUE		= "getQueue";
 	public static final String	MODIFY			= "modify";

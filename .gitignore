@@ -6,3 +6,7 @@
 .svn/
 .metadata
 target/
+core/*/META-INF
+core/*/OSGI-INF
+core/*/build.properties
+

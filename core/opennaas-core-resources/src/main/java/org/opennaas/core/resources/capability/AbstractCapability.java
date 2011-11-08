@@ -208,19 +208,19 @@ public abstract class AbstractCapability implements ICapability {
 
 			List<String> refreshActions = getActionSet().getRefreshActionName();
 
-			// TODO TO IMPROVE
-			// this.resource.setModel(null);
-
 			List<Response> responses = new ArrayList<Response>();
-			int numAction = 1;
+			int numAction = 0;
 			for (String refreshAction : refreshActions) {
-
-				Object param = null;
-				// Check if it exists an available action
-				if (params.size() >= numAction)
-					param = params.get(numAction - 1);
-
+				Object param =  null;
+				if (params.size()>numAction) {
+					param = params.get(numAction);
+					numAction++;
+				} else {
+					param =null;
+				}				
 				responses.add((Response) sendMessage(refreshAction, param));
+				
+				
 			}
 
 			return prepareResponse(responses);

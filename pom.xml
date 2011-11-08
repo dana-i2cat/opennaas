@@ -106,9 +106,21 @@
 			</plugin>
 		</plugins>
 	</build>
+	<repositories>
+		<repository>
+			<id>i2cat-snapshot</id>
+			<name>libs-snapshot-local</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+		</repository>
+		<repository>
+			<id>i2cat-release</id>
+			<name>libs-release-local</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
+		</repository>
+	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>i2cat</id>
+			<id>i2cat-snapshot</id>
 			<name>libs-snapshot-local</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
 		</repository>
