@@ -179,13 +179,14 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
+			//setInterfaceDescriptionAction was moved to ipv4 capab
+//			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+//			Assert.assertTrue(resp.getStatus() == Status.OK);
+//			Assert.assertTrue(resp.getErrors().size() == 0);
 			
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceLogicalPort("fe-0/1/0"));
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
+//			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceLogicalPort("fe-0/1/0"));
+//			Assert.assertTrue(resp.getStatus() == Status.OK);
+//			Assert.assertTrue(resp.getErrors().size() == 0);
 			
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);			
 			Assert.assertTrue(queue.size() == 6);
