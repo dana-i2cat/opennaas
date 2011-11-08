@@ -1,8 +1,8 @@
 <configuration>
 	<interfaces>	
-		<interface  operation="replace">
-			<name>$param.Name</name>
-			<vlan-tagging/>
 		<interface>
-	<interfaces>
-<configuration>
+			<name>$param.Name</name>
+			<vlan-tagging operation="merge"/>
+		</interface>
+	</interfaces>
+</configuration>

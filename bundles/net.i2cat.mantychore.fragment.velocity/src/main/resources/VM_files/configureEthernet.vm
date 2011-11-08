@@ -25,7 +25,6 @@
 			#break
 		#end
 	#end
-
 #end
 
 #macro (hasIPConfiguration $element $resp)
@@ -84,5 +83,5 @@
 	</interfaces>
 	#if($logicalRouter == "true")
 		</logical-systems>
-	#end		
+	#end
 </configuration>

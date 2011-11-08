@@ -9,14 +9,12 @@
 	#end
 #end
 
-
 #macro (isEthernet $element $resp)
 	#set( $resp = "false" )
 	#if($element.LinkTechnology.toString() == "ETHERNET")
 		#set( $resp = "true" )
 	#end
 #end
-
 
 #macro (isVLAN $element $resp $vlanId)
 	#set( $resp = "false" )
@@ -28,8 +26,6 @@
 		#end
 	#end
 #end
-
-
 
 ###############################################################################
 ###########     CONFIGURE INTERFACE COMMAND WITH ETHERNET           ###########
@@ -49,7 +45,7 @@
 				#if($logicalRouter == "false")	
 					<vlan-tagging operation="merge"/>
 				#end
-				<unit>					
+				<unit>
 				
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 
@@ -58,10 +54,10 @@
 					#if($ethernet == "true")
 						<name>0</name>
 					#else
-						<name>$param.PortNumber</name>				
+						<name>$param.PortNumber</name>
 						#set( $isvlan = "false" )
 						#set( $vlanId = "" )	
-						#isVLAN($param $isvlan $vlanId)			
+						#isVLAN($param $isvlan $vlanId)
 						#if($isvlan == "true")
 							<vlan-id operation="merge">$vlanId</vlan-id>
 							## <VLAN-TAGGING/> !! WE HAVE TO ADD VLAN-TAGGING
@@ -69,7 +65,7 @@
 					#end
 					#if($param.description)
 					<description>$param.description</description>
-					#end										
+					#end
 			</unit>
 		</interface>	
 	</interfaces>

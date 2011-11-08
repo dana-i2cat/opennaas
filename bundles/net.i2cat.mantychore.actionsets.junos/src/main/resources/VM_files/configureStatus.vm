@@ -1,7 +1,7 @@
 <configuration>
 <interfaces>
 	<interface>
-		<name>$param.ElementName</name>
+		<name>$param.Name</name>
 		#if($param.OperationalStatus.toString().equals($statusDown) )
 			##We want disable an interface
 			 <disable/>

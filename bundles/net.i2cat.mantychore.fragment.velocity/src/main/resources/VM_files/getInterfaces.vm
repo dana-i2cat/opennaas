@@ -1,7 +1,6 @@
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
-	#if($element.ElementName != null)
+	#if($element.ElementName)
 		#set( $resp = "true" )
 	#end
 #end
