@@ -16,7 +16,7 @@ queue:execute router:junos20
 
 
 
-protocols:context router:routerV1 netconf ssh://i2cat:AykZaKJf@lola.hea.net:22/netconf
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:routerV1
 ipv4:list router:routerV1
 
