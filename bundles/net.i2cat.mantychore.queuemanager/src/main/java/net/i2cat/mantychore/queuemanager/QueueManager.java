@@ -183,11 +183,17 @@ public class QueueManager extends AbstractCapability implements
 		//reset info from resource. TODO use bootstrapper to reset the resource
 //		resource.setModel(new ComputerSystem());
 		try  {
-			resource.getBootstrapper().resetModel(resource);			
+			//FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
+			if (resource.getBootstrapper() == null)
+				throw new ResourceException("Null Bootstrapper found. Could not reset model");
+			
+			resource.getBootstrapper().resetModel(resource);
+			sendRefresh();
+			
 		} catch (ResourceException resourceExcept) {
-			log.warn("The resource couldn't reset its model...");
+			log.warn("The resource couldn't reset its model...", resourceExcept);
 		}
-		sendRefresh();
+		
 		
 		try {
 			ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
@@ -226,18 +232,16 @@ public class QueueManager extends AbstractCapability implements
 	
 	private void sendRefresh () throws CapabilityException  {
 		for (ICapability capab : resource.getCapabilities()) {
-		// abstract capabilities have to be initialized
-		if (capab instanceof AbstractCapability) {
-			log.debug("Executing capabilities startup...");
-			Response response = ((AbstractCapability) capab)
-					.sendRefreshActions();
-			if (!response.getStatus().equals(Status.OK)) {
-				throw new CapabilityException(
-						"model refresh, when calling sendRefreshActions");
+			// abstract capabilities have to be initialized
+			if (capab instanceof AbstractCapability) {
+				log.debug("Executing capabilities startup...");
+				Response response = ((AbstractCapability) capab).sendRefreshActions();
+				if (!response.getStatus().equals(Status.OK)) {
+					throw new CapabilityException(
+							"model refresh, when calling sendRefreshActions");
+				}
 			}
-		}
-	}		
-		
+		}		
 	}
 	
 	private void initVirtualResources () throws CapabilityException {
