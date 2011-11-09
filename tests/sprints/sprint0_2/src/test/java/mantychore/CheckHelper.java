@@ -12,6 +12,12 @@ import net.i2cat.mantychore.model.System;
 
 public class CheckHelper {
 
+	/**
+	 * Checks if a logical router exists.
+	 * @param physicalRouter
+	 * @param logicalRouterName
+	 * @return
+	 */
 	public static boolean checkExistLogicalRouter(ComputerSystem physicalRouter, String logicalRouterName) {
 		List<net.i2cat.mantychore.model.System> logicalRouters = physicalRouter.getSystems();
 		for (System logicalRouter : logicalRouters) {
@@ -22,6 +28,15 @@ public class CheckHelper {
 		return false;
 	}
 
+	/**
+	 * Checks if an interface exists.
+	 * @param inter
+	 * @param port
+	 * @param Ip
+	 * @param mask
+	 * @param system
+	 * @return true if interface exists
+	 */
 	public static boolean checkInterface(String inter, String port, String Ip, String mask, ComputerSystem system) {
 
 		Boolean found = false;
@@ -66,7 +81,7 @@ public class CheckHelper {
 
 			}
 		}
-		// Look if exits the interface to be checked
+		// true if interface exists
 		return found;
 
 	}

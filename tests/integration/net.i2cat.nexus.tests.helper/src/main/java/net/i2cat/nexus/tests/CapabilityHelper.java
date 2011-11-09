@@ -1,4 +1,4 @@
-package automaticrefresh;
+package net.i2cat.nexus.tests;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,9 +17,11 @@ import org.apache.commons.logging.LogFactory;
 
 //TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE SHOULD BE FILLED 
 public class CapabilityHelper {
-	static Log	log	= LogFactory
-							.getLog(CapabilityHelper.class);
-
+	/**
+	 * Create a new resource descriptor of an arbitrary type.
+	 * @param type type of resource descriptor.
+	 * @return a descriptor
+	 */
 	public static ResourceDescriptor newResourceDescriptor(String type) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 		Map<String, String> properties = new HashMap<String, String>();
@@ -46,7 +48,11 @@ public class CapabilityHelper {
 
 		return resourceDescriptor;
 	}
-
+	/**
+	 * Create a Capability Descriptor of an arbitrary type but proteus/1.0. 
+	 * @param type
+	 * @return a capability
+	 */
 	public static CapabilityDescriptor newCapabilityDescriptorProteus(String type) {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 

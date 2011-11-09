@@ -2,7 +2,8 @@ package automaticrefresh;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.*;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
@@ -10,7 +11,6 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,8 +78,9 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
-				log.error(ExceptionUtils.getRootCause(e).getMessage());
+			log.error(e.getLocalizedMessage());
+			//if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
+			//	log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}
