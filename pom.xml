@@ -41,7 +41,7 @@
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
-		<karaf.version>2.2.2-fuse-02-06</karaf.version>
+		<karaf.version>2.2.2-fuse-00-08</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
 		<!--<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>-->
