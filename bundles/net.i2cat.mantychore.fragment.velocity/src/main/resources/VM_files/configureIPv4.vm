@@ -1,13 +1,7 @@
-#macro ( isLogicalRouter $element $resp )
-	#set( $resp = "false" )
-	#if($element.ElementName)
-		#set( $resp = "true" )
-	#end
-#end
 
 #macro (isPeerUnit $element $resp $peerUnit)
 	#set( $resp = "false" )
-	#if("LogicalTunnelPort"==$element.getClass().getSimpleName())
+	#if($element.getClass().getSimpleName().equals("LogicalTunnelPort"))
 			#set( $peerUnit = $element.Peer_unit)
 			#set( $resp = "true" )
 			#break

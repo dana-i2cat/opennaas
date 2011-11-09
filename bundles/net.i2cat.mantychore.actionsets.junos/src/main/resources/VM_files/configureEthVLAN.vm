@@ -3,7 +3,7 @@
 ###############################################################################
 #macro (isEthernet $element $resp)
 	#set( $resp = "false" )
-	#if($element.LinkTechnology.toString() == "ETHERNET")
+	#if($element.LinkTechnology.toString().equals("ETHERNET"))
 		#set( $resp = "true" )
 	#end
 #end
@@ -11,7 +11,7 @@
 #macro (isVLAN $element $resp $vlanId)
 	#set( $resp = "false" )
 	#foreach ($endpoint in $$element.ProtocolEndpoint)
-		#if("VLANEndpoint"==$endpoint.getClass().getSimpleName())
+		#if($endpoint.getClass().getSimpleName().equals("VLANEndpoint"))
 			#set( $vlanId = $endpoint.VlanID)
 			#set( $resp = "true" )
 			#break
@@ -45,14 +45,14 @@
 
 					#set( $ethernet = "true" )
 					#isEthernet( $param $ethernet)
-					#if($ethernet == "true")
+					#if($ethernet.equals("true"))
 						<name>0</name>
 					#else
 						<name>$param.PortNumber</name>
 						#set( $isvlan = "false" )
 						#set( $vlanId = "" )	
 						#isVLAN($param $isvlan $vlanId)
-						#if($isvlan == "true")
+						#if($isvlan.equals("true"))
 							<vlan-id operation="merge">$vlanId</vlan-id>
 							## <VLAN-TAGGING/> !! WE HAVE TO ADD VLAN-TAGGING
 						#end

@@ -2,17 +2,9 @@
 ###########                       MACROS                            ###########
 ###############################################################################
 
-#macro ( isLogicalRouter $element $resp )
-	#set( $resp = "false" )
-	#if($element.ElementName)
-		#set( $resp = "true" )
-	#end
-#end
-
-
 #macro ( isEthernet $element $resp )
 	#set( $resp = "false" )
-	#if($element.LinkTechnology.toString() == "ETHERNET")
+	#if($element.LinkTechnology.toString().equals("ETHERNET"))
 		#set( $resp = "true" )
 	#end
 #end
@@ -20,7 +12,7 @@
 #macro ( isVLAN $element $resp )
 	#set( $resp = "false" )
 	#foreach ($endpoint in $$element.ProtocolEndpoint)
-		#if("VLANEndpoint"==$endpoint.getClass().getSimpleName())
+		#if(==$endpoint.getClass().getSimpleName().equals("VLANEndpoint"))
 			#set( $resp = "true" )
 			#break
 		#end
@@ -30,7 +22,7 @@
 
 #macro ( hasIPConfiguration $element $resp )
 	#set( $resp = "false" )
-	#if (!$element.ProtocolEndpoint.Empty && "IPProtocolEndpoint"==$element.ProtocolEndpoint.get(0).getClass().getSimpleName())
+	#if (!$element.ProtocolEndpoint.Empty && $element.ProtocolEndpoint.get(0).getClass().getSimpleName().equals("IPProtocolEndpoint"))
 		#set( $resp = "true" )
 	#end
 #end
@@ -60,19 +52,19 @@
 					<peer-unit>$param.Peer_unit</peer-unit>
 					#set( $ethernet = "true" )
 					#isEthernet( $param $ethernet)
-					#if($ethernet == "true")
+					#if($ethernet.equals("true"))
 						<encapsulation>ethernet</encapsulation>
 					#else					
 						#set( $isvlan = "false" )
 						#set( $vlanId = "" )	
 						#isVLAN($param $isvlan)			
-						#if($isvlan == "true")
+						#if($isvlan.equals("true"))
 							<encapsulation>vlan</encapsulation>
 						#end
 					#end
 					#set( $isIPConfig = "false" )
 					#hasIPConfiguration($param $isIPConfig)
-					#if( $isIPConfig == "true" )
+					#if( $isIPConfig.equals("true"))
 						<family>
 							<inet>
 								<address>

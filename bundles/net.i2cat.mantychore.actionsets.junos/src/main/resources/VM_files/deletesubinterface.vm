@@ -1,10 +1,3 @@
-#macro ( isLogicalRouter $element $resp )
-	#set( $resp = "false" )
-	#if($element.ElementName)
-		#set( $resp = "true" )
-	#end
-#end
-
 
 ###############################################################################
 ###########             DELETE IP IN AN INTERFACE                ###########
