@@ -45,7 +45,8 @@
 								<artifactItem>
 									<groupId>org.opennaas</groupId>
 									<artifactId>assembly</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
+									<version>1.0.0-20111108.150010-12</version>
+								<!--	<version>1.0.0-SNAPSHOT</version> -->
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>

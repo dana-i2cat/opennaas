@@ -58,8 +58,8 @@ public class VelocityEngine {
 		
 		//TODO fix problem to get params
 //		/* add null tool  */
-//		NullTool nullTool = new NullTool();
-//		ctx.put("NullTool",nullTool);
+		NullTool nullTool = new NullTool();
+		ctx.put("nulltool",nullTool);
 
 		for (String key : extraParams.keySet())
 			ctx.put(key, extraParams.get(key));

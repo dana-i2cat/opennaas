@@ -9,6 +9,13 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 
+/**
+ * 
+ * This class doesn't understand what subinterface type uses
+ * @author Carlos Báez
+ *
+ */
+@Deprecated
 public class CreateSubInterfaceAction extends JunosAction {
 
 	public CreateSubInterfaceAction() {

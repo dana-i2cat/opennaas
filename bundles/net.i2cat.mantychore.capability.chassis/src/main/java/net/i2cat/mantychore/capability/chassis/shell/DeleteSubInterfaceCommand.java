@@ -71,7 +71,7 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 	}
 
 	private EthernetPort prepareParams() {
-		String[] args = subinterface.split(".");
+		String[] args = subinterface.split("\\.");
 		EthernetPort eth = new EthernetPort();
 		eth.setName(args[0]);
 		eth.setPortNumber(Integer.parseInt(args[1]));

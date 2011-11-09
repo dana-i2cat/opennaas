@@ -64,7 +64,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error configuring interfaces.");
 			printError(e);
 			printEndCommand();
 			return -1;
