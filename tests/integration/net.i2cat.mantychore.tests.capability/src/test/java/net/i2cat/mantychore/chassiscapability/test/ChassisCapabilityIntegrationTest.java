@@ -163,21 +163,28 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 		log.info("TEST CHASSIS ACTION");
 
 		try {
+			
+			int actionCount = 0;
+			
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
+			actionCount++;
 
 			resp = (Response) chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
-
+			actionCount++;
+			
 			resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
+			actionCount++;
 
 			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
+			actionCount++;
 			
 			//setInterfaceDescriptionAction was moved to ipv4 capab
 //			resp = (Response) chassisCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
@@ -189,45 +196,24 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 //			Assert.assertTrue(resp.getErrors().size() == 0);
 			
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);			
-			Assert.assertTrue(queue.size() == 6);
+			Assert.assertTrue(queue.size() == 4);
 			
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.getResponses().size() == 6);
+			Assert.assertTrue(queueResponse.getResponses().size() == actionCount);
 
-			Assert.assertTrue(queueResponse.getResponses().get(0).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(0).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-
-			Assert.assertTrue(queueResponse.getResponses().get(1).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(1).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-
-			Assert.assertTrue(queueResponse.getResponses().get(2).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(2).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-
-			Assert.assertTrue(queueResponse.getResponses().get(3).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(3).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-			
-			Assert.assertTrue(queueResponse.getResponses().get(4).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(4).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-			
-			Assert.assertTrue(queueResponse.getResponses().get(5).getStatus() == ActionResponse.STATUS.OK);
-			for (Response response : queueResponse.getResponses().get(5).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			for (int i=0; i< queueResponse.getResponses().size(); i++){
+				Assert.assertTrue(queueResponse.getResponses().get(i).getStatus() == ActionResponse.STATUS.OK);
+				for (Response response : queueResponse.getResponses().get(i).getResponses()) {
+					Assert.assertTrue(response.getStatus() == Response.Status.OK);
+				}
 			}
 			
 			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
-
 			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+			Assert.assertTrue(queueResponse.getRefreshResponse().getStatus() == ActionResponse.STATUS.OK);
 			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+			
+			Assert.assertTrue(queueResponse.isOk());
 
 			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
 			Assert.assertTrue(queue.size() == 0);
