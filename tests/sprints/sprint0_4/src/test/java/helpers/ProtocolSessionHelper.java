@@ -40,7 +40,6 @@ public class ProtocolSessionHelper {
 		String uri = System.getProperty("protocol.uri");
 		if (uri == null || uri.equals("${protocol.uri}")) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-
 		}
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
