@@ -145,7 +145,7 @@ public class MockResource implements IResource {
 
 	public List<ICapability> getCapabilities() {
 		log.info("get Capabilities...");
-		return null;
+		return new ArrayList<ICapability>();
 	}
 
 	public ResourceDescriptor getResourceDescriptor() {
