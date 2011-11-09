@@ -1,0 +1,40 @@
+shell:echo Script to test create logical router
+
+#Creating and initializing resource
+resource:create /home/carlos/Escritorio/resource.descriptor
+
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+ipv4:list router:junos20
+
+chassis:createlogicalrouter router:junos20 routerV1
+resource:list
+
+
+queue:listactions router:junos20
+queue:execute router:junos20
+
+
+
+protocols:context router:routerV1 netconf ssh://i2cat:AykZaKJf@lola.hea.net:22/netconf
+resource:start router:routerV1
+ipv4:list router:routerV1
+
+chassis:deletelogicalrouter router:junos20 routerV1
+
+queue:listactions router:junos20
+queue:execute router:junos20
+
+
+resource:list
+
+
+#Restoring configuration
+resource:stop router:junos20
+resource:remove router:junos20
+
+resource:stop router:routerV1
+resource:remove router:routerV1
+
+
+#protocols:remove ...
