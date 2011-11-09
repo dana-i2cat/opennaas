@@ -155,6 +155,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 							eth.addProtocolEndpoint(ip);
 							printInfo("[" + eth.getName() + "." + eth.getPortNumber() + "]  " + ipv4 + " / " + mask);
 
+							
 							return eth;
 						}
 

@@ -63,6 +63,8 @@ public class CreateSubInterfaceAction extends JunosAction {
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
 				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+			} else if (params!= null && params instanceof ManagedElement){
+				((ManagedElement)params).setElementName(""); 
 			}
 			setVelocityMessage(prepareVelocityCommand(params, template)); 
 		} catch (Exception e) {

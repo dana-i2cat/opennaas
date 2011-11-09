@@ -90,6 +90,7 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 			port.setName(args[0]);
 			port.setDescription(description);
 		}
+		
 		return port;
 	}
 }
