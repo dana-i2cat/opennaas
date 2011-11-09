@@ -87,6 +87,9 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
 					printSymbol(bullet + " INTERFACE: " + ethernetPort.getName() + "." + ethernetPort.getPortNumber());
+					if (ethernetPort.getDescription() != null && !ethernetPort.getDescription().equals("")) {
+						printSymbol("description: " + ethernetPort.getDescription());
+					}
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
@@ -102,6 +105,9 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " INTERFACE: " + lt.getName() + "." + lt.getPortNumber());
 					printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + lt.getPeer_unit());
+					if (lt.getDescription() != null && !lt.getDescription().equals("")) {
+						printSymbol("description: " + lt.getDescription());
+					}
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
