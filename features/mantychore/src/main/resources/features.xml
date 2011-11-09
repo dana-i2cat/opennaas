@@ -15,7 +15,7 @@
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/1.7.0_5</bundle>
 		<bundle>mvn:commons-configuration/commons-configuration/1.6</bundle>
 		<bundle>mvn:commons-io/commons-io/1.4</bundle>
-		<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>
+		<!--<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>-->
 		<bundle>mvn:org.apache.neethi/neethi/3.0.1</bundle>
 		<!-- Events wants this -->
 		<bundle>mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
