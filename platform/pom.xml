@@ -15,7 +15,7 @@
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 		<!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
-		<karaf.version>2.2.2-fuse-00-08</karaf.version>
+		<karaf.version>2.2.2-fuse-02-06</karaf.version>
 		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 	</properties>
 	<repositories>
