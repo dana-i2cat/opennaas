@@ -11,6 +11,8 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
@@ -35,8 +37,6 @@ import org.osgi.framework.BundleContext;
 
 import api.CheckParametersHelper;
 import api.ParamCreationHelper;
-import api.ProtocolSessionHelper;
-import api.ResourceHelper;
 
 /**
  * These tests check the subinterface configurations

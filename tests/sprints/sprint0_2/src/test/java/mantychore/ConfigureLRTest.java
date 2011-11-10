@@ -19,6 +19,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ProtocolSessionHelper;
@@ -198,7 +199,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 
 		if (!isMock) {
 			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
-			boolean exist = CheckHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
+			boolean exist = ExistanceHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
 			Assert.assertTrue(exist);
 
 		}

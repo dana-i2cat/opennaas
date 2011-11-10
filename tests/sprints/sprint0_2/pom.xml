@@ -16,6 +16,11 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>net.i2cat.luminis.protocols</groupId>
 			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
 			<version>1.0.0-SNAPSHOT</version>

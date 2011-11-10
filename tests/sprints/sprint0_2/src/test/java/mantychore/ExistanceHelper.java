@@ -10,13 +10,13 @@ import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.System;
 
-public class CheckHelper {
+public class ExistanceHelper {
 
 	/**
 	 * Checks if a logical router exists.
-	 * @param physicalRouter
-	 * @param logicalRouterName
-	 * @return
+	 * @param physicalRouter physical router that contains it.
+	 * @param logicalRouterName name of the logical route
+	 * @return true if the logical router exists
 	 */
 	public static boolean checkExistLogicalRouter(ComputerSystem physicalRouter, String logicalRouterName) {
 		List<net.i2cat.mantychore.model.System> logicalRouters = physicalRouter.getSystems();
@@ -24,7 +24,6 @@ public class CheckHelper {
 			if (logicalRouter.getName().equals(logicalRouterName))
 				return true;
 		}
-
 		return false;
 	}
 
@@ -38,7 +37,6 @@ public class CheckHelper {
 	 * @return true if interface exists
 	 */
 	public static boolean checkInterface(String inter, String port, String Ip, String mask, ComputerSystem system) {
-
 		Boolean found = false;
 		List<LogicalDevice> ld = system.getLogicalDevices();
 		if (ld == null)
@@ -75,14 +73,11 @@ public class CheckHelper {
 								return (Ip.equals(((IPProtocolEndpoint) p).getIPv4Address()) && mask.equals(((IPProtocolEndpoint) p).getSubnetMask()));
 							}
 						}
-
 					}
 				}
-
 			}
 		}
 		// true if interface exists
 		return found;
-
 	}
 }
