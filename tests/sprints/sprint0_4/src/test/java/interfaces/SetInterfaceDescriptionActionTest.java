@@ -4,8 +4,6 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.CheckParametersHelper;
-import helpers.ProtocolSessionHelper;
-import helpers.ResourceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +14,8 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
