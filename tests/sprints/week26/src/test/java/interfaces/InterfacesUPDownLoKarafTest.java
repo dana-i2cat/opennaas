@@ -2,9 +2,7 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
-import helpers.KarafCommandHelper;
-import helpers.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
