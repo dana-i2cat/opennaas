@@ -27,6 +27,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.RepositoryHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
