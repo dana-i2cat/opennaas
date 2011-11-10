@@ -88,7 +88,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
 			deviceCopied.setElementName(null); // reset logical device
 
-			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);

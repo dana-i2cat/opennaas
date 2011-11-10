@@ -150,9 +150,11 @@ public class GetConfigurationAction extends JunosAction {
 					velocityParams = new ComputerSystem();
 				
 				((ManagedElement)velocityParams).setElementName(((ComputerSystem)modelToUpdate).getElementName());
-			} else if (params!= null && params instanceof ManagedElement){
-				((ManagedElement)params).setElementName(""); 
-			}
+				//TODO If we don't have a ManagedElement initialized
+				} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
+					((ManagedElement)params).setElementName(""); 
+					
+				}
 			setVelocityMessage(prepareVelocityCommand(velocityParams, template)); 
 		} catch (Exception e) {
 			throw new ActionException(e);

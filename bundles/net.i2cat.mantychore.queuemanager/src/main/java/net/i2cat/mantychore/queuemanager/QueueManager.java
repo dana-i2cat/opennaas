@@ -154,9 +154,6 @@ public class QueueManager extends AbstractCapability implements
 					throw new CapabilityException(e);
 				}
 
-				// refresh command, it is not tested
-				// IT IS NECESSARY TO TEST THIS PART!!
-				// refreshResource(queueResponse, protocolSessionManager);
 
 			}
 			if (errorHappened) {
@@ -179,9 +176,6 @@ public class QueueManager extends AbstractCapability implements
 
 		
 		/* refresh operation */
-		//refreshResource(queueResponse,protocolSessionManager);
-		//reset info from resource. TODO use bootstrapper to reset the resource
-//		resource.setModel(new ComputerSystem());
 		try  {
 			//FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
 			if (resource.getBootstrapper() == null)
@@ -201,15 +195,6 @@ public class QueueManager extends AbstractCapability implements
 		} catch (ActionException e) {
 			throw new CapabilityException(e);
 		}
-		
-		//TODO It is necessary a refresh command
-//		ActionResponse refreshResponse = confirm(protocolSessionManager);
-		
-//		
-//		if (refreshResponse.getStatus() != ActionResponse.STATUS.OK) {
-//			throw new CapabilityException(
-//				"Error during capabilities startup. Failed to execute startUp actions.");
-//		}
 		
 		
 

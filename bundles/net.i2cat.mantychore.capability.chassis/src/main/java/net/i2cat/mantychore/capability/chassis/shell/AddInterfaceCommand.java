@@ -90,7 +90,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
 			deviceCopied.setElementName(targetResourceName[1]);
 
-			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);
