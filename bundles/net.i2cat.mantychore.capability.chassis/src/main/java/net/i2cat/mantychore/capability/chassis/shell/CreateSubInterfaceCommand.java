@@ -3,6 +3,9 @@ package net.i2cat.mantychore.capability.chassis.shell;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
+import net.i2cat.mantychore.model.VLANEndpoint;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
@@ -78,6 +81,9 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		EthernetPort eth = new EthernetPort();
 		eth.setName(args[0]);
 		eth.setPortNumber(Integer.parseInt(args[1]));
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(1); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
+		eth.addProtocolEndpoint(vlanEndpoint);
 		eth.setDescription(description);
 		return eth;
 	}
