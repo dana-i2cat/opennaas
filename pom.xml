@@ -513,9 +513,9 @@
 	<modules>
 		<module>bundles</module>
 		<module>features</module>
-		<module>tests</module>
 		<module>platform</module>
-		<!--<module>assembly</module>-->
+		<module>assembly</module>
+		<module>tests</module>
 	</modules>
 	<!--
 		<licenses> <license> <name>GNU Lesser General Public License</name>
