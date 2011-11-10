@@ -1,0 +1,45 @@
+shell:echo Script to test set interface description
+
+#Creating and initializing resource
+resource:create /home/isart/Escriptori/mantychoreTestDescriptors/junos20.descriptor
+
+protocols:context router:junos20 netconf PROTOCOL_URI_GOES_HERE
+resource:start router:junos20
+ipv4:list router:junos20
+
+ipv4:setInterfaceDescription router:junos20 fe-0/3/0 "Test description for iface fe-0/3/0"
+
+chassis:createSubInterface router:junos20 fe-0/3/0.344
+ipv4:setInterfaceDescription router:junos20 fe-0/3/0.344 "Test description for iface fe-0/3/0.344"
+
+queue:listactions router:junos20
+queue:execute router:junos20
+
+chassis:showInterfaces router:junos20 
+
+shell:echo Script to test set interface description in LR
+
+chassis:createLogicalRouter router:junos20 logicalTest1
+queue:execute router:junos20
+
+chassis:addInterface router:junos20 router:logicalTest1 fe-0/3/0.344
+queue:execute router:junos20
+
+protocols:context router:logicalTest1 netconf PROTOCOL_URI_GOES_HERE
+resource:start router:logicalTest1
+
+ipv4:setInterfaceDescription router:logicalTest1 fe-0/3/0.344 "Test description for iface fe-0/3/0.344 in LR"
+
+queue:listactions router:logicalTest1
+queue:execute router:logicalTest1
+ipv4:list router:logicalTest1
+
+
+#Restoring configuration
+resource:stop router:logicalTest1
+resource:remove router:logicalTest1
+
+resource:stop router:junos20
+resource:remove router:junos20
+
+#protocols:remove ...
