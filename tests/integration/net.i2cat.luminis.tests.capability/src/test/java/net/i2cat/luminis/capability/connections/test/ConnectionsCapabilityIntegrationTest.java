@@ -16,6 +16,7 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiv
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -78,8 +79,8 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel((IModel) switchFactory.newPedrosaProteusOpticalSwitch());
-
 		mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
+		mockResource.setResourceIdentifier(new ResourceIdentifier(mockResource.getResourceDescriptor().getInformation().getType(), mockResource.getResourceDescriptor().getId()));
 	}
 
 	/**

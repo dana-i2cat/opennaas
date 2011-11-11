@@ -185,7 +185,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		} catch (CapabilityException e) {
 			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getLocalizedMessage());
 		}
 
 	}
