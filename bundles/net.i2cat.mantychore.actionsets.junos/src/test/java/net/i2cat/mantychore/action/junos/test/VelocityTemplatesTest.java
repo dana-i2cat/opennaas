@@ -87,6 +87,7 @@ public class VelocityTemplatesTest {
 
 	public LogicalTunnelPort newParamsInterfaceLT() {
 		LogicalTunnelPort ltp = new LogicalTunnelPort();
+		ltp.setElementName("");
 		ltp.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
 		ltp.setName("lt-0/3/2");
 		ltp.setPeer_unit(101);

@@ -61,11 +61,6 @@ public class GetConfigurationAction extends JunosAction {
 		/* the model have to be null and we have to initialize */
 		
 		//FIXME This "if" is important because it resets the model if we want to update it
-//		if (model == null) 
-//			 { 
-//				model = new ComputerSystem();
-//			 
-//			 }
 		if (this.modelToUpdate == null ) this.modelToUpdate = new ComputerSystem();
 		
 		
@@ -148,13 +143,20 @@ public class GetConfigurationAction extends JunosAction {
 				//is logicalRouter, add LRName param
 				if (velocityParams == null)
 					velocityParams = new ComputerSystem();
-				
 				((ManagedElement)velocityParams).setElementName(((ComputerSystem)modelToUpdate).getElementName());
+				
 				//TODO If we don't have a ManagedElement initialized
-				} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
-					((ManagedElement)params).setElementName(""); 
-					
-				}
+				
+			// check params 
+			} else if (params!= null 
+					&& params instanceof ManagedElement 
+					&& ((ManagedElement)params).getElementName()==null){
+				
+				((ManagedElement)velocityParams).setElementName(""); 
+				
+			} else if (params == null){
+				velocityParams = "null";
+			}
 			setVelocityMessage(prepareVelocityCommand(velocityParams, template)); 
 		} catch (Exception e) {
 			throw new ActionException(e);

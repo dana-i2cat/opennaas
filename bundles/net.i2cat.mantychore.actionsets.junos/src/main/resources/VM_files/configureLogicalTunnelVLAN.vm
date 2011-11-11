@@ -27,6 +27,9 @@
 						<vlan-id operation="merge">$vlanId</vlan-id>
 					#else
 						<encapsulation operation="merge">ethernet</encapsulation>
+					#end
+					#if(!$param.description.equals(""))
+						<description>$param.description</description>
 					#end															
 			</unit>
 		</interface>	

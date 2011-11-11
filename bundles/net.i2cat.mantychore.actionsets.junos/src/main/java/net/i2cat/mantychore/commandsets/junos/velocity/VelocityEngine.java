@@ -54,8 +54,7 @@ public class VelocityEngine {
 
 		VelocityContext ctx = new VelocityContext();
 		
-		//TODO FIX PROBLEMS TO PARAMS IN NULL
-		if (param == null) param = "null";
+//		//TODO FIX PROBLEMS TO PARAMS IN NULL
 		ctx.put(PARAM_CONSTANT, param);
 	
 

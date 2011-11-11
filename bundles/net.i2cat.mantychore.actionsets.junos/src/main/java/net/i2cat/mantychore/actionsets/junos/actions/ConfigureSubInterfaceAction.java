@@ -81,9 +81,11 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 		if (getParams() == null)
 			throw new ActionException("Params in " + getActionID() + "are null.");
 		checkParams(getParams());
-		if (template == null || template.equals(""))
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
+		if (template == null || template.equals("")) throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
+
 		try {
+			
+			//fill logical router id
 			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
 				//is logicalRouter, add LRName param
 				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
@@ -92,6 +94,13 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 				((ManagedElement)params).setElementName(""); 
 				
 			}
+			
+			//fill description param
+			if (params instanceof ManagedElement 
+					&& (((ManagedElement)params).getDescription()==null || ((ManagedElement)params).getDescription().equals(""))) {
+				((ManagedElement)params).setDescription("");				
+			}
+			
 			setVelocityMessage(prepareVelocityCommand(params, template));
 		} catch (Exception e) {
 			throw new ActionException(e);

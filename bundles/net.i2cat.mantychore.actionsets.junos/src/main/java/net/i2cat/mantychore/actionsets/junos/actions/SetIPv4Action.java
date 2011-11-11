@@ -60,6 +60,8 @@ public class SetIPv4Action extends JunosAction {
 					((ManagedElement)params).setElementName(""); 
 					
 				}
+			
+			
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
