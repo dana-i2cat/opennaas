@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
@@ -17,6 +18,7 @@ import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -67,7 +69,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");
@@ -84,14 +86,15 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 		mockResource = new MockResource();
 		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setBootstrapper(new MockBootstrapper());
+		
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
 		capabilities.add("queue");
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, "router", capabilities);
-
 		mockResource.setResourceDescriptor(resourceDescriptor);
-
+		mockResource.setResourceIdentifier(new ResourceIdentifier(resourceDescriptor.getInformation().getType(), resourceDescriptor.getId()));
 	}
 
 	/**
@@ -122,6 +125,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(queueManagerFactory);
 
 			queueCapability = queueManagerFactory.create(mockResource);
+			queueCapability.initialize();
 
 			// IQueueManagerService queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
 			// "(capability=queue)(capability.name=" + deviceID + ")", 5000);
