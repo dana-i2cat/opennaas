@@ -7,11 +7,16 @@ import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,8 +51,14 @@ public class ResourceDescriptor {
 	 * necessary parameter to configure a ssh connection
 	 */
 	// TODO TO TEST!
-	@ElementCollection
-	Map<String, String>					properties			= new HashMap<String, String>();
+//	@ManyToMany(cascade = CascadeType.ALL)
+	
+    @ElementCollection
+    @MapKeyColumn(name="name")
+    @Column(name="value")
+    @CollectionTable(name="resourcedescriptor_properties", joinColumns=@JoinColumn(name="resourcedescriptor_id"))
+	Map<String,String> properties = new HashMap<String, String>();
+
 
 	@XmlElement(name = "capabilityDescriptors")
 	public List<CapabilityDescriptor> getCapabilityDescriptors() {
