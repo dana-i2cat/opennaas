@@ -22,7 +22,7 @@ import org.opennaas.core.resources.queue.QueueResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MantychoreBootstrapper implements IResourceBootstrapper {
+public class NetworkBootstrapper implements IResourceBootstrapper {
 	Log	log	= LogFactory.getLog(NetworkRepository.class);
 
 	public void resetModel (IResource resource) throws ResourceException {
