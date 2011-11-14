@@ -31,7 +31,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "subInterface", description = "The interface where to set the VLAN.", required = true, multiValued = false)
 	private String	subinterface;
 
-	@Argument(index = 2, name = "VLANid", description = "the VLAN id.", required = true, multiValued = false)
+	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = true, multiValued = false)
 	private int		vlanId;
 
 	@Override

@@ -15,6 +15,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
 public class CreateSubInterfaceCommand extends GenericKarafCommand {
@@ -25,8 +26,13 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "subInterface", description = "The interface to be created.", required = true, multiValued = false)
 	private String	subinterface;
 	
-	@Argument(index = 2, name = "description", description = "Description of the interface to be created.", required = false, multiValued = false)
+	@Option(name = "--description", aliases = { "-d" }, description = "description info.")
 	private String	description = "";
+
+	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging.")
+	private int	vlanid;
+
+	
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -82,7 +88,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		eth.setName(args[0]);
 		eth.setPortNumber(Integer.parseInt(args[1]));
 		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(1); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
+		vlanEndpoint.setVlanID(vlanid); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
 		eth.addProtocolEndpoint(vlanEndpoint);
 		eth.setDescription(description);
 		return eth;
