@@ -21,7 +21,7 @@ public class Path extends NetworkConnection {
 	/**
 	 * The pathsegments property gives a serial partitioning of a Path object.
 	 * This property specifies the links or sub paths of this path.
-	 * @return
+	 * @return list of segments (NetworkConnections) of this path
 	 */
 	public List<NetworkConnection> getPathSegments() {
 		return pathSegments;
