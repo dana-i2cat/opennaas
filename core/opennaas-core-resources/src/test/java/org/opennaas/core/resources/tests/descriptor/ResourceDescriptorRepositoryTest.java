@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,7 +16,9 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
+import org.opennaas.core.resources.descriptor.NetworkInfo;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceId;
 
 public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport {
 
@@ -105,7 +108,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Test Save
 			em.getTransaction().begin();
-			ResourceDescriptor config = createSampleDescriptor();
+			ResourceDescriptor config = createVirtualResourceDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 			assertNotNull(config);
@@ -115,9 +118,9 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 			assertNotNull(loaded);
 			List<CapabilityDescriptor> capabilityDescriptors = loaded.getCapabilityDescriptors();
 			Iterator<CapabilityDescriptor> capabilityIt = capabilityDescriptors.iterator();
-			assertEquals(loaded.getInformation().getType(), "ca.inocybe.xxx");
-			assertEquals(loaded.getInformation().getDescription(), "Test");
-			assertEquals(loaded.getInformation().getName(), "Resource");
+			assertEquals(loaded.getInformation().getType(), "router");
+			assertEquals(loaded.getInformation().getDescription(), "virtual resource description");
+			assertEquals(loaded.getInformation().getName(), "logical1");
 			assertEquals(loaded.getInformation().getVersion(), "1.0.0");
 			while (capabilityIt.hasNext()) {
 				CapabilityDescriptor capabilityDescriptor = capabilityIt.next();
@@ -125,6 +128,12 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 				assertEquals(prop.getName(), "name");
 				assertEquals(prop.getValue(), "value");
 			}
+			
+			Map<String,String> properties = config.getProperties();
+			assertNotNull(properties);
+			String key = properties.get("virtual");
+			assertEquals("true",key);
+			
 			em.getTransaction().commit();
 		} catch (Exception ex) {
 			em.getTransaction().rollback();
@@ -140,7 +149,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Test Save
 			em.getTransaction().begin();
-			ResourceDescriptor config = createSampleDescriptor();
+			ResourceDescriptor config = createNetworkDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 			assertNotNull(config);
@@ -150,9 +159,9 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 			assertNotNull(loaded);
 			List<CapabilityDescriptor> capabilityDescriptors = loaded.getCapabilityDescriptors();
 			Iterator<CapabilityDescriptor> capabilityIt = capabilityDescriptors.iterator();
-			assertEquals(loaded.getInformation().getType(), "ca.inocybe.xxx");
-			assertEquals(loaded.getInformation().getDescription(), "Test");
-			assertEquals(loaded.getInformation().getName(), "Resource");
+			assertEquals(loaded.getInformation().getType(), "network");
+			assertEquals(loaded.getInformation().getDescription(), "network description");
+			assertEquals(loaded.getInformation().getName(), "networklayer1.0");
 			assertEquals(loaded.getInformation().getVersion(), "1.0.0");
 			while (capabilityIt.hasNext()) {
 				CapabilityDescriptor capabilityDescriptor = capabilityIt.next();
@@ -160,6 +169,21 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 				assertEquals(prop.getName(), "name");
 				assertEquals(prop.getValue(), "value");
 			}
+			
+			NetworkInfo networkInfo = loaded.getNetworkInfo();
+			assertNotNull(networkInfo);
+			List<ResourceId> resources = networkInfo.getResources();
+			assertNotNull(resources);
+			assertTrue(resources.size() == 2);
+
+			ResourceId resourceId = resources.get(0);
+			assertEquals(resourceId.getName(),"logical1");
+			assertEquals(resourceId.getType(),"router");
+
+			ResourceId resourceId2 = resources.get(1);
+			assertEquals(resourceId2.getName(),"logical2");
+			assertEquals(resourceId2.getType(),"router");
+
 			em.getTransaction().commit();
 		} catch (Exception ex) {
 			em.getTransaction().rollback();
