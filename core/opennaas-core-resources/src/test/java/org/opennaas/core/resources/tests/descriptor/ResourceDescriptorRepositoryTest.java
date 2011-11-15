@@ -99,4 +99,72 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 			fail("Exception during testPersistence");
 		}
 	}
+	
+	@Test
+	public void testVirtualResourcePersistence() {
+		try {
+			// Test Save
+			em.getTransaction().begin();
+			ResourceDescriptor config = createSampleDescriptor();
+			em.persist(config);
+			em.getTransaction().commit();
+			assertNotNull(config);
+			// Test Load
+			em.getTransaction().begin();
+			ResourceDescriptor loaded = em.find(ResourceDescriptor.class, config.getId());
+			assertNotNull(loaded);
+			List<CapabilityDescriptor> capabilityDescriptors = loaded.getCapabilityDescriptors();
+			Iterator<CapabilityDescriptor> capabilityIt = capabilityDescriptors.iterator();
+			assertEquals(loaded.getInformation().getType(), "ca.inocybe.xxx");
+			assertEquals(loaded.getInformation().getDescription(), "Test");
+			assertEquals(loaded.getInformation().getName(), "Resource");
+			assertEquals(loaded.getInformation().getVersion(), "1.0.0");
+			while (capabilityIt.hasNext()) {
+				CapabilityDescriptor capabilityDescriptor = capabilityIt.next();
+				CapabilityProperty prop = capabilityDescriptor.getCapabilityProperties().get(0);
+				assertEquals(prop.getName(), "name");
+				assertEquals(prop.getValue(), "value");
+			}
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			logger.error("Exception during testPersistence", ex);
+			fail("Exception during testPersistence");
+		}
+	}
+
+
+
+	@Test
+	public void testResourceWithNetworkCapabilitiesPersistence() {
+		try {
+			// Test Save
+			em.getTransaction().begin();
+			ResourceDescriptor config = createSampleDescriptor();
+			em.persist(config);
+			em.getTransaction().commit();
+			assertNotNull(config);
+			// Test Load
+			em.getTransaction().begin();
+			ResourceDescriptor loaded = em.find(ResourceDescriptor.class, config.getId());
+			assertNotNull(loaded);
+			List<CapabilityDescriptor> capabilityDescriptors = loaded.getCapabilityDescriptors();
+			Iterator<CapabilityDescriptor> capabilityIt = capabilityDescriptors.iterator();
+			assertEquals(loaded.getInformation().getType(), "ca.inocybe.xxx");
+			assertEquals(loaded.getInformation().getDescription(), "Test");
+			assertEquals(loaded.getInformation().getName(), "Resource");
+			assertEquals(loaded.getInformation().getVersion(), "1.0.0");
+			while (capabilityIt.hasNext()) {
+				CapabilityDescriptor capabilityDescriptor = capabilityIt.next();
+				CapabilityProperty prop = capabilityDescriptor.getCapabilityProperties().get(0);
+				assertEquals(prop.getName(), "name");
+				assertEquals(prop.getValue(), "value");
+			}
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			logger.error("Exception during testPersistence", ex);
+			fail("Exception during testPersistence");
+		}
+	}
 }

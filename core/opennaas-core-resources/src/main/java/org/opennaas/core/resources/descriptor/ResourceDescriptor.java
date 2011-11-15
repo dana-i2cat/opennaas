@@ -43,15 +43,29 @@ public class ResourceDescriptor {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CapabilityDescriptor>	capabilityDescriptors;
-
+	
 	@Basic
 	private String						profileId			= "";
+
+
+	@Embedded
+	private NetworkInfo 			networkDescriptor;
+	
+	
+	
+	@XmlElement(name = "networkInfo")
+	public NetworkInfo getNetworkInfo() {
+		return networkDescriptor;
+	}
+
+	public void setNetworkInfo(NetworkInfo networkDescriptor) {
+		this.networkDescriptor = networkDescriptor;
+	}
+	
 
 	/**
 	 * necessary parameter to configure a ssh connection
 	 */
-	// TODO TO TEST!
-//	@ManyToMany(cascade = CascadeType.ALL)
 	
     @ElementCollection
     @MapKeyColumn(name="name")
@@ -78,6 +92,9 @@ public class ResourceDescriptor {
 	public void setInformation(Information information) {
 		this.information = information;
 	}
+	
+	
+	
 
 	public String getId() {
 		return this.id;

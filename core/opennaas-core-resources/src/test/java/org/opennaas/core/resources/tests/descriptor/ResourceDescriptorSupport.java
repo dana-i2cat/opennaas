@@ -31,4 +31,55 @@ public class ResourceDescriptorSupport extends TestCase
 		config.setCapabilityDescriptors(capabilityDescriptors);
 		return config;
 	}
+	
+	/**
+	 * Create a resource with properties 
+	 * @return
+	 */
+	protected ResourceDescriptor createVirtualResourceDescriptor() {
+		ResourceDescriptor config = new ResourceDescriptor();
+		config.setId(new String("1"));
+		Information info = new Information();
+		info.setDescription("Test");
+		info.setType("ca.inocybe.xxx");
+		info.setName("Resource");
+		info.setVersion("1.0.0");
+		config.setInformation(info);
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		List<CapabilityProperty> properties = new ArrayList<CapabilityProperty>();
+		properties.add(new CapabilityProperty("name", "value"));
+		capabilityDescriptor.setCapabilityProperties(properties);
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(capabilityDescriptor);
+		config.setCapabilityDescriptors(capabilityDescriptors);
+		return config;
+	}
+	
+	
+	/**
+	 * Create network descriptor
+	 * @return
+	 */
+	protected ResourceDescriptor createNetworkDescriptor() {
+		ResourceDescriptor config = new ResourceDescriptor();
+		config.setId(new String("1"));
+		Information info = new Information();
+		info.setDescription("Test");
+		info.setType("ca.inocybe.xxx");
+		info.setName("Resource");
+		info.setVersion("1.0.0");
+		config.setInformation(info);
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+		List<CapabilityProperty> properties = new ArrayList<CapabilityProperty>();
+		properties.add(new CapabilityProperty("name", "value"));
+		capabilityDescriptor.setCapabilityProperties(properties);
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(capabilityDescriptor);
+		config.setCapabilityDescriptors(capabilityDescriptors);
+		return config;
+	}
+
+
+	
+	
 }
