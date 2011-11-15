@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.network.model.domain;
 
-import net.i2cat.mantychore.network.model.predicates.InAdminDomain;
+import java.util.List;
+
+import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 /**
  * An entity that acts as a the administrator of a collection of resources. 
@@ -25,13 +27,13 @@ import net.i2cat.mantychore.network.model.predicates.InAdminDomain;
  */
 public class AdministrativeDomain {
 	
-	InAdminDomain domainElements;
+	List<NetworkElement> domainElements;
 
-	public InAdminDomain getDomainElements() {
+	public List<NetworkElement> getDomainElements() {
 		return domainElements;
 	}
 
-	public void setDomainElements(InAdminDomain domainElements) {
+	public void setDomainElements(List<NetworkElement> domainElements) {
 		this.domainElements = domainElements;
 	}
 }

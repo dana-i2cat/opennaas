@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.network.model.topology;
 
-import net.i2cat.mantychore.network.model.layer.AdaptationProperty;
+import java.util.List;
 
 /**
  * A network element(s) that can be represented as a connection point (ITU-T G.805 terminology) 
@@ -14,7 +14,22 @@ import net.i2cat.mantychore.network.model.layer.AdaptationProperty;
  */
 public class ConnectionPoint extends TransportNetworkElement {
 	
-	AdaptationProperty toServerInterface;
-	AdaptationProperty toClientInterface;
+	ConnectionPoint serverInterface;
+	List<ConnectionPoint> clientInterfaces;
 	
+	public ConnectionPoint getServerInterface() {
+		return serverInterface;
+	}
+	
+	public void setServerInterface(ConnectionPoint serverInterface) {
+		this.serverInterface = serverInterface;
+	}
+	
+	public List<ConnectionPoint> getClientInterfaces() {
+		return clientInterfaces;
+	}
+	
+	public void setClientInterfaces(List<ConnectionPoint> clientInterfaces) {
+		this.clientInterfaces = clientInterfaces;
+	}
 }

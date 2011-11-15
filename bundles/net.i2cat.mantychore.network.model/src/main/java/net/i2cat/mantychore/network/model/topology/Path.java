@@ -2,8 +2,6 @@ package net.i2cat.mantychore.network.model.topology;
 
 import java.util.List;
 
-import net.i2cat.mantychore.network.model.predicates.ConnectedTo;
-
 /**
  * A (collection of) network element(s) that can be represented as a tandem connection (ITU-T G.805 terminology) 
  * or as a path in a Graph (in Graph theory). A path is always a connection at a single layer. 
@@ -16,7 +14,8 @@ public class Path extends NetworkConnection {
 	
 	List<NetworkConnection> pathSegments;
 	
-	List<ConnectedTo> connectedTo;
+	Interface source;
+	Interface sink;
 
 	/**
 	 * The pathsegments property gives a serial partitioning of a Path object.
@@ -31,11 +30,19 @@ public class Path extends NetworkConnection {
 		this.pathSegments = pathSegments;
 	}
 
-	public List<ConnectedTo> getConnectedTo() {
-		return connectedTo;
+	public Interface getSource() {
+		return source;
 	}
 
-	public void setConnectedTo(List<ConnectedTo> connectedTo) {
-		this.connectedTo = connectedTo;
+	public void setSource(Interface source) {
+		this.source = source;
+	}
+
+	public Interface getSink() {
+		return sink;
+	}
+
+	public void setSink(Interface sink) {
+		this.sink = sink;
 	}
 }

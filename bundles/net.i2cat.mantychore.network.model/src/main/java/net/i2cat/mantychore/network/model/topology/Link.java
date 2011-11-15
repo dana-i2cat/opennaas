@@ -2,8 +2,6 @@ package net.i2cat.mantychore.network.model.topology;
 
 import java.util.List;
 
-import net.i2cat.mantychore.network.model.predicates.LinkTo;
-
 /**
  * A (collection of) network element(s) that can be represented as a link connection (ITU-T G.805 terminology) or as an edge on a vertex (in Graph theory). 
  * Typically a single (non-concatenated) link on a certain network layer (not necessarily the physical layer). 
@@ -14,13 +12,22 @@ import net.i2cat.mantychore.network.model.predicates.LinkTo;
  */
 public class Link extends BroadcastSegment {
 	
-	List<LinkTo> linkTo;
-
-	public List<LinkTo> getLinkTo() {
-		return linkTo;
+	Interface source;
+	Interface sink;
+	
+	public Interface getSource() {
+		return source;
 	}
-
-	public void setLinkTo(List<LinkTo> linkTo) {
-		this.linkTo = linkTo;
+	
+	public void setSource(Interface source) {
+		this.source = source;
+	}
+	
+	public Interface getSink() {
+		return sink;
+	}
+	
+	public void setSink(Interface sink) {
+		this.sink = sink;
 	}
 }

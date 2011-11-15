@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.network.model.topology;
 
-import net.i2cat.mantychore.network.model.predicates.InAdminDomain;
+import java.util.List;
+
+import net.i2cat.mantychore.network.model.domain.AdministrativeDomain;
 
 /**
  * A network element is an abstract class which describe an elements in a computer network.
@@ -10,13 +12,13 @@ import net.i2cat.mantychore.network.model.predicates.InAdminDomain;
  */
 public abstract class NetworkElement {
 	
-	InAdminDomain inAdminDomain;
+	List<AdministrativeDomain> inAdminDomains;
 
-	public InAdminDomain getInAdminDomain() {
-		return inAdminDomain;
+	public List<AdministrativeDomain> getInAdminDomains() {
+		return inAdminDomains;
 	}
 
-	public void setInAdminDomain(InAdminDomain inAdminDomain) {
-		this.inAdminDomain = inAdminDomain;
+	public void setInAdminDomains(List<AdministrativeDomain> inAdminDomains) {
+		this.inAdminDomains = inAdminDomains;
 	}
 }

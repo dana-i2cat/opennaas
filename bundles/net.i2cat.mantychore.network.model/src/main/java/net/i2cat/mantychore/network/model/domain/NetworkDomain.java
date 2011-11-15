@@ -9,7 +9,9 @@ import net.i2cat.mantychore.network.model.topology.NetworkElement;
 public class NetworkDomain extends NetworkElement {
 	
 	List<Device> devices;
-	List<ConnectionPoint> interfaces;
+	
+	List<ConnectionPoint> outboundInterfaces;
+	List<ConnectionPoint> inboundInterfaces;
 
 	public List<Device> getDevices() {
 		return devices;
@@ -23,11 +25,19 @@ public class NetworkDomain extends NetworkElement {
 		devices.add(device);
 	}
 
-	public List<ConnectionPoint> getInterfaces() {
-		return interfaces;
+	public List<ConnectionPoint> getOutboundInterfaces() {
+		return outboundInterfaces;
 	}
 
-	public void setInterfaces(List<ConnectionPoint> interfaces) {
-		this.interfaces = interfaces;
+	public void setOutboundInterfaces(List<ConnectionPoint> outboundInterfaces) {
+		this.outboundInterfaces = outboundInterfaces;
+	}
+
+	public List<ConnectionPoint> getInboundInterfaces() {
+		return inboundInterfaces;
+	}
+
+	public void setInboundInterfaces(List<ConnectionPoint> inboundInterfaces) {
+		this.inboundInterfaces = inboundInterfaces;
 	}
 }

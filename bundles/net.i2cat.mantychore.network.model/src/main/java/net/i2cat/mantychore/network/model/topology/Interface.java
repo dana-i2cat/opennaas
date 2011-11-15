@@ -2,10 +2,6 @@ package net.i2cat.mantychore.network.model.topology;
 
 import java.util.List;
 
-import net.i2cat.mantychore.network.model.predicates.ConnectedTo;
-import net.i2cat.mantychore.network.model.predicates.LinkTo;
-import net.i2cat.mantychore.network.model.predicates.SwitchedTo;
-
 /**
  * A configured interface. Thus an entity that can transport data at a given layer. 
  * 
@@ -14,33 +10,56 @@ import net.i2cat.mantychore.network.model.predicates.SwitchedTo;
  */
 public class Interface extends ConnectionPoint {
 	
-	List<ConnectedTo> connectedTo;
 	
-	List<LinkTo> linkTo;
+	Device device;
 	
-	SwitchedTo switchedTo;
+	Link isSourceOf;
+	Link isSinkOf;
+	
+	List<CrossConnect> switchedTo;
+	
+	/**
+	 *  end-to-end path
+	 */
+	Path connectedTo;
 
-	public List<ConnectedTo> getConnectedTo() {
-		return connectedTo;
+	public Device getDevice() {
+		return device;
 	}
 
-	public void setConnectedTo(List<ConnectedTo> connectedTo) {
-		this.connectedTo = connectedTo;
+	public void setDevice(Device device) {
+		this.device = device;
 	}
 
-	public List<LinkTo> getLinkTo() {
-		return linkTo;
+	public Link getIsSourceOf() {
+		return isSourceOf;
 	}
 
-	public void setLinkTo(List<LinkTo> linkTo) {
-		this.linkTo = linkTo;
+	public void setIsSourceOf(Link isSourceOf) {
+		this.isSourceOf = isSourceOf;
 	}
 
-	public SwitchedTo getSwitchedTo() {
+	public Link getIsSinkOf() {
+		return isSinkOf;
+	}
+
+	public void setIsSinkOf(Link isSinkOf) {
+		this.isSinkOf = isSinkOf;
+	}
+
+	public List<CrossConnect> getSwitchedTo() {
 		return switchedTo;
 	}
 
-	public void setSwitchedTo(SwitchedTo switchedTo) {
+	public void setSwitchedTo(List<CrossConnect> switchedTo) {
 		this.switchedTo = switchedTo;
+	}
+
+	public Path getConnectedTo() {
+		return connectedTo;
+	}
+
+	public void setConnectedTo(Path connectedTo) {
+		this.connectedTo = connectedTo;
 	}
 }
