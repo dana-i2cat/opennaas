@@ -53,10 +53,10 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return createServiceFilter(IQueueManagerService.class.getName(), properties);
 	}
 
-	public static IActionSet getIPActionSetService(String name, String version, String protocol) throws ActivatorException {
+	public static IActionSet getIPActionSetService(String name, String version) throws ActivatorException {
 		try {
 			log.debug("Calling IPActionSetService");
-			return (IActionSet) getServiceFromRegistry(context, createFilterIPActionSet(name, version, protocol));
+			return (IActionSet) getServiceFromRegistry(context, createFilterIPActionSet(name, version));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
@@ -65,7 +65,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	/*
 	 * necessary to get some capability type
 	 */
-	private static Filter createFilterIPActionSet(String name, String version, String protocol) throws InvalidSyntaxException {
+	private static Filter createFilterIPActionSet(String name, String version) throws InvalidSyntaxException {
 		Properties properties = new Properties();
 
 		properties

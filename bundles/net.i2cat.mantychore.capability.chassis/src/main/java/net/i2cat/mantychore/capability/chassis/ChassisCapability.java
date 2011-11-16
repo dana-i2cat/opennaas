@@ -61,18 +61,6 @@ public class ChassisCapability extends AbstractCapability {
 	}
 
 
-
-	public boolean isALogicalRouter() {
-		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
-		/* Check that the logical router exists */
-		if (resourceDescriptor == null || resourceDescriptor.getProperties() == null)
-			return false;
-
-		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null && resourceDescriptor
-				.getProperties()
-				.get(ResourceDescriptor.VIRTUAL).equals("true"));
-	}
-
 	@Override
 	protected void activateCapability() throws CapabilityException {
 
@@ -91,11 +79,10 @@ public class ChassisCapability extends AbstractCapability {
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
-		String protocol = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			return Activator.getChassisActionSetService(name, version, protocol);
+			return Activator.getChassisActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
