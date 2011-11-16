@@ -34,6 +34,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,7 +70,7 @@ public class ChassisCapabilityIntegrationTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
 		String uri = System.getProperty("protocol.uri");

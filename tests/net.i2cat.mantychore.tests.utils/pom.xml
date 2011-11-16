@@ -55,8 +55,7 @@
 							org.osgi.framework,
 						*</Import-Package>
 						<Export-Package>
-							${project.artifactId}.*;version="${project.version}",
-							${project.artifactId}.mock.*;version="${project.version}"
+							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

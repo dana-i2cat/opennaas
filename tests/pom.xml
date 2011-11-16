@@ -14,5 +14,6 @@
 	<modules>
 		<module>integration</module>
 		<module>sprints</module>
+		<module>net.i2cat.mantychore.tests.utils</module>
 	</modules>
 </project>

@@ -1,22 +1,24 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import net.i2cat.mantychore.network.repository.NetworkRepository;
+import net.i2cat.mantychore.tests.utils.mock.MockCapabilityFactory;
+import net.i2cat.mantychore.tests.utils.mock.MockDescriptorRepository;
+
+import net.i2cat.nexus.tests.ResourceHelper;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class NetworkRepositoryTest {
+	
+
+	
 	NetworkRepository	NetworkRepository;
-	String					resourceType	= "router";
 	String					persistenceUnit	= "ResourceCore";
 
 	@Test
@@ -35,7 +37,7 @@ public class NetworkRepositoryTest {
 
 	@Test
 	public void testCreateRemoveResources() {
-		NetworkRepository = new NetworkRepository("router", persistenceUnit);
+		NetworkRepository = new NetworkRepository("network", persistenceUnit);
 		NetworkRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		NetworkRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -44,12 +46,12 @@ public class NetworkRepositoryTest {
 		try {
 			/* type of resources */
 
-			ResourceDescriptor descriptor = newResourceDescriptor("router", "router1");
+			ResourceDescriptor descriptor = ResourceHelper.newResourceDescriptorNetwork("network1");
 			IResource resource = NetworkRepository.createResource(descriptor);
 			String id = resource.getResourceIdentifier().getId();
 			Assert.assertNotNull(id);
 			Assert.assertTrue(resource.getResourceDescriptor().equals(descriptor));
-			Assert.assertTrue(resource.getResourceIdentifier().getType().equals("router"));
+			Assert.assertTrue(resource.getResourceIdentifier().getType().equals("network"));
 
 			boolean thrown = false;
 			NetworkRepository.removeResource(id);
@@ -70,7 +72,7 @@ public class NetworkRepositoryTest {
 	@Test
 	public void testModifyResources() {
 
-		NetworkRepository = new NetworkRepository("router", persistenceUnit);
+		NetworkRepository = new NetworkRepository("network", persistenceUnit);
 		NetworkRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		NetworkRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -78,77 +80,30 @@ public class NetworkRepositoryTest {
 
 		try {
 			/* type of resources */
-			IResource resource = NetworkRepository.createResource(newResourceDescriptor("router", "router1"));
+			IResource resource = NetworkRepository.createResource(ResourceHelper.newResourceDescriptorNetwork("network1"));
 			String id = resource.getResourceIdentifier().getId();
 			Assert.assertTrue(resource.getResourceDescriptor().getCapabilityDescriptors().size() == 2);
-			Assert.assertTrue(resource.getResourceIdentifier().getType().equals("router"));
+			Assert.assertTrue(resource.getResourceIdentifier().getType().equals("network"));
 
-			resource = NetworkRepository.modifyResource(id, oldResourceDescriptor(id, "router", "router1"));
+			resource = NetworkRepository.modifyResource(id, oldResourceDescriptor("networkOld","network"));
 			IResource newResource = NetworkRepository.getResource(resource.getResourceIdentifier().getId());
 			Assert.assertTrue(newResource.getResourceDescriptor().getCapabilityDescriptors().size() == 1);
-			Assert.assertTrue(newResource.getResourceIdentifier().getType().equals("router"));
-
+			Assert.assertTrue(newResource.getResourceIdentifier().getType().equals("network"));
+			Assert.assertTrue(newResource.getResourceDescriptor().getInformation().getName().equals("networkOld"));
 		} catch (ResourceException e) {
 			e.printStackTrace();
 			Assert.fail(e.getMessage());
 		}
 
 	}
+	
 
-	private ResourceDescriptor newResourceDescriptor(String type, String name) {
 
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-
-		Map<String, String> properties = new HashMap<String, String>();
-
-		/* FIXME PUT PROTOCOL_URI IN RESOURCE DESCRIPTOR CONSTANTS */
-		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-				"user:pass@host.net:2212");
-
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-
-		/* factory1 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1"));
-
-		/* factory2 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory2"));
-
-		resourceDescriptor.setProperties(properties);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId("JunosTest");
-		/* information. It is only necessary to add type */
-		Information information = new Information();
-		information.setType(type);
-		information.setName(name);
-		resourceDescriptor.setInformation(information);
-		return resourceDescriptor;
-	}
-
-	private ResourceDescriptor oldResourceDescriptor(String resourceId, String type, String name) {
-
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-
-		Map<String, String> properties = new HashMap<String, String>();
-
-		/* FIXME PUT PROTOCOL_URI IN RESOURCE DESCRIPTOR CONSTANTS */
-		properties.put(ResourceDescriptorConstants.PROTOCOL_URI,
-				"user:pass@host.net:2212");
-
-		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-
-		/* factory1 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1"));
-
-		resourceDescriptor.setProperties(properties);
-		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId(resourceId);
-
-		/* information. It is only necessary to add type */
-		Information information = new Information();
-		information.setType(type);
-		information.setName(name);
-		resourceDescriptor.setInformation(information);
-		return resourceDescriptor;
+	private ResourceDescriptor oldResourceDescriptor(String name, String type) {
+		ResourceDescriptor networkDescriptor = ResourceHelper.newResourceDescriptorNetwork(name);
+		networkDescriptor.getInformation().setType(type);
+		networkDescriptor.getCapabilityDescriptors().remove(0);		
+		return networkDescriptor;
 	}
 
 }

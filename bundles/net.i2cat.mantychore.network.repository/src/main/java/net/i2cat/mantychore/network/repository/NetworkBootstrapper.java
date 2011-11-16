@@ -11,13 +11,11 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 
@@ -83,45 +81,12 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 
 		/* initialize each resource */
 		for (String resourceName : childrenNames) {
-			try {
 				resourceManager.getIdentifierFromResourceName(resourceType, resourceName);
-				// TODO If the resource exists, what is our decision?
-				
-			} catch (ResourceNotFoundException e) {
-				
-				log.info("Resource "+ resourceName +" is new. Creating it...");
-				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), resourceName);
+				// TODO If the resource exists, what is our decision?				
 
-				/* create new resources */
-				resourceManager.createResource(newResourceDescriptor);
-			}
 		}
-		// FIXME If a resource is created, we have to delete the don't used resources
 	}
 	
-	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor parentDescriptor, String resourceName) throws ResourceException {
-
-		ResourceDescriptor newResourceDescriptor;
-		try{
-			newResourceDescriptor = (ResourceDescriptor) parentDescriptor.clone();
-			
-			// the profiles will not be cloned
-			newResourceDescriptor.setProfileId("");
-			// we delete chassis capability, a logical resource can't create new logical devices or new interfaces
-			newResourceDescriptor.removeCapabilityDescriptor("chassis");
-			// Wet set the resource name
-			newResourceDescriptor.getInformation().setName(resourceName);
-
-			/* added virtual description */
-			Map<String, String> properties = new HashMap<String, String>();
-			properties.put(ResourceDescriptor.VIRTUAL, "true");
-			newResourceDescriptor.setProperties(properties);
-			
-		} catch (CloneNotSupportedException e){
-			throw new ResourceException("Failed to create resourceDescriptor", e);
-		}
-		return newResourceDescriptor;
-	}
 
 	private Information createQueueInformation() {
 		Information information = new Information();
