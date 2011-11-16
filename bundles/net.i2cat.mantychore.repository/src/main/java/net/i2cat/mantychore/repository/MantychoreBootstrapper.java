@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.model.ComputerSystem;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
@@ -23,13 +25,15 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
-	Log	log	= LogFactory.getLog(MantychoreRepository.class);
+	Log	log	= LogFactory.getLog(MantychoreBootstrapper.class);
 
+	IModel oldModel;
+	
 	public void resetModel (IResource resource) throws ResourceException {
+		oldModel = resource.getModel();
 		resource.setModel(new ComputerSystem());		
 		if (isALogicalRouter(resource))
 			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
-		
 	}
 
 	
@@ -139,8 +143,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 
 	@Override
 	public void revertBootstrap(IResource resource) throws ResourceException {
-		// TODO REVERT BOOTSTRAP IN ITS CHILDREN
-		resource.setModel(null);
+		resource.setModel(oldModel);
 	}
 	
 	private boolean isALogicalRouter(IResource resource) {
