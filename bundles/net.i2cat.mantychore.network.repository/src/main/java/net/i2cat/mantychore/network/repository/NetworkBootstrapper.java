@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.network.model.NetworkModel;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
@@ -23,21 +25,21 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class NetworkBootstrapper implements IResourceBootstrapper {
-	Log	log	= LogFactory.getLog(NetworkRepository.class);
+	Log	log	= LogFactory.getLog(NetworkBootstrapper.class);
 
+	IModel oldModel;
+	
 	public void resetModel (IResource resource) throws ResourceException {
-		resource.setModel(new ComputerSystem());		
-		if (isALogicalRouter(resource))
-			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
-		
+		resource.setModel(new NetworkModel());		
 	}
 
-	
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
+		
+		oldModel = resource.getModel();
 		resetModel(resource);
 		
-		/* start its capabilities */
+		/* start resource capabilities, this will load required data into model */
 		for (ICapability capab : resource.getCapabilities()) {
 			/* abstract capabilities have to be initialized */
 			log.debug("Found a capability in the resource.");
@@ -51,7 +53,6 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			}
 		}
 		
-		
 		ICapability queueCapab = resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
@@ -64,71 +65,62 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
+		//no children right now
+//		manageChildren(resource);
+	}
+	
+	private void manageChildren(IResource resource) throws ResourceException {
+		
 		/* the type resource is the same for all logical devices and for the physical device */
-		String typeResource = resource.getResourceIdentifier().getType();
+		String resourceType = resource.getResourceIdentifier().getType();
 		IResourceManager resourceManager;
 		try {
 			resourceManager = Activator.getResourceManagerService();
 		} catch (Exception e1) {
 			throw new ResourceException("It was impossible get the Resource Manager Service to do execute the bootstrapper");
 		}
-		List<String> nameLogicalRouters = resource.getModel().getChildren();
+		List<String> childrenNames = resource.getModel().getChildren();
 
 		/* initialize each resource */
-		for (String nameResource : nameLogicalRouters) {
+		for (String resourceName : childrenNames) {
 			try {
-				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
+				resourceManager.getIdentifierFromResourceName(resourceType, resourceName);
+				// TODO If the resource exists, what is our decision?
+				
 			} catch (ResourceNotFoundException e) {
-				// TODO If the resource exists what it is our decision?
-				log.error(e.getMessage());
-				log.info("This resource is new, it have to be created");
-				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+				
+				log.info("Resource "+ resourceName +" is new. Creating it...");
+				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), resourceName);
 
 				/* create new resources */
 				resourceManager.createResource(newResourceDescriptor);
 			}
 		}
-
 		// FIXME If a resource is created, we have to delete the don't used resources
-
 	}
+	
+	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor parentDescriptor, String resourceName) throws ResourceException {
 
-	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource) throws ResourceException {
-
-		try {
-			ResourceDescriptor newResourceDescriptor = (ResourceDescriptor) resourceDescriptor.clone();
-
+		ResourceDescriptor newResourceDescriptor;
+		try{
+			newResourceDescriptor = (ResourceDescriptor) parentDescriptor.clone();
+			
 			// the profiles will not be cloned
 			newResourceDescriptor.setProfileId("");
 			// we delete chassis capability, a logical resource can't create new logical devices or new interfaces
 			newResourceDescriptor.removeCapabilityDescriptor("chassis");
 			// Wet set the resource name
-			newResourceDescriptor.getInformation().setName(nameResource);
+			newResourceDescriptor.getInformation().setName(resourceName);
 
 			/* added virtual description */
 			Map<String, String> properties = new HashMap<String, String>();
 			properties.put(ResourceDescriptor.VIRTUAL, "true");
 			newResourceDescriptor.setProperties(properties);
-
-			return newResourceDescriptor;
-		} catch (Exception e) {
-			throw new ResourceException(e.getMessage());
+			
+		} catch (CloneNotSupportedException e){
+			throw new ResourceException("Failed to create resourceDescriptor", e);
 		}
-
-	}
-
-	public void createResource(NetworkRepository repository, ResourceDescriptor descriptor) {
-		/* Profile info is not cloned */
-		// descriptor.setProfileId(profileName);
-		IResource resource = null;
-		try {
-			log.info("Creating Resource ...... ");
-			resource = repository.createResource(descriptor);
-		} catch (ResourceException e) {
-			log.error(e.getMessage());
-		}
-		log.info("Resource of type " + resource.getResourceDescriptor().getInformation().getType() + " created with name: "
-				+ resource.getResourceDescriptor().getInformation().getName());
+		return newResourceDescriptor;
 	}
 
 	private Information createQueueInformation() {
@@ -139,17 +131,6 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 
 	@Override
 	public void revertBootstrap(IResource resource) throws ResourceException {
-		// TODO REVERT BOOTSTRAP IN ITS CHILDREN
-		resource.setModel(null);
-	}
-	
-	private boolean isALogicalRouter(IResource resource) {
-		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
-		/* Check that the logical router exists */
-		if (resourceDescriptor == null || resourceDescriptor.getProperties() == null)
-			return false;
-
-		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null
-				&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
+		resource.setModel(oldModel);
 	}
 }
