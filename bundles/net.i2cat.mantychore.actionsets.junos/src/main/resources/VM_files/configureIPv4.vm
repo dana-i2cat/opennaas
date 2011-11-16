@@ -27,9 +27,6 @@
 			<name>$param.Name</name>
 				<unit>
 				<name>$param.PortNumber</name>
-					#if("LogicalTunnelPort"==$param.getClass().getSimpleName())
-					<peer-unit>$param.Peer_unit</peer-unit>
-					#end
 				<family>
 					<inet operation="replace">
 						<address>
