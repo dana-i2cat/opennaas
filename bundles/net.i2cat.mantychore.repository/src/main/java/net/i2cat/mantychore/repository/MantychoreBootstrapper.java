@@ -30,7 +30,6 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	IModel oldModel;
 	
 	public void resetModel (IResource resource) throws ResourceException {
-		oldModel = resource.getModel();
 		resource.setModel(new ComputerSystem());		
 		if (isALogicalRouter(resource))
 			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
@@ -39,6 +38,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
+		oldModel = resource.getModel();
 		resetModel(resource);
 		
 		/* start its capabilities */
