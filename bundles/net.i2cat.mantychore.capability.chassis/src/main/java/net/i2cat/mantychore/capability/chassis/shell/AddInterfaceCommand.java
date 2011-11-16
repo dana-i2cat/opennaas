@@ -34,7 +34,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 	@Argument(index = 2, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
 
-	private boolean	checkTargetResource	= true;
+	private boolean	checkTargetResource	= false;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -88,7 +88,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, logicalDevice);
 
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
-			deviceCopied.setElementName(targetResourceName[1]);
+			deviceCopied.setElementName(targetResourceName[1]); // this tells the action that a LR is being used
 
 			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, deviceCopied);
 
