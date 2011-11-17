@@ -6,6 +6,7 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.NetworkPort;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -30,28 +31,35 @@ public class ConfigureEncapsulationAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params instanceof EthernetPort) {
-
-			EthernetPort eth = (EthernetPort) params;
-
-			if (eth.getName() == null || eth.getName().isEmpty())
-				throw new ActionException("Not valid name for the interface");
-
-			setTemplate("/VM_files/configureEthVLAN.vm");
-
-		} else if (params instanceof LogicalTunnelPort) {
-			LogicalTunnelPort lt = (LogicalTunnelPort) params;
-
-			if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
-				throw new ActionException("Not valid name for the interface");
-
-			setTemplate("/VM_files/configureLogicalTunnelVLAN.vm");
-
-		} else
+		
+		if (! (params instanceof NetworkPort)) {
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
+		}
+		
+		if (params instanceof EthernetPort) {
+			return checkParamsForEth((EthernetPort) params);
+		} else if (params instanceof LogicalTunnelPort) {	
+			return checkParamsForLT((LogicalTunnelPort) params);
+		} else 
+			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
+	}
+	
+	private boolean checkParamsForEth(EthernetPort eth) throws ActionException {
+		if (eth.getName() == null || eth.getName().isEmpty())
+			throw new ActionException("Not valid name for the interface");
 
+		setTemplate("/VM_files/configureEthVLAN.vm");
 		return true;
 	}
+	
+	private boolean checkParamsForLT(LogicalTunnelPort lt) throws ActionException {
+		if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
+			throw new ActionException("Not valid name for the interface");
+
+		setTemplate("/VM_files/configureLogicalTunnelVLAN.vm");
+		return true;
+	}
+	
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
@@ -79,9 +87,12 @@ public class ConfigureEncapsulationAction extends JunosAction {
 
 		if (getParams() == null)
 			throw new ActionException("Params in " + getActionID() + "are null.");
+		
 		checkParams(getParams());
+		
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
+		
 		try {
 	
 			//fill logical router id
@@ -91,7 +102,6 @@ public class ConfigureEncapsulationAction extends JunosAction {
 			//TODO If we don't have a ManagedElement initialized
 			} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
 				((ManagedElement)params).setElementName(""); 
-				
 			}
 			
 			//fill description param
@@ -100,8 +110,8 @@ public class ConfigureEncapsulationAction extends JunosAction {
 				((ManagedElement)params).setDescription("");				
 			}
 			
-			
 			setVelocityMessage(prepareVelocityCommand(params, template)); 
+			
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
