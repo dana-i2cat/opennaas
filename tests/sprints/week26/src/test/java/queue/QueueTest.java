@@ -115,7 +115,7 @@ public class QueueTest extends AbstractIntegrationTest {
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceID, ProtocolSessionHelper.newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(resourceID, ResourceHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 

@@ -59,7 +59,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 		try {
 			//TODO this initbundles guarantee that all the bundles are initialized. It is possible to work the test without this initbundles
 			initBundles();
-			mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
+			mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptor("roadm"));
 
 			ICapabilityFactory connectionFactory = getOsgiService(ICapabilityFactory.class, "capability=connections", 10000);
 			// Test elements not null

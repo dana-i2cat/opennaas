@@ -12,8 +12,8 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
-import net.i2cat.nexus.tests.ProtocolSessionHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
@@ -108,7 +108,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		resourceManager.startResource(resource.getResourceIdentifier());
 		
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
@@ -142,7 +142,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	public void tearDown() throws ResourceException {
 
 		//delete created sub interface
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
@@ -197,12 +197,12 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	public void setSubInterfaceDescriptionTest() {
 
 		/* send action */
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		
-		int posIpv4 = ResourceHelper.containsCapability(resource, "ipv4");
+		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
@@ -251,12 +251,12 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	 * */
 	public void setInterfaceDescriptionTest() {
 		/* send action */
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		
-		int posIpv4 = ResourceHelper.containsCapability(resource, "ipv4");
+		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
@@ -305,7 +305,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	 */
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 		
 		isMock = false;
@@ -318,7 +318,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	
 	private QueueResponse executeQueue(IResource resource){
 		/* execute action */
-		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);

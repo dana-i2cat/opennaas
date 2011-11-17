@@ -91,7 +91,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
 		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
