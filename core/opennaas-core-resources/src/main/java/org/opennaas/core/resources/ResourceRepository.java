@@ -183,6 +183,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		logger.debug("Creating resource from configuration");
 
+		//Each repository can override this method to add new conditions to create a resource
 		checkResourceCanBeCreated(resourceDescriptor);
 
 		logger.debug("Resource Checked");
@@ -261,42 +262,6 @@ public class ResourceRepository implements IResourceRepository {
 			throw new ResourceException(e);
 		}
 	}
-
-	// @Override
-	// public IResource modifyResource(ResourceDescriptor descriptor) throws ResourceException {
-	// IResource resource = null;
-	// // Check if descriptor is new, if it is create a new engine
-	// if (descriptor.getId() == null) {
-	// resource = createResource(descriptor);
-	// } else {
-	// // Get the old resource
-	// resource = getResource(descriptor.getId());
-	//
-	// // Get the old configuration in case the new fails
-	// ResourceDescriptor oldConfig = resource.getResourceDescriptor();
-	//
-	// // Set the new configuration and initialize the engine
-	// try {
-	// this.removeResource(descriptor.getId());
-	// resource = createResource(descriptor);
-	// } catch (ResourceException e) {
-	// logger.info("Could not modify configuration for resource ID #"
-	// + resource.getResourceDescriptor().getId());
-	// // There was an error initializing, try to roll back
-	// try {
-	// resource = createResource(oldConfig);
-	// descriptor = oldConfig;
-	// } catch (ResourceException ex) {
-	// logger
-	// .error("Impossible to restore old configuration for resource ID #"
-	// + resource.getResourceDescriptor().getId());
-	// throw ex;
-	// }
-	// }
-	// }
-	//
-	// return resource;
-	// }
 
 	public void startResource(String identifier) throws ResourceException {
 		logger.debug("Starting resource runtime object for ID #"
@@ -393,25 +358,16 @@ public class ResourceRepository implements IResourceRepository {
 		logger.debug("Resource initialized");
 		return resource;
 	}
+	
 
 	private void activateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Activating resource " + resourceId + " ...");
 
 		IResource resource = getResource(resourceId);
-
-		logger.debug("Checking there is at least one session context for this resource");
-		IProtocolSessionManager sessionManager;
-		try {
-			sessionManager = getProtocolSessionManager(resourceId);
-			if (sessionManager.getRegisteredContexts().isEmpty()) {
-				throw new ResourceException(
-						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
-			}
-		} catch (ResourceException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new ResourceException("Error loading session manager: ", e);
-		}
+		
+		
+		//Each repository can override this method to add new conditions to start a resource
+		checkResourceCanBeStarted(resource);
 
 		/* prepare capabilities */
 		logger.debug("  Obtaining capabilities...");
@@ -434,8 +390,6 @@ public class ResourceRepository implements IResourceRepository {
 			loadProfileInResource(resource, resource.getResourceDescriptor().getProfileId());
 			logger.debug("  Profile loaded");
 		}
-
-		// TODO check needed session contexts are ready
 
 		try {
 
@@ -514,6 +468,20 @@ public class ResourceRepository implements IResourceRepository {
 		removeResourceFromRepository(resourceId);
 
 		logger.debug("Resource shut down");
+	}
+	
+	
+	
+	/**
+	 * Checks if the resource is valid to be started
+	 * 
+	 * @param resourceDescriptor
+	 * @throws ResourceException
+	 */
+	protected void checkResourceCanBeStarted(IResource resource)
+			throws ResourceException {
+		//by default, any resource can be started
+
 	}
 
 	/**
@@ -676,9 +644,6 @@ public class ResourceRepository implements IResourceRepository {
 		descriptorRepository.delete(descriptor);
 	}
 
-	private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
-		IProtocolManager protocolManager = Activator.getProtocolManagerService();
-		return protocolManager.getProtocolSessionManager(resourceId);
-	}
+
 
 }
