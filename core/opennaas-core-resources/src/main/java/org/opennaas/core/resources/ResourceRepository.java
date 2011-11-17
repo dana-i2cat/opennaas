@@ -523,26 +523,31 @@ public class ResourceRepository implements IResourceRepository {
 							+ resourceType);
 		}
 	}
-
+	
 	private List<ICapability> createCapabilities(IResource resource) throws ResourceException {
 		List<CapabilityDescriptor> capabilityDescriptors;
 
 		try {
 			capabilityDescriptors = resource.getResourceDescriptor().getCapabilityDescriptors();
 		} catch (Exception e) {
-			throw new ResourceException("Not capability descriptor found, please check the descriptor format", e);
+			throw new ResourceException("No capability descriptor found, this will create an unusable resource. Please, check the descriptor format", e);
 		}
-		Iterator<CapabilityDescriptor> capabilityIterator = capabilityDescriptors.iterator();
+		
 		List<ICapability> capabilities = new ArrayList<ICapability>();
-		while (capabilityIterator.hasNext()) {
-			CapabilityDescriptor capabilityDescriptor = capabilityIterator.next();
-			ICapabilityFactory factory = capabilityFactories.get(capabilityDescriptor.getCapabilityInformation().getType());
-			if (factory == null) {
-				throw new ResourceException("Factory not found for capabilities of type: " + capabilityDescriptor.getCapabilityInformation()
-						.getType());
+		if (capabilityDescriptors == null) {
+			logger.warn("No capability descriptor found, this will create an unusable resource. Please, check the descriptor format");
+		} else {	
+			Iterator<CapabilityDescriptor> capabilityIterator = capabilityDescriptors.iterator();
+			while (capabilityIterator.hasNext()) {
+				CapabilityDescriptor capabilityDescriptor = capabilityIterator.next();
+				ICapabilityFactory factory = capabilityFactories.get(capabilityDescriptor.getCapabilityInformation().getType());
+				if (factory == null) {
+					throw new ResourceException("Factory not found for capabilities of type: " + capabilityDescriptor.getCapabilityInformation()
+							.getType());
+				}
+				ICapability capability = factory.create(resource);
+				capabilities.add(capability);
 			}
-			ICapability capability = factory.create(resource);
-			capabilities.add(capability);
 		}
 		return capabilities;
 	}

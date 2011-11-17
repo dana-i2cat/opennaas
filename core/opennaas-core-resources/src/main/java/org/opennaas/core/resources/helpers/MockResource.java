@@ -12,6 +12,7 @@ import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
@@ -75,7 +76,7 @@ public class MockResource implements IResource {
 		resourceDescriptor = new ResourceDescriptor();
 		capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-
+		resourceIdentifier = new ResourceIdentifier();
 	}
 
 	public String getResourceId() {
