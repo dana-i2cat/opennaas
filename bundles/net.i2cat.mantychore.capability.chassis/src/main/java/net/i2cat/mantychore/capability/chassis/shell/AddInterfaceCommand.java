@@ -77,10 +77,10 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			printInfo("Sending message to the queue");
-
+			
+			// checking given interface is in source resource (we need some data from it)
 			ComputerSystem routerModel = ((ComputerSystem) sourceResource.getModel());
-			int pos = containsSubInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel); // change to containssub
+			int pos = containsSubInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel);
 			if (pos == -1)
 				throw new Exception("The Physical router don't have the interface");
 
@@ -88,6 +88,8 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 			if (!(logicalDevice instanceof NetworkPort))
 				throw new Exception("It is not a correct interface to configure");
 
+			
+			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, logicalDevice);
 
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
