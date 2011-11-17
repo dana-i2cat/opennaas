@@ -5,24 +5,25 @@ resource:create /home/carlos/Escritorio/resource.descriptor
 
 protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:junos20
-ipv4:list router:junos20
 
 
 chassis:createSubInterface -pu 345 -v 120 router:junos20 lt-1/2/0.344
 chassis:createSubInterface -pu 344 -v 120 router:junos20 lt-1/2/0.345
 
+queue:listactions router:junos20
+queue:execute router:junos20
 
+chassis:showinterfaces router:junos20
 
+chassis:deleteSubInterface router:junos20 lt-1/2/0.344
+chassis:deleteSubInterface router:junos20 lt-1/2/0.345
 
 queue:listactions router:junos20
 queue:execute router:junos20
-ipv4:list router:junos20
+
+chassis:showinterfaces router:junos20
+
 
 resource:list
-
-
-#Restoring configuration
 resource:stop router:junos20
 resource:remove router:junos20
-
-#protocols:remove ...
