@@ -22,7 +22,10 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "chassis", name = "addInterface", description = "Add an new subinterface in a logical router")
+/**
+ * Caution: Adding an interface to a LR causes the interface ip config to be removed.
+ */
+@Command(scope = "chassis", name = "addInterface", description = "Add a subinterface to a logical router.")
 public class AddInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id from it is get the interface.", required = true, multiValued = false)

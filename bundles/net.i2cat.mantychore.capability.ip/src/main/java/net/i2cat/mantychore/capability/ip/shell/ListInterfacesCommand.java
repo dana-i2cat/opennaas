@@ -10,6 +10,7 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import org.opennaas.core.resources.IResource;
@@ -85,14 +86,14 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			printSymbol(" [Interface name] 	IP/MASK			");
 			printSymbol(horizontalSeparator);
 
+			//print ifaces & its ip address 
 			for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
-				// TODO CHECK IF IT IS POSSIBLE
-				if (logicalDevice instanceof EthernetPort) {
-					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + ethernetPort.getName() + "." + ethernetPort.getPortNumber() + "]  ");
+				if (logicalDevice instanceof NetworkPort) {
+					NetworkPort port = (NetworkPort) logicalDevice;
+					printSymbolWithoutDoubleLine(bullet + " [" + port.getName() + "." + port.getPortNumber() + "]  ");
 
-					if (ethernetPort.getProtocolEndpoint() != null) {
-						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
+					if (port.getProtocolEndpoint() != null) {
+						for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof IPProtocolEndpoint) {
 								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
 								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
@@ -103,23 +104,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 						}
 					}
-
-				} else if (logicalDevice instanceof LogicalTunnelPort) {
-					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + lt.getName() + "." + lt.getPortNumber() + "]  ");
-
-					if (lt.getProtocolEndpoint() != null) {
-						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
-							if (protocolEndpoint instanceof IPProtocolEndpoint) {
-								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
-								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
-								if (ipv4 != null && mask != null) {
-									printSymbol(doubleTab + ipv4 + " / " + mask);
-								}
-							}
-						}
-					}
-
 				}
 				printSymbol("");
 			}
