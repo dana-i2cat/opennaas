@@ -3,6 +3,8 @@ package net.i2cat.mantychore.capability.chassis.shell;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
@@ -30,7 +32,11 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	private String	description = "";
 
 	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging.")
-	private int	vlanid;
+	private int	vlanid = 1;
+	
+	@Option(name = "--peerunit", aliases = { "-pu" }, description = "specify peer unit for lts.")
+	private int	peerunit = -1;
+
 
 	
 
@@ -82,15 +88,27 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private EthernetPort prepareParams() {
+	private NetworkPort prepareParams() throws Exception {
 		String[] args = subinterface.split("\\.");
-		EthernetPort eth = new EthernetPort();
-		eth.setName(args[0]);
-		eth.setPortNumber(Integer.parseInt(args[1]));
+		//check if it is a logical tunnel
+		NetworkPort networkPort = null; 
+		if (args[0].startsWith("lt")) {
+			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
+			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
+			// VLAN//TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
+			if (peerunit == -1) throw new Exception ("A lt has to include a lt"); 
+			logicalTunnel.setPeer_unit(peerunit);
+			networkPort = logicalTunnel;
+		} else {
+			networkPort = new EthernetPort();
+		}
+		
+		networkPort.setName(args[0]);
+		networkPort.setPortNumber(Integer.parseInt(args[1]));
 		VLANEndpoint vlanEndpoint = new VLANEndpoint();
 		vlanEndpoint.setVlanID(vlanid); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
-		eth.addProtocolEndpoint(vlanEndpoint);
-		eth.setDescription(description);
-		return eth;
+		networkPort.addProtocolEndpoint(vlanEndpoint);
+		networkPort.setDescription(description);
+		return networkPort;
 	}
 }
