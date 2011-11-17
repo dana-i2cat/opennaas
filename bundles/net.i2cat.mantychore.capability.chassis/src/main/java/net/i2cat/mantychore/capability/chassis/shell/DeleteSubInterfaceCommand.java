@@ -43,7 +43,7 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -61,7 +61,7 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error deleting interface.");
 			printError(e);
 			printEndCommand();
 			return -1;

@@ -15,12 +15,12 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
 //			Object response = executeCommand("chassis:up " + resourceFriendlyID + " fe-0/1/2");
-@Command(scope = "chassis", name = "up", description = "Up an physical interface")
+@Command(scope = "chassis", name = "up", description = "Up a physical interface")
 public class UpInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
 	private String	resourceId;
-	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
+	@Argument(index = 1, name = "interface", description = "The name of the interface to be settted up.", required = true, multiValued = false)
 	private String	interfaceName;
 
 	@Override
@@ -43,7 +43,7 @@ public class UpInterfaceCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -61,7 +61,7 @@ public class UpInterfaceCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error setting up an interfaces.");
 			printError(e);
 			printEndCommand();
 			return -1;

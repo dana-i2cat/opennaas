@@ -23,7 +23,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 
-@Command(scope = "chassis", name = "showInterfaces", description = "List all the interfaces of a given resource.")
+@Command(scope = "chassis", name = "showInterfaces", description = "List all interfaces of a given resource.")
 public class ShowInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
@@ -35,7 +35,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("show resource interfaces information");
+		printInitCommand("show interfaces information");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -54,7 +54,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}

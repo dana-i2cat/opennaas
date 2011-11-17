@@ -59,7 +59,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
@@ -71,11 +71,11 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			ComputerSystem routerModel = ((ComputerSystem) resource.getModel());
 			int pos = containsInterface(paramsInterface[0], routerModel);
 			if (pos == -1)
-				throw new Exception("The Physical router don't have the interface");
+				throw new Exception("Given interface is not in parent resource model. Try refreshing the model.");
 
 			LogicalDevice logicalDevice = routerModel.getLogicalDevices().get(pos);
 			if (!(logicalDevice instanceof NetworkPort))
-				throw new Exception("It is not a correct interface to configure");
+				throw new Exception("Given interface is not supported.");
 
 			NetworkPort params = copyNetworkPort((NetworkPort) logicalDevice, Integer.parseInt(paramsInterface[1]));
 			addVlanId(params, vlanId);
@@ -88,7 +88,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error setting vlan.");
 			printError(e);
 			printEndCommand();
 			return null;
@@ -198,7 +198,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 				return (VLANEndpoint) protocolEndpoint;
 			}
 		}
-		throw new Exception("VLANEnpoint don't found");
+		throw new Exception("VLANEnpoint not found");
 
 	}
 

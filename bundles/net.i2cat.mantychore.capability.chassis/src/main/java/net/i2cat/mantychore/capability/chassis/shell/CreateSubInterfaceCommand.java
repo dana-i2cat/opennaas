@@ -28,13 +28,13 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "subInterface", description = "The interface to be created.", required = true, multiValued = false)
 	private String	subinterface;
 	
-	@Option(name = "--description", aliases = { "-d" }, description = "description info.")
+	@Option(name = "--description", aliases = { "-d" }, description = "interface description .")
 	private String	description = "";
 
 	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging.")
 	private int	vlanid = 1;
 	
-	@Option(name = "--peerunit", aliases = { "-pu" }, description = "specify peer unit for lts.")
+	@Option(name = "--peerunit", aliases = { "-pu" }, description = "specify peer unit for lt interfaces.")
 	private int	peerunit = -1;
 
 
@@ -43,7 +43,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("create  subInterfaces");
+		printInitCommand("create subInterface");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -61,7 +61,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -96,7 +96,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
 			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
 			// VLAN//TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
-			if (peerunit == -1) throw new Exception ("A lt has to include a lt"); 
+			if (peerunit == -1) 
+				throw new Exception ("peerUnit must be specified in lt interfaces"); 
 			logicalTunnel.setPeer_unit(peerunit);
 			networkPort = logicalTunnel;
 		} else {

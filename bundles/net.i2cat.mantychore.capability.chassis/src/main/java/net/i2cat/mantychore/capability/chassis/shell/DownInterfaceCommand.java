@@ -14,12 +14,12 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "down", description = "Down an physical interface")
+@Command(scope = "chassis", name = "down", description = "Down a physical interface")
 public class DownInterfaceCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "Id of the resource owning the interface", required = true, multiValued = false)
 	private String	resourceId;
-	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
+	@Argument(index = 1, name = "interface", description = "The name of the interface to set down", required = true, multiValued = false)
 	private String	interfaceName;
 
 	@Override
@@ -42,7 +42,7 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -59,7 +59,7 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error setting down interfaces.");
 			printError(e);
 			printEndCommand();
 			return -1;
