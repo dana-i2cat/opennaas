@@ -27,6 +27,12 @@ public class RestoreAction extends JunosAction {
 			discardCommand.initialize();
 			Response response = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(response);
+			
+			//TODO test unlock command
+//			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
+//			unlockCommand.initialize();
+//			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
+//			actionResponse.addResponse(responseUnlock);
 
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);

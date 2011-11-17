@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.DiscardNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.LockNetconfCommand;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,11 +29,19 @@ public class PrepareAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
+			/* lock commnad */
+			//TODO test lock and unlock
+//			LockNetconfCommand lockCommand = new LockNetconfCommand("target");
+//			lockCommand.initialize();
+//			Response responseLock = sendCommandToProtocol(lockCommand, protocol);
+//			actionResponse.addResponse(responseLock);
+		
+			
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();
 			discardCommand.initialize();
-			Response response = sendCommandToProtocol(discardCommand, protocol);
-			actionResponse.addResponse(response);
+			Response responsePrepare = sendCommandToProtocol(discardCommand, protocol);
+			actionResponse.addResponse(responsePrepare);
 
 			/* it can't be executed this workflow */
 		} catch (Exception e) {

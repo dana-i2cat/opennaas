@@ -7,5 +7,8 @@ public class CommandNetconfConstants {
 	public static final String	EDIT		= "setConfiguration";
 	public static final String	DISCARD		= "discard";
 	public static final String	RESTORE		= "restore";
+	public static final String	LOCK		= "lock";
+	public static final String	UNLOCK		= "unlock";
+
 
 }
