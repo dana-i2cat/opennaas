@@ -35,28 +35,30 @@ public class ConfigureEncapsulationAction extends JunosAction {
 		if (! (params instanceof NetworkPort)) {
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 		}
-		
-		if (params instanceof EthernetPort) {
-			return checkParamsForEth((EthernetPort) params);
-		} else if (params instanceof LogicalTunnelPort) {	
+
+		//TODO In this moment is not supported ethernet encapsulation
+//		if (params instanceof EthernetPort) {
+//			return checkParamsForEth((EthernetPort) params);
+//		} else 
+		if (params instanceof LogicalTunnelPort) {	
 			return checkParamsForLT((LogicalTunnelPort) params);
 		} else 
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 	}
 	
-	private boolean checkParamsForEth(EthernetPort eth) throws ActionException {
-		if (eth.getName() == null || eth.getName().isEmpty())
-			throw new ActionException("Not valid name for the interface");
-
-		setTemplate("/VM_files/configureEthVLAN.vm");
-		return true;
-	}
+//	private boolean checkParamsForEth(EthernetPort eth) throws ActionException {
+//		if (eth.getName() == null || eth.getName().isEmpty())
+//			throw new ActionException("Not valid name for the interface");
+//
+//		setTemplate("/VM_files/configureEthVLAN.vm");
+//		return true;
+//	}
 	
 	private boolean checkParamsForLT(LogicalTunnelPort lt) throws ActionException {
 		if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
 			throw new ActionException("Not valid name for the interface");
 
-		setTemplate("/VM_files/configureLogicalTunnelVLAN.vm");
+		setTemplate("/VM_files/setEncapsulationLTVLAN.vm");
 		return true;
 	}
 	

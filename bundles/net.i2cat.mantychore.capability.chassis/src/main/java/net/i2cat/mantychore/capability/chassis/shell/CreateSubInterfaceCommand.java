@@ -1,5 +1,8 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -31,8 +34,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	@Option(name = "--description", aliases = { "-d" }, description = "interface description .")
 	private String	description = "";
 
-	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging.")
-	private int	vlanid = 1;
+	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging. IMPORTANT, ethernet interfaces need to include vlans")
+	private int	vlanid = -1;
 	
 	@Option(name = "--peerunit", aliases = { "-pu" }, description = "specify peer unit for lt interfaces.")
 	private int	peerunit = -1;
@@ -70,6 +73,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
+			checkParams();
+			
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, prepareParams());
@@ -87,6 +92,27 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
+	
+	public void checkParams ()  throws Exception  {
+		
+		 Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
+	      Matcher ltmatcher = ltPattern.matcher(subinterface);
+		 Pattern ethPattern = Pattern.compile("[fg]e-[0-9]/[0-9]/[0-9].[0-9]");
+	      Matcher ethmatcher = ltPattern.matcher(subinterface);
+		 Pattern loPattern = Pattern.compile("lo[0-9].[0-9]");
+	      Matcher lomatcher = ltPattern.matcher(subinterface);
+	      
+	      Matcher matcher = ltPattern.matcher(subinterface);
+	      if (matcher.find()) throw new Exception ("peerUnit must be specified in lt interfaces"); 
+		
+		String[] args = subinterface.split("\\.");
+		/* check logical tunnels */
+		if (ltmatcher.find()) { if (peerunit == -1) throw new Exception ("peerUnit must be specified in lt interfaces"); }
+		
+		/* check ethernet ports */
+		if (ethmatcher.find() || lomatcher.find())  {if (vlanid == -1) throw new Exception ("vlan must be specified in ethernet interfaces"); }
+		
+	}
 
 	private NetworkPort prepareParams() throws Exception {
 		String[] args = subinterface.split("\\.");
@@ -95,7 +121,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		if (args[0].startsWith("lt")) {
 			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
 			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
-			// VLAN//TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
+			// TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
 			if (peerunit == -1) 
 				throw new Exception ("peerUnit must be specified in lt interfaces"); 
 			logicalTunnel.setPeer_unit(peerunit);
@@ -106,9 +132,11 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		
 		networkPort.setName(args[0]);
 		networkPort.setPortNumber(Integer.parseInt(args[1]));
-		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(vlanid); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
-		networkPort.addProtocolEndpoint(vlanEndpoint);
+		if (vlanid != -1) {
+			VLANEndpoint vlanEndpoint = new VLANEndpoint();
+			vlanEndpoint.setVlanID(vlanid); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
+			networkPort.addProtocolEndpoint(vlanEndpoint);			
+		}
 		networkPort.setDescription(description);
 		return networkPort;
 	}
