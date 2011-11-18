@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.DiscardNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.UnlockNetconfCommand;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,10 +30,10 @@ public class RestoreAction extends JunosAction {
 			actionResponse.addResponse(response);
 			
 			//TODO test unlock command
-//			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
-//			unlockCommand.initialize();
-//			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
-//			actionResponse.addResponse(responseUnlock);
+			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
+			unlockCommand.initialize();
+			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
+			actionResponse.addResponse(responseUnlock);
 
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);

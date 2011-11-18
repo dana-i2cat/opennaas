@@ -1,0 +1,7 @@
+<resourceDescriptor>
+    <information>
+        <type>router</type>
+        <name>junos20</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

@@ -30,11 +30,7 @@ public class PrepareAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
 			/* lock commnad */
-			//TODO test lock and unlock
-//			LockNetconfCommand lockCommand = new LockNetconfCommand("target");
-//			lockCommand.initialize();
-//			Response responseLock = sendCommandToProtocol(lockCommand, protocol);
-//			actionResponse.addResponse(responseLock);
+
 		
 			
 			/* discard changes */
@@ -42,6 +38,11 @@ public class PrepareAction extends JunosAction {
 			discardCommand.initialize();
 			Response responsePrepare = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(responsePrepare);
+			
+			LockNetconfCommand lockCommand = new LockNetconfCommand("candidate");
+			lockCommand.initialize();
+			Response responseLock = sendCommandToProtocol(lockCommand, protocol);
+			actionResponse.addResponse(responseLock);
 
 			/* it can't be executed this workflow */
 		} catch (Exception e) {
