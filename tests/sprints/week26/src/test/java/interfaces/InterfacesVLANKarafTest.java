@@ -115,7 +115,6 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			resource = resourceManager.createResource(resourceDescriptor);
 			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());
-			resource = resourceManager.getResource(resource.getResourceIdentifier());
 			// call the command to initialize the model
 
 		} catch (ResourceException e) {
@@ -263,6 +262,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		ComputerSystem system = (ComputerSystem) resource.getModel();
 		List<LogicalDevice> ld = system.getLogicalDevices();
 		Assert.assertNotNull(ld);
+		Assert.assertFalse(ld.isEmpty());
 		LogicalPort iface = null;
 		for (LogicalDevice l : ld) {
 			// Only check the modified interface

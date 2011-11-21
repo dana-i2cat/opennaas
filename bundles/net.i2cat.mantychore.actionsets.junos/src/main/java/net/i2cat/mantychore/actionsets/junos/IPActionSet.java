@@ -18,7 +18,6 @@ public class IPActionSet extends ActionSet {
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
-
 	}
 
 	@Override
