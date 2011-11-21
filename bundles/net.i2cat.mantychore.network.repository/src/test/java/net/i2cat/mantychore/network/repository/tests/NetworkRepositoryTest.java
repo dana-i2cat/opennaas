@@ -1,3 +1,5 @@
+package net.i2cat.mantychore.network.repository.tests;
+
 import net.i2cat.mantychore.network.repository.NetworkRepository;
 import net.i2cat.mantychore.tests.utils.mock.MockCapabilityFactory;
 import net.i2cat.mantychore.tests.utils.mock.MockDescriptorRepository;
