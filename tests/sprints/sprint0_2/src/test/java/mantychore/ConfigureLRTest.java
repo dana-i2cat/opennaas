@@ -190,6 +190,9 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3,
 				commandprocessor);
 
+		response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		
+		
 		// check logical router creation
 		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
@@ -198,18 +201,13 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		Assert.assertTrue(response2.get(1).isEmpty());
 
 		if (!isMock) {
+			Assert.assertFalse(resource.getModel().getChildren().isEmpty());
+		
 			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
 			boolean exist = ExistanceHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
 			Assert.assertTrue(exist);
-
 		}
-
-		// check logical router creation
-		List<String> response7 = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID, commandprocessor);
-
-		// assert command output no contains ERROR tag
-		Assert.assertTrue(response7.get(1).isEmpty());
-		Assert.assertFalse(resource.getModel().getChildren().isEmpty());
+		
 
 		// HOW GET WE A VIRTUAL RESOURCE, WE DON'T HAVE ANY METHOD TO SEARCH????
 		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName("router", logicalRouterName);

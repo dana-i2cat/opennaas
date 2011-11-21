@@ -184,9 +184,6 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 		// assert command output no contains ERROR tagInitializerTestHelper
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		response1 = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID, commandprocessor);
-		Assert.assertTrue(response1.get(1).isEmpty());
-
 		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
 					commandprocessor);
 		// assert command output no contains ERROR tag

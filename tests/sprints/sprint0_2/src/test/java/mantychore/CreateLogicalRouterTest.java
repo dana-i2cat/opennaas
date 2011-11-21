@@ -185,11 +185,6 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 					commandprocessor);
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			// check logical router creation
-			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
-					commandprocessor);
-			Assert.assertTrue(response.get(1).isEmpty());
-
 			response1 = KarafCommandHelper.executeCommand("resource:list ",
 					commandprocessor);
 			Assert.assertTrue(response1.get(1).isEmpty());
@@ -229,7 +224,6 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 			if (!isMock) {
 				Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
-
 			}
 
 		} catch (Exception e) {
