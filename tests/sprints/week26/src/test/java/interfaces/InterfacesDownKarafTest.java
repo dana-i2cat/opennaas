@@ -202,7 +202,7 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 			// assert command output contains no ERROR
 			Assert.assertTrue(response1.get(1).isEmpty());
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 			log.info(response2.get(0));
 
 			// assert command output contains no ERROR
@@ -251,7 +251,7 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 			// assert command output contains no ERROR
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 			log.info(response2.get(0));
 
 			// assert command output contains no ERROR

@@ -279,7 +279,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 
 	public void testingMethod(String inter, String subport, String newIp, String newMask) throws Exception {
 		// REFRESH to fill up the model
-		List<String> response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
+		List<String> response = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// Obtain the previous IP/MASK make the rollback of the test
@@ -296,7 +296,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 		checkModel(inter, subport, OldIPMask.get(0), OldIPMask.get(1), resource);
 
 		// REFRESH to fill up the model
-		response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
+		response = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// CHECK CHANGES IN THE INTERFACE
@@ -311,7 +311,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		// REFRESH
-		response = KarafCommandHelper.executeCommand("ipv4:list -r " + resourceFriendlyID, commandprocessor);
+		response = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
 		Assert.assertTrue(response.get(1).isEmpty());
 		// CHECK THe ROLLBACK IS DONE
 		checkModel(inter, subport, OldIPMask.get(0), OldIPMask.get(1), resource);

@@ -115,7 +115,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			resource = resourceManager.createResource(resourceDescriptor);
 			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());
-
+			resource = resourceManager.getResource(resource.getResourceIdentifier());
 			// call the command to initialize the model
 
 		} catch (ResourceException e) {
@@ -218,6 +218,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			Assert.assertNotNull(ld);
+			Assert.assertFalse(ld.isEmpty());
 			for (LogicalDevice l : ld) {
 				// Only check the modified interface
 				if (l.getName().equalsIgnoreCase(inter)) {
@@ -300,7 +301,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	public void testingMethod(String inter, String subport, int VLANid) throws Exception {
 
 		// REFRESH to fill up the model
-		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -320,7 +321,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		checkModel(inter, subport, OldVLAN, resource);
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -335,7 +336,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
