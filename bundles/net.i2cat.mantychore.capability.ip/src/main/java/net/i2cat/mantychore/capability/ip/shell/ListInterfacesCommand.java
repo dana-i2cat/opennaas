@@ -28,9 +28,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with current router configuration")
-	boolean			refresh;
-
 	@Override
 	protected Object doExecute() throws Exception {
 
@@ -61,22 +58,6 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 
 			validateResource(resource);
-
-			if (refresh) {
-				ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
-
-				ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
-				// TODO WE NEED TO USE QUEUE WITH CHASSIS
-				IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
-
-				printInfo("Sending the message...");
-				try {
-					queue.execute();
-				} catch (CapabilityException e) {
-					queue.empty();
-					throw e;
-				}
-			}
 
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 			printSymbol(horizontalSeparator);

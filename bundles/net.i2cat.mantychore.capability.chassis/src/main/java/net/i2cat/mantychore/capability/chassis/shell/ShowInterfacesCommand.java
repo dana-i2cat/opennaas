@@ -1,36 +1,24 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
-import java.util.List;
-
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.chassis.Activator;
-import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "chassis", name = "showInterfaces", description = "List all interfaces of a given resource.")
 public class ShowInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
-
-	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the last router configuration")
-	boolean			refresh;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -62,23 +50,6 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 
 			validateResource(resource);
-
-			if (refresh) {
-				ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-
-				chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-
-				// TODO WE NEED TO USE QUEUE WITH CHASSIS
-				IQueueManagerService queue = Activator.getQueueManagerService(resourceIdentifier.getId());
-
-				printInfo("Sending the message...");
-				try {
-					queue.execute();
-				} catch (CapabilityException e) {
-					queue.empty();
-					throw e;
-				}
-			}
 
 			ComputerSystem model = (ComputerSystem) resource.getModel();
 
@@ -134,14 +105,5 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
-			}
-		}
-		throw new Exception("Error getting the capability");
 	}
 }
