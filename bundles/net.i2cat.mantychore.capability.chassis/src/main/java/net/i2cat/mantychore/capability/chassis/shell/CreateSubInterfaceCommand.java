@@ -95,15 +95,12 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 	
 	public void checkParams ()  throws Exception  {
 		
-		 Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
-	      Matcher ltmatcher = ltPattern.matcher(subinterface);
-		 Pattern ethPattern = Pattern.compile("[fg]e-[0-9]/[0-9]/[0-9].[0-9]");
-	      Matcher ethmatcher = ltPattern.matcher(subinterface);
-		 Pattern loPattern = Pattern.compile("lo[0-9].[0-9]");
-	      Matcher lomatcher = ltPattern.matcher(subinterface);
-	      
-	      Matcher matcher = ltPattern.matcher(subinterface);
-	      if (matcher.find()) throw new Exception ("peerUnit must be specified in lt interfaces"); 
+		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
+	    Matcher ltmatcher = ltPattern.matcher(subinterface);
+		Pattern ethPattern = Pattern.compile("[fg]e-[0-9]/[0-9]/[0-9].[0-9]");
+	    Matcher ethmatcher = ethPattern.matcher(subinterface);
+		Pattern loPattern = Pattern.compile("lo[0-9].[0-9]");
+	    Matcher lomatcher = loPattern.matcher(subinterface);
 		
 		String[] args = subinterface.split("\\.");
 		/* check logical tunnels */
