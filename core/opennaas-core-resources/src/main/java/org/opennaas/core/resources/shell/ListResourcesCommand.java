@@ -13,10 +13,10 @@ import org.opennaas.core.resources.IResourceManager;
  * 
  * 
  */
-@Command(scope = "resource", name = "list", description = "List the resources in the platform")
+@Command(scope = "resource", name = "list", description = "List all resources in the platform")
 public class ListResourcesCommand extends GenericKarafCommand {
 
-	@Option(name = "--type", aliases = { "-t" }, description = "The resource's type you want to obtain a list.", required = false, multiValued = false)
+	@Option(name = "--type", aliases = { "-t" }, description = "Specifies the type of resources to list (if specified, only resources of this type will be listed)", required = false, multiValued = false)
 	private String	resourceType	= null;
 
 	@Override
@@ -41,7 +41,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 			printInfo("Found " + resources.size() + " resources.");
 			printSymbol(horizontalSeparator);
 			if (resourceType != null) {
-				printInfo("Listing the resource of the type " + resourceType);
+				printInfo("Listing resources of type " + resourceType);
 				printSymbol(underLine);
 
 				for (IResource resource : resources) {
@@ -53,7 +53,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 				printSymbol(horizontalSeparator);
 
 			} else {
-				printInfo("Listing all the resources ");
+				printInfo("Listing all resources ");
 				printSymbol(underLine);
 				for (IResource resource : resources) {
 					printInfo(doubleTab + "TYPE: " + resource.getResourceDescriptor().getInformation().getType() + doubleTab + "ID: " + resource
@@ -67,7 +67,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 
 		} catch (Exception e) {
 			printError(e);
-			printError("Error listing Resource. ");
+			printError("Error listing resources. ");
 
 		}
 		printEndCommand();

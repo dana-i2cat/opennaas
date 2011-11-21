@@ -82,7 +82,6 @@ public class ResourceManager implements IResourceManager {
 	 * 
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
 	 *         value.
-	 * 
 	 */
 	public synchronized List<IResource> listResourcesByType(String type) {
 		List<IResource> result = new ArrayList<IResource>();

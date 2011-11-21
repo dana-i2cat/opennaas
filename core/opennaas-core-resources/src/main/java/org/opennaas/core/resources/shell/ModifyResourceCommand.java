@@ -20,12 +20,12 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.xml.sax.SAXException;
 
-@Command(scope = "resource", name = "modify", description = "Modify one or more existing resources")
+@Command(scope = "resource", name = "modify", description = "Modify an existing resource, changing its descriptor")
 public class ModifyResourceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The name of the existing resource to modify ", required = true, multiValued = false)
 	private String	resourceId;
-	@Argument(index = 1, name = "path or url", description = "THe file path or url to new resource descriptor", required = true, multiValued = false)
+	@Argument(index = 1, name = "path or url", description = "File path or url to new resource descriptor", required = true, multiValued = false)
 	private String	filename;
 
 	// @Option(name = "--profile", aliases = { "-p" }, description = "")
@@ -58,7 +58,6 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 				resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (resourceIdentifier != null) {
 					try {
-
 						manager.modifyResource(resourceIdentifier, descriptor);
 						printInfo("Resource " + argsRouterName[1] + " modified.");
 					} catch (ResourceException f) {

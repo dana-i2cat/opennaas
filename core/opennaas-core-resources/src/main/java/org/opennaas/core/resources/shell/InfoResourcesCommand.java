@@ -28,7 +28,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("information resource");
+		printInitCommand("print resource information");
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
@@ -94,7 +94,6 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 		} catch (Exception e) {
 			printError(e);
 			printError("Error showing information of resource.");
-
 		}
 		printEndCommand();
 		return null;

@@ -61,7 +61,7 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 			printInfo("Removed " + counter + " resource/s from " + resourceIDs.size());
 
 		} catch (Exception e) {
-			printError("Error removing Resource.");
+			printError("Error removing resource.");
 			printError(e);
 		}
 		printEndCommand();

@@ -52,7 +52,7 @@ public class StopResourceCommand extends GenericKarafCommand {
 						if (!force) {
 							manager.stopResource(identifier);
 						} else {
-							printInfo("Forcing remove resource");
+							printInfo("Forcing resource to stop");
 							manager.forceStopResource(identifier);
 						}
 

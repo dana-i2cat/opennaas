@@ -207,10 +207,10 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		ResourceDescriptor rd = getDescriptor(stream);
 
 		if (rd.getInformation().getType() == null || rd.getInformation().getType() == "") {
-			throw new ResourceException("ResourceDescriptor: Needed to indicate a resource type.");
+			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource type.");
 		}
 		if (rd.getInformation().getName().equals("") || rd.getInformation().getName() == null) {
-			throw new ResourceException("ResourceDescriptor: The resourceName field cannot be null.");
+			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource name.");
 		}
 
 		printInfo("Descriptor loaded for resource " + rd.getInformation().getName() + " with type: " + rd.getInformation()

@@ -53,9 +53,10 @@ public interface IResourceManager {
 	public void removeResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
-	 * List all resources in container by type.
+	 * List all the existing resources of a given type. If type is null, list all resources whatever its type is.
 	 * 
-	 * @return
+	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
+	 *         value.
 	 */
 	public List<IResource> listResourcesByType(String type);
 

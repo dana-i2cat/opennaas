@@ -50,25 +50,23 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 				identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (identifier == null) {
 					printError("Resource not found in Repository");
-					printError("The exportation is canceled");
+					printError("Export cancelled.");
 					return null;
 				}
 				try {
 					manager.exportResourceDescriptor(identifier, fileName);
+					printInfo("Export descriptor succesful for resource: " + resourceId);
 				} catch (ResourceException e) {
-					printError("An error occurred starting the resource " + resourceId);
+					printError("An error occurred exporting descriptor of resource " + resourceId);
 					printError(e);
 				}
-				printInfo("Exportation succesful for resource: " + resourceId);
 
 			} else {
-
 				printError("The type of the file must be .descriptor ");
 			}
 		} catch (Exception e) {
 			printError(e);
 			printError("Error exporting Resource.");
-
 		}
 		printEndCommand();
 		return null;
