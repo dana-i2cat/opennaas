@@ -128,7 +128,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 	}
 
 	private void printActionResponseBrief(ActionResponse actionResponse) {
-		printSymbol("--- actionid: " + actionResponse.getActionID() + " status: " + actionResponse.getStatus() + " ---");
+		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		String[] titles = { "Command Name", "Status" };
@@ -144,14 +144,19 @@ public class ExecuteCommand extends GenericKarafCommand {
 	}
 
 	private void printActionResponseExtended(ActionResponse actionResponse) {
-		printSymbol("--- actionid: " + actionResponse.getActionID() + " status: " + actionResponse.getStatus() + " ---");
+		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		for (Response response : responses) {
 			printSymbol("Command: " + response.getCommandName());
+			printSymbol("Status: " + response.getStatus().toString());
+			
 			printSymbol("Message: " + response.getSentMessage());
-			newSeparator();
 			printSymbol("Information: " + response.getInformation());
+			for (String error: response.getErrors()){
+				printSymbol("Error: " + error);
+			}
+			newSeparator();
 		}
 	}
 
