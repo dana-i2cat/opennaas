@@ -16,17 +16,17 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "ipv4", name = "setIP", description = "Set a IP in a given interface of a resource")
+@Command(scope = "ipv4", name = "setIP", description = "Set an IP address in a given interface of a resource")
 public class SetIPv4Command extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id, owning the interface", required = true, multiValued = false)
 	private String	resourceId;
 	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
-	@Argument(index = 2, name = "ip", description = "A valid IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 2, name = "ip", description = "A valid IPv4 address : x.x.x.x", required = true, multiValued = false)
 	private String	ipv4;
 
-	@Argument(index = 3, name = "mask", description = "A valid MASK IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 3, name = "mask", description = "A valid IPv4 mask: x.x.x.x", required = true, multiValued = false)
 	private String	mask;
 
 	@Override
@@ -54,7 +54,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
@@ -74,12 +74,12 @@ public class SetIPv4Command extends GenericKarafCommand {
 			/* check if it uses logical router */
 
 			if (!validateIPAddress(ipv4)) {
-				printError("Ip format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
+				printError("Ip format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
 				printEndCommand();
 				return null;
 			}
 			if (!validateIPAddress(mask)) {
-				printError("Mask format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
+				printError("Mask format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
 				printEndCommand();
 				return null;
 			}
@@ -93,7 +93,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		} catch (Exception e) {
-			printError("Error setting interface.");
+			printError("Error setting ip address in an interface.");
 			printError(e);
 			printEndCommand();
 			return null;

@@ -13,19 +13,19 @@ import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "queue", name = "remove", description = "Execute all actions in queue")
+@Command(scope = "queue", name = "remove", description = "Remove an action from the queue")
 public class RemoveCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "Resource name of the owner queue", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the resource owning the queue", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "posQueue", description = "Position in the queue", required = true, multiValued = false)
+	@Argument(index = 1, name = "posQueue", description = "Position in the queue of the action to remove", required = true, multiValued = false)
 	private int		posQueue;
 
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("Execute all actions in queue");
+		printInitCommand("Remove action from queue");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -44,7 +44,7 @@ public class RemoveCommand extends GenericKarafCommand {
 
 			/* validate resource identifier */
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -52,13 +52,13 @@ public class RemoveCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
-			printSymbol("removing action " + posQueue + "...");
+			printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);
 			queue.sendMessage(QueueConstants.MODIFY, params);
 			printSymbol("Executed!!!");
 
 		} catch (Exception e) {
-			printError("Error getting queue.");
+			printError("Error removing action from queue.");
 			printError(e);
 			printEndCommand();
 			return -1;
@@ -66,14 +66,4 @@ public class RemoveCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
-			}
-		}
-		throw new Exception("Error getting the capability");
-	}
-
 }

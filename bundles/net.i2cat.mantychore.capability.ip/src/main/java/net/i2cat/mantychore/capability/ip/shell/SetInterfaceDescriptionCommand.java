@@ -46,7 +46,7 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}

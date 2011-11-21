@@ -58,7 +58,7 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 
 		} catch (Exception e) {
 			printError(e);
-			printError("Error showing information of resource.");
+			printError("Error listing alarms.");
 		}
 		printEndCommand();
 		return null;

@@ -28,7 +28,7 @@ public class ListConnectionsCommand extends GenericKarafCommand {
 			printConnections(resource);
 
 		} catch (Exception e) {
-			printError("Error in make connection");
+			printError("Error listing connections");
 			printError(e);
 			printEndCommand();
 			return "";

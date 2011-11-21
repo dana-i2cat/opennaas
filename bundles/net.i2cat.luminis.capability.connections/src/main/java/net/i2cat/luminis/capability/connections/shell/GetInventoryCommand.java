@@ -49,7 +49,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 				}
 				Response response = (Response) capability.sendMessage(ActionConstants.REFRESHCONNECTIONS, null);
 				if (!response.getErrors().isEmpty()) {
-					printError("Errors executing refresh:");
+					printError("Errors sending refresh:");
 					for (String errorMsg : response.getErrors()) {
 						printError(errorMsg);
 					}

@@ -1,18 +1,19 @@
 package net.i2cat.mantychore.capability.ip.shell;
 
-import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.ip.Activator;
 import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
@@ -21,17 +22,13 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-
 @Command(scope = "ipv4", name = "list", description = "List all the interfaces of a given resource.")
 public class ListInterfacesCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the interfaces.", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with the router configuration")
+	@Option(name = "--refresh", aliases = { "-r" }, description = "Force to refresh the model with current router configuration")
 	boolean			refresh;
 
 	@Override
@@ -56,7 +53,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
@@ -120,14 +117,5 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-	}
-
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
-			}
-		}
-		throw new Exception("Error getting the capability");
 	}
 }

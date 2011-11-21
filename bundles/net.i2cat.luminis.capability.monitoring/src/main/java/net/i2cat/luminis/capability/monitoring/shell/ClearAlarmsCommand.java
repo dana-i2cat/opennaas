@@ -15,7 +15,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
  * 
  * @author Carlos Baez
  */
-@Command(scope = "alarms", name = "clear", description = "Clear alarms")
+@Command(scope = "alarms", name = "clear", description = "Clear all alarms fromgiven resources")
 public class ClearAlarmsCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "A space delimited list of resource type and name.", required = true, multiValued = true)
@@ -59,7 +59,7 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 
 		} catch (Exception e) {
 			printError(e);
-			printError("Error showing information of resource.");
+			printError("Error clearing alarms.");
 		}
 		printEndCommand();
 		return null;
