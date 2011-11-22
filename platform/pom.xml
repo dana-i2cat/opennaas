@@ -76,38 +76,6 @@
 	</pluginRepositories>
 	<dependencies>
 		<dependency>
-			<groupId>org.apache.servicemix</groupId>
-			<artifactId>apache-servicemix</artifactId>
-			<type>pom</type>
-			<version>${servicemix.version}</version>
-		</dependency>
-		<!-- Karaf -->
-		<dependency>
-			<groupId>org.apache.karaf.shell</groupId>
-			<artifactId>org.apache.karaf.shell.console</artifactId>
-			<version>${karaf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.jaas</groupId>
-			<artifactId>org.apache.karaf.jaas.boot</artifactId>
-			<version>${karaf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.jaas</groupId>
-			<artifactId>org.apache.karaf.jaas.config</artifactId>
-			<version>${karaf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.jaas</groupId>
-			<artifactId>org.apache.karaf.jaas.modules</artifactId>
-			<version>${karaf.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.tooling</groupId>
-			<artifactId>org.apache.karaf.tooling.testing</artifactId>
-			<version>${karaf.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
@@ -144,7 +112,7 @@
 								<artifactItem>
 									<groupId>org.apache.servicemix</groupId>
 									<artifactId>apache-servicemix</artifactId>
-									<version>${fuse.version}</version>
+									<version>${servicemix.version}</version>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
@@ -188,6 +156,7 @@
 							</artifactItems>
 							<outputDirectory>${target-platform.path}/${servicemix.path}/system/org/opennaas/opennaas-core-features/1.0.0-SNAPSHOT/</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
+							<destFileName>opennaas-core-features-1.0.0-SNAPSHOT-features.xml</destFileName>
 						</configuration>
 					</execution>
 				</executions>

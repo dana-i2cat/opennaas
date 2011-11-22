@@ -42,6 +42,7 @@ public class ResourceRepository implements IResourceRepository {
 	/** This Repository's resource Type **/
 	protected String										resourceType			= null;
 
+	
 	private IResourceBootstrapperFactory					bootstrapperFactory		= null;
 
 	private String											persistenceUnit			= null;
