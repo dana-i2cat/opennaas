@@ -1,10 +1,9 @@
 package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
-import helpers.KarafCommandHelper;
-import helpers.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
@@ -40,10 +40,9 @@ import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.apache.felix.service.command.CommandProcessor;
 
-//import org.apache.felix.service.command.CommandProcessor;
-
 @RunWith(JUnit4TestRunner.class)
 public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	static Log					log	= LogFactory
 														.getLog(InterfacesVLANKarafTest.class);
 
@@ -60,7 +59,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 
 		return options;
@@ -91,7 +90,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
 		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
@@ -116,7 +115,6 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			resource = resourceManager.createResource(resourceDescriptor);
 			isMock = createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());
-
 			// call the command to initialize the model
 
 		} catch (ResourceException e) {
@@ -219,6 +217,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 			ComputerSystem system = (ComputerSystem) resource.getModel();
 			List<LogicalDevice> ld = system.getLogicalDevices();
 			Assert.assertNotNull(ld);
+			Assert.assertFalse(ld.isEmpty());
 			for (LogicalDevice l : ld) {
 				// Only check the modified interface
 				if (l.getName().equalsIgnoreCase(inter)) {
@@ -263,6 +262,8 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		ComputerSystem system = (ComputerSystem) resource.getModel();
 		List<LogicalDevice> ld = system.getLogicalDevices();
 		Assert.assertNotNull(ld);
+		Assert.assertFalse(ld.isEmpty());
+		LogicalPort iface = null;
 		for (LogicalDevice l : ld) {
 			// Only check the modified interface
 			if (l.getName().equalsIgnoreCase(inter)) {
@@ -270,37 +271,37 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 				if (l instanceof EthernetPort) {
 					EthernetPort eth = (EthernetPort) l;
 					if (eth.getPortNumber() == Integer.parseInt(port)) {
-						List<ProtocolEndpoint> pp = eth.getProtocolEndpoint();
-						Assert.assertNotNull(pp);
-						for (ProtocolEndpoint p : pp) {
-							if (p instanceof VLANEndpoint) {
-								return ((VLANEndpoint) p).getVlanID();
-							}
-						}
+						iface = eth;
+						break;
 					}
 				} else if (l instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) l;
 					if (lt.getPortNumber() == Integer.parseInt(port)) {
-						List<ProtocolEndpoint> pp = lt.getProtocolEndpoint();
-						Assert.assertNotNull(pp);
-						for (ProtocolEndpoint p : pp) {
-							if (p instanceof VLANEndpoint) {
-								return ((VLANEndpoint) p).getVlanID();
-							}
-						}
-
+						iface = lt;
+						break;
 					}
 				}
 			}
 		}
-		Assert.fail("Interface not found");
+		if (iface == null)
+			Assert.fail("Interface not found");
+		
+		List<ProtocolEndpoint> pp = iface.getProtocolEndpoint();
+		Assert.assertNotNull(pp);
+		for (ProtocolEndpoint p : pp) {
+			if (p instanceof VLANEndpoint) {
+				return ((VLANEndpoint) p).getVlanID();
+			}
+		}
+		
+		Assert.fail("Interface has no VLAN");
 		return 0;
 	}
 
 	public void testingMethod(String inter, String subport, int VLANid) throws Exception {
 
 		// REFRESH to fill up the model
-		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -320,7 +321,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		checkModel(inter, subport, OldVLAN, resource);
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -335,7 +336,7 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 

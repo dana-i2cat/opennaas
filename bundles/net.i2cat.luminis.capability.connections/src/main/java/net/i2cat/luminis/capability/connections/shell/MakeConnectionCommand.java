@@ -15,7 +15,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 
-@Command(scope = "connections", name = "makeConnection", description = "Makes a connection between given ports af given resource, and configures which lambda enters and which gets out of the connection.")
+@Command(scope = "connections", name = "makeConnection", description = "Makes a connection between given ports of given resource, and configures which lambda gets in and which gets out of the connection.")
 public class MakeConnectionCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to make connection.", required = true, multiValued = false)

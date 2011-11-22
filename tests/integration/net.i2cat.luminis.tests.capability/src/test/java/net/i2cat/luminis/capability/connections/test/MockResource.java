@@ -10,6 +10,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
@@ -30,6 +31,7 @@ public class MockResource implements IResource {
 	IModel				model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
+	IResourceIdentifier			resourceIdentifier;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
@@ -153,7 +155,7 @@ public class MockResource implements IResource {
 
 	public IResourceIdentifier getResourceIdentifier() {
 		log.info("get Resource Identifier...");
-		return null;
+		return resourceIdentifier;
 	}
 
 	public void setCapabilities(List<ICapability> arg0) {
@@ -167,9 +169,9 @@ public class MockResource implements IResource {
 
 	}
 
-	public void setResourceIdentifier(IResourceIdentifier arg0) {
+	public void setResourceIdentifier(IResourceIdentifier identifier) {
 		log.info("set Resource Identifier...");
-
+		this.resourceIdentifier = identifier;
 	}
 
 	public void start() throws ResourceException {

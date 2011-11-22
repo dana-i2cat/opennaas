@@ -56,19 +56,11 @@ public class GetConfigActionTest {
 		// this action always have this template as a default
 		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
-
-	@Test
-	public void testExecute() {
-		System.out.println("TEST EXECUTE");
-		try {
-			ActionResponse response = action.execute(protocolsessionmanager);
-		} catch (ActionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail();
-		}
-		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
-		Assert.assertNotNull(routerModel);
+	
+	
+	
+	private void printTest (net.i2cat.mantychore.model.System routerModel) {
+		
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
 
 		log.info("Logical devices: " + ld.size());
@@ -97,20 +89,48 @@ public class GetConfigActionTest {
 					log.info("VLAN " + vlan.getVlanID());
 				}
 			}
-
 		}
-
-		System.out.println("Found " + routerModel.getChildren().size() + " logical resources.");
+		
+		log.info("Found " + routerModel.getChildren().size() + " logical resources.");
 		for (Object systemElement : routerModel.getChildren()) {
-			System.out.println((String) systemElement);
+			log.info((String) systemElement);
 			if (systemElement instanceof ComputerSystem) {
 				ComputerSystem logicalrouter = (ComputerSystem) systemElement;
 				// check that the element is a Logical Router
-				System.out.println(logicalrouter.getName());
+				log.info(logicalrouter.getName());
 			}
 		}
-
+		
+		
 	}
+
+	@Test
+	public void testExecute() {
+		try {
+			ActionResponse response = action.execute(protocolsessionmanager);
+		} catch (ActionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Assert.fail();
+		}
+		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
+		Assert.assertNotNull(routerModel);
+		printTest(routerModel);
+	}
+	
+//	@Test
+//	public void testExecuteInLogicalRouter() {
+//		try {
+//			ActionResponse response = action.execute(protocolsessionmanager);
+//		} catch (ActionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			Assert.fail();
+//		}
+//		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
+//		Assert.assertNotNull(routerModel);
+//		printTest(routerModel);
+//	}
 
 	/**
 	 * Simple parser. It was used for proves with xml files

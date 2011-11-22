@@ -27,6 +27,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -133,11 +134,11 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		clearRepo();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
@@ -163,10 +164,10 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		clearRepo();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
@@ -230,11 +231,11 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		clearRepo();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
@@ -290,11 +291,11 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		clearRepo();
 
-		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("router");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(RepositoryHelper.newChassisCapabilityDescriptor());
-		capabilityDescriptors.add(RepositoryHelper.newQueueCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 

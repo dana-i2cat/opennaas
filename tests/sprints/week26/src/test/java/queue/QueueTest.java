@@ -2,8 +2,7 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
-import helpers.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,7 +115,7 @@ public class QueueTest extends AbstractIntegrationTest {
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceID, ProtocolSessionHelper.newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(resourceID, ResourceHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 

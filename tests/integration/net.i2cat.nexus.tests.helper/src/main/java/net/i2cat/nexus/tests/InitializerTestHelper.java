@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -42,5 +43,19 @@ public class InitializerTestHelper {
 		return resource;
 
 	}
+	
+	public static int containsCapability(IResource resource, String idCapability) {
+
+		int pos = 0;
+		for (ICapability capability : resource.getCapabilities()) {
+			if (capability.getCapabilityInformation().getType().equals(idCapability)) {
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
+
+	}
+	
 
 }

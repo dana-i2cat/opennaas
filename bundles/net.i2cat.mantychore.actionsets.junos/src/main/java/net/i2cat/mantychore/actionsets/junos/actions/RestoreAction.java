@@ -1,14 +1,15 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.DiscardNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.UnlockNetconfCommand;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.queue.QueueConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class RestoreAction extends JunosAction {
 	Log	log	= LogFactory.getLog(RestoreAction.class);
@@ -27,6 +28,12 @@ public class RestoreAction extends JunosAction {
 			discardCommand.initialize();
 			Response response = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(response);
+			
+			//TODO test unlock command
+			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
+			unlockCommand.initialize();
+			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
+			actionResponse.addResponse(responseUnlock);
 
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);

@@ -2,6 +2,9 @@ package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.ManagedElement;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -53,7 +56,15 @@ public class DeleteSubInterfaceAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template));
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+				//is logicalRouter, add LRName param
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+				//TODO If we don't have a ManagedElement initialized
+				} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
+					((ManagedElement)params).setElementName(""); 
+					
+				}
+			setVelocityMessage(prepareVelocityCommand(params, template)); 
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

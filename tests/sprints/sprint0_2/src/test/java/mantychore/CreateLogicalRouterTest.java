@@ -18,9 +18,10 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
-import net.i2cat.nexus.tests.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -97,7 +98,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
@@ -184,17 +185,12 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 					commandprocessor);
 			Assert.assertTrue(response.get(1).isEmpty());
 
-			// check logical router creation
-			response = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID,
-					commandprocessor);
-			Assert.assertTrue(response.get(1).isEmpty());
-
 			response1 = KarafCommandHelper.executeCommand("resource:list ",
 					commandprocessor);
 			Assert.assertTrue(response1.get(1).isEmpty());
 			if (!isMock) {
 
-				Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
+				Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 
 				Assert.assertTrue(response1.get(0).contains(LRFriendlyID));
 
@@ -227,8 +223,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 			Assert.assertTrue(response.get(0).contains(LRFriendlyID));
 
 			if (!isMock) {
-				Assert.assertTrue(CheckHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
-
+				Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), LRFriendlyID));
 			}
 
 		} catch (Exception e) {

@@ -22,23 +22,26 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "chassis", name = "addInterface", description = "Add an new subinterface in a logical router")
+/**
+ * Caution: Adding an interface to a LR causes the interface ip config to be removed.
+ */
+@Command(scope = "chassis", name = "addInterface", description = "Transfere an exitent subinterface from a physical router to a logical one.")
 public class AddInterfaceCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id from it is get the interface.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id, source of the transference", required = true, multiValued = false)
 	private String	physicalResourceId;
 
-	@Argument(index = 1, name = "resourceType:ChildResourceName", description = "Child resource id to add the interface.", required = true, multiValued = false)
+	@Argument(index = 1, name = "resourceType:ChildResourceName", description = "Child resource id, target of the transference.", required = true, multiValued = false)
 	private String	logicalResourceId;
 
-	@Argument(index = 2, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
+	@Argument(index = 2, name = "interface", description = "The name of the interface to be transfered", required = true, multiValued = false)
 	private String	interfaceName;
 
-	private boolean	checkTargetResource	= true;
+	private boolean	checkTargetResource	= false;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Add an interface to a new resource");
+		printInitCommand("Add an interface to a child logical router");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -62,8 +65,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 				IResourceIdentifier targetResourceIdentifier = getResourceIdentifier(manager, targetResourceName);
 				IResource targetResource = manager.getResource(targetResourceIdentifier);
 				if (isActivatedResource(targetResource))
-					throw new Exception("The resource is activated");
-
+					throw new Exception("The resource is activated.");
 			}
 
 			super.validateResource(sourceResource);
@@ -74,23 +76,24 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			printInfo("Sending message to the queue");
-
+			
+			// checking given interface is in source resource (we need some data from it)
 			ComputerSystem routerModel = ((ComputerSystem) sourceResource.getModel());
-			int pos = containsSubInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel); // change to containssub
+			int pos = containsSubInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel);
 			if (pos == -1)
-				throw new Exception("The Physical router don't have the interface");
+				throw new Exception("Given interface is not in parent resource model. Try refreshing the model.");
 
 			LogicalDevice logicalDevice = routerModel.getLogicalDevices().get(pos);
 			if (!(logicalDevice instanceof NetworkPort))
-				throw new Exception("It is not a correct interface to configure");
+				throw new Exception("Given interface is not supported.");
 
+			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, logicalDevice);
 
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
-			deviceCopied.setElementName(targetResourceName[1]);
+			deviceCopied.setElementName(targetResourceName[1]); // this tells the action that a LR is being used
 
-			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);
@@ -110,7 +113,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(resourceId[0], resourceId[1]);
 		if (resourceIdentifier == null)
-			throw new Exception("Error in identifier");
+			throw new Exception("Could not get resource with name: " + resourceId[0] + ":" + resourceId[1]);
 		return resourceIdentifier;
 	}
 
@@ -176,7 +179,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 				return (VLANEndpoint) protocolEndpoint;
 			}
 		}
-		throw new Exception("VLANEnpoint don't found");
+		throw new Exception("VLANEnpoint not found");
 
 	}
 

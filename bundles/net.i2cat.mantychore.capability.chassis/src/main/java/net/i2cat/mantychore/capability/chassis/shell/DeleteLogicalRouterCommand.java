@@ -12,7 +12,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "deleteLogicalRouter", description = "Create a subinterface on a given resource.")
+@Command(scope = "chassis", name = "deleteLogicalRouter", description = "Delete a logical router on a given resource.")
 public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource owning the Logical Router to delete.", required = true, multiValued = false)
@@ -42,7 +42,7 @@ public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}

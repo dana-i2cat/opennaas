@@ -1,13 +1,16 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
+
 import net.i2cat.mantychore.commandsets.junos.commands.CommitNetconfCommand;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.queue.QueueConstants;
+import net.i2cat.mantychore.commandsets.junos.commands.UnlockNetconfCommand;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.queue.QueueConstants;
 
 public class ConfirmAction extends JunosAction {
 
@@ -30,6 +33,13 @@ public class ConfirmAction extends JunosAction {
 			CommitNetconfCommand command = new CommitNetconfCommand();
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+			
+			//TODO test unlock command
+			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
+			unlockCommand.initialize();
+			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
+			actionResponse.addResponse(responseUnlock);
+			
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + "\n" + e.getMessage());
 		}
@@ -56,7 +66,7 @@ public class ConfirmAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 		// TODO implement the preparation of the message
-		// Check the template is there any
+		// Check the template is there
 		// create the velocity message
 	}
 

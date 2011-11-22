@@ -19,10 +19,10 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 @Command(scope = "queue", name = "execute", description = "Execute all actions in queue")
 public class ExecuteCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "Resource name of the owner queue", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the resource owning the queue", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Option(name = "--debug", aliases = { "-d" }, description = "Get all the debug info.")
+	@Option(name = "--debug", aliases = { "-d" }, description = "Print execution data verbosely.")
 	private boolean	debug;
 
 	@Override
@@ -48,7 +48,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 			/* validate resource identifier */
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -104,6 +104,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 		}
 
 		printActionResponseExtended(queueResponse.getConfirmResponse());
+		printActionResponseExtended(queueResponse.getRefreshResponse());
 
 	}
 
@@ -122,11 +123,12 @@ public class ExecuteCommand extends GenericKarafCommand {
 		}
 
 		printActionResponseBrief(queueResponse.getConfirmResponse());
-
+		printActionResponseBrief(queueResponse.getRefreshResponse());
+		
 	}
 
 	private void printActionResponseBrief(ActionResponse actionResponse) {
-		printSymbol("--- actionid: " + actionResponse.getActionID() + " status: " + actionResponse.getStatus() + " ---");
+		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		String[] titles = { "Command Name", "Status" };
@@ -138,31 +140,24 @@ public class ExecuteCommand extends GenericKarafCommand {
 			matrix[num] = params;
 			num++;
 		}
-
 		super.printTable(titles, matrix, -1);
-
 	}
 
 	private void printActionResponseExtended(ActionResponse actionResponse) {
-		printSymbol("--- actionid: " + actionResponse.getActionID() + " status: " + actionResponse.getStatus() + " ---");
+		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		for (Response response : responses) {
 			printSymbol("Command: " + response.getCommandName());
+			printSymbol("Status: " + response.getStatus().toString());
+			
 			printSymbol("Message: " + response.getSentMessage());
-			newSeparator();
 			printSymbol("Information: " + response.getInformation());
-		}
-
-	}
-
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
+			for (String error: response.getErrors()){
+				printSymbol("Error: " + error);
 			}
+			newSeparator();
 		}
-		throw new Exception("Error getting the capability");
 	}
 
 }

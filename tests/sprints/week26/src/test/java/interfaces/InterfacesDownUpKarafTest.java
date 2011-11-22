@@ -2,9 +2,7 @@ package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import helpers.IntegrationTestsHelper;
-import helpers.KarafCommandHelper;
-import helpers.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.*;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -93,7 +91,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
 		if (context.getSessionParameters().get(context.PROTOCOL_URI).toString().contains("mock")) {
@@ -238,7 +236,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -286,7 +284,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -330,7 +328,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 			// assert command output no contains ERROR tag
 
-			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+			List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 			log.info(response2.get(0));
 
 			// assert command output no contains ERROR tag
@@ -381,7 +379,7 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces -r " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag

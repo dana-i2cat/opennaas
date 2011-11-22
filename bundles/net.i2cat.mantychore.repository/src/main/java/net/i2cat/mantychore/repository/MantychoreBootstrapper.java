@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.model.ComputerSystem;
+
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
@@ -23,14 +25,24 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
-	Log	log	= LogFactory.getLog(MantychoreRepository.class);
+	Log	log	= LogFactory.getLog(MantychoreBootstrapper.class);
 
+	IModel oldModel;
+	
+	public void resetModel (IResource resource) throws ResourceException {
+		resource.setModel(new ComputerSystem());		
+		if (isALogicalRouter(resource))
+			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
+	}
+
+	
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
-		resource.setModel(new ComputerSystem());
+		oldModel = resource.getModel();
+		resetModel(resource);
+		
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
-
 			/* abstract capabilities have to be initialized */
 			log.debug("Found a capability in the resource.");
 			/* abstract capabilities have to be initialized */
@@ -42,6 +54,8 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 				}
 			}
 		}
+		
+		
 		ICapability queueCapab = resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
@@ -64,7 +78,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		}
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
-		/* intialize each resource */
+		/* initialize each resource */
 		for (String nameResource : nameLogicalRouters) {
 			try {
 				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
@@ -129,7 +143,16 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 
 	@Override
 	public void revertBootstrap(IResource resource) throws ResourceException {
-		// TODO REVERT BOOTSTRAP IN ITS CHILDREN
-		resource.setModel(null);
+		resource.setModel(oldModel);
+	}
+	
+	private boolean isALogicalRouter(IResource resource) {
+		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
+		/* Check that the logical router exists */
+		if (resourceDescriptor == null || resourceDescriptor.getProperties() == null)
+			return false;
+
+		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null
+				&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
 	}
 }

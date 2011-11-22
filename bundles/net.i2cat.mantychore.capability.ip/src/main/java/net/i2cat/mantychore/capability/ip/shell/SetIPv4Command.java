@@ -1,16 +1,14 @@
 package net.i2cat.mantychore.capability.ip.shell;
 
-import java.util.List;
-
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.ip.IPCapability;
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
@@ -18,26 +16,23 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-
-@Command(scope = "ipv4", name = "setIP", description = "Set a IP in a given interface of a resource")
+@Command(scope = "ipv4", name = "setIP", description = "Set an IP address in a given interface of a resource")
 public class SetIPv4Command extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to set the interface.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id, owning the interface", required = true, multiValued = false)
 	private String	resourceId;
 	@Argument(index = 1, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
 	private String	interfaceName;
-	@Argument(index = 2, name = "ip", description = "A valid IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 2, name = "ip", description = "A valid IPv4 address : x.x.x.x", required = true, multiValued = false)
 	private String	ipv4;
 
-	@Argument(index = 3, name = "mask", description = "A valid MASK IPv4: x.x.x.x", required = true, multiValued = false)
+	@Argument(index = 3, name = "mask", description = "A valid IPv4 mask: x.x.x.x", required = true, multiValued = false)
 	private String	mask;
 
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("set resource interface");
+		printInitCommand("set Ipv4 address");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -59,7 +54,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
@@ -71,6 +66,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			Object params = validateParams(resource);
 
 			if (params == null) {
+				printError("Interface " + interfaceName + " not found in model");
 				printEndCommand();
 				return null;
 			}
@@ -78,12 +74,12 @@ public class SetIPv4Command extends GenericKarafCommand {
 			/* check if it uses logical router */
 
 			if (!validateIPAddress(ipv4)) {
-				printError("Ip format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
+				printError("Ip format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
 				printEndCommand();
 				return null;
 			}
 			if (!validateIPAddress(mask)) {
-				printError("Mask format incorrect. it must be [255..0].[255..0].[255..0].[255..0]");
+				printError("Mask format incorrect. It must be [255..0].[255..0].[255..0].[255..0]");
 				printEndCommand();
 				return null;
 			}
@@ -97,7 +93,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		} catch (Exception e) {
-			printError("Error setting interface.");
+			printError("Error setting ip address in an interface.");
 			printError(e);
 			printEndCommand();
 			return null;
@@ -114,56 +110,28 @@ public class SetIPv4Command extends GenericKarafCommand {
 			return null;
 		}
 
-		String name = argsInterface[0];
+		String interfaceName = argsInterface[0];
+		int port = Integer.parseInt(argsInterface[1]); 
 
-		if (name.startsWith("lo")) {
+		if (interfaceName.startsWith("lo")) {
 			printError("Configuration for Loopback interface not allowed");
 			return null;
 		}
 
-		int port = Integer.parseInt(argsInterface[1]);
-		ComputerSystem routerModel = (ComputerSystem) resource.getModel();
-		List<LogicalDevice> ld = routerModel.getLogicalDevices();
-		for (LogicalDevice device : ld) {
-			// the interface is found on the model
-			if (device.getName().equalsIgnoreCase(name)) {
-				if (device instanceof NetworkPort) {
-					// TODO implement method clone
-					if (((NetworkPort) device).getPortNumber() == port) {
-						if (device.getName().startsWith("lt")) {
-							LogicalTunnelPort lt = new LogicalTunnelPort();
-							LogicalTunnelPort ltOld = (LogicalTunnelPort) device;
-							lt.setName(ltOld.getName());
-							lt.setPortNumber(ltOld.getPortNumber());
-							lt.setPeer_unit(ltOld.getPeer_unit());
-							lt.setLinkTechnology(LinkTechnology.OTHER);
-							IPProtocolEndpoint ip = new IPProtocolEndpoint();
-							ip.setIPv4Address(ipv4);
-							ip.setSubnetMask(mask);
-							lt.addProtocolEndpoint(ip);
-							printInfo("[" + lt.getName() + "." + lt.getPortNumber() + "]  " + ipv4 + " / " + mask);
-							return lt;
-						} else {
-							EthernetPort ethOld = (EthernetPort) device;
-							EthernetPort eth = new EthernetPort();
-							eth.setName(ethOld.getName());
-							eth.setPortNumber(ethOld.getPortNumber());
-							eth.setLinkTechnology(LinkTechnology.OTHER);
-							IPProtocolEndpoint ip = new IPProtocolEndpoint();
-							ip.setIPv4Address(ipv4);
-							ip.setSubnetMask(mask);
-							eth.addProtocolEndpoint(ip);
-							printInfo("[" + eth.getName() + "." + eth.getPortNumber() + "]  " + ipv4 + " / " + mask);
+		
+		NetworkPort param = new NetworkPort();
+		param.setName(interfaceName);
+		param.setPortNumber(port);
+		param.setLinkTechnology(LinkTechnology.OTHER);
+		
+		IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		ip.setIPv4Address(ipv4);
+		ip.setSubnetMask(mask);
+		param.addProtocolEndpoint(ip);
+		
+		printInfo("[" + param.getName() + "." + param.getPortNumber() + "]  " + ipv4 + " / " + mask);
 
-							return eth;
-						}
-
-					}
-				}
-			}
-		}
-		return null;
-
+		return param;
 	}
 
 	/**
@@ -180,9 +148,13 @@ public class SetIPv4Command extends GenericKarafCommand {
 		}
 
 		for (String s : parts) {
-			int i = Integer.parseInt(s);
-
-			if ((i < 0) || (i > 255)) {
+			try {
+				int i = Integer.parseInt(s);
+	
+				if ((i < 0) || (i > 255)) {
+					return false;
+				}
+			} catch (NumberFormatException e) {
 				return false;
 			}
 		}

@@ -511,11 +511,12 @@
 	<!-- Modules configuration -->
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<modules>
+		<module>helpers</module>
 		<module>bundles</module>
 		<module>features</module>
-		<module>tests</module>
 		<module>platform</module>
-		<!--<module>assembly</module>-->
+		<module>assembly</module>
+	 <!--	<module>tests</module>  -->
 	</modules>
 	<!--
 		<licenses> <license> <name>GNU Lesser General Public License</name>

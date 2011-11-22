@@ -19,7 +19,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 @Command(scope = "connections", name = "getChannels", description = "Shows channels of given port.")
 public class GetChannelsCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id where port is.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id where given port is.", required = true, multiValued = false)
 	private String	resourceId;
 	
 	@Argument(index = 1, name = "port", description = "Port to get channels from", required = true, multiValued = false)
@@ -28,7 +28,7 @@ public class GetChannelsCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("get channels of port : "+ portId + " In resource: " + resourceId);
+		printInitCommand("get channels of port : "+ portId + " in resource: " + resourceId);
 
 		try {
 

@@ -10,11 +10,11 @@ import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -30,13 +30,10 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
 import api.CheckParametersHelper;
 import api.ParamCreationHelper;
-import api.ProtocolSessionHelper;
-import api.ResourceHelper;
 
 /**
  * These tests check the subinterface configurations
@@ -148,7 +145,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	public void simpleSubInterfaceConfigurationTest() {
 
 		/* send action */
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
@@ -160,7 +157,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		}
 
 		/* execute action */
-		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);
@@ -193,7 +190,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 * */
 	public void subInterfaceConfigurationTest() {
 		/* send action */
-		int posChassis = ResourceHelper.containsCapability(resource, "chassis");
+		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
@@ -211,7 +208,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		}
 
 		/* execute action */
-		int posQueue = ResourceHelper.containsCapability(resource, "queue");
+		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);
@@ -244,7 +241,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 */
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, ProtocolSessionHelper.newSessionContextNetconf());
+		protocolManager.getProtocolSessionManagerWithContext(resourceId, ResourceHelper.newSessionContextNetconf());
 
 	}
 

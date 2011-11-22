@@ -22,21 +22,21 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "chassis", name = "removeInterface", description = "Remove a subinterface from a logical router")
+@Command(scope = "chassis", name = "removeInterface", description = "Remove a subinterface from a logical router and transfere it to its parent")
 public class RemoveInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:ParentResourceName", description = "Parent resource id to add the interface.", required = true, multiValued = false)
 	private String	physicalResourceId;
 
-	@Argument(index = 1, name = "resourceType:ChildResourceName", description = "Child resource id from the resource  to get the interface.", required = true, multiValued = false)
+	@Argument(index = 1, name = "resourceType:ChildResourceName", description = "Child resource id owning the interface", required = true, multiValued = false)
 	private String	logicalResourceId;
 
-	@Argument(index = 2, name = "interface", description = "The name of the interface to be setted.", required = true, multiValued = false)
+	@Argument(index = 2, name = "interface", description = "The name of the interface to be transfered.", required = true, multiValued = false)
 	private String	interfaceName;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Add an interface to a new resource");
+		printInitCommand("Remove Interface from LR ");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -76,11 +76,11 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 
 			int pos = containsInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel);
 			if (pos == -1)
-				throw new Exception("The Physical router don't have the interface");
+				throw new Exception("Given interface is not in parent resource model. Try refreshing the model.");
 
 			LogicalDevice logicalDevice = routerModel.getLogicalDevices().get(pos);
 			if (!(logicalDevice instanceof NetworkPort))
-				throw new Exception("It is not a correct interface to configure");
+				throw new Exception("Given interface is not supported.");
 
 			logicalDevice.setElementName(childResourceName[1]);
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, logicalDevice);
@@ -88,7 +88,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);
 			deviceCopied.setElementName(null); // reset logical device
 
-			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, deviceCopied);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, deviceCopied);
 
 		} catch (Exception e) {
 			printError(e);
@@ -108,7 +108,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 
 		IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(resourceId[0], resourceId[1]);
 		if (resourceIdentifier == null)
-			throw new Exception("Error in identifier");
+			throw new Exception("Could not get resource with name: " + resourceId[0] + ":" + resourceId[1]);
 		return resourceIdentifier;
 	}
 
@@ -173,7 +173,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 				return (VLANEndpoint) protocolEndpoint;
 			}
 		}
-		throw new Exception("VLANEnpoint don't found");
+		throw new Exception("VLANEnpoint not found");
 
 	}
 

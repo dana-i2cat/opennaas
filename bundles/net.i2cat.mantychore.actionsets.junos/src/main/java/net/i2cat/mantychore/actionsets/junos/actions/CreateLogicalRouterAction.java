@@ -2,6 +2,7 @@ package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
+
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
@@ -21,7 +22,6 @@ public class CreateLogicalRouterAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
 		if (!(params instanceof String))
 			return false;
 		return true;

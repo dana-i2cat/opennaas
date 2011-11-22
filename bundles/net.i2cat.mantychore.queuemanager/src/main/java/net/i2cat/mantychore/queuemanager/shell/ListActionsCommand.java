@@ -13,10 +13,10 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "queue", name = "listActions", description = "List all the actions which are included in the queue.")
+@Command(scope = "queue", name = "listActions", description = "List all actions included in the queue.")
 public class ListActionsCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "Resource name of the owner queue", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the resource owning the queue", required = true, multiValued = false)
 	private String	resourceId;
 
 	@Override
@@ -41,7 +41,7 @@ public class ListActionsCommand extends GenericKarafCommand {
 
 			/* validate resource identifier */
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -76,14 +76,4 @@ public class ListActionsCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-
-	public ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
-		for (ICapability capability : capabilities) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
-				return capability;
-			}
-		}
-		throw new Exception("Error getting the capability");
-	}
-
 }

@@ -1,11 +1,9 @@
 package net.i2cat.nexus.resources.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.inject.Inject;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ILifecycle.State;
@@ -18,22 +16,20 @@ import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.ServiceLookup;
 import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
-public class UseProfileBundleTest extends AbstractIntegrationTest {
+public class UseProfileBundleTest { //extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 	static Log			log				= LogFactory.getLog(UseProfileBundleTest.class);
@@ -45,28 +41,29 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 	BundleContext		bundleContext	= null;
 
 	@Configuration
+	public Option[] config() {
+		return new Option[]{karafDistributionConfiguration().frameworkUrl("mvn:net.i2cat.mantychore/assembly/1.0.0-SNAPSHOT/zip/bin").karafVersion("2.2.2").name("mantychore")};
+	}
+	
+	/*@Configuration
 	public static Option[] configure() {
 
 		Option[] options = combine(
 				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
-				/*mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.mockprofile")*/
+				//mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
 				mavenBundle().groupId("org.opennaas").artifactId("opennaas-core-tests-mockprofile")
 							// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 							);
 		return options;
-	}
+	}*/
 
 	//@Before
 	public void initBundles() {
-		
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-		profileManager = getOsgiService(IProfileManager.class, 30000);
-
+		//resourceManager = getOsgiService(IResourceManager.class, 50000);
+		//profileManager = getOsgiService(IProfileManager.class, 30000);
+		resourceManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.IResourceManager");
+		profileManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.profile.IProfileManager");
 		clearRepo();
-
 		log.info("INFO: Initialized!");
 	}
 
@@ -157,17 +154,17 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 	}
 
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
+		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
+		IProtocolManager protocolManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.protocol.IProtocolManager");
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
-
 	}
-
+	
 	/**
 	 * Configure the protocol to connect
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 
@@ -180,5 +177,4 @@ public class UseProfileBundleTest extends AbstractIntegrationTest {
 		// ADDED
 		return protocolSessionContext;
 	}
-
 }

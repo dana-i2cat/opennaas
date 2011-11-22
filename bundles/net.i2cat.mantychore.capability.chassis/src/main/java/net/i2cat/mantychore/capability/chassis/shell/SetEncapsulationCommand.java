@@ -1,6 +1,8 @@
 package net.i2cat.mantychore.capability.chassis.shell;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
@@ -22,7 +24,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "setVLAN", description = "Set a VLAN id in a given interface.")
+@Command(scope = "chassis", name = "setEncapsulation", description = "Set an encapsulation in a given interface.")
 public class SetEncapsulationCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
@@ -31,13 +33,13 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "subInterface", description = "The interface where to set the VLAN.", required = true, multiValued = false)
 	private String	subinterface;
 
-	@Argument(index = 2, name = "VLANid", description = "the VLAN id.", required = true, multiValued = false)
-	private int		vlanId;
+	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = true, multiValued = false)
+	private int		vlanId = -1;
 
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("set VLAN");
+		printInitCommand("set Encapsulation");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -59,26 +61,17 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 
 			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
 
-			validateResource(resource);
+			validateResource(resource);			
+			checkParams();
+			NetworkPort params = prepareParams();
 
-			ComputerSystem routerModel = ((ComputerSystem) resource.getModel());
-			int pos = containsInterface(paramsInterface[0], routerModel);
-			if (pos == -1)
-				throw new Exception("The Physical router don't have the interface");
-
-			LogicalDevice logicalDevice = routerModel.getLogicalDevices().get(pos);
-			if (!(logicalDevice instanceof NetworkPort))
-				throw new Exception("It is not a correct interface to configure");
-
-			NetworkPort params = copyNetworkPort((NetworkPort) logicalDevice, Integer.parseInt(paramsInterface[1]));
-			addVlanId(params, vlanId);
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, params);
@@ -88,107 +81,44 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error setting vlan.");
 			printError(e);
 			printEndCommand();
 			return null;
 		}
+		
 		printEndCommand();
 		return null;
 	}
-
-	private void addVlanId(NetworkPort params, int vlanId) {
-		List<ProtocolEndpoint> protocolEndpoints = params.getProtocolEndpoint();
-		// ADD VLAN ID
-
-		// EQUALS IS NOT IMPLEMENTED, WE HAVE TO DELETE THE ELEMENT WITH A INDEX
-		int index = 0;
-		for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
-			if (protocolEndpoint instanceof VLANEndpoint) {
-				ProtocolEndpoint endpointToRemove = params.getProtocolEndpoint().get(index);
-				params.removeProtocolEndpoint(endpointToRemove);
-				break;
-			}
-			index++;
-		}
-		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(vlanId);
-		params.cleanProtocolEndpoint();
-		params.addProtocolEndpoint(vlanEndpoint);
-
+	
+	private void checkParams () throws Exception  {
+		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");		 
+		Matcher matcher = ltPattern.matcher(subinterface);
+		if (!matcher.find()) throw new Exception ("the command encapsulation is limited in logical tunnels"); 		
 	}
-
-	private int containsSubInterface(String nameInterface, int portNumber, ComputerSystem routerModel) {
-		int pos = 0;
-		for (LogicalDevice logicalDevice : routerModel.getLogicalDevices()) {
-			if (logicalDevice.getName().equals(nameInterface)) {
-				if (logicalDevice instanceof NetworkPort) {
-					if (((NetworkPort) logicalDevice).getPortNumber() == portNumber)
-						return pos;
-				} else
-					return pos;
-			}
-			pos++;
-		}
-		return -1;
-
-	}
-
-	private int containsInterface(String nameInterface, ComputerSystem routerModel) {
-		int pos = 0;
-		for (LogicalDevice logicalDevice : routerModel.getLogicalDevices()) {
-			if (logicalDevice.getName().equals(nameInterface)) {
-				return pos;
-			}
-			pos++;
-		}
-		return -1;
-
-	}
-
+	
 	private boolean isLoopback(String name) {
 		return name.startsWith("lo");
 
 	}
 
-	public NetworkPort copyNetworkPort(NetworkPort toCopy, int portNumber) {
-		// String name = toCopy.getName();
-		NetworkPort networkPortCloned = null;
-		if (toCopy.getName().startsWith("lt")) {
-			LogicalTunnelPort lt = new LogicalTunnelPort();
-			LogicalTunnelPort ltOld = (LogicalTunnelPort) toCopy;
-			// params
-			lt.setName(ltOld.getName());
-			lt.setPortNumber(portNumber);
-			lt.setPeer_unit(ltOld.getPeer_unit());
-			lt.setLinkTechnology(LinkTechnology.OTHER);
-			networkPortCloned = lt;
-		} else {
-			EthernetPort ethOld = (EthernetPort) toCopy;
-			EthernetPort eth = new EthernetPort();
-			eth.setName(ethOld.getName());
-			eth.setPortNumber(portNumber);
-			eth.setLinkTechnology(LinkTechnology.OTHER);
-			networkPortCloned = eth;
-		}
 
-		boolean vlanFound = true;
-		VLANEndpoint vlanEndpointToCopy = null;
-		try {
-			vlanEndpointToCopy = (VLANEndpoint) getVLANEnpoint(networkPortCloned.getProtocolEndpoint());
-		} catch (Exception e) {
-			vlanFound = false;
-		}
 
-		if (vlanFound) {
-			VLANEndpoint vlan = new VLANEndpoint();
-			vlan.setVlanID(vlanEndpointToCopy.getVlanID());
-			// FIXME NOT USED CLONE!!
+	private NetworkPort prepareParams() throws Exception {
+		NetworkPort networkPort = null;
+		networkPort = new LogicalTunnelPort();
 
-			networkPortCloned.addProtocolEndpoint(vlan);
-		}
+		String[] args = subinterface.split("\\.");
+		// params
+		networkPort.setName(args[0]);
+		networkPort.setPortNumber(Integer.parseInt(args[1]));
+		networkPort.setLinkTechnology(LinkTechnology.OTHER);
 
-		return networkPortCloned;
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(vlanId);
+		networkPort.addProtocolEndpoint(vlanEndpoint);
+
+		return networkPort;
 
 	}
 
@@ -198,7 +128,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 				return (VLANEndpoint) protocolEndpoint;
 			}
 		}
-		throw new Exception("VLANEnpoint don't found");
+		throw new Exception("VLANEnpoint not found");
 
 	}
 

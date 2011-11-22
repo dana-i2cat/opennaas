@@ -53,6 +53,7 @@ public class IPInterfaceParser extends DigesterEngine {
 			addObjectCreate("*/interfaces/interface/unit", EthernetPort.class);
 			addSetNext("*/interfaces/interface/unit", "addInterface"); /* call our method addInterface!! */
 			addMyRule("*/interfaces/interface/unit/name", "setName", 0);
+			addMyRule("*/interfaces/interface/unit/description", "setDescription", 0);
 			/* status */
 			addMyRule("*/interfaces/interface/disable", "setStatus", 0);
 
@@ -73,7 +74,6 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	public void setStatus(String stat) {
 		mapStatus.put(location, OperationalStatus.STOPPED);
-
 	}
 
 	public IPInterfaceParser() {
@@ -137,7 +137,11 @@ public class IPInterfaceParser extends DigesterEngine {
 		// ethernetPort.setOtherPortType(location + "." + name);
 		ethernetPort.setName(location);
 		ethernetPort.setPortNumber(Integer.parseInt(name));
-
+	}
+	
+	public void setDescription(String description) {
+		NetworkPort ethernetPort = (NetworkPort) peek();
+		ethernetPort.setDescription(description);
 	}
 
 	public void setLocation(String location) {

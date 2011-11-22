@@ -4,5 +4,5 @@
 			<name>$param.Name</name>
 			<vlan-tagging operation="merge"/>
 		</interface>
-	</interfaces>	
+	</interfaces>
 </configuration>

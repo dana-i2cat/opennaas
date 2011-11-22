@@ -38,7 +38,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return null;
 			}
@@ -66,7 +66,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		} catch (Exception e) {
-			printError("Error listing interfaces.");
+			printError("Error listing logical routers.");
 			printError(e);
 			printEndCommand();
 			return null;

@@ -21,7 +21,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
-import net.i2cat.nexus.tests.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -117,7 +117,7 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
@@ -182,9 +182,6 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 
 		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tagInitializerTestHelper
-		Assert.assertTrue(response1.get(1).isEmpty());
-
-		response1 = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID, commandprocessor);
 		Assert.assertTrue(response1.get(1).isEmpty());
 
 		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,

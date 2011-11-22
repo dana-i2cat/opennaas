@@ -19,9 +19,10 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
-import net.i2cat.nexus.tests.ProtocolSessionHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -96,7 +97,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
-		ProtocolSessionContext context = ProtocolSessionHelper.newSessionContextNetconf();
+		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
@@ -189,6 +190,9 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3,
 				commandprocessor);
 
+		response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		
+		
 		// check logical router creation
 		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID, commandprocessor);
 		log.info(response2.get(0));
@@ -197,18 +201,13 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		Assert.assertTrue(response2.get(1).isEmpty());
 
 		if (!isMock) {
+			Assert.assertFalse(resource.getModel().getChildren().isEmpty());
+		
 			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
-			boolean exist = CheckHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
+			boolean exist = ExistanceHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
 			Assert.assertTrue(exist);
-
 		}
-
-		// check logical router creation
-		List<String> response7 = KarafCommandHelper.executeCommand("resource:refresh " + resourceFriendlyID, commandprocessor);
-
-		// assert command output no contains ERROR tag
-		Assert.assertTrue(response7.get(1).isEmpty());
-		Assert.assertFalse(resource.getModel().getChildren().isEmpty());
+		
 
 		// HOW GET WE A VIRTUAL RESOURCE, WE DON'T HAVE ANY METHOD TO SEARCH????
 		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName("router", logicalRouterName);

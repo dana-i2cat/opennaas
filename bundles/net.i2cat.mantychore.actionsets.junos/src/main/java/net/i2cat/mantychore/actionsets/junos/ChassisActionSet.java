@@ -5,7 +5,9 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureEncapsulationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
-import net.i2cat.mantychore.actionsets.junos.actions.CreateSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ConfigureSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.CreateLogicalRouterAction;
+import net.i2cat.mantychore.actionsets.junos.actions.DeleteLogicalRouterAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 
@@ -22,9 +24,15 @@ public class ChassisActionSet extends ActionSet {
 		// up down interfaces
 		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 		this.putAction(ActionConstants.DELETESUBINTERFACE, DeleteSubInterfaceAction.class);
-		this.putAction(ActionConstants.CREATESUBINTERFACE, CreateSubInterfaceAction.class);
+		this.putAction(ActionConstants.CONFIGURESUBINTERFACE, ConfigureSubInterfaceAction.class);
 		this.putAction(ActionConstants.SETENCAPSULATION, ConfigureEncapsulationAction.class);
 		this.putAction(ActionConstants.CONFIGURESTATUS, ConfigureStatusAction.class);
+	//	this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
+		this.putAction(ActionConstants.CREATELOGICALROUTER, CreateLogicalRouterAction.class);
+		this.putAction(ActionConstants.DELETELOGICALROUTER, DeleteLogicalRouterAction.class);
+		
+		/* add refresh actions */
+		this.refreshActions.add(ActionConstants.GETCONFIG);
 	}
 
 	@Override
@@ -32,14 +40,13 @@ public class ChassisActionSet extends ActionSet {
 		List<String> actionNames = new ArrayList<String>();
 		actionNames.add(ActionConstants.GETCONFIG);
 		actionNames.add(ActionConstants.DELETESUBINTERFACE);
-		actionNames.add(ActionConstants.CREATESUBINTERFACE);
 		actionNames.add(ActionConstants.SETENCAPSULATION);
 		actionNames.add(ActionConstants.CONFIGURESTATUS);
-		return actionNames;
-	}
+		actionNames.add(ActionConstants.CONFIGURESUBINTERFACE);
+		//actionNames.add(ActionConstants.SETINTERFACEDESCRIPTION);
+		actionNames.add(ActionConstants.CREATELOGICALROUTER);
+		actionNames.add(ActionConstants.DELETELOGICALROUTER);
 
-	public String getStartUpRefreshActionName() {
-		// FIXME: change when listInterfaces is complete
-		return ActionConstants.GETCONFIG;
+		return actionNames;
 	}
 }

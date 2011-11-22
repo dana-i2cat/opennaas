@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Build the bootstrapper -->
+	<bean id="networkBootstrapperFactory" class="net.i2cat.mantychore.network.repository.NetworkBootstrapperFactory"/>
+	<bean id="networkRepository" class="net.i2cat.mantychore.network.repository.NetworkRepository" init-method="init">
+		<argument value="network"/>
+		<argument value="ResourceCore"/>
+		<property name="resourceBootstrapperFactory" ref="networkBootstrapperFactory"/>
+	</bean>
+	<!-- Get capability factories from the OSGi registry -->
+	<reference-list id="capabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" availability="optional">
+		<reference-listener ref="networkRepository" bind-method="capabilityFactoryAdded" unbind-method="capabilityFactoryDeleted"/>
+	</reference-list>
+	<service ref="networkRepository" interface="org.opennaas.core.resources.IResourceRepository">
+		<service-properties>
+			<entry key="type" value="network"/>
+			<entry key="version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>

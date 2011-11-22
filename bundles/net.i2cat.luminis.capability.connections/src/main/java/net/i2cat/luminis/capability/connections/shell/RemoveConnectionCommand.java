@@ -15,7 +15,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 
-@Command(scope = "connections", name = "removeConnection", description = "Removes a connection between given ports af given resource")
+@Command(scope = "connections", name = "removeConnection", description = "Removes a connection between given ports of given resource")
 public class RemoveConnectionCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id to make connection.", required = true, multiValued = false)

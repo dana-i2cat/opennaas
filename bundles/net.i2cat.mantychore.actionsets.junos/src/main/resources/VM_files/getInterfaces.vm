@@ -1,4 +1,3 @@
-
 #macro ( isLogicalRouter $element $resp )
 	#set( $resp = "false" )
 	#if($element.ElementName)
@@ -8,15 +7,17 @@
 
 <configuration>
 
-	#set( $logicalRouter = "true" )
-	#isLogicalRouter( $param $logicalRouter)
-	#if($logicalRouter == "true")
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
 		<logical-systems>
 			<name>$param.ElementName</name>
 	#end
 		<interfaces/>
 	
-	#if($logicalRouter == "true")
+	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end
 </configuration>

@@ -1,14 +1,15 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import net.i2cat.mantychore.commandsets.junos.commands.DiscardNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.LockNetconfCommand;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.queue.QueueConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class PrepareAction extends JunosAction {
 	Log	log	= LogFactory.getLog(PrepareAction.class);
@@ -28,11 +29,20 @@ public class PrepareAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
+			/* lock commnad */
+
+		
+			
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();
 			discardCommand.initialize();
-			Response response = sendCommandToProtocol(discardCommand, protocol);
-			actionResponse.addResponse(response);
+			Response responsePrepare = sendCommandToProtocol(discardCommand, protocol);
+			actionResponse.addResponse(responsePrepare);
+			
+			LockNetconfCommand lockCommand = new LockNetconfCommand("candidate");
+			lockCommand.initialize();
+			Response responseLock = sendCommandToProtocol(lockCommand, protocol);
+			actionResponse.addResponse(responseLock);
 
 			/* it can't be executed this workflow */
 		} catch (Exception e) {

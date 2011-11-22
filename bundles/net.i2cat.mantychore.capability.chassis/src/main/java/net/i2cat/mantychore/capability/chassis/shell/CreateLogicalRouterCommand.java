@@ -17,18 +17,18 @@ import org.apache.felix.gogo.commands.Command;
 @Command(scope = "chassis", name = "createLogicalRouter", description = "Create a logical router on a given resource.")
 public class CreateLogicalRouterCommand extends GenericKarafCommand {
 
-	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
+	@Argument(index = 0, name = "resourceType:resourceName", description = "Host resource name.", required = true, multiValued = false)
 	private String			resourceId;
 
-	@Argument(index = 1, name = "logicalRouter", description = "The logical router to be created.", required = true, multiValued = false)
+	@Argument(index = 1, name = "logicalRouter", description = "Name of the logical router to be created.", required = true, multiValued = false)
 	private String			LRname;
 
-	@Argument(index = 2, name = "subinterfaces", description = "Optional list of subinterfaces to add", required = false, multiValued = true)
+	@Argument(index = 2, name = "subinterfaces", description = "Optional list of subinterfaces to transfere to new logical router", required = false, multiValued = true)
 	private List<String>	subinterfaces;
 
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("create  Logical Router");
+		printInitCommand("create Logical Router");
 
 		try {
 			IResourceManager manager = getResourceManager();
@@ -45,7 +45,7 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 
 			resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 			if (resourceIdentifier == null) {
-				printError("Error in identifier.");
+				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
 				printEndCommand();
 				return -1;
 			}
@@ -72,9 +72,9 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 					try {
 						addInterface.doExecute();
 					} catch (Exception e) {
-						printError("Problem to add interfaces in interface " + interf + " ...");
+						printError("Problem to add interfaces: Failed to add interface " + interf + " ...");
+						printError(e.getMessage());
 					}
-
 				}
 
 			}
