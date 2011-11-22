@@ -33,7 +33,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 	@Argument(index = 1, name = "subInterface", description = "The interface where to set the VLAN.", required = true, multiValued = false)
 	private String	subinterface;
 
-	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = true, multiValued = false)
+	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = false, multiValued = false)
 	private int		vlanId = -1;
 
 	@Override
@@ -102,8 +102,6 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 
 	}
 
-
-
 	private NetworkPort prepareParams() throws Exception {
 		NetworkPort networkPort = null;
 		networkPort = new LogicalTunnelPort();
@@ -114,12 +112,12 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 		networkPort.setPortNumber(Integer.parseInt(args[1]));
 		networkPort.setLinkTechnology(LinkTechnology.OTHER);
 
-		VLANEndpoint vlanEndpoint = new VLANEndpoint();
-		vlanEndpoint.setVlanID(vlanId);
-		networkPort.addProtocolEndpoint(vlanEndpoint);
-
+		if (vlanId != -1){
+			VLANEndpoint vlanEndpoint = new VLANEndpoint();
+			vlanEndpoint.setVlanID(vlanId);
+			networkPort.addProtocolEndpoint(vlanEndpoint);
+		}
 		return networkPort;
-
 	}
 
 	public VLANEndpoint getVLANEnpoint(List<ProtocolEndpoint> protocolEndpoints) throws Exception {

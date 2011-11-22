@@ -11,7 +11,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 
-@Command(scope = "chassis", name = "listLogicalRouter", description = "List all logical resources of a given resource.")
+@Command(scope = "chassis", name = "listLogicalRouters", description = "List all logical resources of a given resource.")
 public class ListLogicalRoutersCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name to show the logical routers.", required = true, multiValued = false)
@@ -20,7 +20,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
-		printInitCommand("list logical router");
+		printInitCommand("list logical routers");
 
 		try {
 			IResourceManager manager = getResourceManager();

@@ -14,7 +14,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-@Command(scope = "chassis", name = "setInterfaceDescription", description = "Sets given description to given interface.")
+@Command(scope = "ipv4", name = "setInterfaceDescription", description = "Sets given description to given interface.")
 public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)

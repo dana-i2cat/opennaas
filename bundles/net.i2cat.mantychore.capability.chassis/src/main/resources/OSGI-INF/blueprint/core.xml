@@ -61,7 +61,7 @@
 				<null/>
 			</completers>
 		</command>
-		<command name="chassis/listLogicalRouter">
+		<command name="chassis/listLogicalRouters">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.ListLogicalRoutersCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
