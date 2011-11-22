@@ -81,6 +81,10 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 							}
 
 						}
+						
+					}
+					if (port.getDescription() != null && !port.getDescription().equals("")) {
+						printSymbol("description: " + port.getDescription());
 					}
 				}
 				printSymbol("");
