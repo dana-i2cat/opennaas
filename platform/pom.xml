@@ -199,12 +199,12 @@
 	  </resources>
       -->
 							<overwrite>true</overwrite>
-							<outputDirectory>${target-platform.path}/${opennaas.path}</outputDirectory>
 							<resources>
 								<resource>
 									<directory>target/classes</directory>
 								</resource>
 							</resources>
+							<encoding>UTF-8</encoding>
 						</configuration>
 					</execution>
 					<!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
