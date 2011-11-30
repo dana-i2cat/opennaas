@@ -7,6 +7,9 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.descriptor.NetworkInfo;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceId;
 
 /**
  * List the Resources that are in the IaaS Container
@@ -18,6 +21,10 @@ public class ListResourcesCommand extends GenericKarafCommand {
 
 	@Option(name = "--type", aliases = { "-t" }, description = "Specifies the type of resources to list (if specified, only resources of this type will be listed)", required = false, multiValued = false)
 	private String	resourceType	= null;
+	
+	@Option(name = "--all", aliases = { "-a" }, description = "Extensive version ", required = false, multiValued = false)
+	private boolean flagAll	= false;
+
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -49,6 +56,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getResourceDescriptor()
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
+					if (flagAll)  printAll(resource.getResourceDescriptor());
 				}
 				printSymbol(horizontalSeparator);
 
@@ -60,6 +68,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getResourceDescriptor()
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
+					
+					if (flagAll)  printAll(resource.getResourceDescriptor());
 
 				}
 				printSymbol(horizontalSeparator);
@@ -73,4 +83,26 @@ public class ListResourcesCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
+	
+	
+	private void printAll (ResourceDescriptor resourceDescriptor) {
+		
+		/* network descriptor */
+		if (resourceDescriptor.getNetworkInfo() != null)
+			printNetworkInfo(resourceDescriptor.getNetworkInfo());
+		
+		
+	}
+	
+	private void printNetworkInfo (NetworkInfo networkInfo) {
+		
+		List<ResourceId> resources = networkInfo.getResources();		
+		for (ResourceId resource: resources) {
+			String friendlyName = String.format("\t\t%s:%s",resource.getType(), resource.getName());
+			printInfo(friendlyName);
+		}
+		
+		
+	}
+	
 }
