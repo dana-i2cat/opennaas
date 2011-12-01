@@ -14,8 +14,11 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if a logical router exists.
-	 * @param physicalRouter physical router that contains it.
-	 * @param logicalRouterName name of the logical route
+	 * 
+	 * @param physicalRouter
+	 *            physical router that contains it.
+	 * @param logicalRouterName
+	 *            name of the logical route
 	 * @return true if the logical router exists
 	 */
 	public static boolean checkExistLogicalRouter(ComputerSystem physicalRouter, String logicalRouterName) {
@@ -29,6 +32,7 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if an interface exists.
+	 * 
 	 * @param inter
 	 * @param port
 	 * @param Ip

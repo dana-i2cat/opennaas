@@ -1,7 +1,6 @@
 package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.io.InputStream;
@@ -12,8 +11,17 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
-import net.i2cat.nexus.tests.*;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -23,13 +31,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -38,7 +39,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.osgi.framework.BundleContext;
-import org.apache.felix.service.command.CommandProcessor;
 
 /**
  * Tests new chassis operations in interface. In this feature it is necessary to create two operations to configure the status interface. The
@@ -69,7 +69,7 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 
 		return options;
@@ -80,11 +80,12 @@ public class InterfacesDownKarafTest extends AbstractIntegrationTest {
 		return combine(configuration(), new Customizer() {
 			@Override
 			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
+						.build();
 			}
 		});
 	}
-	
+
 	// @Before
 	public void initBundles() {
 		log.info("Waiting to load all bundles");

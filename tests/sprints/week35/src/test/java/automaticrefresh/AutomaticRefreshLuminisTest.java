@@ -2,11 +2,11 @@ package automaticrefresh;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import net.i2cat.nexus.tests.*;
 
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.AbstractCapability;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
+import java.util.List;
+
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,12 +14,14 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
-import java.util.List;
 
 @RunWith(JUnit4TestRunner.class)
 public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
@@ -29,7 +31,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	@Inject
 	BundleContext				bundleContext	= null;
 
-	private List<String>				startupActionNames;
+	private List<String>		startupActionNames;
 	private AbstractCapability	connectionsCapability;
 	IResource					mockResource	= new MockResource();
 
@@ -57,7 +59,7 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 	public void getStartUpRefreshActionTest() {
 
 		try {
-			//TODO this initbundles guarantee that all the bundles are initialized. It is possible to work the test without this initbundles
+			// TODO this initbundles guarantee that all the bundles are initialized. It is possible to work the test without this initbundles
 			initBundles();
 			mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
 
@@ -79,8 +81,8 @@ public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
 			e.printStackTrace();
 			log.error(e.getMessage());
 			log.error(e.getLocalizedMessage());
-			//if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
-			//	log.error(ExceptionUtils.getRootCause(e).getMessage());
+			// if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
+			// log.error(ExceptionUtils.getRootCause(e).getMessage());
 			Assert.fail();
 		}
 	}

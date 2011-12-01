@@ -10,6 +10,13 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
@@ -24,13 +31,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -60,7 +60,7 @@ public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest i
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
 				mavenBundle().groupId("org.opennaas").artifactId(
-				"opennaas-core-events"),
+						"opennaas-core-events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")

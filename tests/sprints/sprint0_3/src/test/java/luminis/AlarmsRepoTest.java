@@ -9,6 +9,14 @@ import java.util.List;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -25,14 +33,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -62,7 +62,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		Option[] options = combine(
 					IntegrationTestsHelper.getLuminisTestOptions(),
 					mavenBundle().groupId("org.opennaas").artifactId(
-					"opennaas-core-events"),
+							"opennaas-core-events"),
 					mavenBundle().groupId("net.i2cat.nexus").artifactId(
 							"net.i2cat.nexus.tests.helper")
 
@@ -102,27 +102,27 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		String resourceId = new ResourceIdentifier("proteus").getId();
 
 		ResourceAlarm alarm = generateResourceAlarm(resourceId);
-		
+
 		try {
 			Thread.sleep(15000);
 		} catch (InterruptedException e) {
 			Assert.fail("Interrupted!");
 		}
-		
+
 		List<ResourceAlarm> alarms;
 		try {
 			alarms = alarmRepo.getResourceAlarms(resourceId);
-			
+
 			Assert.assertTrue(alarms.contains(alarm));
 
-//			boolean isFound = false;
-//			for (ResourceAlarm alarmToCompare : alarms) {
-//				if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
-//					isFound = true;
-//					break;
-//				}
-//			}
-//			Assert.assertTrue(isFound);
+			// boolean isFound = false;
+			// for (ResourceAlarm alarmToCompare : alarms) {
+			// if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
+			// isFound = true;
+			// break;
+			// }
+			// }
+			// Assert.assertTrue(isFound);
 
 		} catch (ResourceNotFoundException e1) {
 			Assert.fail(e1.getMessage());
@@ -131,14 +131,14 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		alarms = alarmRepo.getAlarms();
 
 		Assert.assertTrue(alarms.contains(alarm));
-		
-//		boolean isFound = false;
-//		for (ResourceAlarm alarmToCompare : alarms) {
-//			if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
-//				isFound = true;
-//				break;
-//			}
-//		}
+
+		// boolean isFound = false;
+		// for (ResourceAlarm alarmToCompare : alarms) {
+		// if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
+		// isFound = true;
+		// break;
+		// }
+		// }
 
 		alarmRepo.clear();
 
@@ -179,7 +179,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 			List<ResourceAlarm> alarms = alarmRepo.getResourceAlarms(resource.getResourceIdentifier().getId());
 			Assert.assertFalse(alarms.isEmpty());
 			Assert.assertTrue(alarms.size() == 1);
-			
+
 			resourceManager.stopResource(resource.getResourceIdentifier());
 			resourceManager.removeResource(resource.getResourceIdentifier());
 
@@ -192,7 +192,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		} catch (ProtocolException e) {
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
-		} 
+		}
 	}
 
 	/**

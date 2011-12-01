@@ -9,6 +9,14 @@ import java.util.List;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ILifecycle;
@@ -26,14 +34,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -64,7 +64,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		Option[] options = combine(
 				IntegrationTestsHelper.getLuminisTestOptions(),
 				mavenBundle().groupId("org.opennaas").artifactId(
-				"opennaas-core-events"),
+						"opennaas-core-events"),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
@@ -79,10 +79,10 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 		eventManager = getOsgiService(IEventManager.class, 5000);
 		resourceManager = getOsgiService(IResourceManager.class, 5000);
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		
+
 		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 10000);
 		Assert.assertNotNull(monitoringFactory);
-		
+
 		String filter = "(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))";
 		IActionSet actionSet = getOsgiService(IActionSet.class, filter, 5000);
 		Assert.assertNotNull(actionSet);
@@ -111,7 +111,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 	private void removeResourcesFromRepo() throws ResourceException {
 
 		List<IResource> resources = resourceManager.listResourcesByType("roadm");
-		for (int i=resources.size()-1; i>=0; i-- ){
+		for (int i = resources.size() - 1; i >= 0; i--) {
 			IResource resource = resources.get(i);
 			if (resource.getState().equals(ILifecycle.State.ACTIVE))
 				resourceManager.stopResource(resource.getResourceIdentifier());

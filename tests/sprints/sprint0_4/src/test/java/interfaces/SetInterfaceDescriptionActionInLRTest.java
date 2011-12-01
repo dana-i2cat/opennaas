@@ -39,13 +39,12 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 
-
 @RunWith(JUnit4TestRunner.class)
 public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	@Inject
 	BundleContext		bundleContext	= null;
-	
+
 	boolean				isMock;
 	ResourceDescriptor	resourceDescriptor;
 	IResource			resource		= null;
@@ -53,10 +52,10 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	String				type;
 	IResourceManager	resourceManager;
 	IProfileManager		profileManager;
-	
-	String LRName = "TestLR1";
-	IResource LRresource = null;
-	EthernetPort iface;
+
+	String				LRName			= "TestLR1";
+	IResource			LRresource		= null;
+	EthernetPort		iface;
 
 	@Configuration
 	public static Option[] configure() {
@@ -65,7 +64,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-//					 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		return options;
 	}
@@ -88,7 +87,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
-		
+
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
 		toRemove = resourceManager.listResources().toArray(toRemove);
@@ -99,7 +98,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
-		
+
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("queue");
@@ -107,28 +106,28 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		resource = resourceManager.createResource(resourceDescriptor);
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		resourceManager.startResource(resource.getResourceIdentifier());
-		
+
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		
-		if (! resource.getModel().getChildren().isEmpty()) {
+
+		if (!resource.getModel().getChildren().isEmpty()) {
 			LRName = resource.getModel().getChildren().get(0);
 		} else {
-			//create LR
+			// create LR
 			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRName);
 			executeQueue(resource);
 		}
-		
-		//createlogicalIface in LR
+
+		// createlogicalIface in LR
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName("fe-0/3/2");
 		ethernetPort.setPortNumber(2);
 		ethernetPort.setElementName(LRName);
 		chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, ethernetPort);
 		executeQueue(resource);
-		
+
 		LRresource = resourceManager.getResource(resourceManager.getIdentifierFromResourceName("router", LRName));
 		iface = ethernetPort;
 	}
@@ -141,7 +140,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	 */
 	public void tearDown() throws ResourceException {
 
-		//delete created sub interface
+		// delete created sub interface
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
@@ -151,11 +150,11 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		} catch (CapabilityException e) {
 			Assert.fail("It was impossible to send the following message: " + e.getMessage());
 		}
-		
-		//delete LR
+
+		// delete LR
 		chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, LRName);
 		executeQueue(resource);
-		
+
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
 		toRemove = resourceManager.listResources().toArray(toRemove);
@@ -175,12 +174,12 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 			setSubInterfaceDescriptionTest();
 			setInterfaceDescriptionTest();
-		
+
 		} catch (ResourceException e) {
 			Assert.fail("Impossible set up test: " + e.getMessage());
 		} catch (ProtocolException e) {
 			Assert.fail("Impossible set up test: " + e.getMessage());
-		} catch (Exception e){
+		} catch (Exception e) {
 			Assert.fail("Error during test: " + e.getMessage());
 		} finally {
 			try {
@@ -201,18 +200,18 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		
+
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
-		
+
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName(iface.getName());
 		ethernetPort.setPortNumber(iface.getPortNumber());
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 		ethernetPort.setElementName(LRName);
-		
+
 		try {
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 		} catch (CapabilityException e) {
@@ -234,12 +233,12 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 		try {
 			resourceManager.startResource(LRresource.getResourceIdentifier());
-			
+
 			/* check the update model, it is only possible to check it with a real router */
 			int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
 			Assert.assertTrue(pos != -1);
-			
-			String desc = ((EthernetPort)((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
+
+			String desc = ((EthernetPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
 			Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
 		} catch (ResourceException e) {
 			Assert.fail("Failed to start LR: " + e.getLocalizedMessage());
@@ -255,17 +254,17 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		
+
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
-		
+
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		logicalPort.setElementName(LRName);
-		
+
 		try {
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 		} catch (CapabilityException e) {
@@ -287,13 +286,13 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 		try {
 			resourceManager.startResource(LRresource.getResourceIdentifier());
-			
+
 			/* check the update model, it is only possible to check it with a real router */
 			/* check the update model, it is only possible to check it with a real router */
 			int pos = CheckParametersHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
 			Assert.assertTrue(pos != -1);
-			
-			String desc = ((LogicalPort)((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
+
+			String desc = ((LogicalPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
 			Assert.assertTrue(desc.equals(logicalPort.getDescription()));
 		} catch (ResourceException e) {
 			Assert.fail("Failed to start LR: " + e.getLocalizedMessage());
@@ -307,16 +306,16 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
 		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
-		
+
 		isMock = false;
-		if (context.getSessionParameters().containsKey(ProtocolSessionContext.PROTOCOL_URI)){
-			if (((String)context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI)).startsWith("mock")){
+		if (context.getSessionParameters().containsKey(ProtocolSessionContext.PROTOCOL_URI)) {
+			if (((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI)).startsWith("mock")) {
 				isMock = true;
 			}
 		}
 	}
-	
-	private QueueResponse executeQueue(IResource resource){
+
+	private QueueResponse executeQueue(IResource resource) {
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)

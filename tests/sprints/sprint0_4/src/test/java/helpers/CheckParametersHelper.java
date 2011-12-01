@@ -20,7 +20,7 @@ public class CheckParametersHelper {
 		}
 		return -1;
 	}
-	
+
 	/* check if it exists the Interface in the ComputerSystem */
 	public static int containsInterface(ComputerSystem model, LogicalPort logicalPort) {
 		int pos = 0;
@@ -33,6 +33,5 @@ public class CheckParametersHelper {
 		}
 		return -1;
 	}
-	
 
 }

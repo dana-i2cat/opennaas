@@ -1,7 +1,6 @@
 package interfaces;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 import helpers.CheckParametersHelper;
 
@@ -16,6 +15,7 @@ import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
+
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,8 +43,8 @@ import org.osgi.framework.BundleContext;
 public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	@Inject
-	BundleContext				bundleContext	= null;
-	
+	BundleContext		bundleContext	= null;
+
 	boolean				isMock;
 	ResourceDescriptor	resourceDescriptor;
 	IResource			resource		= null;
@@ -60,7 +60,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-//				 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		return options;
 	}
@@ -83,7 +83,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
-		
+
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
 		toRemove = resourceManager.listResources().toArray(toRemove);
@@ -94,7 +94,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 
 			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
-		
+
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("ipv4");
@@ -112,7 +112,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 	 * 
 	 */
 	public void tearDown() throws ResourceException {
-		
+
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
 		toRemove = resourceManager.listResources().toArray(toRemove);
@@ -135,7 +135,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 
 		setSubInterfaceDescriptionTest();
 		setInterfaceDescriptionTest();
-		
+
 		try {
 			tearDown();
 		} catch (ResourceException e) {
@@ -153,17 +153,17 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		
+
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
-		
+
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName("fe-0/3/2");
 		ethernetPort.setPortNumber(2);
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
-		
+
 		try {
 			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
@@ -196,11 +196,11 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		/* check the update model, it is only possible to check it with a real router */
 		int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) resource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
-		
-		String desc = ((EthernetPort)((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
+
+		String desc = ((EthernetPort) ((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
 		Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
-		
-		//delete created sub interface
+
+		// delete created sub interface
 		try {
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
 			QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
@@ -219,16 +219,16 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		
+
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
 		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
-		
+
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
-		
+
 		try {
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 		} catch (CapabilityException e) {
@@ -260,8 +260,8 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		/* check the update model, it is only possible to check it with a real router */
 		int pos = CheckParametersHelper.containsInterface((ComputerSystem) resource.getModel(), logicalPort);
 		Assert.assertTrue(pos != -1);
-		
-		String desc = ((LogicalPort)((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
+
+		String desc = ((LogicalPort) ((ComputerSystem) resource.getModel()).getLogicalDevices().get(pos)).getDescription();
 		Assert.assertTrue(desc.equals(logicalPort.getDescription()));
 	}
 
@@ -272,16 +272,16 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
 		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
-		
+
 		isMock = false;
-		if (context.getSessionParameters().containsKey(ProtocolSessionContext.PROTOCOL_URI)){
-			if (((String)context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI)).startsWith("mock")){
+		if (context.getSessionParameters().containsKey(ProtocolSessionContext.PROTOCOL_URI)) {
+			if (((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI)).startsWith("mock")) {
 				isMock = true;
 			}
 		}
 	}
-	
-	private QueueResponse executeQueue(IResource resource){
+
+	private QueueResponse executeQueue(IResource resource) {
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)

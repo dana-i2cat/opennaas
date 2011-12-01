@@ -42,12 +42,12 @@ import api.ParamCreationHelper;
  * 
  */
 
-//@RunWith(JUnit4TestRunner.class)
+// @RunWith(JUnit4TestRunner.class)
 public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	@Inject
-	BundleContext				bundleContext	= null;
-	
+	BundleContext		bundleContext	= null;
+
 	boolean				isMock;
 	ResourceDescriptor	resourceDescriptor;
 	IResource			resource		= null;
@@ -87,7 +87,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
 		profileManager = getOsgiService(IProfileManager.class, 30000);
-		
+
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("queue");
@@ -119,7 +119,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	}
 
-//	@Test
+	// @Test
 	public void configureSubInterfaceTest() {
 		try {
 			setUp();
@@ -166,8 +166,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
-		
-		//TODO check queue response is OK
+
+		// TODO check queue response is OK
 
 		/* refresh model */
 		try {
@@ -217,8 +217,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
-		
-		//TODO check queue response is OK
+
+		// TODO check queue response is OK
 
 		/* refresh model */
 		try {

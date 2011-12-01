@@ -2,7 +2,6 @@ package queue;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
-import net.i2cat.nexus.tests.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +11,17 @@ import java.util.Map;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.mantychore.queuemanager.QueueManager;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -27,15 +37,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;

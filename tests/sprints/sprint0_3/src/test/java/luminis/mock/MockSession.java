@@ -8,14 +8,15 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 /**
  * MockSession incapable of sending messages nor using listeners
+ * 
  * @author isart
- *
+ * 
  */
 public class MockSession implements IProtocolSession {
 
 	String					sessionID;
 	ProtocolSessionContext	protocolSessionContext;
-	Status status = Status.DISCONNECTED_BY_USER;
+	Status					status	= Status.DISCONNECTED_BY_USER;
 
 	public MockSession(String sessionID, ProtocolSessionContext protocolSessionContext) {
 		this.sessionID = sessionID;

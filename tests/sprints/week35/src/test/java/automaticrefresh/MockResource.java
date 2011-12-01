@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
@@ -20,15 +21,12 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class MockResource implements IResource {
 	static Log					log				= LogFactory
 														.getLog(MockResource.class);
 
 	Map<String, ICapability>	capabilities	= new HashMap<String, ICapability>();
-	IModel				model;
+	IModel						model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
 

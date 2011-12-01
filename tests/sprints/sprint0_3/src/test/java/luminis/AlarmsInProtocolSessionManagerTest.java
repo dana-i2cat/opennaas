@@ -11,6 +11,13 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import luminis.mock.MockSessionFactory;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
@@ -23,13 +30,6 @@ import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -69,10 +69,9 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 		protocolManager = getOsgiService(IProtocolManager.class, 5000);
 	}
 
-	
 	@Test
 	public void checkHandleSessionAlarmTriggersCapabilityAlarmTest() {
-		
+
 		initBundles();
 
 		try {
@@ -99,7 +98,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 
 			// generate Session Alarm
 			Event newSessionAlarm = generateAlarm(session);
-			
+
 			// sessionManager should handle SessionAlarm and generate a CapabilityAlarm
 			sessionManager.handleEvent(newSessionAlarm);
 
@@ -128,12 +127,9 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 			e.printStackTrace();
 			Assert.fail(e.getLocalizedMessage());
 		}
-		
-		
+
 	}
-	
-	
-	
+
 	/**
 	 * Check a TransportAlarm is transformed into a ResourceAlarm
 	 */
@@ -213,8 +209,6 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 		}
 	}
 
-	
-	
 	/**
 	 * Generates a WonesysAlarm
 	 * 
@@ -224,7 +218,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 		log.debug("Generating SessionAlarm in session: " + session.getSessionId());
 		eventManager.publishEvent(generateAlarm(session));
 	}
-	
+
 	/**
 	 * Generates a WonesysAlarm
 	 * 
