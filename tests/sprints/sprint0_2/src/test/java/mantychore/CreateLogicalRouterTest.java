@@ -170,7 +170,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		try {
 
 			if (isMock) {
-				LRFriendlyID = "routerV2";
+				LRFriendlyID = "cpe1";
 			} else {
 				LRFriendlyID = "pepito";
 			}
