@@ -9,26 +9,27 @@ import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.System;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ILifecycle.State;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -37,7 +38,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.osgi.framework.BundleContext;
-import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
@@ -67,13 +67,14 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 
 		return options;
 	}
-	
+
 	@Configuration
 	public Option[] additionalConfiguration() throws Exception {
 		return combine(configuration(), new Customizer() {
 			@Override
 			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
+						.build();
 			}
 		});
 	}
@@ -168,7 +169,7 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 			logicalRouterName = "pepito";
 		}
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
 					commandprocessor);
 		Assert
 				.assertTrue(response2.get(0).contains(logicalRouterName));
@@ -184,7 +185,7 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 		// assert command output no contains ERROR tagInitializerTestHelper
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
+		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
 					commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response2.get(1).isEmpty());
@@ -264,8 +265,8 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 	}
 
 	/**
-	 * This test is deprecated org.opennaas.core.resources/tests/ResourceManagerTest .java/testRemoveResource. This test is responsible for testing this
-	 * story
+	 * This test is deprecated org.opennaas.core.resources/tests/ResourceManagerTest .java/testRemoveResource. This test is responsible for testing
+	 * this story
 	 * 
 	 * **/
 	@Deprecated

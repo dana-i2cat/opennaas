@@ -8,28 +8,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ILifecycle.State;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
@@ -38,7 +38,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 import org.osgi.framework.BundleContext;
-import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class CreateLogicalRouterTest extends AbstractIntegrationTest {
@@ -59,7 +58,6 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 	@Inject
 	BundleContext				bundleContext	= null;
 
-	
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
@@ -73,13 +71,14 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 
 		return options;
 	}
-	
+
 	@Configuration
 	public Option[] additionalConfiguration() throws Exception {
 		return combine(configuration(), new Customizer() {
 			@Override
 			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
+						.build();
 			}
 		});
 	}
@@ -215,7 +214,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 				LRFriendlyID = "pepito";
 			}
 			// chassis:listLogicalRouters
-			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouter " + resourceFriendlyID,
+			response = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
 					commandprocessor);
 			// assert command output no contains ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
