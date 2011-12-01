@@ -164,7 +164,7 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 		String logicalRouterName;
 
 		if (isMock) {
-			logicalRouterName = "routerV2";
+			logicalRouterName = "cpe1";
 		} else {
 			logicalRouterName = "pepito";
 		}

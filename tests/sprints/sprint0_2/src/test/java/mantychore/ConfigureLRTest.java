@@ -166,7 +166,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		List<String> response1;
 
 		if (isMock) {
-			logicalRouterName = "routerV2";
+			logicalRouterName = "cpe1";
 		} else {
 			logicalRouterName = "pepito";
 		}

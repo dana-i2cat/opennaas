@@ -209,7 +209,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		List<String> response;
 		try {
 			if (isMock) {
-				LRFriendlyID = "routerV2";
+				LRFriendlyID = "cpe1";
 			} else {
 				LRFriendlyID = "pepito";
 			}
@@ -239,7 +239,7 @@ public class CreateLogicalRouterTest extends AbstractIntegrationTest {
 		initResource();
 		try {
 			if (isMock) {
-				LRFriendlyID = "routerV2";
+				LRFriendlyID = "cpe1";
 			} else {
 				LRFriendlyID = "pepito";
 			}
