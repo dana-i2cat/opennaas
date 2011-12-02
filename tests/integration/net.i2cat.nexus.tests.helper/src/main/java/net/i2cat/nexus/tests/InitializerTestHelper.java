@@ -1,7 +1,9 @@
 package net.i2cat.nexus.tests;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -13,16 +15,36 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class InitializerTestHelper {
+
+	/**
+	 * Stops all resources in give resourceManager
+	 * 
+	 * @param resourceManager
+	 * @throws ResourceException
+	 *             if fails to stop a resource.
+	 */
 	public static void stopResources(IResourceManager resourceManager) throws ResourceException {
-		/* delete used resources in the resource Manager */
+
 		for (IResource resource : resourceManager.listResources()) {
 			resourceManager.stopResource(resource.getResourceIdentifier());
 		}
 	}
 
+	/**
+	 * Remove all resources from given resourceManager.
+	 * 
+	 * It stops active resources prior removing them.
+	 * 
+	 * @param resourceManager
+	 * @throws ResourceException
+	 *             if fails to remove (or stop) a resource.
+	 */
 	public static void removeResources(IResourceManager resourceManager) throws ResourceException {
-		/* delete used resources in the resource Manager */
-		for (IResource resource : resourceManager.listResources()) {
+		List<IResource> resources = resourceManager.listResources();
+		for (int i = resources.size() - 1; i >= 0; i--) {
+			IResource resource = resources.get(i);
+			if (resource.getState().equals(ILifecycle.State.ACTIVE))
+				resourceManager.stopResource(resource.getResourceIdentifier());
 			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
 	}
@@ -43,7 +65,7 @@ public class InitializerTestHelper {
 		return resource;
 
 	}
-	
+
 	public static int containsCapability(IResource resource, String idCapability) {
 
 		int pos = 0;
@@ -56,6 +78,5 @@ public class InitializerTestHelper {
 		return -1;
 
 	}
-	
 
 }
