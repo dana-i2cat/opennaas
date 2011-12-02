@@ -53,7 +53,9 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	IResourceManager	resourceManager;
 	IProfileManager		profileManager;
 
-	String				LRName			= "TestLR1";
+	String				LRName			= "cpe2";
+	String				interfaceName	= "fe-0/0/3.1";
+
 	IResource			LRresource		= null;
 	EthernetPort		iface;
 
@@ -101,6 +103,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
+		capabilities.add("ipv4");
 		capabilities.add("queue");
 		resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, type, capabilities);
 		resource = resourceManager.createResource(resourceDescriptor);
@@ -120,12 +123,19 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 			executeQueue(resource);
 		}
 
-		// createlogicalIface in LR
+		// add logicalIface in LR
+		// remove it from parent
 		EthernetPort ethernetPort = new EthernetPort();
-		ethernetPort.setName("fe-0/3/2");
+		ethernetPort.setName(interfaceName);
 		ethernetPort.setPortNumber(2);
-		ethernetPort.setElementName(LRName);
-		chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, ethernetPort);
+		chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
+
+		// put it in child
+		EthernetPort ethernetPort2 = new EthernetPort();
+		ethernetPort2.setName(ethernetPort.getName());
+		ethernetPort2.setPortNumber(ethernetPort.getPortNumber());
+		ethernetPort2.setElementName(LRName);
+		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort2);
 		executeQueue(resource);
 
 		LRresource = resourceManager.getResource(resourceManager.getIdentifierFromResourceName("router", LRName));
@@ -145,14 +155,24 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
-		try {
-			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, iface);
-		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+
+		if (iface != null) {
+			try {
+				chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, iface);
+			} catch (CapabilityException e) {
+				Assert.fail("It was impossible to send message " + ActionConstants.DELETESUBINTERFACE + " : " + e.getMessage());
+			}
 		}
 
 		// delete LR
-		chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, LRName);
+		if (LRresource != null) {
+			try {
+				chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, LRName);
+			} catch (CapabilityException e) {
+				Assert.fail("It was impossible to send message " + ActionConstants.DELETELOGICALROUTER + " : " + e.getMessage());
+			}
+		}
+
 		executeQueue(resource);
 
 		// Reset repository
@@ -215,7 +235,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		try {
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+			Assert.fail("It was impossible to send message " + ActionConstants.SETINTERFACEDESCRIPTION + " : " + e.getMessage());
 		}
 
 		/* execute action */
@@ -268,7 +288,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		try {
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+			Assert.fail("It was impossible to send message " + ActionConstants.SETINTERFACEDESCRIPTION + ": " + e.getMessage());
 		}
 
 		/* execute action */
@@ -278,7 +298,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		try {
 			chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+			Assert.fail("It was impossible to send message " + ActionConstants.GETCONFIG + ": " + e.getMessage());
 		}
 
 		if (isMock)
@@ -326,7 +346,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 			response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 			Assert.assertTrue(response.isOk());
 		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
+			Assert.fail("Error in queue " + QueueConstants.EXECUTE + ": " + e.getMessage());
 		}
 		return response;
 	}

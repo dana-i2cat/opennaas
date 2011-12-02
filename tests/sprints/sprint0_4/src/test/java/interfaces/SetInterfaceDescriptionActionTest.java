@@ -126,7 +126,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void configureSubInterfaceTest() {
+	public void configureSubInterfaceDescriptionTest() {
 		try {
 			setUp();
 		} catch (Exception e) {
