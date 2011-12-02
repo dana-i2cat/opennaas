@@ -315,7 +315,11 @@ public class InterfacesVLANKarafTest extends AbstractIntegrationTest {
 				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
 					, commandprocessor);
 		// assert command output no contains ERROR tag
+		if (!responseError.get(1).isEmpty()) {
+			Assert.fail(responseError.get(1));
+		}
 		Assert.assertTrue(responseError.get(1).isEmpty());
+
 		responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
