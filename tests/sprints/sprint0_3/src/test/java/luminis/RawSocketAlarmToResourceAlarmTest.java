@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -89,6 +90,8 @@ public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest i
 		initBundles();
 
 		try {
+
+			InitializerTestHelper.removeResources(resourceManager);
 
 			// register this as ResourceAlarm listener
 			int registrationNum = registerAsResourceAlarmListener(this);
