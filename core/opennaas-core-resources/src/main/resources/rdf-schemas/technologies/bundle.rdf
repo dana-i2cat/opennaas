@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:bundle="http://www.science.uva.nl/research/sne/ndl/bundle#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>bundle</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: Bundle module</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining bundles of physical links as a network topology. Each bundle (or duct) is described as a link at a single layer. This layer may optionally act as the server layer for Interfaces at a higher layer, such as the Fiber layer or the Twisted Pair (UTP) layer. The main purpose of this layer is to describe shared risk links, and to describe an arbitrary number of physical connection between two interface (to describe a massively over-provisioned network).</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- BUNDLE LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">Bundle</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Bundle Layer. A link on this layer represents a duct containing multiple physical links.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#BundleInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">Bundle</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#StrandLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">M Label</rdfs:label>
+    <rdfs:comment xml:lang="en">The identification number or string of a certain bundle within a bigger bundle of links.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <!-- rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#string"/ -->
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#strand">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">strand</rdfs:label>
+    <rdfs:comment xml:lang="en">The identification number or string of a certain bundle within a bigger bundle of links. This is used for multiple bundles in a duct.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#StrandLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</owl:minCardinality> <!-- label MAY be unset for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#FiberBundle">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">Fiber bundle</rdfs:label>
+    <rdfs:comment xml:lang="en">A fiber bundle, describing which fibers are part of the bundle.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/> <!-- server layer -->
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/wdm#FiberNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#TwistedPairBundle">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">Twisted Pair bundle</rdfs:label>
+    <rdfs:comment xml:lang="en">A UTP bundle, describing which UTP links are part of the bundle.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/> <!-- server layer -->
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/bundle#Bundle-in-Bundles">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/bundle.rdf"/>
+    <rdfs:label xml:lang="en">Bundle of bundles</rdfs:label>
+    <rdfs:comment xml:lang="en">A bundle of bundles, describing which bundles are part of a bigger bundle.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#BundleNetworkElement"/> <!-- server layer -->
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

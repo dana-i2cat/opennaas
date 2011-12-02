@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2000/10/XMLSchema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:vpn="http://www.science.uva.nl/research/sne/ndl/vpn#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>vpn</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: PPP, L2TP and MPLS technologies</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining PPP links, L2TP tunnels and MPLS paths. Of these layers, only the MPLS layer has a label: the mplsLabel. PPP and L2TP are single link-only technologies. The ad-hoc combination of these three technologies in a single schema leads to the correct observation that this schema can be considered a bit immature. The naming is a bit odd: VPN, while only L2TP really is a tunneling protocol.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We regard this schema in particular as a "quick hack". We're not experts in the technologies mentioned here, and will likely have overlooked a few things. Feel free to make a schema for these technologies based on our layer schema, or (slightly) better example schemas (e.g. Ethernet, TDM or WDM), but please start from scratch for this particular technology.</vs:moreinfo>
+</rdf:Description>
+
+<!-- PPP LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">PPP</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Point-to-Point Protocol (PPP) Layer, as defined in RFC 1661. PPP only defines links, and has no switching labels. A PPP packet consists of a 1-byte or 2-byte protocol header, followed by a variable payload.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#PPPInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">PPP</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/>
+</rdfs:Class>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#ip-in-PPP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">IP in PPP</rdfs:label>
+    <rdfs:comment xml:lang="en">A simple adaptation embedding IP packets 1:1 in the payload of PPP packets. The protocol field is set to 0x0021 (for IPv4) or 0x0057 (for IPv6), as defined by www.iana.org/assignments/ppp-numbers.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+
+<!-- L2TP LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">L2TP</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Layer 2 Tunneling Protocol (L2TP) Layer, as defined in RFC 3931. L2TP only defines links, and has no switching labels.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">L2TP</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/>
+</rdfs:Class>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#atm-in-L2TP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">ATM in L2TP</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of ATM in L2TP by creating an AAL5-SDU Mode Pseudowire as defined by RFC 4454.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#ethernet-in-L2TP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">Ethernet in L2TP</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of Ethernet in L2TP by creating an Ethernet Port Pseudowire as defined by RFC 4719.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#ppp-in-L2TP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">PPP in L2TP</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of PPP in L2TP by creating a HDLC Pseudorwire as defined by RFC 4349.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- MPLS LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">MPLS</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the MPLS Layer. Each packet consists of one or more MPLS labels, followed by a payload. Note that labels in labels are NOT represented as MPLS in MPLS.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">MPLS</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">MPLS Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the label field in the MPLS header. This is the topmost label, thus the label of the current link.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1048576</xsd:maxInclusive>
+    <vs:moreinfo>The range is (0..1048576).We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#mplsLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">label</rdfs:label>
+    <rdfs:comment xml:lang="en">The topmost label in a MPLS packet. The MPLS label is a 20-bit integer.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#ip-in-MPLS">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">IP in MPLS</rdfs:label>
+    <rdfs:comment xml:lang="en">A simple adaptation embedding IP packets in the payload of a MPLS packet.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#l2tp-in-MPLS">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/vpn.rdf"/>
+    <rdfs:label xml:lang="en">L2TP in MPLS</rdfs:label>
+    <rdfs:comment xml:lang="en">A simple adaptation embedding L2TP packets in the payload of a MPLS packet.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

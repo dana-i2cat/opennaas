@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:copper="http://www.science.uva.nl/research/sne/ndl/copper#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>copper</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: Copper technology</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining an physical copper network. This schema only defined the TwistedPair layer. It could easily be extended to support other copper layers like Coax as well.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- TWISTED PAIR LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">UTP</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Twisted Pair Layer. A link on this layer represents an UTP or STP cable.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalNetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">UTP</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/physical#PhysicalNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#ShieldingType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Shielding</rdfs:label>
+    <rdfs:comment xml:lang="en">The shielding of the copper pairs in a cable.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#ConnectorType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Connector</rdfs:label>
+    <rdfs:comment xml:lang="en">A type of connector.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#CableCategory">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Category</rdfs:label>
+    <rdfs:comment xml:lang="en">The cable category, defining the performance characteristics of twisted pair cables.</rdfs:comment>
+</rdfs:Class>
+
+<!-- Resources -->
+
+<copper:ShieldingType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#UTP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">UTP</rdfs:label>
+    <rdfs:comment xml:lang="en">Unshielded Twisted Pair. The most common shielding for twisted pair cables. UTP cables are not shielded.</rdfs:comment>
+</copper:ShieldingType>
+
+<copper:ShieldingType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#STP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">STP</rdfs:label>
+    <rdfs:comment xml:lang="en">Shielded Twisted Pair. STP cabling includes metal shielding over each individual pair of copper wires.</rdfs:comment>
+</copper:ShieldingType>
+
+<copper:ShieldingType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#S-UTP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">S/UTP</rdfs:label>
+    <rdfs:comment xml:lang="en">Screened Unshielded Twisted Pair. S/UTP, also known as Fully shielded (or Foiled) Twisted Pair (FTP), is a screened UTP cable: the entire group of twisted pair is protected by a single copper shield.</rdfs:comment>
+</copper:ShieldingType>
+
+<copper:ShieldingType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#S-STP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">S/STP</rdfs:label>
+    <rdfs:comment xml:lang="en">Screened Shielded Twisted Pair. S/STP cabling is both individually shielded (like STP cabling) and also has an outer metal shielding covering the entire group of shielded copper pairs (like S/UTP).</rdfs:comment>
+</copper:ShieldingType>
+
+<copper:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#RJ11">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">RJ11</rdfs:label>
+    <rdfs:comment xml:lang="en">Male RJ-11 connector.</rdfs:comment>
+</copper:ConnectorType>
+
+<copper:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#RJ12">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">RJ12</rdfs:label>
+    <rdfs:comment xml:lang="en">Male RJ-12 connector.</rdfs:comment>
+</copper:ConnectorType>
+
+<copper:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#RJ45">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">RJ45</rdfs:label>
+    <rdfs:comment xml:lang="en">Male RJ-45 connector.</rdfs:comment>
+</copper:ConnectorType>
+
+<copper:ConnectorType rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#GG45">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">GG45</rdfs:label>
+    <rdfs:comment xml:lang="en">Male GG45 connector.</rdfs:comment>
+</copper:ConnectorType>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat3">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat3</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 3 cable is defined in TIA/EIA-568-B, used for data networks utilizing frequencies up to 16 MHz. Historically popular for 10 Mbit/s Ethernet networks.</rdfs:comment>
+</copper:CableCategory>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat5">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat5</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 5 cable is currently unrecognized by TIA/EIA. Provided performance of up to 100 MHz, and was frequently used on 100 Mbit/s ethernet networks. May be unsuitable for 1000BASE-T gigabit ethernet.</rdfs:comment>
+</copper:CableCategory>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat5e">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat5e</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 5e cable is defined in TIA/EIA-568-B. Provides performance of up to 100 MHz, and is frequently used for both 100 Mbit/s and gigabit ethernet networks.</rdfs:comment>
+</copper:CableCategory>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat6">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat6</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 6 cable: defined in TIA/EIA-568-B. It provides performance of up to 250 MHz, more than double category 5 and 5e.</rdfs:comment>
+</copper:CableCategory>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat6a">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat6a</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 6a cable: Future specification for 10 Gbit/s applications.</rdfs:comment>
+</copper:CableCategory>
+
+<copper:CableCategory rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#Cat7">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">Cat7</rdfs:label>
+    <rdfs:comment xml:lang="en">Category 7 cable: An informal name applied to ISO/IEC 11801 Class F cabling. This standard specifies four individually-shielded pairs (STP) inside an overall shield. Designed for transmission at frequencies up to 600 MHz.</rdfs:comment>
+</copper:CableCategory>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#strand">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">strand</rdfs:label>
+    <rdfs:comment xml:lang="en">The identification number of a certain cable within a bundle of links.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#strand"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/bundle#StrandLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</owl:minCardinality> <!-- label MAY be unset for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#shielding">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">shielding</rdfs:label>
+    <rdfs:comment xml:lang="en">The shielding between the individual wires in the twisted pair cable.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#ShieldingType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#connector">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">connector type</rdfs:label>
+    <rdfs:comment xml:lang="en">The type of connector.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#ConnectorType"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#category">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">category</rdfs:label>
+    <rdfs:comment xml:lang="en">The cable category, defining the performance characteristics of twisted pair links.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#CableCategory"/>
+    <!-- Actually a link, not an interface property -->
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#PPP-in-TP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">PPP in UTP</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of PPP over a physical link. The PPP frame is appended with HDLC-like synchronization and padding bits as described in RFC 1662.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#atm-in-TP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">ATM in UTP</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 155 Mb/s ATM over a single UTP cable.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/atm#ATMNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#eth1base5">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">1base5</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 1 Mb/s Ethernet over UTP using the 1base5 encoding.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/copper#base-T">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/copper.rdf"/>
+    <rdfs:label xml:lang="en">base-T</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of Ethernet into a UTP cable. This includes the all base-T Ethernet PMDs: 10base-T for 10Mb/s Ethernet, 100base-TX, 100base-T2 and 100base-T4 for 100Mb/s Ethernet, 1000base-T for 1000Mb/s Ethernet and 10Gbase-T for 10Gb/s Ethernet. Interfaces with autosensing will select the fastest available speed.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/copper#TwistedPairNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+</rdf:RDF>

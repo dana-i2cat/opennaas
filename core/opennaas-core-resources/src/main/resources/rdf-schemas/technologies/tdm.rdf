@@ -1,0 +1,971 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:tdm="http://www.science.uva.nl/research/sne/ndl/tdm#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>tdm</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: TDM technologies</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining a TDM network. This schema defines as much as fifteen layers, with STS-3/AUG-1 as the basic Layer, which can actually represent both STS-3 as well as AUG-1. Other important layers are VC-4 / STS-3c SPE, VC-3 / STS-1 SPE and TUG-3. For higher order concatenation, the OC1, OC3, OC12, OC48, OC192 and OC768 layers are defined. For lower order concatenation the layers VT1.5 / VC-11, VT2 / VC-12, VT3, VT6 / VC-2, VT-group / TUG-2 are defined. The layers are highly based on RFC 4606, the GMPLS extensions for GMPLS. This document does not define lower orders than VT1.5. in particular DS0 is not defined, nor the higher order concatenations of DS0: DS1/T1, DS2/T2, DS3/T3, DS4/T4, DS5/T4, E1, E2, E3, E4 and E5. Defining those should be pretty straightforward though, if needed.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- VT1.5 / VC-11 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT15NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT1.5</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Virtual Tributary (VT)-1.5 or VC-11 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">216000</ndl:capacity> <!-- 1.728 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT15Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT1.5</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT15NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">216000</ndl:capacity> <! - - 1.728 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#MLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">M Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Sequence number of a virtual tributary (VT) in a VT-group (VTG), or the sequence number of a virtual container (VC-11 or VC-12) in a TUG-2 (Tributary Unit Group). The "M" parameters was taken directly from RFC 4606. Valid range is 0..9. 0 indicated a VT-6; 1 or 2 indicate a VT-3; 3, 4 or 5 indicate a VT-2 or VC-12; 6, 7, 8 or 9 indicate a VT-1.5 or VC-11.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">9</xsd:maxInclusive>
+    <vs:moreinfo>The range is (1..9) or (0/unspecified). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#vt15-label">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">M</rdfs:label>
+    <rdfs:comment xml:lang="en">The VT1.5 channel within a VT group, or equivalently, the index of a VC-11 in a TUG-2. This is the same as the "M" label in RFC 4606 (GMPLS). Valid range is {6...9}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT15NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#MLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+<!-- Other adaptation: T-1 in a VC-11 -->
+
+<!-- VT2 / VC-12 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT2NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT2</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Virtual Tributary (VT)-2 or VC-12 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">288000</ndl:capacity> <!-- 2.304 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT2Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT2</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT2NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">288000</ndl:capacity> <! - - 2.304 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#vt2-label">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">M</rdfs:label>
+    <rdfs:comment xml:lang="en">The VT2 channel within a VT group, or equivalently, the index of a VC-12 in a TUG-2. This is the same as the "M" label in RFC 4606 (GMPLS). Valid range is {3...5}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT2NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#MLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+<!-- Other adaptation: E-1 in a VC-12 -->
+
+<!-- VT3 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT3NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT3</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Virtual Tributary (VT)-3 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">432000</ndl:capacity> <!-- 3.456 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT3Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT3</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT3NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">432000</ndl:capacity> <! - - 3.456 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#vt3-label">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">M</rdfs:label>
+    <rdfs:comment xml:lang="en">The index of a VT3 channel within a VT group, or equivalently, the index of a VC-2 in a TUG-2. This is the same as the "M" label in RFC 4606 (GMPLS). Valid range is {1...2}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#MLabel"/>
+    <!-- WARNING: cardinality is not specified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- VT6 / VC-2 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT6NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT6</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Virtual Tributary (VT)-6 or VC-2 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">864000</ndl:capacity> <!-- 6.912 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT6Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT6</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT6NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">864000</ndl:capacity> <! - - 6.912 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+<!-- Other adaptation: DS-2 in a VC-2 -->
+
+<!-- VTG / TUG-2 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VTG</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Virtual Tributary (VT) Group Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">864000</ndl:capacity> <!--- between 6.912 Mbit/s (VT-6) and 7.159 Mbit/s (1/7 STS-1 SPE) -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VTGInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VTG</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">864000</ndl:capacity> <! - - between 6.912 Mbit/s (VT-6) and 7.159 Mbit/s (1/7 STS-1 SPE) - - >
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#LLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">L Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Sequence number of a virtual tributary group (VTG) or TUG-2 (Tributary Unit Group) within a STS-1 SPE, VC-3 or TUG-3. This is the same as the "L" label in RFC 4606 (GMPLS). Valid range is {1...7}.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</xsd:maxInclusive>
+    <vs:moreinfo>The range is (1..7). This probably should be specified. We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#vtg">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">L</rdfs:label>
+    <rdfs:comment xml:lang="en">The VTG or TUG-2 channel within a STS-1 SPE, VC-3 or TUG-3. This is the same as the "L" label in RFC 4606 (GMPLS). Valid range is {1...7}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#LLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT15-in-VTG">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT1.5 in VTG</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 4 VT 1.5 in a VT group or, equivalent, 4 VC-11 in a TUG-2.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT15NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT2-in-VTG">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT2 in VTG</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 3 VT 2 in a VT group.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT2NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT3-in-VTG">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT3 in VTG</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 2 VT 3 in a VT group or, equivalent, 2 VC-12 in a TUG-2.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VT6-in-VTG">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VT6 in VTG</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of a VT 6 in a VT group or, equivalent, a VC-2 in a TUG-2.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VT6NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- STS-1 SPE / VC-3 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-1 SPE</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the virtual container (VC)-3 Layer (SDH) or STS-1 SPE (SONET) Layer. The payload of a STS-1 Layer</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6264000</ndl:capacity> <!-- 50.112 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPEInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-1 SPE</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6264000</ndl:capacity> <! - - 50.112 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#ULabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">U Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Sequence number of a STS-1 SPE (or VC-3) within a STS-3 (or AUG-1). This is the same as the "U" label in RFC 4606 (GMPLS). Valid range is {1...3}.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</xsd:maxInclusive>
+    <vs:moreinfo>The range is (1..3). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#sts">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">U</rdfs:label>
+    <rdfs:comment xml:lang="en">The STS channel. An integer identifying the STS-1 SPE (or VC-3) within a STS-3 (or AUG-1). This is the same as the "U" label in RFC 4606 (GMPLS). Valid range is {1...3}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#ULabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VTG-in-STS1-SPE">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VTG/TUG-2 in STS-1 SPE/VC-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 7 Virtual Tributary Groups (VTG) in one STS-1 SPE or, equivalent, 7 TUG-2 in a VC-3.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- Other adaptation: T-3/E-3 in a VC-3 -->
+
+<!-- TUG-3 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">TUG-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Tributary Unit Groups (TUG)-3 Layer (SDH).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but estimated to be roughly the same as a STS-1 capacity; This is the lower limit. This is the upper limit is a STS-1 SPE, but that would mean there are no header bits, which there in fact are.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6192000</ndl:capacity> <!-- Between 49.536 Mbit/s (user capacity STS-1) and 50.112 Mbit/s (STS-1 SPE) = 6192000 - 6264000 MByte/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">TUG-3</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but estimated to be roughly the same as a STS-1 capacity; This is the lower limit. This is the upper limit is a STS-1 SPE, but that would mean there are no header bits, which there in fact are.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6192000</ndl:capacity> <! - - Between 49.536 Mbit/s (user capacity STS-1) and 50.112 Mbit/s (STS-1 SPE) = 6192000 - 6264000 MByte/s - - >
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#KLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">K Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Sequence number of a TUG-3 within a VC-4. This is the same as the "K" label in RFC 4606 (GMPLS). Valid range is {1...3}.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</xsd:maxInclusive>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <vs:moreinfo>The range is (1..3). This probably should be specified. Perhaps using OWL 1.1.</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#tug">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">K</rdfs:label>
+    <rdfs:comment xml:lang="en">The TUG-3 channel. An integer identifying the TUG-3 within a VC-4. This is the same as the "K" label in RFC 4606 (GMPLS). Valid range is {1...3}.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#KLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#TUG2-in-TUG3">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">TUG-2 in TUG-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 7 Tributary Unit Groups (TUG)-2 in one Tributary Unit Groups (TUG)-3.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VTGNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- STS-3c SPE / VC-4 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VC-4</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the virtual container (VC)-4 Layer (SDH) or STS-3c SPE (SONET) Layer. The payload of a STS-3/AUG-1 Layer</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">18792000</ndl:capacity> <!-- 150.336 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VC-4Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VC-4</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">18792000</ndl:capacity> <! - - 150.336 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3-in-VC4">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">TUG-3 in VC-4</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 3 TUG-3 in a VC-4.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#TUG3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#GiEthernet-in-7-VC4">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">GE in 7 VC-4</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of Gigabit Ethernet in 7 VC-4 channels using Generic Framing Procedure for frames (GFP-F).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">7</layer:serverCount>
+    <layer:clientCapacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">125000000</layer:clientCapacity> <!-- 1000 Mbit/s -->
+    <vs:moreinfo>WARNING: There is no formal way to specify the order of the 7 VC-4 of a Gigabit Ethernet. A regular layer label would be a good way to do so, but a VC-4 has no label. It is not yet clear if we should provide a regular label for VC-4 for only this purpose, or come up with another concept.</vs:moreinfo>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#GiEthernet-in-8-VC4">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">GE in 8 VC-4</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of Gigabit Ethernet in 8 VC-4 channels using a proprietary standard used by some Cisco devices.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">8</layer:serverCount>
+    <layer:clientCapacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">125000000</layer:clientCapacity> <!-- 1000 Mbit/s -->
+    <vs:moreinfo>WARNING: There is no formal way to specify the order of the 8 VC-4 of a Gigabit Ethernet. A regular layer label would be a good way to do so, but a VC-4 has no label. It is not yet clear if we should provide a regular label for VC-4 for only this purpose, or come up with another concept.</vs:moreinfo>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#ATM-in-16-VC4">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">ATM in 16 VC-4</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of ATM in a VC-4-16c.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</layer:serverCount>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <layer:clientCapacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">299520000</layer:clientCapacity> <!-- 2396.160 Mbit/s -->
+    <vs:moreinfo>WARNING: There is no formal way to specify the order of the 16 VC-4 of this ATM link. A regular layer label would be a good way to do so, but a VC-4 has no label. It is not yet clear if we should provide a regular label for VC-4 for only this purpose, or come up with another concept.</vs:moreinfo>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<!-- STS-3 / AUG-1 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the virtual STS-3 (SONET) or AUG-1 (SDH) Layer. A circuit switched layer, were each link represents a single AUG-1 or (concatenated) STS-3 channel.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19440000</ndl:capacity> <!-- 155.52 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19440000</ndl:capacity> <! - - 155.52 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#HierarchyStandard">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">Hierarchy</rdfs:label>
+    <rdfs:comment xml:lang="en">The Digital Hierarchy standard: SDH or SONET. A STS-3 Interface with "SONET" as the hierarchy is a STS-3. A STS-3 Interface with "SDH" as the hierarchy is a AUG-1 interface.</rdfs:comment>
+</rdfs:Class>
+
+<!-- Resources -->
+
+<tdm:HierarchyStandard rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#SONET">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">SONET</rdfs:label>
+    <rdfs:comment xml:lang="en">The ANSI SONET standards.</rdfs:comment>
+</tdm:HierarchyStandard>
+
+<tdm:HierarchyStandard rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#SDH">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">SDH</rdfs:label>
+    <rdfs:comment xml:lang="en">The ITU SDH standards.</rdfs:comment>
+</tdm:HierarchyStandard>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#SLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">S Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Sequence number of a AUG-1 or STS-3 channel (within a STS-n or STM-n) within an optical carrier. This is the same as the "S" label in RFC 4606 (GMPLS). Valid ranges are {1} for OC-3, {1...4} for OC-12, {1...16} for OC-48, {1...64} for OC-192, {1...256} for OC-768, {1...1024} for OC-3072.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1024</xsd:maxInclusive>
+    <vs:moreinfo>We now specify the range with XSD (XML schema), but this is not standardised yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL".</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#stm">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">S</rdfs:label>
+    <rdfs:comment xml:lang="en">The STM channel. An integer identifying the AUG-1 or STS-3 channel (within a STS-n or STM-n) within an optical carrier. This is the same as the "S" label in RFC 4606 (GMPLS). Valid ranges are {1} for OC-3, {1...4} for OC-12, {1...16} for OC-48, {1...64} for OC-192, {1...256} for OC-768</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#SLabel"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:minCardinality> <!-- label MUST be set for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#hierarchy">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">hierarchy</rdfs:label>
+    <rdfs:comment xml:lang="en">The object Interface is configured to handle either SONET-framed, or SDH-framed channels. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#HierarchyStandard"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#ingresshierarchy"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#egresshierarchy"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#ingresshierarchy">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">ingress hierarchy</rdfs:label>
+    <rdfs:comment xml:lang="en">The object Interface is configured to only accept SONET-framed, or SDH-framed channels. If multiple ingress hierarchy properties are defined, all frames can be accepted at the same time.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressProperty"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#HierarchyStandard"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#hierarchy"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#egresshierarchy">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">egress hierarchy</rdfs:label>
+    <rdfs:comment xml:lang="en">The object Interface is configured to only send out SONET-framed, or SDH-framed channels.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#egressProperty"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#HierarchyStandard"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#hierarchy"/>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VC4-in-AUG1">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VC-4/STS-3c SPE in AUG-1/STS-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of one VC-4 in a AUG-1, or equivalent: STS-3c SPE in a STS-3.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#VC4NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#VC3-in-AUG1">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">VC-3/STS-1 in AUG-1/STS-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of 3 VC-3 in a AUG-1, or equivalent: 3 STS-1 SPE in a STS-3.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC1 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC1NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-1</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-1 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6480000</ndl:capacity> <!-- 51.84 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC1Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-1</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC1NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6480000</ndl:capacity> <! - - 51.84 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-1-SPE-in-OC1">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-1 SPE in OC-1</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of a STS-1 Synchronous Payload Envelope (SPE) in a OC-1 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS1-SPENetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC1NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC3 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC3NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-3 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19440000</ndl:capacity> <!-- 155.52 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC3Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-3</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC3NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19440000</ndl:capacity> <! - - 155.52 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC3">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-3</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 3 STS channels (via a STS-3) or 1 STM channel in a OC-3 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC3NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC12 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC12NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-12</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-12 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">77760000</ndl:capacity> <!-- 662.08 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC12Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-12</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC12NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">77760000</ndl:capacity> <! - - 662.08 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC12">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-12</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 12 STS channels or 4 STM channels in a OC-12 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC12NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC48 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC48NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-48</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-48 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">311040000</ndl:capacity> <!-- 2488.32 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC48Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-48</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC48NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">311040000</ndl:capacity> <! - - 2488.32 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC48">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-48</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 48 STS channels or 16 STM channels in a OC-48 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC48NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">16</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC192 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-192</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-192 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1244160000</ndl:capacity> <!-- 9953.28 Mbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC192Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-192</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1244160000</ndl:capacity> <! - - 9953.28 Mbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC192">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-192</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 192 STS channels or 64 STM channels in a OC-192 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">64</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#WANPHY">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">WAN PHY</rdfs:label>
+    <rdfs:comment xml:lang="en">"Embedding" of WAN PHY (9.5 Gb/s) Ethernet in a OC-192 optical interface. This adaptation encompasses the 10Gbase-W PHY. The Ethernet standard defines different physical media dependent (PMD) adpatations to distinguish between the different underlying wavelengths. While these PMDs are not defined as a specific adaptation, it is possible to distinguish between them by examining the wavelength label of the Lambda layer. This must be 850nm for 10Gbase-SW, 1310nm for 10Gbase-LW and 1550nm for 10Gbase-EW.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC192NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+    <vs:moreinfo>The capacity was not checked in the standard, but estimated. The client capacity is taken to be 9510.912 Mb/s, which is the "user data rate" for OC-192. Not sure if this is correct. Others figure I saw were VC-4-64c = 9.5846 Gbit/s, or 9.2419 Gbps (with 64b/66b and WIS), or 9.953 Gbit/s (= the OC-192 framerate, but that is before 64b/66b and WIS)</vs:moreinfo>
+    <layer:clientCapacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1188864000</layer:clientCapacity> <!-- 9510.912 Mb/s -->
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+
+<!-- OC768 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC768NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-768</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-768 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4976640000</ndl:capacity> <!-- 39.81 Gbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC768Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-768</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC768NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4976640000</ndl:capacity> <! - - 39.81 Gbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC768">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-768</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 768 STS channels or 256 STM channels in a OC-768 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC768NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">256</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<!-- OC3072 LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC3072NetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-3072</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Optical Carrier (OC)-3072 Layer.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19906560000</ndl:capacity> <!-- 159.25 Gbit/s -->
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#OC3072Interface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">OC-3072</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC3072NetworkElement"/>
+    <vs:moreinfo>The capacity was not checked in the standard, but taken from a website.</vs:moreinfo>
+    <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19906560000</ndl:capacity> <! - - 159.25 Gbit/s - - >
+</rdfs:Class>
+-->
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/tdm#STS-in-OC3072">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/tdm.rdf"/>
+    <rdfs:label xml:lang="en">STS-3/AUG-1 in OC-3072</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of 3072 STS channels or 1024 STM channels in a OC-3072 optical interface.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#STS-3NetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC3072NetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1024</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

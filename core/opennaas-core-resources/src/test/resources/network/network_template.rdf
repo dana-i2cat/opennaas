@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#">
+
+<!-- Description of Netherlight -->
+<ndl:Location rdf:about="#Netherlight">
+        <ndl:name>Netherlight Optical Exchange</ndl:name>
+</ndl:Location>
+
+<!-- TDM3.amsterdam1.netherlight.net -->
+<ndl:Device rdf:about="#tdm3.amsterdam1.netherlight.net">
+        <ndl:name>tdm3.amsterdam1.netherlight.net</ndl:name>
+        <ndl:locatedAt rdf:resource="#amsterdam1.netherlight.net"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:501/1"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:501/2"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:501/3"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:501/4"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:503/1"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:503/2"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:503/3"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:503/4"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:504/1"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:504/2"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:504/3"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:504/4"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:505/1"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:505/2"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:505/3"/>
+        <ndl:hasInterface rdf:resource="#tdm3.amsterdam1.netherlight.net:505/4"/>
+</ndl:Device>
+
+<!-- all the interfaces of TDM3.amsterdam1.netherlight.net -->
+
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:501/1">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS501/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm4.amsterdam1.netherlight.net:5/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:501/2">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS501/2</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm1.amsterdam1.netherlight.net:12/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:501/3">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS501/3</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm2.amsterdam1.netherlight.net:6/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:501/4">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS501/4</ndl:name>
+        <ndl:connectedTo rdf:resource="#UvA-Force10:4/0"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:503/1">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS503/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm1.Praha1:6/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:503/2">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS503/2</ndl:name>
+        <ndl:connectedTo rdf:resource="#Starlight-HDXc:502/2"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:503/3">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS503/3</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm1.geneva1.netherlight.net:5/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:503/4">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS503/4</ndl:name>
+        <ndl:connectedTo rdf:resource="#UvA-Force10:4/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:504/1">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS504/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#Manlan-HDXc:503/4"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:504/2">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS504/2</ndl:name>
+        <ndl:connectedTo rdf:resource="#GEANT-M160:0/0"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:504/3">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS504/3</ndl:name>
+        <ndl:connectedTo rdf:resource="#Manlan-HDXc:504/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:504/4">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS504/4</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm1.geneva1.netherlight.net:6/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:505/1">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS505/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm1.amsterdam1.netherlight.net:6/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:505/2">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS505/2</ndl:name>
+        <ndl:connectedTo rdf:resource="#Manlan-HDXc:503/2"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:505/3">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS505/3</ndl:name>
+        <ndl:connectedTo rdf:resource="#Starlight-HDXc:503/2"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+<ndl:Interface rdf:about="#tdm3.amsterdam1.netherlight.net:505/4">
+        <ndl:name>tdm3.amsterdam1.netherlight.net:POS505/4</ndl:name>
+        <ndl:connectedTo rdf:resource="#????:0/0"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+ </ndl:Interface>
+
+
+<!-- TDM4.amsterdam1 -->
+<ndl:Device rdf:about="#tdm4.amsterdam1.netherlight.net">
+        <ndl:name>tdm4.amsterdam1.netherlight.net</ndl:name>
+        <ndl:locatedAt rdf:resource="#amsterdam1.netherlight.net"/>
+        <ndl:hasInterface rdf:resource="#tdm4.amsterdam1.netherlight.net:5/1"/>
+</ndl:Device>
+<ndl:Interface rdf:about="#tdm4.amsterdam1.netherlight.net:5/1">
+        <ndl:name>tdm4.amsterdam1.netherlight.net:POS5/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm3.amsterdam1.netherlight.net:501/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+<!-- TDM1.amsterdam1 -->
+<ndl:Device rdf:about="#tdm1.amsterdam1.netherlight.net">
+        <ndl:name>tdm1.amsterdam1.netherlight.net</ndl:name>
+        <ndl:locatedAt rdf:resource="#amsterdam1.netherlight.net"/>
+        <ndl:hasInterface rdf:resource="#tdm1.amsterdam1.netherlight.net:5/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.amsterdam1.netherlight.net:6/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.amsterdam1.netherlight.net:12/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.amsterdam1.netherlight.net:16/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.amsterdam1.netherlight.net:17/1"/>
+</ndl:Device>
+<ndl:Interface rdf:about="#tdm1.amsterdam1.netherlight.net:5/1">
+        <ndl:name>tdm1.amsterdam1.netherlight.net:POS5/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#RIPN-Gloriad:0/0"/>
+        <capacity rdf:resource="#OC12"/>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.amsterdam1.netherlight.net:6/1">
+        <ndl:name>tdm1.amsterdam1.netherlight.net:POS6/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm3.amsterdam1.netherlight.net:505/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.amsterdam1.netherlight.net:12/1">
+        <ndl:name>tdm1.amsterdam1.netherlight.net:POS12/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm3.amsterdam1.netherlight.net:501/2"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.amsterdam1.netherlight.net:16/1">
+        <ndl:name>tdm1.amsterdam1.netherlight.net:POS16/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#br1.amsterdam1.surf.net:5/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3E+8</ndl:capacity>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.amsterdam1.netherlight.net:17/1">
+        <ndl:name>tdm1.amsterdam1.netherlight.net:POS17/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#Nordunet:6/1"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3E+8</ndl:capacity>
+</ndl:Interface>
+
+
+<!-- TDM1.geneva1 -->
+<ndl:Device rdf:about="#tdm1.geneva1.netherlight.net">
+        <ndl:name>tdm1.geneva1.netherlight.net</ndl:name>
+        <ndl:locatedAt rdf:resource="#geneva1.netherlight.net"/>
+        <ndl:hasInterface rdf:resource="#tdm1.geneva1.netherlight.net:5/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.geneva1.netherlight.net:6/1"/>
+        <ndl:hasInterface rdf:resource="#tdm1.geneva1.netherlight.net:13/1"/>
+</ndl:Device>
+<ndl:Interface rdf:about="#tdm1.geneva1.netherlight.net:5/1">
+        <ndl:name>tdm1.geneva1.netherlight.net:POS5/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm3.amsterdam1.netherlight.net:503/3"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.geneva1.netherlight.net:6/1">
+        <ndl:name>tdm1.geneva1.netherlight.net:POS6/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#tdm3.amsterdam1.netherlight.net:504/4"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+<ndl:Interface rdf:about="#tdm1.geneva1.netherlight.net:13/1">
+        <ndl:name>tdm1.geneva1.netherlight.net:POS13/1</ndl:name>
+        <ndl:connectedTo rdf:resource="#Force10-Cern:0/0"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+</rdf:RDF>
