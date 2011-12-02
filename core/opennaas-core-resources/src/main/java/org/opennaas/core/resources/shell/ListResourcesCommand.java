@@ -56,7 +56,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getResourceDescriptor()
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
-					if (flagAll)  printAll(resource.getResourceDescriptor());
+					if (flagAll)  
+						printAll(resource.getResourceDescriptor());
 				}
 				printSymbol(horizontalSeparator);
 
@@ -69,7 +70,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
 					
-					if (flagAll)  printAll(resource.getResourceDescriptor());
+					if (flagAll)  
+						printAll(resource.getResourceDescriptor());
 
 				}
 				printSymbol(horizontalSeparator);
