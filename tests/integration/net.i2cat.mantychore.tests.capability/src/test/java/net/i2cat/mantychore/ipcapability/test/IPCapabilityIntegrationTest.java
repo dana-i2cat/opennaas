@@ -9,12 +9,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -29,16 +40,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -82,6 +83,8 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setBootstrapper(new MockBootstrapper());
+
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("ipv4");
@@ -89,6 +92,7 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
+		mockResource.setResourceIdentifier(new ResourceIdentifier(resourceDescriptor.getInformation().getType(), resourceDescriptor.getId()));
 	}
 
 	/**
@@ -137,6 +141,9 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertNotNull(ipCapability);
 			ipCapability.initialize();
 
+			mockResource.addCapability(ipCapability);
+			mockResource.addCapability(queueCapability);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -150,9 +157,9 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() {
-		
+
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		initResource();
 		initCapability();
 	}
