@@ -2,6 +2,7 @@ package net.i2cat.luminis.ROADM.repository.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+
 import java.util.List;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
@@ -13,25 +14,8 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitc
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-import org.opennaas.core.resources.ILifecycle.State;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.IResourceRepository;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.IAction;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.core.resources.queue.QueueResponse;
-
-import net.i2cat.nexus.tests.CapabilityHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,6 +24,22 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -108,9 +108,9 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 	@Before
 	public void initBundles() throws ResourceException {
-		
+
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-	
+
 		log.info("Getting services...");
 
 		repository = getOsgiService(IResourceRepository.class, "type=roadm", 50000);
@@ -122,7 +122,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 	@Test
 	public void RemoveAndCreateResource() {
 
-		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		try {
 			IResource resource = repository.createResource(resourceDescriptor);
@@ -143,7 +143,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 	@Test
 	public void StartAndStopResource() {
 
-		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		try {
 
@@ -183,7 +183,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resource.getCapabilities().isEmpty());
 			Assert.assertNull(resource.getModel());
 			Assert.assertNull(resource.getProfile());
-//			Assert.assertTrue(repository.listResources().isEmpty());
+			// Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
 			log.error("Exception!! ", e);
@@ -195,7 +195,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 	@Test
 	public void repoIsPublishedInResourceManagerTest() {
 
-		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		IResourceManager resourceManger = getOsgiService(IResourceManager.class, 50000);
 		Assert.assertNotNull(resourceManger);
@@ -220,7 +220,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 
 		clearRepo();
 
-		ResourceDescriptor resourceDescriptor = CapabilityHelper.newResourceDescriptor("roadm");
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		try {
 
@@ -343,7 +343,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 			Assert.assertTrue(resource.getCapabilities().isEmpty());
 			Assert.assertNull(resource.getModel());
 			Assert.assertNull(resource.getProfile());
-//			Assert.assertTrue(repository.listResources().isEmpty());
+			// Assert.assertTrue(repository.listResources().isEmpty());
 
 		} catch (Exception e) {
 			log.error("Exception!! ", e);
