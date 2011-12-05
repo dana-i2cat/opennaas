@@ -2,6 +2,7 @@ package net.i2cat.luminis.commandsKaraf.tests;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -13,6 +14,16 @@ import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandSession;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
@@ -21,21 +32,10 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-import net.i2cat.luminis.commandsKaraf.tests.RepositoryHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.apache.felix.service.command.CommandProcessor;
-import org.apache.felix.service.command.CommandSession;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 
@@ -83,15 +83,17 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 			try {
 
-				// FIXME refresh should skip the queue
-				log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				String responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+				String responseStr;
 
-				// check model is updated
+				// // FIXME refresh should skip the queue
+				// log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
+				// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+				// log.debug(responseStr);
+				// // Assert.assertNotNull(response);
+				// if (responseStr != null)
+				// Assert.fail("Error in the getInventory command");
+
+				// check model is updated (start Resource should get Inventory)
 				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
 				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
 				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
@@ -148,8 +150,8 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 		}
 	}
 
-	//@Test
-	public void makeConnectionAndListCommands/*Test*/() throws Exception {
+	@Test
+	public void makeConnectionAndListCommandsTest() throws Exception {
 
 		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
@@ -170,14 +172,16 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 			try {
 
-				// TODO should refresh manually????
-				// FIXME refresh should skip the queue
-				log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				String responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+				String responseStr;
+
+				// // TODO should refresh manually????
+				// // FIXME refresh should skip the queue
+				// log.info("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+				// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+				// log.debug(responseStr);
+				// // Assert.assertNotNull(response);
+				// if (responseStr != null)
+				// Assert.fail("Error in the getInventory command");
 
 				String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
 				String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
@@ -241,8 +245,8 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	}
 
-	//@Test
-	public void removeConnectionCommands/*Test*/() {
+	@Test
+	public void removeConnectionCommandsTest() {
 
 		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
@@ -262,14 +266,15 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 			try {
 
-				// TODO should refresh manually????
-				// FIXME refresh should skip the queue
-				log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				String responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in getInventory command");
+				String responseStr;
+				// // TODO should refresh manually????
+				// // FIXME refresh should skip the queue
+				// log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
+				// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+				// log.debug(responseStr);
+				// // Assert.assertNotNull(response);
+				// if (responseStr != null)
+				// Assert.fail("Error in getInventory command");
 
 				String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
 				String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
@@ -344,8 +349,8 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	}
 
-	//@Test
-	public void getInventoryCommandComplete/*Test*/() {
+	@Test
+	public void getInventoryCommandCompleteTest() {
 		// connections:getInventory
 		// cards, number of connections
 		// -r (refresh model before)
@@ -367,15 +372,17 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 			try {
 
-				// FIXME refresh should skip the queue
-				log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				String responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+				String responseStr;
 
-				// check model is updated
+				// // FIXME refresh should skip the queue
+				// log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+				// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+				// log.debug(responseStr);
+				// // Assert.assertNotNull(response);
+				// if (responseStr != null)
+				// Assert.fail("Error in the getInventory command");
+
+				// check model is updated (startResource should have loaded inventory)
 				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
 				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
 				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
@@ -476,10 +483,10 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		
+
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		log.info("Getting services...");
 
 		repository = getOsgiService(IResourceRepository.class, "type=roadm", 50000);
@@ -495,7 +502,7 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
+				IntegrationTestsHelper.getLuminisTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
@@ -509,11 +516,12 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 		return combine(configuration(), new Customizer() {
 			@Override
 			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
+						.build();
 			}
 		});
 	}
-	
+
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
 		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newWonesysSessionContext());
