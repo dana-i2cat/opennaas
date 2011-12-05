@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#" xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#" xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#" xmlns:ip="http://www.science.uva.nl/research/sne/ndl/ip#">
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>ip</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: IP technology</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining an IP network, by specifying links on the IP network. Note that our schema basically defines a broadcast network, which is clearly an extreme simplification for IP. IPv4 and IPv6 are defined as the same layer with a distinguishing data property. Alternatively, they could have been defined as two distinct layers, just like NNI VPI and UNI VPI in ATM are described as two layers.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- IP LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IP</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Internet Protocol Layer. A packet switched layer, representing both IPv4 and IPv6 subnetworks. The IP layer describes IP subnetworks, using local and remote IP address as labels. A link on this layer represents a routed connection between local and remote IP address. For example, between host and gateway. This layer does not specifically describe source and destination IP addresses. Basically, a source and destination IP address are the "local IP address" properties of the termination connection point (end-points) of an network connection. An Interface is an end-point of a connection if and only an adaptation function is associated with it. Our model describes packet switched networks as a large broadcast network. That clearly is not a good model for IP. The routing table property should point to a class in an ontology which is targeted towards packets switched networks. That is however out of skope for this specification.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IP</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPAddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IP address</rdfs:label>
+    <rdfs:comment>An IP address, either IPv4 or IPv6.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPv4Address">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IPv4 address</rdfs:label>
+    <rdfs:comment>An IPv4 address in dotted decimal notation.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPAddress"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPv6Address">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IPv6 address</rdfs:label>
+    <rdfs:comment>An IPv6 address written as eight decimal groups, lower case, including all zeros (no abbreviation).</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPAddress"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPVersion">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IP version</rdfs:label>
+    <rdfs:comment>The IP version property.</rdfs:comment>
+</rdfs:Class>
+
+<!-- Resources -->
+
+<ip:IPVersion rdf:about="http://www.iana.org/assignments/version-numbers#IPversion:4">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IPv4</rdfs:label>
+    <rdfs:comment xml:lang="en">IP version 4</rdfs:comment>
+</ip:IPVersion>
+
+<ip:IPVersion rdf:about="http://www.iana.org/assignments/version-numbers#IPversion:6">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IPv6</rdfs:label>
+    <rdfs:comment xml:lang="en">IP version 6</rdfs:comment>
+</ip:IPVersion>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#localipaddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">Local IP address</rdfs:label>
+    <rdfs:comment xml:lang="en">The local IP address of an interface. Do not confuse the local IP address (the configured IP address of an interface) with de source IP address. Either an IPv4 in dotted decimal notation or an IPv6 address written as eight decimal groups, lower case, including all zeros (no abbreviation). There are 2^32 (4294967296) possible IPv4 addresses and 2^128 (340282366920938463463374607431768211456) possible IPv6 addresses.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#egressLabel"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPAddress"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#remoteipaddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">Remote IP address</rdfs:label>
+    <rdfs:comment xml:lang="en">The remote IP address where this interface is linked to. An interface has usually multiple remote IP addresses: one for each IP address in the local subnet, other then it's own IP address. Do not confuse the remote IP address (the IP of the next hop) with de destination IP address. The IP address is either an IPv4 in dotted decimal notation or an IPv6 address written as eight decimal groups, lower case, including all zeros (no abbreviation). There are 2^32 possible IPv4 addresses and 2^128 possible IPv6 addresses.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressLabel"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPAddress"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.iana.org/assignments/version-numbers#version">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">IP version</rdfs:label>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPVersion"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#routingTable">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">routing table</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/capability#SwitchMatrix"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+    <!-- TODO: Define domain and range -->
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <vs:term_status>testing</vs:term_status>
+    <vs:moreinfo>WARNING: it is yet undefined what the range of the routingTable is.</vs:moreinfo>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#l2tp-in-IP">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ip.rdf"/>
+    <rdfs:label xml:lang="en">L2TP in IP</rdfs:label>
+    <rdfs:comment xml:lang="en">Tunneling of L2 tunneling protocol (L2TP) over IP, as defined in RFC 3931.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#L2TPNetworkElement"/>
+
+</rdf:RDF>

@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
+         xmlns:layer="http://www.science.uva.nl/research/sne/ndl/layer#"
+         xmlns:ethernet="http://www.science.uva.nl/research/sne/ndl/ethernet#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>ethernet</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: Ethernet technology</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining an Ethernet network. This schema defines two layers: the MAC layer to describe links between MAC addresses, and Ethernet layer to describe a single LAN or VLAN. This schema does not specifically describe source and destination MAC addresses. Basically, a source and destination MAC address are the "local MAC address" properties of the termination connection point (end-points) of an network connection. Tagged Ethernet is defined as Ethernet over Ethernet. Ethernet has two encoding properties that can yield additional incompatibilities: capacity (defined in the ndl topology schema) and MTU size. We assume that the "type" field in Ethernet is never used as a switching label. If it is used as such in practice, a new layer ("TypelessEthernet") needs to be introduced, just above the Ethernet layer, which consists of the payload of Ethernet. The MAC layer would then be apdapted into TypelessEthernet instead of directly into Ethernet, and Tagged Ethernet would then be described as Ethernet over TypelessEthernet over Ethernet.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2007-01-21</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>testing</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=20-Technology-Schemas"/>
+    <vs:moreinfo>WARNING: this schema is merely an example what can be done with the layer schema. It was never meant for serious usage. For that, look at the output of the NML workgroup in the OGF (www.ogf.org). We do feel that this schema has a few nice concepts, so feel free to take ideas you like, and put those in your own schema (and let us know you did!). Just don't merely use this schema: it is unmaintained.</vs:moreinfo>
+</rdf:Description>
+
+<!-- MAC LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MAC</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Ethernet MAC Layer. A packet switched layer. The Ethernet layer describes individual links between two MAC addresses on a LAN. The encoding of the MAC layer is an Ethernet packet, including all headers.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#MACInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MAC</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#MACAddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MAC address</rdfs:label>
+    <rdfs:comment>A MAC address written as six decimal groups, lower case, separated by a colon (":").</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#string">00:00:00:00:00:00</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ff:ff:ff:ff:ff:ff</xsd:maxInclusive>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#localMACaddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Local MAC</rdfs:label>
+    <rdfs:comment xml:lang="en">The MAC address of the current interface.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#egressLabel"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACAddress"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#remoteMACaddress">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Remote MAC</rdfs:label>
+    <rdfs:comment xml:lang="en">The remote MAC address where this interface is linked to. An interface has usually multiple remote MAC addresses: one for each Ethernet interface in the local LAN, other then it's own MAC address.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressLabel"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACAddress"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#arpTable">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">ARP table</rdfs:label>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/capability#SwitchMatrix"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/>
+    <!-- TODO: Define domain and range -->
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <vs:term_status>testing</vs:term_status>
+    <vs:moreinfo>WARNING: it is yet undefined what the range of the arpTable is.</vs:moreinfo>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#ip-in-MAC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">IP in MAC</rdfs:label>
+    <rdfs:comment xml:lang="en">IP embedded in Ethernet MAC Layer, by carrying IP packets 1:1 in the payload of an Ethernet frame, with the EtherType set to 0x0800 for IPv4 and to 0x86DD for IPv6 packets.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/ip#IPNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#mpls-in-MAC">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MPLS in MAC</rdfs:label>
+    <rdfs:comment xml:lang="en">Unicast MPLS embedded in Ethernet MAC Layer, by carrying MPLS packets 1:1 in the payload of an Ethernet frame, with the EtherType set to 0x8847.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1048576</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#MPLSNetworkElement"/>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#PPPoE">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">PPPoE</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of PPP over Ethernet MAC layer (PPPoE).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+<layer:Layer rdf:about="http://www.science.uva.nl/research/sne/ndl/vpn#PPPNetworkElement"/>
+
+
+<!-- ETHERNET (LAN/VLAN) LAYER -->
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Ethernet</rdfs:label>
+    <rdfs:comment xml:lang="en">Network Elements on the Ethernet Layer. A circuit switched layer. This layer represents a single LAN or VLAN. The encoding of the MAC layer is the payload of an Ethernet packet, without the MAC address headers.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#Layer"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#NetworkElement"/>
+</rdfs:Class>
+
+<!--
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetInterface">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Ethernet</rdfs:label>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#InterfaceClass"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:subClassOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+</rdfs:Class>
+-->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#IEEE802-1QLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">802.1Q Label</rdfs:label>
+    <rdfs:comment xml:lang="en">Value of the 12-bit VLAN ID field in the 802.1Q header, as part of an the Ethernet header.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#LabelType"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <xsd:minInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</xsd:minInclusive>
+    <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4095</xsd:maxInclusive>
+    <vs:moreinfo>The range is (0..4095). We now specify it with XSD (XML schema), but this is not standardized yet. It is likely that the way to specify these limitations (facets) will change. See also "OWL 1.1" and "XML Schema Datatypes in RDF and OWL". This label is only specified for Ethernet-over-Ethernet (=TaggedEthernet), otherwise it MUST not be specified.</vs:moreinfo>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#FrameSizeRange">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Frame Size Range</rdfs:label>
+    <rdfs:comment xml:lang="en">The supported frame size: Packets with these frame sizes are supported. This is not exactly the MTU. It actually says that packets of this size can be handled. So this is a list, while the MTU is the maximum value of this list. Instantiations of this class are Ranges of bytes. For example [765...1500] or [765...9000], or [765...16114].</rdfs:comment>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#IEEE802-1Q">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">802.1Q</rdfs:label>
+    <rdfs:comment xml:lang="en">The IEEE 802.1Q (VLAN) label. The 12-bit value in the 802.1Q header for Tagged Ethernet. This label MUST only be set if and only if the 802.1Q header is actually present in the data stream, thus it MUST be set for tagged Ethernet, but MUST NOT be set for untagged Ethernet. The reason is that otherwise the algorithm to decide if two channels are the same sees different tags, and incorrectly assumes the two untagged interfaces are not connected. To signify the VLAN tag for untagged Ethernet, use the #VLAN property.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#IEEE802-1QLabel"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#VLAN"/>
+    <!-- WARNING: cardinality is not sepcified according to the standard, but very easy to parse for now -->
+    <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">0</owl:minCardinality> <!-- label MAY be unset for this layer -->
+    <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:maxCardinality>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#VLAN">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">VLAN</rdfs:label>
+    <rdfs:comment xml:lang="en">The VLAN name. While the 802.1Q label is ONLY used if the interface actually adds a 802.1Q VLAN-tag in the packet itself, this VLAN property may also be used for untagged links in logical VLANs. For example two untagged Interfaces which are configured in VLAN 5, even though they never actually tag any packet. Since the VLAN property is a subproperty of this 802.1Q property, if they are both defined, they must have the same value.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/capability#internalLabel"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#IEEE802-1Q"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#IEEE802-1QLabel"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#frameSize">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">frame size</rdfs:label>
+    <rdfs:comment xml:lang="en">The object Interface is capable of handling packets with the subject frame size. This is not exactly the MTU. It actually says that packets of this size can be handled. So the actual MTU is larger then the size specified in the subject.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#FrameSizeRange"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MTU"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#MTU">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MTU size</rdfs:label>
+    <rdfs:comment xml:lang="en">The maximum packet size of Ethernet packets. This is sometime referred to as the "Ethernet MTU" and should not be confused with the "IP MTU", which describes the maximum payload size. The value is specified in bytes. A typical value is 1518 bytes (leading to a maximum payload of 1500 bytes).</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#frameSize"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#egressStatus">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Egress Status</rdfs:label>
+    <rdfs:comment xml:lang="en">The egress status defines if an Interface is administrative up or down. If it is down, no data is transmitted on the link. If it is up, it is working as described. Possible values of the object are True (up) and False (down). The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#ingressStatus">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Ingress Status</rdfs:label>
+    <rdfs:comment xml:lang="en">The ingress status defines if an Interface is up or down. If it is down, no data can be received on the link. If it is up, data is received. Possible values of the object are True (up) and False (down). The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+</rdf:Property>
+
+<!-- Adaptations -->
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#MAC-in-Ethernet">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">MAC in Ethernet</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation of the payload of Ethernet in an Ethernet frame. There are 2^48 possible MAC addresses, leading to 2^96 possible (source, destination) Ethernet flows.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#MACNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">79228162514264337593543950336</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+<layer:AdaptationProperty rdf:about="http://www.science.uva.nl/research/sne/ndl/ethernet#Tagged-Ethernet">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/ethernet.rdf"/>
+    <rdfs:label xml:lang="en">Tagged Ethernet</rdfs:label>
+    <rdfs:comment xml:lang="en">Embedding of Ethernet in VLAN-tagged Ethernet, by setting the type field to 0x8100, and adding a VLAN field, followed by the client type field and payload.  It is possible to stack this, leading to Q-in-Q (VLANs within VLANs).</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- client layer -->
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetNetworkElement"/> <!-- server layer -->
+    <layer:clientCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">4096</layer:clientCount>
+    <layer:serverCount rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</layer:serverCount>
+</layer:AdaptationProperty>
+
+</rdf:RDF>

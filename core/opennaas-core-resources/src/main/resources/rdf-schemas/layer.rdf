@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:vs="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+>
+
+<rdf:Description rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Ontology"/>
+    <rdfs:label>layer</rdfs:label>
+    <dc:title xml:lang="en">Network Description Language: Layer and Technology Specification module</dc:title>
+    <dc:description xml:lang="en">A vocabulary for defining network layers and interrelations between layer networks.</dc:description>
+    <dc:publisher xml:lang="en">System and Network Engineering group, Universiteit van Amsterdam</dc:publisher>
+    <dcterms:issued>2006-12-05</dcterms:issued>
+    <dcterms:modified>2007-01-21</dcterms:modified>
+    <owl:versionInfo>2.4</owl:versionInfo>
+    <vs:term_status>unstable</vs:term_status>
+    <vs:userdocs rdf:resource="http://www.science.uva.nl/research/sne/ndl/?c=12-Layer-Schema"/>
+    <vs:moreinfo>WARNING: this schema is still in unstable mode. While it is out of testing phase, and even has some usage, it is still mostly a research project. Feel free to use it, beaware that you'll be an early adopter, with the pros and cons that come with it. If you prefer a slightly more stable schema, do have a look at the output of the NML workgroup in the OGF (www.ogf.org).</vs:moreinfo>
+</rdf:Description>
+
+<!-- Classes -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#Layer">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">Layer</rdfs:label>
+    <rdfs:comment xml:lang="en">A specific encoding of data in a network connection. Most technologies consists of two or more Layers. For example, ATM consist of a Layer with both VPI and VCI and payload, a sublayer consisting of VCI and payload and finally a sublayer with only the payload.</rdfs:comment>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#AdaptationProperty">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">Adaptation Property</rdfs:label>
+    <rdfs:comment xml:lang="en">Adaptation Property are a special kind of rdf:Property. An adaptation describes how data from one or more client layers is embedded in a server layer. Adaptation is implemented in the schema as a predicate, relating a server layer ConnectionPoint to a client layer ConnectionPoint. The ConnectionPoints are classes. For a multiplexing adaptation, there are multiple client Interfaces. This is implemented as multiple RDF statements, each with the same Subject (the server layer Interface) and different Object (each client layer Interface). In these statements, the client layer Interfaces MUST be different and the label property of each client layer Interface MUST be different as well. Inverse multiplexing is implemented as multiple RDF statements with the same Object (the client layer Interface) and different Subjects (the server layer Interfaces).</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#LabelType">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">Label Type</rdfs:label>
+    <rdfs:comment xml:lang="en">A property of a connection point to distinguish channels. To compare if two labels are equal, you must do a normal comparison. Two interfaces without a label are considered to have the same label. To compare if two floats are equal, at least the 6 most significant bits must be compared.</rdfs:comment>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+</rdfs:Class>
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#LabelSet">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">Label set</rdfs:label>
+    <rdfs:comment xml:lang="en">The set of possible labels. We want to be able to specify the range of possible or allowed values for a certain type of label. For example, we want to be able to specify that the allowed range of VLANs is {0..4095}, or we want to specify that a specify interface can only be configured with VLANs {3, 8, 15-46, 53}.</rdfs:comment>
+    <rdfs:seeAlso rdf:resource="http://owl1_1.cs.manchester.ac.uk/#DataRange"/>
+    <vs:moreinfo>DataRange in OWL 1.1 seems useful to describe label sets in the long run, but is currently in draft status. In the mean time, we use LabelSet.</vs:moreinfo>
+    <vs:moreinfo>LabelSet may move to the capability schema.</vs:moreinfo>
+</rdfs:Class>
+
+<!-- Abstract Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#property">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">encoding property</rdfs:label>
+    <rdfs:comment xml:lang="en">A encoding property is a specific property of an Interface that leads to incompatibility when two interfaces are connected with a different encoding property. The encoding property is a short hand for defining both the ingress encoding property as well as the egress encoding property. This is an abstract property. Actual encoding properties are expected to be a subPropertyOf this RDF property. Example encoding properties include different MTU for Ethernet or different spacing in DWDM. Note that this is the configured property; it is possible that the Interface supports multiple encoding properties, but not at the same time.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressProperty"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#egressProperty"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#ingressProperty">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">ingress encoding property</rdfs:label>
+    <rdfs:comment xml:lang="en">A encoding property is a specific property of an Interface that leads to incompatibility when two interfaces are connected with a different encoding property. To be precise: all data coming from elsewhere with a different property is dropped. This is an abstract property. Actual encoding properties are expected to be a subPropertyOf this RDF property. An Interface can accept one or more ingress encoding property, signified by specifying the ingress encoding property more than once. To force interfaces to specify only one value for a specific ingress encoding subproperty, set the cardinality of the subproperty to 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#egressProperty">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">egress encoding property</rdfs:label>
+    <rdfs:comment xml:lang="en">A encoding property is a specific property of an Interface that leads to incompatibility when two interfaces are connected with a different encoding property. To be precise: an interface can send data specified by the egress encoding property. If the egress encoding property is specified multiple times, the interface can send all data with these properties at the same time. E.g. packets each with a different property. This is an abstract property. Actual encoding properties are expected to be a subPropertyOf this RDF property. If data is accepted (as signified by the ingress encoding property), but that particular egress encoding property is not set, then the data is converted to any other egress encoding property. All egress encoding properties SHOULD either be a superset of all ingress encoding properties (no conversion is done) or there should be exactly one egress encoding property (all data is converted to that value), otherwise the behaviour is not defined. To force interfaces to specify only one value for a specific ingress encoding subproperty, set the cardinality of the subproperty to 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#ConnectionPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+</rdf:Property>
+
+<!-- Restrictions -->
+
+<!-- It is crucial to this model that an Interface is active only at a certain layer, 
+and has only label at most. Some layer further restrict this by allowing that it must have 
+exactly one label. The same applies to ingressLabels (but not to egressLabels).
+Note that this restriction does not apply to a PotentialInterface. -->
+
+<rdfs:Class rdf:about="http://www.science.uva.nl/research/sne/ndl#Interface">
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+            <owl:maxCardinality>1</owl:maxCardinality>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+        <owl:Restriction>
+            <owl:onProperty rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressLabel"/>
+            <owl:maxCardinality>1</owl:maxCardinality>
+        </owl:Restriction>
+    </rdfs:subClassOf>
+</rdfs:Class>
+
+<!-- Predicates -->
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#label">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">label</rdfs:label>
+    <rdfs:comment>The label of the Interface, defining the channel at a layer. This predicate must occur at most 1 times. Two Interfaces are linked if they are clients of two (equal) adaptations, and the server Interfaces of these adaptations are linked together, and the labels are equal. label is a shortcut for egressLabel and ingressLabel. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Interface"/> <!-- Actual Connection Points -->
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#ingressLabel"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#egressLabel"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/capability#internalLabel"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#ingressLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">ingress label</rdfs:label>
+    <rdfs:comment>The ingress label of the Interface, defining the channel at a layer. E.g. the destination IP address. This predicate must occur at most 1 times. An ingress label is used for switching decisions, and is comparable to the (uni-directional) label in GMPLS. An Interface is connected to another Interface if the two Interfaces are clients of two adaptations with the same type, and the server Interface of this client Interface is connectedTo the server Interface of the other client Interface, and the egress label of this client interface is equal to the ingress label of the other client Interface. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Interface"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#egressLabel">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">egress label</rdfs:label>
+    <rdfs:comment>The egress label of the Interface, defining the channel at a layer. E.g. the source IP address. This predicate can occur more than once. An Interface is connected to another Interface if the two Interfaces are clients of two adaptations with the same type, and the server Interface of this client Interface is connectedTo  the server Interface of the other client Interface, and the egress label of this client interface is equal to the ingress label of the other client Interface.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl#Interface"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#label"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#property"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#clientCount">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">client count</rdfs:label>
+    <rdfs:comment xml:lang="en">If an adaptation property is defined, it may be defined at most clientCount times for the same object (the same server layer connection point). This is the same as owl:maxCardinality, but defined for the property rather then the subject Class. Client count is > 1 for multiplexing functions. For all other adaptations it is exactly 1. If client count is not defined, the default value is 1. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#AdaptationProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+    <rdfs:seeAlso rdf:resource="http://www.w3.org/2002/07/owl#maxCardinality"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#serverCount">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">server count</rdfs:label>
+    <rdfs:comment xml:lang="en">If an adaptation property is defined, then there must be exactly serverCount objects (server layer connection points) pointing to the same subject (the client layer connection point). Server count is > 1 for inverse multiplexing functions. For all other adaptations it is exactly 1. If server count is not defined, the default value is 1. The maximum cardinality of this property is 1.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#AdaptationProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#clientCapacity">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">client capacity</rdfs:label>
+    <rdfs:comment xml:lang="en">If the adaptation is defined from a server to a client interface, then the capacity of the client interface MUST be the same as specified by this property. This property is inherent to an adaptation itself. It is is a limitation of a specific interface, use layer:clientCapacity.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#AdaptationProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl#capacity"/>
+    <rdfs:seeAlso rdf:resource="http://www.science.uva.nl/research/sne/ndl/capability#clientCapacity"/>
+    <vs:term_status>testing</vs:term_status>
+    <vs:moreinfo>clientCapacity is only used a few times for Ethernet-in-SONET and ATM-in-SONET. serverCapacity is not used at all. Perhaps it is a good idea to remove these and see if we can re-use a property in the capability schema.</vs:moreinfo>
+</rdf:Property>
+
+<rdf:Property rdf:about="http://www.science.uva.nl/research/sne/ndl/layer#serverCapacity">
+    <rdfs:isDefinedBy rdf:resource="http://www.science.uva.nl/research/sne/schema/layer.rdf"/>
+    <rdfs:label xml:lang="en">server capacity</rdfs:label>
+    <rdfs:comment xml:lang="en">If the adaptation is defined from a server to a client interface, then the capacity of the server interface MUST be the same as specified by this property.</rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.science.uva.nl/research/sne/ndl/layer#AdaptationProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    <vs:term_status>testing</vs:term_status>
+    <vs:moreinfo>clientCapacity is only used a few times for Ethernet-in-SONET and ATM-in-SONET. serverCapacity is not used at all. Perhaps it is a good idea to remove these and see if we can re-use a property in the capability schema.</vs:moreinfo>
+</rdf:Property>
+
+<!-- for the set of possible client labels, or possible server labels, see the capability schema -->
+
+</rdf:RDF>
