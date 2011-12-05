@@ -11,6 +11,16 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.KarafCommandHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -18,22 +28,12 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-import net.i2cat.nexus.tests.KarafCommandHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
 import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
-import org.apache.felix.service.command.CommandProcessor;
 
 @RunWith(JUnit4TestRunner.class)
 public class QueueCommandsKarafTest extends AbstractIntegrationTest {
@@ -83,9 +83,9 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() {
-		
+
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		repository = getOsgiService(IResourceRepository.class, 50000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
 		log.info("INFO: Initialized!");
@@ -95,7 +95,7 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	public static Option[] configuration() throws Exception {
 
 		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
+				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
@@ -109,11 +109,12 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 		return combine(configuration(), new Customizer() {
 			@Override
 			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional").build();
+				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
+						.build();
 			}
 		});
 	}
-	
+
 	@Test
 	public void SetAndGetInterfacesCommandTest() {
 		initBundles();
@@ -134,15 +135,15 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0", commandprocessor);
 			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
-			
+
 			response = KarafCommandHelper.executeCommand("queue:listActions  " + resourceFriendlyID, commandprocessor);
 			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
-			
+
 			response = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
 			// assert command output does not contain ERROR tag
 			Assert.assertTrue(response.get(1).isEmpty());
-			
+
 			repository.stopResource(resource.getResourceIdentifier().getId());
 			repository.removeResource(resource.getResourceIdentifier().getId());
 
