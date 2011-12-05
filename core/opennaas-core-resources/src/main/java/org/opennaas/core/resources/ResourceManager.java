@@ -9,7 +9,6 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -242,7 +241,7 @@ public class ResourceManager implements IResourceManager {
 		}
 		List<IResource> resources = repo.listResources();
 		if (resources.isEmpty()) {
-			throw new ResourceException("Didn't find any resource in this engine repository: " + resourceType);
+			throw new ResourceNotFoundException("Didn't find any resource in " + resourceType + " engine repository.");
 		}
 		for (IResource resource : resources) {
 			if ((resource.getResourceDescriptor().getInformation().getName()).equals(resourceName)) {
@@ -281,13 +280,14 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public IResource getResourceById(String resourceId)
 			throws ResourceException {
-		//FIXME: resourceIds are supposed to be GUIDs, however nobody ever verifies that there aren't collisions.
+		// FIXME: resourceIds are supposed to be GUIDs, however nobody ever verifies that there aren't collisions.
 		IResource resource = null;
-		for(IResourceRepository repo: resourceRepositories.values()){
-			try{
+		for (IResourceRepository repo : resourceRepositories.values()) {
+			try {
 				resource = repo.getResource(resourceId);
 				break;
-			} catch (ResourceException e) {}
+			} catch (ResourceException e) {
+			}
 		}
 		return resource;
 	}

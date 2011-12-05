@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.ICapability;
@@ -27,10 +27,11 @@ public class MockResource implements IResource {
 														.getLog(MockResource.class);
 
 	Map<String, ICapability>	capabilities	= new HashMap<String, ICapability>();
-	IModel				model;
+	IModel						model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
 	IResourceIdentifier			resourceIdentifier;
+	IResourceBootstrapper		bootstrapper;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
@@ -89,18 +90,35 @@ public class MockResource implements IResource {
 
 	public void addCapability(ICapability capability) {
 		log.info("add Capability...");
-		capabilities.put(capability.getCapabilityInformation().getName(),
+		capabilities.put(capability.getCapabilityInformation().getType(),
 				capability);
-
 	}
 
 	public ICapability removeCapability(Information info) {
-		return capabilities.remove(info.getName());
+		return capabilities.remove(info.getType());
 	}
 
 	public ICapability getCapability(Information info) {
 		log.info("get Capability...");
-		return capabilities.get(info.getName());
+		return capabilities.get(info.getType());
+	}
+
+	public List<ICapability> getCapabilities() {
+		log.info("get Capabilities...");
+
+		ArrayList<ICapability> capabs = new ArrayList<ICapability>();
+		for (ICapability capab : capabilities.values()) {
+			capabs.add(capab);
+		}
+		return capabs;
+	}
+
+	public void setCapabilities(List<ICapability> capabs) {
+		log.info("set Capabilities...");
+
+		for (ICapability capab : capabs) {
+			addCapability(capab);
+		}
 	}
 
 	public IModel getModel() {
@@ -144,11 +162,6 @@ public class MockResource implements IResource {
 
 	}
 
-	public List<ICapability> getCapabilities() {
-		log.info("get Capabilities...");
-		return new ArrayList<ICapability>();
-	}
-
 	public ResourceDescriptor getResourceDescriptor() {
 		log.info("get Resource Descriptor...");
 		return resourceDescriptor;
@@ -159,17 +172,12 @@ public class MockResource implements IResource {
 		return resourceIdentifier;
 	}
 
-	public void setCapabilities(List<ICapability> arg0) {
-		log.info("set Capabilities...");
-
-	}
-
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		log.info("set Resource Descriptor...");
 		this.resourceDescriptor = resourceDescriptor;
 
 	}
-	
+
 	@Override
 	public void setResourceIdentifier(IResourceIdentifier identifier) {
 		log.info("set Resource Identifier...");
@@ -195,13 +203,11 @@ public class MockResource implements IResource {
 	}
 
 	public IResourceBootstrapper getBootstrapper() {
-		// TODO Auto-generated method stub
-		return null;
+		return bootstrapper;
 	}
 
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
-		// TODO Auto-generated method stub
-
+		this.bootstrapper = bootstrapper;
 	}
 
 }
