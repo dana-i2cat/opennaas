@@ -96,4 +96,8 @@ public class MockTransport implements ITransport {
 
 	}
 
+	public ProteusMock getProteusMock() {
+		return proteusMock;
+	}
+
 }
