@@ -21,8 +21,8 @@
 			<version>4_13</version>
 		</dependency>
 	</dependencies>
-	<!-- Skip this bundle tests @ mvn install
-		to force test execution use mvn install -DskipTests=false
+	<!-- Skip this bundle tests @ mvn install/test
+		to force test execution use mvn install/test -DskipTests=false
 	 -->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
