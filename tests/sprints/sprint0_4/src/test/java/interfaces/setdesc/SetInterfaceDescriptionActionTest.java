@@ -165,7 +165,7 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 
 		try {
-			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("It was impossible to send the following message: " + e.getMessage());

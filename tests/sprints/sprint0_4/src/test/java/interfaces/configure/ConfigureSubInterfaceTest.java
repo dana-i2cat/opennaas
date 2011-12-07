@@ -146,7 +146,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEthernet();
 		try {
-			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -191,13 +191,13 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEtherVLAN();
 		try {
-			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
 
 		try {
-			chassisCapability.sendMessage(ActionConstants.CREATESUBINTERFACE, ethernetPort);
+			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
