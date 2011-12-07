@@ -14,6 +14,8 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,8 +31,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
@@ -47,7 +47,7 @@ import uk.co.westhawk.snmp.stack.varbind;
 @RunWith(JUnit4TestRunner.class)
 public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventHandler {
 
-	static Logger						log				= LoggerFactory.getLogger(ReceiveAlarmsTest.class);
+	static Log							log				= LogFactory.getLog(ReceiveAlarmsTest.class);
 
 	@Inject
 	private BundleContext				bundleContext;
@@ -56,10 +56,10 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	// private String hostIpAddress = "10.10.80.11";
 	// private String hostPort = "27773";
 
-	private String						alarmsPort		= "32162";											// SNMP traps port (162). if different,
-																											// 162 needs to be redirected to this port
-																											// in order to receive traps.
-	private long						alarmWaittime	= 5 * 1000;										// 5sec
+	private String						alarmsPort		= "32162";										// SNMP traps port (162). if different,
+																										// 162 needs to be redirected to this port
+																										// in order to receive traps.
+	private long						alarmWaittime	= 5 * 1000;									// 5sec
 
 	private boolean						alarmReceived	= false;
 

@@ -14,6 +14,13 @@ import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
 import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -21,24 +28,16 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(JUnit4TestRunner.class)
 public class SendCommandTest extends AbstractIntegrationTest {
 
-	static Logger			log				= LoggerFactory
-													.getLogger(SendCommandTest.class);
+	static Log				log				= LogFactory.getLog(SendCommandTest.class);
 
 	@Inject
 	private BundleContext	bundleContext;
