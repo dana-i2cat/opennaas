@@ -1,22 +1,17 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.Properties;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmConfigurator;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class WonesysProtocolTest {
 
@@ -31,16 +26,6 @@ public class WonesysProtocolTest {
 	private String	alarmsPort		= "11162";
 
 	private long	alarmWaittime	= 5 * 1000;
-
-	// @Test
-	// public void testSendMessage() throws ProtocolException {
-	// sendMultipleMessages(1);
-	// }
-	//
-	// @Test
-	// public void testSendMultipleMessages() throws ProtocolException {
-	// sendMultipleMessages(5);
-	// }
 
 	@Test
 	public void testConfigureAlarms() throws IOException {
@@ -67,40 +52,8 @@ public class WonesysProtocolTest {
 		assertTrue(alarmConfigurator.getStatus().equals(WonesysAlarmConfigurator.CONFIGURED_ALARM_STATUS));
 	}
 
-	private void sendMultipleMessages(int numMessagesToSend) throws ProtocolException {
-
-		ProtocolSessionContext protocolSessionContext1 = newWonesysProtocolSessionContext(
-				hostIpAddress, hostPort);
-		// use mock transport
-		protocolSessionContext1.addParameter("protocol.mock", "true");
-
-		String sessionId1 = "1";
-
-		Object command = createGetCommand();
-
-		WonesysProtocolSessionFactory factory = new WonesysProtocolSessionFactory();
-		try {
-
-			IProtocolSession protocolSession = factory.createProtocolSession(
-					sessionId1, protocolSessionContext1);
-			protocolSession.connect();
-			for (int i = 0; i < numMessagesToSend; i++) {
-				log.info("Sending message... " + command);
-				Object response = protocolSession.sendReceive(command);
-				log.info("Received response: " + (String) response);
-				assertNotNull(response);
-				assertFalse(response.equals(""));
-			}
-			protocolSession.disconnect();
-
-		} catch (ProtocolException e) {
-			log.info("Failed to send message!", e);
-			throw e;
-		}
-	}
-
 	// // should know setCommand parameters before using it
-	// // @Test
+	// // @Test // MOVED to WonesysAlarmsTest
 	// public void testSendMessageAndAlarm() throws IOException {
 	// // MOVED to WonesysAlarmsTest
 	//

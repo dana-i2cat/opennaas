@@ -8,12 +8,6 @@ import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import org.opennaas.core.resources.command.CommandException;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
-import org.opennaas.core.resources.protocol.IProtocolSession;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -22,6 +16,12 @@ import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -56,8 +56,6 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
 
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
 		log.info("INFO: Initialized!");
 	}
 
@@ -74,8 +72,7 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 		testLockUnlockInDifferentSessions();
 	}
 
-	// @Test
-	public void testLockUnlock() {
+	private void testLockUnlock() {
 
 		try {
 			WonesysProtocolSession session = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
@@ -118,8 +115,7 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 		}
 	}
 
-	// @Test
-	public void testLockMultipleTimes() {
+	private void testLockMultipleTimes() {
 		try {
 
 			WonesysProtocolSession session = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
@@ -172,8 +168,7 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 		}
 	}
 
-	// @Test
-	public void testUnlockWithoutLock() {
+	private void testUnlockWithoutLock() {
 		try {
 
 			WonesysProtocolSession session = (WonesysProtocolSession) getSession(resourceId, hostIpAddress, hostPort);
@@ -204,8 +199,7 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 		}
 	}
 
-	// @Test
-	public void testLockUnlockInDifferentSessions() {
+	private void testLockUnlockInDifferentSessions() {
 		try {
 
 			log.info("Testing LockUnlockInDifferentSessions ...");

@@ -9,18 +9,18 @@ import java.io.IOException;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -42,8 +42,6 @@ import uk.co.westhawk.snmp.stack.SnmpContext;
 import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
-
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 
 @RunWith(JUnit4TestRunner.class)
 public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventHandler {

@@ -11,11 +11,6 @@ import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;
 import net.i2cat.luminis.transports.wonesys.WonesysTransportException;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-
-import org.opennaas.core.events.EventFilter;
-import org.opennaas.core.events.IEventManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +18,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -68,7 +67,7 @@ public class WonesysTransportTest extends AbstractIntegrationTest implements ITr
 	}
 
 	// FIXME Uncomment to test transport works ok
-	// @Test
+	// @Test //uses real connection
 	public void sendAsyncTest() {
 
 		loadBundles();
@@ -100,7 +99,7 @@ public class WonesysTransportTest extends AbstractIntegrationTest implements ITr
 	}
 
 	// FIXME Uncomment to test transport works ok
-	// @Test
+	// @Test //uses real connection
 	public void sendReceiveTest() {
 
 		loadBundles();
