@@ -243,7 +243,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	/**
 	 * Already tested in first test
 	 */
-	// @Test
+	// @Test //already tested
 	public void checkAlarmsNotifyEventTest() {
 		// open session
 		// while (Alarm alarmInLuminis: allAlarmsInLuminis) {
@@ -255,7 +255,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 	}
 
-	// @Test
+	// @Test //functionality not implemented (alarms don't trigger actions automatically)
 	public void checkEventChannelConfigChangedTest() {
 		String chassis = "01";
 		String slot = "17";
@@ -292,7 +292,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		}
 	}
 
-	// @Test
+	// @Test //uncompleted test
 	public void checkAlarmsStoredInAlarmHistory() {
 		String chassis = "01";
 		String slot = "17";
@@ -302,9 +302,8 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		// create resource with chassis and slot
 		// create protocol context
 		// start resource
-		// manually change chanelConfig in MockProteus
 		// launch channelConfigChanged alarm
-		// check model has been updated
+		// check alarm is stored
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.mock", "true");
