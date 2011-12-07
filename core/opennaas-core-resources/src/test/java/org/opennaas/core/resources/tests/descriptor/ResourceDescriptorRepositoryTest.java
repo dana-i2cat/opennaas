@@ -19,6 +19,7 @@ import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.NetworkInfo;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceId;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport {
 
@@ -170,22 +171,62 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 				assertEquals(prop.getValue(), "value");
 			}
 			
-			NetworkInfo networkInfo = loaded.getNetworkInfo();
-			assertNotNull(networkInfo);
-			List<ResourceId> resources = networkInfo.getResources();
-			assertNotNull(resources);
-			assertTrue(resources.size() == 2);
+			assertEquals(loaded.getNetworkFileDescriptor(),"network/network_example1.xml");
+			
+			
+			/* network description */
+			NetworkTopology networkTopology = loaded.getNetworkTopology();
+			
+			assertNotNull(networkTopology.getDevices());
+			assertEquals(networkTopology.getDevices().get(0).getName(),"router:R-AS2-1");			
+			assertNotNull(networkTopology.getDevices().get(0).getHasInterfaces());
+			assertEquals(networkTopology.getDevices().get(0).getHasInterfaces().size(),3);			
+			assertEquals(networkTopology.getDevices().get(0).getHasInterfaces().get(0).getResource(),"#router:R-AS2-1:lt-1/2/0.51");
+			assertEquals(networkTopology.getDevices().get(0).getHasInterfaces().get(1).getResource(),"#router:R-AS2-1:lt-1/2/0.100");
+			assertEquals(networkTopology.getDevices().get(0).getHasInterfaces().get(2).getResource(),"#router:R-AS2-1:lo0.1");
+			
+			assertEquals(networkTopology.getDevices().get(1).getName(),"router:R-AS2-2");			
+			assertNotNull(networkTopology.getDevices().get(1).getHasInterfaces());
+			assertEquals(networkTopology.getDevices().get(1).getHasInterfaces().size(),3);			
+			assertEquals(networkTopology.getDevices().get(1).getHasInterfaces().get(0).getResource(),"#router:R-AS2-2:lt-1/2/0.100");
+			assertEquals(networkTopology.getDevices().get(1).getHasInterfaces().get(1).getResource(),"#router:R-AS2-2:lt-1/2/0.101");
+			assertEquals(networkTopology.getDevices().get(1).getHasInterfaces().get(2).getResource(),"#router:R-AS2-2:lo0.3");
 
-			ResourceId resourceId = resources.get(0);
-			assertEquals(resourceId.getName(),"logical1");
-			assertEquals(resourceId.getType(),"router");
+			assertEquals(networkTopology.getDevices().get(2).getName(),"router:R-AS2-3");
+			assertNotNull(networkTopology.getDevices().get(2).getHasInterfaces());
+			assertEquals(networkTopology.getDevices().get(2).getHasInterfaces().size(),2);			
+			assertEquals(networkTopology.getDevices().get(2).getHasInterfaces().get(0).getResource(),"#router:R-AS2-3:lt-1/2/0.103");
+			assertEquals(networkTopology.getDevices().get(2).getHasInterfaces().get(1).getResource(),"#router:R-AS2-3:lo0.4");
 
-			ResourceId resourceId2 = resources.get(1);
-			assertEquals(resourceId2.getName(),"logical2");
-			assertEquals(resourceId2.getType(),"router");
+			assertNotNull(networkTopology.getInterfaces());
+			assertEquals(networkTopology.getInterfaces().size(),5);
+			
+			assertEquals(networkTopology.getInterfaces().get(0).getCapacity(),"1.2E+9");
+			assertEquals(networkTopology.getInterfaces().get(0).getName(),"router:R-AS2-1:lt-1/2/0.51");
+			assertEquals(networkTopology.getInterfaces().get(0).getLinkTo().getName(),"#router:R1:lt-1/2/0.50");
 
+			assertEquals(networkTopology.getInterfaces().get(1).getCapacity(),"1.2E+9");
+			assertEquals(networkTopology.getInterfaces().get(1).getName(),"router:R-AS2-1:lt-1/2/0.100");
+			assertEquals(networkTopology.getInterfaces().get(1).getLinkTo().getName(),"#router:R-AS2-2:lt-1/2/0.101");
+
+			assertEquals(networkTopology.getInterfaces().get(2).getCapacity(),"1.2E+9");
+			assertEquals(networkTopology.getInterfaces().get(2).getName(),"router:R-AS2-2:lt-1/2/0.101");
+			assertEquals(networkTopology.getInterfaces().get(2).getLinkTo().getName(),"#router:R-AS2-1:lt-1/2/0.100");
+
+			assertEquals(networkTopology.getInterfaces().get(3).getCapacity(),"1.2E+9");
+			assertEquals(networkTopology.getInterfaces().get(3).getName(),"router:R-AS2-2:lt-1/2/0.102");
+			assertEquals(networkTopology.getInterfaces().get(3).getLinkTo().getName(),"#router:R-AS2-3:lt-1/2/0.103");
+
+			assertEquals(networkTopology.getInterfaces().get(4).getCapacity(),"1.2E+9");
+			assertEquals(networkTopology.getInterfaces().get(4).getName(),"router:R-AS2-3:lt-1/2/0.103");
+			assertEquals(networkTopology.getInterfaces().get(4).getLinkTo().getName(),"#router:R-AS2-2:lt-1/2/0.102");
+			
+			
+
+			
 			em.getTransaction().commit();
 		} catch (Exception ex) {
+			logger.error(ex.getMessage(),ex.getCause());
 			em.getTransaction().rollback();
 			logger.error("Exception during testPersistence", ex);
 			fail("Exception during testPersistence");

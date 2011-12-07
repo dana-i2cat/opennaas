@@ -12,13 +12,18 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
@@ -47,6 +52,11 @@ public class ResourceDescriptor {
 	@Basic
 	private String						profileId			= "";
 
+	private String						networkFileDescriptor = "";
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="NETWORK_TOPOLOGY")
+	private NetworkTopology							networkTopology; 
 
 	@Embedded
 	private NetworkInfo 			networkDescriptor;
@@ -70,7 +80,7 @@ public class ResourceDescriptor {
     @ElementCollection
     @MapKeyColumn(name="name")
     @Column(name="value")
-    @CollectionTable(name="resourcedescriptor_properties", joinColumns=@JoinColumn(name="resourcedescriptor_id"))
+    @CollectionTable(name="RESOURCEDESCRIPTOR_PROPERTIES", joinColumns=@JoinColumn(name="resourcedescriptor_id"))
 	Map<String,String> properties = new HashMap<String, String>();
 
 
@@ -131,6 +141,16 @@ public class ResourceDescriptor {
 		this.profileId = profileId;
 	}
 
+	@XmlAttribute(name = "networkFileDescriptor")
+	public String getNetworkFileDescriptor() {
+		return networkFileDescriptor;
+	}
+
+	public void setNetworkFileDescriptor(String networkFileDescriptor) {
+		this.networkFileDescriptor = networkFileDescriptor;
+	}
+	
+
 	public boolean removeCapabilityDescriptor(String capabilityType) {
 		for (int i = 0; i < capabilityDescriptors.size(); i++) {
 			if (capabilityDescriptors.get(i).getCapabilityInformation()
@@ -140,6 +160,14 @@ public class ResourceDescriptor {
 			}
 		}
 		return false;
+	}
+
+	public NetworkTopology getNetworkTopology() {
+		return networkTopology;
+	}
+
+	public void setNetworkTopology(NetworkTopology networkTopology) {
+		this.networkTopology = networkTopology;
 	}
 
 	@Override
@@ -156,14 +184,10 @@ public class ResourceDescriptor {
 		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
 		resourceDescriptor.setProperties((HashMap<String, String>) ((HashMap) properties).clone());
 
+		//TODO THE NETWORK DESCRIPTOR IS NOT CLONED. A NETWORK RESOURCE HAVE NOT TO BE CLONED
+		
 		return resourceDescriptor;
 	}
 
-	// public IModel getModel() {
-	// return model;
-	// }
-	//
-	// public void setModel(IModel model) {
-	// this.model = model;
-	// }
+
 }

@@ -11,12 +11,14 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.NetworkInfo;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceId;
+import org.opennaas.core.resources.tests.network.ndl.MockNetworkDescriptor;
 
 
 import junit.framework.TestCase;
 
 public class ResourceDescriptorSupport extends TestCase
 {
+	
 	protected ResourceDescriptor createSampleDescriptor() {
 		ResourceDescriptor config = new ResourceDescriptor();
 		config.setId(new String("1"));
@@ -60,26 +62,12 @@ public class ResourceDescriptorSupport extends TestCase
 		capabilityDescriptors.add(capabilityDescriptor);		
 		config.setCapabilityDescriptors(capabilityDescriptors);
 		
-		/* network description */
-		NetworkInfo networkInfo = new NetworkInfo();
-		List<ResourceId> resources = new ArrayList<ResourceId>();
-
-		ResourceId resourceId = new ResourceId();
-		resourceId.setName("logical1");
-		resourceId.setType("router");
-
-		resources.add(resourceId);
-
-		ResourceId resourceId2 = new ResourceId();
+	
+		/* read froma a file descriptor */
+		config.setNetworkFileDescriptor("network/network_example1.xml");
 		
-		resourceId2.setName("logical2");
-		resourceId2.setType("router");
-		resources.add(resourceId2);
-		
-		networkInfo.setResources(resources);
-		config.setNetworkInfo(networkInfo);
-		
-		
+		//Testing if it loads a network topology 
+		config.setNetworkTopology(MockNetworkDescriptor.newNDLNetworkDescriptor());
 		
 		return config;
 	}

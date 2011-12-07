@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 
+@Deprecated
 @Embeddable
 public class NetworkInfo {
 	

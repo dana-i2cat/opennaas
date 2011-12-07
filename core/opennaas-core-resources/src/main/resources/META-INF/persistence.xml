@@ -6,8 +6,13 @@
 		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
 		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
-		<class>org.opennaas.core.resources.descriptor.NetworkInfo</class>
-		<class>org.opennaas.core.resources.descriptor.ResourceId</class>		
+		<class>org.opennaas.core.resources.descriptor.ResourceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.InterfaceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.Link</class>
+		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
+		<class>org.opennaas.core.resources.descriptor.network.Device</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>		
+				
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:file:databases/iaas/resources;hsqldb.default_table_type=cached"/>
@@ -26,8 +31,12 @@
 		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
 		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
-		<class>org.opennaas.core.resources.descriptor.NetworkInfo</class>
-		<class>org.opennaas.core.resources.descriptor.ResourceId</class>				
+		<class>org.opennaas.core.resources.descriptor.ResourceId</class>		
+		<class>org.opennaas.core.resources.descriptor.network.InterfaceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.Link</class>
+		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
+		<class>org.opennaas.core.resources.descriptor.network.Device</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>				
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:unit-testing-jpa"/>

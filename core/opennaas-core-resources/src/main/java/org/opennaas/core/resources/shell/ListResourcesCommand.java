@@ -89,9 +89,10 @@ public class ListResourcesCommand extends GenericKarafCommand {
 	
 	private void printAll (ResourceDescriptor resourceDescriptor) {
 		
+		//TODO get network info
 		/* network descriptor */
-		if (resourceDescriptor.getNetworkInfo() != null)
-			printNetworkInfo(resourceDescriptor.getNetworkInfo());
+//		if (resourceDescriptor.getNetworkInfo() != null)
+//			printNetworkInfo(resourceDescriptor.getNetworkInfo());
 		
 		
 	}
