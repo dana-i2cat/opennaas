@@ -58,19 +58,6 @@ public class ResourceDescriptor {
 	@JoinColumn(name="NETWORK_TOPOLOGY")
 	private NetworkTopology							networkTopology; 
 
-	@Embedded
-	private NetworkInfo 			networkDescriptor;
-	
-	
-	
-	@XmlElement(name = "networkInfo")
-	public NetworkInfo getNetworkInfo() {
-		return networkDescriptor;
-	}
-
-	public void setNetworkInfo(NetworkInfo networkDescriptor) {
-		this.networkDescriptor = networkDescriptor;
-	}
 	
 
 	/**

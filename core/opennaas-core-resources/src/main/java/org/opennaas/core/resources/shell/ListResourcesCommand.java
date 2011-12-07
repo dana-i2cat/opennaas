@@ -10,6 +10,8 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.descriptor.NetworkInfo;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceId;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.osgi.service.device.Device;
 
 /**
  * List the Resources that are in the IaaS Container
@@ -91,19 +93,20 @@ public class ListResourcesCommand extends GenericKarafCommand {
 		
 		//TODO get network info
 		/* network descriptor */
-//		if (resourceDescriptor.getNetworkInfo() != null)
-//			printNetworkInfo(resourceDescriptor.getNetworkInfo());
+		if (resourceDescriptor.getNetworkTopology() != null)
+			printNetworktTopology(resourceDescriptor.getNetworkTopology());
 		
 		
 	}
 	
-	private void printNetworkInfo (NetworkInfo networkInfo) {
+	private void printNetworktTopology (NetworkTopology networkTopology) {
 		
-		List<ResourceId> resources = networkInfo.getResources();		
-		for (ResourceId resource: resources) {
-			String friendlyName = String.format("\t\t%s:%s",resource.getType(), resource.getName());
-			printInfo(friendlyName);
-		}
+		printInfo(networkTopology.toString());
+//		List<Device> devices = networkTopology.toString();		
+//		for (ResourceId resource: devices) {
+//			String friendlyName = String.format("\t\t%s:%s",resource.getType(), resource.getName());
+//			printInfo(friendlyName);
+//		}
 		
 		
 	}

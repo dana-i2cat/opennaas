@@ -26,6 +26,7 @@ import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.xml.sax.SAXException;
 
 /**
@@ -119,18 +120,36 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			stream = new FileInputStream(filename);
 		}
 
-		ResourceDescriptor rd = getDescriptor(stream);
+		ResourceDescriptor resourceDescriptor = getDescriptor(stream);
 
-		if (rd.getInformation().getType() == null || rd.getInformation().getType() == "") {
+		if (resourceDescriptor.getInformation().getType() == null || resourceDescriptor.getInformation().getType() == "") {
 			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource type.");
 		}
-		if (rd.getInformation().getName().equals("") || rd.getInformation().getName() == null) {
+		if (resourceDescriptor.getInformation().getName().equals("") || resourceDescriptor.getInformation().getName() == null) {
 			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource name.");
 		}
+	
+		/* try to load network topology */
+		String networkFileDecriptor = resourceDescriptor.getNetworkFileDescriptor();
+		
+		
+		if (networkFileDecriptor != null && !networkFileDecriptor.equals("")) {
+			/* checks  */
+			
+			//TODO Improve to get descriptors from relative paths
+			if (!networkFileDecriptor.startsWith("//")) 
+				throw new ResourceException("The network file decriptor has to be absolute path");
+			
+			printInfo("Loading network file descriptor: "+networkFileDecriptor);
+			NetworkTopology networkTopology = getNetworkDescriptor(networkFileDecriptor);
+			resourceDescriptor.setNetworkTopology(networkTopology);
+		}
 
-		printInfo("Descriptor loaded for resource " + rd.getInformation().getName() + " with type: " + rd.getInformation()
+		
+		
+		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getName() + " with type: " + resourceDescriptor.getInformation()
 				.getType());
-		return rd;
+		return resourceDescriptor;
 	}
 
 	public ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException, SAXException {
@@ -254,6 +273,69 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 
 		return new URL(url);
+	}
+	
+	
+	/* methods to read descriptors  */
+	
+	/**
+	 * Helper methods to test these functionality...
+	 * 
+	 * @param filename
+	 * @return
+	 * @throws JAXBException
+	 * @throws IOException
+	 * @throws ResourceException
+	 * @throws SAXException
+	 */
+	private NetworkTopology getNetworkDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
+		InputStream stream = null;
+		// First try a URL
+		try {
+			URL url = new URL(filename);
+			log.info("URL: " + url);
+			stream = url.openStream();
+		} catch (MalformedURLException ignore) {
+			// Then try a file
+			//Added class loader to read files
+			
+			
+			//TODO check to read topologies with relative paths
+//			stream = this.getClass().getClassLoader().getResourceAsStream(filename);
+			log.error("file: " + filename);
+			stream = new FileInputStream(filename);
+		}
+
+		NetworkTopology rd = loadNetworkDescriptor(stream);
+		return rd;
+	}
+	
+	private NetworkTopology loadNetworkDescriptor(InputStream stream) throws JAXBException, SAXException {
+
+		NetworkTopology descriptor = null;
+		try {
+			JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
+
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			/* check wellformat xml with xsd */
+			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A COMMAND
+			// SchemaFactory sf = SchemaFactory.newInstance(
+			// javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			// ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			// Schema schema = sf.newSchema(new StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
+			// unmarshaller.setSchema(schema);
+
+			descriptor = (NetworkTopology) unmarshaller.unmarshal(stream);
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException e) {
+				// Ignore
+			}
+		}
+		return descriptor;
+		
 	}
 
 }

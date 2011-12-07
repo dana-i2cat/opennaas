@@ -1,6 +1,7 @@
 package org.opennaas.core.resources.tests.network.ndl;
 
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -77,7 +78,7 @@ public class DummyParserTest {
 			// Then try a file
 			//Added class loader to read files
 			stream = this.getClass().getClassLoader().getResourceAsStream(filename);
-//			log.error("file: " + filename);
+			log.error("file: " + filename);
 //			stream = new FileInputStream(filename);
 		}
 
