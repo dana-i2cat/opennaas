@@ -15,6 +15,7 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
@@ -111,7 +112,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	 * 
 	 * @throws Exception
 	 */
-	// @Test
+	@Test
 	public void testAlarms() throws IOException {
 
 		loadBundlesAndServices();

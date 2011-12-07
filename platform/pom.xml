@@ -16,7 +16,7 @@
 		<opennaas.path>opennaas-1.0.0-SNAPSHOT</opennaas.path>
 	</properties>
 	
-		<repositories>
+	<repositories>
 		<repository>
 			<id>maven.i2cat.net</id>
 			<name>maven.i2cat.net-releases</name>
