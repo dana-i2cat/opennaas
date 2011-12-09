@@ -94,12 +94,12 @@ public class ListResourcesCommand extends GenericKarafCommand {
 		//TODO get network info
 		/* network descriptor */
 		if (resourceDescriptor.getNetworkTopology() != null)
-			printNetworktTopology(resourceDescriptor.getNetworkTopology());
+			printNetworkTopology(resourceDescriptor.getNetworkTopology());
 		
 		
 	}
 	
-	private void printNetworktTopology (NetworkTopology networkTopology) {
+	private void printNetworkTopology (NetworkTopology networkTopology) {
 		
 		printInfo(networkTopology.toString());
 //		List<Device> devices = networkTopology.toString();		

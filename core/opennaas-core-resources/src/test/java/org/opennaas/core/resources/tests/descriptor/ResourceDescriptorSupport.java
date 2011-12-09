@@ -64,7 +64,7 @@ public class ResourceDescriptorSupport extends TestCase
 		
 	
 		/* read froma a file descriptor */
-		config.setNetworkFileDescriptor("network/network_example1.xml");
+		config.setNetwork("network/network_example1.xml");
 		
 		//Testing if it loads a network topology 
 		config.setNetworkTopology(MockNetworkDescriptor.newNDLNetworkDescriptor());

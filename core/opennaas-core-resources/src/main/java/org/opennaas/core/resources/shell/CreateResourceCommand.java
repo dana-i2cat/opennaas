@@ -130,14 +130,14 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 	
 		/* try to load network topology */
-		String networkFileDecriptor = resourceDescriptor.getNetworkFileDescriptor();
+		String networkFileDecriptor = resourceDescriptor.getNetwork();
 		
 		
 		if (networkFileDecriptor != null && !networkFileDecriptor.equals("")) {
 			/* checks  */
 			
 			//TODO Improve to get descriptors from relative paths
-			if (!networkFileDecriptor.startsWith("//")) 
+			if (!networkFileDecriptor.startsWith("/")) 
 				throw new ResourceException("The network file decriptor has to be absolute path");
 			
 			printInfo("Loading network file descriptor: "+networkFileDecriptor);

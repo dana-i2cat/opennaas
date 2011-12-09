@@ -50,9 +50,9 @@ public class ResourceDescriptor {
 	private List<CapabilityDescriptor>	capabilityDescriptors;
 	
 	@Basic
-	private String						profileId			= "";
+	private String						profileId;
 
-	private String						networkFileDescriptor = "";
+	private String						network;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="NETWORK_TOPOLOGY")
@@ -128,13 +128,13 @@ public class ResourceDescriptor {
 		this.profileId = profileId;
 	}
 
-	@XmlAttribute(name = "networkFileDescriptor")
-	public String getNetworkFileDescriptor() {
-		return networkFileDescriptor;
+	@XmlElement(name = "network")
+	public String getNetwork() {
+		return network;
 	}
 
-	public void setNetworkFileDescriptor(String networkFileDescriptor) {
-		this.networkFileDescriptor = networkFileDescriptor;
+	public void setNetwork(String networkFileDescriptor) {
+		this.network = networkFileDescriptor;
 	}
 	
 
