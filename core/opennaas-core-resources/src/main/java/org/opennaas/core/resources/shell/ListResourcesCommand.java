@@ -7,11 +7,12 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.descriptor.NetworkInfo;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceId;
+import org.opennaas.core.resources.descriptor.network.Device;
+import org.opennaas.core.resources.descriptor.network.Interface;
+import org.opennaas.core.resources.descriptor.network.InterfaceId;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
-import org.osgi.service.device.Device;
 
 /**
  * List the Resources that are in the IaaS Container
@@ -101,14 +102,48 @@ public class ListResourcesCommand extends GenericKarafCommand {
 	
 	private void printNetworkTopology (NetworkTopology networkTopology) {
 		
-		printInfo(networkTopology.toString());
-//		List<Device> devices = networkTopology.toString();		
-//		for (ResourceId resource: devices) {
-//			String friendlyName = String.format("\t\t%s:%s",resource.getType(), resource.getName());
-//			printInfo(friendlyName);
-//		}
+		
+		
+		
+
+		printInfo("-> Devices <-");
+		if (networkTopology.getDevices()!=null) {
+			for (Device device: networkTopology.getDevices()) {
+				printInfo(paintResource(device).toString());
+			}
+		}
+		printInfo("-> Connections <-");
+		if (networkTopology.getInterfaces()!=null)
+			paintConnections(networkTopology.getInterfaces());
+		
 		
 		
 	}
+	
+	private StringBuilder paintConnections(List<Interface> interfaces) {
+		StringBuilder message = new StringBuilder();
+		for (Interface interf: interfaces) {
+			message.append(String.format("\t · %s ---> %s (%s)",interf.getName(),interf.getLinkTo(),interf.getCapacity()));
+		}
+		
+		return message;
+		
+	}
+
+
+	public StringBuilder paintResource (Device device) {
+		StringBuilder message = new StringBuilder();
+		
+		message.append("Device id: "+device.getName());
+		message.append("\nInterfaces: ");
+		for (InterfaceId interfaceId: device.getHasInterfaces()) {
+			message.append("\t-"+interfaceId.getResource());
+		}
+		
+		return message;
+	}
+	
+	
+	
 	
 }

@@ -130,7 +130,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 	
 		/* try to load network topology */
-		String networkFileDecriptor = resourceDescriptor.getNetwork();
+		String networkFileDecriptor = resourceDescriptor.getFileTopology();
 		
 		
 		if (networkFileDecriptor != null && !networkFileDecriptor.equals("")) {

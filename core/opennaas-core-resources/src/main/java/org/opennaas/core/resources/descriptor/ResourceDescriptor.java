@@ -52,7 +52,7 @@ public class ResourceDescriptor {
 	@Basic
 	private String						profileId;
 
-	private String						network;
+	private String						fileTopology;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="NETWORK_TOPOLOGY")
@@ -128,13 +128,13 @@ public class ResourceDescriptor {
 		this.profileId = profileId;
 	}
 
-	@XmlElement(name = "network")
-	public String getNetwork() {
-		return network;
+	@XmlElement(name = "fileTopology")
+	public String getFileTopology() {
+		return fileTopology;
 	}
 
-	public void setNetwork(String networkFileDescriptor) {
-		this.network = networkFileDescriptor;
+	public void setFileTopology(String networkFileDescriptor) {
+		this.fileTopology = networkFileDescriptor;
 	}
 	
 

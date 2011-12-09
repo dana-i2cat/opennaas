@@ -171,7 +171,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 				assertEquals(prop.getValue(), "value");
 			}
 			
-			assertEquals(loaded.getNetwork(),"network/network_example1.xml");
+			assertEquals(loaded.getFileTopology(),"network/network_example1.xml");
 			
 			
 			/* network description */
