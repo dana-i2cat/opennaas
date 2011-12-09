@@ -97,6 +97,7 @@
 				<executions>
 					<execution>
 						<id>unpack-opennaas</id>
+						<!-- Run this before any other goal in package phase -->
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>unpack</goal>
