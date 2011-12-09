@@ -11,8 +11,8 @@
 	<artifactId>net.i2cat.mantychore.tests.sprints.week35</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Week 35 - Sprint tests suite</name>
-	<description>Week 35 - Sprint tests suite</description>
+	<name>Week 35 - Sprint tests</name>
+	<description>Week 35 - Sprint tests (auto-refresh)</description>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

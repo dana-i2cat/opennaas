@@ -11,8 +11,8 @@
 	<artifactId>net.i2cat.mantychore.tests.sprints.sprint0_4</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Sprint 0.4 - Tests</name>
-	<description>Sprint 0.4 - Tests</description>
+	<name>Sprint 0.4 - Sprint tests</name>
+	<description>Sprint 0.4 - Sprint tests (ConfigSubInterface, SetDescription)</description>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

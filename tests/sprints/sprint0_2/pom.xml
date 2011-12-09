@@ -11,8 +11,8 @@
 	<artifactId>net.i2cat.mantychore.tests.sprints.sprint0_2</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Sprint 0.2 - Mantychore test</name>
-	<description>Sprint 0.2 - Mantychore test</description>
+	<name>Sprint 0.2 - Sprint tests</name>
+	<description>Sprint 0.2 - Sprint tests (LogicalRouters and RawSocketAlarm)</description>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

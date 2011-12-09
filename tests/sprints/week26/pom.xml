@@ -11,8 +11,8 @@
 	<artifactId>net.i2cat.mantychore.tests.sprints.week26</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Week 26 - Mantychore queue test</name>
-	<description>Week 26 - Mantychore queue test</description>
+	<name>Week 26 - Sprint tests</name>
+	<description>Week 26 - Sprint tests (interfaces and queue)</description>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
