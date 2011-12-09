@@ -13,9 +13,10 @@
     </capabilityDescriptors>
     <!-- Resource information. It specify type and name-->
     <information>
-        <type>network</type>
+        <type>AS2</type>
         <name>networklayer3</name>
     </information>
     <properties/>
-    <fileTopology>/home/carlos/workspace/trunk/utils/networktopologies/topology1.xml</fileTopology> 
+   <fileTopology>
+   </fileTopology>
 </resourceDescriptor>

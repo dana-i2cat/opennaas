@@ -12,8 +12,8 @@
 </ndl:Location>
 
 <!--router1-->
-<ndl:Device rdf:about="#router1">
-  <rdfs:label>router1</rdfs:label>
+<ndl:Device rdf:about="#router:R1">
+  <ndl:name>router:R1</ndl:name>
   <ndl:locatedAt rdf:resource="#1"/>
   <ndl:hasInterface rdf:resource="#router1:eth0"/>
   <ndl:hasInterface rdf:resource="#router1:eth1"/>
@@ -21,7 +21,7 @@
 
 <!--router2-->
 <ndl:Device rdf:about="#router2">
-  <rdfs:label>router2</rdfs:label>
+  <ndl:name>router:R2</ndl:name>
   <ndl:locatedAt rdf:resource="#2"/>
   <ndl:hasInterface rdf:resource="#router2:eth0"/>
   <ndl:hasInterface rdf:resource="#router2:eth1"/>
@@ -29,7 +29,7 @@
 
 <!--router3-->
 <ndl:Device rdf:about="#router3">
-  <rdfs:label>router3</rdfs:label>
+  <ndl:name>router:R3</ndl:name>
   <ndl:locatedAt rdf:resource="#3"/>
   <ndl:hasInterface rdf:resource="#router3:eth0"/>
   <ndl:hasInterface rdf:resource="#router3:eth1"/>
@@ -37,70 +37,70 @@
 
 <!--router4-->
 <ndl:Device rdf:about="#router4">
-  <rdfs:label>router4</rdfs:label>
+  <ndl:name>router:R4</ndl:name>
   <ndl:locatedAt rdf:resource="#4"/>
   <ndl:hasInterface rdf:resource="#router4:eth0"/>
   <ndl:hasInterface rdf:resource="#router4:eth1"/>
 </ndl:Device>
 
 <!--router1:eth0-->
-<ndl:Interface rdf:about="#router1:eth0">
+<ndl:Interface rdf:about="#router:R1:eth0">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetInterface"/>
-  <rdfs:label>router1:eth0</rdfs:label>
+  <ndl:name>router:R1:eth0</ndl:name>
   <ndl:linkedTo rdf:resource="#router3:eth1"/>
   <ndl:capacity>1500</ndl:capacity>
 </ndl:Interface>
 
 <!--router1:eth1-->
-<ndl:Interface rdf:about="#router1:eth1">
-  <rdfs:label>router1:eth1</rdfs:label>
+<ndl:Interface rdf:about="#router:R1:eth1">
+  <ndl:name>router:R1:eth1</ndl:name>
   <ndl:connectedTo rdf:resource="#router2:eth1"/>
   <ndl:capacity>1200</ndl:capacity>
 </ndl:Interface>
 
 <!--router2:eth0-->
-<ndl:Interface rdf:about="#router2:eth0">
+<ndl:Interface rdf:about="#router:R2:eth0">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC12Interface"/>
-  <rdfs:label>router2:eth0</rdfs:label>
+  <ndl:name>router:R2:eth0</ndl:name>
   <ndl:linkedTo rdf:resource="#router3:eth0"/>
   <ndl:capacity>7.776E+07</ndl:capacity>
 </ndl:Interface>
 
 <!--router2:eth1-->
-<ndl:Interface rdf:about="#router2:eth1">
-  <rdfs:label>router2:eth1</rdfs:label>
+<ndl:Interface rdf:about="#router:R2:eth1">
+  <ndl:name>router:R2:eth1</ndl:name>
   <ndl:linkedTo rdf:resource="#router1:eth1"/>
   <ndl:capacity>1500</ndl:capacity>
 </ndl:Interface>
 
 <!--router3:eth0-->
-<ndl:Interface rdf:about="#router3:eth0">
+<ndl:Interface rdf:about="#router:R3:eth0">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/tdm#OC12Interface"/>
-  <rdfs:label>router3:eth0</rdfs:label>
+  <ndl:name>router:R3:eth0</ndl:name>
   <ndl:linkedTo rdf:resource="#router2:eth0"/>
   <ndl:capacity>7.776E+07</ndl:capacity>
 </ndl:Interface>
 
 <!--router3:eth1-->
-<ndl:Interface rdf:about="#router3:eth1">
+<ndl:Interface rdf:about="#router:R3:eth1">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetInterface"/>
-  <rdfs:label>router3:eth1</rdfs:label>
+  <ndl:name>router:R3:eth1</ndl:name>
   <ndl:linkedTo rdf:resource="#router1:eth0"/>
   <ndl:capacity>1500</ndl:capacity>
 </ndl:Interface>
 
 <!--router4:eth0-->
-<ndl:Interface rdf:about="#router4:eth0">
+<ndl:Interface rdf:about="#router:R4:eth0">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetInterface"/>
-  <rdfs:label>router4:eth0</rdfs:label>
+  <ndl:name>router:R4:eth0</ndl:name>
   <ndl:connectedTo rdf:resource="#cloud:oscars"/>
   <ndl:capacity>1600</ndl:capacity>
 </ndl:Interface>
 
 <!--router4:eth1-->
-<ndl:Interface rdf:about="#router4:eth1">
+<ndl:Interface rdf:about="#router:R4:eth1">
 <rdf:type rdf:resource="http://www.science.uva.nl/research/sne/ndl/ethernet#EthernetInterface"/>
-  <rdfs:label>router4:eth1</rdfs:label>
+  <ndl:name>router:R4:eth1</ndl:name>
   <ndl:connectedTo rdf:resource="#cloud:bluenet"/>
   <ndl:capacity>1200</ndl:capacity>
 </ndl:Interface>
