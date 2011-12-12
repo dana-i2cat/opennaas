@@ -13,10 +13,10 @@ public class Interface extends ConnectionPoint {
 	
 	Device device;
 	
-	Link isSourceOf;
-	Link isSinkOf;
 	
-	List<CrossConnect> switchedTo;
+	Link linkTo;
+	CrossConnect switchedTo;
+
 	
 	/**
 	 *  end-to-end path
@@ -31,29 +31,6 @@ public class Interface extends ConnectionPoint {
 		this.device = device;
 	}
 
-	public Link getIsSourceOf() {
-		return isSourceOf;
-	}
-
-	public void setIsSourceOf(Link isSourceOf) {
-		this.isSourceOf = isSourceOf;
-	}
-
-	public Link getIsSinkOf() {
-		return isSinkOf;
-	}
-
-	public void setIsSinkOf(Link isSinkOf) {
-		this.isSinkOf = isSinkOf;
-	}
-
-	public List<CrossConnect> getSwitchedTo() {
-		return switchedTo;
-	}
-
-	public void setSwitchedTo(List<CrossConnect> switchedTo) {
-		this.switchedTo = switchedTo;
-	}
 
 	public Path getConnectedTo() {
 		return connectedTo;
@@ -61,5 +38,21 @@ public class Interface extends ConnectionPoint {
 
 	public void setConnectedTo(Path connectedTo) {
 		this.connectedTo = connectedTo;
+	}
+
+	public Link getLinkTo() {
+		return linkTo;
+	}
+
+	public void setLinkTo(Link linkTo) {
+		this.linkTo = linkTo;
+	}
+
+	public CrossConnect getSwitchedTo() {
+		return switchedTo;
+	}
+
+	public void setSwitchedTo(CrossConnect switchedTo) {
+		this.switchedTo = switchedTo;
 	}
 }

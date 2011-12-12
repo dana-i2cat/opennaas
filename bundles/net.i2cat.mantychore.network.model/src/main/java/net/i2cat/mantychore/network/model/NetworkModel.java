@@ -21,6 +21,10 @@ public class NetworkModel implements IModel {
 	public List<NetworkElement> getNetworkElements(){
 		return networkElements;
 	}
+	
+	public void setNetworkElements(List<NetworkElement> networkElements) {
+		this.networkElements = networkElements;
+	}
 }
 
 	

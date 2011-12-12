@@ -14,6 +14,9 @@ public class Link extends BroadcastSegment {
 	
 	Interface source;
 	Interface sink;
+
+	boolean isBidirectional = false;
+	
 	
 	public Interface getSource() {
 		return source;
@@ -30,4 +33,13 @@ public class Link extends BroadcastSegment {
 	public void setSink(Interface sink) {
 		this.sink = sink;
 	}
+
+	public boolean isBidirectional() {
+		return isBidirectional;
+	}
+
+	public void setBidirectional(boolean isBidirectional) {
+		this.isBidirectional = isBidirectional;
+	}
+	
 }

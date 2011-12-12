@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Device extends NetworkElement {
 	
+	
 	List<ConnectionPoint> interfaces;
 
 	public List<ConnectionPoint> getInterfaces() {

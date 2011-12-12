@@ -8,36 +8,21 @@ import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 public class NetworkDomain extends NetworkElement {
 	
-	List<Device> devices;
+	List<Device> hasDevice;
+	List<ConnectionPoint> hasInterface;
 	
-	List<ConnectionPoint> outboundInterfaces;
-	List<ConnectionPoint> inboundInterfaces;
-
-	public List<Device> getDevices() {
-		return devices;
+	public List<Device> getHasDevice() {
+		return hasDevice;
+	}
+	public void setHasDevice(List<Device> hasDevice) {
+		this.hasDevice = hasDevice;
+	}
+	public List<ConnectionPoint> getHasInterface() {
+		return hasInterface;
+	}
+	public void setHasInterface(List<ConnectionPoint> hasInterface) {
+		this.hasInterface = hasInterface;
 	}
 
-	public void setDevices(List<Device> devices) {
-		this.devices = devices;
-	}
 	
-	public void addDevice(Device device) {
-		devices.add(device);
-	}
-
-	public List<ConnectionPoint> getOutboundInterfaces() {
-		return outboundInterfaces;
-	}
-
-	public void setOutboundInterfaces(List<ConnectionPoint> outboundInterfaces) {
-		this.outboundInterfaces = outboundInterfaces;
-	}
-
-	public List<ConnectionPoint> getInboundInterfaces() {
-		return inboundInterfaces;
-	}
-
-	public void setInboundInterfaces(List<ConnectionPoint> inboundInterfaces) {
-		this.inboundInterfaces = inboundInterfaces;
-	}
 }
