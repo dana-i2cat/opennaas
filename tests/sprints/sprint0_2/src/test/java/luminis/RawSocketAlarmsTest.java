@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Properties;
 
 import junit.framework.Assert;
+import net.i2cat.luminis.actionsets.wonesys.WonesysAlarmsDriver;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmFactory;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
+import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -23,6 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Inject;
@@ -201,44 +206,49 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		}
 	}
 
-	// @Test
-	// public void checkAllAlarmsAreSupportedTest() {
-	//
-	// WonesysAlarmsReader alarmReader = new WonesysAlarmsReader();
-	//
-	// // TODO create one alarm message of each known type
-	// List<String> alarmMessages = new ArrayList<String>();
-	//
-	// // Check alarms are known
-	// WonesysAlarm alarm;
-	// for (String alarmMessage : alarmMessages) {
-	// Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
-	// alarm = WonesysAlarmFactory.createAlarm(properties);
-	//
-	// boolean recognized = false;
-	// for (ProteusOpticalSwitchCard.CardType cardType : ProteusOpticalSwitchCard.CardType.values()) {
-	// recognized = !WonesysAlarmReader.AlarmMeaning.UNKNOWN.equals(
-	// alarmReader.getAlarmMeaning(cardType, alarm));
-	// if (recognized)
-	// break;
-	// }
-	// Assert.assertTrue(recognized);
-	// }
-	//
-	// // check an unknown alarm is created
-	// String unknownAlarmMessage = "FFFF0000FFFFFFFFFFFF";
-	// Properties properties = WonesysAlarmFactory.loadAlarmProperties(unknownAlarmMessage);
-	// alarm = WonesysAlarmFactory.createAlarm(properties);
-	//
-	// boolean recognized = false;
-	// for (ProteusOpticalSwitchCard.CardType cardType : ProteusOpticalSwitchCard.CardType.values()) {
-	// recognized = !WonesysAlarmReader.AlarmMeaning.UNKNOWN.equals(
-	// alarmReader.getAlarmMeaning(cardType, alarm));
-	// if (recognized)
-	// break;
-	// }
-	// Assert.assertFalse(recognized);
-	// }
+	@Test
+	public void checkAllAlarmsAreSupportedTest() {
+		String chassis = "01";
+		String slot = "01";
+
+		OpticalSwitchFactory factory = new OpticalSwitchFactory();
+		IModel model = null;
+		try {
+			model = factory.newPedrosaProteusOpticalSwitch();
+		} catch (Exception e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
+
+		// Create one alarm message of each known type
+		List<String> alarmMessages = new ArrayList<String>();
+		alarmMessages.add("FFFF0000" + chassis + slot + "01FF80"); // CPLANCHANGED
+
+		// Check alarms are known
+		WonesysAlarm alarm;
+		for (String alarmMessage : alarmMessages) {
+			Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
+			alarm = WonesysAlarmFactory.createAlarm(properties);
+
+			boolean recognized = false;
+			ResourceAlarm generatedAlarm = WonesysAlarmsDriver.wonesysAlarmToResourceAlarm(alarm, model, "testResource01");
+			if (!generatedAlarm.getProperty(ResourceAlarm.ALARM_CODE_PROPERTY).equals("UNKNOWN")) {
+				recognized = true;
+			}
+			Assert.assertTrue(recognized);
+		}
+
+		// check an unknown alarm is created
+		String unknownAlarmMessage = "FFFF0000FFFFFFFFFFFF";
+		Properties properties = WonesysAlarmFactory.loadAlarmProperties(unknownAlarmMessage);
+		alarm = WonesysAlarmFactory.createAlarm(properties);
+
+		boolean recognized = false;
+		ResourceAlarm generatedAlarm = WonesysAlarmsDriver.wonesysAlarmToResourceAlarm(alarm, model, "testResource01");
+		if (!generatedAlarm.getProperty(ResourceAlarm.ALARM_CODE_PROPERTY).equals("UNKNOWN")) {
+			recognized = true;
+		}
+		Assert.assertFalse(recognized);
+	}
 
 	/**
 	 * Already tested in first test
@@ -258,7 +268,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	// @Test //functionality not implemented (alarms don't trigger actions automatically)
 	public void checkEventChannelConfigChangedTest() {
 		String chassis = "01";
-		String slot = "17";
+		String slot = "01";
 
 		// initBundles();
 
