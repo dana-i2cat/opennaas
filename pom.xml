@@ -582,6 +582,11 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.felix.karaf.tooling</groupId>
+				<artifactId>features-maven-plugin</artifactId>
+				<version>1.4.0-fuse-03-00</version>
+			</plugin>
 		</plugins>
 	</build>
 	<!-- SCM configuration -->
