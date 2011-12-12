@@ -82,7 +82,9 @@
 							-->
 							*</Import-Package>
 						<Export-Package>
-							${project.artifactId}.*;version="${project.version}"
+							${project.artifactId}.*;version="${project.version}",
+							!uk.co.westhawk.tablelayout,
+							uk.co.westhawk.*
 						</Export-Package>
 						<!-- put snmp library in /lib and import its packages-->
 						<!--<Bundle-ClassPath>.,

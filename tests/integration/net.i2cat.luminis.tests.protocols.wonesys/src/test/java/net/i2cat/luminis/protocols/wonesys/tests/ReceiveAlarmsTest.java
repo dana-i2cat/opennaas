@@ -115,6 +115,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	@Test
 	public void testAlarms() throws IOException {
 
+		// set up
 		loadBundlesAndServices();
 
 		this.alarmReceived = false;
@@ -129,20 +130,31 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 		EventFilter filter = new WonesysAlarmEventFilter();
 		int serviceID = eventManager.registerEventHandler(this, filter);
 
-		triggerAlarm();
+		// test
 
+		TrapPduv2 pdu = null;
 		try {
-			log.info("Waiting for an alarm...");
-			Thread.sleep(alarmWaittime * 3);
-		} catch (InterruptedException e) {
-			log.warn("Interrupted!");
+
+			pdu = triggerAlarm();
+
+			try {
+				log.info("Waiting for an alarm...");
+				Thread.sleep(alarmWaittime * 3);
+			} catch (InterruptedException e) {
+				log.warn("Interrupted!");
+			}
+
+			log.info("AlarmReceived = " + this.alarmReceived);
+			assertTrue(this.alarmReceived);
+
+		} finally {
+			// clean up
+			if (pdu != null)
+				pdu.getContext().destroy();
+
+			eventManager.unregisterHandler(serviceID);
+			alarmConfig.disableAlarms();
 		}
-
-		log.info("AlarmReceived = " + this.alarmReceived);
-		assertTrue(this.alarmReceived);
-
-		eventManager.unregisterHandler(serviceID);
-		alarmConfig.disableAlarms();
 	}
 
 	/**
@@ -164,9 +176,12 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 		this.alarmReceived = true;
 	}
 
-	private void triggerAlarm() throws IOException {
+	private TrapPduv2 triggerAlarm() throws IOException {
 
-		sendSNMPTrap();
+		TrapPduv2 pdu = createSNMPTrap();
+		sendSNMPTrap(pdu);
+		return pdu;
+
 		// try {
 		// // Send setChannel command to trigger an alarm
 		// IProtocolSession protocolSession = getProtocolSession(resourceId, createWonesysProtocolSessionContext(hostIpAddress, hostPort));
@@ -195,7 +210,20 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	 * @throws IOException
 	 * @throws PduException
 	 */
-	private void sendSNMPTrap() throws IOException {
+	private void sendSNMPTrap(TrapPduv2 pdu) throws IOException {
+
+		try {
+			log.info("Sending Pdu");
+			pdu.send();
+		} catch (PduException e) {
+			log.error("PDUException", e);
+			pdu.getContext().destroy();
+			throw new IOException(e);
+		}
+	}
+
+	private TrapPduv2 createSNMPTrap() throws IOException {
+
 		SnmpContext snmpContext = new SnmpContextv2c("127.0.0.1", Integer.parseInt(alarmsPort)); // should send from a different port
 		snmpContext.setCommunity("publica");
 		TrapPduv2 pdu = new OneTrapPduv2(snmpContext);
@@ -245,22 +273,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 		varbindValue = new AsnOctets("0B0001");
 		pdu.addOid(new varbind(varbindID, varbindValue));
 
-		try {
-			log.info("Sending Pdu");
-			pdu.send();
-
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				log.warn("Interrupted!", e);
-			}
-		} catch (PduException e) {
-			log.error("PDUException", e);
-			snmpContext.destroy();
-			throw new IOException(e);
-		}
-
-		snmpContext.destroy();
+		return pdu;
 	}
 
 }
