@@ -33,8 +33,16 @@ public class WonesysAlarmFactory {
 	}
 
 	public static WonesysAlarm createAlarm(Alarm alarm) {
-		// TODO auto-generated stub method
-		return null;
+		Properties properties = new Properties();
+
+		properties.put(WonesysAlarm.CHASSIS_PROPERTY, alarm.getChasis());
+		properties.put(WonesysAlarm.SLOT_PROPERTY, alarm.getSlot());
+		properties.put(WonesysAlarm.SEVERITY_PROPERTY, alarm.getSeverity());
+		properties.put(WonesysAlarm.ALARM_ID_PROPERTY, alarm.getTypeID());
+		properties.put(WonesysAlarm.ALARM_DATA_PROPERTY, alarm.getRawIndo());
+		properties.put(WonesysAlarm.ARRIVAL_TIME, alarm.getDataRecepcio());
+
+		return new WonesysAlarm(properties);
 	}
 
 	/* HELPERS */
