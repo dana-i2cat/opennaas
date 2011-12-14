@@ -1,0 +1,137 @@
+package net.i2cat.mantychore.network.repository;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.i2cat.mantychore.network.model.NetworkModel;
+import net.i2cat.mantychore.network.model.topology.NetworkElement;
+
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.network.Device;
+import org.opennaas.core.resources.descriptor.network.DeviceId;
+import org.opennaas.core.resources.descriptor.network.Interface;
+import org.opennaas.core.resources.descriptor.network.InterfaceId;
+import org.opennaas.core.resources.descriptor.network.NetworkDomain;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+
+public class NetworkMapperDescriptorToModel {
+
+	public static NetworkModel descriptorToModel(NetworkTopology networkTopology) throws ResourceException {
+		NetworkModel networkModel = new NetworkModel();
+
+		List<net.i2cat.mantychore.network.model.topology.Device> existingDevices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
+		List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> existingInterfaces = new ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
+		List<net.i2cat.mantychore.network.model.topology.Link> existingLinks = new ArrayList<net.i2cat.mantychore.network.model.topology.Link>();
+
+		/* set interfaces */
+		for (Interface interf : networkTopology.getInterfaces()) {
+			net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
+			newInterf.setName(cleanName(interf.getName()));
+			existingInterfaces.add(newInterf);
+		}
+
+		/* set links */
+		for (Interface interf : networkTopology.getInterfaces()) {
+			String nameSource = interf.getName();
+			String nameTarget = interf.getLinkTo().getName();
+
+			int sourcePosInterf = getInterface(nameSource, existingInterfaces);
+			if (sourcePosInterf == -1)
+				throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameSource);
+			net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
+					.get(sourcePosInterf);
+
+			int targetPosInterf = getInterface(nameTarget, existingInterfaces);
+			if (targetPosInterf == -1)
+				throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameTarget);
+			net.i2cat.mantychore.network.model.topology.Interface targetInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
+					.get(targetPosInterf);
+
+			if (sourceInterf.getLinkTo() == null) {
+				net.i2cat.mantychore.network.model.topology.Link linkModel = new net.i2cat.mantychore.network.model.topology.Link();
+				linkModel.setSource(sourceInterf);
+				linkModel.setSink(targetInterf);
+				linkModel.setBidirectional(false);
+				sourceInterf.setLinkTo(linkModel);
+			} else {
+				sourceInterf.getLinkTo().setBidirectional(true);
+			}
+
+		}
+
+		/* set devices */
+		for (Device device : networkTopology.getDevices()) {
+			net.i2cat.mantychore.network.model.topology.Device modelDevice = new net.i2cat.mantychore.network.model.topology.Device();
+			modelDevice.setName(device.getName());
+
+			List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> interfaces = new ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
+			for (InterfaceId interfaceId : device.getHasInterfaces()) {
+				int posInterf = getInterface(interfaceId.getResource(), existingInterfaces);
+				net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
+						.get(posInterf);
+				interfaces.add(sourceInterf);
+			}
+			modelDevice.setInterfaces(interfaces);
+			existingDevices.add(modelDevice);
+		}
+
+		/* add devices in networkDomain */
+		List<NetworkElement> networkDomains = new ArrayList<NetworkElement>();
+		for (NetworkDomain networkDomainModel : networkTopology.getNetworkDomains()) {
+			net.i2cat.mantychore.network.model.domain.NetworkDomain networkDomain = new net.i2cat.mantychore.network.model.domain.NetworkDomain();
+			List<net.i2cat.mantychore.network.model.topology.Device> devices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
+			for (DeviceId deviceId : networkDomainModel.getHasDevices()) {
+				int posDevice = getDevice(deviceId.getResource(), existingDevices);
+				if (posDevice == -1)
+					throw new ResourceException("Error to fill network model. It doesn't exist device for this network " + deviceId.getResource());
+
+				net.i2cat.mantychore.network.model.topology.Device modelDevice = existingDevices.get(posDevice);
+				devices.add(modelDevice);
+
+			}
+			networkDomain.setHasDevice(devices);
+			networkDomains.add(networkDomain);
+		}
+
+		List<NetworkElement> networkElems = new ArrayList<NetworkElement>();
+		networkElems.addAll(existingLinks);
+		networkElems.addAll(existingInterfaces);
+		networkElems.addAll(existingDevices);
+		networkModel.setNetworkElements(networkElems);
+
+		return networkModel;
+	}
+
+	private static int getInterface(String name, List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> listInterfaces) {
+		// format name to search
+		name = cleanName(name);
+
+		int pos = 0;
+		for (net.i2cat.mantychore.network.model.topology.ConnectionPoint connectionPoint : listInterfaces) {
+			if (connectionPoint.getName().equals(name))
+				return pos;
+			pos++;
+		}
+
+		return -1;
+	}
+
+	private static int getDevice(String name, List<net.i2cat.mantychore.network.model.topology.Device> devices) {
+		int pos = 0;
+		for (net.i2cat.mantychore.network.model.topology.Device device : devices) {
+			if (device.getName().equals(name))
+				return pos;
+			pos++;
+		}
+		return -1;
+	}
+
+	private static String cleanName(String name) {
+		String formattedName = "";
+		if (name.startsWith("#")) {
+			formattedName = name.replaceFirst("#", "");
+		}
+		return formattedName;
+	}
+
+}
