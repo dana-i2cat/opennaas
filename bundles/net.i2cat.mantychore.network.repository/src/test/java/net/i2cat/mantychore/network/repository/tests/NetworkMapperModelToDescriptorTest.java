@@ -16,7 +16,7 @@ import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
 public class NetworkMapperModelToDescriptorTest {
 
 	@Test
-	public void testMockWrapperNetworkElems() {
+	public void testMockMapperNetworkElems() {
 		try {
 			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(MockNetworkDescriptor
 					.newNetworkDescriptorWithNetworkDomain());
@@ -28,7 +28,7 @@ public class NetworkMapperModelToDescriptorTest {
 	}
 
 	@Test
-	public void testMockWrapperModel() {
+	public void testMockMapperModel() {
 		try {
 
 			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(MockNetworkDescriptor
@@ -66,7 +66,7 @@ public class NetworkMapperModelToDescriptorTest {
 	}
 
 	@Test
-	public void testMockWrapperNetworkDomain() {
+	public void testMockMapperNetworkDomain() {
 		try {
 
 			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(MockNetworkDescriptor
