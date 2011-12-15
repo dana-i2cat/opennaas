@@ -26,9 +26,8 @@ public class NetworkMapperDescriptorToModel {
 
 		/* set interfaces */
 		for (Interface interf : networkTopology.getInterfaces()) {
-			net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
-			newInterf.setName(cleanName(interf.getName()));
-			existingInterfaces.add(newInterf);
+			existingInterfaces.add(createInterface(interf.getName()));
+
 		}
 
 		/* set links */
@@ -51,8 +50,10 @@ public class NetworkMapperDescriptorToModel {
 			// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
 			// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
 			// If the interface doesn't exist, This interface can reference to an external interface in other network domain
-			if (targetPosInterf == -1)
-				continue;
+			if (targetPosInterf == -1) {
+				net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
+				newInterf.setName(cleanName(interf.getName()));
+			}
 
 			// if (targetPosInterf == -1)
 			// throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameTarget);
@@ -90,8 +91,11 @@ public class NetworkMapperDescriptorToModel {
 
 				// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
 				// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
-				if (posInterf == -1)
-					continue;
+				if (posInterf == -1) {
+					net.i2cat.mantychore.network.model.topology.Interface interf = createInterface(interfaceId.getResource());
+					existingInterfaces.add(interf);
+					posInterf = existingInterfaces.size() - 1;
+				}
 				net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
 						.get(posInterf);
 				interfaces.add(sourceInterf);
@@ -125,6 +129,12 @@ public class NetworkMapperDescriptorToModel {
 		networkModel.setNetworkElements(networkElems);
 
 		return networkModel;
+	}
+
+	private static net.i2cat.mantychore.network.model.topology.Interface createInterface(String name) {
+		net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
+		newInterf.setName(cleanName(name));
+		return newInterf;
 	}
 
 	private static int getInterface(String name, List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> listInterfaces) {

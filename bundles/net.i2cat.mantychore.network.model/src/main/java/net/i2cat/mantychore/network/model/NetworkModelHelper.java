@@ -101,6 +101,26 @@ public class NetworkModelHelper {
 		return toReturn;
 	}
 
+	public static List<Interface> getInterfaces(List<NetworkElement> networkElements) {
+		List<Interface> toReturn = new ArrayList<Interface>();
+		for (NetworkElement elem : networkElements) {
+			if (elem instanceof Interface) {
+				toReturn.add((Interface) elem);
+			}
+		}
+		return toReturn;
+	}
+
+	public static int getNetworkElementByName(String name, List<NetworkElement> networkElements) {
+		int pos = 0;
+		for (NetworkElement networkElement : networkElements) {
+			if (networkElement.getName().equals(name))
+				return pos;
+			pos++;
+		}
+		return -1;
+	}
+
 	public static Link linkInterfaces(Interface src, Interface dst, boolean bidiLink) {
 		Link link = new Link();
 		link.setSource(src);

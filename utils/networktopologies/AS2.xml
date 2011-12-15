@@ -47,6 +47,10 @@
         <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
 </ndl:Interface>
 
+<ndl:Interface rdf:about="#router:R-AS2-1:lo0.1">
+        <ndl:name>router:R-AS2-1:lo0.1</ndl:name>
+</ndl:Interface>
+
 <ndl:Interface rdf:about="#router:R-AS2-2:lt-1/2/0.101">
         <ndl:name>router:R-AS2-2:lt-1/2/0.101</ndl:name>
         <ndl:linkTo rdf:resource="#router:R-AS2-1:lt-1/2/0.100"/>
@@ -59,10 +63,18 @@
         <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
 </ndl:Interface>
 
+<ndl:Interface rdf:about="#router:R-AS2-2:lo0.3">
+        <ndl:name>router:R-AS2-2:lo0.3</ndl:name>
+</ndl:Interface>
+
 <ndl:Interface rdf:about="#router:R-AS2-3:lt-1/2/0.103">
         <ndl:name>router:R-AS2-3:lt-1/2/0.103</ndl:name>
         <ndl:linkTo rdf:resource="#router:R-AS2-2:lt-1/2/0.102"/> 
         <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-3:lo0.4">
+        <ndl:name>router:R-AS2-3:lo0.4</ndl:name>
 </ndl:Interface>
 
 </rdf:RDF>
