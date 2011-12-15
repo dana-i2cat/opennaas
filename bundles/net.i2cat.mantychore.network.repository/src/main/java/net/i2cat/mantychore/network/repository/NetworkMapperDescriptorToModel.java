@@ -22,6 +22,7 @@ public class NetworkMapperDescriptorToModel {
 		List<net.i2cat.mantychore.network.model.topology.Device> existingDevices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
 		List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> existingInterfaces = new ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
 		List<net.i2cat.mantychore.network.model.topology.Link> existingLinks = new ArrayList<net.i2cat.mantychore.network.model.topology.Link>();
+		List<net.i2cat.mantychore.network.model.domain.NetworkDomain> existingDomains = new ArrayList<net.i2cat.mantychore.network.model.domain.NetworkDomain>();
 
 		/* set interfaces */
 		for (Interface interf : networkTopology.getInterfaces()) {
@@ -32,8 +33,12 @@ public class NetworkMapperDescriptorToModel {
 
 		/* set links */
 		for (Interface interf : networkTopology.getInterfaces()) {
-			String nameSource = interf.getName();
-			String nameTarget = interf.getLinkTo().getName();
+			// check if it exists a link
+			if (interf.getLinkTo() == null)
+				continue;
+
+			String nameSource = cleanName(interf.getName());
+			String nameTarget = cleanName(interf.getLinkTo().getName());
 
 			int sourcePosInterf = getInterface(nameSource, existingInterfaces);
 			if (sourcePosInterf == -1)
@@ -42,18 +47,33 @@ public class NetworkMapperDescriptorToModel {
 					.get(sourcePosInterf);
 
 			int targetPosInterf = getInterface(nameTarget, existingInterfaces);
+
+			// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
+			// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
+			// If the interface doesn't exist, This interface can reference to an external interface in other network domain
 			if (targetPosInterf == -1)
-				throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameTarget);
+				continue;
+
+			// if (targetPosInterf == -1)
+			// throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameTarget);
+
 			net.i2cat.mantychore.network.model.topology.Interface targetInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
 					.get(targetPosInterf);
 
-			if (sourceInterf.getLinkTo() == null) {
+			// If it is the first relation
+
+			if (targetInterf.getLinkTo() == null) {
+				// It is the first interface, you have to create the link
 				net.i2cat.mantychore.network.model.topology.Link linkModel = new net.i2cat.mantychore.network.model.topology.Link();
 				linkModel.setSource(sourceInterf);
 				linkModel.setSink(targetInterf);
 				linkModel.setBidirectional(false);
 				sourceInterf.setLinkTo(linkModel);
+				targetInterf.setLinkTo(linkModel);
+				// adding links
+				existingLinks.add(linkModel);
 			} else {
+				// The two interfaces have a link each other. The link is bidirectional
 				sourceInterf.getLinkTo().setBidirectional(true);
 			}
 
@@ -67,6 +87,11 @@ public class NetworkMapperDescriptorToModel {
 			List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> interfaces = new ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
 			for (InterfaceId interfaceId : device.getHasInterfaces()) {
 				int posInterf = getInterface(interfaceId.getResource(), existingInterfaces);
+
+				// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
+				// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
+				if (posInterf == -1)
+					continue;
 				net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
 						.get(posInterf);
 				interfaces.add(sourceInterf);
@@ -76,7 +101,6 @@ public class NetworkMapperDescriptorToModel {
 		}
 
 		/* add devices in networkDomain */
-		List<NetworkElement> networkDomains = new ArrayList<NetworkElement>();
 		for (NetworkDomain networkDomainModel : networkTopology.getNetworkDomains()) {
 			net.i2cat.mantychore.network.model.domain.NetworkDomain networkDomain = new net.i2cat.mantychore.network.model.domain.NetworkDomain();
 			List<net.i2cat.mantychore.network.model.topology.Device> devices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
@@ -90,13 +114,14 @@ public class NetworkMapperDescriptorToModel {
 
 			}
 			networkDomain.setHasDevice(devices);
-			networkDomains.add(networkDomain);
+			existingDomains.add(networkDomain);
 		}
 
 		List<NetworkElement> networkElems = new ArrayList<NetworkElement>();
 		networkElems.addAll(existingLinks);
 		networkElems.addAll(existingInterfaces);
 		networkElems.addAll(existingDevices);
+		networkElems.addAll(existingDomains);
 		networkModel.setNetworkElements(networkElems);
 
 		return networkModel;
@@ -127,11 +152,15 @@ public class NetworkMapperDescriptorToModel {
 	}
 
 	private static String cleanName(String name) {
-		String formattedName = "";
 		if (name.startsWith("#")) {
-			formattedName = name.replaceFirst("#", "");
+			int lastIndex = name.lastIndexOf("#");
+			if (lastIndex != -1) {
+				return name.substring(lastIndex + 1);
+
+			}
 		}
-		return formattedName;
+		return name;
+
 	}
 
 }
