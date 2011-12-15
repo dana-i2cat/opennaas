@@ -24,6 +24,12 @@
 			<artifactId>opennaas-core-resources</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<!-- FIXME remove when toNDL is in IModel instead of in ManagedElement -->
+		<dependency>
+			<groupId>net.i2cat.mantychore.network</groupId>
+			<artifactId>net.i2cat.mantychore.network.model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

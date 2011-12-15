@@ -1,11 +1,11 @@
 package net.i2cat.mantychore.network.model.topology;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Device extends NetworkElement {
-	
-	
-	List<ConnectionPoint> interfaces;
+
+	List<ConnectionPoint>	interfaces	= new ArrayList<ConnectionPoint>();
 
 	public List<ConnectionPoint> getInterfaces() {
 		return interfaces;

@@ -1,27 +1,23 @@
 package net.i2cat.mantychore.network.model.topology;
 
-import java.util.List;
 
 /**
- * A configured interface. Thus an entity that can transport data at a given layer. 
+ * A configured interface. Thus an entity that can transport data at a given layer.
  * 
  * @author isart
- *
+ * 
  */
 public class Interface extends ConnectionPoint {
-	
-	
-	Device device;
-	
-	
-	Link linkTo;
-	CrossConnect switchedTo;
 
-	
+	Device			device;
+
+	Link			linkTo;
+	CrossConnect	switchedTo;
+
 	/**
-	 *  end-to-end path
+	 * end-to-end path
 	 */
-	Path connectedTo;
+	Path			connectedTo;
 
 	public Device getDevice() {
 		return device;
@@ -30,7 +26,6 @@ public class Interface extends ConnectionPoint {
 	public void setDevice(Device device) {
 		this.device = device;
 	}
-
 
 	public Path getConnectedTo() {
 		return connectedTo;

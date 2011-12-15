@@ -7,6 +7,7 @@ import net.i2cat.mantychore.network.model.domain.NetworkDomain;
 import net.i2cat.mantychore.network.model.layer.Layer;
 import net.i2cat.mantychore.network.model.topology.ConnectionPoint;
 import net.i2cat.mantychore.network.model.topology.Device;
+import net.i2cat.mantychore.network.model.topology.Interface;
 import net.i2cat.mantychore.network.model.topology.Link;
 import net.i2cat.mantychore.network.model.topology.NetworkElement;
 import net.i2cat.mantychore.network.model.topology.TransportNetworkElement;
@@ -98,6 +99,21 @@ public class NetworkModelHelper {
 			}
 		}
 		return toReturn;
+	}
+
+	public static Link linkInterfaces(Interface src, Interface dst, boolean bidiLink) {
+		Link link = new Link();
+		link.setSource(src);
+		link.setSink(dst);
+		link.setBidirectional(bidiLink);
+
+		link.setLayer(src.getLayer());
+
+		src.setLinkTo(link);
+		if (bidiLink) {
+			dst.setLinkTo(link);
+		}
+		return link;
 	}
 
 }

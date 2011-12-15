@@ -1,5 +1,6 @@
 package net.i2cat.mantychore.network.model.topology;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.network.model.domain.AdministrativeDomain;
@@ -9,14 +10,14 @@ import net.i2cat.mantychore.network.model.physical.Location;
  * A network element is an abstract class which describe an elements in a computer network.
  * 
  * @author isart
- *
+ * 
  */
 public abstract class NetworkElement {
-	String name; 
-	
-	Location LocatedAt;
-	
-	List<AdministrativeDomain> inAdminDomains;
+	String						name;
+
+	Location					locatedAt;
+
+	List<AdministrativeDomain>	inAdminDomains	= new ArrayList<AdministrativeDomain>();
 
 	public List<AdministrativeDomain> getInAdminDomains() {
 		return inAdminDomains;
@@ -35,10 +36,10 @@ public abstract class NetworkElement {
 	}
 
 	public Location getLocatedAt() {
-		return LocatedAt;
+		return locatedAt;
 	}
 
 	public void setLocatedAt(Location locatedAt) {
-		LocatedAt = locatedAt;
+		this.locatedAt = locatedAt;
 	}
 }
