@@ -11,6 +11,8 @@
 		<class>org.opennaas.core.resources.descriptor.network.Link</class>
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
+		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>		
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>		
 				
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
@@ -36,6 +38,8 @@
 		<class>org.opennaas.core.resources.descriptor.network.Link</class>
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
+		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>		
+		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>	
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>				
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>

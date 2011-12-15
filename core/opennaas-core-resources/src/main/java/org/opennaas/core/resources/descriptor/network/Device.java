@@ -38,6 +38,7 @@ public class Device {
 	public List<InterfaceId> getHasInterfaces() {
 		return hasInterfaces;
 	}
+	
 	public void setHasInterfaces(List<InterfaceId> hasInterfaces) {
 		this.hasInterfaces = hasInterfaces;
 	}

@@ -1,7 +1,6 @@
 package org.opennaas.core.resources.tests.network.ndl;
 
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
 import org.xml.sax.SAXException;
 
 public class DummyParserTest {
@@ -43,7 +43,7 @@ public class DummyParserTest {
 	public void javaToNDLTest() {
 		try {
 		String filePath = "target/test1.xml";
-		NetworkTopology mockRDF = MockNetworkDescriptor.newNDLNetworkDescriptor();		
+		NetworkTopology mockRDF = MockNetworkDescriptor.newSimpleNDLNetworkDescriptor();		
 			addNetworkDescriptor(mockRDF,filePath);
 		} catch (IOException e) {
 			log.error(e.getMessage());
@@ -53,6 +53,20 @@ public class DummyParserTest {
 		
 	}
 	
+	
+	@Test
+	public void NDLToJavaTestWithDiffLayers ()  {
+		String filePath = "network/network_diffs_layer.xml";
+		
+		try {
+			NetworkTopology exampleDescriptor = getNetworkDescriptor(filePath);
+			log.info(exampleDescriptor.toString());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			log.error(e.getMessage(),e.getCause());
+		}
+	}
+
 	
 	
 	
