@@ -1,0 +1,22 @@
+shell:echo Script to test adding a resource to a network
+
+#Creating and initializing a router
+resource:create /home/isart/Escriptori/mantychoreTestDescriptors/junos20.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+#Creating and initializing a network
+resource:create /home/isart/workspace/manticore/trunk/utils/basicNetwork.descriptor
+resource:start network:basicNet1
+
+#Adding the router to network
+net:addResource network:basicNet1 router:junos20
+
+shell:echo CHECK RESOURCE IS IN NETWORK
+net:listResources network:basicNet1
+
+#Cleaning
+resource:stop network:basicNet1
+resource:remove network:basicNet1
+resource:stop router:junos20
+resource:remove router:junos20

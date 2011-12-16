@@ -22,9 +22,9 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 	@Argument(index = 1, name = "interface", description = "The interface whose description is set.", required = true, multiValued = false)
 	private String	subinterface;
-	
+
 	@Argument(index = 2, name = "description", description = "Description of the interface.", required = true, multiValued = false)
-	private String	description = "";
+	private String	description	= "";
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -72,13 +72,12 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
-	
+
 	private LogicalPort prepareParams() {
 		String[] args = subinterface.split("\\.");
-		
+
 		LogicalPort port;
-		if (args.length > 1 ) {
+		if (args.length > 1) {
 			// it's a subinterface
 			EthernetPort eth = new EthernetPort();
 			eth.setName(args[0]);
@@ -90,7 +89,7 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 			port.setName(args[0]);
 			port.setDescription(description);
 		}
-		
+
 		return port;
 	}
 }

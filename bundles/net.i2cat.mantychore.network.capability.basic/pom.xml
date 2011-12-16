@@ -28,6 +28,12 @@
 			<artifactId>net.i2cat.mantychore.network.model</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<!-- FIXME remove when Model2NdlMapper is in IModel instead of mantychore.model -->
+		<dependency>
+			<groupId>net.i2cat.mantychore.model</groupId>
+			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<resources>

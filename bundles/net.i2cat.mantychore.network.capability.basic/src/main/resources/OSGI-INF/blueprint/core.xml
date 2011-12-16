@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!-- Factory that creates protocol capabilities -->
+	<bean id="networkBasicCapabilityFactory" class="net.i2cat.mantychore.network.capability.basic.NetworkBasicCapabilityFactory">
+		<property name="type" value="basicNetwork"/>
+	</bean>
+	<!-- Register the Service as an OSGi Service -->
+	<service ref="networkBasicCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<!--  TODO it is necessary to use two parameters to get capability -->
+			<entry key="capability" value="basicNetwork"/>
+		</service-properties>
+	</service>
+	<!-- Command completers -->
+	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.network.capability.basic.shell.completers.ResourceNameCompleter"/>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="net/listResources">
+			<action class="net.i2cat.mantychore.network.capability.basic.shell.ListResourcesCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="net/addResource">
+			<action class="net.i2cat.mantychore.network.capability.basic.shell.AddResourceToNetworkCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+	</command-bundle>
+</blueprint>
