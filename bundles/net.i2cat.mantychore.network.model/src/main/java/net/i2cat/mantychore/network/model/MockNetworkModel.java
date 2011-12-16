@@ -29,10 +29,11 @@ public class MockNetworkModel {
 
 		List<NetworkElement> listDomains = new ArrayList<NetworkElement>();
 		NetworkDomain networkDomain = new NetworkDomain();
+		networkDomain.setName("AS1");
 		List<Device> hasDevice = new ArrayList<Device>();
-		hasDevice.add((Device) networkElements.get(8));
 		hasDevice.add((Device) networkElements.get(9));
 		hasDevice.add((Device) networkElements.get(10));
+		hasDevice.add((Device) networkElements.get(11));
 		networkDomain.setHasDevice(hasDevice);
 		listDomains.add(networkDomain);
 		networkElements.addAll(listDomains);
@@ -49,6 +50,7 @@ public class MockNetworkModel {
 		interfaces.add((ConnectionPoint) networkElements.get(1));
 		interfaces.add((ConnectionPoint) networkElements.get(2));
 		device.setInterfaces(interfaces);
+		listDevices.add(device);
 
 		Device device2 = createDevice("#router:R-AS2-2");
 		List<ConnectionPoint> interfaces2 = new ArrayList<ConnectionPoint>();
@@ -56,12 +58,14 @@ public class MockNetworkModel {
 		interfaces2.add((ConnectionPoint) networkElements.get(4));
 		interfaces2.add((ConnectionPoint) networkElements.get(5));
 		device2.setInterfaces(interfaces2);
+		listDevices.add(device2);
 
-		Device device3 = createDevice("#router:R-AS2-2");
+		Device device3 = createDevice("#router:R-AS2-3");
 		List<ConnectionPoint> interfaces3 = new ArrayList<ConnectionPoint>();
 		interfaces3.add((ConnectionPoint) networkElements.get(6));
 		interfaces3.add((ConnectionPoint) networkElements.get(7));
 		device3.setInterfaces(interfaces3);
+		listDevices.add(device3);
 
 		networkElements.addAll(listDevices);
 		return networkElements;
@@ -79,6 +83,9 @@ public class MockNetworkModel {
 		listInterfaces.add(createInterface("#router:R-AS2-3:lt-1/2/0.103"));
 		listInterfaces.add(createInterface("#router:R-AS2-3:lo0.4"));
 
+		/* external network */
+		listInterfaces.add(createInterface("#router:R1:lt-1/2/0.50"));
+
 		networkElements.addAll(listInterfaces);
 		return networkElements;
 	}
@@ -89,6 +96,7 @@ public class MockNetworkModel {
 		/* link interfs 51-exterior */
 		Link link = new Link();
 		link.setSource((Interface) networkElements.get(0));
+		link.setSink((Interface) networkElements.get(8));
 		link.setBidirectional(false);
 
 		((Interface) networkElements.get(0)).setLinkTo(link);
@@ -97,7 +105,7 @@ public class MockNetworkModel {
 		/* link interfs 100-101 */
 		Link link2 = new Link();
 		link2.setSource((Interface) networkElements.get(1));
-		link2.setSource((Interface) networkElements.get(4));
+		link2.setSink((Interface) networkElements.get(4));
 		link2.setBidirectional(true);
 		((Interface) networkElements.get(1)).setLinkTo(link2);
 		((Interface) networkElements.get(4)).setLinkTo(link2);
@@ -106,7 +114,7 @@ public class MockNetworkModel {
 		/* link interfs 102-103 */
 		Link link3 = new Link();
 		link3.setSource((Interface) networkElements.get(3));
-		link3.setSource((Interface) networkElements.get(6));
+		link3.setSink((Interface) networkElements.get(6));
 		link3.setBidirectional(true);
 		((Interface) networkElements.get(3)).setLinkTo(link3);
 		((Interface) networkElements.get(6)).setLinkTo(link3);
