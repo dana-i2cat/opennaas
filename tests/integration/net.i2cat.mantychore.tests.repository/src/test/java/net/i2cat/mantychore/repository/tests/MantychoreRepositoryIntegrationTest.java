@@ -9,6 +9,17 @@ import java.util.List;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.System;
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.nexus.tests.ResourceHelper;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
@@ -26,17 +37,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-import net.i2cat.nexus.tests.ResourceHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -152,9 +152,10 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertTrue(resourceManager.listResources().isEmpty());
 
 		} catch (Exception e) {
-			clearRepo();
 			log.error("Exception!! ", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 
 	}
@@ -219,9 +220,47 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			Assert.assertFalse(exist);
 
 		} catch (Exception e) {
-			clearRepo();
 			log.error("Exception!! ", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
+		}
+
+	}
+
+	@Test
+	public void startedResourceModelHasNameTest() {
+
+		clearRepo();
+
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
+		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		capabilityDescriptors.add(ResourceHelper.newChassisCapabilityDescriptor());
+		capabilityDescriptors.add(ResourceHelper.newQueueCapabilityDescriptor());
+
+		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
+
+		try {
+
+			/* create resource */
+			IResource resource = resourceManager.createResource(resourceDescriptor);
+			Assert.assertFalse(resourceManager.listResources().isEmpty());
+
+			createProtocolForResource(resource.getResourceIdentifier().getId());
+
+			/* start resource */
+			resourceManager.startResource(resource.getResourceIdentifier());
+			Assert.assertFalse(resource.getCapabilities().isEmpty());
+			Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
+
+			Assert.assertTrue(resource.getModel() instanceof ComputerSystem);
+			Assert.assertNotNull(((ComputerSystem) resource.getModel()).getName());
+
+		} catch (Exception e) {
+			log.error("Exception!! ", e);
+			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 
 	}
@@ -274,9 +313,10 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			resourceManager.removeResource(resource.getResourceIdentifier());
 
 		} catch (Exception e) {
-			clearRepo();
 			log.error("Exception!!", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 
 	}
@@ -311,9 +351,10 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 				checkUpdatedExistLogicalResourcesTest(resourceManager, resource, bundleContext);
 
 		} catch (Exception e) {
-			clearRepo();
 			log.error("Exception!!", e);
 			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
 		}
 
 	}
