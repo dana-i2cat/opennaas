@@ -6,7 +6,6 @@ import java.util.List;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.System;
@@ -35,8 +34,8 @@ public class Cim2NdlMapper {
 	 * @return NetworkElements created to represent given model in networkModel.
 	 */
 	public static List<NetworkElement> addModelToNetworkModel(IModel model, NetworkModel networkModel) {
-		if (model instanceof ManagedElement) {
-			return addManagedElementToNetworkModel((ManagedElement) model, networkModel);
+		if (model instanceof System) {
+			return addManagedElementToNetworkModel((System) model, networkModel);
 		}
 		return new ArrayList<NetworkElement>();
 	}
@@ -48,25 +47,23 @@ public class Cim2NdlMapper {
 	 * @param networkModel
 	 * @return NetworkElements created to represent given managedElement in networkModel.
 	 */
-	private static List<NetworkElement> addManagedElementToNetworkModel(ManagedElement managedElement, NetworkModel networkModel) {
+	private static List<NetworkElement> addManagedElementToNetworkModel(System managedElement, NetworkModel networkModel) {
 
 		List<NetworkElement> createdElements = new ArrayList<NetworkElement>();
 
-		if (managedElement instanceof System) {
+		// create device
+		Device dev = addDeviceToNetworkModel(managedElement, networkModel);
 
-			// create device
-			Device dev = addDeviceToNetworkModel(managedElement, networkModel);
+		// create interfaces
+		List<Interface> interfaces = addInterfacesToNetworkModel(managedElement, dev, networkModel);
 
-			// create interfaces
-			List<Interface> interfaces = addInterfacesToNetworkModel(managedElement, dev, networkModel);
+		// create links
+		List<Link> links = addLTLinksToNetworkModel(managedElement, interfaces, networkModel);
 
-			// create links
-			List<Link> links = addLTLinksToNetworkModel(managedElement, interfaces, networkModel);
+		createdElements.add(dev);
+		createdElements.addAll(interfaces);
+		createdElements.addAll(links);
 
-			createdElements.add(dev);
-			createdElements.addAll(interfaces);
-			createdElements.addAll(links);
-		}
 		return createdElements;
 	}
 
@@ -78,9 +75,9 @@ public class Cim2NdlMapper {
 	 * @param networkModel
 	 * @return Created Device.
 	 */
-	private static Device addDeviceToNetworkModel(ManagedElement managedElement, NetworkModel networkModel) {
+	private static Device addDeviceToNetworkModel(System managedElement, NetworkModel networkModel) {
 		Device dev = new Device();
-		dev.setName(managedElement.getElementName());
+		dev.setName(managedElement.getName());
 		networkModel.getNetworkElements().add(dev);
 
 		return dev;
@@ -94,11 +91,11 @@ public class Cim2NdlMapper {
 	 * @param networkModel
 	 * @return Created interfaces.
 	 */
-	private static List<Interface> addInterfacesToNetworkModel(ManagedElement managedElement, Device dev, NetworkModel networkModel) {
+	private static List<Interface> addInterfacesToNetworkModel(System managedElement, Device dev, NetworkModel networkModel) {
 
 		List<Interface> interfaces = new ArrayList<Interface>();
 
-		for (NetworkPort port : ModelHelper.getInterfaces((System) managedElement)) {
+		for (NetworkPort port : ModelHelper.getInterfaces(managedElement)) {
 			Interface topIface = generateInterfaceBasedOnPortType(port, dev, networkModel);
 			interfaces.add(topIface);
 
@@ -196,12 +193,12 @@ public class Cim2NdlMapper {
 	 * @param networkModel
 	 * @return Created links.
 	 */
-	private static List<Link> addLTLinksToNetworkModel(ManagedElement managedElement, List<Interface> interfaces, NetworkModel networkModel) {
+	private static List<Link> addLTLinksToNetworkModel(System managedElement, List<Interface> interfaces, NetworkModel networkModel) {
 
 		List<LogicalTunnelPort> linkedPorts = new ArrayList<LogicalTunnelPort>();
 		List<Link> links = new ArrayList<Link>();
 
-		for (NetworkPort port : ModelHelper.getInterfaces((System) managedElement)) {
+		for (NetworkPort port : ModelHelper.getInterfaces((managedElement))) {
 			if (port instanceof LogicalTunnelPort) {
 				// avoid duplicating links
 				if (!linkedPorts.contains((LogicalTunnelPort) port)) {
@@ -210,7 +207,7 @@ public class Cim2NdlMapper {
 					LogicalTunnelPort srcPort = (LogicalTunnelPort) port;
 					LogicalTunnelPort dstPort = null;
 					long dstPortUnit = srcPort.getPeer_unit();
-					for (NetworkPort otherPort : ModelHelper.getInterfaces((System) managedElement)) {
+					for (NetworkPort otherPort : ModelHelper.getInterfaces(managedElement)) {
 						if (otherPort instanceof LogicalTunnelPort) {
 							if (otherPort.getPortNumber() == (int) dstPortUnit) {
 								dstPort = (LogicalTunnelPort) otherPort;

@@ -221,7 +221,7 @@ public class Cim2NdlMapperTest {
 	private ManagedElement createTestRouterModel() {
 
 		ComputerSystem router = new ComputerSystem();
-		router.setElementName("TestRouter");
+		router.setName("TestRouter");
 		router.setDescription("Router for testing cim2NdlMapper");
 
 		EthernetPort ethPort = new EthernetPort();
