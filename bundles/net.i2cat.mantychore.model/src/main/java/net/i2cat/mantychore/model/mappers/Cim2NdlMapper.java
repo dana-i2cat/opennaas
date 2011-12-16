@@ -219,31 +219,33 @@ public class Cim2NdlMapper {
 						}
 					}
 
-					// get interfaces matching them
-					Interface srcIface = null;
-					Interface dstIface = null;
-					for (Interface anIface : interfaces) {
-						if (anIface.getName().equals(srcPort.getName() + "." + srcPort.getPortNumber())) {
-							srcIface = anIface;
+					if (dstPort != null) {
+						// get interfaces matching lt endpoints
+						Interface srcIface = null;
+						Interface dstIface = null;
+						for (Interface anIface : interfaces) {
+							if (anIface.getName().equals(srcPort.getName() + "." + srcPort.getPortNumber())) {
+								srcIface = anIface;
 
-							// get interface connected to srcIface
-							for (Interface otherIface : interfaces) {
-								if (otherIface.getName().equals(dstPort.getName() + "." + dstPort.getPortNumber())) {
-									if (otherIface.getLayer().equals(srcIface.getLayer())) {
-										dstIface = otherIface;
-										break;
+								// get interface connected to srcIface
+								for (Interface otherIface : interfaces) {
+									if (otherIface.getName().equals(dstPort.getName() + "." + dstPort.getPortNumber())) {
+										if (otherIface.getLayer().equals(srcIface.getLayer())) {
+											dstIface = otherIface;
+											break;
+										}
 									}
 								}
-							}
-							if (dstIface != null) {
-								Link link = NetworkModelHelper.linkInterfaces(srcIface, dstIface, true);
-								networkModel.getNetworkElements().add(link);
+								if (dstIface != null) {
+									Link link = NetworkModelHelper.linkInterfaces(srcIface, dstIface, true);
+									networkModel.getNetworkElements().add(link);
 
-								links.add(link);
+									links.add(link);
 
-								// avoid duplicating links
-								linkedPorts.add(srcPort);
-								linkedPorts.add(dstPort);
+									// avoid duplicating links
+									linkedPorts.add(srcPort);
+									linkedPorts.add(dstPort);
+								}
 							}
 						}
 					}
