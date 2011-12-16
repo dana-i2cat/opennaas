@@ -3,6 +3,7 @@ package net.i2cat.mantychore.network.capability.basic.shell;
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.mappers.Cim2NdlMapper;
 import net.i2cat.mantychore.network.model.NetworkModel;
+import net.i2cat.mantychore.network.repository.NetworkMapperModelToDescriptor;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -10,6 +11,7 @@ import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "net", name = "addResource", description = "Add a resource to the network")
@@ -56,6 +58,8 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
 		if (resourceModel instanceof ManagedElement) {
 			Cim2NdlMapper.addModelToNetworkModel(resource.getModel(), networkModel);
+			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
+			network.getResourceDescriptor().setNetworkTopology(topology);
 		}
 		printEndCommand();
 		return null;
