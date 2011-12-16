@@ -5,236 +5,197 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class FilterEntryBase as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * FilterEntryBaseBean Interface. The CIM class FilterEntryBase is described 
- * as follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FilterEntryBase as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the FilterEntryBaseBean Interface. The CIM class FilterEntryBase is described as
+ * follows:
  * 
- * A FilterList aggregates instances of (subclasses of) FilterEntryBase via 
- * the aggregation EntriesInFilterList. The filter entries are always ANDed 
- * together when grouped by the FilterList. Note that it is possible to 
- * aggregate different types of filters into a single FilterList - for 
- * example, packet header filters (represented by the IpHeadersFilter class) 
- * and IPsec security filters. A FilterList is weak to the network device 
- * (e.g., the ComputerSystem) that contains it. Hence, the ComputerSystem 
- * keys are propagated to this class. 
+ * A FilterList aggregates instances of (subclasses of) FilterEntryBase via the aggregation EntriesInFilterList. The filter entries are always ANDed
+ * together when grouped by the FilterList. Note that it is possible to aggregate different types of filters into a single FilterList - for example,
+ * packet header filters (represented by the IpHeadersFilter class) and IPsec security filters. A FilterList is weak to the network device (e.g., the
+ * ComputerSystem) that contains it. Hence, the ComputerSystem keys are propagated to this class.
  */
-public class FilterEntryBase extends LogicalElement implements Serializable 
-    {
+public class FilterEntryBase extends LogicalElement implements Serializable {
 
-    /**
-     * This constructor creates a FilterEntryBaseBeanImpl Class which 
-     * implements the FilterEntryBaseBean Interface, and encapsulates the CIM 
-     * class FilterEntryBase in a Java Bean. The CIM class FilterEntryBase is 
-     * described as follows: 
-     * 
-     * A FilterList aggregates instances of (subclasses of) FilterEntryBase 
-     * via the aggregation EntriesInFilterList. The filter entries are always 
-     * ANDed together when grouped by the FilterList. Note that it is 
-     * possible to aggregate different types of filters into a single 
-     * FilterList - for example, packet header filters (represented by the 
-     * IpHeadersFilter class) and IPsec security filters. A FilterList is 
-     * weak to the network device (e.g., the ComputerSystem) that contains 
-     * it. Hence, the ComputerSystem keys are propagated to this class. 
-     */
-    protected FilterEntryBase(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemCreationClassName. 
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the FilterEntryBase.systemCreationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * The scoping ComputerSystem's CreationClassName.
-     * 
-     * @return	String	current systemCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a FilterEntryBaseBeanImpl Class which implements the FilterEntryBaseBean Interface, and encapsulates the CIM class
+	 * FilterEntryBase in a Java Bean. The CIM class FilterEntryBase is described as follows:
+	 * 
+	 * A FilterList aggregates instances of (subclasses of) FilterEntryBase via the aggregation EntriesInFilterList. The filter entries are always
+	 * ANDed together when grouped by the FilterList. Note that it is possible to aggregate different types of filters into a single FilterList - for
+	 * example, packet header filters (represented by the IpHeadersFilter class) and IPsec security filters. A FilterList is weak to the network
+	 * device (e.g., the ComputerSystem) that contains it. Hence, the ComputerSystem keys are propagated to this class.
+	 */
+	protected FilterEntryBase() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the FilterEntryBase.systemCreationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping ComputerSystem's CreationClassName.
-     * 
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the FilterEntryBase.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping ComputerSystem's CreationClassName.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the FilterEntryBase.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping ComputerSystem's CreationClassName.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemName. 
-     */
-    private String systemName;
-    /**
-     * This method returns the FilterEntryBase.systemName property value. This 
-     * property is described as follows: 
-     * 
-     * The scoping ComputerSystem's Name.
-     * 
-     * @return	String	current systemName property value
-     * @exception	Exception	
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the FilterEntryBase.systemName property value. This 
-     * property is described as follows: 
-     * 
-     * The scoping ComputerSystem's Name.
-     * 
-     * @param	String	new systemName property value
-     * @exception	Exception	
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the FilterEntryBase.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping ComputerSystem's Name.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the FilterEntryBase.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping ComputerSystem's Name.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property creationClassName. 
-     */
-    private String creationClassName;
-    /**
-     * This method returns the FilterEntryBase.creationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current creationClassName property value
-     * @exception	Exception	
-     */
-    public String getCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the FilterEntryBase.creationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new creationClassName property value
-     * @exception	Exception	
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the FilterEntryBase.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the FilterEntryBase.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property name. 
-     */
-    private String name;
-    /**
-     * This method returns the FilterEntryBase.name property value. This 
-     * property is described as follows: 
-     * 
-     * The Name property defines the label by which the Filter Entry is known 
-     * and uniquely identified. 
-     * 
-     * @return	String	current name property value
-     * @exception	Exception	
-     */
-    @Override
-	public String getName(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.name;
-    } // getName
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values
+	// * qualified property name.
+	// */
+	// private String name;
+	/**
+	 * This method returns the FilterEntryBase.name property value. This property is described as follows:
+	 * 
+	 * The Name property defines the label by which the Filter Entry is known and uniquely identified.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Override
+	public String getName() {
+		return super.getName();
+	} // getName
 
-    /**
-     * This method sets the FilterEntryBase.name property value. This property 
-     * is described as follows: 
-     * 
-     * The Name property defines the label by which the Filter Entry is known 
-     * and uniquely identified. 
-     * 
-     * @param	String	new name property value
-     * @exception	Exception	
-     */
-    @Override
+	/**
+	 * This method sets the FilterEntryBase.name property value. This property is described as follows:
+	 * 
+	 * The Name property defines the label by which the Filter Entry is known and uniquely identified.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setName(String name) {
+		super.setName(name);
+	} // setName
 
-    this.name = name;
-    } // setName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property isNegated.
+	 */
+	private boolean	isNegated;
 
+	/**
+	 * This method returns the FilterEntryBase.isNegated property value. This property is described as follows:
+	 * 
+	 * Boolean indicating that the match condition described in the properties of the FilterEntryBase subclass should be negated. This property is
+	 * defined for ease of use when filtering on simple negations - for example, to select all source ports except 162. It is not recommended that
+	 * this Boolean be set to True when filtering on multiple criteria, such as defining an IPHeadersFilter based on source/destination addresses,
+	 * ports, and DiffServ Code Points.
+	 * 
+	 * @return boolean current isNegated property value
+	 * @exception Exception
+	 */
+	public boolean isIsNegated() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property isNegated. 
-     */
-    private boolean isNegated;
-    /**
-     * This method returns the FilterEntryBase.isNegated property value. This 
-     * property is described as follows: 
-     * 
-     * Boolean indicating that the match condition described in the properties 
-     * of the FilterEntryBase subclass should be negated. This property is 
-     * defined for ease of use when filtering on simple negations - for 
-     * example, to select all source ports except 162. It is not recommended 
-     * that this Boolean be set to True when filtering on multiple criteria, 
-     * such as defining an IPHeadersFilter based on source/destination 
-     * addresses, ports, and DiffServ Code Points. 
-     * 
-     * @return	boolean	current isNegated property value
-     * @exception	Exception	
-     */
-    public boolean isIsNegated(){
+		return this.isNegated;
+	} // getIsNegated
 
-    return this.isNegated;
-    } // getIsNegated
+	/**
+	 * This method sets the FilterEntryBase.isNegated property value. This property is described as follows:
+	 * 
+	 * Boolean indicating that the match condition described in the properties of the FilterEntryBase subclass should be negated. This property is
+	 * defined for ease of use when filtering on simple negations - for example, to select all source ports except 162. It is not recommended that
+	 * this Boolean be set to True when filtering on multiple criteria, such as defining an IPHeadersFilter based on source/destination addresses,
+	 * ports, and DiffServ Code Points.
+	 * 
+	 * @param boolean new isNegated property value
+	 * @exception Exception
+	 */
+	public void setIsNegated(boolean isNegated) {
 
-    /**
-     * This method sets the FilterEntryBase.isNegated property value. This 
-     * property is described as follows: 
-     * 
-     * Boolean indicating that the match condition described in the properties 
-     * of the FilterEntryBase subclass should be negated. This property is 
-     * defined for ease of use when filtering on simple negations - for 
-     * example, to select all source ports except 162. It is not recommended 
-     * that this Boolean be set to True when filtering on multiple criteria, 
-     * such as defining an IPHeadersFilter based on source/destination 
-     * addresses, ports, and DiffServ Code Points. 
-     * 
-     * @param	boolean	new isNegated property value
-     * @exception	Exception	
-     */
-    public void setIsNegated(boolean isNegated) {
-
-    this.isNegated = isNegated;
-    } // setIsNegated
-
-
+		this.isNegated = isNegated;
+	} // setIsNegated
 
 } // Class FilterEntryBase

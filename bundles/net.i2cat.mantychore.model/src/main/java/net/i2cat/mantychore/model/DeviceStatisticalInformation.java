@@ -5,252 +5,219 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class DeviceStatisticalInformation as well as methods 
- * comparable to the invokeMethods defined for this class. This Class 
- * implements the DeviceStatisticalInformationBean Interface. The CIM class 
- * DeviceStatisticalInformation is described as follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DeviceStatisticalInformation as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the DeviceStatisticalInformationBean Interface. The CIM class
+ * DeviceStatisticalInformation is described as follows:
  * 
- * Statistical information associated with a LogicalDevice or one of its 
- * subclasses. 
+ * Statistical information associated with a LogicalDevice or one of its subclasses.
  */
-public class DeviceStatisticalInformation extends StatisticalInformation 
-    implements Serializable {
+public class DeviceStatisticalInformation extends StatisticalInformation
+		implements Serializable {
 
-    /**
-     * This constructor creates a DeviceStatisticalInformationBeanImpl Class 
-     * which implements the DeviceStatisticalInformationBean Interface, and 
-     * encapsulates the CIM class DeviceStatisticalInformation in a Java 
-     * Bean. The CIM class DeviceStatisticalInformation is described as 
-     * follows: 
-     * 
-     * Statistical information associated with a LogicalDevice or one of its 
-     * subclasses. 
-     */
-    public DeviceStatisticalInformation(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemCreationClassName. 
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the 
-     * DeviceStatisticalInformation.systemCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping System's CreationClassName.
-     * 
-     * @return	String	current systemCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a DeviceStatisticalInformationBeanImpl Class which implements the DeviceStatisticalInformationBean Interface, and
+	 * encapsulates the CIM class DeviceStatisticalInformation in a Java Bean. The CIM class DeviceStatisticalInformation is described as follows:
+	 * 
+	 * Statistical information associated with a LogicalDevice or one of its subclasses.
+	 */
+	public DeviceStatisticalInformation() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the 
-     * DeviceStatisticalInformation.systemCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping System's CreationClassName.
-     * 
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the DeviceStatisticalInformation.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the DeviceStatisticalInformation.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemName. 
-     */
-    private String systemName;
-    /**
-     * This method returns the DeviceStatisticalInformation.systemName 
-     * property value. This property is described as follows: 
-     * 
-     * The scoping System's Name.
-     * 
-     * @return	String	current systemName property value
-     * @exception	Exception	
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the DeviceStatisticalInformation.systemName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping System's Name.
-     * 
-     * @param	String	new systemName property value
-     * @exception	Exception	
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the DeviceStatisticalInformation.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the DeviceStatisticalInformation.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property deviceCreationClassName. 
-     */
-    private String deviceCreationClassName;
-    /**
-     * This method returns the 
-     * DeviceStatisticalInformation.deviceCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping Device's CreationClassName.
-     * 
-     * @return	String	current deviceCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getDeviceCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.deviceCreationClassName;
-    } // getDeviceCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property deviceCreationClassName.
+	 */
+	private String	deviceCreationClassName;
 
-    /**
-     * This method sets the 
-     * DeviceStatisticalInformation.deviceCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping Device's CreationClassName.
-     * 
-     * @param	String	new deviceCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setDeviceCreationClassName(String deviceCreationClassName) {
+	/**
+	 * This method returns the DeviceStatisticalInformation.deviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Device's CreationClassName.
+	 * 
+	 * @return String current deviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getDeviceCreationClassName() {
 
-    this.deviceCreationClassName = deviceCreationClassName;
-    } // setDeviceCreationClassName
+		return this.deviceCreationClassName;
+	} // getDeviceCreationClassName
 
+	/**
+	 * This method sets the DeviceStatisticalInformation.deviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Device's CreationClassName.
+	 * 
+	 * @param String
+	 *            new deviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setDeviceCreationClassName(String deviceCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property deviceID. 
-     */
-    private String deviceID;
-    /**
-     * This method returns the DeviceStatisticalInformation.deviceID property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Device's ID.
-     * 
-     * @return	String	current deviceID property value
-     * @exception	Exception	
-     */
-    public String getDeviceID(){
+		this.deviceCreationClassName = deviceCreationClassName;
+	} // setDeviceCreationClassName
 
-    return this.deviceID;
-    } // getDeviceID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property deviceID.
+	 */
+	private String	deviceID;
 
-    /**
-     * This method sets the DeviceStatisticalInformation.deviceID property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Device's ID.
-     * 
-     * @param	String	new deviceID property value
-     * @exception	Exception	
-     */
-    public void setDeviceID(String deviceID) {
+	/**
+	 * This method returns the DeviceStatisticalInformation.deviceID property value. This property is described as follows:
+	 * 
+	 * The scoping Device's ID.
+	 * 
+	 * @return String current deviceID property value
+	 * @exception Exception
+	 */
+	public String getDeviceID() {
 
-    this.deviceID = deviceID;
-    } // setDeviceID
+		return this.deviceID;
+	} // getDeviceID
 
+	/**
+	 * This method sets the DeviceStatisticalInformation.deviceID property value. This property is described as follows:
+	 * 
+	 * The scoping Device's ID.
+	 * 
+	 * @param String
+	 *            new deviceID property value
+	 * @exception Exception
+	 */
+	public void setDeviceID(String deviceID) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property creationClassName. 
-     */
-    private String creationClassName;
-    /**
-     * This method returns the DeviceStatisticalInformation.creationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current creationClassName property value
-     * @exception	Exception	
-     */
-    public String getCreationClassName(){
+		this.deviceID = deviceID;
+	} // setDeviceID
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the DeviceStatisticalInformation.creationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new creationClassName property value
-     * @exception	Exception	
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the DeviceStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the DeviceStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property name. 
-     */
-    private String name;
-    /**
-     * This method returns the DeviceStatisticalInformation.name property 
-     * value. This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @return	String	current name property value
-     * @exception	Exception	
-     */
-    @Override
-	public String getName(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.name;
-    } // getName
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values
+	// * qualified property name.
+	// */
+	// private String name;
+	/**
+	 * This method returns the DeviceStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Override
+	public String getName() {
+		return super.getName();
+	} // getName
 
-    /**
-     * This method sets the DeviceStatisticalInformation.name property value. 
-     * This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @param	String	new name property value
-     * @exception	Exception	
-     */
-    @Override
+	/**
+	 * This method sets the DeviceStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setName(String name) {
-
-    this.name = name;
-    } // setName
-
-
+		super.setName(name);
+	} // setName
 
 } // Class DeviceStatisticalInformation

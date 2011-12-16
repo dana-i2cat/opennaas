@@ -5,184 +5,155 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class PhysicalStatisticalInformation as well as methods 
- * comparable to the invokeMethods defined for this class. This Class 
- * implements the PhysicalStatisticalInformationBean Interface. The CIM class 
- * PhysicalStatisticalInformation is described as follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PhysicalStatisticalInformation as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the PhysicalStatisticalInformationBean Interface. The CIM class
+ * PhysicalStatisticalInformation is described as follows:
  * 
- * Statistical information associated with a PhysicalElement or one of its 
- * subclasses. 
+ * Statistical information associated with a PhysicalElement or one of its subclasses.
  */
-public class PhysicalStatisticalInformation extends StatisticalInformation 
-    implements Serializable {
+public class PhysicalStatisticalInformation extends StatisticalInformation
+		implements Serializable {
 
-    /**
-     * This constructor creates a PhysicalStatisticalInformationBeanImpl Class 
-     * which implements the PhysicalStatisticalInformationBean Interface, and 
-     * encapsulates the CIM class PhysicalStatisticalInformation in a Java 
-     * Bean. The CIM class PhysicalStatisticalInformation is described as 
-     * follows: 
-     * 
-     * Statistical information associated with a PhysicalElement or one of its 
-     * subclasses. 
-     */
-    public PhysicalStatisticalInformation(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property physicalCreationClassName. 
-     */
-    private String physicalCreationClassName;
-    /**
-     * This method returns the 
-     * PhysicalStatisticalInformation.physicalCreationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Element's CreationClassName.
-     * 
-     * @return	String	current physicalCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getPhysicalCreationClassName(){
+	/**
+	 * This constructor creates a PhysicalStatisticalInformationBeanImpl Class which implements the PhysicalStatisticalInformationBean Interface, and
+	 * encapsulates the CIM class PhysicalStatisticalInformation in a Java Bean. The CIM class PhysicalStatisticalInformation is described as follows:
+	 * 
+	 * Statistical information associated with a PhysicalElement or one of its subclasses.
+	 */
+	public PhysicalStatisticalInformation() {
+	};
 
-    return this.physicalCreationClassName;
-    } // getPhysicalCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property physicalCreationClassName.
+	 */
+	private String	physicalCreationClassName;
 
-    /**
-     * This method sets the 
-     * PhysicalStatisticalInformation.physicalCreationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Element's CreationClassName.
-     * 
-     * @param	String	new physicalCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public void setPhysicalCreationClassName(String physicalCreationClassName) 
-	{
+	/**
+	 * This method returns the PhysicalStatisticalInformation.physicalCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Element's CreationClassName.
+	 * 
+	 * @return String current physicalCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getPhysicalCreationClassName() {
 
-    this.physicalCreationClassName = physicalCreationClassName;
-    } // setPhysicalCreationClassName
+		return this.physicalCreationClassName;
+	} // getPhysicalCreationClassName
 
+	/**
+	 * This method sets the PhysicalStatisticalInformation.physicalCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Element's CreationClassName.
+	 * 
+	 * @param String
+	 *            new physicalCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setPhysicalCreationClassName(String physicalCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property tag. 
-     */
-    private String tag;
-    /**
-     * This method returns the PhysicalStatisticalInformation.tag property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Element's identifying Tag.
-     * 
-     * @return	String	current tag property value
-     * @exception	Exception	
-     */
-    public String getTag(){
+		this.physicalCreationClassName = physicalCreationClassName;
+	} // setPhysicalCreationClassName
 
-    return this.tag;
-    } // getTag
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property tag.
+	 */
+	private String	tag;
 
-    /**
-     * This method sets the PhysicalStatisticalInformation.tag property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping Element's identifying Tag.
-     * 
-     * @param	String	new tag property value
-     * @exception	Exception	
-     */
-    public void setTag(String tag) {
+	/**
+	 * This method returns the PhysicalStatisticalInformation.tag property value. This property is described as follows:
+	 * 
+	 * The scoping Element's identifying Tag.
+	 * 
+	 * @return String current tag property value
+	 * @exception Exception
+	 */
+	public String getTag() {
 
-    this.tag = tag;
-    } // setTag
+		return this.tag;
+	} // getTag
 
+	/**
+	 * This method sets the PhysicalStatisticalInformation.tag property value. This property is described as follows:
+	 * 
+	 * The scoping Element's identifying Tag.
+	 * 
+	 * @param String
+	 *            new tag property value
+	 * @exception Exception
+	 */
+	public void setTag(String tag) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property creationClassName. 
-     */
-    private String creationClassName;
-    /**
-     * This method returns the 
-     * PhysicalStatisticalInformation.creationClassName property value. This 
-     * property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current creationClassName property value
-     * @exception	Exception	
-     */
-    public String getCreationClassName(){
+		this.tag = tag;
+	} // setTag
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the PhysicalStatisticalInformation.creationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new creationClassName property value
-     * @exception	Exception	
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the PhysicalStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the PhysicalStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property name. 
-     */
-    private String name;
-    /**
-     * This method returns the PhysicalStatisticalInformation.name property 
-     * value. This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @return	String	current name property value
-     * @exception	Exception	
-     */
-    @Override
-	public String getName(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.name;
-    } // getName
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values qualified property name.
+	// */
+	// private String name;
 
-    /**
-     * This method sets the PhysicalStatisticalInformation.name property 
-     * value. This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @param	String	new name property value
-     * @exception	Exception	
-     */
-    @Override
+	/**
+	 * This method returns the PhysicalStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Override
+	public String getName() {
+		return super.getName();
+	} // getName
+
+	/**
+	 * This method sets the PhysicalStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setName(String name) {
-
-    this.name = name;
-    } // setName
-
-
+		super.setName(name);
+	} // setName
 
 } // Class PhysicalStatisticalInformation

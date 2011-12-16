@@ -5,183 +5,149 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class RedundancyGroup as well as methods comparable to the 
- * invokeMethods defined for this class. This Class implements the 
- * RedundancyGroupBean Interface. The CIM class RedundancyGroup is described 
- * as follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RedundancyGroup as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RedundancyGroupBean Interface. The CIM class RedundancyGroup is described as
+ * follows:
  * 
- * A class derived from LogicalElement that is a special collection of 
- * ManagedSystemElements. This collection indicates that the aggregated 
- * components together provide redundancy. All elements aggregated in a 
- * RedundancyGroup should be instantiations of the same object class. The use 
- * of this class is being deprecated in lieu of using the RedundancySet 
- * class. 
+ * A class derived from LogicalElement that is a special collection of ManagedSystemElements. This collection indicates that the aggregated components
+ * together provide redundancy. All elements aggregated in a RedundancyGroup should be instantiations of the same object class. The use of this class
+ * is being deprecated in lieu of using the RedundancySet class.
  */
-    @Deprecated
-public class RedundancyGroup extends LogicalElement implements Serializable 
-    {
+@Deprecated
+public class RedundancyGroup extends LogicalElement implements Serializable {
 
-    /**
-     * This constructor creates a RedundancyGroupBeanImpl Class which 
-     * implements the RedundancyGroupBean Interface, and encapsulates the CIM 
-     * class RedundancyGroup in a Java Bean. The CIM class RedundancyGroup is 
-     * described as follows: 
-     * 
-     * A class derived from LogicalElement that is a special collection of 
-     * ManagedSystemElements. This collection indicates that the aggregated 
-     * components together provide redundancy. All elements aggregated in a 
-     * RedundancyGroup should be instantiations of the same object class. The 
-     * use of this class is being deprecated in lieu of using the 
-     * RedundancySet class. 
-     */
-    public RedundancyGroup(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property creationClassName. 
-     */
-    @Deprecated    private String creationClassName;
-    /**
-     * This method returns the RedundancyGroup.creationClassName property 
-     * value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current creationClassName property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public String getCreationClassName(){
+	/**
+	 * This constructor creates a RedundancyGroupBeanImpl Class which implements the RedundancyGroupBean Interface, and encapsulates the CIM class
+	 * RedundancyGroup in a Java Bean. The CIM class RedundancyGroup is described as follows:
+	 * 
+	 * A class derived from LogicalElement that is a special collection of ManagedSystemElements. This collection indicates that the aggregated
+	 * components together provide redundancy. All elements aggregated in a RedundancyGroup should be instantiations of the same object class. The use
+	 * of this class is being deprecated in lieu of using the RedundancySet class.
+	 */
+	public RedundancyGroup() {
+	};
 
-    return this.creationClassName;
-    } // getCreationClassName
-
-    /**
-     * This method sets the RedundancyGroup.creationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new creationClassName property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setCreationClassName(String creationClassName) {
-
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
-
-
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property name. 
-     */
-    @Deprecated    private String name;
-    /**
-     * This method returns the RedundancyGroup.name property value. This 
-     * property is described as follows: 
-     * 
-     * The RedundancyGroup Name serves as the key for the Group's instance in 
-     * an enterprise environment. 
-     * 
-     * @return	String	current name property value
-     * @exception	Exception	
-     */
-    @Override
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
 	@Deprecated
-    public String getName(){
+	private String	creationClassName;
 
-    return this.name;
-    } // getName
-
-    /**
-     * This method sets the RedundancyGroup.name property value. This property 
-     * is described as follows: 
-     * 
-     * The RedundancyGroup Name serves as the key for the Group's instance in 
-     * an enterprise environment. 
-     * 
-     * @param	String	new name property value
-     * @exception	Exception	
-     */
-    @Override
+	/**
+	 * This method returns the RedundancyGroup.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
 	@Deprecated
-    public void setName(String name) {
+	public String getCreationClassName() {
 
-    this.name = name;
-    } // setName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the RedundancyGroup.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property RedundancyStatus. 
-     */
-    @Deprecated
-    public enum RedundancyStatus{
-    UNKNOWN,
-    OTHER,
-    FULLY_REDUNDANT,
-    DEGRADED_REDUNDANCY,
-    REDUNDANCY_LOST
-    }
-    @Deprecated
-    private RedundancyStatus redundancyStatus;
-    /**
-     * This method returns the RedundancyGroup.redundancyStatus property 
-     * value. This property is described as follows: 
-     * 
-     * RedundancyStatus provides information on the state of the 
-     * RedundancyGroup. "Fully Redundant" (value=2) means that all of the 
-     * configured redundancy is still available; "Degraded Redundancy" (3) 
-     * means that some failures have been experienced but some reduced amount 
-     * of redundancy is still available; "Redundancy Lost" (4) means that a 
-     * sufficient number of failures have been experienced such that no 
-     * redundancy is available and the next failure experienced will cause 
-     * overall failure. Also, the values, "Other" (1) and "Unknown" (0), are 
-     * defined. 
-     * 
-     * @return	int	current redundancyStatus property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public RedundancyStatus getRedundancyStatus(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.redundancyStatus;
-    } // getRedundancyStatus
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values
+	// * qualified property name.
+	// */
+	// @Deprecated private String name;
+	/**
+	 * This method returns the RedundancyGroup.name property value. This property is described as follows:
+	 * 
+	 * The RedundancyGroup Name serves as the key for the Group's instance in an enterprise environment.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Override
+	@Deprecated
+	public String getName() {
+		return super.getName();
+	} // getName
 
-    /**
-     * This method sets the RedundancyGroup.redundancyStatus property value. 
-     * This property is described as follows: 
-     * 
-     * RedundancyStatus provides information on the state of the 
-     * RedundancyGroup. "Fully Redundant" (value=2) means that all of the 
-     * configured redundancy is still available; "Degraded Redundancy" (3) 
-     * means that some failures have been experienced but some reduced amount 
-     * of redundancy is still available; "Redundancy Lost" (4) means that a 
-     * sufficient number of failures have been experienced such that no 
-     * redundancy is available and the next failure experienced will cause 
-     * overall failure. Also, the values, "Other" (1) and "Unknown" (0), are 
-     * defined. 
-     * 
-     * @param	int	new redundancyStatus property value
-     * @exception	Exception	
-     */
-    @Deprecated
-    public void setRedundancyStatus(RedundancyStatus redundancyStatus){
+	/**
+	 * This method sets the RedundancyGroup.name property value. This property is described as follows:
+	 * 
+	 * The RedundancyGroup Name serves as the key for the Group's instance in an enterprise environment.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Override
+	@Deprecated
+	public void setName(String name) {
+		super.setName(name);
+	} // setName
 
-    this.redundancyStatus = redundancyStatus;
-    } // setRedundancyStatus
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RedundancyStatus.
+	 */
+	@Deprecated
+	public enum RedundancyStatus {
+		UNKNOWN,
+		OTHER,
+		FULLY_REDUNDANT,
+		DEGRADED_REDUNDANCY,
+		REDUNDANCY_LOST
+	}
 
+	@Deprecated
+	private RedundancyStatus	redundancyStatus;
 
+	/**
+	 * This method returns the RedundancyGroup.redundancyStatus property value. This property is described as follows:
+	 * 
+	 * RedundancyStatus provides information on the state of the RedundancyGroup. "Fully Redundant" (value=2) means that all of the configured
+	 * redundancy is still available; "Degraded Redundancy" (3) means that some failures have been experienced but some reduced amount of redundancy
+	 * is still available; "Redundancy Lost" (4) means that a sufficient number of failures have been experienced such that no redundancy is available
+	 * and the next failure experienced will cause overall failure. Also, the values, "Other" (1) and "Unknown" (0), are defined.
+	 * 
+	 * @return int current redundancyStatus property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public RedundancyStatus getRedundancyStatus() {
+
+		return this.redundancyStatus;
+	} // getRedundancyStatus
+
+	/**
+	 * This method sets the RedundancyGroup.redundancyStatus property value. This property is described as follows:
+	 * 
+	 * RedundancyStatus provides information on the state of the RedundancyGroup. "Fully Redundant" (value=2) means that all of the configured
+	 * redundancy is still available; "Degraded Redundancy" (3) means that some failures have been experienced but some reduced amount of redundancy
+	 * is still available; "Redundancy Lost" (4) means that a sufficient number of failures have been experienced such that no redundancy is available
+	 * and the next failure experienced will cause overall failure. Also, the values, "Other" (1) and "Unknown" (0), are defined.
+	 * 
+	 * @param int new redundancyStatus property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setRedundancyStatus(RedundancyStatus redundancyStatus) {
+
+		this.redundancyStatus = redundancyStatus;
+	} // setRedundancyStatus
 
 } // Class RedundancyGroup

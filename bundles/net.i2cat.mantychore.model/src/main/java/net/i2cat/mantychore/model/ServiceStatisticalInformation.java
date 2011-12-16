@@ -5,253 +5,221 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined 
- * in the CIM class ServiceStatisticalInformation as well as methods 
- * comparable to the invokeMethods defined for this class. This Class 
- * implements the ServiceStatisticalInformationBean Interface. The CIM class 
- * ServiceStatisticalInformation is described as follows: 
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceStatisticalInformation as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ServiceStatisticalInformationBean Interface. The CIM class
+ * ServiceStatisticalInformation is described as follows:
  * 
- * Statistical information associated with a Service object or one of its 
- * subclasses. 
+ * Statistical information associated with a Service object or one of its subclasses.
  */
-public class ServiceStatisticalInformation extends StatisticalInformation 
-    implements Serializable {
+public class ServiceStatisticalInformation extends StatisticalInformation
+		implements Serializable {
 
-    /**
-     * This constructor creates a ServiceStatisticalInformationBeanImpl Class 
-     * which implements the ServiceStatisticalInformationBean Interface, and 
-     * encapsulates the CIM class ServiceStatisticalInformation in a Java 
-     * Bean. The CIM class ServiceStatisticalInformation is described as 
-     * follows: 
-     * 
-     * Statistical information associated with a Service object or one of its 
-     * subclasses. 
-     */
-    public ServiceStatisticalInformation(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemCreationClassName. 
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the 
-     * ServiceStatisticalInformation.systemCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping System's CreationClassName.
-     * 
-     * @return	String	current systemCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a ServiceStatisticalInformationBeanImpl Class which implements the ServiceStatisticalInformationBean Interface, and
+	 * encapsulates the CIM class ServiceStatisticalInformation in a Java Bean. The CIM class ServiceStatisticalInformation is described as follows:
+	 * 
+	 * Statistical information associated with a Service object or one of its subclasses.
+	 */
+	public ServiceStatisticalInformation() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the 
-     * ServiceStatisticalInformation.systemCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping System's CreationClassName.
-     * 
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the ServiceStatisticalInformation.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the ServiceStatisticalInformation.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property systemName. 
-     */
-    private String systemName;
-    /**
-     * This method returns the ServiceStatisticalInformation.systemName 
-     * property value. This property is described as follows: 
-     * 
-     * The scoping System's Name.
-     * 
-     * @return	String	current systemName property value
-     * @exception	Exception	
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the ServiceStatisticalInformation.systemName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping System's Name.
-     * 
-     * @param	String	new systemName property value
-     * @exception	Exception	
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the ServiceStatisticalInformation.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the ServiceStatisticalInformation.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property serviceCreationClassName. 
-     */
-    private String serviceCreationClassName;
-    /**
-     * This method returns the 
-     * ServiceStatisticalInformation.serviceCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping Service's CreationClassName.
-     * 
-     * @return	String	current serviceCreationClassName property 
-     * value 
-     * @exception	Exception	
-     */
-    public String getServiceCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.serviceCreationClassName;
-    } // getServiceCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property serviceCreationClassName.
+	 */
+	private String	serviceCreationClassName;
 
-    /**
-     * This method sets the 
-     * ServiceStatisticalInformation.serviceCreationClassName property value. 
-     * This property is described as follows: 
-     * 
-     * The scoping Service's CreationClassName.
-     * 
-     * @param	String	new serviceCreationClassName property value
-     * @exception	Exception	
-     */
-    public void setServiceCreationClassName(String serviceCreationClassName) 
-	{
+	/**
+	 * This method returns the ServiceStatisticalInformation.serviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's CreationClassName.
+	 * 
+	 * @return String current serviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getServiceCreationClassName() {
 
-    this.serviceCreationClassName = serviceCreationClassName;
-    } // setServiceCreationClassName
+		return this.serviceCreationClassName;
+	} // getServiceCreationClassName
 
+	/**
+	 * This method sets the ServiceStatisticalInformation.serviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's CreationClassName.
+	 * 
+	 * @param String
+	 *            new serviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setServiceCreationClassName(String serviceCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property serviceName. 
-     */
-    private String serviceName;
-    /**
-     * This method returns the ServiceStatisticalInformation.serviceName 
-     * property value. This property is described as follows: 
-     * 
-     * The scoping Service's Name.
-     * 
-     * @return	String	current serviceName property value
-     * @exception	Exception	
-     */
-    public String getServiceName(){
+		this.serviceCreationClassName = serviceCreationClassName;
+	} // setServiceCreationClassName
 
-    return this.serviceName;
-    } // getServiceName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property serviceName.
+	 */
+	private String	serviceName;
 
-    /**
-     * This method sets the ServiceStatisticalInformation.serviceName property 
-     * value. This property is described as follows: 
-     * 
-     * The scoping Service's Name.
-     * 
-     * @param	String	new serviceName property value
-     * @exception	Exception	
-     */
-    public void setServiceName(String serviceName) {
+	/**
+	 * This method returns the ServiceStatisticalInformation.serviceName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's Name.
+	 * 
+	 * @return String current serviceName property value
+	 * @exception Exception
+	 */
+	public String getServiceName() {
 
-    this.serviceName = serviceName;
-    } // setServiceName
+		return this.serviceName;
+	} // getServiceName
 
+	/**
+	 * This method sets the ServiceStatisticalInformation.serviceName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's Name.
+	 * 
+	 * @param String
+	 *            new serviceName property value
+	 * @exception Exception
+	 */
+	public void setServiceName(String serviceName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property creationClassName. 
-     */
-    private String creationClassName;
-    /**
-     * This method returns the ServiceStatisticalInformation.creationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @return	String	current creationClassName property value
-     * @exception	Exception	
-     */
-    public String getCreationClassName(){
+		this.serviceName = serviceName;
+	} // setServiceName
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the ServiceStatisticalInformation.creationClassName 
-     * property value. This property is described as follows: 
-     * 
-     * CreationClassName indicates the name of the class or the subclass used 
-     * in the creation of an instance. When used with the other key 
-     * properties of this class, this property allows all instances of this 
-     * class and its subclasses to be uniquely identified. 
-     * 
-     * @param	String	new creationClassName property value
-     * @exception	Exception	
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the ServiceStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the ServiceStatisticalInformation.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values 
-     * qualified property name. 
-     */
-    private String name;
-    /**
-     * This method returns the ServiceStatisticalInformation.name property 
-     * value. This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @return	String	current name property value
-     * @exception	Exception	
-     */
-    @Override
-	public String getName(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.name;
-    } // getName
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values
+	// * qualified property name.
+	// */
+	// private String name;
+	/**
+	 * This method returns the ServiceStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Override
+	public String getName() {
 
-    /**
-     * This method sets the ServiceStatisticalInformation.name property value. 
-     * This property is described as follows: 
-     * 
-     * The Name property, inherited from StatisticalInformation, serves as 
-     * part of the object key. 
-     * 
-     * @param	String	new name property value
-     * @exception	Exception	
-     */
-    @Override
+		return super.getName();
+	} // getName
+
+	/**
+	 * This method sets the ServiceStatisticalInformation.name property value. This property is described as follows:
+	 * 
+	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setName(String name) {
 
-    this.name = name;
-    } // setName
-
-
+		super.setName(name);
+	} // setName
 
 } // Class ServiceStatisticalInformation

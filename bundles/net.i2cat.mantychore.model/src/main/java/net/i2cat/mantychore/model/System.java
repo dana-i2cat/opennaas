@@ -201,10 +201,10 @@ public class System extends EnabledLogicalElement implements Serializable {
 		this.creationClassName = creationClassName;
 	} // setCreationClassName
 
-	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property name.
-	 */
-	private String	name;
+	// /**
+	// * The following constants are defined for use with the ValueMap/Values qualified property name.
+	// */
+	// private String name;
 
 	/**
 	 * This method returns the System.name property value. This property is described as follows:
@@ -216,8 +216,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 */
 	@Override
 	public String getName() {
-
-		return this.name;
+		return super.getName();
 	} // getName
 
 	/**
@@ -231,8 +230,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	 */
 	@Override
 	public void setName(String name) {
-
-		this.name = name;
+		super.setName(name);
 	} // setName
 
 	// /**
