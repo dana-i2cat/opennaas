@@ -10,7 +10,7 @@
 </ndl:Location>
 
 <domain:NetworkDomain rdf:about="#AS2">
-	<!--  <ndl:name>layer3</ndl:name> -->
+	 <ndl:name>layer3</ndl:name> 
 	<domain:hasDevice rdf:resource="#router:R-AS2-1"/>
 	<domain:hasDevice rdf:resource="#router:R-AS2-2"/>
 	<domain:hasDevice rdf:resource="#router:R-AS2-3"/>
