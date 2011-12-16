@@ -53,6 +53,8 @@ public class NetworkMapperDescriptorToModel {
 			if (targetPosInterf == -1) {
 				net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
 				newInterf.setName(cleanName(interf.getName()));
+				existingInterfaces.add(newInterf);
+				targetPosInterf = existingInterfaces.size() - 1;
 			}
 
 			// if (targetPosInterf == -1)

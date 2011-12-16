@@ -21,7 +21,7 @@ public class NetworkMapperModelToDescriptorTest {
 			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(MockNetworkDescriptor
 					.newNetworkDescriptorWithNetworkDomain());
 			Assert.assertNotNull(networkModel.getNetworkElements());
-			Assert.assertEquals(networkModel.getNetworkElements().size(), 15);
+			Assert.assertEquals(networkModel.getNetworkElements().size(), 16);
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}
