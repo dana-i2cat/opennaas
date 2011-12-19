@@ -29,5 +29,12 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="net/removeResource">
+			<action class="net.i2cat.mantychore.network.capability.basic.shell.RemoveResourceFromNetworkCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>

@@ -15,6 +15,15 @@ net:addResource network:basicNet1 router:junos20
 shell:echo CHECK RESOURCE IS IN NETWORK
 net:listResources network:basicNet1
 
+resource:list --all 
+
+#Removing resource
+net:removeResource network:basicNet1 router:junos20
+
+shell:echo CHECK RESOURCE IS "NOT" IN NETWORK
+net:listResources network:basicNet1
+resource:list --all 
+
 #Cleaning
 resource:stop network:basicNet1
 resource:remove network:basicNet1
