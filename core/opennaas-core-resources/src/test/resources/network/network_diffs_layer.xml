@@ -3,7 +3,7 @@
 
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
         xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#"
-        xmlns:domain="http://www.science.uva.nl/research/sne/ndl/domain#2">
+        xmlns:domain="http://www.science.uva.nl/research/sne/ndl/domain#">
 
 <ndl:Location rdf:about="#Netherlight">
         <ndl:name>First Mantychore Exchange</ndl:name>

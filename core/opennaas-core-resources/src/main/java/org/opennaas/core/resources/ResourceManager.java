@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * This class is the entry point to the resource for resource clients.
@@ -190,6 +191,20 @@ public class ResourceManager implements IResourceManager {
 			JAXBContext context = JAXBContext.newInstance(ResourceDescriptor.class);
 			context.createMarshaller().marshal(resourceDescriptor, file);
 			logger.info("ResourceDescriptor of resource " + resourceDescriptor.getId() + " exported to file " + fileName);
+		} catch (Exception ex) {
+			throw new ResourceException(ex.getMessage(), ex);
+		}
+	}
+
+	public synchronized void exportNetworkTopology(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException {
+		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
+		ResourceDescriptor resourceDescriptor = repo.getResource(resourceIdentifier.getId()).getResourceDescriptor();
+		try {
+			File file = new File(fileName);
+			JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
+			context.createMarshaller().marshal(resourceDescriptor.getNetworkTopology(), file);
+			logger.info("NetworkTopology of resource " + resourceIdentifier.getId() + " exported to file " + fileName);
+			resourceDescriptor.setNetworkTopology(null); // Reset networkTopology
 		} catch (Exception ex) {
 			throw new ResourceException(ex.getMessage(), ex);
 		}

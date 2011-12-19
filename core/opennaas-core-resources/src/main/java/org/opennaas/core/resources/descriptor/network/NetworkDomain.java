@@ -12,35 +12,34 @@ import javax.xml.bind.annotation.XmlElement;
 @Entity
 public class NetworkDomain {
 
-	
 	@Id
 	@GeneratedValue
-	private long 					id;
-	
+	private long	id;
+
 	@Basic
-	String name;
-	
+	String			name;
+
 	@ElementCollection
-	List<DeviceId> hasDevices;
+	List<DeviceId>	hasDevices;
 
 	@XmlElement(name = "name", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@XmlElement(name = "hasDevice", namespace = "http://www.science.uva.nl/research/sne/ndl#")
+
+	@XmlElement(name = "hasDevice", namespace = "http://www.science.uva.nl/research/sne/ndl/domain#")
 	public List<DeviceId> getHasDevices() {
 		return hasDevices;
 	}
+
 	public void setHasDevices(List<DeviceId> hasDevices) {
 		this.hasDevices = hasDevices;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Device [name=" + name + ", hasDevices=" + hasDevices

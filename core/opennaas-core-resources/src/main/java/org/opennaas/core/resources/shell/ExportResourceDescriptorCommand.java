@@ -2,9 +2,9 @@ package org.opennaas.core.resources.shell;
 
 import java.io.File;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
@@ -19,10 +19,13 @@ import org.opennaas.core.resources.ResourceManager;
 public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource whose descriptor is going to be exported", required = true, multiValued = false)
-	private String	resourceId	= null;
+	private String	resourceId		= null;
 
 	@Argument(index = 1, name = "fileName", description = "The path to the file where the descriptor will be exported", required = true, multiValued = false)
-	private String	fileName	= null;
+	private String	fileName		= null;
+
+	@Option(name = "--networkTopology", aliases = { "-nt" }, description = "Allows explicit file where the network topology will be saved")
+	private String	networkFileName	= null;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -45,7 +48,7 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 
 			// check the file Name ends with .descriptor
 			File file = new File(fileName);
-			if (file.getName().endsWith(".descriptor")) {
+			if (file.getName().endsWith(".descriptor") || file.getName().endsWith(".xml")) {
 
 				identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (identifier == null) {
@@ -54,6 +57,17 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 					return null;
 				}
 				try {
+
+					if (networkFileName != null) {
+						File networkFile = new File(networkFileName);
+						if (networkFile.getName().endsWith(".descriptor") || networkFile.getName().endsWith(".xml")) {
+							manager.exportNetworkTopology(identifier, networkFileName);
+							printInfo("Export network descriptor succesful for resource: " + resourceId);
+
+						}
+
+					}
+
 					manager.exportResourceDescriptor(identifier, fileName);
 					printInfo("Export descriptor succesful for resource: " + resourceId);
 				} catch (ResourceException e) {
@@ -71,4 +85,5 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
+
 }
