@@ -1,0 +1,5 @@
+##version 0.1
+
+shell:echo Script enable OSPF
+## Enable ospf in all devices (supporting it)
+#ospf:enable network:networkdemo --all
