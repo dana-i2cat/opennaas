@@ -154,6 +154,7 @@ public class NetworkMapperDescriptorToModel {
 	}
 
 	private static int getDevice(String name, List<net.i2cat.mantychore.network.model.topology.Device> devices) {
+		name = cleanName(name);
 		int pos = 0;
 		for (net.i2cat.mantychore.network.model.topology.Device device : devices) {
 			if (device.getName().equals(name))

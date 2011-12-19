@@ -1,7 +1,5 @@
 package net.i2cat.mantychore.network.repository;
 
-import java.util.List;
-
 import net.i2cat.mantychore.network.model.NetworkModel;
 
 import org.apache.commons.logging.Log;
@@ -9,7 +7,6 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapability;
@@ -62,28 +59,11 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		// no children right now
-		// manageChildren(resource);
-	}
-
-	private void manageChildren(IResource resource) throws ResourceException {
-
-		/* the type resource is the same for all logical devices and for the physical device */
-		String resourceType = resource.getResourceIdentifier().getType();
-		IResourceManager resourceManager;
-		try {
-			resourceManager = Activator.getResourceManagerService();
-		} catch (Exception e1) {
-			throw new ResourceException("It was impossible get the Resource Manager Service to do execute the bootstrapper");
+		// If you have loaded network information
+		if (resource.getResourceDescriptor().getNetworkTopology() != null) {
+			resource.setModel(NetworkMapperDescriptorToModel.descriptorToModel(resource.getResourceDescriptor().getNetworkTopology()));
 		}
-		List<String> childrenNames = resource.getModel().getChildren();
 
-		/* initialize each resource */
-		for (String resourceName : childrenNames) {
-			resourceManager.getIdentifierFromResourceName(resourceType, resourceName);
-			// TODO If the resource exists, what is our decision?
-
-		}
 	}
 
 	private Information createQueueInformation() {

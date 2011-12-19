@@ -1,0 +1,12 @@
+shell:echo Script to test adding a resource to a network
+
+#Creating and initializing a network
+resource:create /home/carlos/workspace/trunk/utils/firstnetwork.descriptor
+
+
+shell:echo CHECK RESOURCE IS IN NETWORK
+resource:list 
+
+#Cleaning
+resource:stop network:networkBasic
+resource:remove network:networkBasic
