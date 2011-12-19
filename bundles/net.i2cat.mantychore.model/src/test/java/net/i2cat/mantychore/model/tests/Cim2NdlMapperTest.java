@@ -7,7 +7,7 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.System;
 import net.i2cat.mantychore.model.VLANEndpoint;
 import net.i2cat.mantychore.model.mappers.Cim2NdlMapper;
 import net.i2cat.mantychore.network.model.NetworkModel;
@@ -36,9 +36,9 @@ public class Cim2NdlMapperTest {
 		NetworkModel networkModel = new NetworkModel();
 		int elemCount = networkModel.getNetworkElements().size();
 
-		ManagedElement model = createTestRouterModel();
+		System model = createTestRouterModel();
 
-		List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(model, networkModel);
+		List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(model, networkModel, model.getName());
 
 		Assert.assertFalse(networkModel.getNetworkElements().isEmpty());
 
@@ -218,7 +218,7 @@ public class Cim2NdlMapperTest {
 		return true;
 	}
 
-	private ManagedElement createTestRouterModel() {
+	private System createTestRouterModel() {
 
 		ComputerSystem router = new ComputerSystem();
 		router.setName("TestRouter");

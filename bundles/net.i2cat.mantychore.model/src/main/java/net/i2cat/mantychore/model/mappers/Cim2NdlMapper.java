@@ -31,11 +31,13 @@ public class Cim2NdlMapper {
 	 * 
 	 * @param model
 	 * @param networkModel
+	 * @param name
+	 *            name for the model to add
 	 * @return NetworkElements created to represent given model in networkModel.
 	 */
-	public static List<NetworkElement> addModelToNetworkModel(IModel model, NetworkModel networkModel) {
+	public static List<NetworkElement> addModelToNetworkModel(IModel model, NetworkModel networkModel, String name) {
 		if (model instanceof System) {
-			return addManagedElementToNetworkModel((System) model, networkModel);
+			return addManagedElementToNetworkModel((System) model, networkModel, name);
 		}
 		return new ArrayList<NetworkElement>();
 	}
@@ -45,14 +47,16 @@ public class Cim2NdlMapper {
 	 * 
 	 * @param managedElement
 	 * @param networkModel
+	 * @param name
+	 *            name for the System to add
 	 * @return NetworkElements created to represent given managedElement in networkModel.
 	 */
-	private static List<NetworkElement> addManagedElementToNetworkModel(System managedElement, NetworkModel networkModel) {
+	private static List<NetworkElement> addManagedElementToNetworkModel(System managedElement, NetworkModel networkModel, String name) {
 
 		List<NetworkElement> createdElements = new ArrayList<NetworkElement>();
 
 		// create device
-		Device dev = addDeviceToNetworkModel(managedElement, networkModel);
+		Device dev = addDeviceToNetworkModel(managedElement, networkModel, name);
 
 		// create interfaces
 		List<Interface> interfaces = addInterfacesToNetworkModel(managedElement, dev, networkModel);
@@ -73,11 +77,17 @@ public class Cim2NdlMapper {
 	 * 
 	 * @param managedElement
 	 * @param networkModel
+	 * @param name
+	 *            Name of the device
 	 * @return Created Device.
 	 */
-	private static Device addDeviceToNetworkModel(System managedElement, NetworkModel networkModel) {
+	private static Device addDeviceToNetworkModel(System managedElement, NetworkModel networkModel, String name) {
 		Device dev = new Device();
-		dev.setName(managedElement.getName());
+		if (name != null) {
+			dev.setName(name);
+		} else {
+			dev.setName(managedElement.getName());
+		}
 		networkModel.getNetworkElements().add(dev);
 
 		return dev;
