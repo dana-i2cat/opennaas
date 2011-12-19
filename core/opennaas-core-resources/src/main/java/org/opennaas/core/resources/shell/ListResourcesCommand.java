@@ -2,13 +2,11 @@ package org.opennaas.core.resources.shell;
 
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.descriptor.ResourceId;
 import org.opennaas.core.resources.descriptor.network.Device;
 import org.opennaas.core.resources.descriptor.network.Interface;
 import org.opennaas.core.resources.descriptor.network.InterfaceId;
@@ -24,10 +22,9 @@ public class ListResourcesCommand extends GenericKarafCommand {
 
 	@Option(name = "--type", aliases = { "-t" }, description = "Specifies the type of resources to list (if specified, only resources of this type will be listed)", required = false, multiValued = false)
 	private String	resourceType	= null;
-	
-	@Option(name = "--all", aliases = { "-a" }, description = "Extensive version ", required = false, multiValued = false)
-	private boolean flagAll	= false;
 
+	@Option(name = "--all", aliases = { "-a" }, description = "Extensive version ", required = false, multiValued = false)
+	private boolean	flagAll			= false;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -59,7 +56,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getResourceDescriptor()
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
-					if (flagAll)  
+					if (flagAll)
 						printAll(resource.getResourceDescriptor());
 				}
 				printSymbol(horizontalSeparator);
@@ -72,8 +69,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 									.getResourceDescriptor()
 									.getInformation().getName() + doubleTab + "STATE: " + resource
 									.getState());
-					
-					if (flagAll)  
+
+					if (flagAll)
 						printAll(resource.getResourceDescriptor());
 
 				}
@@ -88,62 +85,50 @@ public class ListResourcesCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
-	
-	private void printAll (ResourceDescriptor resourceDescriptor) {
-		
-		//TODO get network info
+
+	private void printAll(ResourceDescriptor resourceDescriptor) {
+
+		// TODO get network info
 		/* network descriptor */
 		if (resourceDescriptor.getNetworkTopology() != null)
 			printNetworkTopology(resourceDescriptor.getNetworkTopology());
-		
-		
+
 	}
-	
-	private void printNetworkTopology (NetworkTopology networkTopology) {
-		
-		
-		
-		
+
+	private void printNetworkTopology(NetworkTopology networkTopology) {
 
 		printInfo("-> Devices <-");
-		if (networkTopology.getDevices()!=null) {
-			for (Device device: networkTopology.getDevices()) {
+		if (networkTopology.getDevices() != null) {
+			for (Device device : networkTopology.getDevices()) {
 				printInfo(paintResource(device).toString());
 			}
 		}
 		printInfo("-> Connections <-");
-		if (networkTopology.getInterfaces()!=null)
+		if (networkTopology.getInterfaces() != null)
 			paintConnections(networkTopology.getInterfaces());
-		
-		
-		
+
 	}
-	
+
 	private StringBuilder paintConnections(List<Interface> interfaces) {
 		StringBuilder message = new StringBuilder();
-		for (Interface interf: interfaces) {
-			message.append(String.format("\t · %s ---> %s (%s)",interf.getName(),interf.getLinkTo(),interf.getCapacity()));
+		for (Interface interf : interfaces) {
+			message.append(String.format("\t · %s ---> %s (%s)", interf.getName(), interf.getLinkTo(), interf.getCapacity()));
 		}
-		
+
 		return message;
-		
+
 	}
 
-
-	public StringBuilder paintResource (Device device) {
+	public StringBuilder paintResource(Device device) {
 		StringBuilder message = new StringBuilder();
-		
-		message.append("Device id: "+device.getName());
+
+		message.append("Device id: " + device.getName());
 		message.append("\nInterfaces: ");
-		for (InterfaceId interfaceId: device.getHasInterfaces()) {
-			message.append("\t-"+interfaceId.getResource());
+		for (InterfaceId interfaceId : device.getHasInterfaces()) {
+			message.append("\t" + interfaceId.getResource());
 		}
-		
+
 		return message;
 	}
-	
-	
-	
-	
+
 }

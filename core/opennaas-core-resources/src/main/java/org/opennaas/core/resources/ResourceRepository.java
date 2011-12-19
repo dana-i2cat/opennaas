@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.persistence.GenericRepository;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
@@ -14,11 +16,6 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorRepository;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Base class for all the resource repository implementations.
@@ -42,7 +39,6 @@ public class ResourceRepository implements IResourceRepository {
 	/** This Repository's resource Type **/
 	protected String										resourceType			= null;
 
-	
 	private IResourceBootstrapperFactory					bootstrapperFactory		= null;
 
 	private String											persistenceUnit			= null;
@@ -184,7 +180,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		logger.debug("Creating resource from configuration");
 
-		//Each repository can override this method to add new conditions to create a resource
+		// Each repository can override this method to add new conditions to create a resource
 		checkResourceCanBeCreated(resourceDescriptor);
 
 		logger.debug("Resource Checked");
@@ -359,15 +355,13 @@ public class ResourceRepository implements IResourceRepository {
 		logger.debug("Resource initialized");
 		return resource;
 	}
-	
 
 	private void activateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Activating resource " + resourceId + " ...");
 
 		IResource resource = getResource(resourceId);
-		
-		
-		//Each repository can override this method to add new conditions to start a resource
+
+		// Each repository can override this method to add new conditions to start a resource
 		checkResourceCanBeStarted(resource);
 
 		/* prepare capabilities */
@@ -386,7 +380,8 @@ public class ResourceRepository implements IResourceRepository {
 
 		/* get profile id and load profile from its bundle */
 		IProfile oldProfile = resource.getProfile();
-		if (!resource.getResourceDescriptor().getProfileId().isEmpty()) {
+		if (resource.getResourceDescriptor().getProfileId() != null &&
+				!resource.getResourceDescriptor().getProfileId().isEmpty()) {
 			logger.debug("  Loading profile...");
 			loadProfileInResource(resource, resource.getResourceDescriptor().getProfileId());
 			logger.debug("  Profile loaded");
@@ -431,7 +426,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		try {
-			if (!resource.getResourceDescriptor().getProfileId().isEmpty()) {
+			if (resource.getResourceDescriptor().getProfileId() != null && !resource.getResourceDescriptor().getProfileId().isEmpty()) {
 				unregisterProfileInResource(resource);
 				logger.debug("  Profile removed from resource");
 			}
@@ -470,9 +465,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		logger.debug("Resource shut down");
 	}
-	
-	
-	
+
 	/**
 	 * Checks if the resource is valid to be started
 	 * 
@@ -481,7 +474,7 @@ public class ResourceRepository implements IResourceRepository {
 	 */
 	protected void checkResourceCanBeStarted(IResource resource)
 			throws ResourceException {
-		//by default, any resource can be started
+		// by default, any resource can be started
 
 	}
 
@@ -524,20 +517,21 @@ public class ResourceRepository implements IResourceRepository {
 							+ resourceType);
 		}
 	}
-	
+
 	private List<ICapability> createCapabilities(IResource resource) throws ResourceException {
 		List<CapabilityDescriptor> capabilityDescriptors;
 
 		try {
 			capabilityDescriptors = resource.getResourceDescriptor().getCapabilityDescriptors();
 		} catch (Exception e) {
-			throw new ResourceException("No capability descriptor found, this will create an unusable resource. Please, check the descriptor format", e);
+			throw new ResourceException("No capability descriptor found, this will create an unusable resource. Please, check the descriptor format",
+					e);
 		}
-		
+
 		List<ICapability> capabilities = new ArrayList<ICapability>();
 		if (capabilityDescriptors == null) {
 			logger.warn("No capability descriptor found, this will create an unusable resource. Please, check the descriptor format");
-		} else {	
+		} else {
 			Iterator<CapabilityDescriptor> capabilityIterator = capabilityDescriptors.iterator();
 			while (capabilityIterator.hasNext()) {
 				CapabilityDescriptor capabilityDescriptor = capabilityIterator.next();
@@ -649,7 +643,5 @@ public class ResourceRepository implements IResourceRepository {
 
 		descriptorRepository.delete(descriptor);
 	}
-
-
 
 }

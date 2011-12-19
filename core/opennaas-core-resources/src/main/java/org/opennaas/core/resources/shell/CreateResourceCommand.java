@@ -16,7 +16,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -75,7 +74,6 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 	}
 
-
 	public int createResource(IResourceManager manager, ResourceDescriptor descriptor) {
 
 		// check if profile option is active
@@ -128,28 +126,30 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		if (resourceDescriptor.getInformation().getName().equals("") || resourceDescriptor.getInformation().getName() == null) {
 			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource name.");
 		}
-	
+
 		/* try to load network topology */
-		String networkFileDecriptor = resourceDescriptor.getFileTopology();
-		
-		
-		if (networkFileDecriptor != null && !networkFileDecriptor.equals("")) {
-			/* checks  */
-			
-			//TODO Improve to get descriptors from relative paths
-			if (!networkFileDecriptor.startsWith("/")) 
+		String networkTopologyFilePath = resourceDescriptor.getFileTopology();
+		if (networkTopologyFilePath != null && !networkTopologyFilePath.equals("")) {
+			/* checks */
+
+			// TODO Improve to get descriptors from relative paths
+			if (!networkTopologyFilePath.startsWith("/"))
 				throw new ResourceException("The network file decriptor has to be absolute path");
-			
-			printInfo("Loading network file descriptor: "+networkFileDecriptor);
-			NetworkTopology networkTopology = getNetworkDescriptor(networkFileDecriptor);
-			resourceDescriptor.setNetworkTopology(networkTopology);
+
+			try {
+				printInfo("Loading network file descriptor: " + networkTopologyFilePath);
+				NetworkTopology networkTopology = getNetworkDescriptor(networkTopologyFilePath);
+				resourceDescriptor.setNetworkTopology(networkTopology);
+			} catch (FileNotFoundException e) {
+				throw new FileNotFoundException("Could not found file " + networkTopologyFilePath);
+			}
 		}
 
-		
-		
-		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getName() + " with type: " + resourceDescriptor.getInformation()
+		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getName() + " with type: " + resourceDescriptor
+				.getInformation()
 				.getType());
 		return resourceDescriptor;
+
 	}
 
 	public ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException, SAXException {
@@ -200,7 +200,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 				descriptors.add(getResourceDescriptor(url.toString()));
 
 			} catch (FileNotFoundException f) {
-				printError("File not found: " + url.toString());
+				printError("File not found: " + url.toString() + f.getMessage());
 			} catch (NullPointerException f) {
 				printError("Error parsing descriptor on " + url.toString());
 			} catch (JAXBException f) {
@@ -274,10 +274,9 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		return new URL(url);
 	}
-	
-	
-	/* methods to read descriptors  */
-	
+
+	/* methods to read descriptors */
+
 	/**
 	 * Helper methods to test these functionality...
 	 * 
@@ -297,11 +296,10 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			stream = url.openStream();
 		} catch (MalformedURLException ignore) {
 			// Then try a file
-			//Added class loader to read files
-			
-			
-			//TODO check to read topologies with relative paths
-//			stream = this.getClass().getClassLoader().getResourceAsStream(filename);
+			// Added class loader to read files
+
+			// TODO check to read topologies with relative paths
+			// stream = this.getClass().getClassLoader().getResourceAsStream(filename);
 			log.error("file: " + filename);
 			stream = new FileInputStream(filename);
 		}
@@ -309,7 +307,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		NetworkTopology rd = loadNetworkDescriptor(stream);
 		return rd;
 	}
-	
+
 	private NetworkTopology loadNetworkDescriptor(InputStream stream) throws JAXBException, SAXException {
 
 		NetworkTopology descriptor = null;
@@ -335,7 +333,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			}
 		}
 		return descriptor;
-		
+
 	}
 
 }

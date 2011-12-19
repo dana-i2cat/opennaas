@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
-
 /**
  * This interface must be implemented by all the classes that want to manage resources. They must listen to all the IResourceRepositories, and react
  * to their events creating, modifying and removing resources
@@ -74,17 +73,20 @@ public interface IResourceManager {
 	 *            the id of the resource to get
 	 * @return the resource
 	 * @throws ResourceException
+	 *             if resource is not found
 	 */
 	public IResource getResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
 	 * Get an existing resource
-	 * @param resourceId resource's resourceId
+	 * 
+	 * @param resourceId
+	 *            resource's resourceId
 	 * @return the resource
 	 * @throws ResourceException
 	 */
 	public IResource getResourceById(String resourceId) throws ResourceException;
-	
+
 	/**
 	 * Start an existing resource
 	 * 

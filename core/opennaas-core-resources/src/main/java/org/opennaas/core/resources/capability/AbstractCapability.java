@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
@@ -211,16 +210,14 @@ public abstract class AbstractCapability implements ICapability {
 			List<Response> responses = new ArrayList<Response>();
 			int numAction = 0;
 			for (String refreshAction : refreshActions) {
-				Object param =  null;
-				if (params.size()>numAction) {
+				Object param = null;
+				if (params.size() > numAction) {
 					param = params.get(numAction);
 					numAction++;
 				} else {
-					param =null;
-				}				
+					param = null;
+				}
 				responses.add((Response) sendMessage(refreshAction, param));
-				
-				
 			}
 
 			return prepareResponse(responses);

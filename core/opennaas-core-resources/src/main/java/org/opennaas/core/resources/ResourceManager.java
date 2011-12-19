@@ -202,6 +202,7 @@ public class ResourceManager implements IResourceManager {
 	 *            the id of the resource to get
 	 * @return the resource
 	 * @throws ResourceException
+	 *             if resource is not found
 	 */
 	public synchronized IResource getResource(IResourceIdentifier resourceIdentifier) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());

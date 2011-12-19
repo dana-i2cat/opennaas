@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface IModel extends Serializable {
-	//FIXME: This is disgraceful.
+	// FIXME: This is disgraceful.
 	List<String> getChildren();
-
 }
