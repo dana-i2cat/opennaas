@@ -56,8 +56,8 @@ public class WonesysAlarmFactory {
 		int dataLength = Integer.parseInt(convertLittleBigEndian(dataLengthS), 16);
 
 		String elementId = message.substring(8, 12);
-		int chasis = Integer.parseInt(elementId.substring(0, 2));
-		int slot = Integer.parseInt(elementId.substring(2, 4));
+		int chasis = Integer.parseInt(elementId.substring(0, 2), 16);
+		int slot = Integer.parseInt(elementId.substring(2, 4), 16);
 
 		String alarmType = message.substring(12, 14);
 		int severity = Integer.parseInt(alarmType, 16);
