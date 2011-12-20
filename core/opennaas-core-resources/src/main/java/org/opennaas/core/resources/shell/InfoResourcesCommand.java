@@ -3,14 +3,13 @@ package org.opennaas.core.resources.shell;
 import java.util.HashMap;
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.Information;
 
@@ -29,8 +28,18 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("print resource information");
+
+		ResourceManager manager = null;
 		try {
-			ResourceManager manager = (ResourceManager) getResourceManager();
+			manager = (ResourceManager) getResourceManager();
+		} catch (Exception e) {
+			printError(e.getMessage());
+			printError("Error getting resource manager");
+			printEndCommand();
+			return null;
+		}
+
+		try {
 
 			for (String id : resourceIDs) {
 
@@ -58,10 +67,10 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 						printInfo(doubleTab + "Description: " + information.getDescription());
 						printInfo(doubleTab + "Type: " + information.getType());
 
-						if (!resource.getResourceDescriptor().getProfileId().isEmpty()) {
+						if (resource.getResourceDescriptor().getProfileId() != null && !resource.getResourceDescriptor().getProfileId().isEmpty()) {
 							printInfo("Profile ID: " + resource.getResourceDescriptor().getProfileId());
 						}
-						if (!resource.getResourceDescriptor().getProperties().isEmpty()) {
+						if (resource.getResourceDescriptor().getProfileId() != null && !resource.getResourceDescriptor().getProperties().isEmpty()) {
 							HashMap<String, String> properties = (HashMap<String, String>) resource.getResourceDescriptor().getProperties();
 							if (!properties.isEmpty()) {
 								printInfo("Properties: ");
@@ -93,6 +102,8 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 			}
 		} catch (Exception e) {
 			printError(e);
+			printError(e.getMessage());
+			printError(e.getLocalizedMessage());
 			printError("Error showing information of resource.");
 		}
 		printEndCommand();
