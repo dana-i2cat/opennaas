@@ -1,0 +1,22 @@
+<resourceDescriptor>
+    <!-- Capability information. It specifies device model and version -->
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version"/>
+        <information><type>layer3</type></information>
+    </capabilityDescriptors>
+    <!--  Queue capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information><type>queue</type></information>
+    </capabilityDescriptors>
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>AS1</type>
+        <name>networklayer3</name>
+    </information>
+    <properties/>
+    <fileTopology>
+   </fileTopology>
+</resourceDescriptor>
