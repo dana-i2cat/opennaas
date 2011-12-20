@@ -40,6 +40,7 @@ import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
 public class RawSocketAlarmsTest extends AbstractIntegrationTest implements EventHandler {
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 	public static Log			log							= LogFactory.getLog(RawSocketAlarmsTest.class);
 
