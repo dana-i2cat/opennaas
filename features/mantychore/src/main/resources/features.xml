@@ -19,6 +19,8 @@
 		<bundle>mvn:org.apache.neethi/neethi/3.0.1</bundle>
 		<!-- Events wants this -->
 		<bundle>mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+		<!-- Multiple luminis and mantychore features depend on bundles below -->
+		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.model/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/1.0.0-SNAPSHOT</bundle>
 	</feature>
@@ -39,7 +41,9 @@
 		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository/1.0.0-SNAPSHOT</bundle>
 	</feature>
 	<feature name="i2cat-mantychore-network" version="1.0.0-SNAPSHOT">
+		<!-- MOVED TO i2cat-commons 
 		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.model/1.0.0-SNAPSHOT</bundle>
+		-->
 		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.repository/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.capability.basic/1.0.0-SNAPSHOT</bundle>
 	</feature>
