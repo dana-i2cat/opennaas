@@ -76,4 +76,7 @@
 		<feature version="1.0.0-SNAPSHOT">i2cat-luminis-base</feature>
 		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
 	</feature>
+	<feature name="nexus-tests-helper" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.nexus:net.i2cat.nexus.tests.helper:1.0.0-SNAPSHOT</bundle>
+	</feature>
 </features>
