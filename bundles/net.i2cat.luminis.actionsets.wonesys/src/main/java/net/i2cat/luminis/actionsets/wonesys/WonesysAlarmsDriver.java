@@ -38,14 +38,14 @@ public class WonesysAlarmsDriver {
 
 	private static String getAlarmCode(CardType cardType, WonesysAlarm wonesysAlarm) {
 		if (cardType == null)
-			return "UNKNOW";
-		
+			return "UNKNOWN";
+
 		if (cardType.equals(CardType.ROADM_ADD) || cardType.equals(CardType.ROADM_DROP))
 			if (wonesysAlarm.getProperty(WonesysAlarm.ALARM_ID_PROPERTY) != null &&
 					wonesysAlarm.getProperty(WonesysAlarm.ALARM_ID_PROPERTY).equals("80"))
 				return "CPLANCHANGED";
 
-		return "UNKNOW";
+		return "UNKNOWN";
 	}
 
 	private static Properties loadResourceAlarmProperties(WonesysAlarm wonesysAlarm, String alarmCode, String resourceId) {

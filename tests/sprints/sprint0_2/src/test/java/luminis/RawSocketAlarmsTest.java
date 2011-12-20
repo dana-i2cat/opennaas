@@ -40,6 +40,7 @@ import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
 public class RawSocketAlarmsTest extends AbstractIntegrationTest implements EventHandler {
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 	public static Log			log							= LogFactory.getLog(RawSocketAlarmsTest.class);
 
@@ -208,7 +209,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 	@Test
 	public void checkAllAlarmsAreSupportedTest() {
-		String chassis = "01";
+		String chassis = "00";
 		String slot = "01";
 
 		OpticalSwitchFactory factory = new OpticalSwitchFactory();
@@ -238,7 +239,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		}
 
 		// check an unknown alarm is created
-		String unknownAlarmMessage = "FFFF0000FFFFFFFFFFFF";
+		String unknownAlarmMessage = "FFFF0000FFFFFFFFFF";
 		Properties properties = WonesysAlarmFactory.loadAlarmProperties(unknownAlarmMessage);
 		alarm = WonesysAlarmFactory.createAlarm(properties);
 

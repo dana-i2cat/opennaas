@@ -106,8 +106,7 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// ,
-				// vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 
 		return options;
@@ -151,6 +150,10 @@ public class ResourceCommandsKarafTest extends AbstractIntegrationTest {
 
 			List<String> response = KarafCommandHelper.executeCommand(
 					"resource:info " + resourceFriendlyID, commandprocessor);
+
+			if (!response.get(1).isEmpty()) {
+				Assert.fail(response.get(1));
+			}
 			Assert.assertTrue(response.get(1).isEmpty());
 
 			Assert.assertTrue(response.get(0).contains("Resource ID: junosm20"));
