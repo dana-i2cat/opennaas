@@ -29,7 +29,7 @@ public class GetInventoryCommand extends GenericKarafCommand {
 			printInventory(resource);
 
 		} catch (Exception e) {
-			printError("Error refresing!");
+			printError("Error getting inventory for resource " + resourceId);
 			printError(e);
 			printEndCommand();
 			return "";

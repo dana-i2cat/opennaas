@@ -26,6 +26,8 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
+		printInitCommand("add resource from network");
+
 		// load resources
 		IResource network;
 		IResource resource;
@@ -54,6 +56,7 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		network.getResourceDescriptor().setNetworkTopology(topology);
 
+		printInfo("Resource " + resourceId + "removed from network " + networkId);
 		printEndCommand();
 		return null;
 	}

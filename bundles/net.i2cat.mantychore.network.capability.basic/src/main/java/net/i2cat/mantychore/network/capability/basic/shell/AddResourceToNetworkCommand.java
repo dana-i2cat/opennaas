@@ -26,6 +26,8 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
+		printInitCommand("add resource to network");
+
 		// load resources
 		IResource network;
 		IResource resource;
@@ -61,6 +63,7 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 			network.getResourceDescriptor().setNetworkTopology(topology);
 		}
+		printInfo("Resource " + resourceId + "added to network " + networkId);
 		printEndCommand();
 		return null;
 	}

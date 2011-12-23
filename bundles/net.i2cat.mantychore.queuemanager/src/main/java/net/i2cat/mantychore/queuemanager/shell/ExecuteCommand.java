@@ -3,6 +3,7 @@ package net.i2cat.mantychore.queuemanager.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.queuemanager.QueueManager;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -60,27 +61,33 @@ public class ExecuteCommand extends GenericKarafCommand {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
 				return -1;
 			}
-			
+
 		} catch (Exception e) {
 			printError("Error getting queue.");
 			printError(e);
 			printEndCommand();
 			return -1;
 		}
-		
-		
-		try{
-			printSymbol("Executing actions...");
-			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
-			printSymbol("Executed in " + queueResponse.getTotalTime() + " ms");
 
+		try {
+			printSymbolWithoutDoubleLine("Executing queue... ");
+			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
+			if (queueResponse.isOk())
+				printSymbol("OK");
+			else
+				printSymbol("ERROR");
+			printSymbol("Elapsed time " + queueResponse.getTotalTime() + " ms");
+			printSymbol("Queue Report:");
+			newLine();
 			if (debug) {
 				printDebug(queueResponse);
 			} else {
 				printOverview(queueResponse);
 			}
+			newLine();
 
 		} catch (Exception e) {
+			printSymbol(""); // to start a new line
 			printError("Error executing queue.");
 			printError(e);
 			printEndCommand();
@@ -95,12 +102,12 @@ public class ExecuteCommand extends GenericKarafCommand {
 			printSymbol("WARNING IT WAS NECESARY TO RESTORE THE CONFIGURATION!!");
 			printActionResponseExtended(queueResponse.restoreResponse);
 		}
-		newLine();
+		// newLine();
 		printActionResponseExtended(queueResponse.getPrepareResponse());
-		newLine();
+		// newLine();
 		for (ActionResponse actionResponse : queueResponse.getResponses()) {
 			printActionResponseExtended(actionResponse);
-			newLine();
+			// newLine();
 		}
 
 		printActionResponseExtended(queueResponse.getConfirmResponse());
@@ -114,17 +121,17 @@ public class ExecuteCommand extends GenericKarafCommand {
 			printSymbol("WARNING IT WAS NECESARY TO RESTORE THE CONFIGURATION!!");
 			printActionResponseBrief(queueResponse.restoreResponse);
 		}
-		newLine();
+		// newLine();
 		printActionResponseBrief(queueResponse.getPrepareResponse());
-		newLine();
+		// newLine();
 		for (ActionResponse actionResponse : queueResponse.getResponses()) {
 			printActionResponseBrief(actionResponse);
-			newLine();
+			// newLine();
 		}
 
 		printActionResponseBrief(queueResponse.getConfirmResponse());
 		printActionResponseBrief(queueResponse.getRefreshResponse());
-		
+
 	}
 
 	private void printActionResponseBrief(ActionResponse actionResponse) {
@@ -150,13 +157,13 @@ public class ExecuteCommand extends GenericKarafCommand {
 		for (Response response : responses) {
 			printSymbol("Command: " + response.getCommandName());
 			printSymbol("Status: " + response.getStatus().toString());
-			
+
 			printSymbol("Message: " + response.getSentMessage());
 			printSymbol("Information: " + response.getInformation());
-			for (String error: response.getErrors()){
+			for (String error : response.getErrors()) {
 				printSymbol("Error: " + error);
 			}
-			newSeparator();
+			printSymbol("");
 		}
 	}
 

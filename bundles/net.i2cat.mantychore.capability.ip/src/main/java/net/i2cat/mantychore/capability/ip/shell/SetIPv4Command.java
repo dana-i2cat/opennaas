@@ -41,7 +41,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 				printEndCommand();
 				return null;
 			}
-			printInfo("Setting " + resourceId + " interface: " + interfaceName + " ip: " + ipv4 + " mask: " + mask);
+			// printInfo("Setting " + resourceId + " interface: " + interfaceName + " ip: " + ipv4 + " mask: " + mask);
 
 			String[] argsRouterName = new String[2];
 			try {
@@ -62,7 +62,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 
 			validateResource(resource);
-			printInfo("Preparing the message for setting the interface: ");
+			// printInfo("Preparing the message for setting the interface: ");
 			Object params = validateParams(resource);
 
 			if (params == null) {
@@ -85,7 +85,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			}
 			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
 
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			ipCapability.sendMessage(ActionConstants.SETIPv4, params);
 
 		} catch (ResourceException e) {
@@ -111,24 +111,23 @@ public class SetIPv4Command extends GenericKarafCommand {
 		}
 
 		String interfaceName = argsInterface[0];
-		int port = Integer.parseInt(argsInterface[1]); 
+		int port = Integer.parseInt(argsInterface[1]);
 
 		if (interfaceName.startsWith("lo")) {
 			printError("Configuration for Loopback interface not allowed");
 			return null;
 		}
 
-		
 		NetworkPort param = new NetworkPort();
 		param.setName(interfaceName);
 		param.setPortNumber(port);
 		param.setLinkTechnology(LinkTechnology.OTHER);
-		
+
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address(ipv4);
 		ip.setSubnetMask(mask);
 		param.addProtocolEndpoint(ip);
-		
+
 		printInfo("[" + param.getName() + "." + param.getPortNumber() + "]  " + ipv4 + " / " + mask);
 
 		return param;
@@ -150,7 +149,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 		for (String s : parts) {
 			try {
 				int i = Integer.parseInt(s);
-	
+
 				if ((i < 0) || (i > 255)) {
 					return false;
 				}

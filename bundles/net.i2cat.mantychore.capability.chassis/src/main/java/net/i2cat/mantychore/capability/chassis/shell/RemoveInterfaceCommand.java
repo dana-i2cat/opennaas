@@ -66,7 +66,7 @@ public class RemoveInterfaceCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(parentResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 
 			/*
 			 * FIXME The child resource model is not added because it is not activated. The best option is to search the interface in the parent

@@ -27,7 +27,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 		try {
 			IResourceManager manager = getResourceManager();
-			printInfo("Showing interfaces...");
+			// printInfo("Showing interfaces...");
 
 			String[] argsRouterName = new String[2];
 			try {
@@ -57,10 +57,7 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					printSymbol(bullet + " INTERFACE: " + ethernetPort.getName() + "." + ethernetPort.getPortNumber());
-					if (ethernetPort.getDescription() != null && !ethernetPort.getDescription().equals("")) {
-						printSymbol("description: " + ethernetPort.getDescription());
-					}
+					printSymbolWithoutDoubleLine("INTERFACE: " + ethernetPort.getName() + "." + ethernetPort.getPortNumber());
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
@@ -69,16 +66,17 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 							}
 
 						}
-						printSymbol(doubleTab + "STATE: " + ethernetPort.getOperationalStatus());
+						// TODO does STATE only make sense when ProtocolEndpoints != null???
+						printSymbolWithoutDoubleLine(doubleTab + "STATE: " + ethernetPort.getOperationalStatus());
+					}
+					if (ethernetPort.getDescription() != null && !ethernetPort.getDescription().equals("")) {
+						printSymbolWithoutDoubleLine(doubleTab + "description: " + ethernetPort.getDescription());
 					}
 
 				} else if (logicalDevice instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " INTERFACE: " + lt.getName() + "." + lt.getPortNumber());
+					printSymbolWithoutDoubleLine("INTERFACE: " + lt.getName() + "." + lt.getPortNumber());
 					printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + lt.getPeer_unit());
-					if (lt.getDescription() != null && !lt.getDescription().equals("")) {
-						printSymbol("description: " + lt.getDescription());
-					}
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
@@ -87,10 +85,14 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 							}
 						}
-						printSymbol(doubleTab + "STATE: " + lt.getOperationalStatus());
+						// TODO does STATE only make sense when ProtocolEndpoints != null???
+						printSymbolWithoutDoubleLine(doubleTab + "STATE: " + lt.getOperationalStatus());
+					}
+					if (lt.getDescription() != null && !lt.getDescription().equals("")) {
+						printSymbolWithoutDoubleLine("description: " + lt.getDescription());
 					}
 				}
-
+				printSymbol("");
 			}
 
 		} catch (ResourceException e) {

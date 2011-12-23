@@ -4,15 +4,15 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 //			Object response = executeCommand("chassis:up " + resourceFriendlyID + " fe-0/1/2");
 @Command(scope = "chassis", name = "up", description = "Up a physical interface")
@@ -53,7 +53,7 @@ public class UpInterfaceCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS, prepareConfigureStatusParams(interfaceName));
 
 		} catch (ResourceException e) {

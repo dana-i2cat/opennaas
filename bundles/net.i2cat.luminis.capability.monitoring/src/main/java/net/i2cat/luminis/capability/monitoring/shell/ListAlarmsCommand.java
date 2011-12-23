@@ -45,7 +45,7 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 				if (resourceId != null) {
 
 					printInfo("Resource ID: " + friendlyId);
-					printSymbol(horizontalSeparator);
+					// printSymbol(horizontalSeparator);
 
 					List<ResourceAlarm> alarms = alarmsRepo.getResourceAlarms(resourceId);
 					printAlarms(alarms);
@@ -53,7 +53,7 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
-				printSymbol(underLine);
+				// printSymbol(underLine);
 			}
 
 		} catch (Exception e) {
@@ -78,10 +78,10 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 		for (ResourceAlarm alarm : alarms) {
 			printInfo("Alarm " + i);
 			for (String name : alarm.getPropertyNames()) {
-				printInfo("Property " + name + ": " + alarm.getProperty(name));
+				printInfo(doubleTab + "Property " + name + ": " + alarm.getProperty(name));
 			}
 			i++;
-			printSymbol(horizontalSeparator);
+			// printSymbol(horizontalSeparator);
 		}
 	}
 }

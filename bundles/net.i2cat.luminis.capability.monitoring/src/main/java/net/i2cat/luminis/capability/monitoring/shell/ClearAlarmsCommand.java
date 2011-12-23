@@ -50,11 +50,11 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 				if (resourceId != null) {
 					alarmsRepo.clearResourceAlarms(resourceId);
 					printInfo("Cleared alarms for resource: " + friendlyId);
-					
+
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
-				printSymbol(underLine);
+				// printSymbol(underLine);
 			}
 
 		} catch (Exception e) {

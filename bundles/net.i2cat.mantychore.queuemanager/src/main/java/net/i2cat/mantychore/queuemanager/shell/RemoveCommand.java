@@ -1,8 +1,7 @@
 package net.i2cat.mantychore.queuemanager.shell;
 
-import java.util.List;
-
 import net.i2cat.mantychore.queuemanager.QueueManager;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -52,10 +51,10 @@ public class RemoveCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
 			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
-			printSymbol("Removing action " + posQueue + "...");
+			// printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);
 			queue.sendMessage(QueueConstants.MODIFY, params);
-			printSymbol("Executed!!!");
+			printSymbol("Action " + posQueue + " removed from queue");
 
 		} catch (Exception e) {
 			printError("Error removing action from queue.");

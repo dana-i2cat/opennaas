@@ -76,7 +76,6 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			
 			// checking given interface is in source resource (we need some data from it)
 			ComputerSystem routerModel = ((ComputerSystem) sourceResource.getModel());
 			int pos = containsSubInterface(paramsInterface[0], Integer.parseInt(paramsInterface[1]), routerModel);
@@ -87,7 +86,7 @@ public class AddInterfaceCommand extends GenericKarafCommand {
 			if (!(logicalDevice instanceof NetworkPort))
 				throw new Exception("Given interface is not supported.");
 
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, logicalDevice);
 
 			LogicalDevice deviceCopied = copyNetworkPort((NetworkPort) logicalDevice);

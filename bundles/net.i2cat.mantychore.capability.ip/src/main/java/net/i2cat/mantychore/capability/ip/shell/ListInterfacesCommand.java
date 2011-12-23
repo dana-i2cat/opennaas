@@ -1,25 +1,17 @@
 package net.i2cat.mantychore.capability.ip.shell;
 
-
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.capability.ip.Activator;
-import net.i2cat.mantychore.capability.ip.IPCapability;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "ipv4", name = "list", description = "List all the interfaces of a given resource.")
@@ -35,7 +27,7 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 
 		try {
 			IResourceManager manager = getResourceManager();
-			printInfo("Listing interfaces...");
+			// printInfo("Listing interfaces...");
 
 			String[] argsRouterName = new String[2];
 			try {
@@ -60,34 +52,37 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			ComputerSystem model = (ComputerSystem) resource.getModel();
-			printSymbol(horizontalSeparator);
-			printSymbol(" [Interface name] 	IP/MASK			");
-			printSymbol(horizontalSeparator);
+			// printSymbol(horizontalSeparator);
+			// printSymbol(" [Interface name] 	IP/MASK			");
+			// printSymbol(horizontalSeparator);
 
-			//print ifaces & its ip address 
+			String[] titles = new String[] { "Interface name", "IP address/mask", "description" };
+
+			// print ifaces & its ip address
 			for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
 				if (logicalDevice instanceof NetworkPort) {
 					NetworkPort port = (NetworkPort) logicalDevice;
 					printSymbolWithoutDoubleLine(bullet + " [" + port.getName() + "." + port.getPortNumber() + "]  ");
-
+					if (port.getDescription() != null && !port.getDescription().equals("")) {
+						printSymbolWithoutDoubleLine(doubleTab + "description: " + port.getDescription());
+					}
+					printSymbol("");
 					if (port.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof IPProtocolEndpoint) {
 								String ipv4 = ((IPProtocolEndpoint) protocolEndpoint).getIPv4Address();
 								String mask = ((IPProtocolEndpoint) protocolEndpoint).getSubnetMask();
 								if (ipv4 != null && mask != null) {
-									printSymbol(doubleTab + ipv4 + " / " + mask);
+									printSymbol(doubleTab + "IP/MASK: " + ipv4 + " / " + mask);
 								}
 							}
 
 						}
-						
+
 					}
-					if (port.getDescription() != null && !port.getDescription().equals("")) {
-						printSymbol("description: " + port.getDescription());
-					}
+
 				}
-				printSymbol("");
+				// printSymbol("");
 			}
 
 		} catch (ResourceException e) {

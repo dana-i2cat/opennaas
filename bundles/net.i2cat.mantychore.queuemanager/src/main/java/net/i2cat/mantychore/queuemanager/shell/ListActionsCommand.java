@@ -3,6 +3,7 @@ package net.i2cat.mantychore.queuemanager.shell;
 import java.util.List;
 
 import net.i2cat.mantychore.queuemanager.QueueManager;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -65,7 +66,8 @@ public class ListActionsCommand extends GenericKarafCommand {
 				matrix[num] = params;
 				num++;
 			}
-			super.printTable(titles, matrix, -1);
+			printSymbol("Actions in queue of resource " + resourceId + ":");
+			printTable(titles, matrix, -1);
 
 		} catch (Exception e) {
 			printError("Error getting queue.");

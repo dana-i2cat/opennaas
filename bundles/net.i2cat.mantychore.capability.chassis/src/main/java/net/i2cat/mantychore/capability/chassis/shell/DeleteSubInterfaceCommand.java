@@ -3,15 +3,15 @@ package net.i2cat.mantychore.capability.chassis.shell;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
 import net.i2cat.mantychore.model.EthernetPort;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "deleteSubInterface", description = "Delete a subinterface on a given resource.")
 public class DeleteSubInterfaceCommand extends GenericKarafCommand {
@@ -53,7 +53,7 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, prepareParams());
 
 		} catch (ResourceException e) {

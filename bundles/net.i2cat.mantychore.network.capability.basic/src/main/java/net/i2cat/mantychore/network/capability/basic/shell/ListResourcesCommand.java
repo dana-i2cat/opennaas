@@ -19,6 +19,8 @@ public class ListResourcesCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 
+		printInitCommand("list resources in network");
+
 		// load network
 		IResource network;
 		try {

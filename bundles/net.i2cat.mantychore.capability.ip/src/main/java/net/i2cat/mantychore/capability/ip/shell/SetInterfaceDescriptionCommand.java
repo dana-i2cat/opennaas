@@ -56,7 +56,7 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
 
 		} catch (ResourceException e) {

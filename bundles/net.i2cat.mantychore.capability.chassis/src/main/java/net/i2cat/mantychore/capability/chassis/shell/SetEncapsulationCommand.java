@@ -6,23 +6,20 @@ import java.util.regex.Pattern;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "setEncapsulation", description = "Set an encapsulation in a given interface.")
 public class SetEncapsulationCommand extends GenericKarafCommand {
@@ -34,7 +31,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 	private String	subinterface;
 
 	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = false, multiValued = false)
-	private int		vlanId = -1;
+	private int		vlanId	= -1;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -68,12 +65,12 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 
-			validateResource(resource);			
+			validateResource(resource);
 			checkParams();
 			NetworkPort params = prepareParams();
 
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, params);
 
 		} catch (ResourceException e) {
@@ -86,17 +83,18 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		printEndCommand();
 		return null;
 	}
-	
-	private void checkParams () throws Exception  {
-		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");		 
+
+	private void checkParams() throws Exception {
+		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
 		Matcher matcher = ltPattern.matcher(subinterface);
-		if (!matcher.find()) throw new Exception ("the command encapsulation is limited in logical tunnels"); 		
+		if (!matcher.find())
+			throw new Exception("the command encapsulation is limited in logical tunnels");
 	}
-	
+
 	private boolean isLoopback(String name) {
 		return name.startsWith("lo");
 
@@ -112,7 +110,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 		networkPort.setPortNumber(Integer.parseInt(args[1]));
 		networkPort.setLinkTechnology(LinkTechnology.OTHER);
 
-		if (vlanId != -1){
+		if (vlanId != -1) {
 			VLANEndpoint vlanEndpoint = new VLANEndpoint();
 			vlanEndpoint.setVlanID(vlanId);
 			networkPort.addProtocolEndpoint(vlanEndpoint);

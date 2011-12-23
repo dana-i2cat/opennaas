@@ -2,14 +2,14 @@ package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.ManagedSystemElement;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
 
 @Command(scope = "chassis", name = "listLogicalRouters", description = "List all logical resources of a given resource.")
 public class ListLogicalRoutersCommand extends GenericKarafCommand {
@@ -57,7 +57,7 @@ public class ListLogicalRoutersCommand extends GenericKarafCommand {
 
 				if (systemElement instanceof ComputerSystem) {
 
-					printSymbol(bullet + " " + systemElement.getName());
+					printSymbol(systemElement.getName());
 				}
 			}
 

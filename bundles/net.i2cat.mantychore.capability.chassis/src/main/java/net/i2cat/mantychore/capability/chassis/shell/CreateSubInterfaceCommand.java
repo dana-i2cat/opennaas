@@ -11,16 +11,15 @@ import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "chassis", name = "createSubInterface", description = "Create a subinterface on a given resource.")
 public class CreateSubInterfaceCommand extends GenericKarafCommand {
@@ -30,18 +29,15 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 	@Argument(index = 1, name = "subInterface", description = "The interface to be created.", required = true, multiValued = false)
 	private String	subinterface;
-	
+
 	@Option(name = "--description", aliases = { "-d" }, description = "interface description .")
-	private String	description = "";
+	private String	description	= "";
 
 	@Option(name = "--vlanid", aliases = { "-v" }, description = "specify vlan id to use vlan-tagging. IMPORTANT, ethernet interfaces need to include vlans")
-	private int	vlanid = -1;
-	
+	private int		vlanid		= -1;
+
 	@Option(name = "--peerunit", aliases = { "-pu" }, description = "specify peer unit for lt interfaces.")
-	private int	peerunit = -1;
-
-
-	
+	private int		peerunit	= -1;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -74,9 +70,9 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			checkParams();
-			
+
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			printInfo("Sending message to the queue");
+			// printInfo("Sending message to the queue");
 			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, prepareParams());
 
 		} catch (ResourceException e) {
@@ -92,47 +88,53 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-	
-	public void checkParams ()  throws Exception  {
-		
+
+	public void checkParams() throws Exception {
+
 		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
-	    Matcher ltmatcher = ltPattern.matcher(subinterface);
+		Matcher ltmatcher = ltPattern.matcher(subinterface);
 		Pattern ethPattern = Pattern.compile("[fg]e-[0-9]/[0-9]/[0-9].[0-9]");
-	    Matcher ethmatcher = ethPattern.matcher(subinterface);
+		Matcher ethmatcher = ethPattern.matcher(subinterface);
 		Pattern loPattern = Pattern.compile("lo[0-9].[0-9]");
-	    Matcher lomatcher = loPattern.matcher(subinterface);
-		
+		Matcher lomatcher = loPattern.matcher(subinterface);
+
 		String[] args = subinterface.split("\\.");
 		/* check logical tunnels */
-		if (ltmatcher.find()) { if (peerunit == -1) throw new Exception ("peerUnit must be specified in lt interfaces"); }
-		
+		if (ltmatcher.find()) {
+			if (peerunit == -1)
+				throw new Exception("peerUnit must be specified in lt interfaces");
+		}
+
 		/* check ethernet ports */
-		if (ethmatcher.find() || lomatcher.find())  {if (vlanid == -1) throw new Exception ("vlan must be specified in ethernet interfaces"); }
-		
+		if (ethmatcher.find() || lomatcher.find()) {
+			if (vlanid == -1)
+				throw new Exception("vlan must be specified in ethernet interfaces");
+		}
+
 	}
 
 	private NetworkPort prepareParams() throws Exception {
 		String[] args = subinterface.split("\\.");
-		//check if it is a logical tunnel
-		NetworkPort networkPort = null; 
+		// check if it is a logical tunnel
+		NetworkPort networkPort = null;
 		if (args[0].startsWith("lt")) {
 			LogicalTunnelPort logicalTunnel = new LogicalTunnelPort();
 			logicalTunnel.setLinkTechnology(LinkTechnology.OTHER);
 			// TODO THIS CHECK HAVE TO BE INCLUDED IN THE VIEW?
-			if (peerunit == -1) 
-				throw new Exception ("peerUnit must be specified in lt interfaces"); 
+			if (peerunit == -1)
+				throw new Exception("peerUnit must be specified in lt interfaces");
 			logicalTunnel.setPeer_unit(peerunit);
 			networkPort = logicalTunnel;
 		} else {
 			networkPort = new EthernetPort();
 		}
-		
+
 		networkPort.setName(args[0]);
 		networkPort.setPortNumber(Integer.parseInt(args[1]));
 		if (vlanid != -1) {
 			VLANEndpoint vlanEndpoint = new VLANEndpoint();
-			vlanEndpoint.setVlanID(vlanid); //TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
-			networkPort.addProtocolEndpoint(vlanEndpoint);			
+			vlanEndpoint.setVlanID(vlanid); // TODO COMPLETE OTHER CASES... INITIALIZE THE VLAN ID TO 1
+			networkPort.addProtocolEndpoint(vlanEndpoint);
 		}
 		networkPort.setDescription(description);
 		return networkPort;
