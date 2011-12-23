@@ -5,12 +5,13 @@ import java.util.Vector;
 import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.Reply;
-import org.opennaas.core.resources.command.Command;
-import org.opennaas.core.resources.command.CommandException;
-import org.opennaas.core.resources.command.Response;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.command.Command;
+import org.opennaas.core.resources.command.CommandException;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.helpers.XmlHelper;
 
 public abstract class JunosCommand extends Command {
 
@@ -43,7 +44,14 @@ public abstract class JunosCommand extends Command {
 		if (!(resp instanceof Reply)) {
 			Vector<String> errors = new Vector<String>();
 			errors.add("The response message is badformed. It is not a reply message");
-			return Response.errorResponse(getQuery().toXML(), errors);
+
+			String sentMessage = getQuery().toXML();
+			try {
+				sentMessage = XmlHelper.formatXML(sentMessage);
+			} catch (Exception e) {
+				// ignored
+			}
+			return Response.errorResponse(sentMessage, errors);
 		}
 		Reply reply = (Reply) resp;
 		// extra control, it checks if is not null the error list
@@ -51,7 +59,13 @@ public abstract class JunosCommand extends Command {
 				|| reply.getErrors().size() == 0) {
 
 			// BUILD OK RESPONSE
-			Response response = Response.okResponse(getQuery().toXML());
+			String sentMessage = getQuery().toXML();
+			try {
+				sentMessage = XmlHelper.formatXML(sentMessage);
+			} catch (Exception e) {
+				// ignored
+			}
+			Response response = Response.okResponse(sentMessage);
 			response.setCommandName(this.getClass().getSimpleName());
 
 			response.setInformation(reply.getContain());
@@ -61,7 +75,14 @@ public abstract class JunosCommand extends Command {
 			Vector<String> errors = new Vector<String>();
 			for (Error error : reply.getErrors())
 				errors.add(error.getMessage() + " : " + error.getInfo());
-			return Response.errorResponse(getQuery().toXML(), errors);
+
+			String sentMessage = getQuery().toXML();
+			try {
+				sentMessage = XmlHelper.formatXML(sentMessage);
+			} catch (Exception e) {
+				// ignored
+			}
+			return Response.errorResponse(sentMessage, errors);
 		}
 	}
 
