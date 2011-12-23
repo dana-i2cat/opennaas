@@ -56,13 +56,11 @@ public class ListInterfacesCommand extends GenericKarafCommand {
 			// printSymbol(" [Interface name] 	IP/MASK			");
 			// printSymbol(horizontalSeparator);
 
-			String[] titles = new String[] { "Interface name", "IP address/mask", "description" };
-
 			// print ifaces & its ip address
 			for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
 				if (logicalDevice instanceof NetworkPort) {
 					NetworkPort port = (NetworkPort) logicalDevice;
-					printSymbolWithoutDoubleLine(bullet + " [" + port.getName() + "." + port.getPortNumber() + "]  ");
+					printSymbolWithoutDoubleLine("[" + port.getName() + "." + port.getPortNumber() + "]  ");
 					if (port.getDescription() != null && !port.getDescription().equals("")) {
 						printSymbolWithoutDoubleLine(doubleTab + "description: " + port.getDescription());
 					}
