@@ -57,7 +57,15 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 				// TODO CHECK IF IT IS POSSIBLE
 				if (logicalDevice instanceof EthernetPort) {
 					EthernetPort ethernetPort = (EthernetPort) logicalDevice;
-					printSymbolWithoutDoubleLine("INTERFACE: " + ethernetPort.getName() + "." + ethernetPort.getPortNumber());
+
+					int reservedSpace = 15;
+					String ifaceName = ethernetPort.getName() + "." + ethernetPort.getPortNumber();
+					if (ifaceName.length() < 15) {
+						int dif = 15 - ifaceName.length();
+						for (int i = 0; i < dif; i++)
+							ifaceName += " ";
+					}
+					printSymbolWithoutDoubleLine("INTERFACE: " + ifaceName);
 					if (ethernetPort.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : ethernetPort.getProtocolEndpoint()) {
 							if (protocolEndpoint instanceof VLANEndpoint) {
@@ -75,7 +83,15 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 
 				} else if (logicalDevice instanceof LogicalTunnelPort) {
 					LogicalTunnelPort lt = (LogicalTunnelPort) logicalDevice;
-					printSymbolWithoutDoubleLine("INTERFACE: " + lt.getName() + "." + lt.getPortNumber());
+
+					int reservedSpace = 15;
+					String ifaceName = lt.getName() + "." + lt.getPortNumber();
+					if (ifaceName.length() < 15) {
+						int dif = 15 - ifaceName.length();
+						for (int i = 0; i < dif; i++)
+							ifaceName += " ";
+					}
+					printSymbolWithoutDoubleLine("INTERFACE: " + ifaceName);
 					printSymbolWithoutDoubleLine(doubleTab + "Peer-Unit: " + lt.getPeer_unit());
 					if (lt.getProtocolEndpoint() != null) {
 						for (ProtocolEndpoint protocolEndpoint : lt.getProtocolEndpoint()) {
