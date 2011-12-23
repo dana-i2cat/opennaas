@@ -3,7 +3,6 @@ package org.opennaas.core.resources.shell;
 import java.io.PrintStream;
 import java.util.List;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
@@ -22,7 +21,6 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	protected PrintStream	out					= System.out;
 	protected PrintStream	err					= System.err;
-	protected int			counter				= 0;
 	protected int			totalFiles			= 0;
 	protected String[]		argsInterface		= null;
 	// Messages
@@ -43,25 +41,26 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	public void printInitCommand(String commandName) {
 
-		String title = " Executing " + commandName + " command ";
+		String title = "Executing " + commandName + " command";
+		log.debug(title);
 
-		int length = title.length();
-		float chFrame = (doubleLine.length() - length) / 2;
-		String symbol = "";
-		for (int i = 0; i < chFrame; i++) {
-			symbol = symbol.concat("=");
-		}
-		if (((2 * chFrame) + length) >= doubleLine.length()) {
-			printSymbol(symbol + title + symbol);
-		} else if (chFrame % 2 == 0 && (((2 * chFrame) + length) < doubleLine.length())) {
-			printSymbol(symbol + title + symbol + titleFrame);
-		} else if (chFrame % 2 == 0) {
-			printSymbol(symbol + title + symbol);
-		} else {
-			printSymbol(symbol + title + symbol + titleFrame);
-		}
-
-		printSymbol(doubleLine);
+		// int length = title.length();
+		// float chFrame = (doubleLine.length() - length) / 2;
+		// String symbol = "";
+		// for (int i = 0; i < chFrame; i++) {
+		// symbol = symbol.concat("=");
+		// }
+		// if (((2 * chFrame) + length) >= doubleLine.length()) {
+		// printSymbol(symbol + title + symbol);
+		// } else if (chFrame % 2 == 0 && (((2 * chFrame) + length) < doubleLine.length())) {
+		// printSymbol(symbol + title + symbol + titleFrame);
+		// } else if (chFrame % 2 == 0) {
+		// printSymbol(symbol + title + symbol);
+		// } else {
+		// printSymbol(symbol + title + symbol + titleFrame);
+		// }
+		//
+		// printSymbol(doubleLine);
 	}
 
 	public void newLine() {
@@ -73,7 +72,8 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	public void printEndCommand() {
-		printSymbol(doubleLine);
+		// printSymbol(doubleLine);
+		log.debug("Command finished.");
 	}
 
 	public void printError(String message) {

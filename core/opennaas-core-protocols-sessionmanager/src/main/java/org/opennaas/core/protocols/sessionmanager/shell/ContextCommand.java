@@ -1,15 +1,14 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
  * List the device ids registered to the protocol manager
@@ -85,7 +84,7 @@ public class ContextCommand extends GenericKarafCommand {
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
 		sessionManager.registerContext(context);
-		printInfo("Context registered.");
+		printInfo("Context registered for resource " + resourceId);
 		printEndCommand();
 		return null;
 	}

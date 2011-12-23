@@ -79,7 +79,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 								}
 							}
 						}
-						printSymbol(horizontalSeparator);
+						// printSymbol(horizontalSeparator);
 						printInfo("Active capabilities:");
 						for (ICapability capability : resource.getCapabilities()) {
 							// show only the active capabilities
@@ -98,7 +98,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 				} catch (ResourceException e) {
 					printError(e);
 				}
-				printSymbol(underLine);
+				// printSymbol(underLine);
 			}
 		} catch (Exception e) {
 			printError(e);

@@ -2,7 +2,6 @@ package org.opennaas.core.resources.shell;
 
 import java.util.List;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResourceIdentifier;
@@ -24,7 +23,7 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("remove resource");
-
+		int counter = 0;
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
@@ -42,23 +41,20 @@ public class RemoveResourceCommand extends GenericKarafCommand {
 				try {
 					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
-
-						printInfo("Removing Resource: "
-								+ argsRouterName[1]);
+						// printInfo("Removing Resource: "+ argsRouterName[1]);
 						manager.removeResource(identifier);
 						counter++;
-						printInfo("Resource " + argsRouterName[1] + " removed.");
+						printInfo("Resource " + id + " removed.");
 					} else {
-						printError("The resource " + argsRouterName[1] +
-										" is not found on repository.");
+						printError("Resource " + id +
+										" not found on repository.");
 					}
 				} catch (ResourceException e) {
 					printError(e);
 				}
-				printSymbol(horizontalSeparator);
-
+				// printSymbol(horizontalSeparator);
 			}
-			printInfo("Removed " + counter + " resource/s from " + resourceIDs.size());
+			printInfo("Removed " + counter + " resource/s of " + resourceIDs.size());
 
 		} catch (Exception e) {
 			printError("Error removing resource.");

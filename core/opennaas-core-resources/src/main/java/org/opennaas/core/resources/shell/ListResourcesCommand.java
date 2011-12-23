@@ -35,7 +35,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 			List<IResource> resources = manager.listResourcesByType(resourceType);
 			// if resourceType is null return all the resources
 			if (resources == null) {
-				printError("Didn't find a repository of this type.");
+				printError("Didn't find a repository of type " + resourceType);
 				printEndCommand();
 				return null;
 			}
@@ -46,36 +46,35 @@ public class ListResourcesCommand extends GenericKarafCommand {
 			}
 
 			printInfo("Found " + resources.size() + " resources.");
-			printSymbol(horizontalSeparator);
-			if (resourceType != null) {
-				printInfo("Listing resources of type " + resourceType);
-				printSymbol(underLine);
+			// printSymbol(horizontalSeparator);
+			// if (resourceType != null) {
+			// printInfo("Listing resources of type " + resourceType);
+			// printSymbol(underLine);
+			//
+			// for (IResource resource : resources) {
+			// printInfo(doubleTab + "ID: " + resource
+			// .getResourceDescriptor()
+			// .getInformation().getName() + doubleTab + "STATE: " + resource
+			// .getState());
+			// if (flagAll)
+			// printAll(resource.getResourceDescriptor());
+			// }
+			// // printSymbol(horizontalSeparator);
+			//
+			// } else {
+			// printInfo("Listing all resources ");
+			// printSymbol(underLine);
+			for (IResource resource : resources) {
+				printInfo(doubleTab + "TYPE: " + resource.getResourceDescriptor().getInformation().getType() +
+							doubleTab + "ID: " + resource.getResourceDescriptor().getInformation().getName() +
+							doubleTab + "STATE: " + resource.getState());
 
-				for (IResource resource : resources) {
-					printInfo(doubleTab + "ID: " + resource
-									.getResourceDescriptor()
-									.getInformation().getName() + doubleTab + "STATE: " + resource
-									.getState());
-					if (flagAll)
-						printAll(resource.getResourceDescriptor());
-				}
-				printSymbol(horizontalSeparator);
+				if (flagAll)
+					printAll(resource.getResourceDescriptor());
 
-			} else {
-				printInfo("Listing all resources ");
-				printSymbol(underLine);
-				for (IResource resource : resources) {
-					printInfo(doubleTab + "TYPE: " + resource.getResourceDescriptor().getInformation().getType() + doubleTab + "ID: " + resource
-									.getResourceDescriptor()
-									.getInformation().getName() + doubleTab + "STATE: " + resource
-									.getState());
-
-					if (flagAll)
-						printAll(resource.getResourceDescriptor());
-
-				}
-				printSymbol(horizontalSeparator);
 			}
+			// printSymbol(horizontalSeparator);
+			// }
 
 		} catch (Exception e) {
 			printError(e);

@@ -9,7 +9,6 @@ import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
 
-
 /**
  * Start one or more resources
  * 
@@ -25,6 +24,7 @@ public class StartResourceCommand extends GenericKarafCommand {
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("resource start");
+		int counter = 0;
 
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
@@ -43,28 +43,24 @@ public class StartResourceCommand extends GenericKarafCommand {
 				try {
 					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
-						printInfo("Starting Resource: "
-								+ argsRouterName[1]);
+						// printInfo("Starting Resource: "+ argsRouterName[1]);
 						manager.startResource(identifier);
 						counter++;
-						printInfo("Resource " + argsRouterName[1] + " started.");
+						printInfo("Resource " + id + " started.");
 					} else {
-						printError("The resource " + argsRouterName[1] +
-										" is not found on repository.");
+						printError("Resource " + id +
+										" not found on repository.");
 					}
 				} catch (ResourceException e) {
 					if (e.getCause() instanceof IncorrectLifecycleStateException)
-						printError("Cannot start resource " + argsRouterName[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+						printError("Cannot start resource " + id + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
 								.getResourceState());
 					else
-						printError(e);
-					printError("Resource " + argsRouterName[1] + " was not started");
-
+						printError("Cannot start resource " + id + ": ", e);
 				}
-
-				printSymbol(horizontalSeparator);
+				// printSymbol(horizontalSeparator);
 			}
-			printInfo("Started " + counter + " resource/s from " + resourceIDs.size());
+			printInfo("Started " + counter + " resource/s of " + resourceIDs.size());
 
 		} catch (Exception e) {
 			printError("An error occurred starting the resource.");
@@ -72,6 +68,5 @@ public class StartResourceCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
-
 	}
 }

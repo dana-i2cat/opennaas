@@ -52,8 +52,8 @@ public class ExportResourceDescriptorCommand extends GenericKarafCommand {
 
 				identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 				if (identifier == null) {
-					printError("Resource not found in Repository");
-					printError("Export cancelled.");
+					printError("Resource " + resourceId + " not found in Repository");
+					// printError("Export cancelled.");
 					return null;
 				}
 				try {

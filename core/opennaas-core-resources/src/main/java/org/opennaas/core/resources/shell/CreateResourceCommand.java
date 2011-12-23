@@ -51,12 +51,13 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		IResourceManager manager = getResourceManager();
 
 		List<ResourceDescriptor> descriptors = getDescriptors(paths);
-
+		int counter = 0;
 		for (ResourceDescriptor descriptor : descriptors) {
 			try {
 				totalFiles++;
 				createResource(manager, descriptor);
-				printSymbol(underLine);
+				counter++;
+				// printSymbol(underLine);
 			} catch (NullPointerException f) {
 				printError("Error creating Resource " + descriptor.getInformation().getType() + ":" + descriptor.getInformation().getName());
 				printError(f);
@@ -65,9 +66,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		if (counter == 0) {
 			printInfo("No resource has been created.");
-
 		} else {
-			printInfo("Created " + counter + " resource/s from " + totalFiles);
+			printInfo("Created " + counter + " resource/s of " + totalFiles);
 		}
 		printEndCommand();
 		return null;
@@ -83,7 +83,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 		IResource resource = null;
 		try {
-			printInfo("Creating Resource ...... ");
+			// printInfo("Creating Resource ...... ");
 			resource = manager.createResource(descriptor);
 		} catch (ResourceException e) {
 
@@ -99,9 +99,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			printError(e);
 			return -1;
 		}
-		printInfo("Resource of type " + resource.getResourceDescriptor().getInformation().getType() + " created with name: "
-				+ resource.getResourceDescriptor().getInformation().getName());
-		counter++;
+		printInfo("Created resource " + resource.getResourceDescriptor().getInformation().getType() + ":" + resource.getResourceDescriptor()
+				.getInformation().getName());
 		return 0;
 	}
 
@@ -110,11 +109,11 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		// First try a URL
 		try {
 			URL url = new URL(filename);
-			printInfo("URL: " + url);
+			log.info("URL: " + url);
 			stream = url.openStream();
 		} catch (MalformedURLException ignore) {
 			// Then try a file
-			printInfo("file: " + filename);
+			log.info("file: " + filename);
 			stream = new FileInputStream(filename);
 		}
 
@@ -145,9 +144,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			}
 		}
 
-		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getName() + " with type: " + resourceDescriptor
-				.getInformation()
-				.getType());
+		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getType()
+				+ ":" + resourceDescriptor.getInformation().getName());
 		return resourceDescriptor;
 
 	}

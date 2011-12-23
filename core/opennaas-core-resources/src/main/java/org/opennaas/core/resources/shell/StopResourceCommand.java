@@ -10,7 +10,6 @@ import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
 
-
 /**
  * Stop one or more resources
  * 
@@ -30,6 +29,8 @@ public class StopResourceCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 
 		printInitCommand("resource stop");
+		int counter = 0;
+
 		try {
 			ResourceManager manager = (ResourceManager) getResourceManager();
 			for (String id : resourceIDs) {
@@ -47,31 +48,29 @@ public class StopResourceCommand extends GenericKarafCommand {
 				try {
 					identifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 					if (identifier != null) {
-						printInfo("Stopping Resource...");
+						// printInfo("Stopping Resource...");
 
 						if (!force) {
 							manager.stopResource(identifier);
 						} else {
-							printInfo("Forcing resource to stop");
+							// printInfo("Forcing resource to stop");
 							manager.forceStopResource(identifier);
 						}
 
 						counter++;
-						printInfo("Resource " + argsRouterName[1] + " stopped.");
+						printInfo("Resource " + id + " stopped.");
 					} else {
-						printError("The resource " + argsRouterName[1] + " is not found on repository.");
+						printError("Resource " + id + " is not found on repository.");
 					}
 				} catch (ResourceException e) {
 					if (e.getCause() instanceof IncorrectLifecycleStateException)
-						printError("Cannot stop resource " + argsRouterName[1] + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
+						printError("Cannot stop resource " + id + " from state: " + ((IncorrectLifecycleStateException) e.getCause())
 								.getResourceState());
 					else
-						printError(e);
-					printError("Resource " + argsRouterName[1] + " was not stopped. ");
-
+						printError("Cannot stop resource " + id + ": ", e);
 				}
 
-				printSymbol(horizontalSeparator);
+				// printSymbol(horizontalSeparator);
 			}
 
 			printInfo("Stopped " + counter + " resource/s from " + resourceIDs.size());

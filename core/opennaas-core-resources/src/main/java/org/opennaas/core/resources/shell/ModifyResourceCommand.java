@@ -11,7 +11,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResourceIdentifier;
@@ -59,16 +58,16 @@ public class ModifyResourceCommand extends GenericKarafCommand {
 				if (resourceIdentifier != null) {
 					try {
 						manager.modifyResource(resourceIdentifier, descriptor);
-						printInfo("Resource " + argsRouterName[1] + " modified.");
+						printInfo("Resource " + resourceId + " modified.");
 					} catch (ResourceException f) {
 						printError(f);
 					}
 				} else {
-					printError("The resource " + argsRouterName[1] + " is not found on repository.");
+					printError("Resource " + resourceId + " not found on repository.");
 				}
 			} catch (ResourceException e) {
 				printError(e);
-				printError("No modified " + argsRouterName[1]);
+				printError("Cannot modify resource " + resourceId);
 			}
 		}
 
