@@ -8,6 +8,11 @@ import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
 
 public class XmlHelperTest {
+	private static String	formattedTest	= "<!-- Document comment -->" + '\n'
+													+ "<aaa>" + '\n'
+													+ "  <bbb/>" + '\n'
+													+ "  <ccc/>" + '\n'
+													+ "</aaa>" + '\n';
 
 	@Test
 	public void formatXMLTest() {
@@ -18,8 +23,8 @@ public class XmlHelperTest {
 		toFormat.add("<!-- Document comment --><aaa    >        <bbb       /><ccc/></aaa>");
 
 		for (String unformatted : toFormat) {
-			System.out.println("Unformated:\n" + unformatted);
-			System.out.println("Formatted:\n" + formatString(unformatted));
+			String formatted = formatString(unformatted);
+			Assert.assertEquals(formattedTest, formatted);
 		}
 
 	}
