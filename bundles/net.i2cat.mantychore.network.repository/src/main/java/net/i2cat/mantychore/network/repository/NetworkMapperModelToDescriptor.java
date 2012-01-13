@@ -86,6 +86,13 @@ public class NetworkMapperModelToDescriptor {
 		return networkTopology;
 	}
 
+	private static String addNumberSign(String name) {
+		if (!name.startsWith("#"))
+			return "#" + name;
+		else
+			return name;
+	}
+
 	private static int getNetworkDomain(String name, List<org.opennaas.core.resources.descriptor.network.NetworkDomain> existingDomains) {
 		int pos = 0;
 		for (org.opennaas.core.resources.descriptor.network.NetworkDomain networkDomain : existingDomains) {
