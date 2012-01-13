@@ -114,19 +114,19 @@ public class Cim2NdlMapperTest {
 			if (connectionPoint instanceof Interface) {
 				if (connectionPoint.getLayer() instanceof EthernetLayer) {
 
-					fe_0_0_2_0Found = fe_0_0_2_0Found || connectionPoint.getName().equals("fe-0/0/2.0");
-					fe_0_0_3_0Found = fe_0_0_3_0Found || connectionPoint.getName().equals("fe-0/0/3.0");
-					fe_0_0_1_X_ethFound = fe_0_0_1_X_ethFound || connectionPoint.getName().startsWith("fe-0/0/1.");
-					fe_0_1_1_X_ethFound = fe_0_1_1_X_ethFound || connectionPoint.getName().startsWith("fe-0/1/1.");
-					lt_0_2_1_X_ethFound = lt_0_2_1_X_ethFound || connectionPoint.getName().startsWith("lt-0/2/1.");
+					fe_0_0_2_0Found = fe_0_0_2_0Found || connectionPoint.getName().endsWith("fe-0/0/2.0");
+					fe_0_0_3_0Found = fe_0_0_3_0Found || connectionPoint.getName().endsWith("fe-0/0/3.0");
+					fe_0_0_1_X_ethFound = fe_0_0_1_X_ethFound || connectionPoint.getName().contains("fe-0/0/1.");
+					fe_0_1_1_X_ethFound = fe_0_1_1_X_ethFound || connectionPoint.getName().contains("fe-0/1/1.");
+					lt_0_2_1_X_ethFound = lt_0_2_1_X_ethFound || connectionPoint.getName().contains("lt-0/2/1.");
 
 					ethIfaceCount++;
 
 				} else if (connectionPoint.getLayer() instanceof TaggedEthernetLayer) {
 
-					fe_0_0_1_X_vlanFound = fe_0_0_1_X_vlanFound || connectionPoint.getName().startsWith("fe-0/0/1.");
-					fe_0_1_1_X_vlanFound = fe_0_1_1_X_vlanFound || connectionPoint.getName().startsWith("fe-0/1/1.");
-					lt_0_2_1_X_vlanFound = lt_0_2_1_X_vlanFound || connectionPoint.getName().startsWith("lt-0/2/1.");
+					fe_0_0_1_X_vlanFound = fe_0_0_1_X_vlanFound || connectionPoint.getName().contains("fe-0/0/1.");
+					fe_0_1_1_X_vlanFound = fe_0_1_1_X_vlanFound || connectionPoint.getName().contains("fe-0/1/1.");
+					lt_0_2_1_X_vlanFound = lt_0_2_1_X_vlanFound || connectionPoint.getName().contains("lt-0/2/1.");
 
 					Assert.assertNotNull(connectionPoint.getServerInterface());
 					Assert.assertNotNull(connectionPoint.getServerInterface().getLayer());
@@ -137,11 +137,11 @@ public class Cim2NdlMapperTest {
 
 				} else if (connectionPoint.getLayer() instanceof IPLayer) {
 
-					ip192_168_11_11Found = ip192_168_11_11Found || connectionPoint.getName().equals("192.168.11.11");
-					ip192_168_0_1Found = ip192_168_0_1Found || connectionPoint.getName().equals("192.168.0.1");
-					ip192_168_0_3Found = ip192_168_0_3Found || connectionPoint.getName().equals("192.168.0.3");
-					ip10_0_0_1Found = ip10_0_0_1Found || connectionPoint.getName().equals("10.0.0.1");
-					ip10_0_0_3Found = ip10_0_0_3Found || connectionPoint.getName().equals("10.0.0.3");
+					ip192_168_11_11Found = ip192_168_11_11Found || connectionPoint.getName().endsWith("192.168.11.11");
+					ip192_168_0_1Found = ip192_168_0_1Found || connectionPoint.getName().endsWith("192.168.0.1");
+					ip192_168_0_3Found = ip192_168_0_3Found || connectionPoint.getName().endsWith("192.168.0.3");
+					ip10_0_0_1Found = ip10_0_0_1Found || connectionPoint.getName().endsWith("10.0.0.1");
+					ip10_0_0_3Found = ip10_0_0_3Found || connectionPoint.getName().endsWith("10.0.0.3");
 
 					Assert.assertNotNull(connectionPoint.getServerInterface());
 					Assert.assertNotNull(connectionPoint.getServerInterface().getLayer());
@@ -152,15 +152,15 @@ public class Cim2NdlMapperTest {
 					// check server interfaces chain
 					if (connectionPoint.getName().equals("192.168.11.11")) {
 						Assert.assertNotNull(connectionPoint.getServerInterface().getName());
-						Assert.assertTrue(connectionPoint.getServerInterface().getName().equals("fe-0/0/3.0"));
+						Assert.assertTrue(connectionPoint.getServerInterface().getName().endsWith("fe-0/0/3.0"));
 						Assert.assertTrue(connectionPoint.getServerInterface().getLayer() instanceof EthernetLayer);
-					} else if (connectionPoint.getName().startsWith("192.168.0.")) {
+					} else if (connectionPoint.getName().contains("192.168.0.")) {
 						Assert.assertNotNull(connectionPoint.getServerInterface().getName());
-						Assert.assertTrue(connectionPoint.getServerInterface().getName().startsWith("fe-0/0/1"));
+						Assert.assertTrue(connectionPoint.getServerInterface().getName().contains("fe-0/0/1"));
 						Assert.assertTrue(connectionPoint.getServerInterface().getLayer() instanceof TaggedEthernetLayer);
-					} else if (connectionPoint.getName().startsWith("10.0.0.")) {
+					} else if (connectionPoint.getName().contains("10.0.0.")) {
 						Assert.assertNotNull(connectionPoint.getServerInterface().getName());
-						Assert.assertTrue(connectionPoint.getServerInterface().getName().startsWith("fe-0/1/1"));
+						Assert.assertTrue(connectionPoint.getServerInterface().getName().contains("fe-0/1/1"));
 						Assert.assertTrue(connectionPoint.getServerInterface().getLayer() instanceof TaggedEthernetLayer);
 					}
 
