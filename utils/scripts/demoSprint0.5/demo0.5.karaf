@@ -25,6 +25,11 @@ net:listResources network:networkBasic
 
 resource:export -nt /home/carlos/Escritorio/files-sprint0.5/withRouterNetwork.xml  network:networkBasic /home/carlos/Escritorio/files-sprint0.5/secondDescriptor.xml
 
+net:removeresource network:networkBasic router:junos20
+resource:list -a
+net:listResources network:networkBasic
+
+resource:export -nt /home/carlos/Escritorio/files-sprint0.5/withoutRouterBisNetwork.xml  network:networkBasic /home/carlos/Escritorio/files-sprint0.5/thirdDescriptor.xml
 
 #Cleaning
 resource:stop network:networkBasic
