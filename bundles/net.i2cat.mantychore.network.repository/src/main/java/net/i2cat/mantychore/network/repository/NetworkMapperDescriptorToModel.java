@@ -109,6 +109,7 @@ public class NetworkMapperDescriptorToModel {
 		/* add devices in networkDomain */
 		for (NetworkDomain networkDomainModel : networkTopology.getNetworkDomains()) {
 			net.i2cat.mantychore.network.model.domain.NetworkDomain networkDomain = new net.i2cat.mantychore.network.model.domain.NetworkDomain();
+			networkDomain.setName(networkDomainModel.getName());
 			List<net.i2cat.mantychore.network.model.topology.Device> devices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
 			for (DeviceId deviceId : networkDomainModel.getHasDevices()) {
 				int posDevice = getDevice(deviceId.getResource(), existingDevices);
