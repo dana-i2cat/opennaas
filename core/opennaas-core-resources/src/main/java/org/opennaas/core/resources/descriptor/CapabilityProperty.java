@@ -62,7 +62,6 @@ public class CapabilityProperty {
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
 		CapabilityProperty capabilityProperty = new CapabilityProperty();
-		capabilityProperty.setId(id);
 		capabilityProperty.setName(name);
 		capabilityProperty.setValue(value);
 		return capabilityProperty;

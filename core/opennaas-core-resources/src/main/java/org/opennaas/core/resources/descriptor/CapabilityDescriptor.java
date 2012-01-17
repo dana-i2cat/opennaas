@@ -125,7 +125,6 @@ public class CapabilityDescriptor {
 	protected Object clone() throws CloneNotSupportedException {
 
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-		capabilityDescriptor.setId(id);
 		capabilityDescriptor.setCapabilityInformation((Information) capabilityInformation.clone());
 		capabilityDescriptor.setEnabled(enabled);
 
