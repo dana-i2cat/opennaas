@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlElement;
 /**
  * This class is used to define a capability. The ICapabilityFactory will use this class to get the information it needs to instantiate the new
  * capability.
- * 
+ *
  * @author Mathieu Lemay (ITI)
- * 
+ *
  */
 @Entity
 public class CapabilityDescriptor {
@@ -79,7 +79,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Get the CapabilityProperty who's name field matches the given name
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -95,7 +95,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Get the value of the property who's name field matches the given name
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -109,7 +109,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Convert the capability properties list into a String
-	 * 
+	 *
 	 * @return
 	 */
 	public String capabilityPropertiesToString() {
@@ -125,8 +125,9 @@ public class CapabilityDescriptor {
 	protected Object clone() throws CloneNotSupportedException {
 
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-		capabilityDescriptor.setId(id);
-		capabilityDescriptor.setCapabilityInformation((Information) capabilityInformation.clone());
+		if (capabilityInformation != null) {
+			capabilityDescriptor.setCapabilityInformation((Information) capabilityInformation.clone());
+		}
 		capabilityDescriptor.setEnabled(enabled);
 
 		List<CapabilityProperty> properties = new ArrayList<CapabilityProperty>();
