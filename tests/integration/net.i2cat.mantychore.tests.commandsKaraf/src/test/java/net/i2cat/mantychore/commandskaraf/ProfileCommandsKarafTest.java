@@ -80,7 +80,7 @@ public class ProfileCommandsKarafTest extends AbstractIntegrationTest {
 
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
-		repository = getOsgiService(IResourceRepository.class, 50000);
+		repository = getOsgiService(IResourceRepository.class, "type=router", 50000);
 		profileManager = getOsgiService(IProfileManager.class, 25000);
 		commandprocessor = getOsgiService(CommandProcessor.class);
 		log.info("INFO: Initialized!");

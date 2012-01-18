@@ -32,6 +32,7 @@ import org.osgi.framework.BundleContext;
 
 @RunWith(JUnit4TestRunner.class)
 public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
+	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	static Log					log				= LogFactory
 														.getLog(ResourceManagerIntegrationTest.class);
 
@@ -50,7 +51,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
 
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+//		 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 		);
 		return options;
 	}
@@ -67,7 +68,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
 
 		rm = getOsgiService(IResourceManager.class, 50000);
-		resourceRepo = getOsgiService(IResourceRepository.class, 50000);
+		resourceRepo = getOsgiService(IResourceRepository.class, "type=router", 50000);
 		log.info("INFO: Initialized!");
 
 	}
