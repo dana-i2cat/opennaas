@@ -18,30 +18,24 @@ public abstract class AbstractActivator {
 
 	/**
 	 * Create a Filter to give to the service tracker based on the information about the service to lookup in the properties
-	 * 
+	 *
 	 * @throws InvalidSyntaxException
 	 */
 	protected static Filter createServiceFilter(String clazz, Properties properties) throws InvalidSyntaxException {
-		String objectClass = "(" + Constants.OBJECTCLASS + "=" + clazz + ")";
-
-		String filterString = "(&" + objectClass;
-
-		Enumeration<Object> keys = properties.keys();
-		while (keys.hasMoreElements()) {
-			String currentKey = (String) keys.nextElement();
-			filterString += "(" + currentKey + "=" + properties.getProperty(currentKey) + ")";
+		StringBuilder query = new StringBuilder();
+		query.append("(&");
+		query.append("(").append(Constants.OBJECTCLASS).append("=").append(clazz).append(")");
+		for (String key: properties.stringPropertyNames()) {
+			String value = properties.getProperty(key);
+			query.append("(").append(key).append("=").append(value).append(")");
 		}
-
-		filterString += ")";
-
-		Filter filter = FrameworkUtil.createFilter(filterString);
-
-		return filter;
+		query.append(")");
+		return FrameworkUtil.createFilter(query.toString());
 	}
 
 	/**
 	 * Fetch a service from OSGI Registry
-	 * 
+	 *
 	 * @return Object service instance
 	 * @throws InterruptedException
 	 * @throws InterruptedException
@@ -70,7 +64,7 @@ public abstract class AbstractActivator {
 
 	/**
 	 * Fetch a service from OSGI Registry
-	 * 
+	 *
 	 * @return Object service instance
 	 * @throws InterruptedException
 	 * @throws InterruptedException
