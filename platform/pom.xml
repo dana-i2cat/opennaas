@@ -130,11 +130,11 @@
 									<!-- TODO: use variable project.version -->
 									<type>xml</type>
 									<classifier>features</classifier>
+									<outputDirectory>${target-platform.path}/${opennaas.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
+									<overWrite>true</overWrite>
+									<destFileName>mantychore-1.0.0-SNAPSHOT-features.xml</destFileName>
 								</artifactItem>
 							</artifactItems>
-							<outputDirectory>${target-platform.path}/${opennaas.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
-							<overWriteIfNewer>true</overWriteIfNewer>
-							<destFileName>mantychore-1.0.0-SNAPSHOT-features.xml</destFileName>
 						</configuration>
 					</execution>
 				</executions>
