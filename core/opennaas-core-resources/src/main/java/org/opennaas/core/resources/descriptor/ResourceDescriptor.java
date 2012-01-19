@@ -169,7 +169,7 @@ public class ResourceDescriptor {
 			newCapabilityDescriptors.add((CapabilityDescriptor) capabilityDescriptorToCopy.clone());
 		}
 		resourceDescriptor.setCapabilityDescriptors(newCapabilityDescriptors);
-		resourceDescriptor.setProperties((HashMap<String, String>) ((HashMap) properties).clone());
+		resourceDescriptor.setProperties(new HashMap<String, String>(properties));
 
 		//TODO THE NETWORK DESCRIPTOR IS NOT CLONED. A NETWORK RESOURCE HAVE NOT TO BE CLONED
 		

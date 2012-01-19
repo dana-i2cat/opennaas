@@ -102,6 +102,84 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 	}
 
 	@Test
+	public void testCloningOfPersistentDescriptor()
+		throws Exception {
+		try {
+			// Create persistent descriptor
+			em.getTransaction().begin();
+			ResourceDescriptor config = createSampleDescriptor();
+			em.persist(config);
+			em.getTransaction().commit();
+
+			// Load it back
+			em.getTransaction().begin();
+			ResourceDescriptor loaded =
+				em.find(ResourceDescriptor.class, config.getId());
+
+			// Clone it
+			ResourceDescriptor copy = (ResourceDescriptor) loaded.clone();
+
+			// Check content of descriptor
+			assertEquals(copy.getInformation().getType(), "ca.inocybe.xxx");
+			assertEquals(copy.getInformation().getDescription(), "Test");
+			assertEquals(copy.getInformation().getName(), "Resource");
+			assertEquals(copy.getInformation().getVersion(), "1.0.0");
+			for (CapabilityDescriptor descriptor: copy.getCapabilityDescriptors()) {
+				CapabilityProperty prop =
+					descriptor.getCapabilityProperties().get(0);
+				assertEquals(prop.getName(), "name");
+				assertEquals(prop.getValue(), "value");
+			}
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			throw ex;
+		}
+	}
+
+	@Test
+	public void testPersistingClonedPersistentDescriptor()
+		throws Exception {
+		try {
+			// Create persistent descriptor
+			em.getTransaction().begin();
+			ResourceDescriptor config = createSampleDescriptor();
+			em.persist(config);
+			em.getTransaction().commit();
+
+			// Clone it and store with new ID
+			em.getTransaction().begin();
+			ResourceDescriptor loaded =
+				em.find(ResourceDescriptor.class, config.getId());
+			ResourceDescriptor copy = (ResourceDescriptor) loaded.clone();
+			copy.setId("2");
+			em.persist(copy);
+			em.getTransaction().commit();
+
+			// Load back the result and check values
+			em.getTransaction().begin();
+			ResourceDescriptor result =
+				em.find(ResourceDescriptor.class, copy.getId());
+
+			// Assert content of descriptor
+			assertEquals(result.getInformation().getType(), "ca.inocybe.xxx");
+			assertEquals(result.getInformation().getDescription(), "Test");
+			assertEquals(result.getInformation().getName(), "Resource");
+			assertEquals(result.getInformation().getVersion(), "1.0.0");
+			for (CapabilityDescriptor descriptor: result.getCapabilityDescriptors()) {
+				CapabilityProperty prop =
+					descriptor.getCapabilityProperties().get(0);
+				assertEquals(prop.getName(), "name");
+				assertEquals(prop.getValue(), "value");
+			}
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			em.getTransaction().rollback();
+			throw ex;
+		}
+	}
+
+	@Test
 	public void testVirtualResourcePersistence() {
 		try {
 			// Test Save
