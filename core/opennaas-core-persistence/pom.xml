@@ -28,10 +28,6 @@
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 		</dependency>-->
 		<dependency>
-			<groupId>org.hibernate.java-persistence</groupId>
-			<artifactId>jpa-api</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>classloading-utils</artifactId>
 		</dependency>
