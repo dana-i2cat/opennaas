@@ -17,9 +17,9 @@ import org.osgi.util.tracker.ServiceTracker;
 
 /**
  * GenericJPARepository that gets the EntityManagerFactory from the OSGi registry
- * 
+ *
  * @author eduardgrasa
- * 
+ *
  * @param <T>
  * @param <ID>
  */
@@ -103,9 +103,8 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 
 	private Properties createFilterProperties(String persistenceUnit) {
 		Properties properties = new Properties();
-		properties.put("persistenceUnit", persistenceUnit);
-		properties.put("isDynamicFactory", true);
-
+		properties.setProperty("persistenceUnit", persistenceUnit);
+		properties.setProperty("isDynamicFactory", "true");
 		return properties;
 	}
 
