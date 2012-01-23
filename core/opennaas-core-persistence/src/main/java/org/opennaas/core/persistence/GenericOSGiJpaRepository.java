@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.logging.Log;
@@ -55,6 +56,15 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 		}
 		setEntityManager(entityManagerFactory.createEntityManager());
 	}
+
+    public void close() {
+        EntityManager entityManager = getEntityManager();
+        if (entityManager != null) {
+			logger.debug("Closing entity manager: " + entityManager);
+            entityManager.close();
+            setEntityManager(null);
+        }
+    }
 
 	private EntityManagerFactory getEntityManagerFactoryFromOSGiRegistry(String persistenceUnit) {
 		EntityManagerFactory entityManagerFactory = null;
