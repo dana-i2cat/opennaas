@@ -113,8 +113,8 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 
 	private Properties createFilterProperties(String persistenceUnit) {
 		Properties properties = new Properties();
-		properties.setProperty("persistenceUnit", persistenceUnit);
-		properties.setProperty("isDynamicFactory", "true");
+		properties.setProperty("osgi.unit.name", persistenceUnit);
+		properties.setProperty("org.apache.aries.jpa.container.managed", "true");
 		return properties;
 	}
 

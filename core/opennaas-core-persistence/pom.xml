@@ -35,7 +35,6 @@
 			<groupId>org.dynamicjava.osgi</groupId>
 			<artifactId>service-binding-utils</artifactId>
 		</dependency>
-		<!-- This deprecated garbage enforces persistence-api 1.0.2, which breaks persistence. <dependency><groupId>org.dynamicjava.osgi</groupId><artifactId>dynamic-jpa</artifactId></dependency>-->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hibernate</artifactId>
@@ -53,11 +52,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-		</dependency>
-		<!-- most important dep ever -->
-		<dependency>
-			<groupId>org.dynamicjava.osgi</groupId>
-			<artifactId>dynamic-jpa</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
