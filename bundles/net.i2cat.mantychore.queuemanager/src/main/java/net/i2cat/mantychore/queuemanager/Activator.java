@@ -57,16 +57,9 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 */
 	private static Filter createFilterQueueActionSet(String name, String version, String protocol) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_CAPABILITY, "queue");
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_NAME, name);
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_VERSION, version);
-
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "queue");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
 

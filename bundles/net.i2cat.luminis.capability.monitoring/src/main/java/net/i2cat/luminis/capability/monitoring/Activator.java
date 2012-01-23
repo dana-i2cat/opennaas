@@ -36,7 +36,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	public static IQueueManagerService getQueueManagerService(String resourceId) throws ActivatorException {
 		try {
-			log.debug("CallingQueueManagerService");
+			log.debug("Calling QueueManagerService");
 			return (IQueueManagerService) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
@@ -45,8 +45,8 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-		properties.put(ResourceDescriptorConstants.CAPABILITY, "queue");
-		properties.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		return createServiceFilter(IQueueManagerService.class.getName(), properties);
 	}
 
@@ -64,16 +64,9 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 */
 	private static Filter createFilterMonitoringActionSet(String name, String version) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_CAPABILITY, MonitoringCapability.CAPABILITY_NAME);
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_NAME, name);
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_VERSION, version);
-
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, MonitoringCapability.CAPABILITY_NAME);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
 
@@ -84,7 +77,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	}
 
 	public static IProtocolManager getProtocolManagerService(String resourceId) throws ActivatorException {
-		log.debug("Calling EventManager");
+		log.debug("Calling ProtocolManager");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
 

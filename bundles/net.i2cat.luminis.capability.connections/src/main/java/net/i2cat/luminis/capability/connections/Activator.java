@@ -37,7 +37,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	public static IQueueManagerService getQueueManagerService(String resourceId) throws ActivatorException {
 		try {
-			log.debug("CallingQueueManagerService");
+			log.debug("Calling QueueManagerService");
 			return (IQueueManagerService) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
@@ -49,8 +49,8 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 */
 	protected static Filter createFilterQueueManager(String resourceId) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-		properties.put(ResourceDescriptorConstants.CAPABILITY, "queue");
-		properties.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		return createServiceFilter(IQueueManagerService.class.getName(), properties);
 	}
 
@@ -68,16 +68,9 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 */
 	private static Filter createFilterConnectionsActionSet(String name, String version) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_CAPABILITY, "connections");
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_NAME, name);
-
-		properties
-				.put(ResourceDescriptorConstants.ACTION_VERSION, version);
-
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, "connections");
+		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
 	}
 
