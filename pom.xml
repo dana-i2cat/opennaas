@@ -44,8 +44,6 @@
 		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<cxf.version>2.4.3-fuse-00-20</cxf.version>
-		<dynamicjava.version>1.0.0</dynamicjava.version>
-		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -189,22 +187,7 @@
 				<artifactId>geronimo-jta_1.1_spec</artifactId>
 				<version>${geronimo.jta.version}</version>
 			</dependency>
-			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
-			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>classloading-utils</artifactId>
-				<version>${dynamicjava.classloading.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>service-binding-utils</artifactId>
-				<version>${dynamicjava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>dynamic-jpa</artifactId>
-				<version>${dynamicjava.version}</version>
-			</dependency>
+			<!-- Persistence (hibernate, hsqldb) -->
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
@@ -848,11 +831,6 @@
 			<id>osp4j</id>
 			<name>OSP4J releases</name>
 			<url>http://repository.ops4j.org/maven2</url>
-		</repository>
-		<repository>
-			<id>DynamicJava</id>
-			<name>DynamicJava Repository</name>
-			<url>http://maven.dynamicjava.org/</url>
 		</repository>
 		<repository>
 			<id>fusesource</id>
