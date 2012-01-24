@@ -42,5 +42,6 @@
 		<module>net.i2cat.mantychore.network.model</module>
 		<module>net.i2cat.mantychore.network.repository</module>
 		<module>net.i2cat.mantychore.network.capability.basic</module>
+		<module>org.opennaas.bod.repository</module>
 	</modules>
 </project>
