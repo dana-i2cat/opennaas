@@ -137,7 +137,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 			// create filter to listen to CapabilityAlarms
 			Properties filterProperties = new Properties();
-			filterProperties.put(CapabilityAlarm.RESOURCE_ID_PROPERTY, resourceId);
+			filterProperties.setProperty(CapabilityAlarm.RESOURCE_ID_PROPERTY, resourceId);
 			EventFilter filter = new EventFilter(new String[] { CapabilityAlarm.TOPIC }, filterProperties);
 
 			IEventManager eventManager = Activator.getEventManagerService();

@@ -31,8 +31,8 @@ public class WonesysProtocolTest {
 	public void testConfigureAlarms() throws IOException {
 
 		Properties alarmProperties = new Properties();
-		alarmProperties.put(IWonesysAlarmConfigurator.ALARM_PORT_PROPERTY_NAME, alarmsPort);
-		alarmProperties.put(IWonesysAlarmConfigurator.ALARM_WAITTIME_PROPERTY_NAME, Long.valueOf(alarmWaittime).toString());
+		alarmProperties.setProperty(IWonesysAlarmConfigurator.ALARM_PORT_PROPERTY_NAME, alarmsPort);
+		alarmProperties.setProperty(IWonesysAlarmConfigurator.ALARM_WAITTIME_PROPERTY_NAME, Long.valueOf(alarmWaittime).toString());
 
 		WonesysAlarmConfigurator alarmConfigurator = new WonesysAlarmConfigurator();
 		alarmConfigurator.configureAlarms(alarmProperties);

@@ -165,7 +165,7 @@ public class RawSocketTransport {
 
 		String topic = RawSocketTransport.ALL_EVENTS_TOPIC;
 		Properties properties = new Properties();
-		properties.put(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, getTransportID());
+		properties.setProperty(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, getTransportID());
 		return new EventFilter(new String[] { topic }, properties);
 	}
 

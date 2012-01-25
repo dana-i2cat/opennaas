@@ -81,10 +81,10 @@ public class AlarmsRepositoryTest {
 
 	private Properties newProperties(String time, String resourceId, String alarmCode, String description) {
 		Properties properties1 = new Properties();
-		properties1.put(ResourceAlarm.ARRIVAL_TIME_PROPERTY, time);
-		properties1.put(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);
-		properties1.put(ResourceAlarm.ALARM_CODE_PROPERTY, alarmCode);
-		properties1.put(ResourceAlarm.DESCRIPTION_PROPERTY, description);
+		properties1.setProperty(ResourceAlarm.ARRIVAL_TIME_PROPERTY, time);
+		properties1.setProperty(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);
+		properties1.setProperty(ResourceAlarm.ALARM_CODE_PROPERTY, alarmCode);
+		properties1.setProperty(ResourceAlarm.DESCRIPTION_PROPERTY, description);
 
 		return properties1;
 	}

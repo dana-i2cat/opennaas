@@ -154,7 +154,7 @@ public class WonesysTransportTest extends AbstractIntegrationTest implements ITr
 
 		String topic = RawSocketTransport.ALL_EVENTS_TOPIC;
 		Properties properties = new Properties();
-		properties.put(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, transport.getTransportID());
+		properties.setProperty(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, transport.getTransportID());
 		EventFilter filter = new EventFilter(new String[] { topic }, properties);
 
 		return eventManager.registerEventHandler(this, filter);

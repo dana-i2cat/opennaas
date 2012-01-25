@@ -90,7 +90,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 		String alarmTopic = WonesysAlarm.TOPIC;
 		Properties properties = new Properties();
-		properties.put(WonesysAlarm.SESSION_ID_PROPERTY, sessionID);
+		properties.setProperty(WonesysAlarm.SESSION_ID_PROPERTY, sessionID);
 
 		EventFilter filter = new EventFilter(alarmTopic);
 		int regNum = eventManager.registerEventHandler(this, filter);

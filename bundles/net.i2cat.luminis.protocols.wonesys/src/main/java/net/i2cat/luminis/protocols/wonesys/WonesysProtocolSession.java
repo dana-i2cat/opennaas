@@ -126,7 +126,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 			IEventManager eventManager = WonesysProtocolBundleActivator.getEventManagerService();
 
 			Properties properties = new Properties();
-			properties.put(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, wonesysTransport.getTransportID());
+			properties.setProperty(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, wonesysTransport.getTransportID());
 			EventFilter filter = new EventFilter(new String[] { topic }, properties);
 
 			return eventManager.registerEventHandler(listener, filter);

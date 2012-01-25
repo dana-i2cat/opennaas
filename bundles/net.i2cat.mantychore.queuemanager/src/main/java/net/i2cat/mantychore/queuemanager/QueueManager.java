@@ -64,8 +64,8 @@ public class QueueManager extends AbstractCapability implements
 
 	private void registerQueueCapability() {
 		Properties props = new Properties();
-		props.put(ResourceDescriptorConstants.CAPABILITY, "queue");
-		props.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		props.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
+		props.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		Activator.getContext().registerService(
 				IQueueManagerService.class.getName(), this, props);
 

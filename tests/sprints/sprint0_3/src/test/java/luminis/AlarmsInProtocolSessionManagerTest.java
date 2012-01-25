@@ -227,7 +227,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 	private Event generateAlarm(IProtocolSession session) {
 
 		Properties prop = new Properties();
-		prop.put(SessionAlarm.SESSION_ID_PROPERTY, session.getSessionId());
+		prop.setProperty(SessionAlarm.SESSION_ID_PROPERTY, session.getSessionId());
 
 		SessionAlarm alarm = new SessionAlarm(prop);
 

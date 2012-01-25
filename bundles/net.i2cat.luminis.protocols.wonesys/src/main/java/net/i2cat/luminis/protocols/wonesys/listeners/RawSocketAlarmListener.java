@@ -73,7 +73,7 @@ public class RawSocketAlarmListener implements EventHandler {
 
 		Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
 
-		properties.put(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
+		properties.setProperty(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
 
 		WonesysAlarm alarm = WonesysAlarmFactory.createAlarm(properties);
 		publishEvent(alarm);

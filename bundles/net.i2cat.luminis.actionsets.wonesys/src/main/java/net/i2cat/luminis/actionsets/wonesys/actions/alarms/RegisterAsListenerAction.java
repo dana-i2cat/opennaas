@@ -45,7 +45,7 @@ public class RegisterAsListenerAction extends Action {
 
 			// create filter to listen for WonesysAlarms coming from given wonesys session of given protocolSessionManager
 			Properties filterProperties = new Properties();
-			filterProperties.put(WonesysAlarm.SESSION_ID_PROPERTY, session.getSessionId());
+			filterProperties.setProperty(WonesysAlarm.SESSION_ID_PROPERTY, session.getSessionId());
 			EventFilter filter = new EventFilter(new String[] { WonesysAlarm.TOPIC }, filterProperties);
 
 			// register alarmListener
