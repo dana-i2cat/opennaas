@@ -1,3 +1,4 @@
+package net.i2cat.mantychore.repository.tests;
 import java.util.List;
 import java.util.Map;
 

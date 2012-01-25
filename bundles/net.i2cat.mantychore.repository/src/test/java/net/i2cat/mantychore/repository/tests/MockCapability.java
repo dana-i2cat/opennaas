@@ -1,3 +1,4 @@
+package net.i2cat.mantychore.repository.tests;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
