@@ -14,17 +14,23 @@ import org.apache.commons.logging.LogFactory;
 
 public class MantychoreRepository extends ResourceRepository {
 
+	Log	log	= LogFactory.getLog(MantychoreRepository.class);
+	
 	@Override
 	protected void checkResourceCanBeStarted(IResource resource)
 			throws ResourceException {
-		String name = resource.getResourceDescriptor().getInformation().getName();
-		String type = resource.getResourceDescriptor().getInformation().getType();
-		String resourceId = type+":"+name;
-		
+		checkResourceHasAnAssociatedContext(resource);
+		super.checkResourceCanBeStarted(resource); 
+	}
+	
+	private void checkResourceHasAnAssociatedContext(IResource resource) throws ResourceException {
 		IProtocolSessionManager sessionManager;
 		try {
 			sessionManager = getProtocolSessionManager(resource.getResourceDescriptor().getId());
 			if (sessionManager.getRegisteredContexts().isEmpty()) {
+				String name = resource.getResourceDescriptor().getInformation().getName();
+				String type = resource.getResourceDescriptor().getInformation().getType();
+				String resourceId = type+":"+name;
 				throw new ResourceException(
 						"There is no session context for resource " + resourceId + ". A session context is needed for the resource to start.");
 			}
@@ -33,11 +39,7 @@ public class MantychoreRepository extends ResourceRepository {
 		} catch (Exception e) {
 			throw new ResourceException("Error loading session manager: ", e);
 		}
-		
-		super.checkResourceCanBeStarted(resource);
 	}
-
-	Log	log	= LogFactory.getLog(MantychoreRepository.class);
 
 	public MantychoreRepository(String resourceType, String persistenceUnit) {
 		super(resourceType, persistenceUnit);
