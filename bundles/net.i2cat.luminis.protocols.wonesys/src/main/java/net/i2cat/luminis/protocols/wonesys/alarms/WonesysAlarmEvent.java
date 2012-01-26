@@ -1,7 +1,7 @@
 package net.i2cat.luminis.protocols.wonesys.alarms;
 
-import java.util.Dictionary;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.osgi.service.event.Event;
 
@@ -27,8 +27,8 @@ public class WonesysAlarmEvent extends Event {
 		this.alarm = WonesysAlarmFactory.createAlarm(a);
 	}
 
-	private static Dictionary<String, Object> getAlarmProperties(Alarm a) {
-		Dictionary<String, Object> properties = new Hashtable<String, Object>();
+	private static Map<String, Object> getAlarmProperties(Alarm a) {
+		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(TYPEID_ALARM_PROPERTY, a.getTypeID());
 		properties.put(RECEPTIONDATE_ALARM_PROPERTY, a.getDataRecepcio());
 		properties.put(IP_ALARM_PROPERTY, a.getIp());
