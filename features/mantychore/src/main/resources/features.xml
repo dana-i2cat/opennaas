@@ -58,6 +58,7 @@
 		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-repo</feature>
 		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-network</feature>
 		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
+		<feature version="1.0.0-SNAPSHOT">opennaas-bod</feature>
 	</feature>
 	<feature name="i2cat-luminis-deps" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
@@ -78,5 +79,8 @@
 	</feature>
 	<feature name="nexus-tests-helper" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:net.i2cat.nexus:net.i2cat.nexus.tests.helper:1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="opennaas-bod" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:org.opennaas.bod.repository/org.opennaas.bod.repository/1.0.0-SNAPSHOT</bundle>
 	</feature>
 </features>
