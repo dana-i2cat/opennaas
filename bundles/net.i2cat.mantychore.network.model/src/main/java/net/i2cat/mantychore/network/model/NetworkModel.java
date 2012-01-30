@@ -12,6 +12,8 @@ public class NetworkModel implements IModel {
 	private static final long	serialVersionUID	= -8240103035074766194L;
 
 	List<NetworkElement>		networkElements		= new ArrayList<NetworkElement>();
+	
+	ResourcesReferences resourceReferences = new ResourcesReferences();
 
 	@Override
 	public List<String> getChildren() {
@@ -25,4 +27,17 @@ public class NetworkModel implements IModel {
 	public void setNetworkElements(List<NetworkElement> networkElements) {
 		this.networkElements = networkElements;
 	}
+	
+	public String addResourceRef(String resourceName, String mantychoreResourceId){
+		return resourceReferences.put(resourceName, mantychoreResourceId);
+	}
+	
+	public String removeResourceRef(String resourceName){
+		return resourceReferences.remove(resourceName);
+	}
+	
+	public String getResourceRef(String resourceName){
+		return resourceReferences.get(resourceName);
+	}
+	
 }

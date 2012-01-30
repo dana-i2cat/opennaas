@@ -53,6 +53,7 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 
 		NetworkElement toRemove = resources.get(pos);
 		NetworkModelHelper.deleteNetworkElementAndReferences(toRemove, networkModel);
+		networkModel.removeResourceRef(resourceId);
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		network.getResourceDescriptor().setNetworkTopology(topology);
 
