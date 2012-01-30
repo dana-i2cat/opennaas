@@ -82,5 +82,6 @@
 	</feature>
 	<feature name="opennaas-bod" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:org.opennaas.bod.repository/org.opennaas.bod.repository/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas.bod.capability/org.opennaas.bod.capability.l2bod/1.0.0-SNAPSHOT</bundle>
 	</feature>
 </features>
