@@ -348,5 +348,26 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		assertEquals(networkTopology.getInterfaces().get(7).getName(), "router:R-AS2-3:lo0.4");
 
 	}
+	
+	@Test
+	public void testNetworkResourceReferencesPersistence() {
+		em.getTransaction().begin();
+		ResourceDescriptor config = createNetworkDescriptor();
+		em.persist(config);
+		em.getTransaction().commit();
+		assertNotNull(config);
+		em.getTransaction().begin();
+		ResourceDescriptor loaded = em.find(ResourceDescriptor.class, config.getId());
+		assertNotNull(loaded);
+		
+		Map<String, String> references = loaded.getResourceReferences();
+		assertTrue(references.containsKey("router:test1"));
+		assertTrue(references.containsKey("router:test2"));
+		assertTrue(references.containsKey("router:test3"));
+		
+		assertEquals(references.get("router:test1"), "router/XXXYYYZZZtest1-ID");
+		assertEquals(references.get("router:test2"), "router/XXXYYYZZZtest2-ID");
+		assertEquals(references.get("router:test3"), "router/XXXYYYZZZtest3-ID");
+	}
 
 }

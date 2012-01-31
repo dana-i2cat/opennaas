@@ -65,7 +65,13 @@ public class ResourceDescriptorSupport extends TestCase
 
 		// Testing if it loads a network topology
 		config.setNetworkTopology(MockNetworkDescriptor.newSimpleNDLNetworkDescriptor());
-
+		
+		Map<String, String> resourceReferences = new HashMap<String, String>();
+		resourceReferences.put("router:test1", "router/XXXYYYZZZtest1-ID");
+		resourceReferences.put("router:test2", "router/XXXYYYZZZtest2-ID");
+		resourceReferences.put("router:test3", "router/XXXYYYZZZtest3-ID");
+		config.setResourceReferences(resourceReferences);
+		
 		return config;
 	}
 
