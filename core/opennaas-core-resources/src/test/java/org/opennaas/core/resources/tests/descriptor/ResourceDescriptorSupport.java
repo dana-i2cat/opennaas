@@ -5,18 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
 
-public class ResourceDescriptorSupport extends TestCase
-{
+public class ResourceDescriptorSupport {
 
-	protected ResourceDescriptor createSampleDescriptor() {
+	public static ResourceDescriptor createSampleDescriptor() {
 		ResourceDescriptor config = new ResourceDescriptor();
 		config.setId(new String("1"));
 		Information info = new Information();
@@ -40,7 +37,7 @@ public class ResourceDescriptorSupport extends TestCase
 	 * 
 	 * @return
 	 */
-	protected ResourceDescriptor createNetworkDescriptor() {
+	public static ResourceDescriptor createNetworkDescriptor() {
 		ResourceDescriptor config = new ResourceDescriptor();
 		config.setId(new String("1"));
 		/* resource description */
@@ -65,7 +62,13 @@ public class ResourceDescriptorSupport extends TestCase
 
 		// Testing if it loads a network topology
 		config.setNetworkTopology(MockNetworkDescriptor.newSimpleNDLNetworkDescriptor());
-
+		
+		Map<String, String> resourceReferences = new HashMap<String, String>();
+		resourceReferences.put("router:test1", "router/XXXYYYZZZtest1-ID");
+		resourceReferences.put("router:test2", "router/XXXYYYZZZtest2-ID");
+		resourceReferences.put("router:test3", "router/XXXYYYZZZtest3-ID");
+		config.setResourceReferences(resourceReferences);
+		
 		return config;
 	}
 
@@ -74,7 +77,7 @@ public class ResourceDescriptorSupport extends TestCase
 	 * 
 	 * @return
 	 */
-	protected ResourceDescriptor createNetworkDescriptorWithNetworkDomains() {
+	public static ResourceDescriptor createNetworkDescriptorWithNetworkDomains() {
 		ResourceDescriptor config = new ResourceDescriptor();
 		config.setId(new String("1"));
 
@@ -109,7 +112,7 @@ public class ResourceDescriptorSupport extends TestCase
 	 * 
 	 * @return
 	 */
-	protected ResourceDescriptor createVirtualResourceDescriptor() {
+	public static ResourceDescriptor createVirtualResourceDescriptor() {
 		ResourceDescriptor config = new ResourceDescriptor();
 		config.setId(new String("1"));
 		Information info = new Information();
