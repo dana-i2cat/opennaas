@@ -64,6 +64,7 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			
 			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 			network.getResourceDescriptor().setNetworkTopology(topology);
+			network.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 		}
 		printInfo("Resource " + resourceId + "added to network " + networkId);
 		printEndCommand();

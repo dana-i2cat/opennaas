@@ -39,5 +39,12 @@ public class NetworkModel implements IModel {
 	public String getResourceRef(String resourceName){
 		return resourceReferences.get(resourceName);
 	}
-	
+
+	public ResourcesReferences getResourceReferences() {
+		return resourceReferences;
+	}
+
+	public void setResourceReferences(ResourcesReferences resourceReferences) {
+		this.resourceReferences = resourceReferences;
+	}
 }

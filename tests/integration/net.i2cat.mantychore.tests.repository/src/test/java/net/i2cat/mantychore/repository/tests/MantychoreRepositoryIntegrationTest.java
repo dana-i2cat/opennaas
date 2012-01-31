@@ -1,5 +1,7 @@
 package net.i2cat.mantychore.repository.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
@@ -24,8 +26,10 @@ import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.ICapability;
@@ -51,6 +55,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 													.getLog(MantychoreRepositoryIntegrationTest.class);
 
 	IResourceManager	resourceManager;
+	IResourceRepository resourceRepository;
 
 	@Inject
 	BundleContext		bundleContext	= null;
@@ -99,6 +104,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		/* init services */
 		resourceManager = getOsgiService(IResourceManager.class, 50000);
+		resourceRepository = getOsgiService(IResourceRepository.class, "type=router", 50000);
 
 		clearRepo();
 
@@ -357,6 +363,31 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 			clearRepo();
 		}
 
+	}
+	
+	@Test
+	public void testPersistedIdentifierIdDoesNotChange() {
+		try {
+
+			ResourceDescriptor descriptor = ResourceHelper.newResourceDescriptor("router");
+			IResource res1 = resourceRepository.createResource(descriptor);
+			
+			if (resourceRepository instanceof ResourceRepository){
+				//reset repository and load persisted resources
+				((ResourceRepository) resourceRepository).init();
+				
+				try {
+					IResource res2 = resourceRepository.getResource(res1.getResourceIdentifier().getId());
+					assertEquals(res1.getResourceDescriptor().getId(), res2.getResourceDescriptor().getId());
+				} catch (ResourceException e){
+					fail("Resource with given ID is not present");
+				}
+				//already checked that id is the same
+			}
+			
+		} catch (ResourceException e) {
+			fail(e.getLocalizedMessage());
+		}
 	}
 
 	private static boolean isMock() {
