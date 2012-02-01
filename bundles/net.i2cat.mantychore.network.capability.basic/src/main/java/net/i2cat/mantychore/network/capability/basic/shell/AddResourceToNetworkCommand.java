@@ -60,8 +60,11 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
 		if (resourceModel instanceof ManagedElement) {
 			Cim2NdlMapper.addModelToNetworkModel(resource.getModel(), networkModel, resourceId);
+			networkModel.addResourceRef(resourceId, resource.getResourceIdentifier().getId());
+			
 			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 			network.getResourceDescriptor().setNetworkTopology(topology);
+			network.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 		}
 		printInfo("Resource " + resourceId + "added to network " + networkId);
 		printEndCommand();
