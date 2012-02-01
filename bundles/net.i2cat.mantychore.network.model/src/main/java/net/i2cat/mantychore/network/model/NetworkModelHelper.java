@@ -144,6 +144,19 @@ public class NetworkModelHelper {
 		}
 		return link;
 	}
+	
+	public static CrossConnect crossConnectInterfaces(Interface src, Interface dst) {
+		CrossConnect xConnect = new CrossConnect();
+		xConnect.setSource(src);
+		xConnect.setSink(dst);
+		
+		xConnect.setLayer(src.getLayer());
+
+		src.setSwitchedTo(xConnect);
+		dst.setSwitchedTo(xConnect);
+		
+		return xConnect;
+	}
 
 	/**
 	 * Removes given NetworkElement from given networkModel (if exists).
