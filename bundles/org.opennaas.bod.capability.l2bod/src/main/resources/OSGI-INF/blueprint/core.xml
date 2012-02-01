@@ -20,15 +20,13 @@
 		<property name="type" value="l2bod"/>
 	</bean>
 	<!-- Command completers -->
-	<!--
 	<bean id="resourceNameCompleter" class="org.opennaas.bod.capability.l2bod.shell.completers.ResourceNameCompleter"/>
-	-->
 	<!-- Register the Service as an OSGi Service -->
-	<service ref="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+	<service ref="l2bodCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="l2bod"/>
-			<entry key="capability.model" value="proteus"/>
+			<entry key="capability.model" value="dummy"/>
 			<entry key="capability.version" value="1.0"/>
 		</service-properties>
 	</service>
