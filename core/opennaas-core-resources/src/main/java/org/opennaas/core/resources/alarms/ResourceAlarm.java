@@ -34,12 +34,12 @@ public class ResourceAlarm extends Event {
 		INFO, WARNING, MINOR, MAJOR, CRITICAL
 	}
 
-	public ResourceAlarm(Properties properties) {
-		super(TOPIC, (Map) properties);
+	public ResourceAlarm(Map<String, Object> properties) {
+		super(TOPIC, properties);
 
-		resourceId = properties.getProperty(RESOURCE_ID_PROPERTY);
-		alarmCode = properties.getProperty(ALARM_CODE_PROPERTY);
-		arrivalTime = properties.getProperty(ARRIVAL_TIME_PROPERTY);
+		resourceId = properties.get(RESOURCE_ID_PROPERTY).toString();
+		alarmCode = properties.get(ALARM_CODE_PROPERTY).toString();
+		arrivalTime = properties.get(ARRIVAL_TIME_PROPERTY).toString();
 	}
 
 	@Override

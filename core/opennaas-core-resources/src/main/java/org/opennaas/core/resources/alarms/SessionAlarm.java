@@ -19,8 +19,8 @@ public class SessionAlarm extends Event {
 	 */
 	public static final String	CAUSE_PROPERY		= "cause";
 
-	public SessionAlarm(Properties properties) {
-		super(TOPIC, (Map) properties);
+	public SessionAlarm(Map<String, Object> properties) {
+		super(TOPIC, properties);
 	}
 
 }
