@@ -5,6 +5,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
@@ -115,7 +116,7 @@ public class ResourceRepositoryTest {
 		descriptor.getInformation().setType("WrongEngine");
 		resourceRepository.createResource(descriptor);
 	}
-
+	
 	public ResourceDescriptor newResourceDescriptor(String name) {
 		ResourceDescriptor descriptor = new ResourceDescriptor();
 		Information info = new Information("Mock", name, "1.0.0");

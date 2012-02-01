@@ -24,7 +24,7 @@ public class NetworkTopology {
 	private long 					id;
 	
 	@Basic
-	private String Location;
+	private String location;
 	
 
 	@OneToMany(cascade = CascadeType.ALL)
@@ -38,13 +38,12 @@ public class NetworkTopology {
 	private	List<Interface> interfaces;
 	
 	public String getLocation() {
-		return Location;
+		return location;
 	}
 	
 	public void setLocation(String location) {
-		Location = location;
+		this.location = location;
 	}
-	
 	
 	@XmlElement(name = "NetworkDomain", namespace = "http://www.science.uva.nl/research/sne/ndl/domain#")
 	public List<NetworkDomain> getNetworkDomains() {
@@ -59,6 +58,7 @@ public class NetworkTopology {
 	public List<Device> getDevices() {
 		return devices;
 	}
+	
 	public void setDevices(List<Device> devices) {
 		this.devices = devices;
 	}
@@ -74,15 +74,8 @@ public class NetworkTopology {
 	
 	@Override
 	public String toString() {
-		return "RDF [Location=" + Location+ ", NetworkDomain=" + networkDomains + ", devices=" + devices
+		return "RDF [Location=" + location+ ", NetworkDomain=" + networkDomains + ", devices=" + devices
 				+ ", interfaces=" + interfaces + "]";
 	}
-
-
-
-	
-	
-	
-
 
 }

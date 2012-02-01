@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import junit.framework.TestCase;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -18,7 +20,7 @@ import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
-public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport {
+public class ResourceDescriptorRepositoryTest extends TestCase {
 
 	private static Log				logger		= LogFactory.getLog(ResourceDescriptorRepositoryTest.class);
 	private EntityManagerFactory	emFactory	= null;
@@ -73,7 +75,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Test Save
 			em.getTransaction().begin();
-			ResourceDescriptor config = createSampleDescriptor();
+			ResourceDescriptor config = ResourceDescriptorSupport.createSampleDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 			assertNotNull(config);
@@ -107,7 +109,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Create persistent descriptor
 			em.getTransaction().begin();
-			ResourceDescriptor config = createSampleDescriptor();
+			ResourceDescriptor config = ResourceDescriptorSupport.createSampleDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 
@@ -143,7 +145,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Create persistent descriptor
 			em.getTransaction().begin();
-			ResourceDescriptor config = createSampleDescriptor();
+			ResourceDescriptor config = ResourceDescriptorSupport.createSampleDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 
@@ -184,7 +186,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Test Save
 			em.getTransaction().begin();
-			ResourceDescriptor config = createVirtualResourceDescriptor();
+			ResourceDescriptor config = ResourceDescriptorSupport.createVirtualResourceDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 			assertNotNull(config);
@@ -223,7 +225,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		try {
 			// Test Save
 			em.getTransaction().begin();
-			ResourceDescriptor config = createNetworkDescriptor();
+			ResourceDescriptor config = ResourceDescriptorSupport.createNetworkDescriptor();
 			em.persist(config);
 			em.getTransaction().commit();
 			assertNotNull(config);
@@ -257,7 +259,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 	@Test
 	public void testResourceWithNetworkDomains() {
 		em.getTransaction().begin();
-		ResourceDescriptor config = createNetworkDescriptorWithNetworkDomains();
+		ResourceDescriptor config = ResourceDescriptorSupport.createNetworkDescriptorWithNetworkDomains();
 		em.persist(config);
 		em.getTransaction().commit();
 		assertNotNull(config);
@@ -284,7 +286,7 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 	@Test
 	public void testResourceNetworkTopology() {
 		em.getTransaction().begin();
-		ResourceDescriptor config = createNetworkDescriptor();
+		ResourceDescriptor config = ResourceDescriptorSupport.createNetworkDescriptor();
 		em.persist(config);
 		em.getTransaction().commit();
 		assertNotNull(config);
@@ -348,5 +350,21 @@ public class ResourceDescriptorRepositoryTest extends ResourceDescriptorSupport 
 		assertEquals(networkTopology.getInterfaces().get(7).getName(), "router:R-AS2-3:lo0.4");
 
 	}
-
+	
+	@Test
+	public void testNetworkResourceReferencesPersistence() {
+		em.getTransaction().begin();
+		ResourceDescriptor config = ResourceDescriptorSupport.createNetworkDescriptor();
+		em.persist(config);
+		em.getTransaction().commit();
+		assertNotNull(config);
+		em.getTransaction().begin();
+		ResourceDescriptor loaded = em.find(ResourceDescriptor.class, config.getId());
+		assertNotNull(loaded);
+		
+		for (String frienlyName : config.getResourceReferences().keySet()) {
+			assertTrue(loaded.getResourceReferences().containsKey(frienlyName));
+			assertEquals(config.getResourceReferences().get(frienlyName), loaded.getResourceReferences().get(frienlyName));
+		}
+	}
 }

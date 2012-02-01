@@ -58,7 +58,11 @@ public class ResourceDescriptor {
 	@JoinColumn(name="NETWORK_TOPOLOGY")
 	private NetworkTopology							networkTopology; 
 
-	
+	@ElementCollection
+	@MapKeyColumn(name="name")
+	@Column(name="resourceId")
+	@CollectionTable(name="RESOURCE_REFERENCES")
+	private Map<String, String> resourceReferences;
 
 	/**
 	 * necessary parameter to configure a ssh connection
@@ -155,6 +159,14 @@ public class ResourceDescriptor {
 
 	public void setNetworkTopology(NetworkTopology networkTopology) {
 		this.networkTopology = networkTopology;
+	}
+
+	public Map<String, String> getResourceReferences() {
+		return resourceReferences;
+	}
+
+	public void setResourceReferences(Map<String, String> resourceReferences) {
+		this.resourceReferences = resourceReferences;
 	}
 
 	@Override
