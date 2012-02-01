@@ -5,7 +5,9 @@ import static org.ops4j.pax.exam.OptionUtils.combine;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
@@ -219,7 +221,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 		int chassis = 0;
 		int slot = 1;
 
-		Properties prop = new Properties();
+		Map<String, Object> prop = new HashMap<String, Object>();
 		prop.put(WonesysAlarm.SESSION_ID_PROPERTY, session.getSessionId());
 		prop.put(WonesysAlarm.ALARM_ID_PROPERTY, "80");
 		prop.put(WonesysAlarm.ARRIVAL_TIME, new Date().getTime());
@@ -238,8 +240,8 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 	 * @param resourceId
 	 */
 	private ResourceAlarm generateResourceAlarm(String resourceId) {
-
-		Properties prop = new Properties();
+		
+		Map<String, Object> prop = new HashMap<String, Object>();
 		prop.put(ResourceAlarm.ARRIVAL_TIME_PROPERTY, new Date().getTime());
 		prop.put(ResourceAlarm.ALARM_CODE_PROPERTY, "0001");
 		prop.put(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);

@@ -1,5 +1,6 @@
 package net.i2cat.luminis.protocols.wonesys.alarms;
 
+import java.util.Map;
 import java.util.Properties;
 
 import org.opennaas.core.resources.alarms.SessionAlarm;
@@ -16,8 +17,8 @@ public class WonesysAlarm extends SessionAlarm {
 	public enum Severity {
 		NORMAL, WARNING, MINOR, MAJOR, CRITICAL
 	}
-
-	public WonesysAlarm(Properties properties) {
+	
+	public WonesysAlarm(Map<String, Object> properties) {
 		super(properties);
 	}
 }

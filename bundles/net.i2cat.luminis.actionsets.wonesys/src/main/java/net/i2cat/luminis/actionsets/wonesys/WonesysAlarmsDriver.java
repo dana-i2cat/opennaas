@@ -1,6 +1,8 @@
 package net.i2cat.luminis.actionsets.wonesys;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
@@ -19,7 +21,7 @@ public class WonesysAlarmsDriver {
 		CardType cardType = getAlarmCardType(wonesysAlarm, (ProteusOpticalSwitch) model);
 		String alarmCode = getAlarmCode(cardType, wonesysAlarm);
 
-		Properties properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
+		Map<String,Object> properties = loadResourceAlarmProperties(wonesysAlarm, alarmCode, resourceId);
 
 		return new ResourceAlarm(properties);
 	}
@@ -48,8 +50,9 @@ public class WonesysAlarmsDriver {
 		return "UNKNOWN";
 	}
 
-	private static Properties loadResourceAlarmProperties(WonesysAlarm wonesysAlarm, String alarmCode, String resourceId) {
-		Properties properties = new Properties();
+	private static Map<String, Object> loadResourceAlarmProperties(WonesysAlarm wonesysAlarm, String alarmCode, String resourceId) {
+		Map<String, Object> properties = new HashMap<String, Object>();
+
 		properties.put(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);
 		properties.put(ResourceAlarm.ALARM_CODE_PROPERTY, alarmCode);
 		properties.put(ResourceAlarm.DESCRIPTION_PROPERTY, WonesysAlarmsDriver.getWonesysAlarmDescriptionByCode(alarmCode));

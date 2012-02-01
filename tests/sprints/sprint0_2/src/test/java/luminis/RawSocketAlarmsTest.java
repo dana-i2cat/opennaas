@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import junit.framework.Assert;
@@ -227,7 +228,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		// Check alarms are known
 		WonesysAlarm alarm;
 		for (String alarmMessage : alarmMessages) {
-			Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
+			Map<String, Object> properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
 			alarm = WonesysAlarmFactory.createAlarm(properties);
 
 			boolean recognized = false;
@@ -240,7 +241,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 
 		// check an unknown alarm is created
 		String unknownAlarmMessage = "FFFF0000FFFFFFFFFF";
-		Properties properties = WonesysAlarmFactory.loadAlarmProperties(unknownAlarmMessage);
+		Map<String, Object> properties = WonesysAlarmFactory.loadAlarmProperties(unknownAlarmMessage);
 		alarm = WonesysAlarmFactory.createAlarm(properties);
 
 		boolean recognized = false;

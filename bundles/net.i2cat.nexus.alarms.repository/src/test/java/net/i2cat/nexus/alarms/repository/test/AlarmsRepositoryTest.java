@@ -2,6 +2,8 @@ package net.i2cat.nexus.alarms.repository.test;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
 import junit.framework.Assert;
 import net.i2cat.nexus.alarms.repository.AlarmsRepository;
@@ -79,12 +81,12 @@ public class AlarmsRepositoryTest {
 
 	}
 
-	private Properties newProperties(String time, String resourceId, String alarmCode, String description) {
-		Properties properties1 = new Properties();
-		properties1.setProperty(ResourceAlarm.ARRIVAL_TIME_PROPERTY, time);
-		properties1.setProperty(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);
-		properties1.setProperty(ResourceAlarm.ALARM_CODE_PROPERTY, alarmCode);
-		properties1.setProperty(ResourceAlarm.DESCRIPTION_PROPERTY, description);
+	private Map<String, Object> newProperties(String time, String resourceId, String alarmCode, String description) {
+		Map<String, Object> properties1 = new HashMap<String, Object>();
+		properties1.put(ResourceAlarm.ARRIVAL_TIME_PROPERTY, time);
+		properties1.put(ResourceAlarm.RESOURCE_ID_PROPERTY, resourceId);
+		properties1.put(ResourceAlarm.ALARM_CODE_PROPERTY, alarmCode);
+		properties1.put(ResourceAlarm.DESCRIPTION_PROPERTY, description);
 
 		return properties1;
 	}

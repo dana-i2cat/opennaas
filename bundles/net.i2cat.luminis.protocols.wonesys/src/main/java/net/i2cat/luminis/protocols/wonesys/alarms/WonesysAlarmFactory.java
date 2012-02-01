@@ -1,6 +1,8 @@
 package net.i2cat.luminis.protocols.wonesys.alarms;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.osgi.service.event.Event;
@@ -14,7 +16,7 @@ public class WonesysAlarmFactory {
 	// return null;
 	// }
 
-	public static WonesysAlarm createAlarm(Properties properties) {
+	public static WonesysAlarm createAlarm(Map<String, Object> properties) {
 		return new WonesysAlarm(properties);
 	}
 
@@ -25,7 +27,7 @@ public class WonesysAlarmFactory {
 	 * @return
 	 */
 	public static WonesysAlarm createAlarm(Event event) {
-		Properties properties = new Properties();
+		Map<String, Object> properties = new HashMap<String, Object>();
 		for (String name : event.getPropertyNames()) {
 			properties.put(name, event.getProperty(name));
 		}
@@ -33,8 +35,7 @@ public class WonesysAlarmFactory {
 	}
 
 	public static WonesysAlarm createAlarm(Alarm alarm) {
-		Properties properties = new Properties();
-
+		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(WonesysAlarm.CHASSIS_PROPERTY, alarm.getChasis());
 		properties.put(WonesysAlarm.SLOT_PROPERTY, alarm.getSlot());
 		properties.put(WonesysAlarm.SEVERITY_PROPERTY, alarm.getSeverity());
@@ -47,7 +48,7 @@ public class WonesysAlarmFactory {
 
 	/* HELPERS */
 
-	public static Properties loadAlarmProperties(String message) {
+	public static Map<String, Object> loadAlarmProperties(String message) {
 
 		// Alarm format:
 		// Reserved (2B) + data length (2B) + elementId (2B) + alarmType (1B) + Reserved (1B) + alarmId (1B) + Data (var)
@@ -68,7 +69,7 @@ public class WonesysAlarmFactory {
 		if (message.length() > 18)
 			data = message.substring(18, 18 + dataLength * 2);
 
-		Properties properties = new Properties();
+		Map<String, Object> properties = new HashMap<String, Object>();
 		properties.put(WonesysAlarm.CHASSIS_PROPERTY, chasis);
 		properties.put(WonesysAlarm.SLOT_PROPERTY, slot);
 		properties.put(WonesysAlarm.ALARM_ID_PROPERTY, alarmId);
