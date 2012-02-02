@@ -3,6 +3,8 @@ package net.i2cat.mantychore.network.capability.basic.shell;
 import java.util.Iterator;
 import java.util.List;
 
+import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
+import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
 import net.i2cat.mantychore.network.model.NetworkModel;
 import net.i2cat.mantychore.network.model.NetworkModelHelper;
 import net.i2cat.mantychore.network.model.topology.CrossConnect;
@@ -12,6 +14,8 @@ import net.i2cat.mantychore.network.model.topology.Link;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "net", name = "l2attach", description = "Add a resource to the network")
@@ -68,13 +72,20 @@ public class L2AttachCommand extends GenericKarafCommand {
 			return null;
 		}
 		
-		//TODO Attach implementation should be moved to an action or internal procedure.
-		if (interface1.getDevice().equals(interface2.getDevice())) {
-			CrossConnect xConnect = NetworkModelHelper.crossConnectInterfaces(interface1, interface2);
-			netModel.getNetworkElements().add(xConnect);
-		} else {
-			Link link = NetworkModelHelper.linkInterfaces(interface1, interface2, true);
-			netModel.getNetworkElements().add(link);
+		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
+		if (! (networkCapability instanceof ITopologyManager)) {
+			printError("Failed to get required capability.");
+			printEndCommand();
+			return null;
+		}
+		
+		try {
+			((ITopologyManager)networkCapability).L2attach(interface1, interface2);
+		} catch (CapabilityException e){
+			printError("Error during attach");
+			printError(e);
+			printEndCommand();
+			return null;
 		}
 		
 		printEndCommand();

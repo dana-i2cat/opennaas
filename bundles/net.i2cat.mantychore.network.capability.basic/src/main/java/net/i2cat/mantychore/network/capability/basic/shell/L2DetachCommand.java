@@ -3,6 +3,8 @@ package net.i2cat.mantychore.network.capability.basic.shell;
 import java.util.Iterator;
 import java.util.List;
 
+import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
+import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
 import net.i2cat.mantychore.network.model.NetworkModel;
 import net.i2cat.mantychore.network.model.NetworkModelHelper;
 import net.i2cat.mantychore.network.model.topology.Interface;
@@ -11,6 +13,8 @@ import net.i2cat.mantychore.network.model.topology.NetworkConnection;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "net", name = "l2detach", description = "Add a resource to the network")
@@ -67,15 +71,21 @@ public class L2DetachCommand extends GenericKarafCommand {
 			return null;
 		}
 		
-		//TODO Detach implementation should be moved to an action or internal procedure.
-		NetworkConnection toRemove = null;
-		if (interface1.getSwitchedTo().getSource().equals(interface2) ||
-				interface1.getSwitchedTo().getSink().equals(interface2)){
-			toRemove = interface1.getSwitchedTo();
-		} else {
-			toRemove = interface1.getLinkTo();
+		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
+		if (! (networkCapability instanceof ITopologyManager)) {
+			printError("Failed to get required capability.");
+			printEndCommand();
+			return null;
 		}
-		NetworkModelHelper.deleteNetworkConnectionAndReferences(toRemove, netModel);
+		
+		try {
+			((ITopologyManager)networkCapability).L2detach(interface1, interface2);
+		} catch (CapabilityException e){
+			printError("Error during detach");
+			printError(e);
+			printEndCommand();
+			return null;
+		}
 		
 		printEndCommand();
 		return null;	
