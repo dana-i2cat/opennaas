@@ -117,7 +117,7 @@
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
 							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat</excludes>
+							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat,**\/examples\/**</excludes>
 							<!--<chmod file="${target-platform.path}/${servicemix.path}/bin/*" perm="ugo+rx" />-->
 						</configuration>
 					</execution>
