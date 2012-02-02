@@ -101,9 +101,14 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			//update model
 			List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(resourceToAdd.getModel(), networkModel, toAddName);
 			
-			//update topology in descriptor
-			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
-			resource.getResourceDescriptor().setNetworkTopology(topology);
+			if (! createdElements.isEmpty()){	
+				networkModel.addResourceRef(toAddName, resourceToAdd.getResourceIdentifier().getId());
+				
+				//update topology in descriptor
+				NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
+				resource.getResourceDescriptor().setNetworkTopology(topology);
+				resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
+			}
 		}
 		
 		return networkModel;
@@ -131,10 +136,12 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		
 		//update model
 		NetworkModelHelper.deleteNetworkElementAndReferences(toRemove, networkModel);
+		networkModel.removeResourceRef(toRemoveName);
 		
 		//update topology in descriptor 
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		resource.getResourceDescriptor().setNetworkTopology(topology);
+		resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 		
 		return networkModel;
 	}

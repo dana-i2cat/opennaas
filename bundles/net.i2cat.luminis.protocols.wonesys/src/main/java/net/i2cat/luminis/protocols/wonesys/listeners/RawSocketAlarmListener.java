@@ -1,6 +1,7 @@
 package net.i2cat.luminis.protocols.wonesys.listeners;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator;
@@ -71,9 +72,9 @@ public class RawSocketAlarmListener implements EventHandler {
 
 	private void createAndPublishAlarm(String alarmMessage) throws ProtocolException {
 
-		Properties properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
+		Map<String, Object> properties = WonesysAlarmFactory.loadAlarmProperties(alarmMessage);
 
-		properties.setProperty(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
+		properties.put(SessionAlarm.SESSION_ID_PROPERTY, sessionId);
 
 		WonesysAlarm alarm = WonesysAlarmFactory.createAlarm(properties);
 		publishEvent(alarm);

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.network.model.NetworkModel;
+import net.i2cat.mantychore.network.model.ResourcesReferences;
 import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.Device;
 import org.opennaas.core.resources.descriptor.network.DeviceId;
 import org.opennaas.core.resources.descriptor.network.Interface;
@@ -16,6 +18,37 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class NetworkMapperDescriptorToModel {
 
+	/**
+	 * Loads information from the descriptor to a NetworkModel.
+	 * Loaded information includes topology and resource references
+	 * 
+	 * @param descriptor
+	 * @return
+	 * @throws ResourceException
+	 */
+	public static NetworkModel descriptorToModel(ResourceDescriptor descriptor) throws ResourceException {
+		
+		NetworkModel model = new NetworkModel();
+		if (descriptor.getNetworkTopology() != null) {
+			//load topology
+			model = descriptorToModel(descriptor.getNetworkTopology());
+		}
+		
+		//load references
+		ResourcesReferences references = new ResourcesReferences();
+		references.putAll(descriptor.getResourceReferences());
+		model.setResourceReferences(references);
+		
+		return model;
+	}
+	
+	/**
+	 * Loads a NetworkTopology into a NetworkModel
+	 * 
+	 * @param networkTopology
+	 * @return
+	 * @throws ResourceException
+	 */
 	public static NetworkModel descriptorToModel(NetworkTopology networkTopology) throws ResourceException {
 		NetworkModel networkModel = new NetworkModel();
 
