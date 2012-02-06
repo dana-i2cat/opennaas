@@ -25,12 +25,12 @@ import org.osgi.framework.BundleContext;
 public class IntegrationTestsHelper {
 
 	private static Log	log	= LogFactory.getLog(IntegrationTestsHelper.class);
-	
+
 	public static final String EQUINOX_CONTAINER = "equinox";
 	public static final String FELIX_CONTAINER = "felix";
 	public static final String DEFAULT_CONTAINER = EQUINOX_CONTAINER;
-	
-	
+
+
 	public static Option[] getSimpleTestOptions(String containerName) {
 		String WORKING_DIRECTORY = "target/paxrunner/features/";
 		// Option REPOS = repositories("http://repo.fusesource.com/maven2",
@@ -53,7 +53,7 @@ public class IntegrationTestsHelper {
 		Option OPT_NOVERIFY = vmOption("-noverify");
 
 		Option[] optssimpleTest;
-		
+
 		if (containerName.equals(FELIX_CONTAINER)) {
 			optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 					, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
@@ -72,10 +72,10 @@ public class IntegrationTestsHelper {
 					, waitForFrameworkStartup() // wait for a length of time
 					, equinox(), REPOS, OPT_NOVERIFY);
 		}
-		
+
 		return optssimpleTest;
 	}
-	
+
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
 	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
@@ -166,7 +166,7 @@ public class IntegrationTestsHelper {
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES); // service
 	}
-	
+
 	public static Option[] getOpennaasOptions() {
 		return getOpennaasOptions(DEFAULT_CONTAINER);
 	}
@@ -186,7 +186,7 @@ public class IntegrationTestsHelper {
 	public static Option[] getNexusTestOptions() {
 		return getNexusTestOptions(DEFAULT_CONTAINER);
 	}
-	
+
 	/**
 	 * Wait for all bundles to be active, tries to start non active bundles.
 	 */
@@ -197,30 +197,18 @@ public class IntegrationTestsHelper {
 		int MAX_RETRIES = 20;
 		Bundle b = null;
 		boolean active = true;
-		List<Integer> fragments = new ArrayList<Integer>();
-		String strBundles;
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			active = true;
 			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-				if (!fragments.contains(new Integer(j))) {
-					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED) {
-						active = false;
-						try {
-							bundleContext.getBundles()[j].start();
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							if (ex.getMessage().indexOf("fragment") != -1) {
-								fragments.add(new Integer(j));
-
-								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
-								Enumeration headers = headers_dic.keys();
-								log.info("Fragment headers:");
-								while (headers.hasMoreElements()) {
-									log.info(headers.nextElement());
-								}
-							}
-						}
+				Bundle bundle = bundleContext.getBundles()[j];
+				if (bundle.getHeaders().get("Fragment-Host") == null &&
+					bundle.getState() == Bundle.RESOLVED) {
+					active = false;
+					try {
+						bundleContext.getBundles()[j].start();
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -229,7 +217,7 @@ public class IntegrationTestsHelper {
 				break;
 			}
 
-			strBundles = listBundles(bundleContext);
+			listBundles(bundleContext);
 			log.info("Waiting for activation of all bundles, this is the " + i + " try. Sleeping for 1 second");
 			try {
 				Thread.sleep(1000);
@@ -239,12 +227,7 @@ public class IntegrationTestsHelper {
 			}
 		}
 
-		strBundles = listBundles(bundleContext);
-		String fragmentsNums = "";
-		for (Integer num : fragments) {
-			fragmentsNums += num.toString() + ", ";
-		}
-		log.info("Detected " + fragments.size() + " fragments: " + fragmentsNums);
+		listBundles(bundleContext);
 
 		if (active)
 			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
