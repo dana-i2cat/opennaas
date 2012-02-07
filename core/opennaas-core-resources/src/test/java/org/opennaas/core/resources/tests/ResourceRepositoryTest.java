@@ -26,9 +26,9 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
  * Test class for the ResourceRepository class
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class ResourceRepositoryTest {
 	/*
@@ -43,7 +43,7 @@ public class ResourceRepositoryTest {
 		mockCapabilityFactory = createMock(ICapabilityFactory.class);
 		Map<String, ICapabilityFactory> capabilityFactories = new Hashtable<String, ICapabilityFactory>();
 		capabilityFactories.put("MockCapability", mockCapabilityFactory);
-		resourceRepository = new ResourceRepository("Mock", "", capabilityFactories);
+		resourceRepository = new ResourceRepository("Mock", capabilityFactories);
 		resourceRepository.setResourceDescriptorRepository(new MockResourceDescriptorRepository());
 	}
 
