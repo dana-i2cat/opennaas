@@ -1,0 +1,63 @@
+shell:echo Script to test adding attaching and detacching interfaces in a network
+
+#Creating and initializing a router
+resource:create /home/isart/Escriptori/demo0.6/junos20.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+#Configure sub-interfaces
+chassis:createsubinterface --vlanid 20 router:junos20 fe-0/3/0.14
+chassis:createsubinterface --vlanid 20 router:junos20 fe-0/3/1.15
+queue:execute router:junos20
+
+#Create two logical routers
+chassis:createlogicalrouter router:junos20 logicalRouter1 fe-0/3/0.14
+chassis:createlogicalrouter router:junos20 logicalRouter2 fe-0/3/1.15
+queue:execute router:junos20
+
+#Start logical routers
+protocols:context router:logicalRouter1 netconf mock://user:password@1.1.1.1:22/netconf
+protocols:context router:logicalRouter2 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:logicalRouter1
+resource:start router:logicalRouter2
+
+#Creating and initializing a network with empty model
+resource:create home/isart/Escriptori/demo0.6/basicNetwork.descriptor
+resource:start network:basicNet1
+
+#Adding routers to network
+net:addResource network:basicNet1 router:logicalRouter1
+net:addResource network:basicNet1 router:logicalRouter2
+
+#Export topology
+resource:export -nt /home/isart/Escriptori/demo0.6/noAttachedTopology.xml network:basicNet1 /home/isart/Escriptori/demo0.6/netDescriptor.xml
+
+#Tell network interfaces are attached
+shell:echo "[INFO] Attaching interfaces"
+net:l2attach network:basicNet1 router:logicalRouter1:fe-0/3/0.14 router:logicalRouter2:fe-0/3/1.15
+
+#Export topology
+resource:export -nt /home/isart/Escriptori/demo0.6/attachedTopology.xml network:basicNet1 /home/isart/Escriptori/demo0.6/netDescriptor.xml
+
+#Tell network interfaces are not attached
+shell:echo "[INFO] Detaching interfaces"
+net:l2detach network:basicNet1 router:logicalRouter1:fe-0/3/0.14 router:logicalRouter2:fe-0/3/1.15
+
+#Export topology
+resource:export -nt /home/isart/Escriptori/demo0.6/detachedTopology.xml network:basicNet1 /home/isart/Escriptori/demo0.6/netDescriptor.xml
+
+
+#Cleaning
+net:removeResource network:basicNet1 router:logicalRouter1
+net:removeResource network:basicNet1 router:logicalRouter2
+resource:stop network:basicNet1
+resource:remove network:basicNet1
+resource:stop router:logicalRouter1
+resource:remove router:logicalRouter1
+resource:stop router:logicalRouter2
+resource:remove router:logicalRouter2
+chassis:deletelogicalrouter router:junos20 logicalRouter1
+chassis:deletelogicalrouter router:junos20 logicalRouter2
+queue:execute router:junos20
+resource:stop router:junos20
+resource:remove router:junos20

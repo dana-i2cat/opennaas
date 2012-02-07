@@ -36,5 +36,19 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="net/l2attach">
+			<action class="net.i2cat.mantychore.network.capability.basic.shell.L2AttachCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="net/l2detach">
+			<action class="net.i2cat.mantychore.network.capability.basic.shell.L2DetachCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>

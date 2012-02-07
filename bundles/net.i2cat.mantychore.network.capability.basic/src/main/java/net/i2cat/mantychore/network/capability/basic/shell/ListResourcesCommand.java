@@ -24,9 +24,7 @@ public class ListResourcesCommand extends GenericKarafCommand {
 		// load network
 		IResource network;
 		try {
-			IResourceManager manager = getResourceManager();
-			String[] networkIdSplitted = splitResourceName(networkId);
-			network = manager.getResource(manager.getIdentifierFromResourceName(networkIdSplitted[0], networkIdSplitted[1]));
+			network = getResourceFromFriendlyName(networkId);
 		} catch (Exception e) {
 			printError("Failed to get required resources: " + e.getLocalizedMessage());
 			printEndCommand();
