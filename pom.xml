@@ -42,6 +42,7 @@
 		<module>core</module>
 		<module>platform</module>
 		<module>assembly</module>
+		<module>manticore</module>
 	</modules>
 	<build>
 		<plugins>
