@@ -2,6 +2,8 @@ package net.i2cat.mantychore.network.capability.basic.shell;
 
 import java.util.List;
 
+import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
+import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
 import net.i2cat.mantychore.network.model.NetworkModel;
 import net.i2cat.mantychore.network.model.NetworkModelHelper;
 import net.i2cat.mantychore.network.model.topology.NetworkElement;
@@ -11,6 +13,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
@@ -32,32 +36,29 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 		IResource network;
 		IResource resource;
 		try {
-			IResourceManager manager = getResourceManager();
-			String[] networkIdSplitted = splitResourceName(networkId);
-			network = manager.getResource(manager.getIdentifierFromResourceName(networkIdSplitted[0], networkIdSplitted[1]));
+			network = getResourceFromFriendlyName(networkId);
+			resource = getResourceFromFriendlyName(resourceId);
 		} catch (Exception e) {
-			printError("Failed to get network resource: " + e.getLocalizedMessage());
+			printError("Failed to get required resources: " + e.getLocalizedMessage());
 			printEndCommand();
 			return null;
 		}
 
-		NetworkModel networkModel = (NetworkModel) network.getModel();
-
-		List<NetworkElement> resources = NetworkModelHelper.getNetworkElementsExceptTransportElements(networkModel);
-		int pos = NetworkModelHelper.getNetworkElementByName(resourceId, resources);
-		if (pos == -1) {
-			printError("Could not find resource " + resourceId + " in network model");
+		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
+		if (! (networkCapability instanceof ITopologyManager)) {
+			printError("Failed to get required capability.");
 			printEndCommand();
 			return null;
 		}
-
-		NetworkElement toRemove = resources.get(pos);
-		NetworkModelHelper.deleteNetworkElementAndReferences(toRemove, networkModel);
-		networkModel.removeResourceRef(resourceId);
 		
-		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
-		network.getResourceDescriptor().setNetworkTopology(topology);
-		network.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
+		try {
+			((ITopologyManager)networkCapability).removeResource(resource);
+		} catch (CapabilityException e){
+			printError("Error adding resource.");
+			printError(e);
+			printEndCommand();
+			return null;
+		}
 
 		printInfo("Resource " + resourceId + "removed from network " + networkId);
 		printEndCommand();

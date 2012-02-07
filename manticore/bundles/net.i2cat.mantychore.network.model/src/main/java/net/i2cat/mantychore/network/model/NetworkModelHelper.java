@@ -113,6 +113,34 @@ public class NetworkModelHelper {
 		}
 		return toReturn;
 	}
+	
+	@Deprecated
+	public static Interface getInterfaceByName(String interfaceName, NetworkModel model) {
+		for (NetworkElement elem : model.getNetworkElements()) {
+			if (elem instanceof Interface) {
+				if (elem.getName().equals(interfaceName))
+					return (Interface) elem;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Get the interface from Network Model and interface name
+	 * 
+	 * @param networkElements
+	 * @return Interface
+	 */
+	public static Interface getInterfaceByName(List<NetworkElement> networkElements, String interfaceName) {
+		Interface toReturn = null;
+		for (NetworkElement elem : networkElements) {
+			if (elem instanceof Interface && elem.getName().equals(interfaceName)) {
+				toReturn = (Interface) elem;
+				break;
+			}
+		}
+		return toReturn;
+	}
 
 	/**
 	 * 
@@ -143,6 +171,19 @@ public class NetworkModelHelper {
 			dst.setLinkTo(link);
 		}
 		return link;
+	}
+	
+	public static CrossConnect crossConnectInterfaces(Interface src, Interface dst) {
+		CrossConnect xConnect = new CrossConnect();
+		xConnect.setSource(src);
+		xConnect.setSink(dst);
+		
+		xConnect.setLayer(src.getLayer());
+
+		src.setSwitchedTo(xConnect);
+		dst.setSwitchedTo(xConnect);
+		
+		return xConnect;
 	}
 
 	/**
@@ -254,6 +295,7 @@ public class NetworkModelHelper {
 			// intermediate links and paths will still be active
 
 			// don't remove them by now
+			// just mark they are no longer part of toRemove
 			((Path) toRemove).getPathSegments().clear();
 
 		} else if (toRemove instanceof CrossConnect) {

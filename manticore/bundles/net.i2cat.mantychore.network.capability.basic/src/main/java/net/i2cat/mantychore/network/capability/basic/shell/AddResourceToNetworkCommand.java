@@ -2,6 +2,8 @@ package net.i2cat.mantychore.network.capability.basic.shell;
 
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.mappers.Cim2NdlMapper;
+import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
+import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
 import net.i2cat.mantychore.network.model.NetworkModel;
 import net.i2cat.mantychore.network.repository.NetworkMapperModelToDescriptor;
 
@@ -11,6 +13,8 @@ import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
@@ -32,40 +36,30 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 		IResource network;
 		IResource resource;
 		try {
-
-			IResourceManager manager = getResourceManager();
-
-			String[] networkIdSplitted = splitResourceName(networkId);
-			String[] resourceIdSplitted = splitResourceName(resourceId);
-
-			resource = manager.getResource(manager.getIdentifierFromResourceName(resourceIdSplitted[0], resourceIdSplitted[1]));
-			network = manager.getResource(manager.getIdentifierFromResourceName(networkIdSplitted[0], networkIdSplitted[1]));
-
+			network = getResourceFromFriendlyName(networkId);
+			resource = getResourceFromFriendlyName(resourceId);
 		} catch (Exception e) {
 			printError("Failed to get required resources: " + e.getLocalizedMessage());
 			printEndCommand();
 			return null;
 		}
 
-		// transform resource model to NDL
-		if (!resource.getState().equals(State.ACTIVE)) {
-			printError("Resource should be started before adding it to a network.");
+		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
+		if (! (networkCapability instanceof ITopologyManager)) {
+			printError("Failed to get required capability.");
+			printEndCommand();
+			return null;
 		}
-
-		IModel resourceModel = resource.getModel();
-		NetworkModel networkModel = (NetworkModel) network.getModel();
-
-		// FIXME should use a generic getIModel2NdlWrapper method placed in IModel (NetworkModel should be moved to OpenNaaS for that)
-		// IModel2NdlWrapper wrapper = resourceModel.getIModel2NdlWrapper();
-		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
-		if (resourceModel instanceof ManagedElement) {
-			Cim2NdlMapper.addModelToNetworkModel(resource.getModel(), networkModel, resourceId);
-			networkModel.addResourceRef(resourceId, resource.getResourceIdentifier().getId());
-			
-			NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
-			network.getResourceDescriptor().setNetworkTopology(topology);
-			network.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
+		
+		try {
+			((ITopologyManager)networkCapability).addResource(resource);
+		} catch (CapabilityException e){
+			printError("Error adding resource.");
+			printError(e);
+			printEndCommand();
+			return null;
 		}
+		
 		printInfo("Resource " + resourceId + "added to network " + networkId);
 		printEndCommand();
 		return null;
