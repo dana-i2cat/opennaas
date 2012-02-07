@@ -1,0 +1,14 @@
+##version 0.1
+
+shell:echo Script configuring vlan links
+
+##Tell network who is connected to who with static vlans
+#l2vlan:attach network:networkdemo router:logicalheanet1:fe-0/1/1.1 router:logicalunic1:fe-0/3/2.2 --vlanId 1
+#l2vlan:attach network:networkdemo router:logicalgsn1:fe-0/2/2.1 router:logicalunic1:fe-0/3/1.2 --vlanId 3
+
+##Create desired links (vlans already available) (network launches router iface configuration) 
+#l2vlan:createLink network:networkdemo router:logicalheanet1:fe-0/1/1.1 router:logicalunic1:fe-0/3/2.2
+#l2vlan:createLink network:networkdemo router:logicalgsn1:fe-0/2/2.1 router:logicalunic1:fe-0/3/1.2
+#queue:execute network:networkdemo
+
+

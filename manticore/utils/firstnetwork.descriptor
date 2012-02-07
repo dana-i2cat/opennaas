@@ -1,0 +1,8 @@
+<resourceDescriptor>
+    <information>
+        <type>network</type>
+        <name>networkBasic</name>
+    </information>
+    <properties/>
+    <fileTopology>/home/carlos/workspace/trunk/utils/networktopologies/network_diffs_layer.xml</fileTopology> 
+</resourceDescriptor>

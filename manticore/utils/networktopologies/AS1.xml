@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#">
+
+<ndl:Location rdf:about="#Netherlight">
+        <ndl:name>Second Mantychore Exchange</ndl:name>
+</ndl:Location>
+
+
+
+<!-- router1  -->
+<ndl:Device rdf:about="#router:R1">
+        <ndl:name>router:R1</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R1:lt-1/2/0.1"/>  
+        <ndl:hasInterface rdf:resource="#router:R1:lt-1/2/0.50"/>    
+        <ndl:hasInterface rdf:resource="#router:R1:lo0.2"/>   
+</ndl:Device>
+
+<!-- router2  -->
+<ndl:Device rdf:about="#router:R2">
+        <ndl:name>router:R2</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R2:lt-1/2/0.2"/>  
+        <ndl:hasInterface rdf:resource="#router:R2:lt-1/2/0.3"/>    
+        <ndl:hasInterface rdf:resource="#router:R2:lt-1/2/0.5"/> 
+        <ndl:hasInterface rdf:resource="#router:R2:lo0.5"/>  
+</ndl:Device>
+
+<!-- router3  -->
+<ndl:Device rdf:about="#router:R3">
+        <ndl:name>router:R3</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R3:lt-1/2/0.4"/>  
+        <ndl:hasInterface rdf:resource="#router:R3:lo0.6"/>    
+</ndl:Device>
+
+<!-- router4  -->
+<ndl:Device rdf:about="#router:R4">
+        <ndl:name>router:R4</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R4:lt-1/2/0.6"/>  
+        <ndl:hasInterface rdf:resource="#router:R4:lt-1/2/0.7"/>    
+        <ndl:hasInterface rdf:resource="#router:R4:lo0.7"/>  
+</ndl:Device>
+
+
+<!-- router5  -->
+<ndl:Device rdf:about="#router:R5">
+        <ndl:name>router:R5</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R5:lt-1/2/0.9"/>  
+        <ndl:hasInterface rdf:resource="#router:R5:lo0.8"/>    
+</ndl:Device>
+
+<!-- router6  -->
+<ndl:Device rdf:about="#router:R6">
+        <ndl:name>router:R6</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R6:lt-1/2/0.8"/>  
+        <ndl:hasInterface rdf:resource="#router:R6:lt-1/2/0.10"/>    
+        <ndl:hasInterface rdf:resource="#router:R6:lt-1/2/0.11"/> 
+        <ndl:hasInterface rdf:resource="#router:R6:lt-1/2/0.13"/> 
+        <ndl:hasInterface rdf:resource="#router:R6:lo0.9"/>     
+</ndl:Device>
+
+<!-- router7  -->
+<ndl:Device rdf:about="#router:R7">
+        <ndl:name>router:R7</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R7:lt-1/2/0.12"/>  
+        <ndl:hasInterface rdf:resource="#router:R7:lo0.10"/>   
+</ndl:Device>
+
+<!-- router8  -->
+<ndl:Device rdf:about="#router:R8">
+        <ndl:name>router:R8</ndl:name>
+        <ndl:locatedAt rdf:resource="#nordunet"/>
+        <ndl:hasInterface rdf:resource="#router:R8:lt-1/2/0.14"/>  
+        <ndl:hasInterface rdf:resource="#router:R8:lo0.15"/>    
+</ndl:Device>
+
+
+
+<!--  router 1 -->
+<ndl:Interface rdf:about="#router:R1:lt-1/2/0.1">
+        <ndl:name>router:R1:lt-1/2/0.1</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R2:lt-1/2/0.2"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+<ndl:Interface rdf:about="#router:R1:lt-1/2/0.50">
+        <ndl:name>router:R1:lt-1/2/0.50</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R-AS2-1:lt-1/2/0.51"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+
+<!--  router 2 -->
+<ndl:Interface rdf:about="#router:R2:lt-1/2/0.2">
+        <ndl:name>router:R2:lt-1/2/0.2</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R1:lt-1/2/0.1"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R2:lt-1/2/0.3">
+        <ndl:name>router:R2:lt-1/2/0.3</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R3:lt-1/2/0.4"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R2:lt-1/2/0.5">
+        <ndl:name>router:R2:lt-1/2/0.5</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R4:lt-1/2/0.6"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+<!--  router 3 -->
+<ndl:Interface rdf:about="#router:R3:lt-1/2/0.4">
+        <ndl:name>router:R3:lt-1/2/0.4</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R2:lt-1/2/0.3"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<!--  router 4 -->
+<ndl:Interface rdf:about="#router:R4:lt-1/2/0.6">
+        <ndl:name>router:R4:lt-1/2/0.6</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R2:lt-1/2/0.5"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R4:lt-1/2/0.7">
+        <ndl:name>router:R4:lt-1/2/0.7</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R6:lt-1/2/0.8"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+
+<!--  router 5 -->
+<ndl:Interface rdf:about="#router:R5:lt-1/2/0.9">
+        <ndl:name>router:R5:lt-1/2/0.9</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R6:lt-1/2/0.10"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+
+
+<!--  router 6 -->
+<ndl:Interface rdf:about="#router:R6:lt-1/2/0.8">
+        <ndl:name>router:R6:lt-1/2/0.8</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R4:lt-1/2/0.7"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R6:lt-1/2/0.10">
+        <ndl:name>router:R6:lt-1/2/0.10</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R5:lt-1/2/0.9"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R6:lt-1/2/0.11">
+        <ndl:name>router:R6:lt-1/2/0.11</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R7:lt-1/2/0.12"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R6:lt-1/2/0.13">
+        <ndl:name>router:R6:lt-1/2/0.13</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R8:lt-1/2/0.14"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<!--  router 7 -->
+<ndl:Interface rdf:about="#router:R7:lt-1/2/0.12">
+        <ndl:name>router:R7:lt-1/2/0.12</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R6:lt-1/2/0.11"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+<!--  router 8 -->
+<ndl:Interface rdf:about="#router:R8:lt-1/2/0.14">
+        <ndl:name>router:R8:lt-1/2/0.14</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R6:lt-1/2/0.13"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+
+</rdf:RDF>

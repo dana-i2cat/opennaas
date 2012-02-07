@@ -1,0 +1,46 @@
+##version 0.1
+
+shell:echo Script Initialize TERENA demostration
+
+##Creating heanet resource
+resource:create /home/user/heanet.descriptor
+protocols:context router:heanetM20 netconf mock://user:password@hea.net:22/netconf
+resource:start router:heanetM20
+
+##Creating GSN resource
+resource:create /home/user/gsn.descriptor
+protocols:context router:gsnMX10 netconf mock://user:password@gsn.net:22/netconf
+resource:start router:gsnMX10
+
+##Creating UNI-C resource
+resource:create /home/user/unic.descriptor
+protocols:context router:unicM7i netconf mock://user:password@unic.net:22/netconf
+resource:start router:unicM7i
+
+##Create interfaces
+
+chassis:createsubinterface -v 1 router:heanetM20 fe-0/1/1.1
+chassis:createsubinterface -v 2 router:heanetM20 fe-0/1/2.1
+chassis:createsubinterface -v 9 router:heanetM20 fe-0/1/2.3
+queue:listactions router:heanetM20
+queue:execute router:heanetM20
+
+chassis:createsubinterface -v 2 router:gsnMX10 fe-0/2/1.2
+chassis:createsubinterface -v 3 router:gsnMX10 fe-0/2/2.1
+chassis:createsubinterface -v 9 router:gsnMX10 fe-0/2/2.3
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+
+chassis:createsubinterface -v 1 router:unicM7i fe-0/3/2.2
+chassis:createsubinterface -v 3 router:unicM7i fe-0/3/1.2
+queue:listactions router:unicM7i
+queue:execute router:unicM7i
+
+##Create Bluenet BoD resource
+#resource:create /home/user/bluenet.descriptor
+#protocols:context bod:bluenet bluenetprotocol mock://user:password@blue.net:22/bluenetprotocol
+#resource:start bod:bluenet
+
+##Create demo network resource
+resource:create  /home/user/network.descriptor
+resource:start network:networkdemo

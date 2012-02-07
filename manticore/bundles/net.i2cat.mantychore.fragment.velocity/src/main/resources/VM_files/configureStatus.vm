@@ -1,0 +1,14 @@
+<configuration>
+<interfaces>
+	<interface>
+		<name>$param.Name</name>
+		#if($param.OperationalStatus.toString().equals($statusDown) )
+			##We want disable an interface
+			 <disable/>
+		#else
+			##We want enable an interface
+			<disable operation="delete"></disable>
+		#end
+	</interface>
+</interfaces>
+</configuration>

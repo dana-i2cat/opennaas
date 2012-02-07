@@ -1,0 +1,42 @@
+shell:echo Script to test set interface description
+
+#Creating and initializing resource
+resource:create /home/carlos/Escritorio/resource.descriptor
+
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+ipv4:list router:junos20
+
+ipv4:setInterfaceDescription router:junos20 fe-0/0/1 "Test description for iface fe-0/0/1"
+
+chassis:createSubInterface router:junos20 fe-0/0/1.33
+ipv4:setInterfaceDescription router:junos20 fe-0/0/1.33 "Test description for iface fe-0/0/1.33"
+
+queue:listactions router:junos20
+queue:execute router:junos20
+
+ipv4:list router:junos20
+
+
+
+shell:echo Script to test set interface description in LR
+chassis:addInterface router:junos20 router:routerV1 fe-0/3/0.344
+
+protocols:context router:routerV1 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:routerV1
+
+ipv4:setInterfaceDescription router:routerV1 fe-0/0/1.33 "Test description for iface fe-0/0/1.33 in LR"
+
+queue:listactions router:junos20
+queue:execute router:junos20
+ipv4:list router:routerV1
+
+
+#Restoring configuration
+resource:stop router:junos20
+resource:remove router:junos20
+
+resource:stop router:routerV1
+resource:remove router:routerV1
+
+#protocols:remove ...

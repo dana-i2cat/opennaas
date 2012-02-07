@@ -1,0 +1,24 @@
+##version 0.1
+
+shell:echo Script Stopping mantychore in TERENA demostration
+
+##Deleting demo network resource
+resource:stop network:networkdemo
+resource:delete network:networkdemo
+
+##Deleting heanet resource
+resource:stop router:heanetM20
+resource:delete router:heanetM20
+
+##Deleting GSN resource
+resource:stop router:gsnMX10
+resource:delete router:gsnMX10
+
+##Deleting UNI-C resource
+resource:stop router:unicM7i
+resource:delete router:unicM7i
+
+##Deleting Bluenet BoD resource
+#resource:stop bod:bluenet
+#resource:delete bod:bluenet
+

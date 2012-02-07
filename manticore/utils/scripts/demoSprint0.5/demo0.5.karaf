@@ -1,0 +1,36 @@
+shell:echo Script to test adding a resource to a network
+
+#Creating and initializing a network
+resource:create /home/carlos/Escritorio/files-sprint0.5/demonetwork.descriptor
+
+shell:echo CHECK RESOURCE IS IN NETWORK
+
+resource:list -a
+resource:start network:networkBasic
+net:listResources network:networkBasic
+
+
+
+resource:export -nt /home/carlos/Escritorio/files-sprint0.5/withoutRouterNetwork.xml  network:networkBasic /home/carlos/Escritorio/files-sprint0.5/firstDescriptor.xml
+
+
+#Creating and initializing a router
+resource:create /home/carlos/Escritorio/files-sprint0.5/junos20.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+net:listResources network:networkBasic
+net:addResource network:networkBasic router:junos20
+resource:list -a
+net:listResources network:networkBasic
+
+resource:export -nt /home/carlos/Escritorio/files-sprint0.5/withRouterNetwork.xml  network:networkBasic /home/carlos/Escritorio/files-sprint0.5/secondDescriptor.xml
+
+net:removeresource network:networkBasic router:junos20
+resource:list -a
+net:listResources network:networkBasic
+
+resource:export -nt /home/carlos/Escritorio/files-sprint0.5/withoutRouterBisNetwork.xml  network:networkBasic /home/carlos/Escritorio/files-sprint0.5/thirdDescriptor.xml
+
+#Cleaning
+resource:stop network:networkBasic
+resource:remove network:networkBasic

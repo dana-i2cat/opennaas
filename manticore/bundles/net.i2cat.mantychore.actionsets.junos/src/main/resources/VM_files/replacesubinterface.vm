@@ -1,0 +1,27 @@
+<configuration>
+<interfaces>
+	#foreach($element in $param)
+	#if($element.getClass().getSimpleName().equals("EthernetPort"))		
+	<interface>
+		<name>$element.Name</name>
+		<unit operation="replace">
+		<name>0</name>
+		##<name>$element.PortNumber</name>
+		##<encapsulation>vlan</encapsulation>
+		##<vlan-id>$element.PortNumber</vlan-id>
+		<encapsulation>ethernet</encapsulation>
+		#if(!$element.ProtocolEndpoint.Empty && $element.ProtocolEndpoint.get(0).getClass().getSimpleName().equals("IPProtocolEndpoint"))		
+		<family>
+			<inet>
+			<address>
+			<name>$element.ProtocolEndpoint.get(0).getIPv4Address()/24</name>
+			</address>
+			</inet>
+		</family>	
+		#end
+		</unit>
+	</interface>
+	#end
+	#end
+</interfaces>
+</configuration>
