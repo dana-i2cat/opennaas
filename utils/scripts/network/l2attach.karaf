@@ -1,5 +1,7 @@
 shell:echo Script to test adding attaching and detacching interfaces in a network
 
+shell:echo "INITIALIZING NETWORK..."
+
 #Creating and initializing a router
 resource:create /home/isart/Escriptori/demo0.6/junos20.descriptor
 protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
@@ -29,6 +31,8 @@ resource:start network:basicNet1
 net:addResource network:basicNet1 router:logicalRouter1
 net:addResource network:basicNet1 router:logicalRouter2
 
+shell:echo "NETWORK INITIALIZED"
+
 #Export topology
 resource:export -nt /home/isart/Escriptori/demo0.6/noAttachedTopology.xml network:basicNet1 /home/isart/Escriptori/demo0.6/netDescriptor.xml
 
@@ -48,6 +52,7 @@ resource:export -nt /home/isart/Escriptori/demo0.6/detachedTopology.xml network:
 
 
 #Cleaning
+shell:echo "CLEANING..."
 net:removeResource network:basicNet1 router:logicalRouter1
 net:removeResource network:basicNet1 router:logicalRouter2
 resource:stop network:basicNet1
@@ -61,3 +66,4 @@ chassis:deletelogicalrouter router:junos20 logicalRouter2
 queue:execute router:junos20
 resource:stop router:junos20
 resource:remove router:junos20
+shell:echo "DONE!"
