@@ -1,0 +1,25 @@
+shell:echo Script to test using bod resource in mantychore
+
+#create resource from descriptor
+resource:create /home/isart/Escriptori/demo0.6/dummybod.descriptor
+resource:list
+
+#start resource
+resource:start bod:l2bod_test
+resource:list
+
+#use l2bod capability
+l2bod:requestConnection bod:l2bod_test interface1 interface2
+
+l2bod:shutdownConnection bod:l2bod_test interface1 interface2
+
+#execute queue
+queue:execute bod:l2bod_test
+
+#stop resource
+resource:stop bod:l2bod_test
+resource:list
+
+#remove resource
+resource:remove bod:l2bod_test 
+resource:list

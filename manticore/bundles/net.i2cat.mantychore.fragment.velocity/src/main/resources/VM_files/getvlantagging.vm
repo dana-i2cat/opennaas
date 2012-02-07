@@ -1,0 +1,7 @@
+<configuration>
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+		<interface>
+	<interfaces>
+<configuration>

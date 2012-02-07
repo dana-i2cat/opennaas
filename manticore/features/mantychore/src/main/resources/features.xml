@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<features>
+	<feature name="i2cat-commons" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.alarms.repository/1.0.0-SNAPSHOT</bundle>
+		<!--  general dependencies -->
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.beanutils/1.8.0</bundle>
+		<!--  dependency for common configurations -->
+		<!-- 		<bundle>mvn:commons-logging/commons-logging/1.1.1</bundle -->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/3.2.1_1-fuse</bundle>
+		<bundle>mvn:org.apache.commons/com.springsource.org.apache.commons.digester/1.8.0</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/2.4_3</bundle>
+		<!-- necessary dependencies for commandset  -->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.werken-xpath/0.9.4_3</bundle>
+		<bundle>mvn:commons-digester/commons-digester/2.1</bundle>
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ant/1.7.0_5</bundle>
+		<bundle>mvn:commons-configuration/commons-configuration/1.6</bundle>
+		<bundle>mvn:commons-io/commons-io/1.4</bundle>
+		<!--<bundle>mvn:org.junit/com.springsource.org.junit/4.4.0</bundle>-->
+		<bundle>mvn:org.apache.neethi/neethi/3.0.1</bundle>
+		<!-- Events wants this -->
+		<bundle>mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+		<!-- Multiple luminis and mantychore features depend on bundles below -->
+		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.model/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-deps" version="1.0.0-SNAPSHOT">
+		<!--  necessary dependency for digester library of netconf4j-->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
+		<bundle>mvn:net.i2cat.netconf/netconf4j/0.0.2</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-base" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/1.0.0-SNAPSHOT</bundle>
+		<!-- fragment, so no autostart -->
+		<bundle start="false">mvn:net.i2cat.mantychore.fragment/net.i2cat.mantychore.fragment.velocity/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.chassis/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.ip/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-repo" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-network" version="1.0.0-SNAPSHOT">
+		<!-- MOVED TO i2cat-commons 
+		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.model/1.0.0-SNAPSHOT</bundle>
+		-->
+		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.repository/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.capability.basic/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-nexus-testprofile" version="1.0.0-SNAPSHOT">
+		<!--<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/1.0.0-SNAPSHOT</bundle>-->
+		<bundle>mvn:org.opennaas/opennaas-core-tests-mockprofile/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-mantychore-core" version="1.0.0-SNAPSHOT">
+		<feature version="1.0.0-SNAPSHOT">i2cat-commons</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-deps</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-base</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-repo</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-network</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
+		<feature version="1.0.0-SNAPSHOT">opennaas-bod</feature>
+	</feature>
+	<feature name="i2cat-luminis-deps" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
+		<bundle>mvn:com.wonesys/com.wonesys.emsModule/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-luminis-base" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.luminis.protocols/net.i2cat.luminis.protocols.wonesys/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.luminis.actionsets/net.i2cat.luminis.actionsets.wonesys/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.luminis.capability/net.i2cat.luminis.capability.connections/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.luminis.capability/net.i2cat.luminis.capability.monitoring/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:net.i2cat.luminis.ROADM.repository/net.i2cat.luminis.ROADM.repository/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="i2cat-luminis-core" version="1.0.0-SNAPSHOT">
+		<feature version="1.0.0-SNAPSHOT">i2cat-commons</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-luminis-deps</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-luminis-base</feature>
+		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
+	</feature>
+	<feature name="nexus-tests-helper" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:net.i2cat.nexus:net.i2cat.nexus.tests.helper:1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="opennaas-bod" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:org.opennaas.bod.repository/org.opennaas.bod.repository/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas.bod.capability/org.opennaas.bod.capability.l2bod/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas.bod.actionsets/org.opennaas.bod.actionsets/1.0.0-SNAPSHOT</bundle>
+	</feature>
+</features>

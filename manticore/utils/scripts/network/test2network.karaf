@@ -1,0 +1,15 @@
+shell:echo Script to test create logical router
+
+#Creating and initializing resource
+resource:create /home/carlos/Escritorio/network2.descriptor
+resource:start network:networklayer3
+
+resource:list
+
+
+#Restoring configuration
+resource:stop network:networklayer3
+resource:remove network:networklayer3
+
+#it is necessary to refactor the remove operation
+#protocols:remove ...

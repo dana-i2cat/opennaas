@@ -1,0 +1,50 @@
+resource:create /home/carlos/workspace/sprint_0_4/utils/resource.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconff
+resource:start router:junos20
+chassis:createsubinterface -v 14 router:junos20 fe-0/3/0.14
+chassis:createsubinterface -pu 122 router:junos20 lt-1/2/0.121
+queue:listactions router:junos20
+queue:execute -d router:junos20
+
+chassis:createsubinterface -v 15 -d ethernetDescription router:junos20 fe-0/3/1.15 
+chassis:createsubinterface -pu 121 -d logicalTunnelDescription router:junos20 lt-1/2/0.122
+queue:listactions router:junos20
+queue:execute -d router:junos20
+
+chassis:showinterfaces router:junos20
+
+
+chassis:createlogicalrouter router:junos20 test1 fe-0/3/1.15
+chassis:createlogicalrouter router:junos20 test2 fe-0/3/0.14 lt-1/2/0.122
+
+queue:listactions router:junos20
+queue:execute -d router:junos20
+
+protocols:context router:test1 netconf mock://user:password@1.1.1.1:22/netconf
+protocols:context router:test2 netconf mock://user:password@1.1.1.1:22/netconf
+
+resource:start router:test1
+resource:start router:test2
+
+ipv4:setInterfaceDescription router:test2 fe-0/3/0.14 "switch Description 1"
+ipv4:setInterfaceDescription router:test1 fe-0/3/1.15 "ethernet Description 2"
+
+queue:execute -d router:test1
+queue:execute -d router:test2
+ 
+
+ipv4:list router:test1
+ipv4:list router:test2
+
+chassis:deleteSubInterface router:junos20 router:junos20 lt-1/2/0.121
+chassis:deletelogicalrouter router:junos20 test1 
+chassis:deletelogicalrouter router:junos20 test2 
+
+queue:listactions router:junos20
+queue:execute -d router:junos20
+
+
+resource:stop router:test1
+resource:stop router:test2
+resource:remove router:test1
+resource:remove router:test2

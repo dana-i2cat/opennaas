@@ -1,0 +1,14 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if ($param != "null" )
+		#set( $logicalRouter = "true" )
+	#end	
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
