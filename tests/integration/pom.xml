@@ -23,6 +23,9 @@
 		<module>net.i2cat.luminis.tests.capability</module>
 		<module>net.i2cat.luminis.tests.repository</module>
   		<module>net.i2cat.luminis.tests.commandsKaraf</module>
+  		<module>org.opennaas.bod.tests.repository</module>
+  		<module>org.opennaas.bod.tests.capability.l2bod</module>
+   		<module>org.opennaas.bod.tests</module>
 	</modules>
 	<!--  dependencies for integration tests -->
 	<dependencies>

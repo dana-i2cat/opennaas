@@ -1,24 +1,29 @@
+package org.opennaas.bod.capability.l2bod;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
-public class MockQueueCapabilityFactory extends AbstractCapabilityFactory {
-	public MockQueueCapabilityFactory(String factoryId) {
-		this.setType(factoryId);
-	}
+public class L2BoDCapabilityFactory extends AbstractCapabilityFactory {
 
+	/**
+	 * Create the capability
+	 */
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return this.createCapability(resource.getResourceDescriptor().getCapabilityDescriptor("mock"), resource.getResourceDescriptor().getId());
+
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(L2BoDCapability.CAPABILITY_NAME),
+				resource.getResourceDescriptor().getId());
+		capability.setResource(resource);
+		return capability;
 	}
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return new MockQueueCapability(capabilityDescriptor);
+
+		return new L2BoDCapability(capabilityDescriptor, resourceId);
 	}
 
 }

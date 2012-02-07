@@ -1,3 +1,5 @@
+package org.opennaas.bod.repository.tests;
+
 import java.util.List;
 import java.util.Map;
 

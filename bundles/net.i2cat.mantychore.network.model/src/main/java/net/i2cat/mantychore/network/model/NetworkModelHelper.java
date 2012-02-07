@@ -114,6 +114,7 @@ public class NetworkModelHelper {
 		return toReturn;
 	}
 	
+	@Deprecated
 	public static Interface getInterfaceByName(String interfaceName, NetworkModel model) {
 		for (NetworkElement elem : model.getNetworkElements()) {
 			if (elem instanceof Interface) {
@@ -122,6 +123,23 @@ public class NetworkModelHelper {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Get the interface from Network Model and interface name
+	 * 
+	 * @param networkElements
+	 * @return Interface
+	 */
+	public static Interface getInterfaceByName(List<NetworkElement> networkElements, String interfaceName) {
+		Interface toReturn = null;
+		for (NetworkElement elem : networkElements) {
+			if (elem instanceof Interface && elem.getName().equals(interfaceName)) {
+				toReturn = (Interface) elem;
+				break;
+			}
+		}
+		return toReturn;
 	}
 
 	/**
