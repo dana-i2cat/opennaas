@@ -1,0 +1,5 @@
+##version 0.0
+
+echo: Script to revert changes in devices config
+
+echo: REVERT NOT YET IMPLEMENTED

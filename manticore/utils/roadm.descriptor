@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<resourceDescriptor>
+	<capabilityDescriptors>
+
+		<information>
+			<!-- optional info -->
+			<description>Connections capability for roadm</description>
+			<name>Connections capability</name>
+			<version>1.0</version>
+			<!-- identifier type -->
+			<type>connections</type>
+		</information>
+		<!-- actionSet information -->	
+		<capabilityProperty value="proteus" name="actionset.name"/>
+		<capabilityProperty value="1.0" name="actionset.version" />
+	</capabilityDescriptors>
+
+	   <capabilityDescriptors>
+		<information>
+			<!-- optional info -->
+			<description>Monitoring capability for roadm</description>
+			<name>Monitoring capability</name>
+			<version>1.0</version>
+			<!-- identifier type -->
+			<type>monitoring</type>
+		</information>
+		<!-- actionSet information-->
+		<capabilityProperty value="proteus" name="actionset.name"/>
+		<capabilityProperty value="1.0" name="actionset.version" />
+
+
+	    </capabilityDescriptors>
+
+	   <capabilityDescriptors>
+		<information>
+			<!-- optional info -->
+			<description>Queue capability</description>
+			<name>Queue capability</name>
+			<version>1.0</version>
+			<!-- identifier type -->
+			<type>queue</type>
+		</information>
+		<!-- actionSet information -->
+		<capabilityProperty value="proteus" name="actionset.name"/>
+		<capabilityProperty value="1.0" name="actionset.version" />
+	    </capabilityDescriptors>
+
+	<!-- Resource information to define type and name -->
+	<information>
+		<description>This is a full description of the roadm optical switch</description>
+		<name>pedrosa</name>
+		<type>roadm</type>
+		<version>1.0.0</version>
+	</information>
+	<properties/>
+</resourceDescriptor>

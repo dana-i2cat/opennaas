@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	publish action set services  -->
+	<bean id="chassisActionSet" class="net.i2cat.mantychore.actionsets.junos.ChassisActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="chassisActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="chassis"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	<!--  	publish action set services  -->
+	<bean id="ipActionSet" class="net.i2cat.mantychore.actionsets.junos.IPActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="ipActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="ipv4"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+	<!--  	publish action set services  -->
+	<bean id="queueActionSet" class="net.i2cat.mantychore.actionsets.junos.QueueActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="queueActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="queue"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
+</blueprint>

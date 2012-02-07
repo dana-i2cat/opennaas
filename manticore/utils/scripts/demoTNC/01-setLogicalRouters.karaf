@@ -1,0 +1,40 @@
+##version 0.1
+
+shell:echo Script creating logical routers
+
+##Creating logical routers
+
+chassis:createlogicalrouter router:heanetM20 logicalheanet1 fe-0/1/1.1 fe-0/1/2.1 fe-0/1/2.3
+resource:list
+queue:listactions router:heanetM20
+queue:execute router:heanetM20
+protocols:context router:logicalheanet1 netconf mock://user:password@hea.net:22/netconf
+resource:start router:logicalheanet1
+
+chassis:createlogicalrouter router:gsnMX10 logicalgsn1 fe-0/2/1.2 fe-0/2/2.1 fe-0/2/2.3
+resource:list
+queue:listactions router:gsnMX10
+queue:execute router:gsnMX10
+protocols:context router:logicalgsn1 netconf mock://user:password@gsn.net:22/netconf
+resource:start router:logicalgsn1
+
+chassis:createlogicalrouter router:unicM7i logicalunic1 fe-0/3/2.2 fe-0/3/1.2
+resource:list
+queue:listactions router:unicM7i
+queue:execute router:unicM7i
+protocols:context router:logicalunic1 netconf mock://user:password@unic.net:22/netconf
+resource:start router:logicalunic1
+
+##Add resources to network
+net:addResource network:networkdemo router:logicalheanet1
+net:addResource network:networkdemo router:logicalgsn1
+net:addResource network:networkdemo router:logicalunic1
+#net:addResource network:networkdemo bod:bluenet
+
+##Tell network who is connected with who
+#layer1:attach network:networkdemo router:logicalheanet1:fe-0/1/1.1 router:logicalunic1:fe-0/3/2.2
+#layer1:attach network:networkdemo router:logicalheanet1:fe-0/1/2.1 bod:bluenet:PortIdXXX
+#layer1:attach network:networkdemo bod:bluenet:PortIdYYY router:logicalgsn1:fe-0/2/1.2
+#layer1:attach network:networkdemo router:logicalgsn1:fe-0/2/2.1 router:logicalunic1:fe-0/3/1.2
+#queue:execute network:networkdemo
+

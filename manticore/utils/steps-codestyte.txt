@@ -1,0 +1,13 @@
+
+1.- Eclipse > Window > Preferences > Java > Code Style > Formatter > Import (select our mantychore-codestyle.xml)
+
+2.- Eclipse > Window > Preferences > Java > Editor > Save Actions:
+
+Enable options:
+
+[V] Perform the selected actions on save:
+   [V] Format source code
+       (o) Format all lines
+       (  ) Format edited lines
+[V] Organize imports
+[  ] Aditional actions

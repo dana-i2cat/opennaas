@@ -1,0 +1,55 @@
+shell:echo Script to test set IP in LT
+
+#Creating and initializing resource
+resource:create /home/isart/Escriptori/mantychoreTestDescriptors/junos20.descriptor
+
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+ipv4:list router:junos20
+
+ipv4:setIP router:junos20  lt-1/2/0.0 10.10.10.10 255.0.0.0
+
+chassis:createSubInterface -v 344 router:junos20 lt-1/2/0.344 
+ipv4:setIP router:junos20 lt-1/2/0.344 10.33.33.33 255.0.0.0
+
+queue:listactions router:junos20
+queue:execute -d router:junos20
+
+chassis:showInterfaces router:junos20
+ipv4:list router:junos20
+
+shell:echo Script to test set IP in LT in LR
+
+chassis:createLogicalRouter router:junos20 logicalTest1
+chassis:addInterface router:junos20 router:logicalTest1 lt-1/2/0.344
+queue:execute -d router:junos20
+
+protocols:context router:logicalTest1 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:logicalTest1
+
+ipv4:list router:logicalTest1
+
+ipv4:setIP router:logicalTest1 lt-1/2/0.344 10.13.13.13 255.0.0.0
+
+queue:listactions router:logicalTest1
+queue:execute -d router:logicalTest1
+
+ipv4:list router:logicalTest1
+ipv4:list router:junos20
+
+#remove logical router
+chassis:deletelogicalrouter router:junos20 logicalTest1
+queue:execute -d router:junos20
+
+#list ifaces to check logicalRouter ones has been deleted
+ipv4:list router:junos20
+queue:execute -d router:junos20
+
+#Restoring configuration
+resource:stop router:logicalTest1
+resource:remove router:logicalTest1
+
+resource:stop router:junos20
+resource:remove router:junos20
+
+#protocols:remove ...
