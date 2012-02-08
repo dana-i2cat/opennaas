@@ -18,37 +18,30 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-events</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.capability</groupId>
 			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -57,12 +50,10 @@
 		<dependency>
 			<groupId>net.i2cat.mantychore.actionsets</groupId>
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<!--  manage dependencies  -->
@@ -71,7 +62,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4.3</version>
 				<!--
 					By default, the Surefire Plugin will automatically include all test
 					classes with the following wildcard patterns: "**/Test*.java" -
@@ -93,7 +83,6 @@
 			<plugin>
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
-				<version>1.4</version>
 				<!--
 					| enable improved OSGi compilation support for the bundle
 					life-cycle. | to switch back to the standard bundle life-cycle,
@@ -120,7 +109,6 @@
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>

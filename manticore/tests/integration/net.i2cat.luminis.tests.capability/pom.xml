@@ -18,38 +18,31 @@
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!--  added dependencies to call capability -->
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.luminis.capability</groupId>
 			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.luminis.actionsets</groupId>
 			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.0.1</version>
 		</dependency>
 	</dependencies>
 	<!--  manage dependencies  -->
@@ -58,7 +51,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4.3</version>
 				<!--
                     By default, the Surefire Plugin will automatically include all test classes with the following wildcard patterns:
                     "**/Test*.java" - includes all of its subdirectory and all java filenames that start with "Test". "**/*Test.java" -
@@ -103,7 +95,6 @@
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
 					<configuration>
 						<lifecycleMappingMetadata>
 							<pluginExecutions>
