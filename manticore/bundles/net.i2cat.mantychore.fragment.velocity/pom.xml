@@ -14,9 +14,6 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Velocity Fragment</name>
 	<description>Mantychore Velocity Fragment Implementation</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>
@@ -26,7 +23,6 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
-			<version>2.5</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-digester</groupId>
@@ -38,14 +34,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
@@ -54,7 +42,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.0.0</version>
 				<extensions>true</extensions>
 				<!--
 					| the following instructions build a simple set of public/private
