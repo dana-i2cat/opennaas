@@ -16,9 +16,9 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * MockResourceDescriptorRepository Mock class for resource descriptor saving
- * 
+ *
  * @author knguyen
- * 
+ *
  */
 public class MockResourceDescriptorRepository implements GenericRepository<ResourceDescriptor, Long> {
 

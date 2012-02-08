@@ -10,7 +10,7 @@ public class LockNetconfCommand  extends JunosCommand {
 	public LockNetconfCommand(String target) {
 		super(CommandNetconfConstants.LOCK, "");
 		this.target = target;
-		
+
 	}
 
 	@Override

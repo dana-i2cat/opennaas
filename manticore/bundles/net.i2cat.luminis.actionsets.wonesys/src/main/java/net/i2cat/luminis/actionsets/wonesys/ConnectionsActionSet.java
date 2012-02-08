@@ -14,9 +14,9 @@ public class ConnectionsActionSet extends ActionSet {
 		this.putAction(ActionConstants.MAKECONNECTION, MakeConnectionAction.class);
 		this.putAction(ActionConstants.REMOVECONNECTION, RemoveConnectionAction.class);
 		this.putAction(ActionConstants.REFRESHCONNECTIONS, RefreshModelConnectionsAction.class);
-	
+
 		this.refreshActions.add(ActionConstants.REFRESHCONNECTIONS);
-		
+
 	}
 
 	@Override
@@ -27,6 +27,6 @@ public class ConnectionsActionSet extends ActionSet {
 		actionNames.add(ActionConstants.REFRESHCONNECTIONS);
 		return actionNames;
 	}
-	
+
 
 }

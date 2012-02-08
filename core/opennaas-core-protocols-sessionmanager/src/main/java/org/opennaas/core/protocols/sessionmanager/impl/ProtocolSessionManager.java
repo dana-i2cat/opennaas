@@ -117,7 +117,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	/**
 	 * Get the miliseconds since this session was last released.
-	 * 
+	 *
 	 * @param sessionIds
 	 * @return System.currentTimeMillis() snapshot taken when released.
 	 */
@@ -411,13 +411,13 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
 	}
-	
-	
+
+
 	private IEventManager getEventManager() throws ProtocolException {
 		if (this.eventManager == null)
 			throw new ProtocolException("No eventManager found!");
-		
+
 		return this.eventManager;
 	}
-	
+
 }

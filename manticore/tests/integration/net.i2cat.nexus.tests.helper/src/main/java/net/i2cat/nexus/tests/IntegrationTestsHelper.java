@@ -25,12 +25,12 @@ import org.osgi.framework.BundleContext;
 public class IntegrationTestsHelper {
 
 	private static Log	log	= LogFactory.getLog(IntegrationTestsHelper.class);
-	
+
 	public static final String EQUINOX_CONTAINER = "equinox";
 	public static final String FELIX_CONTAINER = "felix";
 	public static final String DEFAULT_CONTAINER = EQUINOX_CONTAINER;
-	
-	
+
+
 	public static Option[] getSimpleTestOptions(String containerName) {
 		String WORKING_DIRECTORY = "target/paxrunner/features/";
 		// Option REPOS = repositories("http://repo.fusesource.com/maven2",
@@ -53,7 +53,7 @@ public class IntegrationTestsHelper {
 		Option OPT_NOVERIFY = vmOption("-noverify");
 
 		Option[] optssimpleTest;
-		
+
 		if (containerName.equals(FELIX_CONTAINER)) {
 			optssimpleTest = combine(HELPER_DEFAULT_OPTIONS
 					, OPT_WORKING_DIRECTORY // directory where pax-runner saves OSGi
@@ -72,10 +72,10 @@ public class IntegrationTestsHelper {
 					, waitForFrameworkStartup() // wait for a length of time
 					, equinox(), REPOS, OPT_NOVERIFY);
 		}
-		
+
 		return optssimpleTest;
 	}
-	
+
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
 	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
@@ -166,7 +166,7 @@ public class IntegrationTestsHelper {
 		Option OPT_MANTYCHORE_FEATURES = scanFeatures(MTCHORE_FEATURES_REPO, MTCHORE_FEATURES);
 		return combine(getOpennaasOptions(containerName), OPT_MANTYCHORE_FEATURES); // service
 	}
-	
+
 	public static Option[] getOpennaasOptions() {
 		return getOpennaasOptions(DEFAULT_CONTAINER);
 	}
@@ -186,7 +186,7 @@ public class IntegrationTestsHelper {
 	public static Option[] getNexusTestOptions() {
 		return getNexusTestOptions(DEFAULT_CONTAINER);
 	}
-	
+
 	/**
 	 * Wait for all bundles to be active, tries to start non active bundles.
 	 */

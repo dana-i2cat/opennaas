@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
- * Provides information about the java virtual machine is executing. It has JAXB annotations 
+ * Provides information about the java virtual machine is executing. It has JAXB annotations
  * to provide XML marshalling capabilities
  * @author eduardgrasa
  *
@@ -17,7 +17,7 @@ public class Java {
 	private String jvmVendor = null;
 	private Memory nonHeapMemory = null;
 	private Memory heapMemory = null;
-	
+
 	public Java(){
 	}
 
@@ -83,7 +83,7 @@ public class Java {
 	public void setHeapMemory(Memory heapMemory) {
 		this.heapMemory = heapMemory;
 	}
-	
+
 	public String toString(){
 		String result = Platform.BOLD + "Java Virtual Machine Information \n" + Platform.NORMAL;
 		result = result + "   JRE Version: " + getJreVersion() + "\n";
@@ -93,7 +93,7 @@ public class Java {
 		result = result + "   JVM Vendor: " + getJvmVendor() + "\n";
 		result = result + "   Non heap memory (in MB): \n" + nonHeapMemory.toString();
 		result = result + "   Heap memory (in MB): \n" + heapMemory.toString();
-		
+
 		return result;
 	}
 }

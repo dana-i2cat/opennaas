@@ -6,7 +6,7 @@ import org.opennaas.core.resources.action.IActionSet;
 
 
 /**
- * 
+ *
  * @author Isart Canyameres Gimenez (i2cat)
  */
 public class ProfileDescriptor {

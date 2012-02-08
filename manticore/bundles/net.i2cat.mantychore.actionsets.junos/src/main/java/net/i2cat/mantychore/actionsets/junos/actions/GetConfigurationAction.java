@@ -59,11 +59,11 @@ public class GetConfigurationAction extends JunosAction {
 
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
 		/* the model have to be null and we have to initialize */
-		
+
 		//FIXME This "if" is important because it resets the model if we want to update it
 		if (this.modelToUpdate == null ) this.modelToUpdate = new ComputerSystem();
-		
-		
+
+
 		String message;
 		try {
 			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
@@ -139,25 +139,25 @@ public class GetConfigurationAction extends JunosAction {
 		checkParams(params);
 		try {
 			Object velocityParams = params;
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
 				//is logicalRouter, add LRName param
 				if (velocityParams == null)
 					velocityParams = new ComputerSystem();
 				((ManagedElement)velocityParams).setElementName(((ComputerSystem)modelToUpdate).getElementName());
-				
+
 				//TODO If we don't have a ManagedElement initialized
-				
-			// check params 
-			} else if (params!= null 
-					&& params instanceof ManagedElement 
+
+			// check params
+			} else if (params!= null
+					&& params instanceof ManagedElement
 					&& ((ManagedElement)params).getElementName()==null){
-				
-				((ManagedElement)velocityParams).setElementName(""); 
-				
+
+				((ManagedElement)velocityParams).setElementName("");
+
 			} else if (params == null){
 				velocityParams = "null";
 			}
-			setVelocityMessage(prepareVelocityCommand(velocityParams, template)); 
+			setVelocityMessage(prepareVelocityCommand(velocityParams, template));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

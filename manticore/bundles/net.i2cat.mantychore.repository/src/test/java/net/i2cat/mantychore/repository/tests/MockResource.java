@@ -206,7 +206,7 @@ public class MockResource implements IResource {
 	@Override
 	public void setModel(IModel arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

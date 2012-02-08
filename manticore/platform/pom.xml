@@ -15,7 +15,7 @@
 		<target-platform.path>target/mantychore</target-platform.path>
 		<opennaas.path>opennaas-1.0.0-SNAPSHOT</opennaas.path>
 	</properties>
-	
+
 	<repositories>
 		<repository>
 			<id>maven.i2cat.net</id>
@@ -72,8 +72,8 @@
 			<url>http://repo.fusesource.com/maven2/</url>
 		</pluginRepository>
 	</pluginRepositories>
-	
-	
+
+
 
 	<!--
   | imported (non-local) bundles are listed here as dependencies | and
@@ -107,7 +107,7 @@
 								<artifactItem>
 									<groupId>org.opennaas</groupId>
 									<artifactId>assembly</artifactId>
-									<version>1.0.0-SNAPSHOT</version> 
+									<version>1.0.0-SNAPSHOT</version>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
@@ -189,7 +189,7 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${target-platform.path}/${opennaas.path}</outputDirectory>
-							<!--  
+							<!--
       <resources>
 		  <resource>
 		    <directory>src/main/java</directory>

@@ -26,7 +26,7 @@ public class SetInterfaceDescriptionAction extends JunosAction {
 	/**
 	 * Params must be a LogicalPort.
 	 * Action template is chosen depending of params being a physical interface or a subinterface (logical)
-	 * 
+	 *
 	 * @param params: LogicalPort whose description to set
 	 * @throws ActionException if params is null or is not a LogicalPort
 	 */
@@ -64,15 +64,15 @@ public class SetInterfaceDescriptionAction extends JunosAction {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		try {
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
 				//is logicalRouter, add LRName param
-				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName());
 				//TODO If we don't have a ManagedElement initialized
 				} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
-					((ManagedElement)params).setElementName(""); 
-					
+					((ManagedElement)params).setElementName("");
+
 				}
-			setVelocityMessage(prepareVelocityCommand(params, template)); 
+			setVelocityMessage(prepareVelocityCommand(params, template));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

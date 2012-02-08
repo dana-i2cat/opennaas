@@ -5,9 +5,9 @@ import javax.jws.WebService;
 
 @WebService
 public class PlatformManagerWS implements IPlatformManagerWS{
-	
+
 	private Platform platform = null;
-	
+
 	public PlatformManagerWS(){
 		platform = new Platform();
 	}

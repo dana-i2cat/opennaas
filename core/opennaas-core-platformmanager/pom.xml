@@ -158,7 +158,7 @@
 							<!--org.osgi.service.command,-->
 							*</Import-Package>
 						<Export-Package>
-							org.opennaas.core.platformmanager*;version="${project.version}", 
+							org.opennaas.core.platformmanager*;version="${project.version}",
     						</Export-Package>
 						<Require-Bundle>org.apache.cxf.bundle</Require-Bundle>
 						<DynamicImport-Package>org.apache.cxf.*</DynamicImport-Package>

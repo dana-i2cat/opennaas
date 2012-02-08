@@ -12,9 +12,9 @@ import org.apache.commons.logging.LogFactory;
  * Factory for WonesysProtocolSession creation. Registering this factory as an osgi service will allow other bundles use of it.
  * <p>
  * This registration may be done declaratively, through an xml file in OSGI-INF folder.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class WonesysProtocolSessionFactory implements IProtocolSessionFactory {
 

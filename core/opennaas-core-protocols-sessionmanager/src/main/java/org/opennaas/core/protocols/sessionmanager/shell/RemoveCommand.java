@@ -12,9 +12,9 @@ import org.apache.felix.gogo.commands.Option;
 
 /**
  * Remove a protocol session.
- * 
+ *
  * @author Pau Minoves
- * 
+ *
  */
 @Command(scope = "protocols", name = "remove", description = "Removes a live connection from the pool, closing it.")
 public class RemoveCommand extends GenericKarafCommand {

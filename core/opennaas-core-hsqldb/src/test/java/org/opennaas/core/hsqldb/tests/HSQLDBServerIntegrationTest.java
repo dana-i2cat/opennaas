@@ -16,12 +16,12 @@ AbstractDependencyInjectionSpringContextTests {
 	    }
 
 	    private static String[] fakeDatabasePaths = {
-	        "classpath*:/applicationContext-test.xml", "classpath*:/applicationContext.xml", 
+	        "classpath*:/applicationContext-test.xml", "classpath*:/applicationContext.xml",
 	    };
-	    
+
 	    @Override
 	    protected void onSetUp() throws Exception {
-	        ApplicationContext context = applicationContext;        
+	        ApplicationContext context = applicationContext;
 	        server = (HSQLDBServer) context.getBean("dataBase");
 	    }
 

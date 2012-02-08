@@ -211,7 +211,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 
 	/**
 	 * Generates a WonesysAlarm
-	 * 
+	 *
 	 * @param session
 	 */
 	private void generateAndPublishAlarm(IProtocolSession session) {
@@ -221,7 +221,7 @@ public class AlarmsInProtocolSessionManagerTest extends AbstractIntegrationTest 
 
 	/**
 	 * Generates a WonesysAlarm
-	 * 
+	 *
 	 * @param session
 	 */
 	private Event generateAlarm(IProtocolSession session) {

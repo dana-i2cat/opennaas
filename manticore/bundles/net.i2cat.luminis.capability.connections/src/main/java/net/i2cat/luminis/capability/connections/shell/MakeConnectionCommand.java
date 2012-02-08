@@ -40,7 +40,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 		String channelInput = "l";
 		if (useChannelNum)
 			channelInput = "n";
-		
+
 		printInitCommand("make connection between: (" + portSource + "," + channelInput + "=" + lambdaSource + "),(" + portTarget + "," + channelInput + "=" + lambdaTarget + ")");
 
 		try {
@@ -101,7 +101,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 
 		DWDMChannel srcFiberChannel = new DWDMChannel();
 		DWDMChannel dstFiberChannel = new DWDMChannel();
-		
+
 		if (!useChannelNum) {
 			srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
 			dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
@@ -109,7 +109,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 			srcFiberChannel.setNumChannel(Integer.parseInt(lambdaSource));
 			dstFiberChannel.setNumChannel(Integer.parseInt(lambdaTarget));
 		}
-		
+
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
 

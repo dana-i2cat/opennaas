@@ -43,7 +43,7 @@ public class ResourceHelper {
 
 	/**
 	 * It creates a new resource descriptor
-	 * 
+	 *
 	 * @param type
 	 *            resource descriptor type
 	 * @return
@@ -75,7 +75,7 @@ public class ResourceHelper {
 
 	/**
 	 * Create a new resource descriptor of an arbitrary type.
-	 * 
+	 *
 	 * @param type
 	 *            type of resource descriptor.
 	 * @return a descriptor
@@ -109,7 +109,7 @@ public class ResourceHelper {
 
 	/**
 	 * Create a new resource descriptor of an arbitrary type.
-	 * 
+	 *
 	 * @param type
 	 *            type of resource descriptor.
 	 * @return a descriptor
@@ -143,7 +143,7 @@ public class ResourceHelper {
 
 	/**
 	 * Create a Capability Descriptor of an arbitrary type but proteus/1.0.
-	 * 
+	 *
 	 * @param type
 	 * @return a capability
 	 */
@@ -243,7 +243,7 @@ public class ResourceHelper {
 
 	/**
 	 * It creates a new resource descriptor
-	 * 
+	 *
 	 * @param capabilities
 	 * @param type
 	 * @param uri
@@ -274,7 +274,7 @@ public class ResourceHelper {
 
 	/**
 	 * It creates a new capability descriptor
-	 * 
+	 *
 	 * @param capabilities
 	 * @param type
 	 * @param uri

@@ -23,7 +23,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Get the Bunble Context
-	 * 
+	 *
 	 * @return BundleContext
 	 */
 	public static BundleContext getContext() {
@@ -31,14 +31,14 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void start(BundleContext context) throws Exception {
 		Activator.context = context;
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	public void stop(BundleContext context) throws Exception {
 
@@ -46,7 +46,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Get the Queue Manager Service
-	 * 
+	 *
 	 * @param resourceId
 	 * @return IQueueManagerService
 	 * @throws ActivatorException
@@ -63,7 +63,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Necessary to get some capability type
-	 * 
+	 *
 	 * @param resourceId
 	 * @return Filter
 	 * @throws InvalidSyntaxException
@@ -78,7 +78,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Get the connections action set service
-	 * 
+	 *
 	 * @param name
 	 * @param version
 	 * @return IActionSet
@@ -96,7 +96,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Necessary to get some capability type
-	 * 
+	 *
 	 * @param name
 	 * @param version
 	 * @return Filter

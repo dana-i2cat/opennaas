@@ -15,7 +15,7 @@ public interface IWonesysAlarmConfigurator {
 
 	/**
 	 * Activates the receiving of alarms. System may receive alarms after this call.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public void enableAlarms() throws IOException;

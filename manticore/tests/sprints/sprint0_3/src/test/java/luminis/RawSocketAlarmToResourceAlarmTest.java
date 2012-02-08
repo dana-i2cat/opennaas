@@ -187,7 +187,7 @@ public class RawSocketAlarmToResourceAlarmTest extends AbstractIntegrationTest i
 
 	/**
 	 * Generates a WonesysAlarm
-	 * 
+	 *
 	 * @param session
 	 */
 	private void generateAlarm(IProtocolSession session) {

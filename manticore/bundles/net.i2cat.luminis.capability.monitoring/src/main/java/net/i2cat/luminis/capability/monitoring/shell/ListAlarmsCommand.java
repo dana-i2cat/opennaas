@@ -13,9 +13,9 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Lists alarms per resource
- * 
+ *
  * @author Isart Canyameres
- * 
+ *
  */
 @Command(scope = "alarms", name = "list", description = "List alarms of given resource (all alarms if no resource is given)")
 public class ListAlarmsCommand extends GenericKarafCommand {

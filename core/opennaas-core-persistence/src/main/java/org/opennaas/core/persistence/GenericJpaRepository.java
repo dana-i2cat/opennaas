@@ -19,12 +19,12 @@ import org.springframework.beans.factory.annotation.Required;
  * JPA implementation of the GenericRepository. Note that this implementation
  * also expects Hibernate as JPA implementation. That's because we like the
  * Criteria API.
- * 
+ *
  * @author Jurgen Lust
  * @author $LastChangedBy: jlust $
- * 
+ *
  * @version $LastChangedRevision: 257 $
- * 
+ *
  * @param <T>
  *            The persistent type
  * @param <ID>
@@ -89,8 +89,8 @@ public class GenericJpaRepository<T, ID extends Serializable> implements
 	public List<T> findByExample(final T exampleInstance) {
 		Session session = (Session) getEntityManager().getDelegate();
 		Criteria crit = session.createCriteria(getEntityClass());
-		final List<T> result = crit.list();  
-		return result; 
+		final List<T> result = crit.list();
+		return result;
 	}
 
 	/**

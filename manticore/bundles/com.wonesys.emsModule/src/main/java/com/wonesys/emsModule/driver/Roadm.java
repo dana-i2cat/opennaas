@@ -19,35 +19,35 @@ import java.util.List;
  */
 public class Roadm extends Driver {
 
-   
+
     public static String ID = "1.3.6.1.4.1.18223.9.11";
     //TODO id alarma incorrecte! canviar
     public static String Alarma = "1.3.6.1.4.1.18223.9.11.2.3";
-    
+
     public List getListTipos(String params) {
-        
+
         ArrayList<String> list = new ArrayList<String>();
         String[] strList = params.split("#");
         String tipusAlarmaS = strList[3];
-        
+
         if(!tipusAlarmaS.startsWith("0x")){
-            
+
             char[] chars = tipusAlarmaS.toCharArray();
             tipusAlarmaS = "";
-            
+
             for (int i = 0; i< chars.length; i++) {
-                
+
                 String o = Integer.toHexString(chars[i]);
                 tipusAlarmaS += o.length() < 2 ? "0"+o : o;
-                
+
                 if(i < chars.length-1)
                     tipusAlarmaS += ":";
             }
-            
+
             tipusAlarmaS = "0x" + tipusAlarmaS.toUpperCase();
-            
+
         }
-           
+
         if(tipusAlarmaS.startsWith("0x01")) { //Fallo Alimentacion ROADM (Capella)
             list.add("ROADM_POWER");
         }
@@ -63,7 +63,7 @@ public class Roadm extends Driver {
         else if(tipusAlarmaS.startsWith("0x0A")) { //Temperatura Placa
             list.add("ROADM_TEMP");
         }
-     
+
         else if(tipusAlarmaS.startsWith("0x0C")) { //Fallo Rele 1 (5 (Capella)/3.3V(Metconnex))
             list.add("ROADM_POWER_RELE1");
         }
@@ -73,23 +73,23 @@ public class Roadm extends Driver {
         else if(tipusAlarmaS.startsWith("0x0D")) { //Fallo Rele 3 (5V) ( Metconnex)
             list.add("ROADM_POWER_RELE3");
         }
-        
+
         else if(tipusAlarmaS.startsWith("0x0E")) { //Fallo Rele 4 (N5V) (Metconnex)
             list.add("ROADM_POWER_RELE4");
         }
         else if(tipusAlarmaS.startsWith("0x0F")) { //Reset
             list.add("ROADM_RESET");
         }
-       
+
         return list;
     }
-  
-   
+
+
 
     public int getPuerto(String params) {
-        
+
         return -1;
-        
+
     }
-     
+
 }

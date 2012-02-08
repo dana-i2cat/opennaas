@@ -23,16 +23,16 @@ public class L2AttachCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "network:networkName", description = "The network where to add a resource", required = true, multiValued = false)
 	private String	networkId;
-	
+
 	@Argument(index = 1, name = "interfaceName", description = "First interface to attach", required = true, multiValued = false)
 	private String interface1Name;
-	
+
 	@Argument(index = 2, name = "interfaceName", description = "Second interface to attach", required = true, multiValued = false)
 	private String interface2Name;
-	
+
 	@Override
 	protected Object doExecute() throws Exception {
-	
+
 		IResource network;
 		try {
 			network = getResourceFromFriendlyName(networkId);
@@ -44,11 +44,11 @@ public class L2AttachCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		//get interfaces
 		NetworkModel netModel = (NetworkModel) network.getModel();
 		List<Interface> interfaces = NetworkModelHelper.getInterfaces(netModel.getNetworkElements());
-		
+
 		Iterator<Interface> it = interfaces.iterator();
 		boolean found = false;
 		Interface interface1 = null;
@@ -71,14 +71,14 @@ public class L2AttachCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
 		if (! (networkCapability instanceof ITopologyManager)) {
 			printError("Failed to get required capability.");
 			printEndCommand();
 			return null;
 		}
-		
+
 		try {
 			((ITopologyManager)networkCapability).L2attach(interface1, interface2);
 		} catch (CapabilityException e){
@@ -87,9 +87,9 @@ public class L2AttachCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		printEndCommand();
-		return null;	
+		return null;
 	}
 
 }

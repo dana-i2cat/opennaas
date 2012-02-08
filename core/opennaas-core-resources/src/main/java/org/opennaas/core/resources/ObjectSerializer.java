@@ -1,6 +1,6 @@
 package org.opennaas.core.resources;
 
-import java.io.StringReader; 
+import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
@@ -34,7 +34,7 @@ public class ObjectSerializer {
 	 * @param xml
 	 * @return
 	 */
-	public static Object fromXml(String xml, String packageName) {	
+	public static Object fromXml(String xml, String packageName) {
 
 		StringReader in = new StringReader(xml);
 		try {
@@ -43,7 +43,7 @@ public class ObjectSerializer {
 			.createUnmarshaller().unmarshal(in);
 			return obj;
 		} catch (JAXBException e) {
-			e.printStackTrace();		
+			e.printStackTrace();
 		}
 		return null;
 	}

@@ -8,7 +8,7 @@ public class Root {
 	private String totalSpace = null;
 	private String freeSpace = null;
 	private String usableSpace = null;
-	
+
 	public Root(){
 	}
 
@@ -42,12 +42,12 @@ public class Root {
 	public void setAbsolutePath(String absolutePath) {
 		this.absolutePath = absolutePath;
 	}
-	
+
 	@XmlAttribute(name = "absolutePath")
 	public String getAbsolutePath() {
 		return absolutePath;
 	}
-	
+
 	public String toString(){
 		String result = "      Root  \n";
 		result = result + "         Absolute Path: " + getAbsolutePath() + "\n";

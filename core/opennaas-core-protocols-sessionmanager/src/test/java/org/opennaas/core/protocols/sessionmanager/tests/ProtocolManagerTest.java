@@ -34,7 +34,7 @@ public class ProtocolManagerTest {
 		protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
 		//trick to avoid registration as alarm listener errors
 		protocolSessionManager.setEventManager(new MockEventManager());
-	
+
 		netconfContext = new ProtocolSessionContext();
 		netconfContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 		netconfContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "mock://user:pass@server");

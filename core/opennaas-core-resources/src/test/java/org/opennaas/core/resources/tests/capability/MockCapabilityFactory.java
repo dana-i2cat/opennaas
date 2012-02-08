@@ -9,9 +9,9 @@ import org.opennaas.core.resources.descriptor.Information;
 
 /**
  * A mock CapabilityFactory for testing
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class MockCapabilityFactory extends AbstractCapabilityFactory {
 	@Override

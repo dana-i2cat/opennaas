@@ -29,7 +29,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Transforms given model to a NDL representation and adds it to networkModel.
-	 * 
+	 *
 	 * @param model
 	 * @param networkModel
 	 * @param name
@@ -45,7 +45,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Transforms given managedElement to a NDL representation and adds it to networkModel.
-	 * 
+	 *
 	 * @param managedElement
 	 * @param networkModel
 	 * @param name
@@ -75,7 +75,7 @@ public class Cim2NdlMapper {
 	/**
 	 * Creates a Device representing given ManagedElement and adds it to networkModel. Notice that a single Device is not a complete representation of
 	 * a ManagedElement.
-	 * 
+	 *
 	 * @param managedElement
 	 * @param networkModel
 	 * @param name
@@ -114,7 +114,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Creates interfaces representing given managedElement endpoints, and adds them to networkModel.
-	 * 
+	 *
 	 * @param managedElement
 	 * @param dev
 	 * @param networkModel
@@ -226,7 +226,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Creates links representing LT connections in managedElement, and adds them to networkModel.
-	 * 
+	 *
 	 * @param managedElement
 	 * @param interfaces
 	 * @param networkModel

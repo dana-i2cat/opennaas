@@ -12,10 +12,10 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 /**
  * Add a Profile to ProfileManager. <br/>
  * NOTE: Profiles are automatically added when an OSGi bundle exporting IProfile interface is registered in OSGi registry.
- * 
+ *
  * @author Evelyn Torras (i2cat)
  * @author Isart Canyameres Gimenez (i2cat)
- * 
+ *
  */
 @Command(scope = "profile", name = "create", description = "Create a new Profile.")
 public class CreateProfileCommand extends GenericKarafCommand {

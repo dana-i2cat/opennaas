@@ -214,7 +214,7 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 
 	/**
 	 * Generates a WonesysAlarm
-	 * 
+	 *
 	 * @param session
 	 */
 	private void generateWonesysAlarm(IProtocolSession session) {
@@ -236,11 +236,11 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 
 	/**
 	 * Generates a ResourceAlarm
-	 * 
+	 *
 	 * @param resourceId
 	 */
 	private ResourceAlarm generateResourceAlarm(String resourceId) {
-		
+
 		Map<String, Object> prop = new HashMap<String, Object>();
 		prop.put(ResourceAlarm.ARRIVAL_TIME_PROPERTY, new Date().getTime());
 		prop.put(ResourceAlarm.ALARM_CODE_PROPERTY, "0001");

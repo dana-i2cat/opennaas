@@ -12,9 +12,9 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * List the device ids registered to the protocol manager
- * 
+ *
  * @author Pau Minoves
- * 
+ *
  */
 @Command(scope = "protocols", name = "Context", description = "Manipulates protocol contexts for used to create new sessions. Call without protocol to list.")
 public class ContextCommand extends GenericKarafCommand {

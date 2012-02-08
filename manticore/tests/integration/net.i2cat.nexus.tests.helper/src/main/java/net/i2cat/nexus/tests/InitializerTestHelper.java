@@ -18,7 +18,7 @@ public class InitializerTestHelper {
 
 	/**
 	 * Stops all resources in give resourceManager
-	 * 
+	 *
 	 * @param resourceManager
 	 * @throws ResourceException
 	 *             if fails to stop a resource.
@@ -32,9 +32,9 @@ public class InitializerTestHelper {
 
 	/**
 	 * Remove all resources from given resourceManager.
-	 * 
+	 *
 	 * It stops active resources prior removing them.
-	 * 
+	 *
 	 * @param resourceManager
 	 * @throws ResourceException
 	 *             if fails to remove (or stop) a resource.

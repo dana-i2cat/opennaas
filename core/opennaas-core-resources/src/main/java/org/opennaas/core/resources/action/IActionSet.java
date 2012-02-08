@@ -18,7 +18,7 @@ public interface IActionSet {
 	public List<String> getRefreshActionName();
 
 	/**
-	 * 
+	 *
 	 * @param actionId
 	 * @return Action with given actionId present in this actionSet, or null if there is no action with given Id
 	 * @throws ActionException

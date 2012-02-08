@@ -17,9 +17,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class NetworkRepositoryTest {
-	
 
-	
+
+
 	NetworkRepository	NetworkRepository;
 	String					persistenceUnit	= "ResourceCore";
 
@@ -98,13 +98,13 @@ public class NetworkRepositoryTest {
 		}
 
 	}
-	
+
 
 
 	private ResourceDescriptor oldResourceDescriptor(String name, String type) {
 		ResourceDescriptor networkDescriptor = ResourceHelper.newResourceDescriptorNetwork(name);
 		networkDescriptor.getInformation().setType(type);
-		networkDescriptor.getCapabilityDescriptors().remove(0);		
+		networkDescriptor.getCapabilityDescriptors().remove(0);
 		return networkDescriptor;
 	}
 

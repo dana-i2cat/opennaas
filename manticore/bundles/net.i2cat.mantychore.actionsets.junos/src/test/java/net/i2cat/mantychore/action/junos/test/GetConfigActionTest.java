@@ -56,11 +56,11 @@ public class GetConfigActionTest {
 		// this action always have this template as a default
 		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
-	
-	
-	
+
+
+
 	private void printTest (net.i2cat.mantychore.model.System routerModel) {
-		
+
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
 
 		log.info("Logical devices: " + ld.size());
@@ -90,7 +90,7 @@ public class GetConfigActionTest {
 				}
 			}
 		}
-		
+
 		log.info("Found " + routerModel.getChildren().size() + " logical resources.");
 		for (Object systemElement : routerModel.getChildren()) {
 			log.info((String) systemElement);
@@ -100,8 +100,8 @@ public class GetConfigActionTest {
 				log.info(logicalrouter.getName());
 			}
 		}
-		
-		
+
+
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class GetConfigActionTest {
 		Assert.assertNotNull(routerModel);
 		printTest(routerModel);
 	}
-	
+
 //	@Test
 //	public void testExecuteInLogicalRouter() {
 //		try {
@@ -134,7 +134,7 @@ public class GetConfigActionTest {
 
 	/**
 	 * Simple parser. It was used for proves with xml files
-	 * 
+	 *
 	 * @param stream
 	 * @return
 	 */

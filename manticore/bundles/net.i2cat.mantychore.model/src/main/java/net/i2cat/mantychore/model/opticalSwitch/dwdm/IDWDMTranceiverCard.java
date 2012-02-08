@@ -7,9 +7,9 @@ import net.i2cat.mantychore.model.opticalSwitch.IOpticalSwitchCard;
 
 /**
  * Allows transformation from electrical signal to optical, and viceversa.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public interface IDWDMTranceiverCard extends IOpticalSwitchCard {
 

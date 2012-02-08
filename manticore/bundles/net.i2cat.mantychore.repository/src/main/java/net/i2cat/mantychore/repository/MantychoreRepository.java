@@ -15,14 +15,14 @@ import org.apache.commons.logging.LogFactory;
 public class MantychoreRepository extends ResourceRepository {
 
 	Log	log	= LogFactory.getLog(MantychoreRepository.class);
-	
+
 	@Override
 	protected void checkResourceCanBeStarted(IResource resource)
 			throws ResourceException {
 		checkResourceHasAnAssociatedContext(resource);
-		super.checkResourceCanBeStarted(resource); 
+		super.checkResourceCanBeStarted(resource);
 	}
-	
+
 	private void checkResourceHasAnAssociatedContext(IResource resource) throws ResourceException {
 		IProtocolSessionManager sessionManager;
 		try {
@@ -54,7 +54,7 @@ public class MantychoreRepository extends ResourceRepository {
 		log.info("Deleting factory: " + capabilityFactory.getType());
 		this.capabilityFactories.remove(capabilityFactory.getType());
 	}
-	
+
 	private IProtocolSessionManager getProtocolSessionManager(String resourceId) throws Exception {
 		IProtocolManager protocolManager = Activator.getProtocolManagerService();
 		return protocolManager.getProtocolSessionManager(resourceId);

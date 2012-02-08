@@ -27,9 +27,9 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * Resource Descriptor with JPA and JAXB annotations to provide both persistence and XML marshaling capabilities.
- * 
+ *
  * @author Mathieu Lemay (ITI)
- * 
+ *
  */
 @XmlRootElement
 @Entity
@@ -48,7 +48,7 @@ public class ResourceDescriptor {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<CapabilityDescriptor>	capabilityDescriptors;
-	
+
 	@Basic
 	private String						profileId;
 
@@ -56,7 +56,7 @@ public class ResourceDescriptor {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="NETWORK_TOPOLOGY")
-	private NetworkTopology							networkTopology; 
+	private NetworkTopology							networkTopology;
 
 	@ElementCollection
 	@MapKeyColumn(name="name")
@@ -67,7 +67,7 @@ public class ResourceDescriptor {
 	/**
 	 * necessary parameter to configure a ssh connection
 	 */
-	
+
     @ElementCollection
     @MapKeyColumn(name="name")
     @Column(name="value")
@@ -93,9 +93,9 @@ public class ResourceDescriptor {
 	public void setInformation(Information information) {
 		this.information = information;
 	}
-	
-	
-	
+
+
+
 
 	public String getId() {
 		return this.id;
@@ -140,7 +140,7 @@ public class ResourceDescriptor {
 	public void setFileTopology(String networkFileDescriptor) {
 		this.fileTopology = networkFileDescriptor;
 	}
-	
+
 
 	public boolean removeCapabilityDescriptor(String capabilityType) {
 		for (int i = 0; i < capabilityDescriptors.size(); i++) {
@@ -184,7 +184,7 @@ public class ResourceDescriptor {
 		resourceDescriptor.setProperties(new HashMap<String, String>(properties));
 
 		//TODO THE NETWORK DESCRIPTOR IS NOT CLONED. A NETWORK RESOURCE HAVE NOT TO BE CLONED
-		
+
 		return resourceDescriptor;
 	}
 

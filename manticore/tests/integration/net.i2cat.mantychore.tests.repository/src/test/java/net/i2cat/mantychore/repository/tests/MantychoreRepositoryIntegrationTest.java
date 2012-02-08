@@ -364,18 +364,18 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 		}
 
 	}
-	
+
 	@Test
 	public void testPersistedIdentifierIdDoesNotChange() {
 		try {
 
 			ResourceDescriptor descriptor = ResourceHelper.newResourceDescriptor("router");
 			IResource res1 = resourceRepository.createResource(descriptor);
-			
+
 			if (resourceRepository instanceof ResourceRepository){
 				//reset repository and load persisted resources
 				((ResourceRepository) resourceRepository).init();
-				
+
 				try {
 					IResource res2 = resourceRepository.getResource(res1.getResourceIdentifier().getId());
 					assertEquals(res1.getResourceDescriptor().getId(), res2.getResourceDescriptor().getId());
@@ -384,7 +384,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 				}
 				//already checked that id is the same
 			}
-			
+
 		} catch (ResourceException e) {
 			fail(e.getLocalizedMessage());
 		}

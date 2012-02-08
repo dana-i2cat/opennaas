@@ -199,7 +199,7 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 
 	/**
 	 * Generates a WonesysAlarm
-	 * 
+	 *
 	 * @param session
 	 */
 	private void generateWonesysAlarm(IProtocolSession session) {

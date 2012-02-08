@@ -18,10 +18,10 @@ public class Device {
 	@Id
 	@GeneratedValue
 	private long 					id;
-	
+
 	@Basic
 	String name;
-	
+
 	@ElementCollection
 	List<InterfaceId> hasInterfaces;
 
@@ -29,21 +29,21 @@ public class Device {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@XmlElement(name = "hasInterface", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public List<InterfaceId> getHasInterfaces() {
 		return hasInterfaces;
 	}
-	
+
 	public void setHasInterfaces(List<InterfaceId> hasInterfaces) {
 		this.hasInterfaces = hasInterfaces;
 	}
 
-	
+
 	@Override
 	public String toString() {
 		return "Device [name=" + name + ", hasInterfaces=" + hasInterfaces

@@ -135,7 +135,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 	/**
 	 * TODO FORMAT TO STRING
-	 * 
+	 *
 	 * @param ipAddress
 	 * @return
 	 */

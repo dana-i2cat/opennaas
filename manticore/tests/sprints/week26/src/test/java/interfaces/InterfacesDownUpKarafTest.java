@@ -202,24 +202,24 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * This test change the interface status to up. It try to enable the administrative mode, and it will be able to be configured. Estimation: 15
-	 * 
+	 *
 	 * tasks:
-	 * 
+	 *
 	 * -> Create unitary test, and integration test to new feature
-	 * 
+	 *
 	 * -> Implement operation
-	 * 
+	 *
 	 * -> create template
-	 * 
+	 *
 	 * -> add modifications in the parser
-	 * 
+	 *
 	 * -> create karaf command -
-	 * 
+	 *
 	 * -> test to a real router
-	 * 
+	 *
 	 * @throws Exception
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public void DownInterfaceETH(String interfaceToConfigure) throws Exception {
 
@@ -264,10 +264,10 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	 * This test change the interface status to down. It try to enable the administrative mode, and it will be able to be configured. Estimation: 5
 	 * (the operation can be cloned fromt he upInterface) tasks: -> Create unitary test, and integration test to new feature -> Implement operation ->
 	 * create template -> add modifications in the parser -> create karaf command -> test to a real router
-	 * 
+	 *
 	 * @throws Exception
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public void DownInterfaceLT(String interfaceToConfigure) throws Exception {
 		// try {
@@ -359,10 +359,10 @@ public class InterfacesDownUpKarafTest extends AbstractIntegrationTest {
 	 * This test change the interface status to down. It try to enable the administrative mode, and it will be able to be configured. Estimation: 5
 	 * (the operation can be cloned fromt he upInterface) tasks: -> Create unitary test, and integration test to new feature -> Implement operation ->
 	 * create template -> add modifications in the parser -> create karaf command -> test to a real router
-	 * 
+	 *
 	 * @throws Exception
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	public void UpInterfaceLT(String interfaceToConfigure) throws Exception {
 

@@ -8,7 +8,7 @@ import org.osgi.service.event.EventHandler;
 public class MockEventManager implements IEventManager {
 
 	int count = 0;
-	
+
 	@Override
 	public int registerEventHandler(EventHandler handler, EventFilter filter) {
 		return ++count;
@@ -17,7 +17,7 @@ public class MockEventManager implements IEventManager {
 	@Override
 	public void unregisterHandler(int handlerServiceID) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -9,7 +9,7 @@
 	<!--  POM id -->
 	<groupId>org.opennaas.bod.itests-bundle-settings</groupId>
 	<artifactId>org.opennaas.bod.tests.repository</artifactId>
-	<!--  Maven configuration -->	
+	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>BoD repository test</name>
 	<packaging>jar</packaging>
@@ -53,7 +53,7 @@
                     includes all of its subdirectory and all java filenames that end with "Test". "**/*TestCase.java" - includes all of
                     its subdirectory and all java filenames that end with "TestCase".
                 -->
-				<configuration>				 
+				<configuration>
 					<systemProperties>
 						<property>
 							<name>protocol.uri</name>

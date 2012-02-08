@@ -18,16 +18,16 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class ResourceHelper {
-	
+
 	static Log	log	= LogFactory
 			.getLog(ResourceHelper.class);
 
 
-	
+
 	/*
 	 * Protocol Session Manager helpers
 	 */
-	
+
 	/**
 	 * Configure protocol session context
 	 */
@@ -46,10 +46,10 @@ public class ResourceHelper {
 
 	}
 
-	
+
 	/**
 	 * It creates a new resource descriptor
-	 * 
+	 *
 	 * @param type resource descriptor type
 	 * @return
 	 */
@@ -77,8 +77,8 @@ public class ResourceHelper {
 
 		return resourceDescriptor;
 	}
-	
-	
+
+
 	/**
 	 * Create a new resource descriptor of an arbitrary type.
 	 * @param type type of resource descriptor.
@@ -110,8 +110,8 @@ public class ResourceHelper {
 
 		return resourceDescriptor;
 	}
-	
-	
+
+
 	/**
 	 * Create a new resource descriptor of an arbitrary type.
 	 * @param type type of resource descriptor.
@@ -143,10 +143,10 @@ public class ResourceHelper {
 
 		return resourceDescriptor;
 	}
-	
-	
+
+
 	/**
-	 * Create a Capability Descriptor of an arbitrary type but proteus/1.0. 
+	 * Create a Capability Descriptor of an arbitrary type but proteus/1.0.
 	 * @param type
 	 * @return a capability
 	 */
@@ -167,9 +167,9 @@ public class ResourceHelper {
 
 		return capabilityDescriptor;
 	}
-	
 
-	
+
+
 
 	public static CapabilityDescriptor newChassisCapabilityDescriptor() {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
@@ -196,7 +196,7 @@ public class ResourceHelper {
 
 		return capabilityDescriptor;
 	}
-	
+
 
 	public static CapabilityDescriptor newQueueCapabilityDescriptor() {
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
@@ -222,7 +222,7 @@ public class ResourceHelper {
 
 		return capabilityDescriptor;
 	}
-	
+
 
 
 	public static CapabilityDescriptor newCapabilityDescriptorNetwork(String type) {
@@ -244,7 +244,7 @@ public class ResourceHelper {
 				ResourceDescriptorConstants.ACTION_VERSION, "1.0");
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
-		
+
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
@@ -253,8 +253,8 @@ public class ResourceHelper {
 
 		return capabilityDescriptor;
 	}
-	
 
-	
-	
+
+
+
 }

@@ -50,7 +50,7 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		try {
 			((ITopologyManager)networkCapability).addResource(resource);
 		} catch (CapabilityException e){
@@ -59,7 +59,7 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		printInfo("Resource " + resourceId + "added to network " + networkId);
 		printEndCommand();
 		return null;

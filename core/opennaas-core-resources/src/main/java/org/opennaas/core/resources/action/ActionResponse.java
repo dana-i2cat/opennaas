@@ -58,7 +58,7 @@ public class ActionResponse {
 		actionResponse.setStatus(STATUS.PENDING);
 		return actionResponse;
 	}
-	
+
 	@Deprecated
 	public static ActionResponse newOkAction(String actionID) {
 		ActionResponse actionResponse = new ActionResponse();

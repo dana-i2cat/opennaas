@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 /**
  * It is used to parse different messages
- * 
+ *
  * @author Carlos BAez Ruiz
- * 
+ *
  */
 public class IPUtilsHelper {
 

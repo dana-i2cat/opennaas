@@ -8,9 +8,9 @@ import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 
 /**
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class CommandResponseListener extends Thread implements ITransportListener {
 
@@ -33,7 +33,7 @@ public class CommandResponseListener extends Thread implements ITransportListene
 
 	/**
 	 * Command layout: Header (2B) | DeviceID (2B) | Reserved (2B) | CommandID (2B) | Reserved (4B) | DataLength (2B) | Data | XOR (1B) | EOS (1B)
-	 * 
+	 *
 	 * @param response
 	 * @return
 	 */
@@ -45,7 +45,7 @@ public class CommandResponseListener extends Thread implements ITransportListene
 
 	/**
 	 * Errors are commands with CommandID's first byte = 0x0C
-	 * 
+	 *
 	 * @param response
 	 * @return
 	 */

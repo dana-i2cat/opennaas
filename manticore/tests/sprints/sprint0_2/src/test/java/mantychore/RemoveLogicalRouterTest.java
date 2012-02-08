@@ -267,7 +267,7 @@ public class RemoveLogicalRouterTest extends AbstractIntegrationTest {
 	/**
 	 * This test is deprecated org.opennaas.core.resources/tests/ResourceManagerTest .java/testRemoveResource. This test is responsible for testing
 	 * this story
-	 * 
+	 *
 	 * **/
 	@Deprecated
 	public void RemoveLogicalRouterLogicalProvider() {

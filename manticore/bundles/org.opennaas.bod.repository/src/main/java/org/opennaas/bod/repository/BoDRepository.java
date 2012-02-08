@@ -22,7 +22,7 @@ public class BoDRepository extends ResourceRepository {
 
 	/**
 	 * Add a factory to the capability factories
-	 * 
+	 *
 	 * @param capabilityFactory
 	 */
 	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {
@@ -32,7 +32,7 @@ public class BoDRepository extends ResourceRepository {
 
 	/**
 	 * Remove a factory from the capability factories
-	 * 
+	 *
 	 * @param capabilityFactory
 	 */
 	public void capabilityFactoryDeleted(ICapabilityFactory capabilityFactory) {

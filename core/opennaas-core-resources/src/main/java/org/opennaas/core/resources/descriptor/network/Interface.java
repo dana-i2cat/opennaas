@@ -15,17 +15,17 @@ public class Interface {
 	@Id
 	@GeneratedValue
 	private long 					id;
-	
+
 	@Basic
 	private String nameInterface;
-	
+
 	@Embedded
 	private Link linkTo;
-	
+
 	@Basic
 	private String 	capacity;
-	
-	
+
+
 	@XmlElement(name = "name", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getName() {
 		return nameInterface;
@@ -33,18 +33,18 @@ public class Interface {
 	public void setName(String name) {
 		this.nameInterface = name;
 	}
-	
+
 
 	@XmlElement(name = "linkTo", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public Link getLinkTo() {
 		return linkTo;
 	}
-	
+
 	public void setLinkTo(Link linkTo) {
 		this.linkTo = linkTo;
 	}
-	
-	
+
+
 	@XmlElement(name = "capacity", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getCapacity() {
 		return capacity;
@@ -52,13 +52,13 @@ public class Interface {
 	public void setCapacity(String capacity) {
 		this.capacity = capacity;
 	}
-	
-	
-	
+
+
+
 	@Override
 	public String toString() {
 		return "Interface [name=" + nameInterface + ", linkTo=" + linkTo + ", capacity="
 				+ capacity + "]";
 	}
-	
+
 }

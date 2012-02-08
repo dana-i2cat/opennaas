@@ -56,7 +56,7 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 
 	/*
 	 * @Configuration public static Option[] configure() {
-	 * 
+	 *
 	 * Option[] options = combine( IntegrationTestsHelper.getMantychoreTestOptions(),
 	 * //mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
 	 * mavenBundle().groupId("org.opennaas").artifactId("opennaas-core-tests-mockprofile") // ,

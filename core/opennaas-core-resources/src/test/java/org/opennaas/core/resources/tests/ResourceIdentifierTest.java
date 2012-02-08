@@ -14,22 +14,22 @@ import org.opennaas.core.resources.ResourceIdentifier;
 public class ResourceIdentifierTest {
 
 	private IResourceIdentifier resourceIdentifier = null;
-	
+
 	@Before
 	public void setUp(){
 		resourceIdentifier = new ResourceIdentifier("Simple");
 	}
-	
+
 	@Test
 	public void testIsURIWellFormed(){
 		Assert.assertNotNull(resourceIdentifier.getURI());
 	}
-	
+
 	@Test
 	public void testGetTypeIsNotNull(){
 		Assert.assertNotNull(resourceIdentifier.getType());
 	}
-	
+
 	@Test
 	public void testMarshalling() throws Exception{
 		JAXBContext context = JAXBContext.newInstance(ResourceIdentifier.class); // using jaxb.index file

@@ -14,8 +14,8 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * List the Resources that are in the IaaS Container
- * 
- * 
+ *
+ *
  */
 @Command(scope = "resource", name = "list", description = "List all resources in the platform")
 public class ListResourcesCommand extends GenericKarafCommand {

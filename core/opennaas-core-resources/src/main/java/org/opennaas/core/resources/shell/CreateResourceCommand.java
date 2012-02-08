@@ -30,9 +30,9 @@ import org.xml.sax.SAXException;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 @Command(scope = "resource", name = "create", description = "Create one or more resources from a given descriptor")
 public class CreateResourceCommand extends GenericKarafCommand {
@@ -277,7 +277,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 	/**
 	 * Helper methods to test these functionality...
-	 * 
+	 *
 	 * @param filename
 	 * @return
 	 * @throws JAXBException

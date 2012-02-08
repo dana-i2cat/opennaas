@@ -33,7 +33,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 
 	@Option(name = "--useChannelNumbers", aliases={"-n"}, description="Tells command to read inputLambda and outputLambda as integers representing the channelNumber, instead of their original meaning")
 	private boolean useChannelNum = false;
-	
+
 	@Override
 	protected Object doExecute() throws Exception {
 
@@ -98,7 +98,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 
 		DWDMChannel srcFiberChannel = new DWDMChannel();
 		DWDMChannel dstFiberChannel = new DWDMChannel();
-		
+
 		if (!useChannelNum) {
 			srcFiberChannel.setLambda(Double.parseDouble(lambdaSource));
 			dstFiberChannel.setLambda(Double.parseDouble(lambdaTarget));
@@ -106,7 +106,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 			srcFiberChannel.setNumChannel(Integer.parseInt(lambdaSource));
 			dstFiberChannel.setNumChannel(Integer.parseInt(lambdaTarget));
 		}
-		
+
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
 

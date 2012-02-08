@@ -97,7 +97,7 @@ public class ConfigureEncapsulationActionTest {
 
 	}
 
-	
+
 	/**
 	 * TODO, it is necessary to implement the dummy state to configure vlans
 	 */
