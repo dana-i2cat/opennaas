@@ -164,7 +164,7 @@ public class MakeConnectionAction extends Action {
 	/**
 	 * Finds a route from srcPort to dstPort following connections inside the switch <br/>
 	 * FIXME: NOTE: Right now it only tries paths with less than two hops of card.
-	 * 
+	 *
 	 * @param srcPort
 	 * @param dstPort
 	 * @return
@@ -223,7 +223,7 @@ public class MakeConnectionAction extends Action {
 
 	/**
 	 * Uses given request to create a FiberConnection request with information from opticalSwitch model. Checks all params are correct.
-	 * 
+	 *
 	 * @param connectionRequest
 	 *            request to select which data must be loaded
 	 * @param opticalSwitch
@@ -252,7 +252,7 @@ public class MakeConnectionAction extends Action {
 							.getSrcCard().getSlot() + " PortNumber : " + connectionRequest.getSrcPort().getPortNumber());
 
 		DWDMChannel srcFiberChannel = loadCompleteDWDMChannel((DWDMChannel) connectionRequest.getSrcFiberChannel(), srcCard);
-		
+
 
 		// connection dst
 		ProteusOpticalSwitchCard dstCard = opticalSwitch.getCard(connectionRequest.getDstCard().getChasis(), connectionRequest.getDstCard()
@@ -269,7 +269,7 @@ public class MakeConnectionAction extends Action {
 							.getDstCard().getSlot() + " PortNumber : " + connectionRequest.getDstPort().getPortNumber());
 
 		DWDMChannel dstFiberChannel = loadCompleteDWDMChannel((DWDMChannel) connectionRequest.getDstFiberChannel(), dstCard);
-		
+
 		FiberConnection connection = new FiberConnection();
 		connection.setSrcCard(srcCard);
 		connection.setDstCard(dstCard);
@@ -286,27 +286,27 @@ public class MakeConnectionAction extends Action {
 
 		return connection;
 	}
-	
+
 	/**
 	 * Loads existent DWDMChannel from request.
 	 * Tries to load it from request lambda. If lambda is not set, loads it from request channelNum.
-	 * 
+	 *
 	 * @param request
-	 * @param card 
+	 * @param card
 	 * @return
 	 * @throws ActionException
 	 */
 	private static DWDMChannel loadCompleteDWDMChannel(DWDMChannel request, ProteusOpticalSwitchCard card) throws ActionException {
-		
+
 		int channelNum = request.getNumChannel();
-		
+
 		if (request.getLambda() != 0.0) {
 			//load from lambda
-			
+
 			// FIXME what if it's not a valid lambda????
 			channelNum = ((WDMChannelPlan) card.getChannelPlan()).getChannelNumberFromLambda(request.getLambda());
 		}
-		
+
 		//check channelNum is a valid one
 		int[] allChannelsNum = ((WDMChannelPlan) card.getChannelPlan()).getAllChannelsNum();
 		boolean found = false;
@@ -324,18 +324,18 @@ public class MakeConnectionAction extends Action {
 				}
 			}
 		}
-		
+
 		if (!found){
 			log.debug("Could not find specified channel. Looking for channel " + channelNum + ". Found " + allChannelsNum[position] + " and gap is " +  ((WDMChannelPlan) card.getChannelPlan()).getChannelGap());
 			throw new ActionException("Invalid connectionRequest: Could not find specified channel");
 		}
-		
+
 		DWDMChannel completeChannel = (DWDMChannel) ((WDMChannelPlan) card.getChannelPlan()).getChannel(channelNum);
-		
+
 		if (completeChannel == null) {
 			throw new ActionException("Invalid connectionRequest: Could not find specified channel");
 		}
-		
+
 		return completeChannel;
 	}
 

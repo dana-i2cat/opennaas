@@ -26,9 +26,9 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
  * Test class for the ResourceRepository class
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class ResourceRepositoryTest {
 	/*
@@ -116,7 +116,7 @@ public class ResourceRepositoryTest {
 		descriptor.getInformation().setType("WrongEngine");
 		resourceRepository.createResource(descriptor);
 	}
-	
+
 	public ResourceDescriptor newResourceDescriptor(String name) {
 		ResourceDescriptor descriptor = new ResourceDescriptor();
 		Information info = new Information("Mock", name, "1.0.0");

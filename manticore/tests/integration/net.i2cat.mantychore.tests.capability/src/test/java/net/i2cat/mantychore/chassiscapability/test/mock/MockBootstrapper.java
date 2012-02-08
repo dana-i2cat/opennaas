@@ -21,21 +21,21 @@ public class MockBootstrapper implements IResourceBootstrapper {
 	Log	log	= LogFactory.getLog(MockBootstrapper.class);
 
 	IModel oldModel;
-	
+
 	public void resetModel (IResource resource) throws ResourceException {
-		resource.setModel(new ComputerSystem());		
+		resource.setModel(new ComputerSystem());
 		if (isALogicalRouter(resource))
 			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 	}
 
-	
+
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
-		
+
 		oldModel = resource.getModel();
-		
+
 		resetModel(resource);
-		
+
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
 			/* abstract capabilities have to be initialized */
@@ -49,7 +49,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 				}
 			}
 		}
-		
+
 		ICapability queueCapab = resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
@@ -62,7 +62,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		//MockBootstrapper does not create childs 
+		//MockBootstrapper does not create childs
 	}
 
 	private Information createQueueInformation() {
@@ -75,7 +75,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 	public void revertBootstrap(IResource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
-	
+
 	private boolean isALogicalRouter(IResource resource) {
 		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
 		/* Check that the logical router exists */

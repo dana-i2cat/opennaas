@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class HSQLDBServerTest {
-	protected static Log log = LogFactory.getLog( HSQLDBServerTest.class ); 
+	protected static Log log = LogFactory.getLog( HSQLDBServerTest.class );
 	private static HSQLDBServer server;
 
 @Test

@@ -13,7 +13,7 @@ import org.osgi.service.event.EventHandler;
 public class MockEventManager implements IEventManager {
 
 	int count = 0;
-	
+
 	@Override
 	public void publishEvent(Event arg0) {
 		// TODO Auto-generated method stub
@@ -28,6 +28,6 @@ public class MockEventManager implements IEventManager {
 	@Override
 	public void unregisterHandler(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

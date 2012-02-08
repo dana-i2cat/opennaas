@@ -13,9 +13,9 @@ import org.springframework.validation.Validator;
 
 /**
  * Basic validation on the CapabilityDescriptor
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class CapabilityDescriptorValidator implements Validator
 {
@@ -35,7 +35,7 @@ public class CapabilityDescriptorValidator implements Validator
 		descriptorErrors = new BindException(obj, obj.getClass().getName());
 		validate(obj, descriptorErrors);
 	}
-	
+
 	public void validate(Object obj, Errors e) {
 		descriptorErrors = e;
 		ValidationUtils.rejectIfEmpty(descriptorErrors, "capabilityInformation", "field.empty",

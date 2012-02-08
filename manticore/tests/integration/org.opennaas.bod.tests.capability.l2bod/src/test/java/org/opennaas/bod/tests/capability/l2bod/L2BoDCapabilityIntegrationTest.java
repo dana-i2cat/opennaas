@@ -62,7 +62,7 @@ public class L2BoDCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	/**
 	 * Initialize the configuration
-	 * 
+	 *
 	 * @return
 	 */
 	@Configuration

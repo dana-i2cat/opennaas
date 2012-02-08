@@ -7,11 +7,11 @@ import org.osgi.service.event.Event;
 
 /**
  * Defines a ResourceAlarm.
- * 
+ *
  * Define which properties are common to ResourceAlarms, although any other property may be added.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class ResourceAlarm extends Event {
 

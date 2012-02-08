@@ -147,7 +147,7 @@ public class L2BoDCommandsKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * Create the protocol to connect
-	 * 
+	 *
 	 * @param resourceId
 	 * @throws ProtocolException
 	 */
@@ -171,7 +171,7 @@ public class L2BoDCommandsKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * Get the mantychore test options
-	 * 
+	 *
 	 * @return Option[]
 	 * @throws Exception
 	 */

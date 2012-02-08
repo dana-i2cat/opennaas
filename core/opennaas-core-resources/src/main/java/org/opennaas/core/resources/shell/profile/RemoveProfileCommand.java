@@ -9,7 +9,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Remove Profile from one or more resources
- * 
+ *
  * @author Evelyn Torras (i2cat)
  * @author Isart Canyameres Gimenez (i2cat)
  */

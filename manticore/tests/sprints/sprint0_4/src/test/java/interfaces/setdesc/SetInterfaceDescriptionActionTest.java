@@ -72,10 +72,10 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 
 	/**
 	 * Prepare the resource to do the test
-	 * 
+	 *
 	 * @throws ResourceException
 	 * @throws ProtocolException
-	 * 
+	 *
 	 */
 	public void setUp() throws ResourceException, ProtocolException {
 
@@ -107,9 +107,9 @@ public class SetInterfaceDescriptionActionTest extends AbstractIntegrationTest {
 
 	/**
 	 * Reset info for next tests
-	 * 
+	 *
 	 * @throws ResourceException
-	 * 
+	 *
 	 */
 	public void tearDown() throws ResourceException {
 

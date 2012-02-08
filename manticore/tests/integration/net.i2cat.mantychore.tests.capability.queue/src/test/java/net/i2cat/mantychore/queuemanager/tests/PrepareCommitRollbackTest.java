@@ -95,10 +95,10 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() throws ProtocolException {
-		
+
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());

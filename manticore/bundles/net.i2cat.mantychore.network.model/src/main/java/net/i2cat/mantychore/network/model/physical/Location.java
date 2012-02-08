@@ -7,7 +7,7 @@ public class Location {
 	String rack;
 	String panel;
 	String coords;
-	
+
 	public String getAddress() {
 		return address;
 	}

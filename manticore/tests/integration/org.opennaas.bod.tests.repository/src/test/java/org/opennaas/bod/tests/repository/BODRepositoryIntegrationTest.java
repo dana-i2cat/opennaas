@@ -42,7 +42,7 @@ public class BODRepositoryIntegrationTest extends AbstractIntegrationTest {
 
 	/**
 	 * Initialize the configuration
-	 * 
+	 *
 	 * @return
 	 */
 	@Configuration

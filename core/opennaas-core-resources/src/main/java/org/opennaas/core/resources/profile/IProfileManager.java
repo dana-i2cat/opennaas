@@ -7,21 +7,21 @@ import org.opennaas.core.resources.ResourceException;
 
 
 /**
- * 
+ *
  * @author Isart Canyameres Gimenez (i2cat)
  */
 public interface IProfileManager {
 
 	/**
 	 * Adds a profile to this manager. Only added profiles can be used by resources
-	 * 
+	 *
 	 * @throws ResourceException
 	 */
 	public void addProfile(IProfile profile) throws ResourceException;
 
 	/**
 	 * Removes a profile from this manager. Thus, preventing resources to use it in the future.
-	 * 
+	 *
 	 * @param profileName
 	 * @throws ResourceException
 	 */
@@ -33,7 +33,7 @@ public interface IProfileManager {
 	public List<ProfileDescriptor> listProfiles();
 
 	/**
-	 * 
+	 *
 	 * @param profileId
 	 * @return
 	 */
@@ -44,7 +44,7 @@ public interface IProfileManager {
 	/**
 	 * Registers the use of given profileId at given resource.<br/>
 	 * DOES NOT MODIFY RESOURCE
-	 * 
+	 *
 	 * @param profileId
 	 * @param resource
 	 * @throws ResourceException
@@ -55,7 +55,7 @@ public interface IProfileManager {
 	/**
 	 * Unregisters the use of given profileId at given resource.<br/>
 	 * DOES NOT MODIFY RESOURCE
-	 * 
+	 *
 	 * @param profileId
 	 * @param resource
 	 * @throws ResourceException
@@ -64,7 +64,7 @@ public interface IProfileManager {
 	public void unregisterResource(String profileId, IResource resource) throws ResourceException;
 
 	/**
-	 * 
+	 *
 	 * @param profileId
 	 * @return a list of resources using Profile with given profileId
 	 * @throws ResourceException

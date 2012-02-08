@@ -31,14 +31,14 @@ public class PrepareAction extends JunosAction {
 		try {
 			/* lock commnad */
 
-		
-			
+
+
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();
 			discardCommand.initialize();
 			Response responsePrepare = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(responsePrepare);
-			
+
 			LockNetconfCommand lockCommand = new LockNetconfCommand("candidate");
 			lockCommand.initialize();
 			Response responseLock = sendCommandToProtocol(lockCommand, protocol);

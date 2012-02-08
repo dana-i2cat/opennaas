@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class Utils {
-	
+
 	/**
 	 * Utility method to read a file located at the given InputStream into a String.
 	 * @param stream
@@ -13,7 +13,7 @@ public class Utils {
 	 */
 	public static String readStringFromFile(InputStream stream){
 		String answer = null;
-		
+
 		try {
 			InputStreamReader streamReader = new InputStreamReader(stream);
 			StringBuffer fileData = new StringBuffer(10000);
@@ -31,7 +31,7 @@ public class Utils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return answer;
 	}
 }

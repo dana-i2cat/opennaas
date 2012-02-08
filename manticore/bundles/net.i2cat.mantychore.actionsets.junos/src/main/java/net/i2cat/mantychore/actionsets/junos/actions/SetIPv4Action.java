@@ -52,16 +52,16 @@ public class SetIPv4Action extends JunosAction {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("ipUtilsHelper", ipUtilsHelper);
 
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
 				//is logicalRouter, add LRName param
-				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName());
 				//TODO If we don't have a ManagedElement initialized
 				} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
-					((ManagedElement)params).setElementName(""); 
-					
+					((ManagedElement)params).setElementName("");
+
 				}
-			
-			
+
+
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);

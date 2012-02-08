@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author mbeltran
  */
 public class Optr25gexc extends Driver {
@@ -27,44 +27,44 @@ public class Optr25gexc extends Driver {
 
 	/*
 	 * public void setParams(Alarm alarma, String params) {
-	 * 
+	 *
 	 * try {
-	 * 
+	 *
 	 * String[] strList = params.split("#");
-	 * 
+	 *
 	 * String tipusAlarmaS = strList[3];
-	 * 
-	 * 
+	 *
+	 *
 	 * if (strList[3].startsWith("0x01") || strList[3].startsWith("0x02") || strList[3].startsWith("0x03") || strList[3].startsWith("0x04")){
-	 * 
+	 *
 	 * Sfp sfp = new Sfp(); // sfp.setParams(alarma, params);
-	 * 
+	 *
 	 * return; }
-	 * 
-	 * 
+	 *
+	 *
 	 * else if(tipusAlarmaS.startsWith("0x05")) { //CDR Status setTipo(alarma,"CROSS_CDR");
-	 * 
-	 * 
+	 *
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x09")) { //Board Power setTipo(alarma,"CHASIS_POWER");
-	 * 
-	 * 
+	 *
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x0A")) { //Board Temperature setTipo(alarma,"CHASIS_TEMP");
-	 * 
-	 * 
+	 *
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x0B")) { //EXC Status setTipo(alarma,"CROSS_EXC");
-	 * 
-	 * 
+	 *
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x10")) { //Reset setTipo(alarma,"CROSS_RESET");
-	 * 
+	 *
 	 * }
-	 * 
+	 *
 	 * } catch (Exception e) { //error de decoding, id = unknown
-	 * 
+	 *
 	 * e.printStackTrace();
-	 * 
+	 *
 	 * }
-	 * 
-	 * 
+	 *
+	 *
 	 * }
 	 */
 

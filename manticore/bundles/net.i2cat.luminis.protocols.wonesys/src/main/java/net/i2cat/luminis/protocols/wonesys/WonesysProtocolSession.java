@@ -249,7 +249,7 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 
 	@Override
 	/**
-	 * This method manages events. This method is responsible to manage two type of alarms, ERROR_EVENT and CMD_RCVD. Other type of alarms are managed for 
+	 * This method manages events. This method is responsible to manage two type of alarms, ERROR_EVENT and CMD_RCVD. Other type of alarms are managed for
 	 * RAWSocketAlarmListener
 	 */
 	public void handleEvent(Event event) {

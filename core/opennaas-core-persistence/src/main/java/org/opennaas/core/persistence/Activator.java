@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
  *
  */
 public class Activator implements BundleActivator{
-	
+
 	private static BundleContext context;
 
 	public void start(BundleContext bundleContext) throws Exception {
@@ -18,7 +18,7 @@ public class Activator implements BundleActivator{
 
 	public void stop(BundleContext context) throws Exception {
 	}
-	
+
 	public static BundleContext getBundleContext(){
 		return context;
 	}

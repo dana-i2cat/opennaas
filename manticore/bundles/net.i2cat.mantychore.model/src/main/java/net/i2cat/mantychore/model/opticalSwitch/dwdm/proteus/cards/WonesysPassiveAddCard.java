@@ -9,9 +9,9 @@ import net.i2cat.mantychore.model.opticalSwitch.FiberChannel;
 /**
  * Represents a card that has all ports redirected to the commonPort, and can not be configured. A passive Add card allows adding to a dstPort ALL
  * channels within a srcPorts set. If same channel is used more than once per src set, bad things may happen :o
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class WonesysPassiveAddCard extends ProteusOpticalSwitchCard {
 

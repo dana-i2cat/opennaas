@@ -38,9 +38,9 @@ import org.osgi.framework.BundleContext;
 
 /**
  * These tests check the subinterface configurations
- * 
+ *
  * http://jira.i2cat.net:8080/browse/MANTYCHORE-272
- * 
+ *
  */
 
 @RunWith(JUnit4TestRunner.class)
@@ -78,10 +78,10 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	/**
 	 * Prepare the resource to do the test
-	 * 
+	 *
 	 * @throws ResourceException
 	 * @throws ProtocolException
-	 * 
+	 *
 	 */
 	public void setUp() throws ResourceException, ProtocolException {
 
@@ -104,9 +104,9 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	/**
 	 * Reset info for next tests
-	 * 
+	 *
 	 * @throws ResourceException
-	 * 
+	 *
 	 */
 	public void tearDown() throws ResourceException {
 		InitializerTestHelper.removeResources(resourceManager);

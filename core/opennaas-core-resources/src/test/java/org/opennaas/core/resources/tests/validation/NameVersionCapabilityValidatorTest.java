@@ -20,9 +20,9 @@ import org.springframework.validation.FieldError;
 
 /**
  * Test that the NameVersionCapabilityValidator works properly
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class NameVersionCapabilityValidatorTest {
 	Log										logger					= LogFactory.getLog(NameVersionCapabilityValidatorTest.class);

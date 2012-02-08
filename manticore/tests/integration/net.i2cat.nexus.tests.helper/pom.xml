@@ -59,7 +59,7 @@
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
 							org.slf4j,
-							org.ops4j.pax.exam, 
+							org.ops4j.pax.exam,
 							org.apache.karaf.testing,
 							org.osgi.framework,
 						*</Import-Package>

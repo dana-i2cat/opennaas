@@ -22,7 +22,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	private Map<String, IProtocolSessionManager>	sessionManagers		= null;
 	private IEventManager						eventManager;
-	
+
 
 	/**
 	 * Stores the protocolFactories present in the platform, indexed by the protocol id
@@ -145,7 +145,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	/**
 	 * Called by blueprint every time a sessionFactory is registered in the OSGi repository
-	 * 
+	 *
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -158,7 +158,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	/**
 	 * Called by blueprint every time a sessionFactory is unregistered from the OSGi repository
-	 * 
+	 *
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -170,22 +170,22 @@ public class ProtocolManager implements IProtocolManager {
 			protocolFactories.remove(serviceProperties.get(ProtocolSessionContext.PROTOCOL));
 		}
 	}
-	
+
 	/**
 	 * Blueprint callback (executed when EventManager is available)
-	 * 
+	 *
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
-		
+
 		for (IProtocolSessionManager sessionManager: sessionManagers.values()){
 			if (sessionManager instanceof ProtocolSessionManager){
 				((ProtocolSessionManager)sessionManager).setEventManager(eventManager);
 			}
 		}
 	}
-	
+
 	private IEventManager getEventManager() throws ProtocolException {
 		return this.eventManager;
 	}

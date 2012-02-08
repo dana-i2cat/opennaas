@@ -31,7 +31,7 @@ public class ConfigureEncapsulationAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		
+
 		if (! (params instanceof NetworkPort)) {
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 		}
@@ -39,13 +39,13 @@ public class ConfigureEncapsulationAction extends JunosAction {
 		//TODO In this moment is not supported ethernet encapsulation
 //		if (params instanceof EthernetPort) {
 //			return checkParamsForEth((EthernetPort) params);
-//		} else 
-		if (params instanceof LogicalTunnelPort) {	
+//		} else
+		if (params instanceof LogicalTunnelPort) {
 			return checkParamsForLT((LogicalTunnelPort) params);
-		} else 
+		} else
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 	}
-	
+
 //	private boolean checkParamsForEth(EthernetPort eth) throws ActionException {
 //		if (eth.getName() == null || eth.getName().isEmpty())
 //			throw new ActionException("Not valid name for the interface");
@@ -53,7 +53,7 @@ public class ConfigureEncapsulationAction extends JunosAction {
 //		setTemplate("/VM_files/configureEthVLAN.vm");
 //		return true;
 //	}
-	
+
 	private boolean checkParamsForLT(LogicalTunnelPort lt) throws ActionException {
 		if (lt.getName() == null || lt.getName().isEmpty() || !lt.getName().startsWith("lt"))
 			throw new ActionException("Not valid name for the interface");
@@ -61,7 +61,7 @@ public class ConfigureEncapsulationAction extends JunosAction {
 		setTemplate("/VM_files/setEncapsulationLTVLAN.vm");
 		return true;
 	}
-	
+
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
@@ -89,31 +89,31 @@ public class ConfigureEncapsulationAction extends JunosAction {
 
 		if (getParams() == null)
 			throw new ActionException("Params in " + getActionID() + "are null.");
-		
+
 		checkParams(getParams());
-		
+
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
-		
+
 		try {
-	
+
 			//fill logical router id
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) { 
+			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
 				//is logicalRouter, add LRName param
-				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName()); 
+				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName());
 			//TODO If we don't have a ManagedElement initialized
 			} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
-				((ManagedElement)params).setElementName(""); 
+				((ManagedElement)params).setElementName("");
 			}
-			
+
 			//fill description param
-			if (params instanceof ManagedElement 
+			if (params instanceof ManagedElement
 					&& (((ManagedElement)params).getDescription()==null || ((ManagedElement)params).getDescription().equals(""))) {
-				((ManagedElement)params).setDescription("");				
+				((ManagedElement)params).setDescription("");
 			}
-			
-			setVelocityMessage(prepareVelocityCommand(params, template)); 
-			
+
+			setVelocityMessage(prepareVelocityCommand(params, template));
+
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

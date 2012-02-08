@@ -7,19 +7,19 @@ import javax.persistence.Id;
 
 @Entity
 public class ResourceId {
-	
+
 	@Id
 	@GeneratedValue
 	private long						id;
-	
+
 	@Basic
 	private String	type;
 	/** The name or alias **/
 	@Basic
 	private String	name;
 
-	
-	
+
+
 	public String getType() {
 		return type;
 	}

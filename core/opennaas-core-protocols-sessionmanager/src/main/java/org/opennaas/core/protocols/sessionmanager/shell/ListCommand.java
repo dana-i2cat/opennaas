@@ -16,9 +16,9 @@ import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
  * List the device ids registere do the protocol manager
- * 
+ *
  * @author Pau Minoves
- * 
+ *
  */
 @Command(scope = "protocols", name = "list", description = "List devices to which we have a live protocol session.")
 public class ListCommand extends GenericKarafCommand {

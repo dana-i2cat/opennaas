@@ -42,7 +42,7 @@ import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 /**
  * Spring week 26 <br/>
  * http://jira.i2cat.net:8080/browse/MANTYCHORE-156
- * 
+ *
  * @author isart
  */
 @RunWith(JUnit4TestRunner.class)

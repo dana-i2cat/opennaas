@@ -17,7 +17,7 @@ public class WonesysAlarm extends SessionAlarm {
 	public enum Severity {
 		NORMAL, WARNING, MINOR, MAJOR, CRITICAL
 	}
-	
+
 	public WonesysAlarm(Map<String, Object> properties) {
 		super(properties);
 	}

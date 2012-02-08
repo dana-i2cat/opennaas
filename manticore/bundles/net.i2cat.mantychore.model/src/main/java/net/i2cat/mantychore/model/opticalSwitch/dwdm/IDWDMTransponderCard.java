@@ -6,9 +6,9 @@ import net.i2cat.mantychore.model.opticalSwitch.IOpticalSwitchCard;
 
 /**
  * Allows conversion of channels
- * 
+ *
  * @author isart
- * 
+ *
  */
 public interface IDWDMTransponderCard extends IOpticalSwitchCard {
 

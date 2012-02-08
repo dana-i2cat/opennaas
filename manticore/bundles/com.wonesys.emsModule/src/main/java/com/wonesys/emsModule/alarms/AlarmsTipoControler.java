@@ -26,13 +26,13 @@ import com.wonesys.emsModule.driver.Wcmctc;
 import com.wonesys.emsModule.driver.Wswitch;
 
 /**
- * 
+ *
  * @author mbeltran
  */
 
 /*
  * Exemple d'alarma (temperatura)
- * 
+ *
  * str[0] = 307100 str[1] = 1.3.6.1.4.1.18223.9.4.2.2 str[2] = 0 str[3] = 4 str[4] = 0x0A:FF:FF str[5] = TEMP str[6] = High temperature str[7] = 1
  */
 
@@ -76,19 +76,19 @@ public class AlarmsTipoControler {
 
 		/*
 		 * else if (oidAlarm.equals(Optr25gexc.Alarma)) //Tarja 4x4 {
-		 * 
+		 *
 		 * return new Optr25gexc().getListTipos(params);
-		 * 
+		 *
 		 * } else if (oidAlarm.equals(Optr10g.Alarma)) //Tarja 10G {
-		 * 
+		 *
 		 * return new Optr10g().getListTipos(params); } else if (oidAlarm.equals(Roadm.Alarma)) //Roadm {
-		 * 
+		 *
 		 * return new Roadm().getListTipos(params); }
-		 * 
+		 *
 		 * else if (oidAlarm.equals(Psedfa.Alarma)) //Sinton {
-		 * 
+		 *
 		 * return new Psedfa().getListTipos(params); } else if (oidAlarm.equals(Osnl.Alarma)) //Sinton {
-		 * 
+		 *
 		 * return new Osnl().getListTipos(params); }
 		 */
 
@@ -136,7 +136,7 @@ public class AlarmsTipoControler {
 
 	/*
 	 * Exemple d'alarma (temperatura)
-	 * 
+	 *
 	 * str[0] = 307100 str[1] = 1.3.6.1.4.1.18223.9.4.2.2 str[2] = 0 str[3] = 4 str[4] = 0x0A:FF:FF str[5] = TEMP str[6] = High temperature str[7] = 1
 	 */
 

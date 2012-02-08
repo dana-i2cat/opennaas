@@ -54,9 +54,9 @@ public class RequestConnectionCommand extends GenericKarafCommand {
 
 	/**
 	 * Get the interfaces from the model
-	 * 
+	 *
 	 * @param networkModel
-	 * 
+	 *
 	 * @return list of interfaces
 	 */
 	private List<Interface> getInterfaces(NetworkModel networkModel) {

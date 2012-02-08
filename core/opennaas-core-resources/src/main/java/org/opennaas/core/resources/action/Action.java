@@ -46,7 +46,7 @@ public abstract class Action implements IAction {
 
 	/**
 	 * Set params an action may use to specify its behavior (i.e. path to a template file to be loaded)
-	 * 
+	 *
 	 * @param params
 	 */
 	public void setBehaviorParams(Object params) {

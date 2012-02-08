@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ *
  * @author mbeltran
  */
 public class OptriaSX extends Driver {
@@ -23,30 +23,30 @@ public class OptriaSX extends Driver {
 
 	/*
 	 * public void setParams(Alarm alarma, String params) {
-	 * 
+	 *
 	 * try {
-	 * 
+	 *
 	 * // System.out.println("entra");
-	 * 
+	 *
 	 * String[] strList = params.split("#");
-	 * 
+	 *
 	 * String tipusAlarmaS = strList[2];
-	 * 
+	 *
 	 * if(tipusAlarmaS.equals("0x01")) { //temperatura setTipo(alarma,"ALARMS_CHASIS_TEMP");
-	 * 
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x02")) { //potencia setTipo(alarma,"ALARMS_CHASIS_POWER");
-	 * 
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x03")) { //ventiladores setTipo(alarma,"ALARMS_CHASIS_FAN");
-	 * 
+	 *
 	 * } else if(tipusAlarmaS.startsWith("0x04")) { //tarjetas setTipo(alarma,"ALARMS_CHASIS_CARD");
-	 * 
+	 *
 	 * } else setTipo(alarma,"ALARMS_UNKNOWN"); } catch (Exception e) { //error de decoding, id = unknown
-	 * 
+	 *
 	 * e.printStackTrace();
-	 * 
+	 *
 	 * }
-	 * 
-	 * 
+	 *
+	 *
 	 * }
 	 */
 

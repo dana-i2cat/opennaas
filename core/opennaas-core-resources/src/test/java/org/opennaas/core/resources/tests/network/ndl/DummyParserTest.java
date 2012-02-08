@@ -24,8 +24,8 @@ import org.xml.sax.SAXException;
 
 public class DummyParserTest {
 	Log								log					= LogFactory.getLog(DummyParserTest.class);
-	
-	
+
+
 	@Test
 	public void NDLToJavaTest ()  {
 		String filePath = "network/network_example1.xml";
@@ -37,27 +37,27 @@ public class DummyParserTest {
 			log.error(e.getMessage(),e.getCause());
 		}
 	}
-	
-	
+
+
 	@Test
 	public void javaToNDLTest() {
 		try {
 		String filePath = "target/test1.xml";
-		NetworkTopology mockRDF = MockNetworkDescriptor.newSimpleNDLNetworkDescriptor();		
+		NetworkTopology mockRDF = MockNetworkDescriptor.newSimpleNDLNetworkDescriptor();
 			addNetworkDescriptor(mockRDF,filePath);
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			log.error(e.getMessage(),e.getCause());
 		}
-		
-		
+
+
 	}
-	
-	
+
+
 	@Test
 	public void NDLToJavaTestWithDiffLayers ()  {
 		String filePath = "network/network_diffs_layer.xml";
-		
+
 		try {
 			NetworkTopology exampleDescriptor = getNetworkDescriptor(filePath);
 			log.info(exampleDescriptor.toString());
@@ -67,13 +67,13 @@ public class DummyParserTest {
 		}
 	}
 
-	
-	
-	
-	
+
+
+
+
 	/**
 	 * Helper methods to test these functionality...
-	 * 
+	 *
 	 * @param filename
 	 * @return
 	 * @throws JAXBException
@@ -99,7 +99,7 @@ public class DummyParserTest {
 		NetworkTopology rd = loadNetworkDescriptor(stream);
 		return rd;
 	}
-	
+
 	private NetworkTopology loadNetworkDescriptor(InputStream stream) throws JAXBException, SAXException {
 
 		NetworkTopology descriptor = null;
@@ -125,20 +125,20 @@ public class DummyParserTest {
 			}
 		}
 		return descriptor;
-		
+
 	}
-	
+
 	private void addNetworkDescriptor (NetworkTopology networkDescriptor, String filename) throws IOException {
-		
+
 		OutputStream stream = new FileOutputStream(filename);
 		saveNetworkDescriptor(networkDescriptor,stream);
-		
-		
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 
 	public OutputStream saveNetworkDescriptor  (NetworkTopology networkDescriptor, OutputStream stream) {
 
@@ -150,7 +150,7 @@ public class DummyParserTest {
 			log.error(e.getMessage(),e.getCause());
 		}
 		return stream;
-		
+
 	}
 
 }

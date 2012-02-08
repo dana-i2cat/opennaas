@@ -90,11 +90,11 @@ public class QueueResponse {
 	public void setRestoreResponse(ActionResponse restoreResponse) {
 		this.restoreResponse = restoreResponse;
 	}
-	
+
 	public ActionResponse getRefreshResponse(){
 		return refreshResponse;
 	}
-	
+
 	public void setRefreshResponse(ActionResponse refreshResponse){
 		this.refreshResponse = refreshResponse;
 	}

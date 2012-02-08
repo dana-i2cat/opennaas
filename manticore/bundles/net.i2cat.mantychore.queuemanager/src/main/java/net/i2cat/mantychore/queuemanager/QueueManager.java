@@ -55,7 +55,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Constructor to test the component
-	 * 
+	 *
 	 * @param queueDescriptor
 	 */
 	public QueueManager(CapabilityDescriptor queueDescriptor) {
@@ -170,51 +170,51 @@ public class QueueManager extends AbstractCapability implements
 			}
 
 		}
-		
+
 		/* empty queue */
 		empty();
 
-		
+
 		/* refresh operation */
 		try  {
 			//FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
 			if (resource.getBootstrapper() == null)
 				throw new ResourceException("Null Bootstrapper found. Could not reset model");
-			
+
 			resource.getBootstrapper().resetModel(resource);
 			sendRefresh();
-			
+
 		} catch (ResourceException resourceExcept) {
 			log.warn("The resource couldn't reset its model...", resourceExcept);
 		}
-		
-		
+
+
 		try {
 			ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
 			queueResponse.setRefreshResponse(refreshResponse);
 		} catch (ActionException e) {
 			throw new CapabilityException(e);
 		}
-		
-		
+
+
 
 		if (resource.getProfile() != null) {
 			log.debug("Executing initModel from profile...");
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		
+
 		initVirtualResources ();
 
 		/* stop time */
 		stopTime = java.lang.System.currentTimeMillis();
 		queueResponse.setTotalTime(stopTime - startTime);
 
-		empty();		
+		empty();
 		return queueResponse;
 	}
-	
-	
+
+
 	private void sendRefresh () throws CapabilityException  {
 		for (ICapability capab : resource.getCapabilities()) {
 			// abstract capabilities have to be initialized
@@ -226,13 +226,13 @@ public class QueueManager extends AbstractCapability implements
 							"model refresh, when calling sendRefreshActions");
 				}
 			}
-		}		
+		}
 	}
-	
+
 	private void initVirtualResources () throws CapabilityException {
 		String typeResource = resource.getResourceIdentifier().getType();
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
-		
+
 		IResourceManager manager;
 		try {
 			manager = Activator.getResourceManagerService();
@@ -241,8 +241,8 @@ public class QueueManager extends AbstractCapability implements
 			e1.printStackTrace();
 			throw new CapabilityException("Can't get ResourceManagerService!");
 		}
-		
-		// initialize each resource		
+
+		// initialize each resource
 		try {
 			for (String nameResource : nameLogicalRouters) {
 				try {
@@ -262,10 +262,10 @@ public class QueueManager extends AbstractCapability implements
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
-		
+
 	}
 
-	
+
 	//FIXME this parameters shouldn't be in the queue because it is an opennaas module
 	// Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
 	private ResourceDescriptor newResourceDescriptor(
@@ -336,7 +336,7 @@ public class QueueManager extends AbstractCapability implements
 		}
 		return queueResponse;
 	}
-	
+
 	private ActionResponse executeRefreshActions (IProtocolSessionManager protocolSessionManager) throws ActionException {
 		ActionResponse refreshResponse = ActionResponse.okResponse(QueueConstants.REFRESH);
 		for (IAction action : queue) {
@@ -354,7 +354,7 @@ public class QueueManager extends AbstractCapability implements
 			}
 		}
 		return refreshResponse;
-		
+
 	}
 
 	private ActionResponse confirm(

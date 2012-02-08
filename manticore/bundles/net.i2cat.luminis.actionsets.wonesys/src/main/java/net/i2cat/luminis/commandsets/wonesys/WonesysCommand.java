@@ -65,8 +65,8 @@ public abstract class WonesysCommand extends Command {
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param data
 	 * @param numberOfBytes
 	 * @return

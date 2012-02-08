@@ -14,7 +14,7 @@ import java.util.Calendar;
 /**
  * Alarm object representation. <br>
  * Contains all the information form a registered alarm.
- * 
+ *
  * @author mbeltran
  */
 
@@ -35,14 +35,14 @@ public class Alarm {
 
 	/**
 	 * Creates a new instance of Alarm
-	 * 
+	 *
 	 * @param ip
 	 *            IP of the entity
 	 * @param oid
 	 *            alarm oid
 	 * @param params
 	 *            SNMP message in propietary format
-	 * 
+	 *
 	 */
 	public Alarm(String ip, String oid, String params) {
 		this.ip = ip;
@@ -80,9 +80,9 @@ public class Alarm {
 
 	/**
 	 * Returns the first reception time of the alarm
-	 * 
+	 *
 	 * @return first repcetion time in POSIX milliseconds format
-	 * 
+	 *
 	 */
 	public long getDataRecepcio() {
 		return dataRecepcio;
@@ -90,9 +90,9 @@ public class Alarm {
 
 	/**
 	 * Returns the last reception time of the alarm
-	 * 
+	 *
 	 * @return last repcetion time in POSIX milliseconds format
-	 * 
+	 *
 	 */
 	public long getDataUltima() {
 		return dataUltima;
@@ -100,9 +100,9 @@ public class Alarm {
 
 	/**
 	 * Returns the type name of the alarm
-	 * 
+	 *
 	 * @return type name in human language format
-	 * 
+	 *
 	 */
 	public String getTypeName() {
 		return typeName;
@@ -110,9 +110,9 @@ public class Alarm {
 
 	/**
 	 * Returns the type ID of the alarm
-	 * 
+	 *
 	 * @return type ID in a coded format
-	 * 
+	 *
 	 */
 	public String getTypeID() {
 		return typeID;
@@ -131,9 +131,9 @@ public class Alarm {
 	 * <li><b>Clear</b> Alarm cleared message
 	 * <li><b>Unknown</b> Unknown alarm
 	 * </ul>
-	 * 
+	 *
 	 * @return type ID in a coded format
-	 * 
+	 *
 	 */
 	public String getSeverity() {
 		return severity;
@@ -141,9 +141,9 @@ public class Alarm {
 
 	/**
 	 * Returns the SNMP messange
-	 * 
+	 *
 	 * @return the SNMP message
-	 * 
+	 *
 	 */
 	public String getRawIndo() {
 		return rawInfo;
@@ -151,9 +151,9 @@ public class Alarm {
 
 	/**
 	 * Returns the count of alarms received
-	 * 
+	 *
 	 * @return count of alarms received
-	 * 
+	 *
 	 */
 	public int getRepet() {
 		return repet;
@@ -161,9 +161,9 @@ public class Alarm {
 
 	/**
 	 * Returns the IP of the entity that send the alarms
-	 * 
+	 *
 	 * @return IP in string format
-	 * 
+	 *
 	 */
 	public String getIp() {
 		return ip;
@@ -171,9 +171,9 @@ public class Alarm {
 
 	/**
 	 * Returns the slot of the card that caused the alarm, -1 if not set
-	 * 
+	 *
 	 * @return slot in int format
-	 * 
+	 *
 	 */
 	public int getSlot() {
 		return slot;
@@ -197,9 +197,9 @@ public class Alarm {
 
 	/**
 	 * Returns the port number that caused the alarm, -1 if not set
-	 * 
+	 *
 	 * @return slot in int format
-	 * 
+	 *
 	 */
 	public int getPort() {
 		return port;
@@ -207,10 +207,10 @@ public class Alarm {
 
 	/**
 	 * Sets the last received alarm time value
-	 * 
+	 *
 	 * @param dataUltima
 	 *            received alarm time in milliseconds
-	 * 
+	 *
 	 */
 	public void setDataUltima(long dataUltima) {
 		this.dataUltima = dataUltima;
@@ -218,7 +218,7 @@ public class Alarm {
 
 	/**
 	 * Increases de number of times that the same alarm has been received
-	 * 
+	 *
 	 */
 	void incRepet() {
 		repet++;
@@ -226,7 +226,7 @@ public class Alarm {
 
 	/**
 	 * Sets the severity of the alarm
-	 * 
+	 *
 	 */
 	public void setSeverity(String severity) {
 		this.severity = severity;
@@ -234,7 +234,7 @@ public class Alarm {
 
 	/**
 	 * Sets the group of the alarm
-	 * 
+	 *
 	 */
 	public void setGroup(String group) {
 		this.group = group;
@@ -242,7 +242,7 @@ public class Alarm {
 
 	/**
 	 * Sets the typeID of the alarm
-	 * 
+	 *
 	 */
 	public void setTypeID(String typeID) {
 		this.typeID = typeID;
@@ -250,7 +250,7 @@ public class Alarm {
 
 	/**
 	 * Sets the typeName of the alarm
-	 * 
+	 *
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
@@ -265,7 +265,7 @@ public class Alarm {
 	 * <p>
 	 * IP: ip_value Chasis: chasis_number Slot: slot_number Port: port_number RawInfo: snmp_info typeName: type_name typeID: type_ID dataRecepcio:
 	 * date_milis dataUltima: date_milis severity: severity repet: number
-	 * 
+	 *
 	 */
 	public String toString() {
 

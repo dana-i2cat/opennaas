@@ -23,7 +23,7 @@ public class Link {
 	public String toString() {
 		return "Link [name=" + name + "]";
 	}
-	
+
 
 
 }

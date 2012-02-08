@@ -15,7 +15,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-//FIXME: We need to know how a resource has to be filled. 
+//FIXME: We need to know how a resource has to be filled.
 public class CapabilityHelper {
 	static Log	log	= LogFactory
 							.getLog(CapabilityHelper.class);

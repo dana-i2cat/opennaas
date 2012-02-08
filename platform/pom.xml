@@ -216,7 +216,7 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-							<!--  
+							<!--
       <resources>
 		  <resource>
 		    <directory>src/main/java</directory>

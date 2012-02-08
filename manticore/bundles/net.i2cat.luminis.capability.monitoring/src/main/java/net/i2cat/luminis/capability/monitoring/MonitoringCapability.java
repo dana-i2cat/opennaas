@@ -54,14 +54,14 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 				log.debug("Executing MonitoringCapability.PROCESS_ALARM_ACTION");
 				//execute directly, skipping queue
 				return executeAction(action, idOperation);
-				
+
 			} else {
 				//queue action
 				IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
 				queueManager.queueAction(action);
 				return Response.okResponse(idOperation);
 			}
-			
+
 		} catch (Exception e) {
 			Vector<String> errorMsgs = new Vector<String>();
 			errorMsgs
@@ -74,7 +74,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-		
+
 		try {
 			return Activator.getMonitoringActionSetService(name, version);
 		} catch (ActivatorException e) {
@@ -103,7 +103,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/**
 	 * Executes given action directly, without passing it to the queue.
 	 * Given action will be executed with no ProtocolSessionManager (null)
@@ -112,9 +112,9 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	 * @throws ActionException
 	 */
 	private Response executeAction(IAction action, String idOperation) throws ActionException {
-		
+
 		log.debug("Executing action " + idOperation +"...");
-		
+
 		// skip the queue and execute directly
 		ActionResponse response = action.execute(null);
 
@@ -127,8 +127,8 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
 	}
-	
-	
+
+
 
 	private void registerAsCapabilityAlarmListener() throws CapabilityException {
 		log.debug("Registering as CapabilityAlarm listener");

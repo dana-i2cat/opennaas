@@ -14,7 +14,7 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if a logical router exists.
-	 * 
+	 *
 	 * @param physicalRouter
 	 *            physical router that contains it.
 	 * @param logicalRouterName
@@ -32,7 +32,7 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if an interface exists.
-	 * 
+	 *
 	 * @param inter
 	 * @param port
 	 * @param Ip

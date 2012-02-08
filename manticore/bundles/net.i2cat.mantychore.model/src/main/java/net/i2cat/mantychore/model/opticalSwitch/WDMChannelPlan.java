@@ -75,7 +75,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param freq
 	 *            in THz
 	 * @return channel number
@@ -91,7 +91,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param lambda
 	 * @return
 	 */
@@ -107,7 +107,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param channelNum
 	 * @return channel frequency in THz
 	 */
@@ -121,7 +121,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param lambda
 	 *            (nm)
 	 * @return channel frequency in THz
@@ -136,7 +136,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param channelNum
 	 * @return channel lambda (wavelength) in nm
 	 */
@@ -201,7 +201,7 @@ public class WDMChannelPlan extends FiberChannelPlan {
 		long maxFreqRounded = Math.round(maxFreq * 10000);
 		long minFreqRounded = Math.round(minFreq * 10000);
 		long guardIntervalRounded = Math.round(guardInterval * 10000);
-		
+
 		int numberOfChannels = (int) ((maxFreqRounded - minFreqRounded) / guardIntervalRounded);
 		List<FiberChannel> allChannels = new ArrayList<FiberChannel>(numberOfChannels);
 

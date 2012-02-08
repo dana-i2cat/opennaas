@@ -17,9 +17,9 @@ import org.opennaas.core.resources.validation.CapabilityDescriptorValidator;
 
 /**
  * Test class for the AbstractCapabilityFactory
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class AbstractCapabilityFactoryTest
 {
@@ -36,7 +36,7 @@ public class AbstractCapabilityFactoryTest
 		typeList.add(information);
 		CapabilityDescriptorValidator validator = new CapabilityDescriptorValidator();
 		resourceId = "resource123";
-		
+
 		capabilityFactory = new MockCapabilityFactory();
 		capabilityFactory.setCapabilityDescriptorValidator(validator);
 	}
@@ -49,7 +49,7 @@ public class AbstractCapabilityFactoryTest
 		capability = capabilityFactory.create(capabilityDescriptor, resourceId);
 		assertNotNull(capability);
 	}
-	
+
 	@Test (expected=CapabilityException.class)
 	public void testCapabilityDescriptorValidationFails() throws ResourceException {
 		// Create the module descriptor

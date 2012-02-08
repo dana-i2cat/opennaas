@@ -45,15 +45,15 @@ import org.osgi.framework.BundleContext;
 
 /**
  * Tests new queue operations. In the sprint for the week 26, it is planned to add new features in the queue.
- * 
+ *
  * tasks:
- * 
+ *
  * 1.- A queue have to remove elements from its queue list
- * 
+ *
  * 2.- The queue has to implement a method to report responses from a list of actions
- * 
+ *
  * @author Carlos Báez Ruiz
- * 
+ *
  *         jira ticket : http://jira.i2cat.net:8080/browse/MANTYCHORE-185
  */
 @RunWith(JUnit4TestRunner.class)
@@ -144,13 +144,13 @@ public class QueueTest extends AbstractIntegrationTest {
 
 	/**
 	 * A queue have to be new operations. In this sprint, it have to implement the remove operation to remove actions from the queue.
-	 * 
+	 *
 	 * Estimation: 3 hours
-	 * 
+	 *
 	 * tasks:
-	 * 
+	 *
 	 * 1.- Add unitary tests,
-	 * 
+	 *
 	 * 2.- Implement operation in the queue
 	 */
 	@Test
@@ -180,13 +180,13 @@ public class QueueTest extends AbstractIntegrationTest {
 
 	/**
 	 * A queue have to be new operations. In this sprint, it have to implement the remove operation to remove actions from the queue.
-	 * 
+	 *
 	 * Estimation: 5
-	 * 
+	 *
 	 * hours tasks:
-	 * 
+	 *
 	 * 1.- Add unitary test
-	 * 
+	 *
 	 * 2.- Add necessary refactoring to add new information in the queue
 	 */
 	@Test

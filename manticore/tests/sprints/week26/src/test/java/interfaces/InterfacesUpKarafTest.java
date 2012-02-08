@@ -45,11 +45,11 @@ import org.osgi.framework.BundleContext;
 /**
  * Tests new chassis operations in interface. In this feature it is necessary to create two operations to configure the status interface. The
  * objective it is to configure the interface status (up, down status administrative)
- * 
+ *
  * jira ticket: http://jira.i2cat.net:8080/browse/MANTYCHORE-161
- * 
+ *
  * @author Carlos Báez Ruiz
- * 
+ *
  */
 @SuppressWarnings("unused")
 @RunWith(JUnit4TestRunner.class)
@@ -176,22 +176,22 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * This test change the interface status to up. It try to enable the administrative mode, and it will be able to be configured. Estimation: 15
-	 * 
+	 *
 	 * tasks:
-	 * 
+	 *
 	 * -> Create unitary test, and integration test to new feature
-	 * 
+	 *
 	 * -> Implement operation
-	 * 
+	 *
 	 * -> create template
-	 * 
+	 *
 	 * -> add modifications in the parser
-	 * 
+	 *
 	 * -> create karaf command -
-	 * 
+	 *
 	 * -> test to a real router
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@Test
 	public void UpInterfaceETHTest() {
@@ -247,8 +247,8 @@ public class InterfacesUpKarafTest extends AbstractIntegrationTest {
 	 * This test change the interface status to down. It try to enable the administrative mode, and it will be able to be configured. Estimation: 5
 	 * (the operation can be cloned fromt he upInterface) tasks: -> Create unitary test, and integration test to new feature -> Implement operation ->
 	 * create template -> add modifications in the parser -> create karaf command -> test to a real router
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@Test
 	public void UPInterfaceLTTest() {

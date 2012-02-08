@@ -223,7 +223,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * Configure a IP in a lt interface
-	 * 
+	 *
 	 */
 
 	public void setIPlt() {
@@ -256,7 +256,7 @@ public class InterfacesIPKarafTest extends AbstractIntegrationTest {
 
 	/**
 	 * Configure a IP in a ETh interface
-	 * 
+	 *
 	 */
 
 	public void setIPETH() {

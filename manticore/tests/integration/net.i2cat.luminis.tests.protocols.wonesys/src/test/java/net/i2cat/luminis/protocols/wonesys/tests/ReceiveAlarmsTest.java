@@ -104,12 +104,12 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	 * 5. Wait for alarm reception <br>
 	 * 6. Receive the alarm and checks <br>
 	 * 7. Unregister Handlers and disable alarms <br>
-	 * 
+	 *
 	 * @throws PduException
-	 * 
+	 *
 	 * @throws CommandException
 	 * @throws ProtocolException
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@Test
@@ -206,7 +206,7 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 
 	/**
 	 * Simulates an alarm has been received.
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws PduException
 	 */

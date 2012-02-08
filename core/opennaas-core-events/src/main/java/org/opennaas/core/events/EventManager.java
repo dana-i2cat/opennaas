@@ -17,10 +17,10 @@ import org.apache.commons.logging.LogFactory;
 /**
  * This class is intended to manage events, using EventAdmin service as a helper. In order for a class to receive events, it must implement
  * EventHandler interface and register itself using a filter. <code>registerEventHandler</code> manages this registration.
- * 
- * 
+ *
+ *
  * @author isart
- * 
+ *
  */
 public class EventManager implements IEventManager {
 
@@ -43,7 +43,7 @@ public class EventManager implements IEventManager {
 	/**
 	 * Registers given Handler using given filter. Handler <code>handleEvent</code> operation will be called when events matching given filter are
 	 * received.
-	 * 
+	 *
 	 * @param filter
 	 */
 	public int registerEventHandler(EventHandler handler, EventFilter filter) {
@@ -97,7 +97,7 @@ public class EventManager implements IEventManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param topics
 	 *            Specify the topics to subscribe to - Wilcard * is applicable at the end of a String
 	 * @param filter
