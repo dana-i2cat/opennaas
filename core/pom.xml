@@ -9,10 +9,6 @@
 	</parent>
 	<name>OpenNaaS :: Core</name>
 	<artifactId>opennaas-core</artifactId>
-	<properties>
-		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<karaf.version>2.2.2-fuse-00-08</karaf.version>
-	</properties>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -43,12 +39,12 @@
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
-				<version>1.2.2_5</version>
+				<version>1.2.2_7</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.specs</groupId>
-				<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
-				<version>1.6.0</version>
+				<artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
+				<version>1.8.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.dynamicjava.osgi</groupId>

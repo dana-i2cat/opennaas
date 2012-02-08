@@ -78,7 +78,7 @@ public class IntegrationTestsHelper {
 
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
-	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 	// String[] SERVICE_MIX_FEATURES = new String[] { "activemq", "karaf-framework", "config", "cxf", "activemq" };
 	// Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 	// return combine(getSimpleTestOptions(), OPT_SERVICE_MIX_FEATURES);
@@ -86,7 +86,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getKarafFrameworkOptions(String containerName) {
 		/* fuse features */
-		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
+		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.2-fuse-02-20/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "karaf-framework" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 		return combine(getSimpleTestOptions(containerName), OPT_SERVICE_MIX_FEATURES);
@@ -94,7 +94,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getConfigOptions(String containerName) {
 		/* fuse features */
-		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
+		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.2-fuse-02-20/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "config" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 		return combine(getKarafFrameworkOptions(containerName), OPT_SERVICE_MIX_FEATURES);
@@ -102,7 +102,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getCXFOptions(String containerName) {
 		/* Opennaas features */
-		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 		String[] OPENNAAS_FEATURES = { "cxf" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
@@ -111,7 +111,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getActiveMQOptions(String containerName) {
 		/* Opennaas features */
-		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.activemq/activemq-karaf/5.5.0-fuse-00-43/xml/features";
+		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.activemq/activemq-karaf/5.5.1-fuse-01-20/xml/features";
 		String[] OPENNAAS_FEATURES = { "activemq" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
@@ -120,7 +120,7 @@ public class IntegrationTestsHelper {
 
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
-	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 	// String[] SERVICE_MIX_FEATURES = new String[] { "activemq", "karaf-framework", "config", "cxf", "activemq" };
 	// Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 	// return combine(getActiveMQOptions(), OPT_SERVICE_MIX_FEATURES);
@@ -197,30 +197,18 @@ public class IntegrationTestsHelper {
 		int MAX_RETRIES = 20;
 		Bundle b = null;
 		boolean active = true;
-		List<Integer> fragments = new ArrayList<Integer>();
-		String strBundles;
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			active = true;
 			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-				if (!fragments.contains(new Integer(j))) {
-					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED) {
-						active = false;
-						try {
-							bundleContext.getBundles()[j].start();
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							if (ex.getMessage().indexOf("fragment") != -1) {
-								fragments.add(new Integer(j));
-
-								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
-								Enumeration headers = headers_dic.keys();
-								log.info("Fragment headers:");
-								while (headers.hasMoreElements()) {
-									log.info(headers.nextElement());
-								}
-							}
-						}
+				Bundle bundle = bundleContext.getBundles()[j];
+				if (bundle.getHeaders().get("Fragment-Host") == null &&
+					bundle.getState() == Bundle.RESOLVED) {
+					active = false;
+					try {
+						bundleContext.getBundles()[j].start();
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -229,7 +217,7 @@ public class IntegrationTestsHelper {
 				break;
 			}
 
-			strBundles = listBundles(bundleContext);
+			listBundles(bundleContext);
 			log.info("Waiting for activation of all bundles, this is the " + i + " try. Sleeping for 1 second");
 			try {
 				Thread.sleep(1000);
@@ -239,12 +227,7 @@ public class IntegrationTestsHelper {
 			}
 		}
 
-		strBundles = listBundles(bundleContext);
-		String fragmentsNums = "";
-		for (Integer num : fragments) {
-			fragmentsNums += num.toString() + ", ";
-		}
-		log.info("Detected " + fragments.size() + " fragments: " + fragmentsNums);
+		listBundles(bundleContext);
 
 		if (active)
 			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");

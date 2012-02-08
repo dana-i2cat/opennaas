@@ -140,7 +140,7 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix.karaf.tooling</groupId>
+				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<executions>
 					<execution>

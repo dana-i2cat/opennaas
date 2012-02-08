@@ -202,30 +202,18 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 		int MAX_RETRIES = 20;
 		Bundle b = null;
 		boolean active = true;
-		List<Integer> fragments = new ArrayList<Integer>();
-		String strBundles;
 
 		for (int i = 0; i < MAX_RETRIES; i++) {
 			active = true;
 			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-				if (!fragments.contains(new Integer(j))) {
-					if (bundleContext.getBundles()[j].getState() == Bundle.RESOLVED) {
-						active = false;
-						try {
-							bundleContext.getBundles()[j].start();
-						} catch (Exception ex) {
-							ex.printStackTrace();
-							if (ex.getMessage().indexOf("fragment") != -1) {
-								fragments.add(new Integer(j));
-
-								Dictionary headers_dic = bundleContext.getBundles()[j].getHeaders();
-								Enumeration headers = headers_dic.keys();
-								log.info("Fragment headers:");
-								while (headers.hasMoreElements()) {
-									log.info(headers.nextElement());
-								}
-							}
-						}
+				Bundle bundle = bundleContext.getBundles()[j];
+				if (bundle.getHeaders().get("Fragment-Host") == null &&
+					bundle.getState() == Bundle.RESOLVED) {
+					active = false;
+					try {
+						bundleContext.getBundles()[j].start();
+					} catch (Exception ex) {
+						ex.printStackTrace();
 					}
 				}
 			}
@@ -234,7 +222,7 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 				break;
 			}
 
-			strBundles = listBundles(bundleContext);
+			listBundles(bundleContext);
 			log.info("Waiting for activation of all bundles, this is the " + i + " try. Sleeping for 1 second");
 			try {
 				Thread.sleep(1000);
@@ -244,12 +232,7 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 			}
 		}
 
-		strBundles = listBundles(bundleContext);
-		String fragmentsNums = "";
-		for (Integer num : fragments) {
-			fragmentsNums += num.toString() + ", ";
-		}
-		log.info("Detected " + fragments.size() + " fragments: " + fragmentsNums);
+		listBundles(bundleContext);
 
 		if (active)
 			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");

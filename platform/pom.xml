@@ -14,9 +14,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
-		<!-- Using this as 2.2 up to and including 2.2.0-fuse-00-43 gave us nightmares. Let's try 2.2+ versions again sometime.-->
-		<karaf.version>2.2.2-fuse-00-08</karaf.version>
-		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
 	</properties>
 	<repositories>
 		<repository>
@@ -162,9 +159,9 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix.karaf.tooling</groupId>
+				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
-				<version>1.4.0-fuse-02-00</version>
+				<version>${karaf.version}</version>
 				<executions>
 					<execution>
 						<id>add-features-to-repo</id>
@@ -173,9 +170,18 @@
 							<goal>add-features-to-repo</goal>
 						</goals>
 						<configuration>
+							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
-								<descriptor>mvn:org.opennaas/opennaas-core-features/1.0.0-SNAPSHOT/xml/features</descriptor>
+								<descriptor>mvn:org.apache.servicemix/apache-servicemix/${servicemix.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/opennaas-core-features/${project.version}/xml/features</descriptor>
 							</descriptors>
+							<!-- Only add the features we specify
+							     explicitly.  Remaining features are
+							     included by copying servicemix above.
+							     -->
+							<addTransitiveFeatures>false</addTransitiveFeatures>
 							<features>
 								<feature>opennaas-core-deps</feature>
 								<feature>opennaas-core</feature>
