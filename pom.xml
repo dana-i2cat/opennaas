@@ -34,6 +34,12 @@
      | some example OSGi runtime properties
     <org.osgi.service.http.port>8080</org.osgi.service.http.port>
     <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>-->
+		<karaf.version>2.2.2-fuse-02-20</karaf.version>
+		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
+		<camel.version>2.8.0-fuse-01-20</camel.version>
+		<nmr.version>1.5.1-fuse-01-20</nmr.version>
+		<cxf.version>2.4.3-fuse-00-20</cxf.version>
+		<activemq.version>5.5.1-fuse-01-20</activemq.version>
 	</properties>
 	<packaging>pom</packaging>
 	<modules>

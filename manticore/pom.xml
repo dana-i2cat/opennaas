@@ -21,14 +21,15 @@
 	</organization>
 	<!-- Custom Properties -->
 	<properties>
-		<activemq.version>5.4.0-fuse-00-00</activemq.version>
-		<axiom.version>1.2.8</axiom.version>
+		<activemq.version>5.5.1-fuse-01-20</activemq.version>
+		<axiom.version>1.2.12</axiom.version>
+		<camel.version>2.8.0-fuse-01-20</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.configuration.version>1.2</commons.configuration.version>
-		<commons.dbcp.version>1.2.2_5</commons.dbcp.version>
+		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
-		<cxf.version>2.4.0-fuse-00-27</cxf.version>
-		<cxf.java2ws.plugin.version>2.4.0-fuse-00-27</cxf.java2ws.plugin.version>
+		<cxf.version>2.4.3-fuse-00-20</cxf.version>
+		<cxf.java2ws.plugin.version>2.4.3-fuse-00-20</cxf.java2ws.plugin.version>
 		<!-- -->
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
@@ -41,23 +42,24 @@
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
-		<karaf.version>2.2.2-fuse-00-08</karaf.version>
+		<karaf.version>2.2.2-fuse-02-20</karaf.version>
 		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
-		<!--<netconf4j.version>0.0.1-SNAPSHOT</netconf4j.version>-->
+		<nmr.version>1.5.1-fuse-01-20</nmr.version>
+		<opennaas.version>1.0.0-SNAPSHOT</opennaas.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam.version>1.2.4</pax.exam.version>
-		<pax.logging.version>1.5.3</pax.logging.version>
+		<pax.logging.version>1.6.2</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.4.0-fuse-00-43</servicemix.version>
-		<servicemix.specs.version>1.6.0</servicemix.specs.version>
-		<servicemix.velocity.version>1.6.4_1</servicemix.velocity.version>
-		<servicemix.xerces.version>2.9.1_3</servicemix.xerces.version>
+		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
+		<servicemix.specs.version>1.8.0</servicemix.specs.version>
+		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
+		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<spring.osgi.version>1.2.0</spring.osgi.version>
+		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
-		<xbean.version>3.7</xbean.version>
+		<xbean.version>3.8</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
 	<dependencyManagement>
@@ -583,9 +585,9 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.felix.karaf.tooling</groupId>
+				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
-				<version>1.4.0-fuse-03-00</version>
+				<version>${karaf.version}</version>
 			</plugin>
 		</plugins>
 	</build>
