@@ -78,7 +78,7 @@ public class IntegrationTestsHelper {
 
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
-	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 	// String[] SERVICE_MIX_FEATURES = new String[] { "activemq", "karaf-framework", "config", "cxf", "activemq" };
 	// Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 	// return combine(getSimpleTestOptions(), OPT_SERVICE_MIX_FEATURES);
@@ -86,7 +86,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getKarafFrameworkOptions(String containerName) {
 		/* fuse features */
-		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
+		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.2-fuse-02-20/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "karaf-framework" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 		return combine(getSimpleTestOptions(containerName), OPT_SERVICE_MIX_FEATURES);
@@ -94,7 +94,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getConfigOptions(String containerName) {
 		/* fuse features */
-		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.0-fuse-00-43/xml/features";
+		String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.karaf.assemblies.features/standard/2.2.2-fuse-02-20/xml/features";
 		String[] SERVICE_MIX_FEATURES = new String[] { "config" };
 		Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 		return combine(getKarafFrameworkOptions(containerName), OPT_SERVICE_MIX_FEATURES);
@@ -102,7 +102,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getCXFOptions(String containerName) {
 		/* Opennaas features */
-		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 		String[] OPENNAAS_FEATURES = { "cxf" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
@@ -111,7 +111,7 @@ public class IntegrationTestsHelper {
 
 	public static Option[] getActiveMQOptions(String containerName) {
 		/* Opennaas features */
-		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.activemq/activemq-karaf/5.5.0-fuse-00-43/xml/features";
+		String OPENNAAS_FEATURE_REPO = "mvn:org.apache.activemq/activemq-karaf/5.5.1-fuse-01-20/xml/features";
 		String[] OPENNAAS_FEATURES = { "activemq" };
 		// String[] FUSE_FEATURES = { "opennaas-core-deps" };
 		Option OPT_OPENNAAS_FEATURES = scanFeatures(OPENNAAS_FEATURE_REPO, OPENNAAS_FEATURES);
@@ -120,7 +120,7 @@ public class IntegrationTestsHelper {
 
 	// public static Option[] getFuseOptions() {
 	// /* fuse features */
-	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.0-fuse-00-43/xml/features";
+	// String SERVICE_MIX_FEATURES_REPO = "mvn:org.apache.servicemix/apache-servicemix/4.4.1-fuse-01-20/xml/features";
 	// String[] SERVICE_MIX_FEATURES = new String[] { "activemq", "karaf-framework", "config", "cxf", "activemq" };
 	// Option OPT_SERVICE_MIX_FEATURES = scanFeatures(SERVICE_MIX_FEATURES_REPO, SERVICE_MIX_FEATURES);
 	// return combine(getActiveMQOptions(), OPT_SERVICE_MIX_FEATURES);
