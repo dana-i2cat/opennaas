@@ -22,13 +22,13 @@ public class RawSocketAlarmListener implements EventHandler {
 	public static Log	log	= LogFactory.getLog(RawSocketAlarmListener.class);
 
 	private String		sessionId;
-	
+
 	private long creationTime;
 
 	public RawSocketAlarmListener(String sessionID) {
 		this.sessionId = sessionID;
 		creationTime = new Date().getTime();
-		
+
 		log.info("Created RawSocketAlarmListener for session: " + sessionId);
 	}
 
@@ -39,14 +39,14 @@ public class RawSocketAlarmListener implements EventHandler {
 		String message = (String) event.getProperty(RawSocketTransport.MESSAGE_PROPERTY_NAME);
 		if (message != null) {
 			if (isAlarm(message)) {
-				
+
 				boolean isOld = false;
 				Long arrivalTime = (Long) event.getProperty(RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME);
 				if (arrivalTime != null) {
 					if (arrivalTime < creationTime)
 						isOld = true;
 				}
-				
+
 				//Only publish if event arrived after listener creation
 				if (!isOld){
 					try {

@@ -5,16 +5,16 @@ package org.opennaas.core.resources.protocol;
  * implements this interface to the OSGi registry, with a property called
  * "Protocol" whose value is the name of the protocol that the protocol session
  * implements.
- * 
+ *
  * @author eduardgrasa
- * 
+ *
  */
 public interface IProtocolSessionFactory {
 
 	/**
 	 * Create a protocol session and configure it using the information in the
 	 * ProtocolSessionContext.
-	 * 
+	 *
 	 * @param sessionID
 	 *            The ID associated to the session, cannot be null
 	 * @param context

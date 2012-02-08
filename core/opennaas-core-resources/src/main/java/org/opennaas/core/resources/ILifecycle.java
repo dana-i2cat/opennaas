@@ -10,7 +10,7 @@ public interface ILifecycle {
 
 	/**
 	 * Returns the current resource state
-	 * 
+	 *
 	 * @return state enum object
 	 */
 	public State getState();
@@ -22,7 +22,7 @@ public interface ILifecycle {
 
 	/**
 	 * Initializes this component, the status will be INITIALIZED, then will be ACTIVE if enabled.
-	 * 
+	 *
 	 * @throws IncorrectLifecycleStateException
 	 *             if this method is not allowed in current state
 	 * @throws ResourceException
@@ -32,7 +32,7 @@ public interface ILifecycle {
 
 	/**
 	 * Activates this component and change state to ACTIVE.
-	 * 
+	 *
 	 * @throws IncorrectLifecycleStateException
 	 *             if this method is not allowed in current state
 	 * @throws ResourceException
@@ -42,7 +42,7 @@ public interface ILifecycle {
 
 	/**
 	 * Deactivate this component and change state to INACTIVE
-	 * 
+	 *
 	 * @throws IncorrectLifecycleStateException
 	 *             if this method is not allowed in current state
 	 * @throws ResourceException
@@ -52,7 +52,7 @@ public interface ILifecycle {
 
 	/**
 	 * Prepares component for Garbage Collection state will be SHUTDOWN until it is collected.
-	 * 
+	 *
 	 * @throws IncorrectLifecycleStateException
 	 *             if this method is not allowed in current state
 	 * @throws ResourceException

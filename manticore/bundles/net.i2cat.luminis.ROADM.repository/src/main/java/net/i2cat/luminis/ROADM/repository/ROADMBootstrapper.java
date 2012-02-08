@@ -82,9 +82,9 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 	public void revertBootstrap(IResource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
-	
+
 	public void resetModel (IResource resource) throws ResourceException {
-		
+
 	}
 
 }

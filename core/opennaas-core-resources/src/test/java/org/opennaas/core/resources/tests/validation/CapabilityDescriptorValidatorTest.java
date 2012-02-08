@@ -21,9 +21,9 @@ import org.springframework.validation.FieldError;
 
 /**
  * Test the ModuleDescriptorValidator class
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class CapabilityDescriptorValidatorTest {
 	Log								logger					= LogFactory.getLog(CapabilityDescriptorValidatorTest.class);

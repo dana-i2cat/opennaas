@@ -13,9 +13,9 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Show the Profile information of one or more resources
- * 
+ *
  * @author Evelyn Torras
- * 
+ *
  */
 @Command(scope = "profile", name = "info", description = "Provides extended information about one or more profiles.")
 public class InfoProfileCommand extends GenericKarafCommand {

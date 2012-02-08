@@ -7,10 +7,10 @@ import net.i2cat.mantychore.network.model.topology.Device;
 import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 public class NetworkDomain extends NetworkElement {
-	
+
 	List<Device> hasDevice;
 	List<ConnectionPoint> hasInterface;
-	
+
 	public List<Device> getHasDevice() {
 		return hasDevice;
 	}
@@ -24,5 +24,5 @@ public class NetworkDomain extends NetworkElement {
 		this.hasInterface = hasInterface;
 	}
 
-	
+
 }

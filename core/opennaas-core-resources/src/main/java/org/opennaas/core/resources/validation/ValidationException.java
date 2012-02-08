@@ -8,7 +8,7 @@ import org.springframework.validation.Errors;
 
 /**
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class ValidationException extends ResourceException
 {

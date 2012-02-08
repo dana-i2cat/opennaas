@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This class provides a simple resource identifier implementation
- * 
+ *
  * @author root
- * 
+ *
  */
 @Entity
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -43,7 +43,7 @@ public class ResourceIdentifier implements IResourceIdentifier {
 		this.type = type;
 		this.id = UUID.randomUUID().toString();
 	}
-	
+
 	public ResourceIdentifier(String type, String id) {
 		this.type = type;
 		this.id = id;

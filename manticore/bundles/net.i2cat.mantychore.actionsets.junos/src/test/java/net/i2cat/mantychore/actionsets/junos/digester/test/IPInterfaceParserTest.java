@@ -28,7 +28,7 @@ public class IPInterfaceParserTest {
 
 	/**
 	 * Simple parser. It was used for proves with xml files
-	 * 
+	 *
 	 * @param stream
 	 * @return
 	 */

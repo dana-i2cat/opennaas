@@ -5,7 +5,7 @@ import org.opennaas.core.resources.action.ActionException;
 public class CommandException extends ActionException {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long	serialVersionUID	= -4678410903548522139L;
 

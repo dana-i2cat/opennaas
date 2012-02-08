@@ -33,13 +33,13 @@ public class ConfirmAction extends JunosAction {
 			CommitNetconfCommand command = new CommitNetconfCommand();
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
-			
+
 			//TODO test unlock command
 			UnlockNetconfCommand unlockCommand = new UnlockNetconfCommand("candidate");
 			unlockCommand.initialize();
 			Response responseUnlock = sendCommandToProtocol(unlockCommand, protocol);
 			actionResponse.addResponse(responseUnlock);
-			
+
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + "\n" + e.getMessage());
 		}

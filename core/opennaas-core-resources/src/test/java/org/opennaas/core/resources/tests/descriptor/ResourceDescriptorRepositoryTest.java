@@ -350,7 +350,7 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 		assertEquals(networkTopology.getInterfaces().get(7).getName(), "router:R-AS2-3:lo0.4");
 
 	}
-	
+
 	@Test
 	public void testNetworkResourceReferencesPersistence() {
 		em.getTransaction().begin();
@@ -361,7 +361,7 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 		em.getTransaction().begin();
 		ResourceDescriptor loaded = em.find(ResourceDescriptor.class, config.getId());
 		assertNotNull(loaded);
-		
+
 		for (String frienlyName : config.getResourceReferences().keySet()) {
 			assertTrue(loaded.getResourceReferences().containsKey(frienlyName));
 			assertEquals(config.getResourceReferences().get(frienlyName), loaded.getResourceReferences().get(frienlyName));

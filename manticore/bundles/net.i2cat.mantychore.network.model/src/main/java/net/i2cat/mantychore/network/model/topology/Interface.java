@@ -3,9 +3,9 @@ package net.i2cat.mantychore.network.model.topology;
 
 /**
  * A configured interface. Thus an entity that can transport data at a given layer.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class Interface extends ConnectionPoint {
 

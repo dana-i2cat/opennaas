@@ -87,19 +87,19 @@ public interface GenericRepository<T, ID extends Serializable> {
      */
     int countByExample(final T exampleInstance);
 
-    
+
     /**
      * save an entity. This can be either a INSERT or UPDATE in the database
-     * 
+     *
      * @param entity the entity to save
-     * 
+     *
      * @return the saved entity
      */
     T save(final T entity);
 
     /**
      * delete an entity from the database
-     * 
+     *
      * @param entity the entity to delete
      */
     void delete(final T entity);

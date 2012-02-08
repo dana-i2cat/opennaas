@@ -50,7 +50,7 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		
+
 		try {
 			((ITopologyManager)networkCapability).removeResource(resource);
 		} catch (CapabilityException e){

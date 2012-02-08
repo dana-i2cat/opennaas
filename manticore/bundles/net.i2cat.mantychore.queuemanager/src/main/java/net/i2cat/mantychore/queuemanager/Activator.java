@@ -37,7 +37,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		log.debug("Calling QueueManagerService");
 		return (IProtocolManager) getServiceFromRegistry(context, IProtocolManager.class.getName());
 	}
-	
+
 	public static IResourceManager getResourceManagerService() throws ActivatorException {
 		log.debug("Calling ResourceManager");
 		return (IResourceManager) getServiceFromRegistry(context, IResourceManager.class.getName());

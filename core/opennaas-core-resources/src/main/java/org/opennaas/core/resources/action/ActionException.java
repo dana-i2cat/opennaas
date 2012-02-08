@@ -4,7 +4,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 
 public class ActionException extends CapabilityException {
 	/**
-	 * 
+	 *
 	 */
 	private static final long	serialVersionUID	= 6179279998351947424L;
 

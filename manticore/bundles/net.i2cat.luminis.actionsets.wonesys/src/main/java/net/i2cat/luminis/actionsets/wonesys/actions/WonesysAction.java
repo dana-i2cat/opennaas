@@ -36,8 +36,8 @@ public abstract class WonesysAction extends Action {
 	}
 
 	/**
-	 * 
-	 * 
+	 *
+	 *
 	 * @param data
 	 * @param numberOfBytes
 	 * @return

@@ -12,7 +12,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Lists alarms per resource
- * 
+ *
  * @author Carlos Baez
  */
 @Command(scope = "alarms", name = "clear", description = "Clear all alarms fromgiven resources")

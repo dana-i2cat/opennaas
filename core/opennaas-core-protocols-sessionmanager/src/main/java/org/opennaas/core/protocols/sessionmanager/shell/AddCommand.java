@@ -11,9 +11,9 @@ import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
  * List the device ids registered to the protocol manager
- * FIXME: Is this really doing that? 
+ * FIXME: Is this really doing that?
  * @author Pau Minoves
- * 
+ *
  */
 @Command(scope = "protocols", name = "add", description = "Brings up a live connection from the pool with the given protocol if there is none.")
 public class AddCommand extends GenericKarafCommand {

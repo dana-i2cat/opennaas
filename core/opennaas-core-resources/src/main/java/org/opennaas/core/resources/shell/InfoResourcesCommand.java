@@ -15,9 +15,9 @@ import org.opennaas.core.resources.descriptor.Information;
 
 /**
  * Show the information of one or more Resources
- * 
+ *
  * @author Evelyn Torras
- * 
+ *
  */
 @Command(scope = "resource", name = "info", description = "Provides extended information about one or more resources.")
 public class InfoResourcesCommand extends GenericKarafCommand {

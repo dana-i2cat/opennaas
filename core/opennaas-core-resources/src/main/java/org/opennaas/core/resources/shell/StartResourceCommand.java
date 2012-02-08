@@ -11,9 +11,9 @@ import org.opennaas.core.resources.ResourceManager;
 
 /**
  * Start one or more resources
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 @Command(scope = "resource", name = "start", description = "Start one or more resources")
 public class StartResourceCommand extends GenericKarafCommand {

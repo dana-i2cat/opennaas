@@ -113,7 +113,7 @@ public class NetworkModelHelper {
 		}
 		return toReturn;
 	}
-	
+
 	@Deprecated
 	public static Interface getInterfaceByName(String interfaceName, NetworkModel model) {
 		for (NetworkElement elem : model.getNetworkElements()) {
@@ -127,7 +127,7 @@ public class NetworkModelHelper {
 
 	/**
 	 * Get the interface from Network Model and interface name
-	 * 
+	 *
 	 * @param networkElements
 	 * @return Interface
 	 */
@@ -143,7 +143,7 @@ public class NetworkModelHelper {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param name
 	 * @param networkElements
 	 * @return lowest current position of networkElements containing an element named with given name.
@@ -172,23 +172,23 @@ public class NetworkModelHelper {
 		}
 		return link;
 	}
-	
+
 	public static CrossConnect crossConnectInterfaces(Interface src, Interface dst) {
 		CrossConnect xConnect = new CrossConnect();
 		xConnect.setSource(src);
 		xConnect.setSink(dst);
-		
+
 		xConnect.setLayer(src.getLayer());
 
 		src.setSwitchedTo(xConnect);
 		dst.setSwitchedTo(xConnect);
-		
+
 		return xConnect;
 	}
 
 	/**
 	 * Removes given NetworkElement from given networkModel (if exists).
-	 * 
+	 *
 	 * @param toRemove
 	 * @param networkModel
 	 * @return updated network model

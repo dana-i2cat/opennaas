@@ -13,9 +13,9 @@ import org.opennaas.core.resources.profile.IProfile;
 
 /**
  * Main resource class
- * 
+ *
  * @author Mathieu Lemay
- * 
+ *
  */
 public class Resource implements IResource {
 
@@ -256,7 +256,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to initialize and activate all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 * 
+	 *
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure
@@ -324,7 +324,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to deactivate and shutdown all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 * 
+	 *
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure

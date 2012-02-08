@@ -5,9 +5,9 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Network {
-	
+
 	private List<NetInf> networkInterfaces = null;
-	
+
 	public Network(){
 	}
 
@@ -19,7 +19,7 @@ public class Network {
 	public List<NetInf> getNeworkInterfaces() {
 		return networkInterfaces;
 	}
-	
+
 	public String toString(){
 		String result = "   Network Interfaces \n";
 		if (networkInterfaces != null){
@@ -27,8 +27,8 @@ public class Network {
 				result = result + networkInterfaces.get(i).toString();
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 }

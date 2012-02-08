@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 public class HardDisk {
 private List<Root> roots = null;
-	
+
 	public HardDisk(){
 	}
 
@@ -18,7 +18,7 @@ private List<Root> roots = null;
 	public List<Root> getRoots() {
 		return roots;
 	}
-	
+
 	public String toString(){
 		String result = "   Hard Disk \n";
 		if (roots != null){
@@ -26,7 +26,7 @@ private List<Root> roots = null;
 				result = result + roots.get(i).toString();
 			}
 		}
-		
+
 		return result;
 	}
 }

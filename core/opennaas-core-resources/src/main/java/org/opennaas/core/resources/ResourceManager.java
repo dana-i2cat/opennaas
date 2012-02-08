@@ -16,10 +16,10 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * This class is the entry point to the resource for resource clients.
- * 
+ *
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
- * 
+ *
  */
 public class ResourceManager implements IResourceManager {
 
@@ -37,7 +37,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is registered
-	 * 
+	 *
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -52,7 +52,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is unregistered
-	 * 
+	 *
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -66,7 +66,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Create a new resource with a given resourceDescriptor
-	 * 
+	 *
 	 * @param resourceDescriptor
 	 * @returns the new resource
 	 * @throws ResourceException
@@ -79,7 +79,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * List all the existing resources of a given type. If type is null, list all the resources of all types
-	 * 
+	 *
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
 	 *         value.
 	 */
@@ -104,7 +104,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * List all the existing resources
-	 * 
+	 *
 	 * @return
 	 */
 	public synchronized List<IResource> listResources() {
@@ -119,7 +119,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Modify the existing resource that matches the id
-	 * 
+	 *
 	 * @param resourceDescriptor
 	 * @return the modified resource
 	 * @throws ResourceException
@@ -140,7 +140,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Remove the existing resource that matches the id
-	 * 
+	 *
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -151,7 +151,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Start the existing resource that matches the id
-	 * 
+	 *
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -162,7 +162,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Stop the existing resource that matches the id
-	 * 
+	 *
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -173,7 +173,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Stop the existing resource that matches the id
-	 * 
+	 *
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -212,7 +212,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Get an existing resource
-	 * 
+	 *
 	 * @param engineIdentifier
 	 *            the id of the resource to get
 	 * @return the resource
@@ -241,7 +241,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Get the IdentifierInformation for a given name (Resource.Information.name) of resource
-	 * 
+	 *
 	 * @return the ResourceIdentifier
 	 */
 	public IResourceIdentifier getIdentifierFromResourceName(String resourceType, String resourceName) throws ResourceException {
@@ -272,7 +272,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Get the Name for a given resource ID (Resource.descriptor.id) of resource
-	 * 
+	 *
 	 * @return the Name. If null didn't find a resource with this ID
 	 */
 	public String getNameFromResourceID(String ID) throws ResourceException {

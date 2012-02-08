@@ -4,12 +4,12 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 public class Hardware {
-	
+
 	private String cpus = null;
 	private String cpuLoad = null;
 	private HardDisk hardDisk = null;
 	private Network network = null;
-	
+
 	public Hardware(){
 	}
 
@@ -21,7 +21,7 @@ public class Hardware {
 	public void setCpus(String cpus) {
 		this.cpus = cpus;
 	}
-	
+
 	@XmlAttribute(name = "cpuLoad")
 	public String getCpuLoad() {
 		return cpuLoad;
@@ -39,7 +39,7 @@ public class Hardware {
 	public void setHardDisk(HardDisk hardDisk) {
 		this.hardDisk = hardDisk;
 	}
-	
+
 	public void setNetwork(Network network) {
 		this.network = network;
 	}
@@ -48,7 +48,7 @@ public class Hardware {
 	public Network getNetwork() {
 		return network;
 	}
-	
+
 	public String toString(){
 		String result = Platform.BOLD + "Hardware \n" + Platform.NORMAL;
 		result = result + "   Number of cpus: " + getCpus() + "\n";

@@ -61,7 +61,7 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 				);
 		return options;
 	}
-	
+
 	/*@Configuration
 	public Option[] additionalConfiguration() throws Exception {
 		return combine(configure(), new Customizer() {
@@ -93,9 +93,9 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 	}
 
 	public void initBundles() throws ProtocolException {
-		
+
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());

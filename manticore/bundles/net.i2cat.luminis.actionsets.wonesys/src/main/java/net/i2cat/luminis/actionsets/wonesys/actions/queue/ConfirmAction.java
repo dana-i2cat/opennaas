@@ -40,7 +40,7 @@ public class ConfirmAction extends WonesysAction {
 			String response = (String) protocol.sendReceive(c.message());
 			Response resp = checkResponse(c.message(), response);
 
-			
+
 			ActionResponse actionResponse = ActionResponse.okResponse(actionID);
 			actionResponse.addResponse(resp);
 			//Even if command fails, ActionResponse is OK (command may fail because of lock timeout)

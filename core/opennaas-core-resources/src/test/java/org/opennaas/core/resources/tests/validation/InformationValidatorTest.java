@@ -17,9 +17,9 @@ import org.springframework.validation.FieldError;
 
 /**
  * Test the InformationValidator class
- * 
+ *
  * @author Scott Campbell (CRC)
- * 
+ *
  */
 public class InformationValidatorTest {
 	Log						logger		= LogFactory.getLog(InformationValidatorTest.class);

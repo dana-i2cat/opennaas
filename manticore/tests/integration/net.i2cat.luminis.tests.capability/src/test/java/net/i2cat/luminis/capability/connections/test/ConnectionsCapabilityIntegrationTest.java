@@ -129,17 +129,17 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
-			
+
 			Assert.fail();
 		}
 	}
 
 	@Before
 	public void initBundles() throws Exception {
-		
+
 		/* Wait for the activation of all the bundles */
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		
+
 		initResource();
 		initCapability();
 	}

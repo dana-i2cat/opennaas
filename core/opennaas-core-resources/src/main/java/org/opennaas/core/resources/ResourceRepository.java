@@ -19,9 +19,9 @@ import org.opennaas.core.resources.profile.IProfileManager;
 
 /**
  * Base class for all the resource repository implementations.
- * 
+ *
  * @author Mathieu Leman (ITI)
- * 
+ *
  */
 public class ResourceRepository implements IResourceRepository {
 	/** logger */
@@ -45,7 +45,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Construct a new resource repository for resources of the given type
-	 * 
+	 *
 	 * @throws ResourceException
 	 */
 	public ResourceRepository(String resourceType, String persistenceUnit) {
@@ -107,7 +107,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Set the type of resource for the repository
-	 * 
+	 *
 	 * @param resourceType
 	 *            the resourceType to set
 	 */
@@ -306,7 +306,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Loads and starts a resource into memory. Uses resourceDescriptor id to identify the resource
-	 * 
+	 *
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -468,7 +468,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource is valid to be started
-	 * 
+	 *
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -480,7 +480,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource type is valid so it can be created.
-	 * 
+	 *
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */

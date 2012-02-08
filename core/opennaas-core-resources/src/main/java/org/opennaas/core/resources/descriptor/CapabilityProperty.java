@@ -8,9 +8,9 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 /**
  * Property for capability. Used by the CapabilityDescriptor to provide the properties needed to instantiate the capability
- * 
+ *
  * @author Mathieu Lemay (ITI)
- * 
+ *
  */
 @Entity
 public class CapabilityProperty {

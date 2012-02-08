@@ -30,7 +30,7 @@ public class ChassisActionSet extends ActionSet {
 	//	this.putAction(ActionConstants.SETINTERFACEDESCRIPTION, SetInterfaceDescriptionAction.class);
 		this.putAction(ActionConstants.CREATELOGICALROUTER, CreateLogicalRouterAction.class);
 		this.putAction(ActionConstants.DELETELOGICALROUTER, DeleteLogicalRouterAction.class);
-		
+
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
 	}

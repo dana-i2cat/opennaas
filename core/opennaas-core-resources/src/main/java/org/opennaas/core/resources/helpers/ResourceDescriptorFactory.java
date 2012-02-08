@@ -17,7 +17,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-//TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE HAVE TO BE FILL 
+//TODO TO FIX!! WE HAVE TO KNOW HOW A RESOURCE HAVE TO BE FILL
 public class ResourceDescriptorFactory {
 	public static String	version	= "1.0";
 

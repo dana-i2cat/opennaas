@@ -58,7 +58,7 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			log.debug("Executing initModel from profile...");
 			resource.getProfile().initModel(resource.getModel());
 		}
-		
+
 		// If you have loaded network information
 		if (resource.getResourceDescriptor().getNetworkTopology() != null) {
 			resource.setModel(NetworkMapperDescriptorToModel.descriptorToModel(resource.getResourceDescriptor()));

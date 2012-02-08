@@ -166,7 +166,7 @@ public class RefreshModelConnectionsAction extends WonesysAction {
 			}
 		}
 		((ProteusOpticalSwitch) model).getFiberConnections().clear();
-		
+
 		OpticalSwitchCardFactory factory;
 		try {
 			factory = new OpticalSwitchCardFactory();

@@ -11,9 +11,9 @@ import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 
 /**
  * List the device ids registered to the protocol manager
- * 
+ *
  * @author Pau Minoves
- * 
+ *
  */
 @Command(scope = "protocols", name = "purge", description = "Brings up a live connection from the pool with the given protocol if there is none.")
 public class PurgeCommand extends GenericKarafCommand {

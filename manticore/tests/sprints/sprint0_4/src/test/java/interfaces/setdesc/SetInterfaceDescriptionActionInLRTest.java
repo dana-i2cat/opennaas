@@ -78,10 +78,10 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 	/**
 	 * Prepare the resource to do the test
-	 * 
+	 *
 	 * @throws ResourceException
 	 * @throws ProtocolException
-	 * 
+	 *
 	 */
 	public void setUp() throws ResourceException, ProtocolException {
 
@@ -144,9 +144,9 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 
 	/**
 	 * Reset info for next tests
-	 * 
+	 *
 	 * @throws ResourceException
-	 * 
+	 *
 	 */
 	public void tearDown() throws ResourceException {
 

@@ -52,7 +52,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 	}
 
 	// LIVE-CYCLE METHODS //
-	
+
 	@Override
 	protected void initializeCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
@@ -76,26 +76,26 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	// ITopologyManager IMPLEMENTATION //
 
 	@Override
 	public NetworkModel addResource(IResource resourceToAdd) throws CapabilityException {
-	
+
 		if (resourceToAdd == null){
 			throw new CapabilityException("Invalid null resourceToAdd");
 		}
-		
+
 		if (!resourceToAdd.getState().equals(State.ACTIVE)) {
 			throw new CapabilityException("Resource should be started before adding it to a network.");
 		}
-		
+
 		if(! (resource.getModel() instanceof NetworkModel)) {
 			throw new CapabilityException("Invalid resource model");
 		}
-			
+
 		NetworkModel networkModel = (NetworkModel) resource.getModel();
-		
+
 		IModel resourceModel = resourceToAdd.getModel();
 		String toAddName = resourceToAdd.getResourceDescriptor().getInformation().getType() + ":" + resourceToAdd.getResourceDescriptor().getInformation().getName();
 
@@ -104,75 +104,75 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		if (pos != -1){
 			throw new CapabilityException("There is already a resource with same name in this network.");
 		}
-	
+
 		// FIXME should use a generic getIModel2NdlWrapper method placed in IModel (NetworkModel should be moved to OpenNaaS for that)
 		// IModel2NdlWrapper wrapper = resourceModel.getIModel2NdlWrapper();
 		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
 		if (resourceModel instanceof ManagedElement) {
 			//update model
 			List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(resourceToAdd.getModel(), networkModel, toAddName);
-			
-			if (! createdElements.isEmpty()){	
+
+			if (! createdElements.isEmpty()){
 				networkModel.addResourceRef(toAddName, resourceToAdd.getResourceIdentifier().getId());
-				
+
 				//update topology in descriptor
 				NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 				resource.getResourceDescriptor().setNetworkTopology(topology);
 				resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 			}
 		}
-		
+
 		return networkModel;
 	}
 
 	@Override
 	public NetworkModel removeResource(IResource resourceToRemove) throws CapabilityException {
-		
+
 		if (resourceToRemove == null){
 			throw new CapabilityException("Invalid null resourceToRemove");
 		}
-		
+
 		if(! (resource.getModel() instanceof NetworkModel)) {
 			throw new CapabilityException("Invalid resource model");
 		}
-		
+
 		NetworkModel networkModel = (NetworkModel) resource.getModel();
-		
+
 		String toRemoveName = resourceToRemove.getResourceDescriptor().getInformation().getType() + ":" + resourceToRemove.getResourceDescriptor().getInformation().getName();
-		
+
 		//get networkElement to remove
 		List<NetworkElement> resources = NetworkModelHelper.getNetworkElementsExceptTransportElements(networkModel);
 		int pos = NetworkModelHelper.getNetworkElementByName(toRemoveName, resources);
 		if (pos == -1) {
-			throw new CapabilityException("Resource " + toRemoveName + " not found in network model."); 
+			throw new CapabilityException("Resource " + toRemoveName + " not found in network model.");
 		}
 		NetworkElement toRemove = resources.get(pos);
-		
+
 		//update model
 		NetworkModelHelper.deleteNetworkElementAndReferences(toRemove, networkModel);
 		networkModel.removeResourceRef(toRemoveName);
-		
-		//update topology in descriptor 
+
+		//update topology in descriptor
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		resource.getResourceDescriptor().setNetworkTopology(topology);
 		resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
-		
+
 		return networkModel;
 	}
 
 	@Override
 	public NetworkConnection L2attach(Interface interface1, Interface interface2) throws CapabilityException {
-		
+
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
 		}
-		
+
 		if(! (resource.getModel() instanceof NetworkModel)) {
 			throw new CapabilityException("Invalid resource model");
 		}
-		
+
 		NetworkModel networkModel = (NetworkModel) resource.getModel();
-		
+
 		//get interfaces in model
 		Interface realInterface1 = NetworkModelHelper.getInterfaceByName(interface1.getName(), networkModel);
 		Interface realInterface2 = NetworkModelHelper.getInterfaceByName(interface2.getName(), networkModel);
@@ -187,7 +187,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			log.info("Given interfaces are already attached");
 			return existentConnection;
 		}
-		
+
 		//check interfaces are not attached to others
 		List<NetworkConnection> toRemove = new ArrayList<NetworkConnection>();
 		if (interface1.getSwitchedTo() != null) {
@@ -209,26 +209,26 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 				removeConnection(connection, resource);
 			}
 		}
-		
+
 		//create connection
 		NetworkConnection connection = createConnectionBetweenInterfaces(realInterface1, realInterface2, resource);
-		
+
 		return connection;
 	}
 
 	@Override
 	public void L2detach(Interface interface1, Interface interface2) throws CapabilityException {
-		
+
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
 		}
-		
+
 		if(! (resource.getModel() instanceof NetworkModel)) {
 			throw new CapabilityException("Invalid resource model");
 		}
-		
+
 		NetworkModel networkModel = (NetworkModel) resource.getModel();
-		
+
 		//get interfaces in model
 		Interface realInterface1 = NetworkModelHelper.getInterfaceByName(interface1.getName(), networkModel);
 		Interface realInterface2 = NetworkModelHelper.getInterfaceByName(interface2.getName(), networkModel);
@@ -236,7 +236,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			throw new CapabilityException("Interface " + interface1.getName() + " not found in network model");
 		if (realInterface2 == null)
 			throw new CapabilityException("Interface " + interface2.getName() + " not found in network model");
-				
+
 		//remove connection between given interfaces
 		NetworkConnection toRemove = getConnectionBetweenInterfaces(realInterface1, realInterface2);
 		if (toRemove != null) {
@@ -245,13 +245,13 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			log.info("L2detach: Interfaces were not attached.");
 		}
 	}
-	
-	
+
+
 	private NetworkConnection createConnectionBetweenInterfaces(Interface interface1, Interface interface2, IResource network) {
 		log.info("Creating connection in network model");
-		
+
 		NetworkModel networkModel = (NetworkModel) network.getModel();
-		
+
 		NetworkConnection connection = null;
 		if (interface1.getDevice().equals(interface2.getDevice())) {
 			connection = NetworkModelHelper.crossConnectInterfaces(interface1, interface2);
@@ -260,35 +260,35 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			connection = NetworkModelHelper.linkInterfaces(interface1, interface2, true);
 			networkModel.getNetworkElements().add(connection);
 		}
-		
-		//update topology in descriptor 
+
+		//update topology in descriptor
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		network.getResourceDescriptor().setNetworkTopology(topology);
-		
+
 		return connection;
 	}
-	
+
 	private NetworkConnection getConnectionBetweenInterfaces(Interface interface1, Interface interface2) {
 		NetworkConnection connection = null;
-		if (interface1.getSwitchedTo() != null && 
+		if (interface1.getSwitchedTo() != null &&
 				(interface1.getSwitchedTo().getSource().equals(interface2) ||
 						interface1.getSwitchedTo().getSink().equals(interface2))) {
 			connection = interface1.getSwitchedTo();
-		} else if (interface1.getLinkTo() != null && 
+		} else if (interface1.getLinkTo() != null &&
 				(interface1.getLinkTo().getSource().equals(interface2) ||
 						interface1.getLinkTo().getSink().equals(interface2))) {
 			connection = interface1.getLinkTo();
 		}
-		
+
 		return connection;
 	}
-	
+
 	private void removeConnection(NetworkConnection toRemove, IResource network) {
 		log.info("Removing connection from network model");
 		//update model
 		NetworkModelHelper.deleteNetworkConnectionAndReferences(toRemove, (NetworkModel) network.getModel());
-		
-		//update topology in descriptor 
+
+		//update topology in descriptor
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor((NetworkModel) network.getModel());
 		network.getResourceDescriptor().setNetworkTopology(topology);
 	}

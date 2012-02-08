@@ -14,11 +14,11 @@ import org.osgi.framework.ServiceRegistration;
 
 /**
  * Allows net.i2cat.luminis.protocols.wonesys bundle to become context aware. BundleContext is needed for some tasks like event management.
- * 
+ *
  * In order to BundlerActivator to be called from osgi container it needs to be registered in the bundle manifest file.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class WonesysProtocolBundleActivator extends AbstractActivator implements BundleActivator {
 

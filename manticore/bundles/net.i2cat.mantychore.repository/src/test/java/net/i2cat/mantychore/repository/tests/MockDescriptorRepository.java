@@ -7,9 +7,9 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
  * A DescriptorRepository not doing persistence, nor doing nothing at all.
- * 
+ *
  * @author isart
- * 
+ *
  */
 public class MockDescriptorRepository implements GenericRepository<ResourceDescriptor, String> {
 

@@ -194,7 +194,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	/**
 	 * TODO A method don't have to return null!!! REFACTOR
-	 * 
+	 *
 	 * @param resourceId
 	 * @return
 	 * @throws ResourceException

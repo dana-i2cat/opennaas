@@ -32,7 +32,7 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 
 	/**
 	 * Blueprint callback (executed when EventManager is available)
-	 * 
+	 *
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {
@@ -72,10 +72,10 @@ public class AlarmsRepository implements IAlarmsRepository, EventHandler {
 		alarmsRepository.clear();
 
 	}
-	
+
 	@Override
 	public void clearResourceAlarms(String resourceId) {
-		
+
 		List<AlarmElement> alarmElems = alarmsRepository.get(resourceId);
 		if (alarmElems != null) {
 			alarmsRepository.remove(resourceId);

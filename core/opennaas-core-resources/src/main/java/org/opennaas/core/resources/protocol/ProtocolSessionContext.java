@@ -8,9 +8,9 @@ import java.util.Map.Entry;
 /**
  * Encapsulates the parameters required to create a protocol session, including the data required to connect to the remote device and the parameters
  * that define the behavior of the session (keepAlive, ...)
- * 
+ *
  * @author eduardgrasa
- * 
+ *
  */
 public class ProtocolSessionContext {
 

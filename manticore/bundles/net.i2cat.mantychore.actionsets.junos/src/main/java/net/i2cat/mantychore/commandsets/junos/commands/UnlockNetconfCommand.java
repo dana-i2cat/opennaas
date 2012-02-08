@@ -18,5 +18,5 @@ public class UnlockNetconfCommand extends JunosCommand {
 		setQuery(QueryFactory.newUnlock(target));
 		return query;
 	}
-	
+
 }

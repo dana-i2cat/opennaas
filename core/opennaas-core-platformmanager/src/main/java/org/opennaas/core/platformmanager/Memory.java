@@ -3,16 +3,16 @@ package org.opennaas.core.platformmanager;
 import javax.xml.bind.annotation.XmlAttribute;
 
 public class Memory {
-	
+
 	/** in bytes **/
 	private String committed = null;
 	private String init = null;
 	private String max = null;
 	private String usage = null;
-	
+
 	public Memory(){
 	}
-	
+
 	@XmlAttribute(name = "committed")
 	public String getCommitted() {
 		return committed;
@@ -21,7 +21,7 @@ public class Memory {
 	public void setCommitted(String committed) {
 		this.committed = committed;
 	}
-	
+
 	@XmlAttribute(name = "init")
 	public String getInit() {
 		return init;
@@ -30,7 +30,7 @@ public class Memory {
 	public void setInit(String init) {
 		this.init = init;
 	}
-	
+
 	@XmlAttribute(name = "max")
 	public String getMax() {
 		return max;
@@ -39,7 +39,7 @@ public class Memory {
 	public void setMax(String max) {
 		this.max = max;
 	}
-	
+
 	@XmlAttribute(name = "usage")
 	public String getUsage() {
 		return usage;

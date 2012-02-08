@@ -33,7 +33,7 @@
 				<directory>src/test/resources</directory>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
@@ -50,7 +50,7 @@
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
 							org.slf4j,
-							org.ops4j.pax.exam, 
+							org.ops4j.pax.exam,
 							org.apache.karaf.testing,
 							org.osgi.framework,
 						*</Import-Package>
@@ -59,7 +59,7 @@
 						</Export-Package>
 					</instructions>
 				</configuration>
-			</plugin> 
+			</plugin>
 		</plugins>
 	</build>
 </project>

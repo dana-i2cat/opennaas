@@ -16,11 +16,11 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 
 /**
- * 
+ *
  * Parser of the interfaces. Takes the name and unit of the interface. Set IP values, VLAN and peer-unit when exists
- * 
+ *
  * @author Evelyn Torras
- * 
+ *
  */
 public class IPInterfaceParser extends DigesterEngine {
 	String									location		= "";
@@ -138,7 +138,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		ethernetPort.setName(location);
 		ethernetPort.setPortNumber(Integer.parseInt(name));
 	}
-	
+
 	public void setDescription(String description) {
 		NetworkPort ethernetPort = (NetworkPort) peek();
 		ethernetPort.setDescription(description);

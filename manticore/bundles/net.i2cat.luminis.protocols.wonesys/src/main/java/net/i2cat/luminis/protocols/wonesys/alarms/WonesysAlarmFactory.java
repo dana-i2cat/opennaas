@@ -22,7 +22,7 @@ public class WonesysAlarmFactory {
 
 	/**
 	 * Assumes given event contains all WonesysAlarm required properties
-	 * 
+	 *
 	 * @param event
 	 * @return
 	 */

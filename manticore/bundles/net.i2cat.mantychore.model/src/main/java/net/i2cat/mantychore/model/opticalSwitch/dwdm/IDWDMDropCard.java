@@ -8,7 +8,7 @@ public interface IDWDMDropCard extends IOpticalSwitchCard {
 
 	/**
 	 * Drops given channel from srcPort and redirects it to dstPort
-	 * 
+	 *
 	 * @param channel
 	 * @param srcPort
 	 * @param dstPort
@@ -17,7 +17,7 @@ public interface IDWDMDropCard extends IOpticalSwitchCard {
 
 	/**
 	 * Removes a previously configured drop of a channel.
-	 * 
+	 *
 	 * @param channel
 	 * @param srcPort
 	 * @param dstPort
