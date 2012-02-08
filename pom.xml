@@ -1,51 +1,481 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!--
-   | put company details here
-  <organization>
-    <name>...</name>
-    <url>http://...</url>
-  </organization>
-  -->
-	<!--
-   | put license details here
-  <licenses>
-    <license>
-      <name>...</name>
-      <url>http://...</url>
-      <comments>
-      </comments>
-    </license>
-  </licenses>
-  -->
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>OpenNaaS (OSGi project)</name>
-	<!--
-   | describe your project here
-  -->
-	<description>
-    Generated using Pax-Construct
-  </description>
-	<properties>
-		<!--
-     | some example OSGi runtime properties
-    <org.osgi.service.http.port>8080</org.osgi.service.http.port>
-    <org.osgi.service.http.port.secure>8443</org.osgi.service.http.port.secure>-->
-		<karaf.version>2.2.2-fuse-02-20</karaf.version>
-		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
-		<camel.version>2.8.0-fuse-01-20</camel.version>
-		<nmr.version>1.5.1-fuse-01-20</nmr.version>
-		<cxf.version>2.4.3-fuse-00-20</cxf.version>
-		<activemq.version>5.5.1-fuse-01-20</activemq.version>
-	</properties>
 	<packaging>pom</packaging>
+
+	<url>http://www.mantychore.eu/</url>
+
+	<description>
+        OpenNaaS - Network as a Service platform
+    </description>
+
+	<organization>
+		<name>Fundació Privada i2CAT, Internet i Innovació a Catalunya</name>
+		<url>http://www.i2cat.net/en</url>
+	</organization>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License 3</name>
+            <url>LICENSE</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+	<properties>
+		<activemq.version>5.5.1-fuse-01-20</activemq.version>
+		<axiom.version>1.2.12</axiom.version>
+		<camel.version>2.8.0-fuse-01-20</camel.version>
+		<commons.logging.version>1.1.1</commons.logging.version>
+		<commons.configuration.version>1.2</commons.configuration.version>
+		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
+		<commons.digester.version>2.1</commons.digester.version>
+		<cxf.version>2.4.3-fuse-00-20</cxf.version>
+		<cxf.java2ws.plugin.version>2.4.3-fuse-00-20</cxf.java2ws.plugin.version>
+		<dynamicjava.version>1.0.0</dynamicjava.version>
+		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
+		<easymock.version>3.0</easymock.version>
+		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
+		<geronimo.jpa.version>1.1</geronimo.jpa.version>
+		<geronimo.jta.version>1.1.1</geronimo.jta.version>
+		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
+		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
+		<junit.version>4.5</junit.version>
+		<karaf.version>2.2.2-fuse-02-20</karaf.version>
+		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<netconf4j.version>0.0.2</netconf4j.version>
+		<nmr.version>1.5.1-fuse-01-20</nmr.version>
+		<opennaas.version>1.0.0-SNAPSHOT</opennaas.version>
+		<osgi.version>4.2.0</osgi.version>
+		<pax.exam.version>1.2.4</pax.exam.version>
+		<pax.logging.version>1.6.2</pax.logging.version>
+		<plexus.api.version>1.0-alpha-32</plexus.api.version>
+		<plexus.utils.version>2.0.5</plexus.utils.version>
+		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
+		<servicemix.specs.version>1.8.0</servicemix.specs.version>
+		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
+		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<spring.osgi.version>1.2.1</spring.osgi.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<xbean.version>3.8</xbean.version>
+		<xmlschema.version>1.4.5</xmlschema.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- Netconf4j -->
+			<dependency>
+				<groupId>net.i2cat.netconf</groupId>
+				<artifactId>netconf4j</artifactId>
+				<version>${netconf4j.version}</version>
+			</dependency>
+			<!-- Digester, velocity and deps -->
+			<dependency>
+				<groupId>xerces</groupId>
+				<artifactId>xercesImpl</artifactId>
+				<version>2.9.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-configuration</groupId>
+				<artifactId>commons-configuration</artifactId>
+				<version>${commons.configuration.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+				<version>${servicemix.xerces.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-digester</groupId>
+				<artifactId>commons-digester</artifactId>
+				<version>${commons.digester.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.velocity</artifactId>
+				<version>${servicemix.velocity.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jta_1.1_spec</artifactId>
+				<version>${geronimo.jta.version}</version>
+			</dependency>
+			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
+			<dependency>
+				<groupId>org.dynamicjava.osgi</groupId>
+				<artifactId>classloading-utils</artifactId>
+				<version>${dynamicjava.classloading.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dynamicjava.osgi</groupId>
+				<artifactId>service-binding-utils</artifactId>
+				<version>${dynamicjava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.dynamicjava.osgi</groupId>
+				<artifactId>dynamic-jpa</artifactId>
+				<version>${dynamicjava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hsqldb</groupId>
+				<artifactId>com.springsource.org.hsqldb</artifactId>
+				<version>${hsqldb.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jpa_2.0_spec</artifactId>
+				<version>${geronimo.jpa.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
+				<version>${commons.dbcp.version}</version>
+			</dependency>
+			<!-- OSGI API -->
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.core</artifactId>
+				<version>${osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>${osgi.version}</version>
+			</dependency>
+			<!-- Karaf -->
+			<dependency>
+				<groupId>org.apache.karaf.shell</groupId>
+				<artifactId>org.apache.karaf.shell.console</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.boot</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.config</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.jaas</groupId>
+				<artifactId>org.apache.karaf.jaas.modules</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<!-- Spring Framework -->
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-aop</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-beans</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-jms</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-tx</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<!-- Spring DM -->
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-extender</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-annotation</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-core</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-mock</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-test</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.osgi</groupId>
+				<artifactId>spring-osgi-io</artifactId>
+				<version>${spring.osgi.version}</version>
+			</dependency>
+			<!-- Active MQ -->
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-core</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>kahadb</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-ra</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-pool</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-console</artifactId>
+				<version>${activemq.version}</version>
+			</dependency>
+			<!-- Logging -->
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>${commons.logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>log4j-over-slf4j</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.logging</groupId>
+				<artifactId>pax-logging-api</artifactId>
+				<version>${pax.logging.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.logging</groupId>
+				<artifactId>pax-logging-service</artifactId>
+				<version>${pax.logging.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<!-- Web services support -->
+			<dependency>
+				<groupId>org.apache.servicemix.specs</groupId>
+				<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
+				<version>${servicemix.specs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
+				<version>${jaxb.impl.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+				<version>${geronimo.jaxws.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.schema</groupId>
+				<artifactId>XmlSchema</artifactId>
+				<version>${xmlschema.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+				<version>${geronimo.wsmetadata.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-impl</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.ws.commons.axiom</groupId>
+				<artifactId>axiom-api</artifactId>
+				<version>${axiom.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle</artifactId>
+				<version>${cxf.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>bouncycastle</groupId>
+						<artifactId>bcprov-jdk14</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>net.java.dev.stax-utils</groupId>
+						<artifactId>stax-utils</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.codehaus.jra</groupId>
+						<artifactId>jra</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jaxen</groupId>
+						<artifactId>jaxen</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>opensaml</groupId>
+						<artifactId>opensaml</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-core</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxws</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-transports-http-jetty</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-databinding-aegis</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-component-api</artifactId>
+				<version>${plexus.api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus.plexus</groupId>
+				<artifactId>plexus-utils</artifactId>
+				<version>${plexus.utils.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.xbean</groupId>
+				<artifactId>xbean-spring</artifactId>
+				<version>${xbean.version}</version>
+			</dependency>
+			<!-- Unit tests -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymock</artifactId>
+				<version>${easymock.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.easymock</groupId>
+				<artifactId>easymockclassextension</artifactId>
+				<version>${easymock.version}</version>
+			</dependency>
+			<!-- Integration tests -->
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-junit</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-container-default</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ops4j.pax.exam</groupId>
+				<artifactId>pax-exam-junit-extender-impl</artifactId>
+				<version>${pax.exam.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.karaf.tooling</groupId>
+				<artifactId>org.apache.karaf.tooling.testing</artifactId>
+				<version>${karaf.version}</version>
+			</dependency>
+			<!-- Features -->
+			<dependency>
+				<groupId>org.apache.servicemix</groupId>
+				<artifactId>apache-servicemix</artifactId>
+				<type>pom</type>
+				<version>${servicemix.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<modules>
-		<!--<module>poms</module>
-    <module>provision</module>-->
-		<module>core</module>
+        <module>core</module>
 		<module>platform</module>
 		<module>assembly</module>
 		<module>manticore</module>
@@ -92,9 +522,6 @@
 				<artifactId>maven-pax-plugin</artifactId>
 				<version>1.5</version>
 				<configuration>
-					<!--
-           | some example Pax-Runner settings
-          -->
 					<provision>
 						<param>--platform=felix</param>
 					</provision>
@@ -115,21 +542,136 @@
 	</build>
 	<repositories>
 		<repository>
-			<id>i2cat-snapshot</id>
-			<name>libs-snapshot-local</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
-		</repository>
-		<repository>
-			<id>i2cat-release</id>
-			<name>libs-release-local</name>
+			<id>maven.i2cat.net</id>
+			<name>maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
+		<repository>
+			<id>i2cat</id>
+			<name>i2cat maven repository</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+		</repository>
+		<repository>
+			<id>i2cat libs-snapshot-local</id>
+			<name>maven.i2cat.net-snapshots</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
+		</repository>
+		<repository>
+			<id>springsource-external</id>
+			<name>SpringSource Enterprise Bundle Repository - External Bundle
+				Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/external</url>
+		</repository>
+		<repository>
+			<id>springsource-releases</id>
+			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle
+				Releases</name>
+			<url>http://repository.springsource.com/maven/bundles/release</url>
+		</repository>
+		<repository>
+			<id>Maven-central</id>
+			<name>Maven central</name>
+			<url>http://repo1.maven.org/maven2</url>
+		</repository>
+		<repository>
+			<id>osp4j</id>
+			<name>OSP4J releases</name>
+			<url>http://repository.ops4j.org/maven2</url>
+		</repository>
+		<repository>
+			<id>DynamicJava</id>
+			<name>DynamicJava Repository</name>
+			<url>http://maven.dynamicjava.org/</url>
+		</repository>
+		<repository>
+			<id>fusesource</id>
+			<name>Fuse Source releases</name>
+			<url>http://repo.fusesource.com/maven2/</url>
+		</repository>
+		<!--<repository>
+			<id>java</id>
+			<name>Java.net releases</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>-->
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<url>http://maven.i2cat.net:8081/artifactory/plugins-release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>snapshots</id>
+			<url>http://maven.i2cat.net:8081/artifactory/plugins-snapshot</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+		</pluginRepository>
+		<pluginRepository>
+			<id>ops4j.releases</id>
+			<url>http://repository.ops4j.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>ibiblio</id>
+			<url>http://mirrors.ibiblio.org/pub/mirrors/maven2/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<scm>
+        <connection>scm:git:git://github.com/dana-i2cat/opennaas.git</connection>
+        <developerConnection>scm:git:git@github.com:dana-i2cat/opennaas.git</developerConnection>
+        <url>http://github.com/dana-i2cat/opennaas</url>
+	</scm>
+
 	<distributionManagement>
 		<repository>
+            <uniqueVersion>true</uniqueVersion>
 			<id>i2cat-snapshot</id>
 			<name>libs-snapshot-local</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
 		</repository>
+		<site>
+            <id>github</id>
+            <name>opennaas</name>
+            <url>http://github.com/dana-i2cat/opennaas/</url>
+		</site>
 	</distributionManagement>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.4</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<!-- IT SPECIFIES THE PROCESS TO LOAD DIFFERENT CLASSPATHS -->
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 </project>
