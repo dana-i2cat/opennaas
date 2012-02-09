@@ -639,11 +639,6 @@
 					<version>2.1.2</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
-				<plugin>
 					<groupId>org.apache.cxf</groupId>
 					<artifactId>cxf-java2ws-plugin</artifactId>
 					<version>2.2.9</version>
