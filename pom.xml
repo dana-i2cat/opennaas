@@ -39,17 +39,17 @@
 		<cxf.version>2.4.3-fuse-00-20</cxf.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
-		<easymock.version>3.0</easymock.version>
+		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
-		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
-		<junit.version>4.5</junit.version>
+		<junit.version>4.10</junit.version>
 		<karaf.version>2.2.2-fuse-02-20</karaf.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
@@ -281,6 +281,7 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -322,6 +323,7 @@
 				<groupId>org.springframework.osgi</groupId>
 				<artifactId>spring-osgi-test</artifactId>
 				<version>${spring.osgi.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.osgi</groupId>
@@ -628,7 +630,7 @@
 				<plugin>
 					<groupId>org.ops4j</groupId>
 					<artifactId>maven-pax-plugin</artifactId>
-					<version>1.4</version>
+					<version>1.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
