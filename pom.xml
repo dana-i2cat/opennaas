@@ -608,6 +608,14 @@
 					<version>2.4</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<tarLongFileMode>gnu</tarLongFileMode>
+					</configuration>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.karaf.tooling</groupId>
 					<artifactId>features-maven-plugin</artifactId>
 					<version>${karaf.version}</version>
