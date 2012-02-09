@@ -27,6 +27,8 @@
     </licenses>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 		<activemq.version>5.5.1-fuse-01-20</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
 		<camel.version>2.8.0-fuse-01-20</camel.version>
@@ -39,19 +41,21 @@
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
 		<easymock.version>3.0</easymock.version>
+		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<hibernate.version>3.6.6.Final</hibernate.version>
+		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.5</junit.version>
 		<karaf.version>2.2.2-fuse-02-20</karaf.version>
-		<mantychore.version>1.0.0-SNAPSHOT</mantychore.version>
+		<mantychore.version>${project.version}</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
 		<nmr.version>1.5.1-fuse-01-20</nmr.version>
-		<opennaas.version>1.0.0-SNAPSHOT</opennaas.version>
+		<opennaas.version>${project.version}</opennaas.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.logging.version>1.6.2</pax.logging.version>
@@ -64,12 +68,70 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
+		<westhawk.snmp.version>4_13</westhawk.snmp.version>
 		<xbean.version>3.8</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Our own modules -->
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-hibernate</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-hsqldb</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-persistence</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-resources</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-events</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas.bod.actionsets</groupId>
+				<artifactId>org.opennaas.bod.actionsets</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas.bod.capability</groupId>
+				<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-tests-mockprofile</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>karafbranding-opennaas</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas-core-features</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>
@@ -91,6 +153,16 @@
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
 				<version>${servicemix.xerces.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.0.1</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-digester</groupId>
@@ -174,6 +246,11 @@
 				<groupId>org.apache.karaf.jaas</groupId>
 				<artifactId>org.apache.karaf.jaas.modules</artifactId>
 				<version>${karaf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.osgi.compendium</artifactId>
+				<version>1.4.0</version>
 			</dependency>
 			<!-- Spring Framework -->
 			<dependency>
@@ -322,6 +399,11 @@
 				<version>${servicemix.specs.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.apache.servicemix.specs</groupId>
+				<artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
+				<version>1.8.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
 				<version>${jaxb.impl.version}</version>
@@ -427,42 +509,57 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.easymock</groupId>
 				<artifactId>easymock</artifactId>
 				<version>${easymock.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.easymock</groupId>
 				<artifactId>easymockclassextension</artifactId>
 				<version>${easymock.version}</version>
+				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+				<artifactId>paxexam-karaf-container</artifactId>
+				<version>0.4.0</version>
+				<scope>test</scope>
+			</dependency>
+
 			<!-- Integration tests -->
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
 				<artifactId>pax-exam</artifactId>
 				<version>${pax.exam.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
 				<artifactId>pax-exam-junit</artifactId>
 				<version>${pax.exam.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
 				<artifactId>pax-exam-container-default</artifactId>
 				<version>${pax.exam.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
 				<artifactId>pax-exam-junit-extender-impl</artifactId>
 				<version>${pax.exam.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>org.apache.karaf.tooling.testing</artifactId>
 				<version>${karaf.version}</version>
+				<scope>test</scope>
 			</dependency>
 			<!-- Features -->
 			<dependency>
@@ -470,6 +567,28 @@
 				<artifactId>apache-servicemix</artifactId>
 				<type>pom</type>
 				<version>${servicemix.version}</version>
+			</dependency>
+
+			<!-- Misc -->
+			<dependency>
+				<groupId>westhawk</groupId>
+				<artifactId>snmp</artifactId>
+				<version>${westhawk.snmp.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>org.apache.felix.gogo.runtime</artifactId>
+				<version>${felix.gogo.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-entitymanager</artifactId>
+				<version>${hibernate.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.java-persistence</groupId>
+				<artifactId>jpa-api</artifactId>
+				<version>${hibernate.jpa-api.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -480,7 +599,83 @@
 		<module>assembly</module>
 		<module>manticore</module>
 	</modules>
+
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>2.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+					<configuration>
+						<tarLongFileMode>gnu</tarLongFileMode>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.karaf.tooling</groupId>
+					<artifactId>features-maven-plugin</artifactId>
+					<version>${karaf.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<version>2.3.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.ops4j</groupId>
+					<artifactId>maven-pax-plugin</artifactId>
+					<version>1.4</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.1.2</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.cxf</groupId>
+					<artifactId>cxf-java2ws-plugin</artifactId>
+					<version>2.2.9</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-jaxws</artifactId>
+							<version>2.2.9</version>
+						</dependency>
+						<dependency>
+							<groupId>org.apache.cxf</groupId>
+							<artifactId>cxf-rt-frontend-simple</artifactId>
+							<version>2.2.9</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.servicemix.tooling</groupId>
+					<artifactId>depends-maven-plugin</artifactId>
+					<version>1.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

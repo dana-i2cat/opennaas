@@ -10,9 +10,6 @@
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Core :: karaf branding</name>
 	<description>Branding of the karaf shell to suit our preferences</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<build>
 		<plugins>
 			<plugin>

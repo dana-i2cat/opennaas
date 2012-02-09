@@ -10,9 +10,6 @@
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Core :: JPA Persistence</name>
 	<description>Dynamic JPA Persistence tools for Nexus</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<dependency>
 			<!-- This dep has to be here on the top or all shit breaks loose -->
@@ -39,12 +36,10 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hibernate</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hsqldb</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -61,23 +56,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<!--
-				| example additional resource entries, useful when building Eclipse
-				RCP applications
-			-->
-			<resource>
-				<directory>.</directory>
-				<includes>
-					<include>plugin.xml</include>
-					<include>plugin.properties</include>
-					<include>icons/**</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
