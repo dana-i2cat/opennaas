@@ -11,14 +11,10 @@
   <!--  Maven configuration -->
   <modelVersion>4.0.0</modelVersion>
   <packaging>bundle</packaging>
-  <name> BoD ActionSet </name>
-  <description> BoD ActionSet Implementation </description>
+  <name>BoD ActionSet</name>
+  <description>BoD ActionSet Implementation</description>
   <dependencies>
   	<!-- Internal Mantychore dependencies -->
-	<dependency>
-	  <groupId>org.opennaas</groupId>
-	  <artifactId>opennaas-core-resources</artifactId>
-	</dependency>
 	<dependency>
 	  <groupId>org.opennaas</groupId>
 	  <artifactId>opennaas-core-resources</artifactId>
