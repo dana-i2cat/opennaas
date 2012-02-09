@@ -75,7 +75,7 @@
 							*
 							</Import-Package>
 						<Export-Package>
-							${project.artifactId};version="${pom.version}"
+							${project.artifactId};version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
