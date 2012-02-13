@@ -2,10 +2,17 @@ package net.i2cat.mantychore.network.repository.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import junit.framework.Assert;
 import net.i2cat.mantychore.network.model.MockNetworkModel;
+import net.i2cat.mantychore.network.model.NetworkModel;
+import net.i2cat.mantychore.network.model.NetworkModelHelper;
+import net.i2cat.mantychore.network.model.topology.Interface;
+import net.i2cat.mantychore.network.model.topology.NetworkElement;
+import net.i2cat.mantychore.network.repository.NetworkMapperDescriptorToModel;
 import net.i2cat.mantychore.network.repository.NetworkMapperModelToDescriptor;
 
 import org.junit.Test;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class NetworkDescriptorToMapperModelTest {
@@ -70,6 +77,51 @@ public class NetworkDescriptorToMapperModelTest {
 
 		assertEquals(networkTopology.getInterfaces().get(7).getName(), "router:R-AS2-3:lo0.4");
 
+	}
+
+	@Test
+	public void testModelToDescriptorAndViceversa() {
+
+		try {
+			NetworkModel model1 = MockNetworkModel.newNetworkModel();
+			NetworkTopology topology1 = NetworkMapperModelToDescriptor.modelToDescriptor(model1);
+			NetworkModel model2 = NetworkMapperDescriptorToModel.descriptorToModel(topology1);
+			NetworkTopology topology2 = NetworkMapperModelToDescriptor.modelToDescriptor(model2);
+
+			checkModels(model1, model2);
+			Assert.assertEquals(topology1, topology2);
+
+		} catch (ResourceException e) {
+			Assert.fail("Error mapping descriptor to model: " + e.getMessage());
+		}
+
+	}
+
+	private void checkModels(NetworkModel model1, NetworkModel model2) {
+
+		Assert.assertEquals(model1.getNetworkElements().size(), model2.getNetworkElements().size());
+		for (NetworkElement elem1 : model1.getNetworkElements()) {
+			int elemIndexInModel2 = NetworkModelHelper.getNetworkElementByName(elem1.getName(), model2.getNetworkElements());
+			Assert.assertFalse("Elem " + elem1.getName() + " of model1 is in model2.", elemIndexInModel2 == -1);
+
+			NetworkElement elem2 = model2.getNetworkElements().get(elemIndexInModel2);
+			Assert.assertEquals(elem1.getClass(), elem2.getClass());
+		}
+
+		for (Interface iface1 : NetworkModelHelper.getInterfaces(model1.getNetworkElements())) {
+			Interface iface2 = NetworkModelHelper.getInterfaceByName(model2.getNetworkElements(), iface1.getName());
+			Assert.assertNotNull("Interface " + iface1.getName() + " is also in model2", iface2);
+
+			if (iface1.getLinkTo() != null) {
+				Assert.assertNotNull(iface2.getLinkTo());
+				Assert.assertEquals(iface1.getLinkTo().getName(), iface2.getLinkTo().getName());
+			}
+
+			if (iface1.getSwitchedTo() != null) {
+				Assert.assertNotNull(iface2.getSwitchedTo());
+				Assert.assertEquals(iface1.getSwitchedTo().getName(), iface2.getSwitchedTo().getName());
+			}
+		}
 	}
 
 }
