@@ -2,6 +2,9 @@ package net.i2cat.mantychore.network.repository.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.List;
+
 import junit.framework.Assert;
 import net.i2cat.mantychore.network.model.MockNetworkModel;
 import net.i2cat.mantychore.network.model.NetworkModel;
@@ -101,16 +104,19 @@ public class NetworkDescriptorToMapperModelTest {
 
 		Assert.assertEquals(model1.getNetworkElements().size(), model2.getNetworkElements().size());
 		for (NetworkElement elem1 : model1.getNetworkElements()) {
-			int elemIndexInModel2 = NetworkModelHelper.getNetworkElementByName(elem1.getName(), model2.getNetworkElements());
-			Assert.assertFalse("Elem " + elem1.getName() + " of model1 is in model2.", elemIndexInModel2 == -1);
 
-			NetworkElement elem2 = model2.getNetworkElements().get(elemIndexInModel2);
-			Assert.assertEquals(elem1.getClass(), elem2.getClass());
+			List<NetworkElement> tmp_elems = NetworkModelHelper.getNetworkElementsByClassName(elem1.getClass(), model2.getNetworkElements());
+			Assert.assertFalse(tmp_elems.isEmpty());
+
+			if (elem1.getName() != null) { // should be elements without name?? Links has no name, by now.
+				int elemIndexInModel2 = NetworkModelHelper.getNetworkElementByName(elem1.getName(), tmp_elems);
+				Assert.assertFalse("Elem " + elem1.getName() + " of model1 is not in model2.", elemIndexInModel2 == -1);
+			}
 		}
 
 		for (Interface iface1 : NetworkModelHelper.getInterfaces(model1.getNetworkElements())) {
 			Interface iface2 = NetworkModelHelper.getInterfaceByName(model2.getNetworkElements(), iface1.getName());
-			Assert.assertNotNull("Interface " + iface1.getName() + " is also in model2", iface2);
+			Assert.assertNotNull("Interface " + iface1.getName() + " is not in model2", iface2);
 
 			if (iface1.getLinkTo() != null) {
 				Assert.assertNotNull(iface2.getLinkTo());
