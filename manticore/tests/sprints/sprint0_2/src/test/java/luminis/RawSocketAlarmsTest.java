@@ -1,8 +1,12 @@
 package luminis;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
@@ -10,19 +14,20 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.inject.Inject;
 
-import junit.framework.Assert;
 import net.i2cat.luminis.actionsets.wonesys.WonesysAlarmsDriver;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmFactory;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
@@ -31,17 +36,23 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
-public class RawSocketAlarmsTest extends AbstractIntegrationTest implements EventHandler {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class RawSocketAlarmsTest implements EventHandler {
 
 	public static Log			log							= LogFactory.getLog(RawSocketAlarmsTest.class);
 
@@ -54,38 +65,36 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	public static final String	TRANSPORT_ID_PROPERTY_NAME	= RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME;
 	public static final String	ARRIVAL_TIME_PROPERTY_NAME	= RawSocketTransport.ARRIVAL_TIME_PROPERTY_NAME;
 
+	@Inject
 	private IEventManager		eventManager;
 
 	@Inject
-	BundleContext				bundleContext				= null;
+	private BundleContext		bundleContext;
 
 	private final Object		lock						= new Object();
 
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+        return probe;
+    }
+
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("org.opennaas").artifactId(
-						"opennaas-core-events"),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-
-	public void initBundles() {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		eventManager = getOsgiService(IEventManager.class, 2000);
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	private TestInitInfo setUp() throws ProtocolException {
-
-		initBundles();
 
 		String sessionID = "session1";
 
@@ -99,9 +108,8 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.mock", "true");
 
-		WonesysProtocolSession session;
-
-		session = new WonesysProtocolSession(protocolSessionContext, sessionID);
+		WonesysProtocolSession session =
+			new WonesysProtocolSession(protocolSessionContext, sessionID);
 		session.connect();
 
 		TestInitInfo initInfo = new TestInitInfo();
@@ -122,7 +130,7 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	 * @throws ProtocolException
 	 */
 	@Test
-	public void allRawSocketAlarmsTest() throws ProtocolException {
+	public void allRawSocketAlarmsTest() throws Exception {
 
 		TestInitInfo initInfo = setUp();
 
@@ -132,8 +140,6 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 			// checkAllAlarmsAreSupportedTest();
 			// checkEventChannelConfigChangedTest();
 			// checkAlarmsStoredInAlarmHistory();
-		} catch (Exception e) {
-			Assert.fail(e.getLocalizedMessage());
 		} finally {
 			tearDown(initInfo);
 		}
@@ -142,84 +148,67 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 	/**
 	 * Test that WonesysProtocol receives alarms correctly from transport and notifies listeners upon alarm reception.
 	 */
-	public void alarmsReceivedTest(TestInitInfo initInfo) {
+	public void alarmsReceivedTest(TestInitInfo initInfo) throws InterruptedException {
 
-		try {
+		alarmReceived = false;
 
-			alarmReceived = false;
+		generateAlarm(initInfo.session);
 
-			generateAlarm(initInfo.session);
-
-			synchronized (lock) {
-				lock.wait(3000);
-				// check that the alarm is received & listeners are notified
-				Assert.assertTrue(alarmReceived);
-			}
-
-			alarmReceived = false;
-			alarmCounter = 0;
-			receivedAlarms.clear();
-
-		} catch (InterruptedException e) {
-			Assert.fail("Interrupted!");
+		synchronized (lock) {
+			lock.wait(3000);
+			// check that the alarm is received & listeners are notified
+			Assert.assertTrue(alarmReceived);
 		}
+
+		alarmReceived = false;
+		alarmCounter = 0;
+		receivedAlarms.clear();
 	}
 
 	/**
 	 * Tests that WonesysProtocolSession distinguishes between alarms and command responses, and only rises and alarm when alarms are received.
 	 */
-	public void checkAlarmsAndCommandsTest(TestInitInfo initInfo) {
+	public void checkAlarmsAndCommandsTest(TestInitInfo initInfo) throws InterruptedException {
 
-		try {
+		alarmReceived = false;
+		alarmCounter = 0;
+		receivedAlarms.clear();
 
-			alarmReceived = false;
-			alarmCounter = 0;
-			receivedAlarms.clear();
+		generateAlarm(initInfo.session);
 
-			generateAlarm(initInfo.session);
-
-			synchronized (lock) {
-				lock.wait(3000);
-				// check that the alarm is received & listeners are notified
-				Assert.assertTrue(alarmReceived);
-			}
-
-			alarmReceived = false;
-
-			// generate command response
-			// FIXME XOR is incorrect
-			String commandResponse = "59100117FFFF0B02FFFFFFFF0100000100"; // Set channel resp (OK)
-			generateRawSocketEvent(initInfo.session.getWonesysTransport().getTransportID(), commandResponse);
-
-			synchronized (lock) {
-				lock.wait(3000);
-				// check that no alarm has been received
-				Assert.assertFalse(alarmReceived);
-			}
-
-			Assert.assertTrue(alarmCounter == 1);
-
-			alarmReceived = false;
-			alarmCounter = 0;
-			receivedAlarms.clear();
-
-		} catch (InterruptedException e) {
-			Assert.fail("Interrupted!");
+		synchronized (lock) {
+			lock.wait(3000);
+			// check that the alarm is received & listeners are notified
+			Assert.assertTrue(alarmReceived);
 		}
+
+		alarmReceived = false;
+
+		// generate command response
+		// FIXME XOR is incorrect
+		String commandResponse = "59100117FFFF0B02FFFFFFFF0100000100"; // Set channel resp (OK)
+		generateRawSocketEvent(initInfo.session.getWonesysTransport().getTransportID(), commandResponse);
+
+		synchronized (lock) {
+			lock.wait(3000);
+			// check that no alarm has been received
+			Assert.assertFalse(alarmReceived);
+		}
+
+		Assert.assertTrue(alarmCounter == 1);
+
+		alarmReceived = false;
+		alarmCounter = 0;
+		receivedAlarms.clear();
 	}
 
 	@Test
-	public void checkAllAlarmsAreSupportedTest() {
+	public void checkAllAlarmsAreSupportedTest() throws Exception {
 		String chassis = "00";
 		String slot = "01";
 
 		OpticalSwitchFactory factory = new OpticalSwitchFactory();
-		IModel model = null;
-		try {
-			model = factory.newPedrosaProteusOpticalSwitch();
-		} catch (Exception e) {
-			Assert.fail(e.getLocalizedMessage());
-		}
+		IModel model = factory.newPedrosaProteusOpticalSwitch();
 
 		// Create one alarm message of each known type
 		List<String> alarmMessages = new ArrayList<String>();
@@ -252,23 +241,8 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		Assert.assertFalse(recognized);
 	}
 
-	/**
-	 * Already tested in first test
-	 */
-	// @Test //already tested
-	public void checkAlarmsNotifyEventTest() {
-		// open session
-		// while (Alarm alarmInLuminis: allAlarmsInLuminis) {
-		// simulate alarm
-		// check that the alarm is known
-		// throw notify event
-		// check that it is received by listeners
-		// }
-
-	}
-
 	// @Test //functionality not implemented (alarms don't trigger actions automatically)
-	public void checkEventChannelConfigChangedTest() {
+	public void checkEventChannelConfigChangedTest() throws Exception {
 		String chassis = "01";
 		String slot = "01";
 
@@ -284,28 +258,21 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.mock", "true");
 
-		WonesysProtocolSession session;
-		try {
-			session = new WonesysProtocolSession(protocolSessionContext, "session1");
+		WonesysProtocolSession session = new WonesysProtocolSession(protocolSessionContext, "session1");
 
-			session.connect();
+		session.connect();
 
-			String message = "FFFF0000" + chassis + slot + "01FF80";
+		String message = "FFFF0000" + chassis + slot + "01FF80";
 
-			generateRawSocketEvent(session.getWonesysTransport().getTransportID(), message);
+		generateRawSocketEvent(session.getWonesysTransport().getTransportID(), message);
 
-			// TODO check model has been refreshed
+		// TODO check model has been refreshed
 
-			session.disconnect();
-
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		session.disconnect();
 	}
 
 	// @Test //uncompleted test
-	public void checkAlarmsStoredInAlarmHistory() {
+	public void checkAlarmsStoredInAlarmHistory() throws Exception {
 		String chassis = "01";
 		String slot = "17";
 
@@ -320,25 +287,17 @@ public class RawSocketAlarmsTest extends AbstractIntegrationTest implements Even
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.mock", "true");
 
-		WonesysProtocolSession session;
-		try {
-			session = new WonesysProtocolSession(protocolSessionContext, "session1");
+		WonesysProtocolSession session = new WonesysProtocolSession(protocolSessionContext, "session1");
 
-			session.connect();
+		session.connect();
 
-			String alarmMessage = "FFFF0000" + chassis + slot + "01FF80";
+		String alarmMessage = "FFFF0000" + chassis + slot + "01FF80";
 
-			generateRawSocketEvent(session.getWonesysTransport().getTransportID(), alarmMessage);
+		generateRawSocketEvent(session.getWonesysTransport().getTransportID(), alarmMessage);
 
-			// TODO check alarm history for given device contains generated alarm
+		// TODO check alarm history for given device contains generated alarm
 
-			session.disconnect();
-
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
-
+		session.disconnect();
 	}
 
 	@Override
