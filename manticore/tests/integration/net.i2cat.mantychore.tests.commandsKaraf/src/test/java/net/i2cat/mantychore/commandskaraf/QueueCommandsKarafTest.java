@@ -1,9 +1,16 @@
 package net.i2cat.mantychore.commandskaraf;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import javax.inject.Inject;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,13 +18,11 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.felix.service.command.CommandProcessor;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,21 +35,44 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
-import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class QueueCommandsKarafTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class QueueCommandsKarafTest
+{
+	static Log					log	=
+		LogFactory.getLog(ResourceCommandsKarafTest.class);
 
-	static Log					log	= LogFactory
-											.getLog(ResourceCommandsKarafTest.class);
+	@Inject
+	@Filter("(type=router)")
+	private IResourceRepository	repository;
 
-	IResourceRepository			repository;
-
+	@Inject
 	private CommandProcessor	commandprocessor;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer	routerRepositoryService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    private BlueprintContainer	ipService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer	queueService;
 
 	public String capture() throws IOException {
 		StringWriter sw = new StringWriter();
@@ -77,47 +105,33 @@ public class QueueCommandsKarafTest extends AbstractIntegrationTest {
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 
 	}
 
-	public void initBundles() {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		repository = getOsgiService(IResourceRepository.class, "type=router", 50000);
-		commandprocessor = getOsgiService(CommandProcessor.class);
-		log.info("INFO: Initialized!");
-
-	}
-
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+        return probe;
+    }
 
 	@Configuration
-	public Option[] additionalConfiguration() throws Exception {
-		return combine(configuration(), new Customizer() {
-			@Override
-			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
-						.build();
-			}
-		});
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	@Test
 	public void SetAndGetInterfacesCommandTest() {
-		initBundles();
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("ipv4");
