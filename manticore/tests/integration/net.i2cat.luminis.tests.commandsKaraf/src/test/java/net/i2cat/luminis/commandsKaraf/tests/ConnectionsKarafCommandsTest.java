@@ -1,29 +1,45 @@
 package net.i2cat.luminis.commandsKaraf.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
 import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
@@ -32,12 +48,6 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
-import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
 
 /**
  * Spring week 26 <br/>
@@ -46,14 +56,30 @@ import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
  * @author isart
  */
 @RunWith(JUnit4TestRunner.class)
-public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ConnectionsKarafCommandsTest
+{
+	static Log log =
+		LogFactory.getLog(ConnectionsKarafCommandsTest.class);
 
-	static Log			log				= LogFactory
-												.getLog(ConnectionsKarafCommandsTest.class);
+	@Inject
+	private BundleContext		bundleContext;
 
-	IResourceRepository	repository;
-	IProfileManager		profileManager;
+	@Inject @Filter("(type=roadm)")
+	private IResourceRepository	repository;
+
+	@Inject
+	private IProfileManager		profileManager;
+
+	@Inject
+	private IProtocolManager    protocolManager;
+
+	@Inject
+	private CommandProcessor    commandProcessor;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.connections)")
+    private BlueprintContainer connectionService;
 
 	String				resourceName	= "pedrosa";
 	String				chassisNum		= "0";
@@ -66,7 +92,6 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	@Test
 	public void getInventoryCommandBasicTest() {
 
-		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(RepositoryHelper.newConnectionsCapabilityDescriptor());
@@ -153,7 +178,6 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	@Test
 	public void makeConnectionAndListCommandsTest() throws Exception {
 
-		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(RepositoryHelper.newConnectionsCapabilityDescriptor());
@@ -248,7 +272,6 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 	@Test
 	public void removeConnectionCommandsTest() {
 
-		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(RepositoryHelper.newConnectionsCapabilityDescriptor());
@@ -355,7 +378,6 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 		// cards, number of connections
 		// -r (refresh model before)
 
-		initBundles();
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(RepositoryHelper.newConnectionsCapabilityDescriptor());
@@ -482,48 +504,28 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	}
 
-	public void initBundles() {
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		log.info("Getting services...");
-
-		repository = getOsgiService(IResourceRepository.class, "type=roadm", 50000);
-		profileManager = getOsgiService(IProfileManager.class, 25000);
-
-		Assert.assertNotNull(repository);
-		Assert.assertNotNull(profileManager);
-
-		log.info("INFO: Initialized!");
-
-	}
-
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+        return probe;
+    }
 
 	@Configuration
-	public Option[] additionalConfiguration() throws Exception {
-		return combine(configuration(), new Customizer() {
-			@Override
-			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
-						.build();
-			}
-		});
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newWonesysSessionContext());
 
 	}
@@ -546,12 +548,11 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 
 	public Object executeCommand(String command) throws Exception {
 		// Run some commands to make sure they are installed properly
-		CommandProcessor cp = getOsgiService(CommandProcessor.class);
 		ByteArrayOutputStream outputError = new ByteArrayOutputStream();
 		PrintStream psE = new PrintStream(outputError);
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		PrintStream ps = new PrintStream(output);
-		CommandSession cs = cp.createSession(System.in, ps, psE);
+		CommandSession cs = commandProcessor.createSession(System.in, ps, psE);
 		Object commandOutput = null;
 		try {
 			commandOutput = cs.execute(command);
@@ -566,5 +567,4 @@ public class ConnectionsKarafCommandsTest extends AbstractIntegrationTest {
 		cs.close();
 		return commandOutput;
 	}
-
 }
