@@ -1,11 +1,18 @@
 package interfaces.setdesc;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import helpers.CheckParametersHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -16,7 +23,8 @@ import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
@@ -33,42 +41,73 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class SetInterfaceDescriptionActionInLRTest
+{
 	@Inject
-	BundleContext		bundleContext	= null;
+	private BundleContext		bundleContext;
 
-	boolean				isMock;
-	ResourceDescriptor	resourceDescriptor;
-	IResource			resource		= null;
-	String				deviceID;
-	String				type;
-	IResourceManager	resourceManager;
-	IProfileManager		profileManager;
+	@Inject
+	private IResourceManager	resourceManager;
 
-	String				LRName			= "cpe2";
-	String				interfaceName	= "fe-0/0/3.1";
+	@Inject
+	private IProfileManager		profileManager;
 
-	IResource			LRresource		= null;
-	EthernetPort		iface;
+	@Inject
+	private IProtocolManager	protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer routerService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer queueService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    private BlueprintContainer ipService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    private BlueprintContainer chassisService;
+
+	private boolean				isMock;
+	private ResourceDescriptor	resourceDescriptor;
+	private IResource			resource;
+	private String				deviceID;
+	private String				type;
+
+	private String				LRName			= "cpe2";
+	private String				interfaceName	= "fe-0/0/3.1";
+
+	private IResource			LRresource;
+	private EthernetPort		iface;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public SetInterfaceDescriptionActionInLRTest() {
@@ -83,12 +122,8 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	 * @throws ProtocolException
 	 *
 	 */
+	@Before
 	public void setUp() throws ResourceException, ProtocolException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-		profileManager = getOsgiService(IProfileManager.class, 30000);
 
 		// Reset repository
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
@@ -148,6 +183,7 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	 * @throws ResourceException
 	 *
 	 */
+	@After
 	public void tearDown() throws ResourceException {
 
 		// delete created sub interface
@@ -188,33 +224,19 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 	}
 
 	@Test
-	public void setInterfaceDescriptionActionInLRTest() {
-		try {
-			setUp();
-
-			setSubInterfaceDescriptionTest();
-			setInterfaceDescriptionTest();
-
-		} catch (ResourceException e) {
-			Assert.fail("Impossible set up test: " + e.getMessage());
-		} catch (ProtocolException e) {
-			Assert.fail("Impossible set up test: " + e.getMessage());
-		} catch (Exception e) {
-			Assert.fail("Error during test: " + e.getMessage());
-		} finally {
-			try {
-				tearDown();
-			} catch (ResourceException e) {
-				Assert.fail("Impossible tear down test: " + e.getMessage());
-			}
-		}
+	public void setInterfaceDescriptionActionInLRTest()
+		throws CapabilityException, ResourceException
+	{
+		setSubInterfaceDescriptionTest();
+		setInterfaceDescriptionTest();
 	}
 
 	/**
 	 * Put related task
 	 * */
-	public void setSubInterfaceDescriptionTest() {
-
+	public void setSubInterfaceDescriptionTest()
+		throws CapabilityException, ResourceException
+	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
@@ -232,43 +254,33 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 		ethernetPort.setElementName(LRName);
 
-		try {
-			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
-		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send message " + ActionConstants.SETINTERFACEDESCRIPTION + " : " + e.getMessage());
-		}
+		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 
 		/* execute action */
 		executeQueue(resource);
 
 		/* refresh model */
-		try {
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
-		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send the following message: " + e.getMessage());
-		}
+		chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 
 		if (isMock)
 			return;
 
-		try {
-			resourceManager.startResource(LRresource.getResourceIdentifier());
+		resourceManager.startResource(LRresource.getResourceIdentifier());
 
-			/* check the update model, it is only possible to check it with a real router */
-			int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
-			Assert.assertTrue(pos != -1);
+		/* check the update model, it is only possible to check it with a real router */
+		int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
+		Assert.assertTrue(pos != -1);
 
-			String desc = ((EthernetPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
-			Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
-		} catch (ResourceException e) {
-			Assert.fail("Failed to start LR: " + e.getLocalizedMessage());
-		}
+		String desc = ((EthernetPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
+		Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
 	}
 
 	/**
 	 * Test the possibility to configure subinterfaces with an encapsulation
 	 * */
-	public void setInterfaceDescriptionTest() {
+	public void setInterfaceDescriptionTest()
+		throws CapabilityException, ResourceException
+	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
@@ -285,45 +297,32 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		logicalPort.setElementName(LRName);
 
-		try {
-			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
-		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send message " + ActionConstants.SETINTERFACEDESCRIPTION + ": " + e.getMessage());
-		}
+		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
 
 		/* execute action */
 		executeQueue(resource);
 
 		/* refresh model */
-		try {
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
-		} catch (CapabilityException e) {
-			Assert.fail("It was impossible to send message " + ActionConstants.GETCONFIG + ": " + e.getMessage());
-		}
+		chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 
 		if (isMock)
 			return;
 
-		try {
-			resourceManager.startResource(LRresource.getResourceIdentifier());
+		resourceManager.startResource(LRresource.getResourceIdentifier());
 
-			/* check the update model, it is only possible to check it with a real router */
-			/* check the update model, it is only possible to check it with a real router */
-			int pos = CheckParametersHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
-			Assert.assertTrue(pos != -1);
+		/* check the update model, it is only possible to check it with a real router */
+		/* check the update model, it is only possible to check it with a real router */
+		int pos = CheckParametersHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
+		Assert.assertTrue(pos != -1);
 
-			String desc = ((LogicalPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
-			Assert.assertTrue(desc.equals(logicalPort.getDescription()));
-		} catch (ResourceException e) {
-			Assert.fail("Failed to start LR: " + e.getLocalizedMessage());
-		}
+		String desc = ((LogicalPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
+		Assert.assertTrue(desc.equals(logicalPort.getDescription()));
 	}
 
 	/**
 	 * TODO This class has to be moved to the share helper
 	 */
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
 		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, context);
 
@@ -335,19 +334,14 @@ public class SetInterfaceDescriptionActionInLRTest extends AbstractIntegrationTe
 		}
 	}
 
-	private QueueResponse executeQueue(IResource resource) {
+	private QueueResponse executeQueue(IResource resource) throws CapabilityException {
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
 		ICapability queueCapability = resource.getCapabilities().get(posQueue);
-		QueueResponse response = null;
-		try {
-			response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(response.isOk());
-		} catch (CapabilityException e) {
-			Assert.fail("Error in queue " + QueueConstants.EXECUTE + ": " + e.getMessage());
-		}
+		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(response.isOk());
 		return response;
 	}
 }
