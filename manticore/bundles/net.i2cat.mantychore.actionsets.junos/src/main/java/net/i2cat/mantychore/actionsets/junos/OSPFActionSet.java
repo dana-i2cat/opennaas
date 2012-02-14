@@ -14,8 +14,8 @@ public class OSPFActionSet extends ActionSet {
 	public OSPFActionSet() {
 		super.setActionSetId("OSPFActionSet");
 
-		this.putAction(ActionConstants.OSPF_GET_CONFIGURATION, ConfigureOSPFAction.class);
-		this.putAction(ActionConstants.OSPF_CONFIGURE, GetOSPFConfigAction.class);
+		this.putAction(ActionConstants.OSPF_GET_CONFIGURATION, GetOSPFConfigAction.class);
+		this.putAction(ActionConstants.OSPF_CONFIGURE, ConfigureOSPFAction.class);
 		this.putAction(ActionConstants.OSPF_ACTIVATE, ActivateOSPFAction.class);
 		this.putAction(ActionConstants.OSPF_DEACTIVATE, DeactivateOSPFAction.class);
 		this.putAction(ActionConstants.OSPF_ENABLE_INTERFACE, EnableOSPFInInterfaceAction.class);
