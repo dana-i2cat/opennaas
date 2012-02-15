@@ -14,7 +14,6 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
-import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -162,15 +161,16 @@ public class GetConfigurationAction extends JunosAction {
 	private net.i2cat.mantychore.model.System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
 			throws IOException, SAXException {
 
-		DigesterEngine routingOptionsParser = new RoutingOptionsParser();
+		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
 		routingOptionsParser.init();
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
 
+		routerModel = routingOptionsParser.getModel();
 		// add to the router model
-		for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
-			NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
-			routerModel.addNextHopRoute(nh);
-		}
+		// for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
+		// NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
+		// routerModel.addNextHopRoute(nh);
+		// }
 
 		return routerModel;
 	}
