@@ -5,8 +5,7 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFProtocolEndpointBase as well as methods comparable
@@ -17,6 +16,22 @@ import java.lang.Exception;
  */
 public class OSPFProtocolEndpointBase extends ProtocolEndpoint implements
 		Serializable {
+
+	/* EndpointInArea */
+	/**
+	 * 
+	 * @return OSPFArea associated to this OSPFProtocolEndpointBase through EndpointInArea aggregation.
+	 */
+	public OSPFArea getOSPFArea() {
+		return (OSPFArea) this.getFromAssociatedElementsByType(EndpointInArea.class);
+	}
+
+	/**
+	 * Associates this OSPFProtocolEndpointBase with ospfArea through EndpointInArea aggregation
+	 */
+	public void setOSPFArea(OSPFArea ospfArea) {
+		EndpointInArea.link(ospfArea, this);
+	}
 
 	/**
 	 * This constructor creates a OSPFProtocolEndpointBaseBeanImpl Class which implements the OSPFProtocolEndpointBaseBean Interface, and encapsulates
