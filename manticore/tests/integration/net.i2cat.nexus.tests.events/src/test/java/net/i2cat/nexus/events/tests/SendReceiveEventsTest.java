@@ -1,78 +1,85 @@
 package net.i2cat.nexus.events.tests;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
-
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.ops4j.pax.exam.Customizer;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
-import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
-public class SendReceiveEventsTest extends AbstractIntegrationTest {
+public class SendReceiveEventsTest
+{
+	private final static Log	log 	= LogFactory.getLog(SendReceiveEventsTest.class);
 
-	static Log				log					= LogFactory.getLog(SendReceiveEventsTest.class);
+	private Event				h1receivedEvent;
+	private Event				h2receivedEvent;
+
+	private final String		eventTopic			= "whatever/the/topic/is";
+	private final String		filterPropertyName	= "aPropertyName";
+	private final String		filterPropertyValue	= "aPropertyValue";
 
 	@Inject
 	private BundleContext	bundleContext;
 
-	Event					h1receivedEvent		= null;
-	Event					h2receivedEvent		= null;
+	@Inject
+	private EventAdmin		eventAdmin;
 
-	String					eventTopic			= "whatever/the/topic/is";
-	String					filterPropertyName	= "aPropertyName";
-	String					filterPropertyValue	= "aPropertyValue";
+	@Inject
+	private IEventManager	eventManager;
 
-	public static Option[] configure() {
-		return combine(
-				IntegrationTestsHelper.getNexusTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-		// ,
-		// // Tell pax platform to include ORGi/Minimum-1.1 exec environment (required for org.eclipse.equinox.event)
-		// vmOption("-Dorg.osgi.framework.executionenvironment=J2SE-1.2,J2SE-1.3,J2SE-1.4,J2SE-1.5,OSGi/Minimum-1.1,"
-		// + "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		// )
-		);
-	}
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+        return probe;
+    }
 
 	@Configuration
-	public Option[] additionalConfiguration() throws Exception {
-		return combine(configure(), new Customizer() {
-			@Override
-			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
-						.build();
-			}
-		});
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	@Test
-	public void registerHandlerAndPublishEventTest() {
-
-		loadBundles();
-
+	public void registerHandlerAndPublishEventTest() throws InterruptedException
+	{
 		EventFilter filter1 = new EventFilter(
 				new String[] { eventTopic });
 
@@ -81,9 +88,6 @@ public class SendReceiveEventsTest extends AbstractIntegrationTest {
 
 		EventHandler handler1 = createHandler1();
 		EventHandler handler2 = createHandler2();
-
-		IEventManager eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
 
 		log.info("Registering Handlers...");
 		int handler1Id = eventManager.registerEventHandler(handler1, filter1);
@@ -99,11 +103,7 @@ public class SendReceiveEventsTest extends AbstractIntegrationTest {
 		eventManager.publishEvent(event);
 		log.info("Publishing event... DONE");
 
-		try {
-			Thread.sleep(10 * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		Thread.sleep(10 * 1000);
 
 		log.info("Checking reception...");
 		assertNotNull(h1receivedEvent);
@@ -167,20 +167,5 @@ public class SendReceiveEventsTest extends AbstractIntegrationTest {
 			}
 		};
 		return handler;
-	}
-
-	public void loadBundles() {
-
-		assertNotNull(bundleContext);
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		EventAdmin eventAdmin = getOsgiService(EventAdmin.class, 20000);
-		assertNotNull(eventAdmin);
-
-		IEventManager eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
-
 	}
 }
