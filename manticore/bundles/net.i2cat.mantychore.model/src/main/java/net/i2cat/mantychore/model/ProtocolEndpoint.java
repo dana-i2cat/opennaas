@@ -13,14 +13,48 @@ import java.util.List;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ProtocolEndpoint as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ProtocolEndpointBean Interface. The CIM class ProtocolEndpoint is described as
  * follows:
- *
+ * 
  * A communication point from which data can be sent or received. ProtocolEndpoints link system or computer interfaces to LogicalNetworks.
  */
 public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {
+
+	/**
+	 * Sets the ProvidesEndpoint association between a given Service and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void setService(Service service) {
+		if (service != null)
+			ProvidesEndpoint.link(this, service);
+	}
+
+	/**
+	 * Removes the ProvidesEndpoint association between the given ProtocolEndpoint and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void unsetService(Service service) {
+		if (service != null) {
+			Association a = this.getFirstFromAssociationByTypeAndElement(ProvidesEndpoint.class, service);
+			if (a != null)
+				a.unlink();
+		}
+	}
+
+	/**
+	 * Returns the Service associated to this element.
+	 * 
+	 * @return
+	 */
+	public Service getService() {
+		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+
+	}
+
 	// //Example when ProtocolEndpoint makes as FROM
 	/**
-	 *
+	 * 
 	 * @param nextHop
 	 * @return
 	 */
@@ -31,7 +65,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	}
 
 	/**
-	 *
+	 * 
 	 * @param nextHop
 	 * @return
 	 */
@@ -50,7 +84,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the list of NextHopRoute from the toAssociation vector that match with the type RouteUsesEndpoint
-	 *
+	 * 
 	 * @return List<NextHopRoute>
 	 */
 	@SuppressWarnings("unchecked")
@@ -61,7 +95,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	// //Example when ProtocolEndpoint makes as TO
 	/**
 	 * Add a new PortImplementsEndpoint association between logiaclPort and this element
-	 *
+	 * 
 	 * @param logicalPort
 	 * @return
 	 */
@@ -73,7 +107,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * Remove the PortImplementsEndpoint association (will be deleted) between the logiaclPort and this element
-	 *
+	 * 
 	 * @param logicalPort
 	 * @return
 	 */
@@ -93,7 +127,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	/**
 	 * This method returns the list of LogicalPort from the fromAssociation vector that match with the type PortImplementsEndpoint the association
 	 * wouldn't be deleted
-	 *
+	 * 
 	 * @return List<LogicalPort>
 	 */
 	@SuppressWarnings("unchecked")
@@ -104,7 +138,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	/**
 	 * This constructor creates a ProtocolEndpointBeanImpl Class which implements the ProtocolEndpointBean Interface, and encapsulates the CIM class
 	 * ProtocolEndpoint in a Java Bean. The CIM class ProtocolEndpoint is described as follows:
-	 *
+	 * 
 	 * A communication point from which data can be sent or received. ProtocolEndpoints link system or computer interfaces to LogicalNetworks.
 	 */
 	public ProtocolEndpoint() {
@@ -117,9 +151,9 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.description property value. This property is described as follows:
-	 *
+	 * 
 	 * The Description property provides a textual description of the object.
-	 *
+	 * 
 	 * @return String current description property value
 	 * @exception Exception
 	 */
@@ -131,9 +165,9 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.description property value. This property is described as follows:
-	 *
+	 * 
 	 * The Description property provides a textual description of the object.
-	 *
+	 * 
 	 * @param String
 	 *            new description property value
 	 * @exception Exception
@@ -151,11 +185,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.timeOfLastStateChange property value. This property is described as follows:
-	 *
+	 * 
 	 * The date or time when the EnabledState of the element last changed. If the state of the element has not changed and this property is populated,
 	 * then it must be set to a 0 interval value. If a state change was requested, but rejected or not yet processed, the property must not be
 	 * updated.
-	 *
+	 * 
 	 * @return Date current timeOfLastStateChange property value
 	 * @exception Exception
 	 */
@@ -167,11 +201,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.timeOfLastStateChange property value. This property is described as follows:
-	 *
+	 * 
 	 * The date or time when the EnabledState of the element last changed. If the state of the element has not changed and this property is populated,
 	 * then it must be set to a 0 interval value. If a state change was requested, but rejected or not yet processed, the property must not be
 	 * updated.
-	 *
+	 * 
 	 * @param Date
 	 *            new timeOfLastStateChange property value
 	 * @exception Exception
@@ -189,11 +223,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.name property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that identifies this ProtocolEndpoint with either a port or an interface on a device. To ensure uniqueness, the Name property should
 	 * be prepended or appended with information from the Type or OtherTypeDescription properties. The method selected is described in the NameFormat
 	 * property of this class.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -205,11 +239,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.name property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that identifies this ProtocolEndpoint with either a port or an interface on a device. To ensure uniqueness, the Name property should
 	 * be prepended or appended with information from the Type or OtherTypeDescription properties. The method selected is described in the NameFormat
 	 * property of this class.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -227,11 +261,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.nameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * NameFormat contains the naming heuristic that is selected to ensure that the value of the Name property is unique. For example, you might
 	 * choose to prepend the name of the port or interface with the Type of ProtocolEndpoint (for example, IPv4) of this instance followed by an
 	 * underscore.
-	 *
+	 * 
 	 * @return String current nameFormat property value
 	 * @exception Exception
 	 */
@@ -242,11 +276,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.nameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * NameFormat contains the naming heuristic that is selected to ensure that the value of the Name property is unique. For example, you might
 	 * choose to prepend the name of the port or interface with the Type of ProtocolEndpoint (for example, IPv4) of this instance followed by an
 	 * underscore.
-	 *
+	 * 
 	 * @param String
 	 *            new nameFormat property value
 	 * @exception Exception
@@ -296,13 +330,13 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.protocolType property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: This property is deprecated in lieu of the ProtocolIFType enumeration. This deprecation was done to have better alignment between the
 	 * IF-MIB of the IETF and this CIM class. Deprecated description: ProtocolType is an enumeration that provides information to categorize and
 	 * classify different instances of this class. For most instances, information in this enumeration and the definition of the subclass overlap.
 	 * However, there are several cases where a specific subclass of ProtocolEndpoint is not required (for example, there is no Fibre Channel subclass
 	 * of ProtocolEndpoint). Therefore, this property is needed to define the type of Endpoint.
-	 *
+	 * 
 	 * @return int current protocolType property value
 	 * @exception Exception
 	 */
@@ -314,13 +348,13 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.protocolType property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: This property is deprecated in lieu of the ProtocolIFType enumeration. This deprecation was done to have better alignment between the
 	 * IF-MIB of the IETF and this CIM class. Deprecated description: ProtocolType is an enumeration that provides information to categorize and
 	 * classify different instances of this class. For most instances, information in this enumeration and the definition of the subclass overlap.
 	 * However, there are several cases where a specific subclass of ProtocolEndpoint is not required (for example, there is no Fibre Channel subclass
 	 * of ProtocolEndpoint). Therefore, this property is needed to define the type of Endpoint.
-	 *
+	 * 
 	 * @param int new protocolType property value
 	 * @exception Exception
 	 */
@@ -603,12 +637,12 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.protocolIFType property value. This property is described as follows:
-	 *
+	 * 
 	 * ProtocolIFType is an enumeration that is synchronized with the IANA ifType MIB. The ifType MIB is maintained at the URL,
 	 * http://www.iana.org/assignments/ianaiftype-mib. Also, additional values defined by the DMTF are included. The property is used to categorize
 	 * and classify instances of the ProtocolEndpoint class. Note that if the ProtocolIFType is set to 1 (Other), then the type information should be
 	 * provided in the OtherTypeDescription string property.
-	 *
+	 * 
 	 * @return int current protocolIFType property value
 	 * @exception Exception
 	 */
@@ -619,12 +653,12 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.protocolIFType property value. This property is described as follows:
-	 *
+	 * 
 	 * ProtocolIFType is an enumeration that is synchronized with the IANA ifType MIB. The ifType MIB is maintained at the URL,
 	 * http://www.iana.org/assignments/ianaiftype-mib. Also, additional values defined by the DMTF are included. The property is used to categorize
 	 * and classify instances of the ProtocolEndpoint class. Note that if the ProtocolIFType is set to 1 (Other), then the type information should be
 	 * provided in the OtherTypeDescription string property.
-	 *
+	 * 
 	 * @param int new protocolIFType property value
 	 * @exception Exception
 	 */
@@ -640,10 +674,10 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method returns the ProtocolEndpoint.otherTypeDescription property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that describes the type of ProtocolEndpoint when the Type property of this class (or any of its subclasses) is set to 1 (Other). This
 	 * property should be set to null when the Type property is any value other than 1.
-	 *
+	 * 
 	 * @return String current otherTypeDescription property value
 	 * @exception Exception
 	 */
@@ -654,10 +688,10 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 
 	/**
 	 * This method sets the ProtocolEndpoint.otherTypeDescription property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that describes the type of ProtocolEndpoint when the Type property of this class (or any of its subclasses) is set to 1 (Other). This
 	 * property should be set to null when the Type property is any value other than 1.
-	 *
+	 * 
 	 * @param String
 	 *            new otherTypeDescription property value
 	 * @exception Exception

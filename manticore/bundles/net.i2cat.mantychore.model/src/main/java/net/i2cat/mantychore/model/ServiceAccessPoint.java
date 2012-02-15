@@ -11,7 +11,7 @@ import java.io.Serializable;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAccessPoint as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the ServiceAccessPointBean Interface. The CIM class ServiceAccessPoint is described
  * as follows:
- *
+ * 
  * CIM_ServiceAccessPoint represents the ability to utilize or invoke a Service. Access points represent that a Service is made available for other
  * entities to use.
  */
@@ -21,7 +21,7 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 	/**
 	 * This constructor creates a ServiceAccessPointBeanImpl Class which implements the ServiceAccessPointBean Interface, and encapsulates the CIM
 	 * class ServiceAccessPoint in a Java Bean. The CIM class ServiceAccessPoint is described as follows:
-	 *
+	 * 
 	 * CIM_ServiceAccessPoint represents the ability to utilize or invoke a Service. Access points represent that a Service is made available for
 	 * other entities to use.
 	 */
@@ -35,9 +35,9 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method returns the ServiceAccessPoint.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The CreationClassName of the scoping System.
-	 *
+	 * 
 	 * @return String current systemCreationClassName property value
 	 * @exception Exception
 	 */
@@ -48,9 +48,9 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method sets the ServiceAccessPoint.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The CreationClassName of the scoping System.
-	 *
+	 * 
 	 * @param String
 	 *            new systemCreationClassName property value
 	 * @exception Exception
@@ -67,9 +67,9 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method returns the ServiceAccessPoint.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name of the scoping System.
-	 *
+	 * 
 	 * @return String current systemName property value
 	 * @exception Exception
 	 */
@@ -80,9 +80,9 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method sets the ServiceAccessPoint.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name of the scoping System.
-	 *
+	 * 
 	 * @param String
 	 *            new systemName property value
 	 * @exception Exception
@@ -99,10 +99,10 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method returns the ServiceAccessPoint.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @return String current creationClassName property value
 	 * @exception Exception
 	 */
@@ -113,10 +113,10 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method sets the ServiceAccessPoint.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @param String
 	 *            new creationClassName property value
 	 * @exception Exception
@@ -133,10 +133,10 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 	// private String name;
 	/**
 	 * This method returns the ServiceAccessPoint.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property uniquely identifies the ServiceAccessPoint and provides an indication of the functionality that is managed. This
 	 * functionality is described in more detail in the Description property of the object.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -147,10 +147,10 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 
 	/**
 	 * This method sets the ServiceAccessPoint.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property uniquely identifies the ServiceAccessPoint and provides an indication of the functionality that is managed. This
 	 * functionality is described in more detail in the Description property of the object.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -159,5 +159,37 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 	public void setName(String name) {
 		super.setName(name);
 	} // setName
+
+	/**
+	 * Adds a new ProvidesEndpoint association between a given service and this element.
+	 * 
+	 * @param greTunnelConfiguration
+	 */
+	public void setService(Service service) {
+		if (service != null)
+			ProvidesEndpoint.link(this, service);
+	}
+
+	/**
+	 * Removes the ProvidesEndpoint association between the given service and this element.
+	 * 
+	 * @param greTunnelConfiguration
+	 */
+	public void unsetService(Service service) {
+		if (service != null) {
+			Association a = this.getFirstFromAssociationByTypeAndElement(ProvidesEndpoint.class, service);
+			if (a != null)
+				a.unlink();
+		}
+	}
+
+	/**
+	 * Returns the Service associated to this element.
+	 * 
+	 * @return
+	 */
+	public Service getService() {
+		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+	}
 
 } // Class ServiceAccessPoint
