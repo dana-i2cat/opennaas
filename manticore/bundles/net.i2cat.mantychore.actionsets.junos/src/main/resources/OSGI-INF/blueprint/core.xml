@@ -33,4 +33,15 @@
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
+	<!--  	publish action set services  -->
+	<bean id="ospfActionSet" class="net.i2cat.mantychore.actionsets.junos.OSPFActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="ospfActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="ospf"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
 </blueprint>
