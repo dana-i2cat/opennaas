@@ -8,34 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PortOnDevice as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * PortOnDeviceBean Interface. The CIM class PortOnDevice is described as
- * follows:
- *
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PortOnDevice as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the PortOnDeviceBean Interface. The CIM class PortOnDevice is described as follows:
+ * 
  * PortOnDevice associates a Port or connection point with its Device.
  */
 public class PortOnDevice extends HostedDependency implements Serializable {
 
-    /**
-     * This constructor creates a PortOnDeviceBeanImpl Class which implements
-     * the PortOnDeviceBean Interface, and encapsulates the CIM class
-     * PortOnDevice in a Java Bean. The CIM class PortOnDevice is described
-     * as follows:
-     *
-     * PortOnDevice associates a Port or connection point with its Device.
-     */
-    public PortOnDevice(){};
-    /**
-     * This method create an Association of the type PortOnDevice between one
-     * LogicalDevice object and LogicalPort object
-     */
-    public static PortOnDevice link(LogicalDevice antecedent,LogicalPort
-	dependent){
+	/**
+	 * This constructor creates a PortOnDeviceBeanImpl Class which implements the PortOnDeviceBean Interface, and encapsulates the CIM class
+	 * PortOnDevice in a Java Bean. The CIM class PortOnDevice is described as follows:
+	 * 
+	 * PortOnDevice associates a Port or connection point with its Device.
+	 */
+	public PortOnDevice() {
+	};
 
-    return (PortOnDevice)
-	Association.link(PortOnDevice.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type PortOnDevice between one LogicalDevice object and LogicalPort object
+	 */
+	public static PortOnDevice link(LogicalDevice antecedent, LogicalPort
+			dependent) {
+
+		return (PortOnDevice) Association.link(PortOnDevice.class, antecedent, dependent);
+	}// link
 
 } // Class PortOnDevice

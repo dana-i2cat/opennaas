@@ -9,90 +9,71 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SettingAssociatedToCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the SettingAssociatedToCapabilitiesBean Interface. The CIM
- * class SettingAssociatedToCapabilities is described as follows:
- *
- * This association defines settings that can be used to create or modify
- * elements. Unlike ElementSettingData, these settings are not used to
- * express the characteristics of existing managed elements. Typically, the
- * capabilities associated with this class define the characteristics of a
- * service in creating or modifying elements that are dependent on the
- * service directly or indirectly. A CIM Client may use this association to
- * find SettingData instances that can be used to create or modify these
- * dependent elements.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SettingAssociatedToCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SettingAssociatedToCapabilitiesBean Interface. The CIM class
+ * SettingAssociatedToCapabilities is described as follows:
+ * 
+ * This association defines settings that can be used to create or modify elements. Unlike ElementSettingData, these settings are not used to express
+ * the characteristics of existing managed elements. Typically, the capabilities associated with this class define the characteristics of a service in
+ * creating or modifying elements that are dependent on the service directly or indirectly. A CIM Client may use this association to find SettingData
+ * instances that can be used to create or modify these dependent elements.
  */
 public class SettingAssociatedToCapabilities extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SettingAssociatedToCapabilitiesBeanImpl
-     * Class which implements the SettingAssociatedToCapabilitiesBean
-     * Interface, and encapsulates the CIM class
-     * SettingAssociatedToCapabilities in a Java Bean. The CIM class
-     * SettingAssociatedToCapabilities is described as follows:
-     *
-     * This association defines settings that can be used to create or modify
-     * elements. Unlike ElementSettingData, these settings are not used to
-     * express the characteristics of existing managed elements. Typically,
-     * the capabilities associated with this class define the characteristics
-     * of a service in creating or modifying elements that are dependent on
-     * the service directly or indirectly. A CIM Client may use this
-     * association to find SettingData instances that can be used to create
-     * or modify these dependent elements.
-     */
-    public SettingAssociatedToCapabilities(){};
-    /**
-     * This method create an Association of the type
-     * SettingAssociatedToCapabilities between one Capabilities object and
-     * SettingData object
-     */
-    public static SettingAssociatedToCapabilities link(Capabilities
-	antecedent,SettingData dependent){
+	/**
+	 * This constructor creates a SettingAssociatedToCapabilitiesBeanImpl Class which implements the SettingAssociatedToCapabilitiesBean Interface,
+	 * and encapsulates the CIM class SettingAssociatedToCapabilities in a Java Bean. The CIM class SettingAssociatedToCapabilities is described as
+	 * follows:
+	 * 
+	 * This association defines settings that can be used to create or modify elements. Unlike ElementSettingData, these settings are not used to
+	 * express the characteristics of existing managed elements. Typically, the capabilities associated with this class define the characteristics of
+	 * a service in creating or modifying elements that are dependent on the service directly or indirectly. A CIM Client may use this association to
+	 * find SettingData instances that can be used to create or modify these dependent elements.
+	 */
+	public SettingAssociatedToCapabilities() {
+	};
 
-    return (SettingAssociatedToCapabilities) Association.link(SettingAssociatedToCapabilities.class,antecedent,dependent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property defaultSetting.
-     */
-    private boolean defaultSetting;
-    /**
-     * This method returns the SettingAssociatedToCapabilities.defaultSetting
-     * property value. This property is described as follows:
-     *
-     * If an element whose characteristics are described by the associated
-     * Capabilities instance has a dependent element created or modified
-     * without specifying an associated SettingData instance, then the
-     * default SettingData will be used in that operation.
-     *
-     * @return	boolean	current defaultSetting property value
-     * @exception	Exception
-     */
-    public boolean isDefaultSetting(){
+	/**
+	 * This method create an Association of the type SettingAssociatedToCapabilities between one Capabilities object and SettingData object
+	 */
+	public static SettingAssociatedToCapabilities link(Capabilities
+			antecedent, SettingData dependent) {
 
-    return this.defaultSetting;
-    } // getDefaultSetting
+		return (SettingAssociatedToCapabilities) Association.link(SettingAssociatedToCapabilities.class, antecedent, dependent);
+	}// link
 
-    /**
-     * This method sets the SettingAssociatedToCapabilities.defaultSetting
-     * property value. This property is described as follows:
-     *
-     * If an element whose characteristics are described by the associated
-     * Capabilities instance has a dependent element created or modified
-     * without specifying an associated SettingData instance, then the
-     * default SettingData will be used in that operation.
-     *
-     * @param	boolean	new defaultSetting property value
-     * @exception	Exception
-     */
-    public void setDefaultSetting(boolean defaultSetting) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property defaultSetting.
+	 */
+	private boolean	defaultSetting;
 
-    this.defaultSetting = defaultSetting;
-    } // setDefaultSetting
+	/**
+	 * This method returns the SettingAssociatedToCapabilities.defaultSetting property value. This property is described as follows:
+	 * 
+	 * If an element whose characteristics are described by the associated Capabilities instance has a dependent element created or modified without
+	 * specifying an associated SettingData instance, then the default SettingData will be used in that operation.
+	 * 
+	 * @return boolean current defaultSetting property value
+	 * @exception Exception
+	 */
+	public boolean isDefaultSetting() {
 
+		return this.defaultSetting;
+	} // getDefaultSetting
 
+	/**
+	 * This method sets the SettingAssociatedToCapabilities.defaultSetting property value. This property is described as follows:
+	 * 
+	 * If an element whose characteristics are described by the associated Capabilities instance has a dependent element created or modified without
+	 * specifying an associated SettingData instance, then the default SettingData will be used in that operation.
+	 * 
+	 * @param boolean new defaultSetting property value
+	 * @exception Exception
+	 */
+	public void setDefaultSetting(boolean defaultSetting) {
+
+		this.defaultSetting = defaultSetting;
+	} // setDefaultSetting
 
 } // Class SettingAssociatedToCapabilities

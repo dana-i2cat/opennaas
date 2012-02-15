@@ -8,28 +8,22 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LogicalElement as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * LogicalElementBean Interface. The CIM class LogicalElement is described as
- * follows:
- *
- * CIM_LogicalElement is a base class for all the components of a System that
- * represent abstract system components, such as Files, Processes, or
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalElement as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the LogicalElementBean Interface. The CIM class LogicalElement is described as follows:
+ * 
+ * CIM_LogicalElement is a base class for all the components of a System that represent abstract system components, such as Files, Processes, or
  * LogicalDevices.
  */
 public class LogicalElement extends ManagedSystemElement implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a LogicalElementBeanImpl Class which
-     * implements the LogicalElementBean Interface, and encapsulates the CIM
-     * class LogicalElement in a Java Bean. The CIM class LogicalElement is
-     * described as follows:
-     *
-     * CIM_LogicalElement is a base class for all the components of a System
-     * that represent abstract system components, such as Files, Processes,
-     * or LogicalDevices.
-     */
-    protected LogicalElement(){};
+	/**
+	 * This constructor creates a LogicalElementBeanImpl Class which implements the LogicalElementBean Interface, and encapsulates the CIM class
+	 * LogicalElement in a Java Bean. The CIM class LogicalElement is described as follows:
+	 * 
+	 * CIM_LogicalElement is a base class for all the components of a System that represent abstract system components, such as Files, Processes, or
+	 * LogicalDevices.
+	 */
+	protected LogicalElement() {
+	};
 } // Class LogicalElement

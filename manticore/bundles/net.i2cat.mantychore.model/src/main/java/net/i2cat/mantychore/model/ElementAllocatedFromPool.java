@@ -8,39 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ElementAllocatedFromPool as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ElementAllocatedFromPoolBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ElementAllocatedFromPool as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ElementAllocatedFromPoolBean Interface. The CIM class
  * ElementAllocatedFromPool is described as follows:
- *
- * ElementAllocatedFromPool associates an instance of CIM_LogicalElement
- * representing an allocated Resource with the CIM_ResourcePool from which it
+ * 
+ * ElementAllocatedFromPool associates an instance of CIM_LogicalElement representing an allocated Resource with the CIM_ResourcePool from which it
  * was allocated.
  */
 public class ElementAllocatedFromPool extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ElementAllocatedFromPoolBeanImpl Class which
-     * implements the ElementAllocatedFromPoolBean Interface, and
-     * encapsulates the CIM class ElementAllocatedFromPool in a Java Bean.
-     * The CIM class ElementAllocatedFromPool is described as follows:
-     *
-     * ElementAllocatedFromPool associates an instance of CIM_LogicalElement
-     * representing an allocated Resource with the CIM_ResourcePool from
-     * which it was allocated.
-     */
-    public ElementAllocatedFromPool(){};
-    /**
-     * This method create an Association of the type ElementAllocatedFromPool
-     * between one ResourcePool object and LogicalElement object
-     */
-    public static ElementAllocatedFromPool link(ResourcePool
-	antecedent,LogicalElement dependent){
+	/**
+	 * This constructor creates a ElementAllocatedFromPoolBeanImpl Class which implements the ElementAllocatedFromPoolBean Interface, and encapsulates
+	 * the CIM class ElementAllocatedFromPool in a Java Bean. The CIM class ElementAllocatedFromPool is described as follows:
+	 * 
+	 * ElementAllocatedFromPool associates an instance of CIM_LogicalElement representing an allocated Resource with the CIM_ResourcePool from which
+	 * it was allocated.
+	 */
+	public ElementAllocatedFromPool() {
+	};
 
-    return (ElementAllocatedFromPool)
-	Association.link(ElementAllocatedFromPool.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ElementAllocatedFromPool between one ResourcePool object and LogicalElement object
+	 */
+	public static ElementAllocatedFromPool link(ResourcePool
+			antecedent, LogicalElement dependent) {
+
+		return (ElementAllocatedFromPool) Association.link(ElementAllocatedFromPool.class, antecedent, dependent);
+	}// link
 
 } // Class ElementAllocatedFromPool

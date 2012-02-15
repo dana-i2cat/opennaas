@@ -8,39 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedResourcePool as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedResourcePoolBean Interface. The CIM class HostedResourcePool is
- * described as follows:
- *
- * HostedResourcePool is a specialization of the SystemComponent association
- * that establishes that the ResourcePool is defined in the context of the
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedResourcePool as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the HostedResourcePoolBean Interface. The CIM class HostedResourcePool is described
+ * as follows:
+ * 
+ * HostedResourcePool is a specialization of the SystemComponent association that establishes that the ResourcePool is defined in the context of the
  * System
  */
 public class HostedResourcePool extends SystemComponent implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedResourcePoolBeanImpl Class which
-     * implements the HostedResourcePoolBean Interface, and encapsulates the
-     * CIM class HostedResourcePool in a Java Bean. The CIM class
-     * HostedResourcePool is described as follows:
-     *
-     * HostedResourcePool is a specialization of the SystemComponent
-     * association that establishes that the ResourcePool is defined in the
-     * context of the System
-     */
-    public HostedResourcePool(){};
-    /**
-     * This method create an Association of the type HostedResourcePool
-     * between one System object and ResourcePool object
-     */
-    public static HostedResourcePool link(System groupComponent,ResourcePool
-	partComponent){
+	/**
+	 * This constructor creates a HostedResourcePoolBeanImpl Class which implements the HostedResourcePoolBean Interface, and encapsulates the CIM
+	 * class HostedResourcePool in a Java Bean. The CIM class HostedResourcePool is described as follows:
+	 * 
+	 * HostedResourcePool is a specialization of the SystemComponent association that establishes that the ResourcePool is defined in the context of
+	 * the System
+	 */
+	public HostedResourcePool() {
+	};
 
-    return (HostedResourcePool)
-	Association.link(HostedResourcePool.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedResourcePool between one System object and ResourcePool object
+	 */
+	public static HostedResourcePool link(System groupComponent, ResourcePool
+			partComponent) {
+
+		return (HostedResourcePool) Association.link(HostedResourcePool.class, groupComponent, partComponent);
+	}// link
 
 } // Class HostedResourcePool

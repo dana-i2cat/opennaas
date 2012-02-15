@@ -9,114 +9,89 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SAEndpointRefreshSettings as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SAEndpointRefreshSettingsBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SAEndpointRefreshSettings as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SAEndpointRefreshSettingsBean Interface. The CIM class
  * SAEndpointRefreshSettings is described as follows:
- *
- * SAEndpointRefreshSettings hold the refresh thresholds for the
- * SecurityAssociationEndpoint. Since these settings may change for an SA,
- * the properties are defined both in this class and in
- * SecurityAssociationEndpoint.
+ * 
+ * SAEndpointRefreshSettings hold the refresh thresholds for the SecurityAssociationEndpoint. Since these settings may change for an SA, the
+ * properties are defined both in this class and in SecurityAssociationEndpoint.
  */
 public class SAEndpointRefreshSettings extends SettingData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SAEndpointRefreshSettingsBeanImpl Class
-     * which implements the SAEndpointRefreshSettingsBean Interface, and
-     * encapsulates the CIM class SAEndpointRefreshSettings in a Java Bean.
-     * The CIM class SAEndpointRefreshSettings is described as follows:
-     *
-     * SAEndpointRefreshSettings hold the refresh thresholds for the
-     * SecurityAssociationEndpoint. Since these settings may change for an
-     * SA, the properties are defined both in this class and in
-     * SecurityAssociationEndpoint.
-     */
-    public SAEndpointRefreshSettings(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property refreshThresholdSecondsPercentage.
-     */
-    private short refreshThresholdSecondsPercentage;
-    /**
-     * This method returns the
-     * SAEndpointRefreshSettings.refreshThresholdSecondsPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdSecondsPercentage is the lifetime percentage after
-     * which a new SA should be acquired, before the existing SA expires.
-     *
-     * @return	short	current refreshThresholdSecondsPercentage
-     * property value
-     * @exception	Exception
-     */
-    public short getRefreshThresholdSecondsPercentage(){
+	/**
+	 * This constructor creates a SAEndpointRefreshSettingsBeanImpl Class which implements the SAEndpointRefreshSettingsBean Interface, and
+	 * encapsulates the CIM class SAEndpointRefreshSettings in a Java Bean. The CIM class SAEndpointRefreshSettings is described as follows:
+	 * 
+	 * SAEndpointRefreshSettings hold the refresh thresholds for the SecurityAssociationEndpoint. Since these settings may change for an SA, the
+	 * properties are defined both in this class and in SecurityAssociationEndpoint.
+	 */
+	public SAEndpointRefreshSettings() {
+	};
 
-    return this.refreshThresholdSecondsPercentage;
-    } // getRefreshThresholdSecondsPercentage
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property refreshThresholdSecondsPercentage.
+	 */
+	private short	refreshThresholdSecondsPercentage;
 
-    /**
-     * This method sets the
-     * SAEndpointRefreshSettings.refreshThresholdSecondsPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdSecondsPercentage is the lifetime percentage after
-     * which a new SA should be acquired, before the existing SA expires.
-     *
-     * @param	short	new refreshThresholdSecondsPercentage
-     * property value
-     * @exception	Exception
-     */
-    public void setRefreshThresholdSecondsPercentage(short
-	refreshThresholdSecondsPercentage) {
+	/**
+	 * This method returns the SAEndpointRefreshSettings.refreshThresholdSecondsPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdSecondsPercentage is the lifetime percentage after which a new SA should be acquired, before the existing SA expires.
+	 * 
+	 * @return short current refreshThresholdSecondsPercentage property value
+	 * @exception Exception
+	 */
+	public short getRefreshThresholdSecondsPercentage() {
 
-    this.refreshThresholdSecondsPercentage =
-	refreshThresholdSecondsPercentage;
-    } // setRefreshThresholdSecondsPercentage
+		return this.refreshThresholdSecondsPercentage;
+	} // getRefreshThresholdSecondsPercentage
 
+	/**
+	 * This method sets the SAEndpointRefreshSettings.refreshThresholdSecondsPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdSecondsPercentage is the lifetime percentage after which a new SA should be acquired, before the existing SA expires.
+	 * 
+	 * @param short new refreshThresholdSecondsPercentage property value
+	 * @exception Exception
+	 */
+	public void setRefreshThresholdSecondsPercentage(short
+			refreshThresholdSecondsPercentage) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property refreshThresholdKbytesPercentage.
-     */
-    private short refreshThresholdKbytesPercentage;
-    /**
-     * This method returns the
-     * SAEndpointRefreshSettings.refreshThresholdKbytesPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdKbytesPercentage is the lifetime percentage of
-     * kilobytes processed, at which a new SA should be acquired.
-     *
-     * @return	short	current refreshThresholdKbytesPercentage
-     * property value
-     * @exception	Exception
-     */
-    public short getRefreshThresholdKbytesPercentage(){
+		this.refreshThresholdSecondsPercentage =
+				refreshThresholdSecondsPercentage;
+	} // setRefreshThresholdSecondsPercentage
 
-    return this.refreshThresholdKbytesPercentage;
-    } // getRefreshThresholdKbytesPercentage
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property refreshThresholdKbytesPercentage.
+	 */
+	private short	refreshThresholdKbytesPercentage;
 
-    /**
-     * This method sets the
-     * SAEndpointRefreshSettings.refreshThresholdKbytesPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdKbytesPercentage is the lifetime percentage of
-     * kilobytes processed, at which a new SA should be acquired.
-     *
-     * @param	short	new refreshThresholdKbytesPercentage
-     * property value
-     * @exception	Exception
-     */
-    public void setRefreshThresholdKbytesPercentage(short
-	refreshThresholdKbytesPercentage) {
+	/**
+	 * This method returns the SAEndpointRefreshSettings.refreshThresholdKbytesPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdKbytesPercentage is the lifetime percentage of kilobytes processed, at which a new SA should be acquired.
+	 * 
+	 * @return short current refreshThresholdKbytesPercentage property value
+	 * @exception Exception
+	 */
+	public short getRefreshThresholdKbytesPercentage() {
 
-    this.refreshThresholdKbytesPercentage = refreshThresholdKbytesPercentage;
-    } // setRefreshThresholdKbytesPercentage
+		return this.refreshThresholdKbytesPercentage;
+	} // getRefreshThresholdKbytesPercentage
 
+	/**
+	 * This method sets the SAEndpointRefreshSettings.refreshThresholdKbytesPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdKbytesPercentage is the lifetime percentage of kilobytes processed, at which a new SA should be acquired.
+	 * 
+	 * @param short new refreshThresholdKbytesPercentage property value
+	 * @exception Exception
+	 */
+	public void setRefreshThresholdKbytesPercentage(short
+			refreshThresholdKbytesPercentage) {
 
+		this.refreshThresholdKbytesPercentage = refreshThresholdKbytesPercentage;
+	} // setRefreshThresholdKbytesPercentage
 
 } // Class SAEndpointRefreshSettings

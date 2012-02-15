@@ -8,60 +8,42 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SystemComponent as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SystemComponentBean Interface. The CIM class SystemComponent is described
- * as follows:
- *
- * CIM_SystemComponent is a specialization of the CIM_Component association
- * that establishes 'part of' relationships between a System and any
- * ManagedSystemElements of which it is composed. Use this association with
- * caution when using it instead of a subclass such as SystemDevice or a peer
- * association such as HostedService. This class is very broadly defined,
- * which can lead to erroneous use. For example, Access Points that are
- * dependent on (and hosted on) a System are NOT Components of the System.
- * The System is not made up of any AccessPoint 'parts', which is why a
- * Dependency association, HostedAccessPoint, was defined. Similarly, a
- * PhysicalPackage is not a 'part' of a System, because the physical element
- * exists independently of any internal components, software, and so on. In
- * fact, again, a Dependency relationship is true where a ComputerSystem is
- * Dependent on its packaging, as described by the ComputerSystemPackage
- * association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemComponent as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SystemComponentBean Interface. The CIM class SystemComponent is described as
+ * follows:
+ * 
+ * CIM_SystemComponent is a specialization of the CIM_Component association that establishes 'part of' relationships between a System and any
+ * ManagedSystemElements of which it is composed. Use this association with caution when using it instead of a subclass such as SystemDevice or a peer
+ * association such as HostedService. This class is very broadly defined, which can lead to erroneous use. For example, Access Points that are
+ * dependent on (and hosted on) a System are NOT Components of the System. The System is not made up of any AccessPoint 'parts', which is why a
+ * Dependency association, HostedAccessPoint, was defined. Similarly, a PhysicalPackage is not a 'part' of a System, because the physical element
+ * exists independently of any internal components, software, and so on. In fact, again, a Dependency relationship is true where a ComputerSystem is
+ * Dependent on its packaging, as described by the ComputerSystemPackage association.
  */
 public class SystemComponent extends Component implements Serializable {
 
-    /**
-     * This constructor creates a SystemComponentBeanImpl Class which
-     * implements the SystemComponentBean Interface, and encapsulates the CIM
-     * class SystemComponent in a Java Bean. The CIM class SystemComponent is
-     * described as follows:
-     *
-     * CIM_SystemComponent is a specialization of the CIM_Component
-     * association that establishes 'part of' relationships between a System
-     * and any ManagedSystemElements of which it is composed. Use this
-     * association with caution when using it instead of a subclass such as
-     * SystemDevice or a peer association such as HostedService. This class
-     * is very broadly defined, which can lead to erroneous use. For example,
-     * Access Points that are dependent on (and hosted on) a System are NOT
-     * Components of the System. The System is not made up of any AccessPoint
-     * 'parts', which is why a Dependency association, HostedAccessPoint, was
-     * defined. Similarly, a PhysicalPackage is not a 'part' of a System,
-     * because the physical element exists independently of any internal
-     * components, software, and so on. In fact, again, a Dependency
-     * relationship is true where a ComputerSystem is Dependent on its
-     * packaging, as described by the ComputerSystemPackage association.
-     */
-    public SystemComponent(){};
-    /**
-     * This method create an Association of the type SystemComponent between
-     * one System object and ManagedSystemElement object
-     */
-    public static SystemComponent link(System
-	groupComponent,ManagedSystemElement partComponent){
+	/**
+	 * This constructor creates a SystemComponentBeanImpl Class which implements the SystemComponentBean Interface, and encapsulates the CIM class
+	 * SystemComponent in a Java Bean. The CIM class SystemComponent is described as follows:
+	 * 
+	 * CIM_SystemComponent is a specialization of the CIM_Component association that establishes 'part of' relationships between a System and any
+	 * ManagedSystemElements of which it is composed. Use this association with caution when using it instead of a subclass such as SystemDevice or a
+	 * peer association such as HostedService. This class is very broadly defined, which can lead to erroneous use. For example, Access Points that
+	 * are dependent on (and hosted on) a System are NOT Components of the System. The System is not made up of any AccessPoint 'parts', which is why
+	 * a Dependency association, HostedAccessPoint, was defined. Similarly, a PhysicalPackage is not a 'part' of a System, because the physical
+	 * element exists independently of any internal components, software, and so on. In fact, again, a Dependency relationship is true where a
+	 * ComputerSystem is Dependent on its packaging, as described by the ComputerSystemPackage association.
+	 */
+	public SystemComponent() {
+	};
 
-    return (SystemComponent)
-	Association.link(SystemComponent.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type SystemComponent between one System object and ManagedSystemElement object
+	 */
+	public static SystemComponent link(System
+			groupComponent, ManagedSystemElement partComponent) {
+
+		return (SystemComponent) Association.link(SystemComponent.class, groupComponent, partComponent);
+	}// link
 
 } // Class SystemComponent

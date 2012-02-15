@@ -8,45 +8,34 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ElementLocation as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ElementLocationBean Interface. The CIM class ElementLocation is described
- * as follows:
- *
- * ElementLocation associates a ManagedElement with a location for
- * positioning, inventory, maintenance and similar purposes. PhysicalElements
- * can certainly have locations. They are explicitly defined in a subclass,
- * PhysicalElement Location. However, other ManagedElements can also be
- * associated with locations. For example, Organizations can be 'in' one or
- * more locations, or Services can be restricted to a location.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ElementLocation as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ElementLocationBean Interface. The CIM class ElementLocation is described as
+ * follows:
+ * 
+ * ElementLocation associates a ManagedElement with a location for positioning, inventory, maintenance and similar purposes. PhysicalElements can
+ * certainly have locations. They are explicitly defined in a subclass, PhysicalElement Location. However, other ManagedElements can also be
+ * associated with locations. For example, Organizations can be 'in' one or more locations, or Services can be restricted to a location.
  */
 public class ElementLocation extends Association implements Serializable {
 
-    /**
-     * This constructor creates a ElementLocationBeanImpl Class which
-     * implements the ElementLocationBean Interface, and encapsulates the CIM
-     * class ElementLocation in a Java Bean. The CIM class ElementLocation is
-     * described as follows:
-     *
-     * ElementLocation associates a ManagedElement with a location for
-     * positioning, inventory, maintenance and similar purposes.
-     * PhysicalElements can certainly have locations. They are explicitly
-     * defined in a subclass, PhysicalElement Location. However, other
-     * ManagedElements can also be associated with locations. For example,
-     * Organizations can be 'in' one or more locations, or Services can be
-     * restricted to a location.
-     */
-    public ElementLocation(){};
-    /**
-     * This method create an Association of the type ElementLocation between
-     * one ManagedElement object and Location object
-     */
-    public static ElementLocation link(ManagedElement element,Location
-	physicalLocation){
+	/**
+	 * This constructor creates a ElementLocationBeanImpl Class which implements the ElementLocationBean Interface, and encapsulates the CIM class
+	 * ElementLocation in a Java Bean. The CIM class ElementLocation is described as follows:
+	 * 
+	 * ElementLocation associates a ManagedElement with a location for positioning, inventory, maintenance and similar purposes. PhysicalElements can
+	 * certainly have locations. They are explicitly defined in a subclass, PhysicalElement Location. However, other ManagedElements can also be
+	 * associated with locations. For example, Organizations can be 'in' one or more locations, or Services can be restricted to a location.
+	 */
+	public ElementLocation() {
+	};
 
-    return (ElementLocation)
-	Association.link(ElementLocation.class,element,physicalLocation);
-    }//link
+	/**
+	 * This method create an Association of the type ElementLocation between one ManagedElement object and Location object
+	 */
+	public static ElementLocation link(ManagedElement element, Location
+			physicalLocation) {
+
+		return (ElementLocation) Association.link(ElementLocation.class, element, physicalLocation);
+	}// link
 
 } // Class ElementLocation

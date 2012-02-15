@@ -15,7 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class ManagedElementTest {
-	Log			log			= LogFactory.getLog(ManagedElementTest.class);
+	Log				log			= LogFactory.getLog(ManagedElementTest.class);
 
 	// A crowd is composed by a group of persons.
 	ManagedElement	school		= new ComputerSystem();
