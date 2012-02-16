@@ -9,103 +9,74 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class Configuration as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ConfigurationBean Interface. The CIM class Configuration is described as
- * follows:
- *
- * Note: The use of CIM_Configuration is deprecated in favor of aggregating
- * instances of Setting or SettingData into "higher-level" Settings or
- * SettingData objects using the ConcreteComponent association. This
- * association simplifies the use of Settings or SettingData. With
- * Configurations serving as aggregations of Settings (as defined by the
- * Configuration Component relationship), separate associations were needed
- * for the aggregation and to tie an element to either its Configurations or
- * Settings or SettingData. These separate associations introduced
- * unnecessary complexity and redundancy into the model. Deprecated
- * description: The Configuration object allows the grouping of sets of
- * parameters (defined in Setting objects) and dependencies for one or more
- * ManagedSystemElements. It represents a certain behavior or a desired
- * functional state for the ManagedSystemElements. The desired functional
- * state of the Configuration is typically driven by external requirements
- * such as time or location. For example, to connect to a Mail System from
- * home, a dependency on a modem exists, but a dependency on a network
- * adapter exists at work. Settings for the pertinent LogicalDevices (in this
- * example, POTSModem and NetworkAdapter) can be defined and aggregated by
- * the Configuration. Therefore, two "Connect to Mail" Configurations can be
- * defined by grouping the relevant dependencies and Setting objects.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class Configuration as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ConfigurationBean Interface. The CIM class Configuration is described as follows:
+ * 
+ * Note: The use of CIM_Configuration is deprecated in favor of aggregating instances of Setting or SettingData into "higher-level" Settings or
+ * SettingData objects using the ConcreteComponent association. This association simplifies the use of Settings or SettingData. With Configurations
+ * serving as aggregations of Settings (as defined by the Configuration Component relationship), separate associations were needed for the aggregation
+ * and to tie an element to either its Configurations or Settings or SettingData. These separate associations introduced unnecessary complexity and
+ * redundancy into the model. Deprecated description: The Configuration object allows the grouping of sets of parameters (defined in Setting objects)
+ * and dependencies for one or more ManagedSystemElements. It represents a certain behavior or a desired functional state for the
+ * ManagedSystemElements. The desired functional state of the Configuration is typically driven by external requirements such as time or location. For
+ * example, to connect to a Mail System from home, a dependency on a modem exists, but a dependency on a network adapter exists at work. Settings for
+ * the pertinent LogicalDevices (in this example, POTSModem and NetworkAdapter) can be defined and aggregated by the Configuration. Therefore, two
+ * "Connect to Mail" Configurations can be defined by grouping the relevant dependencies and Setting objects.
  */
-    @Deprecated
+@Deprecated
 public class Configuration extends ManagedElement implements Serializable {
 
-    /**
-     * This constructor creates a ConfigurationBeanImpl Class which implements
-     * the ConfigurationBean Interface, and encapsulates the CIM class
-     * Configuration in a Java Bean. The CIM class Configuration is described
-     * as follows:
-     *
-     * Note: The use of CIM_Configuration is deprecated in favor of
-     * aggregating instances of Setting or SettingData into "higher-level"
-     * Settings or SettingData objects using the ConcreteComponent
-     * association. This association simplifies the use of Settings or
-     * SettingData. With Configurations serving as aggregations of Settings
-     * (as defined by the Configuration Component relationship), separate
-     * associations were needed for the aggregation and to tie an element to
-     * either its Configurations or Settings or SettingData. These separate
-     * associations introduced unnecessary complexity and redundancy into the
-     * model. Deprecated description: The Configuration object allows the
-     * grouping of sets of parameters (defined in Setting objects) and
-     * dependencies for one or more ManagedSystemElements. It represents a
-     * certain behavior or a desired functional state for the
-     * ManagedSystemElements. The desired functional state of the
-     * Configuration is typically driven by external requirements such as
-     * time or location. For example, to connect to a Mail System from home,
-     * a dependency on a modem exists, but a dependency on a network adapter
-     * exists at work. Settings for the pertinent LogicalDevices (in this
-     * example, POTSModem and NetworkAdapter) can be defined and aggregated
-     * by the Configuration. Therefore, two "Connect to Mail" Configurations
-     * can be defined by grouping the relevant dependencies and Setting
-     * objects.
-     */
-    public Configuration(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property name.
-     */
-    @Deprecated    private String name;
-    /**
-     * This method returns the Configuration.name property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this element is deprecated. Deprecated description:
-     * The label by which the Configuration object is known.
-     *
-     * @return	String	current name property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getName(){
+	/**
+	 * This constructor creates a ConfigurationBeanImpl Class which implements the ConfigurationBean Interface, and encapsulates the CIM class
+	 * Configuration in a Java Bean. The CIM class Configuration is described as follows:
+	 * 
+	 * Note: The use of CIM_Configuration is deprecated in favor of aggregating instances of Setting or SettingData into "higher-level" Settings or
+	 * SettingData objects using the ConcreteComponent association. This association simplifies the use of Settings or SettingData. With
+	 * Configurations serving as aggregations of Settings (as defined by the Configuration Component relationship), separate associations were needed
+	 * for the aggregation and to tie an element to either its Configurations or Settings or SettingData. These separate associations introduced
+	 * unnecessary complexity and redundancy into the model. Deprecated description: The Configuration object allows the grouping of sets of
+	 * parameters (defined in Setting objects) and dependencies for one or more ManagedSystemElements. It represents a certain behavior or a desired
+	 * functional state for the ManagedSystemElements. The desired functional state of the Configuration is typically driven by external requirements
+	 * such as time or location. For example, to connect to a Mail System from home, a dependency on a modem exists, but a dependency on a network
+	 * adapter exists at work. Settings for the pertinent LogicalDevices (in this example, POTSModem and NetworkAdapter) can be defined and aggregated
+	 * by the Configuration. Therefore, two "Connect to Mail" Configurations can be defined by grouping the relevant dependencies and Setting objects.
+	 */
+	public Configuration() {
+	};
 
-    return this.name;
-    } // getName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property name.
+	 */
+	@Deprecated
+	private String	name;
 
-    /**
-     * This method sets the Configuration.name property value. This property
-     * is described as follows:
-     *
-     * Note: The use of this element is deprecated. Deprecated description:
-     * The label by which the Configuration object is known.
-     *
-     * @param	String	new name property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setName(String name) {
+	/**
+	 * This method returns the Configuration.name property value. This property is described as follows:
+	 * 
+	 * Note: The use of this element is deprecated. Deprecated description: The label by which the Configuration object is known.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getName() {
 
-    this.name = name;
-    } // setName
+		return this.name;
+	} // getName
 
+	/**
+	 * This method sets the Configuration.name property value. This property is described as follows:
+	 * 
+	 * Note: The use of this element is deprecated. Deprecated description: The label by which the Configuration object is known.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setName(String name) {
 
+		this.name = name;
+	} // setName
 
 } // Class Configuration

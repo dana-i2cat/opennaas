@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPPeerGroupService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BGPPeerGroupServiceBean Interface. The CIM class BGPPeerGroupService is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPPeerGroupService as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the BGPPeerGroupServiceBean Interface. The CIM class BGPPeerGroupService is
  * described as follows:
- *
- * This defines the relationship between a BGPService and a specific
- * BGPPeerGroup in which it is executing.
+ * 
+ * This defines the relationship between a BGPService and a specific BGPPeerGroup in which it is executing.
  */
 public class BGPPeerGroupService extends Dependency implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a BGPPeerGroupServiceBeanImpl Class which
-     * implements the BGPPeerGroupServiceBean Interface, and encapsulates the
-     * CIM class BGPPeerGroupService in a Java Bean. The CIM class
-     * BGPPeerGroupService is described as follows:
-     *
-     * This defines the relationship between a BGPService and a specific
-     * BGPPeerGroup in which it is executing.
-     */
-    public BGPPeerGroupService(){};
-    /**
-     * This method create an Association of the type BGPPeerGroupService
-     * between one BGPPeerGroup object and BGPService object
-     */
-    public static BGPPeerGroupService link(BGPPeerGroup antecedent,BGPService
-	dependent){
+	/**
+	 * This constructor creates a BGPPeerGroupServiceBeanImpl Class which implements the BGPPeerGroupServiceBean Interface, and encapsulates the CIM
+	 * class BGPPeerGroupService in a Java Bean. The CIM class BGPPeerGroupService is described as follows:
+	 * 
+	 * This defines the relationship between a BGPService and a specific BGPPeerGroup in which it is executing.
+	 */
+	public BGPPeerGroupService() {
+	};
 
-    return (BGPPeerGroupService)
-	Association.link(BGPPeerGroupService.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type BGPPeerGroupService between one BGPPeerGroup object and BGPService object
+	 */
+	public static BGPPeerGroupService link(BGPPeerGroup antecedent, BGPService
+			dependent) {
+
+		return (BGPPeerGroupService) Association.link(BGPPeerGroupService.class, antecedent, dependent);
+	}// link
 
 } // Class BGPPeerGroupService

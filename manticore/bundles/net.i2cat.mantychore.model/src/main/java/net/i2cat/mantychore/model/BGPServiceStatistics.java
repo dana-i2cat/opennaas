@@ -8,45 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPServiceStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BGPServiceStatisticsBean Interface. The CIM class BGPServiceStatistics is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPServiceStatistics as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the BGPServiceStatisticsBean Interface. The CIM class BGPServiceStatistics is
  * described as follows:
- *
- * This association defines statistics collected for a BGP Service. The
- * relationship is deprecated since the class BGPStatistics is deprecated. It
- * is incorrectly associated with a BGPService, but should instead be
- * associated with a BGPProtocolEndpoint using the ElementStatisticalData
+ * 
+ * This association defines statistics collected for a BGP Service. The relationship is deprecated since the class BGPStatistics is deprecated. It is
+ * incorrectly associated with a BGPService, but should instead be associated with a BGPProtocolEndpoint using the ElementStatisticalData
  * relationship.
  */
-    @Deprecated
+@Deprecated
 public class BGPServiceStatistics extends ServiceStatistics implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a BGPServiceStatisticsBeanImpl Class which
-     * implements the BGPServiceStatisticsBean Interface, and encapsulates
-     * the CIM class BGPServiceStatistics in a Java Bean. The CIM class
-     * BGPServiceStatistics is described as follows:
-     *
-     * This association defines statistics collected for a BGP Service. The
-     * relationship is deprecated since the class BGPStatistics is
-     * deprecated. It is incorrectly associated with a BGPService, but should
-     * instead be associated with a BGPProtocolEndpoint using the
-     * ElementStatisticalData relationship.
-     */
-    public BGPServiceStatistics(){};
-    /**
-     * This method create an Association of the type BGPServiceStatistics
-     * between one BGPStatistics object and BGPService object
-     */
-    @Deprecated
-    public static BGPServiceStatistics link(BGPStatistics stats,BGPService
-	element){
+	/**
+	 * This constructor creates a BGPServiceStatisticsBeanImpl Class which implements the BGPServiceStatisticsBean Interface, and encapsulates the CIM
+	 * class BGPServiceStatistics in a Java Bean. The CIM class BGPServiceStatistics is described as follows:
+	 * 
+	 * This association defines statistics collected for a BGP Service. The relationship is deprecated since the class BGPStatistics is deprecated. It
+	 * is incorrectly associated with a BGPService, but should instead be associated with a BGPProtocolEndpoint using the ElementStatisticalData
+	 * relationship.
+	 */
+	public BGPServiceStatistics() {
+	};
 
-    return (BGPServiceStatistics)
-	Association.link(BGPServiceStatistics.class,stats,element);
-    }//link
+	/**
+	 * This method create an Association of the type BGPServiceStatistics between one BGPStatistics object and BGPService object
+	 */
+	@Deprecated
+	public static BGPServiceStatistics link(BGPStatistics stats, BGPService
+			element) {
+
+		return (BGPServiceStatistics) Association.link(BGPServiceStatistics.class, stats, element);
+	}// link
 
 } // Class BGPServiceStatistics

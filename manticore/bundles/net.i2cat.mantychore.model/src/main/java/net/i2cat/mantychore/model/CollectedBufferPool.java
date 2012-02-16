@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class CollectedBufferPool as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * CollectedBufferPoolBean Interface. The CIM class CollectedBufferPool is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class CollectedBufferPool as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the CollectedBufferPoolBean Interface. The CIM class CollectedBufferPool is
  * described as follows:
- *
- * CIM_CollectedBufferPool is an aggregation association representing that a
- * Pool may itself be contained in a 'higher level' Pool.
+ * 
+ * CIM_CollectedBufferPool is an aggregation association representing that a Pool may itself be contained in a 'higher level' Pool.
  */
 public class CollectedBufferPool extends MemberOfCollection implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a CollectedBufferPoolBeanImpl Class which
-     * implements the CollectedBufferPoolBean Interface, and encapsulates the
-     * CIM class CollectedBufferPool in a Java Bean. The CIM class
-     * CollectedBufferPool is described as follows:
-     *
-     * CIM_CollectedBufferPool is an aggregation association representing that
-     * a Pool may itself be contained in a 'higher level' Pool.
-     */
-    public CollectedBufferPool(){};
-    /**
-     * This method create an Association of the type CollectedBufferPool
-     * between one BufferPool object and BufferPool object
-     */
-    public static CollectedBufferPool link(BufferPool collection,BufferPool
-	member){
+	/**
+	 * This constructor creates a CollectedBufferPoolBeanImpl Class which implements the CollectedBufferPoolBean Interface, and encapsulates the CIM
+	 * class CollectedBufferPool in a Java Bean. The CIM class CollectedBufferPool is described as follows:
+	 * 
+	 * CIM_CollectedBufferPool is an aggregation association representing that a Pool may itself be contained in a 'higher level' Pool.
+	 */
+	public CollectedBufferPool() {
+	};
 
-    return (CollectedBufferPool)
-	Association.link(CollectedBufferPool.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type CollectedBufferPool between one BufferPool object and BufferPool object
+	 */
+	public static CollectedBufferPool link(BufferPool collection, BufferPool
+			member) {
+
+		return (CollectedBufferPool) Association.link(CollectedBufferPool.class, collection, member);
+	}// link
 
 } // Class CollectedBufferPool

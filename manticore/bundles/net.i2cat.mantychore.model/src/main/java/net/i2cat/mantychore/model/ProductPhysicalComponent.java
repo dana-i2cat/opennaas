@@ -8,36 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductPhysicalComponent as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ProductPhysicalComponentBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductPhysicalComponent as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ProductPhysicalComponentBean Interface. The CIM class
  * ProductPhysicalComponent is described as follows:
- *
- * Indicates that the referenced PhysicalElement is acquired as part of a
- * Product.
+ * 
+ * Indicates that the referenced PhysicalElement is acquired as part of a Product.
  */
 public class ProductPhysicalComponent extends Component implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ProductPhysicalComponentBeanImpl Class which
-     * implements the ProductPhysicalComponentBean Interface, and
-     * encapsulates the CIM class ProductPhysicalComponent in a Java Bean.
-     * The CIM class ProductPhysicalComponent is described as follows:
-     *
-     * Indicates that the referenced PhysicalElement is acquired as part of a
-     * Product.
-     */
-    public ProductPhysicalComponent(){};
-    /**
-     * This method create an Association of the type ProductPhysicalComponent
-     * between one Product object and PhysicalElement object
-     */
-    public static ProductPhysicalComponent link(Product
-	groupComponent,PhysicalElement partComponent){
+	/**
+	 * This constructor creates a ProductPhysicalComponentBeanImpl Class which implements the ProductPhysicalComponentBean Interface, and encapsulates
+	 * the CIM class ProductPhysicalComponent in a Java Bean. The CIM class ProductPhysicalComponent is described as follows:
+	 * 
+	 * Indicates that the referenced PhysicalElement is acquired as part of a Product.
+	 */
+	public ProductPhysicalComponent() {
+	};
 
-    return (ProductPhysicalComponent) Association.link(ProductPhysicalComponent.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ProductPhysicalComponent between one Product object and PhysicalElement object
+	 */
+	public static ProductPhysicalComponent link(Product
+			groupComponent, PhysicalElement partComponent) {
+
+		return (ProductPhysicalComponent) Association.link(ProductPhysicalComponent.class, groupComponent, partComponent);
+	}// link
 
 } // Class ProductPhysicalComponent

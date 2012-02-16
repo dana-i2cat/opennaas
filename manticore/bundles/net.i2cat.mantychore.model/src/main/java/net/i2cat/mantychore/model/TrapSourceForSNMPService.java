@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TrapSourceForSNMPService as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * TrapSourceForSNMPServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TrapSourceForSNMPService as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the TrapSourceForSNMPServiceBean Interface. The CIM class
  * TrapSourceForSNMPService is described as follows:
- *
- * TrapSourceForSNMPService specifies the protocol endpoint/interface (and
- * hence its IP address) from which traps originate.
+ * 
+ * TrapSourceForSNMPService specifies the protocol endpoint/interface (and hence its IP address) from which traps originate.
  */
 public class TrapSourceForSNMPService extends ServiceSAPDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a TrapSourceForSNMPServiceBeanImpl Class which
-     * implements the TrapSourceForSNMPServiceBean Interface, and
-     * encapsulates the CIM class TrapSourceForSNMPService in a Java Bean.
-     * The CIM class TrapSourceForSNMPService is described as follows:
-     *
-     * TrapSourceForSNMPService specifies the protocol endpoint/interface (and
-     * hence its IP address) from which traps originate.
-     */
-    public TrapSourceForSNMPService(){};
-    /**
-     * This method create an Association of the type TrapSourceForSNMPService
-     * between one ProtocolEndpoint object and SNMPService object
-     */
-    public static TrapSourceForSNMPService link(ProtocolEndpoint
-	antecedent,SNMPService dependent){
+	/**
+	 * This constructor creates a TrapSourceForSNMPServiceBeanImpl Class which implements the TrapSourceForSNMPServiceBean Interface, and encapsulates
+	 * the CIM class TrapSourceForSNMPService in a Java Bean. The CIM class TrapSourceForSNMPService is described as follows:
+	 * 
+	 * TrapSourceForSNMPService specifies the protocol endpoint/interface (and hence its IP address) from which traps originate.
+	 */
+	public TrapSourceForSNMPService() {
+	};
 
-    return (TrapSourceForSNMPService)
-	Association.link(TrapSourceForSNMPService.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type TrapSourceForSNMPService between one ProtocolEndpoint object and SNMPService object
+	 */
+	public static TrapSourceForSNMPService link(ProtocolEndpoint
+			antecedent, SNMPService dependent) {
+
+		return (TrapSourceForSNMPService) Association.link(TrapSourceForSNMPService.class, antecedent, dependent);
+	}// link
 
 } // Class TrapSourceForSNMPService

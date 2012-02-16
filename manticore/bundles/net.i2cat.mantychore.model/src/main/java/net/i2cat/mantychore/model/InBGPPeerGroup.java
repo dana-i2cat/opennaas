@@ -8,36 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class InBGPPeerGroup as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * InBGPPeerGroupBean Interface. The CIM class InBGPPeerGroup is described as
- * follows:
- *
- * This aggregation defines the specific routers (i.e., ComputerSystems) that
- * participate in a PeerGroup.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class InBGPPeerGroup as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the InBGPPeerGroupBean Interface. The CIM class InBGPPeerGroup is described as follows:
+ * 
+ * This aggregation defines the specific routers (i.e., ComputerSystems) that participate in a PeerGroup.
  */
 public class InBGPPeerGroup extends CollectedMSEs implements Serializable {
 
-    /**
-     * This constructor creates a InBGPPeerGroupBeanImpl Class which
-     * implements the InBGPPeerGroupBean Interface, and encapsulates the CIM
-     * class InBGPPeerGroup in a Java Bean. The CIM class InBGPPeerGroup is
-     * described as follows:
-     *
-     * This aggregation defines the specific routers (i.e., ComputerSystems)
-     * that participate in a PeerGroup.
-     */
-    public InBGPPeerGroup(){};
-    /**
-     * This method create an Association of the type InBGPPeerGroup between
-     * one BGPPeerGroup object and ComputerSystem object
-     */
-    public static InBGPPeerGroup link(BGPPeerGroup collection,ComputerSystem
-	member){
+	/**
+	 * This constructor creates a InBGPPeerGroupBeanImpl Class which implements the InBGPPeerGroupBean Interface, and encapsulates the CIM class
+	 * InBGPPeerGroup in a Java Bean. The CIM class InBGPPeerGroup is described as follows:
+	 * 
+	 * This aggregation defines the specific routers (i.e., ComputerSystems) that participate in a PeerGroup.
+	 */
+	public InBGPPeerGroup() {
+	};
 
-    return (InBGPPeerGroup)
-	Association.link(InBGPPeerGroup.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type InBGPPeerGroup between one BGPPeerGroup object and ComputerSystem object
+	 */
+	public static InBGPPeerGroup link(BGPPeerGroup collection, ComputerSystem
+			member) {
+
+		return (InBGPPeerGroup) Association.link(InBGPPeerGroup.class, collection, member);
+	}// link
 
 } // Class InBGPPeerGroup

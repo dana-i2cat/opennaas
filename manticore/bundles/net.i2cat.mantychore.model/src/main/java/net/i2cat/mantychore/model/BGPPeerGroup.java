@@ -9,379 +9,322 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPPeerGroup as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BGPPeerGroupBean Interface. The CIM class BGPPeerGroup is described as
- * follows:
- *
- * A BGP Peer Group is a set of BGP neighbors that share the same update
- * policies. This enables an administrator to assign policies to the peer
- * group, instead of individually. This enables the routers in the Peer Group
- * to optimize UPDATE messages. Consequently, Peer Groups have a set of
- * restrictions that must be followed in order to work correctly with
- * external BGP peers. Otherwise, loss of routing information could occur. A
- * BGPPeerGroup is weak to the AutonomousSystem that contains it. Therefore,
- * the keys from System must be propagated to it.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPPeerGroup as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the BGPPeerGroupBean Interface. The CIM class BGPPeerGroup is described as follows:
+ * 
+ * A BGP Peer Group is a set of BGP neighbors that share the same update policies. This enables an administrator to assign policies to the peer group,
+ * instead of individually. This enables the routers in the Peer Group to optimize UPDATE messages. Consequently, Peer Groups have a set of
+ * restrictions that must be followed in order to work correctly with external BGP peers. Otherwise, loss of routing information could occur. A
+ * BGPPeerGroup is weak to the AutonomousSystem that contains it. Therefore, the keys from System must be propagated to it.
  */
 public class BGPPeerGroup extends CollectionOfMSEs implements Serializable {
 
-    /**
-     * This constructor creates a BGPPeerGroupBeanImpl Class which implements
-     * the BGPPeerGroupBean Interface, and encapsulates the CIM class
-     * BGPPeerGroup in a Java Bean. The CIM class BGPPeerGroup is described
-     * as follows:
-     *
-     * A BGP Peer Group is a set of BGP neighbors that share the same update
-     * policies. This enables an administrator to assign policies to the peer
-     * group, instead of individually. This enables the routers in the Peer
-     * Group to optimize UPDATE messages. Consequently, Peer Groups have a
-     * set of restrictions that must be followed in order to work correctly
-     * with external BGP peers. Otherwise, loss of routing information could
-     * occur. A BGPPeerGroup is weak to the AutonomousSystem that contains
-     * it. Therefore, the keys from System must be propagated to it.
-     */
-    public BGPPeerGroup(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemCreationClassName.
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the BGPPeerGroup.systemCreationClassName property
-     * value. This property is described as follows:
-     *
-     * The scoping AutonomousSystem's CreationClassName.
-     *
-     * @return	String	current systemCreationClassName property
-     * value
-     * @exception	Exception
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a BGPPeerGroupBeanImpl Class which implements the BGPPeerGroupBean Interface, and encapsulates the CIM class
+	 * BGPPeerGroup in a Java Bean. The CIM class BGPPeerGroup is described as follows:
+	 * 
+	 * A BGP Peer Group is a set of BGP neighbors that share the same update policies. This enables an administrator to assign policies to the peer
+	 * group, instead of individually. This enables the routers in the Peer Group to optimize UPDATE messages. Consequently, Peer Groups have a set of
+	 * restrictions that must be followed in order to work correctly with external BGP peers. Otherwise, loss of routing information could occur. A
+	 * BGPPeerGroup is weak to the AutonomousSystem that contains it. Therefore, the keys from System must be propagated to it.
+	 */
+	public BGPPeerGroup() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the BGPPeerGroup.systemCreationClassName property
-     * value. This property is described as follows:
-     *
-     * The scoping AutonomousSystem's CreationClassName.
-     *
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the BGPPeerGroup.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping AutonomousSystem's CreationClassName.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the BGPPeerGroup.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping AutonomousSystem's CreationClassName.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemName.
-     */
-    private String systemName;
-    /**
-     * This method returns the BGPPeerGroup.systemName property value. This
-     * property is described as follows:
-     *
-     * The scoping AutonomousSystem's Name.
-     *
-     * @return	String	current systemName property value
-     * @exception	Exception
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the BGPPeerGroup.systemName property value. This
-     * property is described as follows:
-     *
-     * The scoping AutonomousSystem's Name.
-     *
-     * @param	String	new systemName property value
-     * @exception	Exception
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the BGPPeerGroup.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping AutonomousSystem's Name.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the BGPPeerGroup.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping AutonomousSystem's Name.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property creationClassName.
-     */
-    private String creationClassName;
-    /**
-     * This method returns the BGPPeerGroup.creationClassName property value.
-     * This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @return	String	current creationClassName property value
-     * @exception	Exception
-     */
-    public String getCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the BGPPeerGroup.creationClassName property value.
-     * This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @param	String	new creationClassName property value
-     * @exception	Exception
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the BGPPeerGroup.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the BGPPeerGroup.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property name.
-     */
-    private String name;
-    /**
-     * This method returns the BGPPeerGroup.name property value. This property
-     * is described as follows:
-     *
-     * This is the name of the BGP Peer Group.
-     *
-     * @return	String	current name property value
-     * @exception	Exception
-     */
-    public String getName(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.name;
-    } // getName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property name.
+	 */
+	private String	name;
 
-    /**
-     * This method sets the BGPPeerGroup.name property value. This property is
-     * described as follows:
-     *
-     * This is the name of the BGP Peer Group.
-     *
-     * @param	String	new name property value
-     * @exception	Exception
-     */
-    public void setName(String name) {
+	/**
+	 * This method returns the BGPPeerGroup.name property value. This property is described as follows:
+	 * 
+	 * This is the name of the BGP Peer Group.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	public String getName() {
 
-    this.name = name;
-    } // setName
+		return this.name;
+	} // getName
 
+	/**
+	 * This method sets the BGPPeerGroup.name property value. This property is described as follows:
+	 * 
+	 * This is the name of the BGP Peer Group.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	public void setName(String name) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property connectRetryInterval.
-     */
-    private long connectRetryInterval;
-    /**
-     * This method returns the BGPPeerGroup.connectRetryInterval property
-     * value. This property is described as follows:
-     *
-     * This defines the time interval, in seconds, for the ConnectRetry timer
-     * for the endpoints of the routers in the PeerGroup. The suggested value
-     * is 120 seconds.
-     *
-     * @return	long	current connectRetryInterval property value
-     * @exception	Exception
-     */
-    public long getConnectRetryInterval(){
+		this.name = name;
+	} // setName
 
-    return this.connectRetryInterval;
-    } // getConnectRetryInterval
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property connectRetryInterval.
+	 */
+	private long	connectRetryInterval;
 
-    /**
-     * This method sets the BGPPeerGroup.connectRetryInterval property value.
-     * This property is described as follows:
-     *
-     * This defines the time interval, in seconds, for the ConnectRetry timer
-     * for the endpoints of the routers in the PeerGroup. The suggested value
-     * is 120 seconds.
-     *
-     * @param	long	new connectRetryInterval property value
-     * @exception	Exception
-     */
-    public void setConnectRetryInterval(long connectRetryInterval) {
+	/**
+	 * This method returns the BGPPeerGroup.connectRetryInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval, in seconds, for the ConnectRetry timer for the endpoints of the routers in the PeerGroup. The suggested value
+	 * is 120 seconds.
+	 * 
+	 * @return long current connectRetryInterval property value
+	 * @exception Exception
+	 */
+	public long getConnectRetryInterval() {
 
-    this.connectRetryInterval = connectRetryInterval;
-    } // setConnectRetryInterval
+		return this.connectRetryInterval;
+	} // getConnectRetryInterval
 
+	/**
+	 * This method sets the BGPPeerGroup.connectRetryInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval, in seconds, for the ConnectRetry timer for the endpoints of the routers in the PeerGroup. The suggested value
+	 * is 120 seconds.
+	 * 
+	 * @param long new connectRetryInterval property value
+	 * @exception Exception
+	 */
+	public void setConnectRetryInterval(long connectRetryInterval) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property holdTimeConfigured.
-     */
-    private int holdTimeConfigured;
-    /**
-     * This method returns the BGPPeerGroup.holdTimeConfigured property value.
-     * This property is described as follows:
-     *
-     * This defines the time interval in seconds for the Hold TimeConfigured
-     * property of the endpoints of the routers in the PeerGroup. This value
-     * must not be less than three seconds. The suggested value for this
-     * timer is 90 seconds.
-     *
-     * @return	int	current holdTimeConfigured property value
-     * @exception	Exception
-     */
-    public int getHoldTimeConfigured(){
+		this.connectRetryInterval = connectRetryInterval;
+	} // setConnectRetryInterval
 
-    return this.holdTimeConfigured;
-    } // getHoldTimeConfigured
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property holdTimeConfigured.
+	 */
+	private int	holdTimeConfigured;
 
-    /**
-     * This method sets the BGPPeerGroup.holdTimeConfigured property value.
-     * This property is described as follows:
-     *
-     * This defines the time interval in seconds for the Hold TimeConfigured
-     * property of the endpoints of the routers in the PeerGroup. This value
-     * must not be less than three seconds. The suggested value for this
-     * timer is 90 seconds.
-     *
-     * @param	int	new holdTimeConfigured property value
-     * @exception	Exception
-     */
-    public void setHoldTimeConfigured(int holdTimeConfigured) {
+	/**
+	 * This method returns the BGPPeerGroup.holdTimeConfigured property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the Hold TimeConfigured property of the endpoints of the routers in the PeerGroup. This value
+	 * must not be less than three seconds. The suggested value for this timer is 90 seconds.
+	 * 
+	 * @return int current holdTimeConfigured property value
+	 * @exception Exception
+	 */
+	public int getHoldTimeConfigured() {
 
-    this.holdTimeConfigured = holdTimeConfigured;
-    } // setHoldTimeConfigured
+		return this.holdTimeConfigured;
+	} // getHoldTimeConfigured
 
+	/**
+	 * This method sets the BGPPeerGroup.holdTimeConfigured property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the Hold TimeConfigured property of the endpoints of the routers in the PeerGroup. This value
+	 * must not be less than three seconds. The suggested value for this timer is 90 seconds.
+	 * 
+	 * @param int new holdTimeConfigured property value
+	 * @exception Exception
+	 */
+	public void setHoldTimeConfigured(int holdTimeConfigured) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property keepAliveConfigured.
-     */
-    private int keepAliveConfigured;
-    /**
-     * This method returns the BGPPeerGroup.keepAliveConfigured property
-     * value. This property is described as follows:
-     *
-     * This defines the time interval in seconds for the KeepAliveConfigured
-     * timer for the endpoints of the routers in the PeerGroup. The suggested
-     * value for this property is 30 seconds. The maximum value of this
-     * property is 21845 seconds.
-     *
-     * @return	int	current keepAliveConfigured property value
-     * @exception	Exception
-     */
-    public int getKeepAliveConfigured(){
+		this.holdTimeConfigured = holdTimeConfigured;
+	} // setHoldTimeConfigured
 
-    return this.keepAliveConfigured;
-    } // getKeepAliveConfigured
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property keepAliveConfigured.
+	 */
+	private int	keepAliveConfigured;
 
-    /**
-     * This method sets the BGPPeerGroup.keepAliveConfigured property value.
-     * This property is described as follows:
-     *
-     * This defines the time interval in seconds for the KeepAliveConfigured
-     * timer for the endpoints of the routers in the PeerGroup. The suggested
-     * value for this property is 30 seconds. The maximum value of this
-     * property is 21845 seconds.
-     *
-     * @param	int	new keepAliveConfigured property value
-     * @exception	Exception
-     */
-    public void setKeepAliveConfigured(int keepAliveConfigured) {
+	/**
+	 * This method returns the BGPPeerGroup.keepAliveConfigured property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the KeepAliveConfigured timer for the endpoints of the routers in the PeerGroup. The suggested
+	 * value for this property is 30 seconds. The maximum value of this property is 21845 seconds.
+	 * 
+	 * @return int current keepAliveConfigured property value
+	 * @exception Exception
+	 */
+	public int getKeepAliveConfigured() {
 
-    this.keepAliveConfigured = keepAliveConfigured;
-    } // setKeepAliveConfigured
+		return this.keepAliveConfigured;
+	} // getKeepAliveConfigured
 
+	/**
+	 * This method sets the BGPPeerGroup.keepAliveConfigured property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the KeepAliveConfigured timer for the endpoints of the routers in the PeerGroup. The suggested
+	 * value for this property is 30 seconds. The maximum value of this property is 21845 seconds.
+	 * 
+	 * @param int new keepAliveConfigured property value
+	 * @exception Exception
+	 */
+	public void setKeepAliveConfigured(int keepAliveConfigured) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minASOriginationInterval.
-     */
-    private int minASOriginationInterval;
-    /**
-     * This method returns the BGPPeerGroup.minASOriginationInterval property
-     * value. This property is described as follows:
-     *
-     * This defines the time interval in seconds for the
-     * MinASOriginationInterval timer for the endpoints of the routers in the
-     * PeerGroup. The suggested value for this property is 15 seconds.
-     *
-     * @return	int	current minASOriginationInterval property
-     * value
-     * @exception	Exception
-     */
-    public int getMinASOriginationInterval(){
+		this.keepAliveConfigured = keepAliveConfigured;
+	} // setKeepAliveConfigured
 
-    return this.minASOriginationInterval;
-    } // getMinASOriginationInterval
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minASOriginationInterval.
+	 */
+	private int	minASOriginationInterval;
 
-    /**
-     * This method sets the BGPPeerGroup.minASOriginationInterval property
-     * value. This property is described as follows:
-     *
-     * This defines the time interval in seconds for the
-     * MinASOriginationInterval timer for the endpoints of the routers in the
-     * PeerGroup. The suggested value for this property is 15 seconds.
-     *
-     * @param	int	new minASOriginationInterval property value
-     * @exception	Exception
-     */
-    public void setMinASOriginationInterval(int minASOriginationInterval) {
+	/**
+	 * This method returns the BGPPeerGroup.minASOriginationInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the MinASOriginationInterval timer for the endpoints of the routers in the PeerGroup. The
+	 * suggested value for this property is 15 seconds.
+	 * 
+	 * @return int current minASOriginationInterval property value
+	 * @exception Exception
+	 */
+	public int getMinASOriginationInterval() {
 
-    this.minASOriginationInterval = minASOriginationInterval;
-    } // setMinASOriginationInterval
+		return this.minASOriginationInterval;
+	} // getMinASOriginationInterval
 
+	/**
+	 * This method sets the BGPPeerGroup.minASOriginationInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the MinASOriginationInterval timer for the endpoints of the routers in the PeerGroup. The
+	 * suggested value for this property is 15 seconds.
+	 * 
+	 * @param int new minASOriginationInterval property value
+	 * @exception Exception
+	 */
+	public void setMinASOriginationInterval(int minASOriginationInterval) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minRouteAdvertisementInterval.
-     */
-    private int minRouteAdvertisementInterval;
-    /**
-     * This method returns the BGPPeerGroup.minRouteAdvertisementInterval
-     * property value. This property is described as follows:
-     *
-     * This defines the time interval in seconds for the
-     * MinRouteAdvertisementInterval timer for the endpoints of the routers
-     * in the PeerGroup. The suggested value for this property is 30 seconds.
-     *
-     * @return	int	current minRouteAdvertisementInterval
-     * property value
-     * @exception	Exception
-     */
-    public int getMinRouteAdvertisementInterval(){
+		this.minASOriginationInterval = minASOriginationInterval;
+	} // setMinASOriginationInterval
 
-    return this.minRouteAdvertisementInterval;
-    } // getMinRouteAdvertisementInterval
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minRouteAdvertisementInterval.
+	 */
+	private int	minRouteAdvertisementInterval;
 
-    /**
-     * This method sets the BGPPeerGroup.minRouteAdvertisementInterval
-     * property value. This property is described as follows:
-     *
-     * This defines the time interval in seconds for the
-     * MinRouteAdvertisementInterval timer for the endpoints of the routers
-     * in the PeerGroup. The suggested value for this property is 30 seconds.
-     *
-     * @param	int	new minRouteAdvertisementInterval property
-     * value
-     * @exception	Exception
-     */
-    public void setMinRouteAdvertisementInterval(int
-	minRouteAdvertisementInterval) {
+	/**
+	 * This method returns the BGPPeerGroup.minRouteAdvertisementInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the MinRouteAdvertisementInterval timer for the endpoints of the routers in the PeerGroup. The
+	 * suggested value for this property is 30 seconds.
+	 * 
+	 * @return int current minRouteAdvertisementInterval property value
+	 * @exception Exception
+	 */
+	public int getMinRouteAdvertisementInterval() {
 
-    this.minRouteAdvertisementInterval = minRouteAdvertisementInterval;
-    } // setMinRouteAdvertisementInterval
+		return this.minRouteAdvertisementInterval;
+	} // getMinRouteAdvertisementInterval
 
+	/**
+	 * This method sets the BGPPeerGroup.minRouteAdvertisementInterval property value. This property is described as follows:
+	 * 
+	 * This defines the time interval in seconds for the MinRouteAdvertisementInterval timer for the endpoints of the routers in the PeerGroup. The
+	 * suggested value for this property is 30 seconds.
+	 * 
+	 * @param int new minRouteAdvertisementInterval property value
+	 * @exception Exception
+	 */
+	public void setMinRouteAdvertisementInterval(int
+			minRouteAdvertisementInterval) {
 
+		this.minRouteAdvertisementInterval = minRouteAdvertisementInterval;
+	} // setMinRouteAdvertisementInterval
 
 } // Class BGPPeerGroup

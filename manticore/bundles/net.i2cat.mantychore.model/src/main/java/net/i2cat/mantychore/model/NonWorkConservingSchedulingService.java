@@ -8,31 +8,24 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NonWorkConservingSchedulingService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the NonWorkConservingSchedulingServiceBean Interface. The CIM
- * class NonWorkConservingSchedulingService is described as follows:
- *
- * A type of packet scheduler, that is capable of operating in a non-work
- * conserving manner. This class does not add any properties beyond those it
- * inherits from PacketSchedulingService. It does, however, participate in
- * one additional association, FailNextScheduler.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NonWorkConservingSchedulingService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the NonWorkConservingSchedulingServiceBean Interface. The CIM class
+ * NonWorkConservingSchedulingService is described as follows:
+ * 
+ * A type of packet scheduler, that is capable of operating in a non-work conserving manner. This class does not add any properties beyond those it
+ * inherits from PacketSchedulingService. It does, however, participate in one additional association, FailNextScheduler.
  */
 public class NonWorkConservingSchedulingService extends
-    PacketSchedulingService implements Serializable {
+		PacketSchedulingService implements Serializable {
 
-    /**
-     * This constructor creates a NonWorkConservingSchedulingServiceBeanImpl
-     * Class which implements the NonWorkConservingSchedulingServiceBean
-     * Interface, and encapsulates the CIM class
-     * NonWorkConservingSchedulingService in a Java Bean. The CIM class
-     * NonWorkConservingSchedulingService is described as follows:
-     *
-     * A type of packet scheduler, that is capable of operating in a non-work
-     * conserving manner. This class does not add any properties beyond those
-     * it inherits from PacketSchedulingService. It does, however,
-     * participate in one additional association, FailNextScheduler.
-     */
-    public NonWorkConservingSchedulingService(){};
+	/**
+	 * This constructor creates a NonWorkConservingSchedulingServiceBeanImpl Class which implements the NonWorkConservingSchedulingServiceBean
+	 * Interface, and encapsulates the CIM class NonWorkConservingSchedulingService in a Java Bean. The CIM class NonWorkConservingSchedulingService
+	 * is described as follows:
+	 * 
+	 * A type of packet scheduler, that is capable of operating in a non-work conserving manner. This class does not add any properties beyond those
+	 * it inherits from PacketSchedulingService. It does, however, participate in one additional association, FailNextScheduler.
+	 */
+	public NonWorkConservingSchedulingService() {
+	};
 } // Class NonWorkConservingSchedulingService

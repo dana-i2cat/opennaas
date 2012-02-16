@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class NextHopRoute as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the NextHopRouteBean Interface. The CIM class NextHopRoute is described as follows:
- *
+ * 
  * NextHopRoute represents one of a series of 'hops' to reach a network destination. A route is administratively defined, or calculated/learned by a
  * particular routing process. A ConcreteDependency associaton may be instantiated between a route and its routing service to indicate this. (In this
  * scenario, the route is dependent on the service.)
@@ -18,14 +18,14 @@ import java.io.Serializable;
 public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
-	 *This method sets the System into the the Association of the type HostedRoute System will be the "from" and this class will be the "to" If the
+	 * This method sets the System into the the Association of the type HostedRoute System will be the "from" and this class will be the "to" If the
 	 * param is null the method will delete the existing Association and don't add a new one.
-	 *
+	 * 
 	 * Is required to have one, and only one, System
-	 *
+	 * 
 	 * @param The
 	 *            System to set into the association as a from
-	 *
+	 * 
 	 */
 	public void setSystem(System system) {
 		Association a = this.getFirstFromAssociationsByType(HostedRoute.class);
@@ -38,8 +38,8 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	}
 
 	/**
-	 *This method return the firsts System in the HostedRoute association
-	 *
+	 * This method return the firsts System in the HostedRoute association
+	 * 
 	 * @return The System element
 	 */
 	public System getSystem() {
@@ -47,14 +47,14 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	}
 
 	/**
-	 *This method sets the ProtocolEndpoint p into the the Association of the type RouteUsesEndpoint ProtocolEndpoint will be the "from" and this
+	 * This method sets the ProtocolEndpoint p into the the Association of the type RouteUsesEndpoint ProtocolEndpoint will be the "from" and this
 	 * class will be the "to" If the param is null the method will delete the existing Association and don't add a new one.
-	 *
+	 * 
 	 * Can have 0 or 1 related protoclEndpoint
-	 *
+	 * 
 	 * @param The
 	 *            ProtocolEndpoint to set into the association as a from
-	 *
+	 * 
 	 */
 	public void setProtocolEndpoint(ProtocolEndpoint p) {
 		Association a = this.getFirstFromAssociationsByType(RouteUsesEndpoint.class);
@@ -67,8 +67,8 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	}
 
 	/**
-	 *This method return the firsts ProtocolEndpoint in the RouteUsesEndpoint association
-	 *
+	 * This method return the firsts ProtocolEndpoint in the RouteUsesEndpoint association
+	 * 
 	 * @return The ProtocolEndpoint element
 	 */
 	public ProtocolEndpoint getProtocolEndpoint() {
@@ -78,7 +78,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	/**
 	 * This constructor creates a NextHopRouteBeanImpl Class which implements the NextHopRouteBean Interface, and encapsulates the CIM class
 	 * NextHopRoute in a Java Bean. The CIM class NextHopRoute is described as follows:
-	 *
+	 * 
 	 * NextHopRoute represents one of a series of 'hops' to reach a network destination. A route is administratively defined, or calculated/learned by
 	 * a particular routing process. A ConcreteDependency associaton may be instantiated between a route and its routing service to indicate this. (In
 	 * this scenario, the route is dependent on the service.)
@@ -93,7 +93,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.instanceID property value. This property is described as follows:
-	 *
+	 * 
 	 * Within the scope of the instantiating Namespace, InstanceID opaquely and uniquely identifies an instance of this class. In order to ensure
 	 * uniqueness within the NameSpace, the value of InstanceID SHOULD be constructed using the following 'preferred' algorithm: <OrgID>:<LocalID>
 	 * Where <OrgID> and <LocalID> are separated by a colon ':', and where <OrgID> MUST include a copyrighted, trademarked or otherwise unique name
@@ -104,7 +104,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 * elements. If the above 'preferred' algorithm is not used, the defining entity MUST assure that the resultant InstanceID is not re-used across
 	 * any InstanceIDs produced by this or other providers for this instance's NameSpace. For DMTF defined instances, the 'preferred' algorithm MUST
 	 * be used with the <OrgID> set to 'CIM'.
-	 *
+	 * 
 	 * @return String current instanceID property value
 	 * @exception Exception
 	 */
@@ -116,7 +116,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.instanceID property value. This property is described as follows:
-	 *
+	 * 
 	 * Within the scope of the instantiating Namespace, InstanceID opaquely and uniquely identifies an instance of this class. In order to ensure
 	 * uniqueness within the NameSpace, the value of InstanceID SHOULD be constructed using the following 'preferred' algorithm: <OrgID>:<LocalID>
 	 * Where <OrgID> and <LocalID> are separated by a colon ':', and where <OrgID> MUST include a copyrighted, trademarked or otherwise unique name
@@ -127,7 +127,7 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 	 * elements. If the above 'preferred' algorithm is not used, the defining entity MUST assure that the resultant InstanceID is not re-used across
 	 * any InstanceIDs produced by this or other providers for this instance's NameSpace. For DMTF defined instances, the 'preferred' algorithm MUST
 	 * be used with the <OrgID> set to 'CIM'.
-	 *
+	 * 
 	 * @param String
 	 *            new instanceID property value
 	 * @exception Exception
@@ -145,9 +145,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.destinationAddress property value. This property is described as follows:
-	 *
+	 * 
 	 * The address which serves as the destination to be reached.
-	 *
+	 * 
 	 * @return String current destinationAddress property value
 	 * @exception Exception
 	 */
@@ -158,9 +158,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.destinationAddress property value. This property is described as follows:
-	 *
+	 * 
 	 * The address which serves as the destination to be reached.
-	 *
+	 * 
 	 * @param String
 	 *            new destinationAddress property value
 	 * @exception Exception
@@ -177,9 +177,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.adminDistance property value. This property is described as follows:
-	 *
+	 * 
 	 * The specific administrative distance of this route, overriding any default distances specified by the system or routing service.
-	 *
+	 * 
 	 * @return int current adminDistance property value
 	 * @exception Exception
 	 */
@@ -190,9 +190,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.adminDistance property value. This property is described as follows:
-	 *
+	 * 
 	 * The specific administrative distance of this route, overriding any default distances specified by the system or routing service.
-	 *
+	 * 
 	 * @param int new adminDistance property value
 	 * @exception Exception
 	 */
@@ -208,9 +208,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.routeMetric property value. This property is described as follows:
-	 *
+	 * 
 	 * RouteMetric provides a numeric indication as to the preference of this route, compared to other routes that reach the same destination.
-	 *
+	 * 
 	 * @return int current routeMetric property value
 	 * @exception Exception
 	 */
@@ -221,9 +221,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.routeMetric property value. This property is described as follows:
-	 *
+	 * 
 	 * RouteMetric provides a numeric indication as to the preference of this route, compared to other routes that reach the same destination.
-	 *
+	 * 
 	 * @param int new routeMetric property value
 	 * @exception Exception
 	 */
@@ -239,9 +239,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.isStatic property value. This property is described as follows:
-	 *
+	 * 
 	 * TRUE indicates that this is a static route, and FALSE indicates a dynamically-learned route.
-	 *
+	 * 
 	 * @return boolean current isStatic property value
 	 * @exception Exception
 	 */
@@ -252,9 +252,9 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.isStatic property value. This property is described as follows:
-	 *
+	 * 
 	 * TRUE indicates that this is a static route, and FALSE indicates a dynamically-learned route.
-	 *
+	 * 
 	 * @param boolean new isStatic property value
 	 * @exception Exception
 	 */
@@ -277,10 +277,10 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method returns the NextHopRoute.typeOfRoute property value. This property is described as follows:
-	 *
+	 * 
 	 * An enumerated integer indicating whether the route is administrator-defined (value=2), computed (via a routing protocol/algorithm, value=3) or
 	 * the actual route implemented in the network (value=4). The default is a computed route.
-	 *
+	 * 
 	 * @return int current typeOfRoute property value
 	 * @exception Exception
 	 */
@@ -291,10 +291,10 @@ public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
 	 * This method sets the NextHopRoute.typeOfRoute property value. This property is described as follows:
-	 *
+	 * 
 	 * An enumerated integer indicating whether the route is administrator-defined (value=2), computed (via a routing protocol/algorithm, value=3) or
 	 * the actual route implemented in the network (value=4). The default is a computed route.
-	 *
+	 * 
 	 * @param int new typeOfRoute property value
 	 * @exception Exception
 	 */

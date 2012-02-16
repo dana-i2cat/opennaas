@@ -8,57 +8,41 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductServiceComponent as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ProductServiceComponentBean Interface. The CIM class
- * ProductServiceComponent is described as follows:
- *
- * Indicates that the referenced Service is acquired as part of a Product.
- * Examples of Services that may be acquired are outsourced storage and
- * networking services, or support and warranty services. Expanding on the
- * examples, Services represent generic functionality - so, it is possible to
- * model the existence of storage volume management or warranty services as
- * individual instances of subclasses of CIM_Service. These 'Services' may be
- * enabled/disabled, started/stopped, signal an error, etc. (They behave as
- * standard ManagedSystemElements.) Specific requests against the Services -
- * for example, a request for warranty service or increased storage space -
- * are NOT new instances of Service, but may be requested via the methods of
- * the Service subclass, or be instantiated as specific subclasses of
- * ManagedElement.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductServiceComponent as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ProductServiceComponentBean Interface. The CIM class ProductServiceComponent
+ * is described as follows:
+ * 
+ * Indicates that the referenced Service is acquired as part of a Product. Examples of Services that may be acquired are outsourced storage and
+ * networking services, or support and warranty services. Expanding on the examples, Services represent generic functionality - so, it is possible to
+ * model the existence of storage volume management or warranty services as individual instances of subclasses of CIM_Service. These 'Services' may be
+ * enabled/disabled, started/stopped, signal an error, etc. (They behave as standard ManagedSystemElements.) Specific requests against the Services -
+ * for example, a request for warranty service or increased storage space - are NOT new instances of Service, but may be requested via the methods of
+ * the Service subclass, or be instantiated as specific subclasses of ManagedElement.
  */
 public class ProductServiceComponent extends Component implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ProductServiceComponentBeanImpl Class which
-     * implements the ProductServiceComponentBean Interface, and encapsulates
-     * the CIM class ProductServiceComponent in a Java Bean. The CIM class
-     * ProductServiceComponent is described as follows:
-     *
-     * Indicates that the referenced Service is acquired as part of a Product.
-     * Examples of Services that may be acquired are outsourced storage and
-     * networking services, or support and warranty services. Expanding on
-     * the examples, Services represent generic functionality - so, it is
-     * possible to model the existence of storage volume management or
-     * warranty services as individual instances of subclasses of
-     * CIM_Service. These 'Services' may be enabled/disabled,
-     * started/stopped, signal an error, etc. (They behave as standard
-     * ManagedSystemElements.) Specific requests against the Services - for
-     * example, a request for warranty service or increased storage space -
-     * are NOT new instances of Service, but may be requested via the methods
-     * of the Service subclass, or be instantiated as specific subclasses of
-     * ManagedElement.
-     */
-    public ProductServiceComponent(){};
-    /**
-     * This method create an Association of the type ProductServiceComponent
-     * between one Product object and Service object
-     */
-    public static ProductServiceComponent link(Product groupComponent,Service
-	partComponent){
+	/**
+	 * This constructor creates a ProductServiceComponentBeanImpl Class which implements the ProductServiceComponentBean Interface, and encapsulates
+	 * the CIM class ProductServiceComponent in a Java Bean. The CIM class ProductServiceComponent is described as follows:
+	 * 
+	 * Indicates that the referenced Service is acquired as part of a Product. Examples of Services that may be acquired are outsourced storage and
+	 * networking services, or support and warranty services. Expanding on the examples, Services represent generic functionality - so, it is possible
+	 * to model the existence of storage volume management or warranty services as individual instances of subclasses of CIM_Service. These 'Services'
+	 * may be enabled/disabled, started/stopped, signal an error, etc. (They behave as standard ManagedSystemElements.) Specific requests against the
+	 * Services - for example, a request for warranty service or increased storage space - are NOT new instances of Service, but may be requested via
+	 * the methods of the Service subclass, or be instantiated as specific subclasses of ManagedElement.
+	 */
+	public ProductServiceComponent() {
+	};
 
-    return (ProductServiceComponent) Association.link(ProductServiceComponent.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ProductServiceComponent between one Product object and Service object
+	 */
+	public static ProductServiceComponent link(Product groupComponent, Service
+			partComponent) {
+
+		return (ProductServiceComponent) Association.link(ProductServiceComponent.class, groupComponent, partComponent);
+	}// link
 
 } // Class ProductServiceComponent

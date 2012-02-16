@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class StorageExtent as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the StorageExtentBean Interface. The CIM class StorageExtent is described as follows:
- *
+ * 
  * StorageExtent describes the capabilities and management of the various media that exist to store data and allow data retrieval. This superclass
  * could be used to represent the various components of RAID (Hardware or Software) or as a raw logical extent on top of physical media.
  */
@@ -19,7 +19,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	/**
 	 * This constructor creates a StorageExtentBeanImpl Class which implements the StorageExtentBean Interface, and encapsulates the CIM class
 	 * StorageExtent in a Java Bean. The CIM class StorageExtent is described as follows:
-	 *
+	 * 
 	 * StorageExtent describes the capabilities and management of the various media that exist to store data and allow data retrieval. This superclass
 	 * could be used to represent the various components of RAID (Hardware or Software) or as a raw logical extent on top of physical media.
 	 */
@@ -42,9 +42,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.dataOrganization property value. This property is described as follows:
-	 *
+	 * 
 	 * Type of data organization used.
-	 *
+	 * 
 	 * @return int current dataOrganization property value
 	 * @exception Exception
 	 */
@@ -55,9 +55,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.dataOrganization property value. This property is described as follows:
-	 *
+	 * 
 	 * Type of data organization used.
-	 *
+	 * 
 	 * @param int new dataOrganization property value
 	 * @exception Exception
 	 */
@@ -73,9 +73,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.purpose property value. This property is described as follows:
-	 *
+	 * 
 	 * A free form string describing the media and/or its use.
-	 *
+	 * 
 	 * @return String current purpose property value
 	 * @exception Exception
 	 */
@@ -86,9 +86,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.purpose property value. This property is described as follows:
-	 *
+	 * 
 	 * A free form string describing the media and/or its use.
-	 *
+	 * 
 	 * @param String
 	 *            new purpose property value
 	 * @exception Exception
@@ -114,10 +114,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.access property value. This property is described as follows:
-	 *
+	 * 
 	 * Access describes whether the media is readable (value=1), writeable (value=2), or both (value=3). "Unknown" (0) and "Write Once" (4) can also
 	 * be defined.
-	 *
+	 * 
 	 * @return int current access property value
 	 * @exception Exception
 	 */
@@ -128,10 +128,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.access property value. This property is described as follows:
-	 *
+	 * 
 	 * Access describes whether the media is readable (value=1), writeable (value=2), or both (value=3). "Unknown" (0) and "Write Once" (4) can also
 	 * be defined.
-	 *
+	 * 
 	 * @param int new access property value
 	 * @exception Exception
 	 */
@@ -147,9 +147,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.errorMethodology property value. This property is described as follows:
-	 *
+	 * 
 	 * ErrorMethodology is a free-form string describing the type of error detection and correction supported by this StorageExtent.
-	 *
+	 * 
 	 * @return String current errorMethodology property value
 	 * @exception Exception
 	 */
@@ -160,9 +160,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.errorMethodology property value. This property is described as follows:
-	 *
+	 * 
 	 * ErrorMethodology is a free-form string describing the type of error detection and correction supported by this StorageExtent.
-	 *
+	 * 
 	 * @param String
 	 *            new errorMethodology property value
 	 * @exception Exception
@@ -179,10 +179,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.blockSize property value. This property is described as follows:
-	 *
+	 * 
 	 * Size in bytes of the blocks which form this StorageExtent. If variable block size, then the maximum block size in bytes should be specified. If
 	 * the block size is unknown or if a block concept is not valid (for example, for AggregateExtents, Memory or LogicalDisks), enter a 1.
-	 *
+	 * 
 	 * @return long current blockSize property value
 	 * @exception Exception
 	 */
@@ -193,10 +193,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.blockSize property value. This property is described as follows:
-	 *
+	 * 
 	 * Size in bytes of the blocks which form this StorageExtent. If variable block size, then the maximum block size in bytes should be specified. If
 	 * the block size is unknown or if a block concept is not valid (for example, for AggregateExtents, Memory or LogicalDisks), enter a 1.
-	 *
+	 * 
 	 * @param long new blockSize property value
 	 * @exception Exception
 	 */
@@ -212,10 +212,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.numberOfBlocks property value. This property is described as follows:
-	 *
+	 * 
 	 * Total number of logically contiguous blocks, of size Block Size, which form this Extent. The total size of the Extent can be calculated by
 	 * multiplying BlockSize by NumberOfBlocks. If the BlockSize is 1, this property is the total size of the Extent.
-	 *
+	 * 
 	 * @return long current numberOfBlocks property value
 	 * @exception Exception
 	 */
@@ -226,10 +226,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.numberOfBlocks property value. This property is described as follows:
-	 *
+	 * 
 	 * Total number of logically contiguous blocks, of size Block Size, which form this Extent. The total size of the Extent can be calculated by
 	 * multiplying BlockSize by NumberOfBlocks. If the BlockSize is 1, this property is the total size of the Extent.
-	 *
+	 * 
 	 * @param long new numberOfBlocks property value
 	 * @exception Exception
 	 */
@@ -245,13 +245,13 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.consumableBlocks property value. This property is described as follows:
-	 *
+	 * 
 	 * The maximum number of blocks, of size BlockSize, which are available for consumption when layering StorageExtents using the BasedOn
 	 * association. This property only has meaning when this StorageExtent is an Antecedent reference in a BasedOn relationship. For example, a
 	 * StorageExtent could be composed of 120 blocks. However, the Extent itself may use 20 blocks for redundancy data. If another StorageExtent is
 	 * BasedOn this Extent, only 100 blocks would be available to it. This information ('100 blocks is available for consumption') is indicated in the
 	 * ConsumableBlocks property.
-	 *
+	 * 
 	 * @return long current consumableBlocks property value
 	 * @exception Exception
 	 */
@@ -262,13 +262,13 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.consumableBlocks property value. This property is described as follows:
-	 *
+	 * 
 	 * The maximum number of blocks, of size BlockSize, which are available for consumption when layering StorageExtents using the BasedOn
 	 * association. This property only has meaning when this StorageExtent is an Antecedent reference in a BasedOn relationship. For example, a
 	 * StorageExtent could be composed of 120 blocks. However, the Extent itself may use 20 blocks for redundancy data. If another StorageExtent is
 	 * BasedOn this Extent, only 100 blocks would be available to it. This information ('100 blocks is available for consumption') is indicated in the
 	 * ConsumableBlocks property.
-	 *
+	 * 
 	 * @param long new consumableBlocks property value
 	 * @exception Exception
 	 */
@@ -284,9 +284,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.isBasedOnUnderlyingRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * True indicates that the underlying StorageExtent(s) participate in a StorageRedundancyGroup.
-	 *
+	 * 
 	 * @return boolean current isBasedOnUnderlyingRedundancy property value
 	 * @exception Exception
 	 */
@@ -297,9 +297,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.isBasedOnUnderlyingRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * True indicates that the underlying StorageExtent(s) participate in a StorageRedundancyGroup.
-	 *
+	 * 
 	 * @param boolean new isBasedOnUnderlyingRedundancy property value
 	 * @exception Exception
 	 */
@@ -316,10 +316,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.sequentialAccess property value. This property is described as follows:
-	 *
+	 * 
 	 * Boolean set to TRUE if the Storage is sequentially accessed by a MediaAccessDevice. A TapePartition is an example of a sequentially accessed
 	 * StorageExtent. StorageVolumes, Disk Partitions and LogicalDisks represent randomly accessed Extents.
-	 *
+	 * 
 	 * @return boolean current sequentialAccess property value
 	 * @exception Exception
 	 */
@@ -330,10 +330,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.sequentialAccess property value. This property is described as follows:
-	 *
+	 * 
 	 * Boolean set to TRUE if the Storage is sequentially accessed by a MediaAccessDevice. A TapePartition is an example of a sequentially accessed
 	 * StorageExtent. StorageVolumes, Disk Partitions and LogicalDisks represent randomly accessed Extents.
-	 *
+	 * 
 	 * @param boolean new sequentialAccess property value
 	 * @exception Exception
 	 */
@@ -373,7 +373,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.extentStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * StorageExtents have additional status information beyond that captured in the OperationalStatus and other properties, inherited from
 	 * ManagedSystemElement. This additional information (for example, "Protection Disabled", value=9) is captured in the ExtentStatus property.
 	 * 'In-Band Access Granted' says that access to data on an extent is granted to some consumer and is only valid when 'Exported' is also set. It is
@@ -381,7 +381,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * current system, but known to be managed by some other system. For example, a server imports volumes from a disk array. 'Exported' indicates the
 	 * extent is meant to be used by some comsumer. A disk array's logical units are exported. Intermediate composite extents may be neither imported
 	 * nor exported.
-	 *
+	 * 
 	 * @return int current extentStatus property value
 	 * @exception Exception
 	 */
@@ -392,7 +392,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.extentStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * StorageExtents have additional status information beyond that captured in the OperationalStatus and other properties, inherited from
 	 * ManagedSystemElement. This additional information (for example, "Protection Disabled", value=9) is captured in the ExtentStatus property.
 	 * 'In-Band Access Granted' says that access to data on an extent is granted to some consumer and is only valid when 'Exported' is also set. It is
@@ -400,7 +400,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * current system, but known to be managed by some other system. For example, a server imports volumes from a disk array. 'Exported' indicates the
 	 * extent is meant to be used by some comsumer. A disk array's logical units are exported. Intermediate composite extents may be neither imported
 	 * nor exported.
-	 *
+	 * 
 	 * @param int new extentStatus property value
 	 * @exception Exception
 	 */
@@ -416,9 +416,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.noSinglePointOfFailure property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates whether or not there exists no single point of failure.
-	 *
+	 * 
 	 * @return boolean current noSinglePointOfFailure property value
 	 * @exception Exception
 	 */
@@ -429,9 +429,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.noSinglePointOfFailure property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates whether or not there exists no single point of failure.
-	 *
+	 * 
 	 * @param boolean new noSinglePointOfFailure property value
 	 * @exception Exception
 	 */
@@ -447,9 +447,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.dataRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * Number of complete copies of data currently maintained.
-	 *
+	 * 
 	 * @return int current dataRedundancy property value
 	 * @exception Exception
 	 */
@@ -460,9 +460,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.dataRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * Number of complete copies of data currently maintained.
-	 *
+	 * 
 	 * @param int new dataRedundancy property value
 	 * @exception Exception
 	 */
@@ -478,9 +478,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.packageRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * How many physical packages can currently fail without data loss. For example, in the storage domain, this might be disk spindles.
-	 *
+	 * 
 	 * @return int current packageRedundancy property value
 	 * @exception Exception
 	 */
@@ -491,9 +491,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.packageRedundancy property value. This property is described as follows:
-	 *
+	 * 
 	 * How many physical packages can currently fail without data loss. For example, in the storage domain, this might be disk spindles.
-	 *
+	 * 
 	 * @param int new packageRedundancy property value
 	 * @exception Exception
 	 */
@@ -509,10 +509,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.deltaReservation property value. This property is described as follows:
-	 *
+	 * 
 	 * Current value for Delta reservation. This is a percentage that specifies the amount of space that should be reserved in a replica for caching
 	 * changes.
-	 *
+	 * 
 	 * @return short current deltaReservation property value
 	 * @exception Exception
 	 */
@@ -523,10 +523,10 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.deltaReservation property value. This property is described as follows:
-	 *
+	 * 
 	 * Current value for Delta reservation. This is a percentage that specifies the amount of space that should be reserved in a replica for caching
 	 * changes.
-	 *
+	 * 
 	 * @param short new deltaReservation property value
 	 * @exception Exception
 	 */
@@ -542,7 +542,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.primordial property value. This property is described as follows:
-	 *
+	 * 
 	 * If true, "Primordial" indicates that the containing System does not have the ability to create or delete this operational element. This is
 	 * important because StorageExtents are assembled into higher-level abstractions using the BasedOn association. Although the higher-level
 	 * abstractions can be created and deleted, the most basic, (i.e. primordial), hardware-based storage entities cannot. They are physically
@@ -552,7 +552,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * StorageExtent.ConsumableSpace across all, StorageExtents but that also want to distinquish the space that underlies Primordial StoragePools.
 	 * Since implementations are not required to surface all Component StorageExtents of a StoragePool, this information is not accessible in any
 	 * other way.
-	 *
+	 * 
 	 * @return boolean current primordial property value
 	 * @exception Exception
 	 */
@@ -563,7 +563,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.primordial property value. This property is described as follows:
-	 *
+	 * 
 	 * If true, "Primordial" indicates that the containing System does not have the ability to create or delete this operational element. This is
 	 * important because StorageExtents are assembled into higher-level abstractions using the BasedOn association. Although the higher-level
 	 * abstractions can be created and deleted, the most basic, (i.e. primordial), hardware-based storage entities cannot. They are physically
@@ -573,7 +573,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * StorageExtent.ConsumableSpace across all, StorageExtents but that also want to distinquish the space that underlies Primordial StoragePools.
 	 * Since implementations are not required to surface all Component StorageExtents of a StoragePool, this information is not accessible in any
 	 * other way.
-	 *
+	 * 
 	 * @param boolean new primordial property value
 	 * @exception Exception
 	 */
@@ -589,9 +589,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	// private String name;
 	/**
 	 * This method returns the StorageExtent.name property value. This property is described as follows:
-	 *
+	 * 
 	 * A unique identifier for the Extent.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -603,9 +603,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.name property value. This property is described as follows:
-	 *
+	 * 
 	 * A unique identifier for the Extent.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -640,7 +640,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.nameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * The list here applies to all StorageExtent subclasses. Please look at the Description in each subclass for guidelines on the approriate values
 	 * for that subclass. Note that any of these formats could apply to a CompositeExtent. Note - this property originally touched on two concepts
 	 * that are now separated into this property and NameNamespace. Values 2,3,4,5,6, and 8 are retained for backwards compatibility but are
@@ -660,7 +660,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * 83, identifier type 1. See T10 SPC-3 specification. This is the 8-byte ASCII vendor ID from the T10 registry followed by a vendor specific
 	 * ASCII identifier; spaces are permitted. For non SCSI volumes, 'SNVM' may be the most appropriate choice. 12 = OS Device Name (for
 	 * LogicalDisks). See LogicalDisk Name description for details.
-	 *
+	 * 
 	 * @return int current nameFormat property value
 	 * @exception Exception
 	 */
@@ -671,7 +671,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.nameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * The list here applies to all StorageExtent subclasses. Please look at the Description in each subclass for guidelines on the approriate values
 	 * for that subclass. Note that any of these formats could apply to a CompositeExtent. Note - this property originally touched on two concepts
 	 * that are now separated into this property and NameNamespace. Values 2,3,4,5,6, and 8 are retained for backwards compatibility but are
@@ -691,7 +691,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * 83, identifier type 1. See T10 SPC-3 specification. This is the 8-byte ASCII vendor ID from the T10 registry followed by a vendor specific
 	 * ASCII identifier; spaces are permitted. For non SCSI volumes, 'SNVM' may be the most appropriate choice. 12 = OS Device Name (for
 	 * LogicalDisks). See LogicalDisk Name description for details.
-	 *
+	 * 
 	 * @param int new nameFormat property value
 	 * @exception Exception
 	 */
@@ -720,7 +720,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.nameNamespace property value. This property is described as follows:
-	 *
+	 * 
 	 * The preferred source SCSI for volume names is SCSI VPD Page 83 responses. Page 83 returns a list of identifiers for various device elements.
 	 * The metadata for each identifier includes an Association field, identifiers with association of 0 apply to volumes. Page 83 supports several
 	 * namespaces specified in the Type field in the identifier metadata. See SCSI SPC-3 specification. 2 = VPD Page 83, Type 3 NAA (NameFormat SHOULD
@@ -728,7 +728,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * namespaces from other interfaces: 5 = VPD page 80, Serial number (NameFormat SHOULD be Other) 6 = FC NodeWWN (NameFormat SHOULD be NAA or EUI)
 	 * 7 = Serial Number/Vendor/Model (NameFormat SHOULD be SNVM) The preferred namespace for LogigicalDisk names is platform specific device
 	 * namespace; see LogigicalDIsk Description. 8 = OS Device Namespace.
-	 *
+	 * 
 	 * @return int current nameNamespace property value
 	 * @exception Exception
 	 */
@@ -739,7 +739,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.nameNamespace property value. This property is described as follows:
-	 *
+	 * 
 	 * The preferred source SCSI for volume names is SCSI VPD Page 83 responses. Page 83 returns a list of identifiers for various device elements.
 	 * The metadata for each identifier includes an Association field, identifiers with association of 0 apply to volumes. Page 83 supports several
 	 * namespaces specified in the Type field in the identifier metadata. See SCSI SPC-3 specification. 2 = VPD Page 83, Type 3 NAA (NameFormat SHOULD
@@ -747,7 +747,7 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 	 * namespaces from other interfaces: 5 = VPD page 80, Serial number (NameFormat SHOULD be Other) 6 = FC NodeWWN (NameFormat SHOULD be NAA or EUI)
 	 * 7 = Serial Number/Vendor/Model (NameFormat SHOULD be SNVM) The preferred namespace for LogigicalDisk names is platform specific device
 	 * namespace; see LogigicalDIsk Description. 8 = OS Device Namespace.
-	 *
+	 * 
 	 * @param int new nameNamespace property value
 	 * @exception Exception
 	 */
@@ -763,9 +763,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.otherNameNamespace property value. This property is described as follows:
-	 *
+	 * 
 	 * A string describing the namespace of the Name property when NameNamespace includes the value 1, "Other".
-	 *
+	 * 
 	 * @return String current otherNameNamespace property value
 	 * @exception Exception
 	 */
@@ -776,9 +776,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.otherNameNamespace property value. This property is described as follows:
-	 *
+	 * 
 	 * A string describing the namespace of the Name property when NameNamespace includes the value 1, "Other".
-	 *
+	 * 
 	 * @param String
 	 *            new otherNameNamespace property value
 	 * @exception Exception
@@ -795,9 +795,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method returns the StorageExtent.otherNameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * A string describing the format of the Name property when NameFormat includes the value 1, "Other".
-	 *
+	 * 
 	 * @return String current otherNameFormat property value
 	 * @exception Exception
 	 */
@@ -808,9 +808,9 @@ public class StorageExtent extends LogicalDevice implements Serializable {
 
 	/**
 	 * This method sets the StorageExtent.otherNameFormat property value. This property is described as follows:
-	 *
+	 * 
 	 * A string describing the format of the Name property when NameFormat includes the value 1, "Other".
-	 *
+	 * 
 	 * @param String
 	 *            new otherNameFormat property value
 	 * @exception Exception
