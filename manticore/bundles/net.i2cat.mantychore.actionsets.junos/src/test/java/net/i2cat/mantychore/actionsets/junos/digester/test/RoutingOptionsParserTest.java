@@ -19,7 +19,7 @@ import org.junit.Test;
 
 public class RoutingOptionsParserTest {
 
-	private Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
+	private Log	log	= LogFactory.getLog(RoutingOptionsParserTest.class);
 
 	@Test
 	public void testParseRoutingOptions() throws Exception {

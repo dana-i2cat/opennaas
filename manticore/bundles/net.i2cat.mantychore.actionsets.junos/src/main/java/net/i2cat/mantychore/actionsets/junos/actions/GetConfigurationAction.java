@@ -8,12 +8,14 @@ import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
+import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -65,7 +67,7 @@ public class GetConfigurationAction extends JunosAction {
 
 		String message;
 		try {
-			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
+			System routerModel = (System) model;
 
 			/* getting interface information */
 			if (responseMessage instanceof Reply) {
@@ -80,8 +82,14 @@ public class GetConfigurationAction extends JunosAction {
 				/* Parse LR info */
 				routerModel = parseLRs(routerModel, message);
 
-				/* Parse interface options info */
+				/* Parse interface info */
 				routerModel = parseInterfaces(routerModel, message);
+
+				/* Parse protocols info */
+				// Protocols parsing should be done before parsing routing-options:
+				// Protocol parser creates classes in the model that require being updated by routing-options parser.
+				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
+				routerModel = parseProtocols(routerModel, message);
 
 				/* Parse routing options info */
 				routerModel = parseRoutingOptions(routerModel, message);
@@ -102,7 +110,7 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseLRs(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseLRs(System routerModel, String message)
 			throws IOException, SAXException {
 
 		DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
@@ -129,7 +137,7 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseInterfaces(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseInterfaces(System routerModel, String message)
 			throws IOException, SAXException {
 
 		DigesterEngine logicalInterfParser = new IPInterfaceParser();
@@ -148,6 +156,29 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	/**
+	 * Parses protocols data from message and puts in into routerModel.
+	 * 
+	 * @param routerModel
+	 *            to store parsed data
+	 * @param message
+	 *            to parse interfaces data from
+	 * @return routerModel updated with interfaces information from message.
+	 * @throws
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	private System parseProtocols(System routerModel, String message) throws IOException, SAXException {
+
+		ProtocolsParser protocolsParser = new ProtocolsParser(routerModel);
+		protocolsParser.init();
+		protocolsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+
+		routerModel = protocolsParser.getModel();
+
+		return routerModel;
+	}
+
+	/**
 	 * Parses routing options data from message and puts in into routerModel.
 	 * 
 	 * @param routerModel
@@ -158,7 +189,7 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
 			throws IOException, SAXException {
 
 		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
