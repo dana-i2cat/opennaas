@@ -27,7 +27,7 @@ public class OSPFArea extends RoutingProtocolDomain implements Serializable
 	 * @return OSPFAreaConfiguration assigned to this OSPFArea through AreaOfConfiguration dependency.
 	 */
 	public OSPFAreaConfiguration getConfiguration() {
-		return (OSPFAreaConfiguration) this.getToAssociatedElementsByType(AreaOfConfiguration.class);
+		return (OSPFAreaConfiguration) this.getFisrtsToAssociatedElementByType(AreaOfConfiguration.class);
 	}
 
 	/**

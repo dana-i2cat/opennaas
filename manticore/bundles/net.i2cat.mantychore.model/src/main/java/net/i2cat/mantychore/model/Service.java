@@ -23,7 +23,7 @@ public class Service extends EnabledLogicalElement implements Serializable {
 	 * @return System associated with this Service through HostedService dependency.
 	 */
 	public System getHostSystem() {
-		return (System) this.getFromAssociatedElementsByType(HostedService.class);
+		return (System) this.getFirstFromAssociatedElementByType(HostedService.class);
 	}
 
 	/**
