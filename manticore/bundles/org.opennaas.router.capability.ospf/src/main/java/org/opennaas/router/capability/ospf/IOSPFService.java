@@ -1,6 +1,11 @@
 package org.opennaas.router.capability.ospf;
 
+import java.util.List;
+
 import net.i2cat.mantychore.model.OSPFService;
+import net.i2cat.mantychore.network.model.topology.Interface;
+
+import org.opennaas.core.resources.capability.CapabilityException;
 
 /**
  * @author Jordi Puig
@@ -9,30 +14,41 @@ public interface IOSPFService {
 
 	/**
 	 * Enable OSPF on the interface.
+	 * 
+	 * @param lInterface
+	 * @return requestStatus
 	 */
-	public Object activateOSPF(Object params);
+	public Object activateOSPF(List<Interface> lInterface);
 
 	/**
 	 * Disable OSPF on the interface.
+	 * 
+	 * @param lInterface
+	 * @return requestStatus
 	 */
-	public Object deactivateOSPF(Object params);
+	public Object deactivateOSPF(List<Interface> lInterface);
 
 	/**
 	 * Configure a network interface in order to activate OSPF on it.
+	 * 
+	 * @param ospfService
+	 * @return requestStatus
 	 */
-	public Object configureOSPF(Object params);
+	public Object configureOSPF(OSPFService ospfService);
 
 	/**
 	 * Returns a list of all interfaces where the OSPF is configured and enabled (from model)
+	 * 
+	 * @return ospfService
+	 * @throws CapabilityException
 	 */
-	public OSPFService showOSPFConfiguration();
+	public OSPFService showOSPFConfiguration() throws CapabilityException;
 
 	/**
 	 * Returns a list of all interfaces where the OSPF is configured and enabled (from router)
 	 * 
-	 * @param routerId
-	 * @return OSPF configuration
+	 * @return ospfService
 	 */
-	public Object getOSPFConfiguration(OSPFService ospfService);
+	public OSPFService getOSPFConfiguration();
 
 }

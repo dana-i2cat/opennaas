@@ -1,9 +1,13 @@
 package org.opennaas.router.capability.ospf;
 
+import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.OSPFService;
+import net.i2cat.mantychore.model.Service;
+import net.i2cat.mantychore.network.model.topology.Interface;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
@@ -87,34 +91,45 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#configureOSPF()
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#activateOSPF(java.util.List)
 	 */
 	@Override
-	public Object configureOSPF(Object params) {
+	public Object activateOSPF(List<Interface> lInterface) {
 
-		return sendMessage(ActionConstants.OSPF_CONFIGURE, params);
+		return sendMessage(ActionConstants.OSPF_ACTIVATE, lInterface);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#activateOSPF(java.lang.String, java.lang.String)
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#deactivateOSPF(java.util.List)
 	 */
 	@Override
-	public Object activateOSPF(Object params) {
-		// TODO Auto-generated method stub
-		return sendMessage(ActionConstants.OSPF_ACTIVATE, params);
+	public Object deactivateOSPF(List<Interface> lInterface) {
+
+		return sendMessage(ActionConstants.OSPF_DEACTIVATE, lInterface);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#deactivateOSPF(java.lang.String, java.lang.String)
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#configureOSPF(net.i2cat.mantychore.model.OSPFService)
 	 */
 	@Override
-	public Object deactivateOSPF(Object params) {
-		// TODO Auto-generated method stub
-		return sendMessage(ActionConstants.OSPF_DEACTIVATE, params);
+	public Object configureOSPF(OSPFService ospfService) {
+
+		return sendMessage(ActionConstants.OSPF_CONFIGURE, ospfService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#getOSPFConfiguration()
+	 */
+	@Override
+	public OSPFService getOSPFConfiguration() {
+
+		return (OSPFService) sendMessage(ActionConstants.OSPF_GET_CONFIGURATION, null);
 	}
 
 	/*
@@ -123,20 +138,24 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 * @see org.opennaas.router.capability.ospf.IOSPFService#showOSPFConfiguration()
 	 */
 	@Override
-	public OSPFService showOSPFConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public OSPFService showOSPFConfiguration() throws CapabilityException {
+		OSPFService ospfService = null;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#getOSPFConfiguration(net.i2cat.mantychore.model.OSPFService)
-	 */
-	@Override
-	public Object getOSPFConfiguration(OSPFService ospfService) {
+		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
+		// If hosted services is null or empty throw Exception
+		if (lServices == null || lServices.size() <= 0) {
+			throw new CapabilityException("No hosted services in this model.");
+		} else {
+			// Search OSPF Service in the Service list
+			for (Service service : lServices) {
+				if (service instanceof OSPFService) {
+					ospfService = (OSPFService) service;
+					break;
+				}
+			}
+		}
 
-		return sendMessage(ActionConstants.OSPF_GET_CONFIGURATION, ospfService.getRouterID());
+		return ospfService;
 	}
 
 	/*
