@@ -43,9 +43,11 @@ public class GetOSPFConfigAction extends JunosAction {
 	public GetOSPFConfigAction() {
 		super();
 		initialize();
-
 	}
 
+	/**
+	 * Initialize protocolName, ActionId and velocity template
+	 */
 	protected void initialize() {
 		this.setActionID(ActionConstants.OSPF_GET_CONFIGURATION);
 		setTemplate("/VM_files/getconfiguration.vm"); // ask for the whole configuration
