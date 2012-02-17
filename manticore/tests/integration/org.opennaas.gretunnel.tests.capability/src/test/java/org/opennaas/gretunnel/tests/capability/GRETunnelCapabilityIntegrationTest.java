@@ -135,14 +135,11 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 	public void TestGRETunnelAction() {
 		log.info("TEST GRE TUNNEL ACTION");
 		try {
-			Response resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.CREATETUNNEL, null);
+			Response resp = (Response) gretunnelCapability.sendMessage(ActionConstants.CREATETUNNEL, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETTUNNELS, null);
+			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
@@ -155,10 +152,10 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 5);
+			Assert.assertTrue(queue.size() == 4);
 
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.getResponses().size() == 5);
+			Assert.assertTrue(queueResponse.getResponses().size() == 4);
 
 			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
 			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);

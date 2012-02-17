@@ -6,16 +6,16 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 
-public class GetTunnelsAction extends JunosAction {
+public class GetTunnelConfigurationAction extends JunosAction {
 
-	public GetTunnelsAction() {
+	public GetTunnelConfigurationAction() {
 		super();
 		initialize();
 
 	}
 
 	protected void initialize() {
-		this.setActionID(ActionConstants.GETTUNNELS);
+		this.setActionID(ActionConstants.GETTUNNELCONFIG);
 		setTemplate("");
 		this.protocolName = "netconf";
 	}
