@@ -5,9 +5,9 @@ import java.util.Vector;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.OSPFService;
 import net.i2cat.mantychore.model.Service;
-import net.i2cat.mantychore.network.model.topology.Interface;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
@@ -94,11 +94,11 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 * @see org.opennaas.router.capability.ospf.IOSPFService#activateOSPF(java.util.List)
 	 */
 	@Override
-	public Object activateOSPF(List<Interface> lInterface) {
+	public Object activateOSPF(List<LogicalPort> lLogicalPort) {
 		Response response = null;
 
-		for (Interface inter : lInterface) {
-			response = (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, inter);
+		for (LogicalPort logicalPort : lLogicalPort) {
+			response = (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, logicalPort);
 			if (response.getStatus().equals(Response.Status.OK)) {
 				break;
 			}
@@ -113,9 +113,9 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 * @see org.opennaas.router.capability.ospf.IOSPFService#deactivateOSPF(java.util.List)
 	 */
 	@Override
-	public Object deactivateOSPF(List<Interface> lInterface) {
+	public Object deactivateOSPF(List<LogicalPort> lLogicalPort) {
 
-		return sendMessage(ActionConstants.OSPF_DEACTIVATE, lInterface);
+		return sendMessage(ActionConstants.OSPF_DEACTIVATE, lLogicalPort);
 	}
 
 	/*

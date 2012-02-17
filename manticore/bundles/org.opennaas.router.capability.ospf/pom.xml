@@ -33,11 +33,6 @@
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.network</groupId>
-			<artifactId>net.i2cat.mantychore.network.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 		<!--  auxiliar methods to use with commands -->
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>

@@ -2,8 +2,8 @@ package org.opennaas.router.capability.ospf;
 
 import java.util.List;
 
+import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.OSPFService;
-import net.i2cat.mantychore.network.model.topology.Interface;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 
@@ -15,18 +15,18 @@ public interface IOSPFService {
 	/**
 	 * Enable OSPF on the interface.
 	 * 
-	 * @param lInterface
+	 * @param lLogicalPort
 	 * @return requestStatus
 	 */
-	public Object activateOSPF(List<Interface> lInterface);
+	public Object activateOSPF(List<LogicalPort> lLogicalPort);
 
 	/**
 	 * Disable OSPF on the interface.
 	 * 
-	 * @param lInterface
+	 * @param lLogicalPort
 	 * @return requestStatus
 	 */
-	public Object deactivateOSPF(List<Interface> lInterface);
+	public Object deactivateOSPF(List<LogicalPort> lLogicalPort);
 
 	/**
 	 * Configure a network interface in order to activate OSPF on it.
