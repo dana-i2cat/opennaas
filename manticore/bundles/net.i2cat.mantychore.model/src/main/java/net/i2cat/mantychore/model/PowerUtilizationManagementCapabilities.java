@@ -9,127 +9,107 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PowerUtilizationManagementCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the PowerUtilizationManagementCapabilitiesBean Interface. The
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PowerUtilizationManagementCapabilities as well as
+ * methods comparable to the invokeMethods defined for this class. This Class implements the PowerUtilizationManagementCapabilitiesBean Interface. The
  * CIM class PowerUtilizationManagementCapabilities is described as follows:
- *
- * CIM_PowerUtilizationManagementCapabilities describes the capabilities of
- * the associated CIM_PowerUtilizationManagementService.
+ * 
+ * CIM_PowerUtilizationManagementCapabilities describes the capabilities of the associated CIM_PowerUtilizationManagementService.
  */
 public class PowerUtilizationManagementCapabilities extends
-    EnabledLogicalElementCapabilities implements Serializable {
+		EnabledLogicalElementCapabilities implements Serializable {
 
-    /**
-     * This constructor creates a
-     * PowerUtilizationManagementCapabilitiesBeanImpl Class which implements
-     * the PowerUtilizationManagementCapabilitiesBean Interface, and
-     * encapsulates the CIM class PowerUtilizationManagementCapabilities in a
-     * Java Bean. The CIM class PowerUtilizationManagementCapabilities is
-     * described as follows:
-     *
-     * CIM_PowerUtilizationManagementCapabilities describes the capabilities
-     * of the associated CIM_PowerUtilizationManagementService.
-     */
-    public PowerUtilizationManagementCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property PowerUtilizationModesSupported.
-     */
+	/**
+	 * This constructor creates a PowerUtilizationManagementCapabilitiesBeanImpl Class which implements the PowerUtilizationManagementCapabilitiesBean
+	 * Interface, and encapsulates the CIM class PowerUtilizationManagementCapabilities in a Java Bean. The CIM class
+	 * PowerUtilizationManagementCapabilities is described as follows:
+	 * 
+	 * CIM_PowerUtilizationManagementCapabilities describes the capabilities of the associated CIM_PowerUtilizationManagementService.
+	 */
+	public PowerUtilizationManagementCapabilities() {
+	};
 
-    public enum PowerUtilizationModesSupported{
-    DYNAMIC,
-    STATIC,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private PowerUtilizationModesSupported powerUtilizationModesSupported;
-    /**
-     * This method returns the
-     * PowerUtilizationManagementCapabilities.powerUtilizationModesSupported
-     * property value. This property is described as follows:
-     *
-     * PowerUtilizationModesSupported indicates the power utilization modes
-     * supported by associated instances of
-     * CIM_PowerUtilizationManagementService. See
-     * CIM_PowerUtilizationManagementService.PowerSavingMode for a
-     * description of each enumeration value.
-     *
-     * @return	int	current powerUtilizationModesSupported
-     * property value
-     * @exception	Exception
-     */
-    public PowerUtilizationModesSupported
-	getPowerUtilizationModesSupported(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property PowerUtilizationModesSupported.
+	 */
 
-    return this.powerUtilizationModesSupported;
-    } // getPowerUtilizationModesSupported
+	public enum PowerUtilizationModesSupported {
+		DYNAMIC,
+		STATIC,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the
-     * PowerUtilizationManagementCapabilities.powerUtilizationModesSupported
-     * property value. This property is described as follows:
-     *
-     * PowerUtilizationModesSupported indicates the power utilization modes
-     * supported by associated instances of
-     * CIM_PowerUtilizationManagementService. See
-     * CIM_PowerUtilizationManagementService.PowerSavingMode for a
-     * description of each enumeration value.
-     *
-     * @param	int	new powerUtilizationModesSupported property
-     * value
-     * @exception	Exception
-     */
-    public void
-	setPowerUtilizationModesSupported(PowerUtilizationModesSupported
-	powerUtilizationModesSupported){
+	private PowerUtilizationModesSupported	powerUtilizationModesSupported;
 
-    this.powerUtilizationModesSupported = powerUtilizationModesSupported;
-    } // setPowerUtilizationModesSupported
+	/**
+	 * This method returns the PowerUtilizationManagementCapabilities.powerUtilizationModesSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * PowerUtilizationModesSupported indicates the power utilization modes supported by associated instances of
+	 * CIM_PowerUtilizationManagementService. See CIM_PowerUtilizationManagementService.PowerSavingMode for a description of each enumeration value.
+	 * 
+	 * @return int current powerUtilizationModesSupported property value
+	 * @exception Exception
+	 */
+	public PowerUtilizationModesSupported
+			getPowerUtilizationModesSupported() {
 
+		return this.powerUtilizationModesSupported;
+	} // getPowerUtilizationModesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedMethods.
-     */
+	/**
+	 * This method sets the PowerUtilizationManagementCapabilities.powerUtilizationModesSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * PowerUtilizationModesSupported indicates the power utilization modes supported by associated instances of
+	 * CIM_PowerUtilizationManagementService. See CIM_PowerUtilizationManagementService.PowerSavingMode for a description of each enumeration value.
+	 * 
+	 * @param int new powerUtilizationModesSupported property value
+	 * @exception Exception
+	 */
+	public void
+			setPowerUtilizationModesSupported(PowerUtilizationModesSupported
+					powerUtilizationModesSupported) {
 
-    public enum SupportedMethods{
-    APPLYPOWERALLOCATIONSETTINGS,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SupportedMethods supportedMethods;
-    /**
-     * This method returns the
-     * PowerUtilizationManagementCapabilities.supportedMethods property
-     * value. This property is described as follows:
-     *
-     * Enumeration of supported method identifiers
-     *
-     * @return	int	current supportedMethods property value
-     * @exception	Exception
-     */
-    public SupportedMethods getSupportedMethods(){
+		this.powerUtilizationModesSupported = powerUtilizationModesSupported;
+	} // setPowerUtilizationModesSupported
 
-    return this.supportedMethods;
-    } // getSupportedMethods
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedMethods.
+	 */
 
-    /**
-     * This method sets the
-     * PowerUtilizationManagementCapabilities.supportedMethods property
-     * value. This property is described as follows:
-     *
-     * Enumeration of supported method identifiers
-     *
-     * @param	int	new supportedMethods property value
-     * @exception	Exception
-     */
-    public void setSupportedMethods(SupportedMethods supportedMethods){
+	public enum SupportedMethods {
+		APPLYPOWERALLOCATIONSETTINGS,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.supportedMethods = supportedMethods;
-    } // setSupportedMethods
+	private SupportedMethods	supportedMethods;
 
+	/**
+	 * This method returns the PowerUtilizationManagementCapabilities.supportedMethods property value. This property is described as follows:
+	 * 
+	 * Enumeration of supported method identifiers
+	 * 
+	 * @return int current supportedMethods property value
+	 * @exception Exception
+	 */
+	public SupportedMethods getSupportedMethods() {
 
+		return this.supportedMethods;
+	} // getSupportedMethods
+
+	/**
+	 * This method sets the PowerUtilizationManagementCapabilities.supportedMethods property value. This property is described as follows:
+	 * 
+	 * Enumeration of supported method identifiers
+	 * 
+	 * @param int new supportedMethods property value
+	 * @exception Exception
+	 */
+	public void setSupportedMethods(SupportedMethods supportedMethods) {
+
+		this.supportedMethods = supportedMethods;
+	} // setSupportedMethods
 
 } // Class PowerUtilizationManagementCapabilities

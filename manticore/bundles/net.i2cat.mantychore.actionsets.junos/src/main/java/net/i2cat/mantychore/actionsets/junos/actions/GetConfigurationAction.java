@@ -14,7 +14,7 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
-import net.i2cat.mantychore.model.NextHopRoute;
+import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -66,7 +66,7 @@ public class GetConfigurationAction extends JunosAction {
 
 		String message;
 		try {
-			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
+			System routerModel = (System) model;
 
 			/* getting interface information */
 			if (responseMessage instanceof Reply) {
@@ -81,10 +81,13 @@ public class GetConfigurationAction extends JunosAction {
 				/* Parse LR info */
 				routerModel = parseLRs(routerModel, message);
 
-				/* Parse interface options info */
+				/* Parse interface info */
 				routerModel = parseInterfaces(routerModel, message);
 
 				/* Parse routing options info */
+				// Routing options parsing should be done after parsing protocols (protocols is required):
+				// Protocol parser creates classes in the model that require being updated by routing-options parser.
+				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
 				routerModel = parseRoutingOptions(routerModel, message);
 			}
 		} catch (Exception e) {
@@ -103,7 +106,7 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseLRs(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseLRs(System routerModel, String message)
 			throws IOException, SAXException {
 
 		DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
@@ -130,7 +133,7 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseInterfaces(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseInterfaces(System routerModel, String message)
 			throws IOException, SAXException {
 
 		DigesterEngine logicalInterfParser = new IPInterfaceParser();
@@ -159,19 +162,14 @@ public class GetConfigurationAction extends JunosAction {
 	 * @throws IOException
 	 * @throws SAXException
 	 */
-	private net.i2cat.mantychore.model.System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
+	private System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
 			throws IOException, SAXException {
 
-		DigesterEngine routingOptionsParser = new RoutingOptionsParser();
+		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
 		routingOptionsParser.init();
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
 
-		// add to the router model
-		for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
-			NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
-			routerModel.addNextHopRoute(nh);
-		}
-
+		routerModel = routingOptionsParser.getModel();
 		return routerModel;
 	}
 

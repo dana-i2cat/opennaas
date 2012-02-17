@@ -8,36 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SAPStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SAPStatisticsBean Interface. The CIM class SAPStatistics is described as
- * follows:
- *
- * SAPStatistics relates the SAPStatisticalInformation class to the
- * ServiceAccessPoint to which it applies.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SAPStatistics as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SAPStatisticsBean Interface. The CIM class SAPStatistics is described as follows:
+ * 
+ * SAPStatistics relates the SAPStatisticalInformation class to the ServiceAccessPoint to which it applies.
  */
 public class SAPStatistics extends Statistics implements Serializable {
 
-    /**
-     * This constructor creates a SAPStatisticsBeanImpl Class which implements
-     * the SAPStatisticsBean Interface, and encapsulates the CIM class
-     * SAPStatistics in a Java Bean. The CIM class SAPStatistics is described
-     * as follows:
-     *
-     * SAPStatistics relates the SAPStatisticalInformation class to the
-     * ServiceAccessPoint to which it applies.
-     */
-    public SAPStatistics(){};
-    /**
-     * This method create an Association of the type SAPStatistics between one
-     * SAPStatisticalInformation object and ServiceAccessPoint object
-     */
-    public static SAPStatistics link(SAPStatisticalInformation
-	stats,ServiceAccessPoint element){
+	/**
+	 * This constructor creates a SAPStatisticsBeanImpl Class which implements the SAPStatisticsBean Interface, and encapsulates the CIM class
+	 * SAPStatistics in a Java Bean. The CIM class SAPStatistics is described as follows:
+	 * 
+	 * SAPStatistics relates the SAPStatisticalInformation class to the ServiceAccessPoint to which it applies.
+	 */
+	public SAPStatistics() {
+	};
 
-    return (SAPStatistics)
-	Association.link(SAPStatistics.class,stats,element);
-    }//link
+	/**
+	 * This method create an Association of the type SAPStatistics between one SAPStatisticalInformation object and ServiceAccessPoint object
+	 */
+	public static SAPStatistics link(SAPStatisticalInformation
+			stats, ServiceAccessPoint element) {
+
+		return (SAPStatistics) Association.link(SAPStatistics.class, stats, element);
+	}// link
 
 } // Class SAPStatistics

@@ -9,97 +9,84 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchPortStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SwitchPortStatisticsBean Interface. The CIM class SwitchPortStatistics is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchPortStatistics as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the SwitchPortStatisticsBean Interface. The CIM class SwitchPortStatistics is
  * described as follows:
- *
- * Statistical information regarding a generic SwitchPort, independent of the
- * specific kind of switching done on frames arriving at the port.
+ * 
+ * Statistical information regarding a generic SwitchPort, independent of the specific kind of switching done on frames arriving at the port.
  */
 public class SwitchPortStatistics extends SAPStatisticalInformation implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SwitchPortStatisticsBeanImpl Class which
-     * implements the SwitchPortStatisticsBean Interface, and encapsulates
-     * the CIM class SwitchPortStatistics in a Java Bean. The CIM class
-     * SwitchPortStatistics is described as follows:
-     *
-     * Statistical information regarding a generic SwitchPort, independent of
-     * the specific kind of switching done on frames arriving at the port.
-     */
-    public SwitchPortStatistics(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property delayExceededDiscards.
-     */
-    private long delayExceededDiscards;
-    /**
-     * This method returns the SwitchPortStatistics.delayExceededDiscards
-     * property value. This property is described as follows:
-     *
-     * The number of frames discarded by this port due to excessive transit
-     * delay through the bridge.
-     *
-     * @return	long	current delayExceededDiscards property value
-     * @exception	Exception
-     */
-    public long getDelayExceededDiscards(){
+	/**
+	 * This constructor creates a SwitchPortStatisticsBeanImpl Class which implements the SwitchPortStatisticsBean Interface, and encapsulates the CIM
+	 * class SwitchPortStatistics in a Java Bean. The CIM class SwitchPortStatistics is described as follows:
+	 * 
+	 * Statistical information regarding a generic SwitchPort, independent of the specific kind of switching done on frames arriving at the port.
+	 */
+	public SwitchPortStatistics() {
+	};
 
-    return this.delayExceededDiscards;
-    } // getDelayExceededDiscards
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property delayExceededDiscards.
+	 */
+	private long	delayExceededDiscards;
 
-    /**
-     * This method sets the SwitchPortStatistics.delayExceededDiscards
-     * property value. This property is described as follows:
-     *
-     * The number of frames discarded by this port due to excessive transit
-     * delay through the bridge.
-     *
-     * @param	long	new delayExceededDiscards property value
-     * @exception	Exception
-     */
-    public void setDelayExceededDiscards(long delayExceededDiscards) {
+	/**
+	 * This method returns the SwitchPortStatistics.delayExceededDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames discarded by this port due to excessive transit delay through the bridge.
+	 * 
+	 * @return long current delayExceededDiscards property value
+	 * @exception Exception
+	 */
+	public long getDelayExceededDiscards() {
 
-    this.delayExceededDiscards = delayExceededDiscards;
-    } // setDelayExceededDiscards
+		return this.delayExceededDiscards;
+	} // getDelayExceededDiscards
 
+	/**
+	 * This method sets the SwitchPortStatistics.delayExceededDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames discarded by this port due to excessive transit delay through the bridge.
+	 * 
+	 * @param long new delayExceededDiscards property value
+	 * @exception Exception
+	 */
+	public void setDelayExceededDiscards(long delayExceededDiscards) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property mtuExceededDiscards.
-     */
-    private long mtuExceededDiscards;
-    /**
-     * This method returns the SwitchPortStatistics.mtuExceededDiscards
-     * property value. This property is described as follows:
-     *
-     * The number of frames discarded by this port due to an excessive size.
-     *
-     * @return	long	current mtuExceededDiscards property value
-     * @exception	Exception
-     */
-    public long getMtuExceededDiscards(){
+		this.delayExceededDiscards = delayExceededDiscards;
+	} // setDelayExceededDiscards
 
-    return this.mtuExceededDiscards;
-    } // getMtuExceededDiscards
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property mtuExceededDiscards.
+	 */
+	private long	mtuExceededDiscards;
 
-    /**
-     * This method sets the SwitchPortStatistics.mtuExceededDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of frames discarded by this port due to an excessive size.
-     *
-     * @param	long	new mtuExceededDiscards property value
-     * @exception	Exception
-     */
-    public void setMtuExceededDiscards(long mtuExceededDiscards) {
+	/**
+	 * This method returns the SwitchPortStatistics.mtuExceededDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames discarded by this port due to an excessive size.
+	 * 
+	 * @return long current mtuExceededDiscards property value
+	 * @exception Exception
+	 */
+	public long getMtuExceededDiscards() {
 
-    this.mtuExceededDiscards = mtuExceededDiscards;
-    } // setMtuExceededDiscards
+		return this.mtuExceededDiscards;
+	} // getMtuExceededDiscards
 
+	/**
+	 * This method sets the SwitchPortStatistics.mtuExceededDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames discarded by this port due to an excessive size.
+	 * 
+	 * @param long new mtuExceededDiscards property value
+	 * @exception Exception
+	 */
+	public void setMtuExceededDiscards(long mtuExceededDiscards) {
 
+		this.mtuExceededDiscards = mtuExceededDiscards;
+	} // setMtuExceededDiscards
 
 } // Class SwitchPortStatistics

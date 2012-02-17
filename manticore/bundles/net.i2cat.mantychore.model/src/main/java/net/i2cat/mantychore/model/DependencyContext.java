@@ -13,7 +13,7 @@ import javax.persistence.Entity;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class DependencyContext as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the DependencyContextBean Interface. The CIM class DependencyContext is described as
  * follows:
- *
+ * 
  * Note: The Configuration class is being deprecated in lieu of using a ConcreteComponent relationship to indicate a hierarchy of Setting or
  * SettingData instances. Therefore, this association is also deprecated but it is deprecated to "No value" because there are no equivalent
  * relationships currently defined for the Setting or SettingData classes. This association is an anomaly because it defines what cannot be expressed
@@ -28,7 +28,7 @@ public class DependencyContext extends Association implements Serializable {
 	/**
 	 * This constructor creates a DependencyContextBeanImpl Class which implements the DependencyContextBean Interface, and encapsulates the CIM class
 	 * DependencyContext in a Java Bean. The CIM class DependencyContext is described as follows:
-	 *
+	 * 
 	 * Note: The Configuration class is being deprecated in lieu of using a ConcreteComponent relationship to indicate a hierarchy of Setting or
 	 * SettingData instances. Therefore, this association is also deprecated but it is deprecated to "No value" because there are no equivalent
 	 * relationships currently defined for the Setting or SettingData classes. This association is an anomaly because it defines what cannot be

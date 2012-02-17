@@ -8,52 +8,38 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SchedulerUsed as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SchedulerUsedBean Interface. The CIM class SchedulerUsed is described as
- * follows:
- *
- * In order to remove queued packets, a process or Service (identified as a
- * PacketSchedulingService) runs. This association describes the Dependency
- * of the queue and its QueuingService on a SchedulingService, which empties
- * it. The association is deprecated in lieu of associating Queuing Services
- * to SchedulingElements, and SchedulingElements into SchedulingServices. The
- * latter approach is very flexible regarding the implementations that can be
- * modeled, and removes the need to track individual traffic streams using an
- * artificial model property, TrafficClass.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SchedulerUsed as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SchedulerUsedBean Interface. The CIM class SchedulerUsed is described as follows:
+ * 
+ * In order to remove queued packets, a process or Service (identified as a PacketSchedulingService) runs. This association describes the Dependency
+ * of the queue and its QueuingService on a SchedulingService, which empties it. The association is deprecated in lieu of associating Queuing Services
+ * to SchedulingElements, and SchedulingElements into SchedulingServices. The latter approach is very flexible regarding the implementations that can
+ * be modeled, and removes the need to track individual traffic streams using an artificial model property, TrafficClass.
  */
-    @Deprecated
+@Deprecated
 public class SchedulerUsed extends ServiceServiceDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SchedulerUsedBeanImpl Class which implements
-     * the SchedulerUsedBean Interface, and encapsulates the CIM class
-     * SchedulerUsed in a Java Bean. The CIM class SchedulerUsed is described
-     * as follows:
-     *
-     * In order to remove queued packets, a process or Service (identified as
-     * a PacketSchedulingService) runs. This association describes the
-     * Dependency of the queue and its QueuingService on a SchedulingService,
-     * which empties it. The association is deprecated in lieu of associating
-     * Queuing Services to SchedulingElements, and SchedulingElements into
-     * SchedulingServices. The latter approach is very flexible regarding the
-     * implementations that can be modeled, and removes the need to track
-     * individual traffic streams using an artificial model property,
-     * TrafficClass.
-     */
-    public SchedulerUsed(){};
-    /**
-     * This method create an Association of the type SchedulerUsed between one
-     * PacketSchedulingService object and QueuingService object
-     */
-    @Deprecated
-    public static SchedulerUsed link(PacketSchedulingService
-	antecedent,QueuingService dependent){
+	/**
+	 * This constructor creates a SchedulerUsedBeanImpl Class which implements the SchedulerUsedBean Interface, and encapsulates the CIM class
+	 * SchedulerUsed in a Java Bean. The CIM class SchedulerUsed is described as follows:
+	 * 
+	 * In order to remove queued packets, a process or Service (identified as a PacketSchedulingService) runs. This association describes the
+	 * Dependency of the queue and its QueuingService on a SchedulingService, which empties it. The association is deprecated in lieu of associating
+	 * Queuing Services to SchedulingElements, and SchedulingElements into SchedulingServices. The latter approach is very flexible regarding the
+	 * implementations that can be modeled, and removes the need to track individual traffic streams using an artificial model property, TrafficClass.
+	 */
+	public SchedulerUsed() {
+	};
 
-    return (SchedulerUsed)
-	Association.link(SchedulerUsed.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type SchedulerUsed between one PacketSchedulingService object and QueuingService object
+	 */
+	@Deprecated
+	public static SchedulerUsed link(PacketSchedulingService
+			antecedent, QueuingService dependent) {
+
+		return (SchedulerUsed) Association.link(SchedulerUsed.class, antecedent, dependent);
+	}// link
 
 } // Class SchedulerUsed

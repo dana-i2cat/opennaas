@@ -9,222 +9,179 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ElementSoftwareIdentity as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ElementSoftwareIdentityBean Interface. The CIM class
- * ElementSoftwareIdentity is described as follows:
- *
- * ElementSoftwareIdentity allows a Managed Element to report its software
- * related asset information (firmware, drivers, configuration software, and
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ElementSoftwareIdentity as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ElementSoftwareIdentityBean Interface. The CIM class ElementSoftwareIdentity
+ * is described as follows:
+ * 
+ * ElementSoftwareIdentity allows a Managed Element to report its software related asset information (firmware, drivers, configuration software, and
  * etc.)
  */
 public class ElementSoftwareIdentity extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ElementSoftwareIdentityBeanImpl Class which
-     * implements the ElementSoftwareIdentityBean Interface, and encapsulates
-     * the CIM class ElementSoftwareIdentity in a Java Bean. The CIM class
-     * ElementSoftwareIdentity is described as follows:
-     *
-     * ElementSoftwareIdentity allows a Managed Element to report its software
-     * related asset information (firmware, drivers, configuration software,
-     * and etc.)
-     */
-    public ElementSoftwareIdentity(){};
-    /**
-     * This method create an Association of the type ElementSoftwareIdentity
-     * between one SoftwareIdentity object and ManagedElement object
-     */
-    public static ElementSoftwareIdentity link(SoftwareIdentity
-	antecedent,ManagedElement dependent){
+	/**
+	 * This constructor creates a ElementSoftwareIdentityBeanImpl Class which implements the ElementSoftwareIdentityBean Interface, and encapsulates
+	 * the CIM class ElementSoftwareIdentity in a Java Bean. The CIM class ElementSoftwareIdentity is described as follows:
+	 * 
+	 * ElementSoftwareIdentity allows a Managed Element to report its software related asset information (firmware, drivers, configuration software,
+	 * and etc.)
+	 */
+	public ElementSoftwareIdentity() {
+	};
 
-    return (ElementSoftwareIdentity)
-	Association.link(ElementSoftwareIdentity.class,antecedent,dependent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property UpgradeCondition.
-     */
+	/**
+	 * This method create an Association of the type ElementSoftwareIdentity between one SoftwareIdentity object and ManagedElement object
+	 */
+	public static ElementSoftwareIdentity link(SoftwareIdentity
+			antecedent, ManagedElement dependent) {
 
-    public enum UpgradeCondition{
-    UNKNOWN,
-    OTHER,
-    RESIDES_OFF_DEVICE,
-    OWNER_UPGRADEABLE,
-    FACTORY_UPGRADEABLE,
-    NOT_UPGRADEABLE,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private UpgradeCondition upgradeCondition;
-    /**
-     * This method returns the ElementSoftwareIdentity.upgradeCondition
-     * property value. This property is described as follows:
-     *
-     * Indicates the element's ability to upgrade this software asset.
-     * 'Resides off element'(2), indicates the persistence of the software is
-     * outside of the element. Typically for a element this software is part
-     * of the OperatingSystem is typically upgradeable. 'Owner Upgradeable'
-     * (3), indicates the persistence of the software is on the element and
-     * is upgradeable by the owner. 'FactoryUpgradeable' (4),indicates the
-     * persistence of the software is on the element and is upgradeable by
-     * the manufacturer. 'Not Upgradeable' (5), indicates the presistence of
-     * the software is on the element and is not upgradeable. (i.e. burned
-     * into a non replaceable ROM chip.
-     *
-     * @return	int	current upgradeCondition property value
-     * @exception	Exception
-     */
-    public UpgradeCondition getUpgradeCondition(){
+		return (ElementSoftwareIdentity) Association.link(ElementSoftwareIdentity.class, antecedent, dependent);
+	}// link
 
-    return this.upgradeCondition;
-    } // getUpgradeCondition
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property UpgradeCondition.
+	 */
 
-    /**
-     * This method sets the ElementSoftwareIdentity.upgradeCondition property
-     * value. This property is described as follows:
-     *
-     * Indicates the element's ability to upgrade this software asset.
-     * 'Resides off element'(2), indicates the persistence of the software is
-     * outside of the element. Typically for a element this software is part
-     * of the OperatingSystem is typically upgradeable. 'Owner Upgradeable'
-     * (3), indicates the persistence of the software is on the element and
-     * is upgradeable by the owner. 'FactoryUpgradeable' (4),indicates the
-     * persistence of the software is on the element and is upgradeable by
-     * the manufacturer. 'Not Upgradeable' (5), indicates the presistence of
-     * the software is on the element and is not upgradeable. (i.e. burned
-     * into a non replaceable ROM chip.
-     *
-     * @param	int	new upgradeCondition property value
-     * @exception	Exception
-     */
-    public void setUpgradeCondition(UpgradeCondition upgradeCondition){
+	public enum UpgradeCondition {
+		UNKNOWN,
+		OTHER,
+		RESIDES_OFF_DEVICE,
+		OWNER_UPGRADEABLE,
+		FACTORY_UPGRADEABLE,
+		NOT_UPGRADEABLE,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.upgradeCondition = upgradeCondition;
-    } // setUpgradeCondition
+	private UpgradeCondition	upgradeCondition;
 
+	/**
+	 * This method returns the ElementSoftwareIdentity.upgradeCondition property value. This property is described as follows:
+	 * 
+	 * Indicates the element's ability to upgrade this software asset. 'Resides off element'(2), indicates the persistence of the software is outside
+	 * of the element. Typically for a element this software is part of the OperatingSystem is typically upgradeable. 'Owner Upgradeable' (3),
+	 * indicates the persistence of the software is on the element and is upgradeable by the owner. 'FactoryUpgradeable' (4),indicates the persistence
+	 * of the software is on the element and is upgradeable by the manufacturer. 'Not Upgradeable' (5), indicates the presistence of the software is
+	 * on the element and is not upgradeable. (i.e. burned into a non replaceable ROM chip.
+	 * 
+	 * @return int current upgradeCondition property value
+	 * @exception Exception
+	 */
+	public UpgradeCondition getUpgradeCondition() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherUpgradeCondition.
-     */
-    private String otherUpgradeCondition;
-    /**
-     * This method returns the ElementSoftwareIdentity.otherUpgradeCondition
-     * property value. This property is described as follows:
-     *
-     * Describes the upgrade condition, when UpgradeCondition is set to 1
-     * ("Other").
-     *
-     * @return	String	current otherUpgradeCondition property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherUpgradeCondition(){
+		return this.upgradeCondition;
+	} // getUpgradeCondition
 
-    return this.otherUpgradeCondition;
-    } // getOtherUpgradeCondition
+	/**
+	 * This method sets the ElementSoftwareIdentity.upgradeCondition property value. This property is described as follows:
+	 * 
+	 * Indicates the element's ability to upgrade this software asset. 'Resides off element'(2), indicates the persistence of the software is outside
+	 * of the element. Typically for a element this software is part of the OperatingSystem is typically upgradeable. 'Owner Upgradeable' (3),
+	 * indicates the persistence of the software is on the element and is upgradeable by the owner. 'FactoryUpgradeable' (4),indicates the persistence
+	 * of the software is on the element and is upgradeable by the manufacturer. 'Not Upgradeable' (5), indicates the presistence of the software is
+	 * on the element and is not upgradeable. (i.e. burned into a non replaceable ROM chip.
+	 * 
+	 * @param int new upgradeCondition property value
+	 * @exception Exception
+	 */
+	public void setUpgradeCondition(UpgradeCondition upgradeCondition) {
 
-    /**
-     * This method sets the ElementSoftwareIdentity.otherUpgradeCondition
-     * property value. This property is described as follows:
-     *
-     * Describes the upgrade condition, when UpgradeCondition is set to 1
-     * ("Other").
-     *
-     * @param	String	new otherUpgradeCondition property value
-     * @exception	Exception
-     */
-    public void setOtherUpgradeCondition(String otherUpgradeCondition) {
+		this.upgradeCondition = upgradeCondition;
+	} // setUpgradeCondition
 
-    this.otherUpgradeCondition = otherUpgradeCondition;
-    } // setOtherUpgradeCondition
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherUpgradeCondition.
+	 */
+	private String	otherUpgradeCondition;
 
+	/**
+	 * This method returns the ElementSoftwareIdentity.otherUpgradeCondition property value. This property is described as follows:
+	 * 
+	 * Describes the upgrade condition, when UpgradeCondition is set to 1 ("Other").
+	 * 
+	 * @return String current otherUpgradeCondition property value
+	 * @exception Exception
+	 */
+	public String getOtherUpgradeCondition() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ElementSoftwareStatus.
-     */
+		return this.otherUpgradeCondition;
+	} // getOtherUpgradeCondition
 
-    public enum ElementSoftwareStatus{
-    UNKNOWN,
-    CURRENT,
-    NEXT,
-    FALLBACK,
-    DEFAULT,
-    INSTALLED,
-    SINGLE_USE,
-    AVAILABLE,
-    SUPPORTS,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private ElementSoftwareStatus elementSoftwareStatus;
-    /**
-     * This method returns the ElementSoftwareIdentity.elementSoftwareStatus
-     * property value. This property is described as follows:
-     *
-     * A collection of properties describing the status of the software on the
-     * managed element. Multiple properties could be set at the same time.
-     * For example a ElementSoftwareStatus could have "Installed", "Default",
-     * "Current" and "FallBack" set at the same time. "Current" indicates
-     * that the software is currently running on or for the Managed Element.
-     * "Next" indicates that the software will run after the next reset or
-     * reboot unless superseded by a software with a status of "SingleUse".
-     * "FallBack" indicates that the software will be run if the software
-     * which has a status of "Next" or "SingleUse" fails to run. "Default"
-     * indicates the default version of the software that was originally
-     * shipped by the manufacturer. "Installed" indicates that the software
-     * is persistently located and is available for use on the Managed
-     * Element. "SingleUse" indicates that the software will run only after
-     * the next reset or reboot but will not run after the subsequent reset
-     * or reboot. "Available" indicates that the software is available for
-     * installation on the Managed Element. "Supports"indicates that the
-     * software will work with or operate the Managed Element but is or will
-     * be installed on a different Managed Element.
-     *
-     * @return	int	current elementSoftwareStatus property value
-     * @exception	Exception
-     */
-    public ElementSoftwareStatus getElementSoftwareStatus(){
+	/**
+	 * This method sets the ElementSoftwareIdentity.otherUpgradeCondition property value. This property is described as follows:
+	 * 
+	 * Describes the upgrade condition, when UpgradeCondition is set to 1 ("Other").
+	 * 
+	 * @param String
+	 *            new otherUpgradeCondition property value
+	 * @exception Exception
+	 */
+	public void setOtherUpgradeCondition(String otherUpgradeCondition) {
 
-    return this.elementSoftwareStatus;
-    } // getElementSoftwareStatus
+		this.otherUpgradeCondition = otherUpgradeCondition;
+	} // setOtherUpgradeCondition
 
-    /**
-     * This method sets the ElementSoftwareIdentity.elementSoftwareStatus
-     * property value. This property is described as follows:
-     *
-     * A collection of properties describing the status of the software on the
-     * managed element. Multiple properties could be set at the same time.
-     * For example a ElementSoftwareStatus could have "Installed", "Default",
-     * "Current" and "FallBack" set at the same time. "Current" indicates
-     * that the software is currently running on or for the Managed Element.
-     * "Next" indicates that the software will run after the next reset or
-     * reboot unless superseded by a software with a status of "SingleUse".
-     * "FallBack" indicates that the software will be run if the software
-     * which has a status of "Next" or "SingleUse" fails to run. "Default"
-     * indicates the default version of the software that was originally
-     * shipped by the manufacturer. "Installed" indicates that the software
-     * is persistently located and is available for use on the Managed
-     * Element. "SingleUse" indicates that the software will run only after
-     * the next reset or reboot but will not run after the subsequent reset
-     * or reboot. "Available" indicates that the software is available for
-     * installation on the Managed Element. "Supports"indicates that the
-     * software will work with or operate the Managed Element but is or will
-     * be installed on a different Managed Element.
-     *
-     * @param	int	new elementSoftwareStatus property value
-     * @exception	Exception
-     */
-    public void setElementSoftwareStatus(ElementSoftwareStatus
-	elementSoftwareStatus){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ElementSoftwareStatus.
+	 */
 
-    this.elementSoftwareStatus = elementSoftwareStatus;
-    } // setElementSoftwareStatus
+	public enum ElementSoftwareStatus {
+		UNKNOWN,
+		CURRENT,
+		NEXT,
+		FALLBACK,
+		DEFAULT,
+		INSTALLED,
+		SINGLE_USE,
+		AVAILABLE,
+		SUPPORTS,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
+	private ElementSoftwareStatus	elementSoftwareStatus;
 
+	/**
+	 * This method returns the ElementSoftwareIdentity.elementSoftwareStatus property value. This property is described as follows:
+	 * 
+	 * A collection of properties describing the status of the software on the managed element. Multiple properties could be set at the same time. For
+	 * example a ElementSoftwareStatus could have "Installed", "Default", "Current" and "FallBack" set at the same time. "Current" indicates that the
+	 * software is currently running on or for the Managed Element. "Next" indicates that the software will run after the next reset or reboot unless
+	 * superseded by a software with a status of "SingleUse". "FallBack" indicates that the software will be run if the software which has a status of
+	 * "Next" or "SingleUse" fails to run. "Default" indicates the default version of the software that was originally shipped by the manufacturer.
+	 * "Installed" indicates that the software is persistently located and is available for use on the Managed Element. "SingleUse" indicates that the
+	 * software will run only after the next reset or reboot but will not run after the subsequent reset or reboot. "Available" indicates that the
+	 * software is available for installation on the Managed Element. "Supports"indicates that the software will work with or operate the Managed
+	 * Element but is or will be installed on a different Managed Element.
+	 * 
+	 * @return int current elementSoftwareStatus property value
+	 * @exception Exception
+	 */
+	public ElementSoftwareStatus getElementSoftwareStatus() {
+
+		return this.elementSoftwareStatus;
+	} // getElementSoftwareStatus
+
+	/**
+	 * This method sets the ElementSoftwareIdentity.elementSoftwareStatus property value. This property is described as follows:
+	 * 
+	 * A collection of properties describing the status of the software on the managed element. Multiple properties could be set at the same time. For
+	 * example a ElementSoftwareStatus could have "Installed", "Default", "Current" and "FallBack" set at the same time. "Current" indicates that the
+	 * software is currently running on or for the Managed Element. "Next" indicates that the software will run after the next reset or reboot unless
+	 * superseded by a software with a status of "SingleUse". "FallBack" indicates that the software will be run if the software which has a status of
+	 * "Next" or "SingleUse" fails to run. "Default" indicates the default version of the software that was originally shipped by the manufacturer.
+	 * "Installed" indicates that the software is persistently located and is available for use on the Managed Element. "SingleUse" indicates that the
+	 * software will run only after the next reset or reboot but will not run after the subsequent reset or reboot. "Available" indicates that the
+	 * software is available for installation on the Managed Element. "Supports"indicates that the software will work with or operate the Managed
+	 * Element but is or will be installed on a different Managed Element.
+	 * 
+	 * @param int new elementSoftwareStatus property value
+	 * @exception Exception
+	 */
+	public void setElementSoftwareStatus(ElementSoftwareStatus
+			elementSoftwareStatus) {
+
+		this.elementSoftwareStatus = elementSoftwareStatus;
+	} // setElementSoftwareStatus
 
 } // Class ElementSoftwareIdentity

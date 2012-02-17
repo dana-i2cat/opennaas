@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class EthernetPort as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the EthernetPortBean Interface. The CIM class EthernetPort is described as follows:
- *
+ * 
  * Capabilities and management of an EthernetPort.
  */
 public class EthernetPort extends NetworkPort implements Serializable {
@@ -25,7 +25,7 @@ public class EthernetPort extends NetworkPort implements Serializable {
 	/**
 	 * This constructor creates a EthernetPortBeanImpl Class which implements the EthernetPortBean Interface, and encapsulates the CIM class
 	 * EthernetPort in a Java Bean. The CIM class EthernetPort is described as follows:
-	 *
+	 * 
 	 * Capabilities and management of an EthernetPort.
 	 */
 	public EthernetPort() {
@@ -38,11 +38,11 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.networkAddresses property value. This property is described as follows:
-	 *
+	 * 
 	 * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits (for example, "010203040506"), with each pair representing one of the six
 	 * octets of the MAC address in "canonical" bit order. (Therefore, the Group address bit is found in the low order bit of the first character of
 	 * the string.)
-	 *
+	 * 
 	 * @return String[] current networkAddresses property value
 	 * @exception Exception
 	 */
@@ -54,11 +54,11 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.networkAddresses property value. This property is described as follows:
-	 *
+	 * 
 	 * Ethernet/802.3 MAC addresses formatted as twelve hexadecimal digits (for example, "010203040506"), with each pair representing one of the six
 	 * octets of the MAC address in "canonical" bit order. (Therefore, the Group address bit is found in the low order bit of the first character of
 	 * the string.)
-	 *
+	 * 
 	 * @param String
 	 *            [] new networkAddresses property value
 	 * @exception Exception
@@ -75,9 +75,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.maxDataSize property value. This property is described as follows:
-	 *
+	 * 
 	 * The maximum size of the INFO (non-MAC) field that will be received or transmitted.
-	 *
+	 * 
 	 * @return long current maxDataSize property value
 	 * @exception Exception
 	 */
@@ -88,9 +88,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.maxDataSize property value. This property is described as follows:
-	 *
+	 * 
 	 * The maximum size of the INFO (non-MAC) field that will be received or transmitted.
-	 *
+	 * 
 	 * @param long new maxDataSize property value
 	 * @exception Exception
 	 */
@@ -116,11 +116,11 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.capabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * Capabilities of the EthernetPort. For example, the Device might support AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or load
 	 * balancing capabilities are listed, a SpareGroup (failover) or ExtraCapacityGroup (load balancing) should also be defined to completely describe
 	 * the capability.
-	 *
+	 * 
 	 * @return int current capabilities property value
 	 * @exception Exception
 	 */
@@ -131,11 +131,11 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.capabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * Capabilities of the EthernetPort. For example, the Device might support AlertOnLan, WakeOnLan, Load Balancing, or FailOver. If failover or load
 	 * balancing capabilities are listed, a SpareGroup (failover) or ExtraCapacityGroup (load balancing) should also be defined to completely describe
 	 * the capability.
-	 *
+	 * 
 	 * @param int new capabilities property value
 	 * @exception Exception
 	 */
@@ -151,10 +151,10 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.capabilityDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings that provides more detailed explanations for any of the EthernetPort features that are indicated in the
 	 * Capabilities array. Note, each entry of this array is related to the entry in the Capabilities array that is located at the same index.
-	 *
+	 * 
 	 * @return String[] current capabilityDescriptions property value
 	 * @exception Exception
 	 */
@@ -165,10 +165,10 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.capabilityDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings that provides more detailed explanations for any of the EthernetPort features that are indicated in the
 	 * Capabilities array. Note, each entry of this array is related to the entry in the Capabilities array that is located at the same index.
-	 *
+	 * 
 	 * @param String
 	 *            [] new capabilityDescriptions property value
 	 * @exception Exception
@@ -195,9 +195,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.enabledCapabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * Specifies which capabilities are enabled from the list of all supported ones, which are defined in the Capabilities array.
-	 *
+	 * 
 	 * @return int current enabledCapabilities property value
 	 * @exception Exception
 	 */
@@ -208,9 +208,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.enabledCapabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * Specifies which capabilities are enabled from the list of all supported ones, which are defined in the Capabilities array.
-	 *
+	 * 
 	 * @param int new enabledCapabilities property value
 	 * @exception Exception
 	 */
@@ -227,9 +227,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method returns the EthernetPort.otherEnabledCapabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings that provides more detailed explanations for any of the enabled capabilities that are specified as 'Other'.
-	 *
+	 * 
 	 * @return String[] current otherEnabledCapabilities property value
 	 * @exception Exception
 	 */
@@ -240,9 +240,9 @@ public class EthernetPort extends NetworkPort implements Serializable {
 
 	/**
 	 * This method sets the EthernetPort.otherEnabledCapabilities property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings that provides more detailed explanations for any of the enabled capabilities that are specified as 'Other'.
-	 *
+	 * 
 	 * @param String
 	 *            [] new otherEnabledCapabilities property value
 	 * @exception Exception

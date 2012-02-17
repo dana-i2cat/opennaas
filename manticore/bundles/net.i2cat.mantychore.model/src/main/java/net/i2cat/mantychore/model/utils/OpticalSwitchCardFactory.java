@@ -124,7 +124,7 @@ public class OpticalSwitchCardFactory {
 
 	/**
 	 * Adds connections between ports of given opticalSwitch, loading them from a config file.
-	 *
+	 * 
 	 * @param opticalSwitch
 	 */
 	public void addHardcodedCardConnections(net.i2cat.mantychore.model.System opticalSwitch) {

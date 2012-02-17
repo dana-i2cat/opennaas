@@ -35,7 +35,7 @@ public class OSPFAreaConfiguration extends LogicalElement implements
 	 * @return OSPFService associated with this OSPFAreaConfiguration through OSPFServiceConfiguration dependency.
 	 */
 	public OSPFService getOSPFService() {
-		return (OSPFService) this.getFromAssociatedElementsByType(OSPFServiceConfiguration.class);
+		return (OSPFService) this.getFirstFromAssociatedElementByType(OSPFServiceConfiguration.class);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class OSPFAreaConfiguration extends LogicalElement implements
 	 * @return OSPFArea assigned to this OSPFAreaConfiguration through AreaOfConfiguration dependency.
 	 */
 	public OSPFArea getOSPFArea() {
-		return (OSPFArea) this.getFromAssociatedElementsByType(AreaOfConfiguration.class);
+		return (OSPFArea) this.getFirstFromAssociatedElementByType(AreaOfConfiguration.class);
 	}
 
 	/**

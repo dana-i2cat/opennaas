@@ -9,167 +9,146 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkPortStatistics as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * NetworkPortStatisticsBean Interface. The CIM class NetworkPortStatistics
- * is described as follows:
- *
- * The NetworkPortStatistics class describes the statistics for the
- * NetworkPort.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPortStatistics as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the NetworkPortStatisticsBean Interface. The CIM class NetworkPortStatistics is
+ * described as follows:
+ * 
+ * The NetworkPortStatistics class describes the statistics for the NetworkPort.
  */
 public class NetworkPortStatistics extends StatisticalData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a NetworkPortStatisticsBeanImpl Class which
-     * implements the NetworkPortStatisticsBean Interface, and encapsulates
-     * the CIM class NetworkPortStatistics in a Java Bean. The CIM class
-     * NetworkPortStatistics is described as follows:
-     *
-     * The NetworkPortStatistics class describes the statistics for the
-     * NetworkPort.
-     */
-    public NetworkPortStatistics(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property bytesTransmitted.
-     */
-    private long bytesTransmitted;
-    /**
-     * This method returns the NetworkPortStatistics.bytesTransmitted property
-     * value. This property is described as follows:
-     *
-     * The total number of bytes that are transmitted, including framing
-     * characters.
-     *
-     * @return	long	current bytesTransmitted property value
-     * @exception	Exception
-     */
-    public long getBytesTransmitted(){
+	/**
+	 * This constructor creates a NetworkPortStatisticsBeanImpl Class which implements the NetworkPortStatisticsBean Interface, and encapsulates the
+	 * CIM class NetworkPortStatistics in a Java Bean. The CIM class NetworkPortStatistics is described as follows:
+	 * 
+	 * The NetworkPortStatistics class describes the statistics for the NetworkPort.
+	 */
+	public NetworkPortStatistics() {
+	};
 
-    return this.bytesTransmitted;
-    } // getBytesTransmitted
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property bytesTransmitted.
+	 */
+	private long	bytesTransmitted;
 
-    /**
-     * This method sets the NetworkPortStatistics.bytesTransmitted property
-     * value. This property is described as follows:
-     *
-     * The total number of bytes that are transmitted, including framing
-     * characters.
-     *
-     * @param	long	new bytesTransmitted property value
-     * @exception	Exception
-     */
-    public void setBytesTransmitted(long bytesTransmitted) {
+	/**
+	 * This method returns the NetworkPortStatistics.bytesTransmitted property value. This property is described as follows:
+	 * 
+	 * The total number of bytes that are transmitted, including framing characters.
+	 * 
+	 * @return long current bytesTransmitted property value
+	 * @exception Exception
+	 */
+	public long getBytesTransmitted() {
 
-    this.bytesTransmitted = bytesTransmitted;
-    } // setBytesTransmitted
+		return this.bytesTransmitted;
+	} // getBytesTransmitted
 
+	/**
+	 * This method sets the NetworkPortStatistics.bytesTransmitted property value. This property is described as follows:
+	 * 
+	 * The total number of bytes that are transmitted, including framing characters.
+	 * 
+	 * @param long new bytesTransmitted property value
+	 * @exception Exception
+	 */
+	public void setBytesTransmitted(long bytesTransmitted) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property bytesReceived.
-     */
-    private long bytesReceived;
-    /**
-     * This method returns the NetworkPortStatistics.bytesReceived property
-     * value. This property is described as follows:
-     *
-     * The total number of bytes that are received, including framing
-     * characters.
-     *
-     * @return	long	current bytesReceived property value
-     * @exception	Exception
-     */
-    public long getBytesReceived(){
+		this.bytesTransmitted = bytesTransmitted;
+	} // setBytesTransmitted
 
-    return this.bytesReceived;
-    } // getBytesReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property bytesReceived.
+	 */
+	private long	bytesReceived;
 
-    /**
-     * This method sets the NetworkPortStatistics.bytesReceived property
-     * value. This property is described as follows:
-     *
-     * The total number of bytes that are received, including framing
-     * characters.
-     *
-     * @param	long	new bytesReceived property value
-     * @exception	Exception
-     */
-    public void setBytesReceived(long bytesReceived) {
+	/**
+	 * This method returns the NetworkPortStatistics.bytesReceived property value. This property is described as follows:
+	 * 
+	 * The total number of bytes that are received, including framing characters.
+	 * 
+	 * @return long current bytesReceived property value
+	 * @exception Exception
+	 */
+	public long getBytesReceived() {
 
-    this.bytesReceived = bytesReceived;
-    } // setBytesReceived
+		return this.bytesReceived;
+	} // getBytesReceived
 
+	/**
+	 * This method sets the NetworkPortStatistics.bytesReceived property value. This property is described as follows:
+	 * 
+	 * The total number of bytes that are received, including framing characters.
+	 * 
+	 * @param long new bytesReceived property value
+	 * @exception Exception
+	 */
+	public void setBytesReceived(long bytesReceived) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property packetsTransmitted.
-     */
-    private long packetsTransmitted;
-    /**
-     * This method returns the NetworkPortStatistics.packetsTransmitted
-     * property value. This property is described as follows:
-     *
-     * The total number of packets that are transmitted.
-     *
-     * @return	long	current packetsTransmitted property value
-     * @exception	Exception
-     */
-    public long getPacketsTransmitted(){
+		this.bytesReceived = bytesReceived;
+	} // setBytesReceived
 
-    return this.packetsTransmitted;
-    } // getPacketsTransmitted
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property packetsTransmitted.
+	 */
+	private long	packetsTransmitted;
 
-    /**
-     * This method sets the NetworkPortStatistics.packetsTransmitted property
-     * value. This property is described as follows:
-     *
-     * The total number of packets that are transmitted.
-     *
-     * @param	long	new packetsTransmitted property value
-     * @exception	Exception
-     */
-    public void setPacketsTransmitted(long packetsTransmitted) {
+	/**
+	 * This method returns the NetworkPortStatistics.packetsTransmitted property value. This property is described as follows:
+	 * 
+	 * The total number of packets that are transmitted.
+	 * 
+	 * @return long current packetsTransmitted property value
+	 * @exception Exception
+	 */
+	public long getPacketsTransmitted() {
 
-    this.packetsTransmitted = packetsTransmitted;
-    } // setPacketsTransmitted
+		return this.packetsTransmitted;
+	} // getPacketsTransmitted
 
+	/**
+	 * This method sets the NetworkPortStatistics.packetsTransmitted property value. This property is described as follows:
+	 * 
+	 * The total number of packets that are transmitted.
+	 * 
+	 * @param long new packetsTransmitted property value
+	 * @exception Exception
+	 */
+	public void setPacketsTransmitted(long packetsTransmitted) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property packetsReceived.
-     */
-    private long packetsReceived;
-    /**
-     * This method returns the NetworkPortStatistics.packetsReceived property
-     * value. This property is described as follows:
-     *
-     * The total number of packets that are received.
-     *
-     * @return	long	current packetsReceived property value
-     * @exception	Exception
-     */
-    public long getPacketsReceived(){
+		this.packetsTransmitted = packetsTransmitted;
+	} // setPacketsTransmitted
 
-    return this.packetsReceived;
-    } // getPacketsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property packetsReceived.
+	 */
+	private long	packetsReceived;
 
-    /**
-     * This method sets the NetworkPortStatistics.packetsReceived property
-     * value. This property is described as follows:
-     *
-     * The total number of packets that are received.
-     *
-     * @param	long	new packetsReceived property value
-     * @exception	Exception
-     */
-    public void setPacketsReceived(long packetsReceived) {
+	/**
+	 * This method returns the NetworkPortStatistics.packetsReceived property value. This property is described as follows:
+	 * 
+	 * The total number of packets that are received.
+	 * 
+	 * @return long current packetsReceived property value
+	 * @exception Exception
+	 */
+	public long getPacketsReceived() {
 
-    this.packetsReceived = packetsReceived;
-    } // setPacketsReceived
+		return this.packetsReceived;
+	} // getPacketsReceived
 
+	/**
+	 * This method sets the NetworkPortStatistics.packetsReceived property value. This property is described as follows:
+	 * 
+	 * The total number of packets that are received.
+	 * 
+	 * @param long new packetsReceived property value
+	 * @exception Exception
+	 */
+	public void setPacketsReceived(long packetsReceived) {
 
+		this.packetsReceived = packetsReceived;
+	} // setPacketsReceived
 
 } // Class NetworkPortStatistics

@@ -8,45 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class InLogicalNetwork as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * InLogicalNetworkBean Interface. The CIM class InLogicalNetwork is
- * described as follows:
- *
- * This association defines a ProtocolEndpoint as a member of a specific
- * LogicalNetwork. Since the LogicalNetwork class is deprecated in lieu of
- * ConnectivityCollection, this association is no longer necessary. It is
- * deprecated to the MemberOfCollection association, that is inherited by
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class InLogicalNetwork as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the InLogicalNetworkBean Interface. The CIM class InLogicalNetwork is described as
+ * follows:
+ * 
+ * This association defines a ProtocolEndpoint as a member of a specific LogicalNetwork. Since the LogicalNetwork class is deprecated in lieu of
+ * ConnectivityCollection, this association is no longer necessary. It is deprecated to the MemberOfCollection association, that is inherited by
  * ConnectivityCollection from its superclass, Collection.
  */
-    @Deprecated
+@Deprecated
 public class InLogicalNetwork extends CollectedMSEs implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a InLogicalNetworkBeanImpl Class which
-     * implements the InLogicalNetworkBean Interface, and encapsulates the
-     * CIM class InLogicalNetwork in a Java Bean. The CIM class
-     * InLogicalNetwork is described as follows:
-     *
-     * This association defines a ProtocolEndpoint as a member of a specific
-     * LogicalNetwork. Since the LogicalNetwork class is deprecated in lieu
-     * of ConnectivityCollection, this association is no longer necessary. It
-     * is deprecated to the MemberOfCollection association, that is inherited
-     * by ConnectivityCollection from its superclass, Collection.
-     */
-    public InLogicalNetwork(){};
-    /**
-     * This method create an Association of the type InLogicalNetwork between
-     * one LogicalNetwork object and ProtocolEndpoint object
-     */
-    @Deprecated
-    public static InLogicalNetwork link(LogicalNetwork
-	collection,ProtocolEndpoint member){
+	/**
+	 * This constructor creates a InLogicalNetworkBeanImpl Class which implements the InLogicalNetworkBean Interface, and encapsulates the CIM class
+	 * InLogicalNetwork in a Java Bean. The CIM class InLogicalNetwork is described as follows:
+	 * 
+	 * This association defines a ProtocolEndpoint as a member of a specific LogicalNetwork. Since the LogicalNetwork class is deprecated in lieu of
+	 * ConnectivityCollection, this association is no longer necessary. It is deprecated to the MemberOfCollection association, that is inherited by
+	 * ConnectivityCollection from its superclass, Collection.
+	 */
+	public InLogicalNetwork() {
+	};
 
-    return (InLogicalNetwork)
-	Association.link(InLogicalNetwork.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type InLogicalNetwork between one LogicalNetwork object and ProtocolEndpoint object
+	 */
+	@Deprecated
+	public static InLogicalNetwork link(LogicalNetwork
+			collection, ProtocolEndpoint member) {
+
+		return (InLogicalNetwork) Association.link(InLogicalNetwork.class, collection, member);
+	}// link
 
 } // Class InLogicalNetwork

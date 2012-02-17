@@ -9,539 +9,432 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class USBRedirectionCapabilities as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * USBRedirectionCapabilitiesBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class USBRedirectionCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the USBRedirectionCapabilitiesBean Interface. The CIM class
  * USBRedirectionCapabilities is described as follows:
- *
- * USBRedirectionCapabilities describes the capabilities of the USB
- * Redirection Service.
+ * 
+ * USBRedirectionCapabilities describes the capabilities of the USB Redirection Service.
  */
 public class USBRedirectionCapabilities extends RedirectionServiceCapabilities
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a USBRedirectionCapabilitiesBeanImpl Class
-     * which implements the USBRedirectionCapabilitiesBean Interface, and
-     * encapsulates the CIM class USBRedirectionCapabilities in a Java Bean.
-     * The CIM class USBRedirectionCapabilities is described as follows:
-     *
-     * USBRedirectionCapabilities describes the capabilities of the USB
-     * Redirection Service.
-     */
-    public USBRedirectionCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ConnectionModesSupported.
-     */
+	/**
+	 * This constructor creates a USBRedirectionCapabilitiesBeanImpl Class which implements the USBRedirectionCapabilitiesBean Interface, and
+	 * encapsulates the CIM class USBRedirectionCapabilities in a Java Bean. The CIM class USBRedirectionCapabilities is described as follows:
+	 * 
+	 * USBRedirectionCapabilities describes the capabilities of the USB Redirection Service.
+	 */
+	public USBRedirectionCapabilities() {
+	};
 
-    public enum ConnectionModesSupported{
-    UNKNOWN,
-    LISTEN,
-    CONNECT,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIED
-    }
-    private ConnectionModesSupported connectionModesSupported;
-    /**
-     * This method returns the
-     * USBRedirectionCapabilities.connectionModesSupported property value.
-     * This property is described as follows:
-     *
-     * The connection mode used to configure the session. A value set to 2 =
-     * "Listen" shall indicate that the SAP will listen for a connection
-     * request from the remote USB redirection server. A CIM_BindsTo
-     * association to a CIM_ProtocolEndoint may be used to represent where
-     * the SAP is listening for the connection request. A value set to 3 =
-     * "Connect" shall indicate that the the SAP shall initiate the
-     * connection to the remote USB redirection server. A
-     * CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote USB redirection server.
-     *
-     * @return	int	current connectionModesSupported property
-     * value
-     * @exception	Exception
-     */
-    public ConnectionModesSupported getConnectionModesSupported(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ConnectionModesSupported.
+	 */
 
-    return this.connectionModesSupported;
-    } // getConnectionModesSupported
+	public enum ConnectionModesSupported {
+		UNKNOWN,
+		LISTEN,
+		CONNECT,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIED
+	}
 
-    /**
-     * This method sets the
-     * USBRedirectionCapabilities.connectionModesSupported property value.
-     * This property is described as follows:
-     *
-     * The connection mode used to configure the session. A value set to 2 =
-     * "Listen" shall indicate that the SAP will listen for a connection
-     * request from the remote USB redirection server. A CIM_BindsTo
-     * association to a CIM_ProtocolEndoint may be used to represent where
-     * the SAP is listening for the connection request. A value set to 3 =
-     * "Connect" shall indicate that the the SAP shall initiate the
-     * connection to the remote USB redirection server. A
-     * CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote USB redirection server.
-     *
-     * @param	int	new connectionModesSupported property value
-     * @exception	Exception
-     */
-    public void setConnectionModesSupported(ConnectionModesSupported
-	connectionModesSupported){
+	private ConnectionModesSupported	connectionModesSupported;
 
-    this.connectionModesSupported = connectionModesSupported;
-    } // setConnectionModesSupported
+	/**
+	 * This method returns the USBRedirectionCapabilities.connectionModesSupported property value. This property is described as follows:
+	 * 
+	 * The connection mode used to configure the session. A value set to 2 = "Listen" shall indicate that the SAP will listen for a connection request
+	 * from the remote USB redirection server. A CIM_BindsTo association to a CIM_ProtocolEndoint may be used to represent where the SAP is listening
+	 * for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate the connection to the remote USB
+	 * redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may be used to represent where the SAP
+	 * shall connect to the remote USB redirection server.
+	 * 
+	 * @return int current connectionModesSupported property value
+	 * @exception Exception
+	 */
+	public ConnectionModesSupported getConnectionModesSupported() {
 
+		return this.connectionModesSupported;
+	} // getConnectionModesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property uSBVersionsSupported.
-     */
-    private int[] uSBVersionsSupported;
-    /**
-     * This method returns the USBRedirectionCapabilities.uSBVersionsSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB specification versions which are
-     * supported. The property is expressed as a Binary-Coded Decimal (BCD)
-     * where a decimal point is implied between the 2nd and 3rd digits. For
-     * example, a value of 0x0201 indicates that version 2.01 is supported.
-     * Note that each entry of this array is related to the entries of the
-     * ClassesSupported, SubClassesSupported, MaxDevicesSupported and
-     * MaxDevicesPerSAP arrays that are located at the same index.
-     *
-     * @return	int[]	current uSBVersionsSupported property value
-     * @exception	Exception
-     */
-    public int[] getUSBVersionsSupported(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.connectionModesSupported property value. This property is described as follows:
+	 * 
+	 * The connection mode used to configure the session. A value set to 2 = "Listen" shall indicate that the SAP will listen for a connection request
+	 * from the remote USB redirection server. A CIM_BindsTo association to a CIM_ProtocolEndoint may be used to represent where the SAP is listening
+	 * for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate the connection to the remote USB
+	 * redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may be used to represent where the SAP
+	 * shall connect to the remote USB redirection server.
+	 * 
+	 * @param int new connectionModesSupported property value
+	 * @exception Exception
+	 */
+	public void setConnectionModesSupported(ConnectionModesSupported
+			connectionModesSupported) {
 
-    return this.uSBVersionsSupported;
-    } // getUSBVersionsSupported
+		this.connectionModesSupported = connectionModesSupported;
+	} // setConnectionModesSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.uSBVersionsSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB specification versions which are
-     * supported. The property is expressed as a Binary-Coded Decimal (BCD)
-     * where a decimal point is implied between the 2nd and 3rd digits. For
-     * example, a value of 0x0201 indicates that version 2.01 is supported.
-     * Note that each entry of this array is related to the entries of the
-     * ClassesSupported, SubClassesSupported, MaxDevicesSupported and
-     * MaxDevicesPerSAP arrays that are located at the same index.
-     *
-     * @param	int[]	new uSBVersionsSupported property value
-     * @exception	Exception
-     */
-    public void setUSBVersionsSupported(int[] uSBVersionsSupported) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property uSBVersionsSupported.
+	 */
+	private int[]	uSBVersionsSupported;
 
-    this.uSBVersionsSupported = uSBVersionsSupported;
-    } // setUSBVersionsSupported
+	/**
+	 * This method returns the USBRedirectionCapabilities.uSBVersionsSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB specification versions which are supported. The property is expressed as a Binary-Coded Decimal (BCD) where a
+	 * decimal point is implied between the 2nd and 3rd digits. For example, a value of 0x0201 indicates that version 2.01 is supported. Note that
+	 * each entry of this array is related to the entries of the ClassesSupported, SubClassesSupported, MaxDevicesSupported and MaxDevicesPerSAP
+	 * arrays that are located at the same index.
+	 * 
+	 * @return int[] current uSBVersionsSupported property value
+	 * @exception Exception
+	 */
+	public int[] getUSBVersionsSupported() {
 
+		return this.uSBVersionsSupported;
+	} // getUSBVersionsSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property classesSupported.
-     */
-    private short[] classesSupported;
-    /**
-     * This method returns the USBRedirectionCapabilities.classesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB Device Classes which are supported.
-     * Note that each entry of this array is related to the entries of the
-     * USBVersionsSupported, SubClassesSupported, MaxDevicesSupported, and
-     * MaxDevicesPerSAP arrays that are located at the same index.
-     *
-     * @return	short[]	current classesSupported property value
-     * @exception	Exception
-     */
-    public short[] getClassesSupported(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.uSBVersionsSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB specification versions which are supported. The property is expressed as a Binary-Coded Decimal (BCD) where a
+	 * decimal point is implied between the 2nd and 3rd digits. For example, a value of 0x0201 indicates that version 2.01 is supported. Note that
+	 * each entry of this array is related to the entries of the ClassesSupported, SubClassesSupported, MaxDevicesSupported and MaxDevicesPerSAP
+	 * arrays that are located at the same index.
+	 * 
+	 * @param int[] new uSBVersionsSupported property value
+	 * @exception Exception
+	 */
+	public void setUSBVersionsSupported(int[] uSBVersionsSupported) {
 
-    return this.classesSupported;
-    } // getClassesSupported
+		this.uSBVersionsSupported = uSBVersionsSupported;
+	} // setUSBVersionsSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.classesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB Device Classes which are supported.
-     * Note that each entry of this array is related to the entries of the
-     * USBVersionsSupported, SubClassesSupported, MaxDevicesSupported, and
-     * MaxDevicesPerSAP arrays that are located at the same index.
-     *
-     * @param	short[]	new classesSupported property value
-     * @exception	Exception
-     */
-    public void setClassesSupported(short[] classesSupported) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property classesSupported.
+	 */
+	private short[]	classesSupported;
 
-    this.classesSupported = classesSupported;
-    } // setClassesSupported
+	/**
+	 * This method returns the USBRedirectionCapabilities.classesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB Device Classes which are supported. Note that each entry of this array is related to the entries of the
+	 * USBVersionsSupported, SubClassesSupported, MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at the same index.
+	 * 
+	 * @return short[] current classesSupported property value
+	 * @exception Exception
+	 */
+	public short[] getClassesSupported() {
 
+		return this.classesSupported;
+	} // getClassesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property subClassesSupported.
-     */
-    private short[] subClassesSupported;
-    /**
-     * This method returns the USBRedirectionCapabilities.subClassesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB Device SubClasses which are
-     * supported. Note that each entry of this array is related to the
-     * entries of the USBVersionsSupported, ClassesSupproted,
-     * MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at
-     * the same index.
-     *
-     * @return	short[]	current subClassesSupported property
-     * value
-     * @exception	Exception
-     */
-    public short[] getSubClassesSupported(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.classesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB Device Classes which are supported. Note that each entry of this array is related to the entries of the
+	 * USBVersionsSupported, SubClassesSupported, MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at the same index.
+	 * 
+	 * @param short[] new classesSupported property value
+	 * @exception Exception
+	 */
+	public void setClassesSupported(short[] classesSupported) {
 
-    return this.subClassesSupported;
-    } // getSubClassesSupported
+		this.classesSupported = classesSupported;
+	} // setClassesSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.subClassesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the USB Device SubClasses which are
-     * supported. Note that each entry of this array is related to the
-     * entries of the USBVersionsSupported, ClassesSupproted,
-     * MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at
-     * the same index.
-     *
-     * @param	short[]	new subClassesSupported property value
-     * @exception	Exception
-     */
-    public void setSubClassesSupported(short[] subClassesSupported) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property subClassesSupported.
+	 */
+	private short[]	subClassesSupported;
 
-    this.subClassesSupported = subClassesSupported;
-    } // setSubClassesSupported
+	/**
+	 * This method returns the USBRedirectionCapabilities.subClassesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB Device SubClasses which are supported. Note that each entry of this array is related to the entries of the
+	 * USBVersionsSupported, ClassesSupproted, MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at the same index.
+	 * 
+	 * @return short[] current subClassesSupported property value
+	 * @exception Exception
+	 */
+	public short[] getSubClassesSupported() {
 
+		return this.subClassesSupported;
+	} // getSubClassesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxDevicesSupported.
-     */
-    private int[] maxDevicesSupported;
-    /**
-     * This method returns the USBRedirectionCapabilities.maxDevicesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the number of USB devices which are supported
-     * for the devices specified in the USBVersionsSupported,
-     * ClassesSupported, and SubClassesSupported array properties. Note that
-     * each entry of this array is related to the entries in the
-     * USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays
-     * that are located at the same index.
-     *
-     * @return	int[]	current maxDevicesSupported property value
-     * @exception	Exception
-     */
-    public int[] getMaxDevicesSupported(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.subClassesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the USB Device SubClasses which are supported. Note that each entry of this array is related to the entries of the
+	 * USBVersionsSupported, ClassesSupproted, MaxDevicesSupported, and MaxDevicesPerSAP arrays that are located at the same index.
+	 * 
+	 * @param short[] new subClassesSupported property value
+	 * @exception Exception
+	 */
+	public void setSubClassesSupported(short[] subClassesSupported) {
 
-    return this.maxDevicesSupported;
-    } // getMaxDevicesSupported
+		this.subClassesSupported = subClassesSupported;
+	} // setSubClassesSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.maxDevicesSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the number of USB devices which are supported
-     * for the devices specified in the USBVersionsSupported,
-     * ClassesSupported, and SubClassesSupported array properties. Note that
-     * each entry of this array is related to the entries in the
-     * USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays
-     * that are located at the same index.
-     *
-     * @param	int[]	new maxDevicesSupported property value
-     * @exception	Exception
-     */
-    public void setMaxDevicesSupported(int[] maxDevicesSupported) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxDevicesSupported.
+	 */
+	private int[]	maxDevicesSupported;
 
-    this.maxDevicesSupported = maxDevicesSupported;
-    } // setMaxDevicesSupported
+	/**
+	 * This method returns the USBRedirectionCapabilities.maxDevicesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the number of USB devices which are supported for the devices specified in the USBVersionsSupported,
+	 * ClassesSupported, and SubClassesSupported array properties. Note that each entry of this array is related to the entries in the
+	 * USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays that are located at the same index.
+	 * 
+	 * @return int[] current maxDevicesSupported property value
+	 * @exception Exception
+	 */
+	public int[] getMaxDevicesSupported() {
 
+		return this.maxDevicesSupported;
+	} // getMaxDevicesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxDevicesPerSAP.
-     */
-    private int[] maxDevicesPerSAP;
-    /**
-     * This method returns the USBRedirectionCapabilities.maxDevicesPerSAP
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the number of USB devices per USB Redirection
-     * Session which are supported for the devices specified in the
-     * USBVersionsSupported, ClassesSupported, and SubClassesSupported array
-     * properties. Note that each entry of this array is related to the
-     * entries in the USBVersionsSupported, ClassesSupported, and
-     * SubClassesSupported arrays that are located at the same index.
-     *
-     * @return	int[]	current maxDevicesPerSAP property value
-     * @exception	Exception
-     */
-    public int[] getMaxDevicesPerSAP(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.maxDevicesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the number of USB devices which are supported for the devices specified in the USBVersionsSupported,
+	 * ClassesSupported, and SubClassesSupported array properties. Note that each entry of this array is related to the entries in the
+	 * USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays that are located at the same index.
+	 * 
+	 * @param int[] new maxDevicesSupported property value
+	 * @exception Exception
+	 */
+	public void setMaxDevicesSupported(int[] maxDevicesSupported) {
 
-    return this.maxDevicesPerSAP;
-    } // getMaxDevicesPerSAP
+		this.maxDevicesSupported = maxDevicesSupported;
+	} // setMaxDevicesSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.maxDevicesPerSAP
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the number of USB devices per USB Redirection
-     * Session which are supported for the devices specified in the
-     * USBVersionsSupported, ClassesSupported, and SubClassesSupported array
-     * properties. Note that each entry of this array is related to the
-     * entries in the USBVersionsSupported, ClassesSupported, and
-     * SubClassesSupported arrays that are located at the same index.
-     *
-     * @param	int[]	new maxDevicesPerSAP property value
-     * @exception	Exception
-     */
-    public void setMaxDevicesPerSAP(int[] maxDevicesPerSAP) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxDevicesPerSAP.
+	 */
+	private int[]	maxDevicesPerSAP;
 
-    this.maxDevicesPerSAP = maxDevicesPerSAP;
-    } // setMaxDevicesPerSAP
+	/**
+	 * This method returns the USBRedirectionCapabilities.maxDevicesPerSAP property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the number of USB devices per USB Redirection Session which are supported for the devices specified in the
+	 * USBVersionsSupported, ClassesSupported, and SubClassesSupported array properties. Note that each entry of this array is related to the entries
+	 * in the USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays that are located at the same index.
+	 * 
+	 * @return int[] current maxDevicesPerSAP property value
+	 * @exception Exception
+	 */
+	public int[] getMaxDevicesPerSAP() {
 
+		return this.maxDevicesPerSAP;
+	} // getMaxDevicesPerSAP
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SAPCapabilitiesSupported.
-     */
+	/**
+	 * This method sets the USBRedirectionCapabilities.maxDevicesPerSAP property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the number of USB devices per USB Redirection Session which are supported for the devices specified in the
+	 * USBVersionsSupported, ClassesSupported, and SubClassesSupported array properties. Note that each entry of this array is related to the entries
+	 * in the USBVersionsSupported, ClassesSupported, and SubClassesSupported arrays that are located at the same index.
+	 * 
+	 * @param int[] new maxDevicesPerSAP property value
+	 * @exception Exception
+	 */
+	public void setMaxDevicesPerSAP(int[] maxDevicesPerSAP) {
 
-    public enum SAPCapabilitiesSupported{
-    UNKNOWN,
-    PRE_CONFIGURED_SAPS,
-    CREATE_SAPS,
-    MODIFY_SAP,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIED
-    }
-    private SAPCapabilitiesSupported sAPCapabilitiesSupported;
-    /**
-     * This method returns the
-     * USBRedirectionCapabilities.sAPCapabilitiesSupported property value.
-     * This property is described as follows:
-     *
-     * An enumeration indicating the whether instances of USBRedirectionSAPs
-     * already exist and whether whether SAPs can be created. A value set to
-     * 2 = "Pre-Configured SAPs" shall indicate that instances of
-     * CIM_USBRedirectionSAP exists which can be enabled. A value set to 3 =
-     * "Create SAPs" shall indicate that instances of CIM_USBRedirectionSAP
-     * can be created with the CreateDevice() and CreateSession() methods. A
-     * value set to 4 = "Modify Timeouts" shall indicate that the timeout
-     * parameters of instances of CIM_USBRedirectionSAP can be modified by
-     * applications using 'ModifyInstance'
-     *
-     * @return	int	current sAPCapabilitiesSupported property
-     * value
-     * @exception	Exception
-     */
-    public SAPCapabilitiesSupported getSAPCapabilitiesSupported(){
+		this.maxDevicesPerSAP = maxDevicesPerSAP;
+	} // setMaxDevicesPerSAP
 
-    return this.sAPCapabilitiesSupported;
-    } // getSAPCapabilitiesSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SAPCapabilitiesSupported.
+	 */
 
-    /**
-     * This method sets the
-     * USBRedirectionCapabilities.sAPCapabilitiesSupported property value.
-     * This property is described as follows:
-     *
-     * An enumeration indicating the whether instances of USBRedirectionSAPs
-     * already exist and whether whether SAPs can be created. A value set to
-     * 2 = "Pre-Configured SAPs" shall indicate that instances of
-     * CIM_USBRedirectionSAP exists which can be enabled. A value set to 3 =
-     * "Create SAPs" shall indicate that instances of CIM_USBRedirectionSAP
-     * can be created with the CreateDevice() and CreateSession() methods. A
-     * value set to 4 = "Modify Timeouts" shall indicate that the timeout
-     * parameters of instances of CIM_USBRedirectionSAP can be modified by
-     * applications using 'ModifyInstance'
-     *
-     * @param	int	new sAPCapabilitiesSupported property value
-     * @exception	Exception
-     */
-    public void setSAPCapabilitiesSupported(SAPCapabilitiesSupported
-	sAPCapabilitiesSupported){
+	public enum SAPCapabilitiesSupported {
+		UNKNOWN,
+		PRE_CONFIGURED_SAPS,
+		CREATE_SAPS,
+		MODIFY_SAP,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIED
+	}
 
-    this.sAPCapabilitiesSupported = sAPCapabilitiesSupported;
-    } // setSAPCapabilitiesSupported
+	private SAPCapabilitiesSupported	sAPCapabilitiesSupported;
 
+	/**
+	 * This method returns the USBRedirectionCapabilities.sAPCapabilitiesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the whether instances of USBRedirectionSAPs already exist and whether whether SAPs can be created. A value set to 2 =
+	 * "Pre-Configured SAPs" shall indicate that instances of CIM_USBRedirectionSAP exists which can be enabled. A value set to 3 = "Create SAPs"
+	 * shall indicate that instances of CIM_USBRedirectionSAP can be created with the CreateDevice() and CreateSession() methods. A value set to 4 =
+	 * "Modify Timeouts" shall indicate that the timeout parameters of instances of CIM_USBRedirectionSAP can be modified by applications using
+	 * 'ModifyInstance'
+	 * 
+	 * @return int current sAPCapabilitiesSupported property value
+	 * @exception Exception
+	 */
+	public SAPCapabilitiesSupported getSAPCapabilitiesSupported() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property requestedStatesSupportedForCreatedSAP.
-     */
-    private int[] requestedStatesSupportedForCreatedSAP;
-    /**
-     * This method returns the
-     * USBRedirectionCapabilities.requestedStatesSupportedForCreatedSAP
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the RequestedStatesSupported capabilities
-     * that may be used when creating a new SAP, if SAPCapabilitiesSupported
-     * has a value of 3, 'Create SAPs', otherwise ignored
-     *
-     * @return	int[]	current
-     * requestedStatesSupportedForCreatedSAP property value
-     * @exception	Exception
-     */
-    public int[] getRequestedStatesSupportedForCreatedSAP(){
+		return this.sAPCapabilitiesSupported;
+	} // getSAPCapabilitiesSupported
 
-    return this.requestedStatesSupportedForCreatedSAP;
-    } // getRequestedStatesSupportedForCreatedSAP
+	/**
+	 * This method sets the USBRedirectionCapabilities.sAPCapabilitiesSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the whether instances of USBRedirectionSAPs already exist and whether whether SAPs can be created. A value set to 2 =
+	 * "Pre-Configured SAPs" shall indicate that instances of CIM_USBRedirectionSAP exists which can be enabled. A value set to 3 = "Create SAPs"
+	 * shall indicate that instances of CIM_USBRedirectionSAP can be created with the CreateDevice() and CreateSession() methods. A value set to 4 =
+	 * "Modify Timeouts" shall indicate that the timeout parameters of instances of CIM_USBRedirectionSAP can be modified by applications using
+	 * 'ModifyInstance'
+	 * 
+	 * @param int new sAPCapabilitiesSupported property value
+	 * @exception Exception
+	 */
+	public void setSAPCapabilitiesSupported(SAPCapabilitiesSupported
+			sAPCapabilitiesSupported) {
 
-    /**
-     * This method sets the
-     * USBRedirectionCapabilities.requestedStatesSupportedForCreatedSAP
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating the RequestedStatesSupported capabilities
-     * that may be used when creating a new SAP, if SAPCapabilitiesSupported
-     * has a value of 3, 'Create SAPs', otherwise ignored
-     *
-     * @param	int[]	new requestedStatesSupportedForCreatedSAP
-     * property value
-     * @exception	Exception
-     */
-    public void setRequestedStatesSupportedForCreatedSAP(int[]
-	requestedStatesSupportedForCreatedSAP) {
+		this.sAPCapabilitiesSupported = sAPCapabilitiesSupported;
+	} // setSAPCapabilitiesSupported
 
-    this.requestedStatesSupportedForCreatedSAP =
-	requestedStatesSupportedForCreatedSAP;
-    } // setRequestedStatesSupportedForCreatedSAP
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property requestedStatesSupportedForCreatedSAP.
+	 */
+	private int[]	requestedStatesSupportedForCreatedSAP;
 
+	/**
+	 * This method returns the USBRedirectionCapabilities.requestedStatesSupportedForCreatedSAP property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the RequestedStatesSupported capabilities that may be used when creating a new SAP, if SAPCapabilitiesSupported has a
+	 * value of 3, 'Create SAPs', otherwise ignored
+	 * 
+	 * @return int[] current requestedStatesSupportedForCreatedSAP property value
+	 * @exception Exception
+	 */
+	public int[] getRequestedStatesSupportedForCreatedSAP() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property InfoFormatsSupported.
-     */
+		return this.requestedStatesSupportedForCreatedSAP;
+	} // getRequestedStatesSupportedForCreatedSAP
 
-    public enum InfoFormatsSupported{
-    OTHER,
-    HOST_NAME,
-    IPV4_ADDRESS,
-    IPV6_ADDRESS,
-    IPX_ADDRESS,
-    DECNET_ADDRESS,
-    SNA_ADDRESS,
-    AUTONOMOUS_SYSTEM_NUMBER,
-    MPLS_LABEL,
-    IPV4_SUBNET_ADDRESS,
-    IPV6_SUBNET_ADDRESS,
-    IPV4_ADDRESS_RANGE,
-    IPV6_ADDRESS_RANGE,
-    DIAL_STRING,
-    ETHERNET_ADDRESS,
-    TOKEN_RING_ADDRESS,
-    ATM_ADDRESS,
-    FRAME_RELAY_ADDRESS,
-    URL,
-    FQDN,
-    USER_FQDN,
-    DER_ASN1_DN,
-    DER_ASN1_GN,
-    KEY_ID,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private InfoFormatsSupported infoFormatsSupported;
-    /**
-     * This method returns the USBRedirectionCapabilities.infoFormatsSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating which of the formats for
-     * CIM_RemoteServiceAcccessPoint.InfoFormat are supported by the USB
-     * Redirection Service. When a USB Redirection Session is configured with
-     * ConnectionMode = 3 'Connect' the USB Redirection SAP needs to know the
-     * remote service access point to connect to. The
-     * CIM_RemoteServiceAccessPoint class is used to model this information.
-     * InfoFormat describes the address format for
-     * CIM_RemoteServiceAccessPoint.AccessInfo. which tells the local SAP
-     * where to find the USB redirection remote access point modeled by
-     * CIM_RemoteServiceAccessPoint. InfoFormatsSupported describes the
-     * AccessInfo formats that are supported by the local USB Redirection
-     * Service.
-     *
-     * @return	int	current infoFormatsSupported property value
-     * @exception	Exception
-     */
-    public InfoFormatsSupported getInfoFormatsSupported(){
+	/**
+	 * This method sets the USBRedirectionCapabilities.requestedStatesSupportedForCreatedSAP property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating the RequestedStatesSupported capabilities that may be used when creating a new SAP, if SAPCapabilitiesSupported has a
+	 * value of 3, 'Create SAPs', otherwise ignored
+	 * 
+	 * @param int[] new requestedStatesSupportedForCreatedSAP property value
+	 * @exception Exception
+	 */
+	public void setRequestedStatesSupportedForCreatedSAP(int[]
+			requestedStatesSupportedForCreatedSAP) {
 
-    return this.infoFormatsSupported;
-    } // getInfoFormatsSupported
+		this.requestedStatesSupportedForCreatedSAP =
+				requestedStatesSupportedForCreatedSAP;
+	} // setRequestedStatesSupportedForCreatedSAP
 
-    /**
-     * This method sets the USBRedirectionCapabilities.infoFormatsSupported
-     * property value. This property is described as follows:
-     *
-     * An enumeration indicating which of the formats for
-     * CIM_RemoteServiceAcccessPoint.InfoFormat are supported by the USB
-     * Redirection Service. When a USB Redirection Session is configured with
-     * ConnectionMode = 3 'Connect' the USB Redirection SAP needs to know the
-     * remote service access point to connect to. The
-     * CIM_RemoteServiceAccessPoint class is used to model this information.
-     * InfoFormat describes the address format for
-     * CIM_RemoteServiceAccessPoint.AccessInfo. which tells the local SAP
-     * where to find the USB redirection remote access point modeled by
-     * CIM_RemoteServiceAccessPoint. InfoFormatsSupported describes the
-     * AccessInfo formats that are supported by the local USB Redirection
-     * Service.
-     *
-     * @param	int	new infoFormatsSupported property value
-     * @exception	Exception
-     */
-    public void setInfoFormatsSupported(InfoFormatsSupported
-	infoFormatsSupported){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property InfoFormatsSupported.
+	 */
 
-    this.infoFormatsSupported = infoFormatsSupported;
-    } // setInfoFormatsSupported
+	public enum InfoFormatsSupported {
+		OTHER,
+		HOST_NAME,
+		IPV4_ADDRESS,
+		IPV6_ADDRESS,
+		IPX_ADDRESS,
+		DECNET_ADDRESS,
+		SNA_ADDRESS,
+		AUTONOMOUS_SYSTEM_NUMBER,
+		MPLS_LABEL,
+		IPV4_SUBNET_ADDRESS,
+		IPV6_SUBNET_ADDRESS,
+		IPV4_ADDRESS_RANGE,
+		IPV6_ADDRESS_RANGE,
+		DIAL_STRING,
+		ETHERNET_ADDRESS,
+		TOKEN_RING_ADDRESS,
+		ATM_ADDRESS,
+		FRAME_RELAY_ADDRESS,
+		URL,
+		FQDN,
+		USER_FQDN,
+		DER_ASN1_DN,
+		DER_ASN1_GN,
+		KEY_ID,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
+	private InfoFormatsSupported	infoFormatsSupported;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property singleClassPerSAP.
-     */
-    private boolean singleClassPerSAP;
-    /**
-     * This method returns the USBRedirectionCapabilities.singleClassPerSAP
-     * property value. This property is described as follows:
-     *
-     * SingleClassPerSAP indicates that only instances of CIM_USBDevice whose
-     * ClassCode property have the same value as each other shall be
-     * associated with the instances of CIM_USBRedirectionSAP.
-     *
-     * @return	boolean	current singleClassPerSAP property value
-     * @exception	Exception
-     */
-    public boolean isSingleClassPerSAP(){
+	/**
+	 * This method returns the USBRedirectionCapabilities.infoFormatsSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating which of the formats for CIM_RemoteServiceAcccessPoint.InfoFormat are supported by the USB Redirection Service. When
+	 * a USB Redirection Session is configured with ConnectionMode = 3 'Connect' the USB Redirection SAP needs to know the remote service access point
+	 * to connect to. The CIM_RemoteServiceAccessPoint class is used to model this information. InfoFormat describes the address format for
+	 * CIM_RemoteServiceAccessPoint.AccessInfo. which tells the local SAP where to find the USB redirection remote access point modeled by
+	 * CIM_RemoteServiceAccessPoint. InfoFormatsSupported describes the AccessInfo formats that are supported by the local USB Redirection Service.
+	 * 
+	 * @return int current infoFormatsSupported property value
+	 * @exception Exception
+	 */
+	public InfoFormatsSupported getInfoFormatsSupported() {
 
-    return this.singleClassPerSAP;
-    } // getSingleClassPerSAP
+		return this.infoFormatsSupported;
+	} // getInfoFormatsSupported
 
-    /**
-     * This method sets the USBRedirectionCapabilities.singleClassPerSAP
-     * property value. This property is described as follows:
-     *
-     * SingleClassPerSAP indicates that only instances of CIM_USBDevice whose
-     * ClassCode property have the same value as each other shall be
-     * associated with the instances of CIM_USBRedirectionSAP.
-     *
-     * @param	boolean	new singleClassPerSAP property value
-     * @exception	Exception
-     */
-    public void setSingleClassPerSAP(boolean singleClassPerSAP) {
+	/**
+	 * This method sets the USBRedirectionCapabilities.infoFormatsSupported property value. This property is described as follows:
+	 * 
+	 * An enumeration indicating which of the formats for CIM_RemoteServiceAcccessPoint.InfoFormat are supported by the USB Redirection Service. When
+	 * a USB Redirection Session is configured with ConnectionMode = 3 'Connect' the USB Redirection SAP needs to know the remote service access point
+	 * to connect to. The CIM_RemoteServiceAccessPoint class is used to model this information. InfoFormat describes the address format for
+	 * CIM_RemoteServiceAccessPoint.AccessInfo. which tells the local SAP where to find the USB redirection remote access point modeled by
+	 * CIM_RemoteServiceAccessPoint. InfoFormatsSupported describes the AccessInfo formats that are supported by the local USB Redirection Service.
+	 * 
+	 * @param int new infoFormatsSupported property value
+	 * @exception Exception
+	 */
+	public void setInfoFormatsSupported(InfoFormatsSupported
+			infoFormatsSupported) {
 
-    this.singleClassPerSAP = singleClassPerSAP;
-    } // setSingleClassPerSAP
+		this.infoFormatsSupported = infoFormatsSupported;
+	} // setInfoFormatsSupported
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property singleClassPerSAP.
+	 */
+	private boolean	singleClassPerSAP;
 
+	/**
+	 * This method returns the USBRedirectionCapabilities.singleClassPerSAP property value. This property is described as follows:
+	 * 
+	 * SingleClassPerSAP indicates that only instances of CIM_USBDevice whose ClassCode property have the same value as each other shall be associated
+	 * with the instances of CIM_USBRedirectionSAP.
+	 * 
+	 * @return boolean current singleClassPerSAP property value
+	 * @exception Exception
+	 */
+	public boolean isSingleClassPerSAP() {
+
+		return this.singleClassPerSAP;
+	} // getSingleClassPerSAP
+
+	/**
+	 * This method sets the USBRedirectionCapabilities.singleClassPerSAP property value. This property is described as follows:
+	 * 
+	 * SingleClassPerSAP indicates that only instances of CIM_USBDevice whose ClassCode property have the same value as each other shall be associated
+	 * with the instances of CIM_USBRedirectionSAP.
+	 * 
+	 * @param boolean new singleClassPerSAP property value
+	 * @exception Exception
+	 */
+	public void setSingleClassPerSAP(boolean singleClassPerSAP) {
+
+		this.singleClassPerSAP = singleClassPerSAP;
+	} // setSingleClassPerSAP
 
 } // Class USBRedirectionCapabilities

@@ -8,37 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class CollectedMSEs as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * CollectedMSEsBean Interface. The CIM class CollectedMSEs is described as
- * follows:
- *
- * CIM_CollectedMSEs is a generic association used to establish the members of
- * the grouping object, CollectionOf MSEs.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class CollectedMSEs as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the CollectedMSEsBean Interface. The CIM class CollectedMSEs is described as follows:
+ * 
+ * CIM_CollectedMSEs is a generic association used to establish the members of the grouping object, CollectionOf MSEs.
  */
 public class CollectedMSEs extends MemberOfCollection implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a CollectedMSEsBeanImpl Class which implements
-     * the CollectedMSEsBean Interface, and encapsulates the CIM class
-     * CollectedMSEs in a Java Bean. The CIM class CollectedMSEs is described
-     * as follows:
-     *
-     * CIM_CollectedMSEs is a generic association used to establish the
-     * members of the grouping object, CollectionOf MSEs.
-     */
-    public CollectedMSEs(){};
-    /**
-     * This method create an Association of the type CollectedMSEs between one
-     * CollectionOfMSEs object and ManagedSystemElement object
-     */
-    public static CollectedMSEs link(CollectionOfMSEs
-	collection,ManagedSystemElement member){
+	/**
+	 * This constructor creates a CollectedMSEsBeanImpl Class which implements the CollectedMSEsBean Interface, and encapsulates the CIM class
+	 * CollectedMSEs in a Java Bean. The CIM class CollectedMSEs is described as follows:
+	 * 
+	 * CIM_CollectedMSEs is a generic association used to establish the members of the grouping object, CollectionOf MSEs.
+	 */
+	public CollectedMSEs() {
+	};
 
-    return (CollectedMSEs)
-	Association.link(CollectedMSEs.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type CollectedMSEs between one CollectionOfMSEs object and ManagedSystemElement object
+	 */
+	public static CollectedMSEs link(CollectionOfMSEs
+			collection, ManagedSystemElement member) {
+
+		return (CollectedMSEs) Association.link(CollectedMSEs.class, collection, member);
+	}// link
 
 } // Class CollectedMSEs

@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFArea as well as methods comparable to the
@@ -26,7 +27,7 @@ public class OSPFArea extends RoutingProtocolDomain implements Serializable
 	 * @return OSPFAreaConfiguration assigned to this OSPFArea through AreaOfConfiguration dependency.
 	 */
 	public OSPFAreaConfiguration getConfiguration() {
-		return (OSPFAreaConfiguration) this.getToAssociatedElementsByType(AreaOfConfiguration.class);
+		return (OSPFAreaConfiguration) this.getFisrtsToAssociatedElementByType(AreaOfConfiguration.class);
 	}
 
 	/**
@@ -37,6 +38,47 @@ public class OSPFArea extends RoutingProtocolDomain implements Serializable
 	public void setConfiguration(OSPFAreaConfiguration config) {
 		if (config != null)
 			AreaOfConfiguration.link(this, config);
+	}
+
+	/* EndpointInArea */
+	/**
+	 * 
+	 * @return List of OSPFProtocolEndpointBase associated to this OSPFArea through EndpointInArea aggregation.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<OSPFProtocolEndpointBase> getEndpointsInArea() {
+		return (List<OSPFProtocolEndpointBase>) this.getToAssociatedElementsByType(EndpointInArea.class);
+	}
+
+	/**
+	 * Associates ospfProtocolEndpointBase to this OSPFArea through EndpointInArea aggregation.
+	 * 
+	 * @param ospfProtocolEndpointBase
+	 * @return
+	 */
+	public boolean addEndpointInArea(OSPFProtocolEndpointBase ospfProtocolEndpointBase) {
+		if (ospfProtocolEndpointBase == null)
+			return false;
+		EndpointInArea.link(this, ospfProtocolEndpointBase);
+		return true;
+	}
+
+	/**
+	 * Removes EndpointInArea aggregation between this OSPFArea and ospfProtocolEndpointBase, if any.
+	 * 
+	 * @param ospfProtocolEndpointBase
+	 * @return
+	 */
+	public boolean removeEndpointInArea(OSPFProtocolEndpointBase ospfProtocolEndpointBase) {
+		if (ospfProtocolEndpointBase == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(EndpointInArea.class, ospfProtocolEndpointBase);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
 	}
 
 	/**

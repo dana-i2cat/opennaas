@@ -8,42 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BindsTo as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BindsToBean Interface. The CIM class BindsTo is described as follows:
- *
- * This association establishes a ServiceAccessPoint as a requestor of
- * protocol services from a ProtocolEndpoint. Typically, this association
- * runs between SAPs and endpoints on a single system. Because a
- * ProtocolEndpoint is a kind of ServiceAccessPoint, this binding can be used
- * to establish a layering of two protocols, with the upper layer represented
- * by the Dependent and the lower layer represented by the Antecedent.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BindsTo as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the BindsToBean Interface. The CIM class BindsTo is described as follows:
+ * 
+ * This association establishes a ServiceAccessPoint as a requestor of protocol services from a ProtocolEndpoint. Typically, this association runs
+ * between SAPs and endpoints on a single system. Because a ProtocolEndpoint is a kind of ServiceAccessPoint, this binding can be used to establish a
+ * layering of two protocols, with the upper layer represented by the Dependent and the lower layer represented by the Antecedent.
  */
 public class BindsTo extends SAPSAPDependency implements Serializable {
 
-    /**
-     * This constructor creates a BindsToBeanImpl Class which implements the
-     * BindsToBean Interface, and encapsulates the CIM class BindsTo in a
-     * Java Bean. The CIM class BindsTo is described as follows:
-     *
-     * This association establishes a ServiceAccessPoint as a requestor of
-     * protocol services from a ProtocolEndpoint. Typically, this association
-     * runs between SAPs and endpoints on a single system. Because a
-     * ProtocolEndpoint is a kind of ServiceAccessPoint, this binding can be
-     * used to establish a layering of two protocols, with the upper layer
-     * represented by the Dependent and the lower layer represented by the
-     * Antecedent.
-     */
-    public BindsTo(){};
-    /**
-     * This method create an Association of the type BindsTo between one
-     * ProtocolEndpoint object and ServiceAccessPoint object
-     */
-    public static BindsTo link(ProtocolEndpoint antecedent,ServiceAccessPoint
-	dependent){
+	/**
+	 * This constructor creates a BindsToBeanImpl Class which implements the BindsToBean Interface, and encapsulates the CIM class BindsTo in a Java
+	 * Bean. The CIM class BindsTo is described as follows:
+	 * 
+	 * This association establishes a ServiceAccessPoint as a requestor of protocol services from a ProtocolEndpoint. Typically, this association runs
+	 * between SAPs and endpoints on a single system. Because a ProtocolEndpoint is a kind of ServiceAccessPoint, this binding can be used to
+	 * establish a layering of two protocols, with the upper layer represented by the Dependent and the lower layer represented by the Antecedent.
+	 */
+	public BindsTo() {
+	};
 
-    return (BindsTo) Association.link(BindsTo.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type BindsTo between one ProtocolEndpoint object and ServiceAccessPoint object
+	 */
+	public static BindsTo link(ProtocolEndpoint antecedent, ServiceAccessPoint
+			dependent) {
+
+		return (BindsTo) Association.link(BindsTo.class, antecedent, dependent);
+	}// link
 
 } // Class BindsTo

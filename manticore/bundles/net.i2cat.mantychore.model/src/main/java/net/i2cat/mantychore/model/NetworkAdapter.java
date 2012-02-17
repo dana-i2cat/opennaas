@@ -9,364 +9,311 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkAdapter as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * NetworkAdapterBean Interface. The CIM class NetworkAdapter is described as
- * follows:
- *
- * Note: The use of the CIM_NetworkAdpater class has been deprecated in lieu
- * of CIM_NetworkPort. CIM_NetworkPort better reflects that the hardware of a
- * single port is described and managed. Deprecated description:
- * NetworkAdapter is an Abstract class that defines general networking
- * hardware concepts (for example, PermanentAddress or Speed of operation).
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkAdapter as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the NetworkAdapterBean Interface. The CIM class NetworkAdapter is described as follows:
+ * 
+ * Note: The use of the CIM_NetworkAdpater class has been deprecated in lieu of CIM_NetworkPort. CIM_NetworkPort better reflects that the hardware of
+ * a single port is described and managed. Deprecated description: NetworkAdapter is an Abstract class that defines general networking hardware
+ * concepts (for example, PermanentAddress or Speed of operation).
  */
-    @Deprecated
+@Deprecated
 public class NetworkAdapter extends LogicalDevice implements Serializable {
 
-    /**
-     * This constructor creates a NetworkAdapterBeanImpl Class which
-     * implements the NetworkAdapterBean Interface, and encapsulates the CIM
-     * class NetworkAdapter in a Java Bean. The CIM class NetworkAdapter is
-     * described as follows:
-     *
-     * Note: The use of the CIM_NetworkAdpater class has been deprecated in
-     * lieu of CIM_NetworkPort. CIM_NetworkPort better reflects that the
-     * hardware of a single port is described and managed. Deprecated
-     * description: NetworkAdapter is an Abstract class that defines general
-     * networking hardware concepts (for example, PermanentAddress or Speed
-     * of operation).
-     */
-    protected NetworkAdapter(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property permanentAddress.
-     */
-    @Deprecated    private String permanentAddress;
-    /**
-     * This method returns the NetworkAdapter.permanentAddress property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: PermanentAddress defines the network address that is
-     * hardcoded into an adapter. This 'hardcoded' address might be changed
-     * through a firmware upgrade or software configuration. If so, this
-     * field should be updated when the change is made. PermanentAddress
-     * should be left blank if no 'hardcoded' address exists for the
-     * NetworkAdapter.
-     *
-     * @return	String	current permanentAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getPermanentAddress(){
+	/**
+	 * This constructor creates a NetworkAdapterBeanImpl Class which implements the NetworkAdapterBean Interface, and encapsulates the CIM class
+	 * NetworkAdapter in a Java Bean. The CIM class NetworkAdapter is described as follows:
+	 * 
+	 * Note: The use of the CIM_NetworkAdpater class has been deprecated in lieu of CIM_NetworkPort. CIM_NetworkPort better reflects that the hardware
+	 * of a single port is described and managed. Deprecated description: NetworkAdapter is an Abstract class that defines general networking hardware
+	 * concepts (for example, PermanentAddress or Speed of operation).
+	 */
+	protected NetworkAdapter() {
+	};
 
-    return this.permanentAddress;
-    } // getPermanentAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property permanentAddress.
+	 */
+	@Deprecated
+	private String	permanentAddress;
 
-    /**
-     * This method sets the NetworkAdapter.permanentAddress property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: PermanentAddress defines the network address that is
-     * hardcoded into an adapter. This 'hardcoded' address might be changed
-     * through a firmware upgrade or software configuration. If so, this
-     * field should be updated when the change is made. PermanentAddress
-     * should be left blank if no 'hardcoded' address exists for the
-     * NetworkAdapter.
-     *
-     * @param	String	new permanentAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPermanentAddress(String permanentAddress) {
+	/**
+	 * This method returns the NetworkAdapter.permanentAddress property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: PermanentAddress defines the network address that is hardcoded into
+	 * an adapter. This 'hardcoded' address might be changed through a firmware upgrade or software configuration. If so, this field should be updated
+	 * when the change is made. PermanentAddress should be left blank if no 'hardcoded' address exists for the NetworkAdapter.
+	 * 
+	 * @return String current permanentAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getPermanentAddress() {
 
-    this.permanentAddress = permanentAddress;
-    } // setPermanentAddress
+		return this.permanentAddress;
+	} // getPermanentAddress
 
+	/**
+	 * This method sets the NetworkAdapter.permanentAddress property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: PermanentAddress defines the network address that is hardcoded into
+	 * an adapter. This 'hardcoded' address might be changed through a firmware upgrade or software configuration. If so, this field should be updated
+	 * when the change is made. PermanentAddress should be left blank if no 'hardcoded' address exists for the NetworkAdapter.
+	 * 
+	 * @param String
+	 *            new permanentAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPermanentAddress(String permanentAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property networkAddresses.
-     */
-    @Deprecated    private String[] networkAddresses;
-    /**
-     * This method returns the NetworkAdapter.networkAddresses property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: An array of strings that indicates the network addresses
-     * for an adapter.
-     *
-     * @return	String[]	current networkAddresses property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String[] getNetworkAddresses(){
+		this.permanentAddress = permanentAddress;
+	} // setPermanentAddress
 
-    return this.networkAddresses;
-    } // getNetworkAddresses
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property networkAddresses.
+	 */
+	@Deprecated
+	private String[]	networkAddresses;
 
-    /**
-     * This method sets the NetworkAdapter.networkAddresses property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: An array of strings that indicates the network addresses
-     * for an adapter.
-     *
-     * @param	String[]	new networkAddresses property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setNetworkAddresses(String[] networkAddresses) {
+	/**
+	 * This method returns the NetworkAdapter.networkAddresses property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: An array of strings that indicates the network addresses for an
+	 * adapter.
+	 * 
+	 * @return String[] current networkAddresses property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String[] getNetworkAddresses() {
 
-    this.networkAddresses = networkAddresses;
-    } // setNetworkAddresses
+		return this.networkAddresses;
+	} // getNetworkAddresses
 
+	/**
+	 * This method sets the NetworkAdapter.networkAddresses property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: An array of strings that indicates the network addresses for an
+	 * adapter.
+	 * 
+	 * @param String
+	 *            [] new networkAddresses property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setNetworkAddresses(String[] networkAddresses) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property speed.
-     */
-    @Deprecated    private long speed;
-    /**
-     * This method returns the NetworkAdapter.speed property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: An estimate of the current bandwidth in Bits per Second.
-     * For Adapters that vary in bandwidth or for those where no accurate
-     * estimation can be made, this property should contain the nominal
-     * bandwidth.
-     *
-     * @return	long	current speed property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getSpeed(){
+		this.networkAddresses = networkAddresses;
+	} // setNetworkAddresses
 
-    return this.speed;
-    } // getSpeed
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property speed.
+	 */
+	@Deprecated
+	private long	speed;
 
-    /**
-     * This method sets the NetworkAdapter.speed property value. This property
-     * is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: An estimate of the current bandwidth in Bits per Second.
-     * For Adapters that vary in bandwidth or for those where no accurate
-     * estimation can be made, this property should contain the nominal
-     * bandwidth.
-     *
-     * @param	long	new speed property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setSpeed(long speed) {
+	/**
+	 * This method returns the NetworkAdapter.speed property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: An estimate of the current bandwidth in Bits per Second. For Adapters
+	 * that vary in bandwidth or for those where no accurate estimation can be made, this property should contain the nominal bandwidth.
+	 * 
+	 * @return long current speed property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getSpeed() {
 
-    this.speed = speed;
-    } // setSpeed
+		return this.speed;
+	} // getSpeed
 
+	/**
+	 * This method sets the NetworkAdapter.speed property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: An estimate of the current bandwidth in Bits per Second. For Adapters
+	 * that vary in bandwidth or for those where no accurate estimation can be made, this property should contain the nominal bandwidth.
+	 * 
+	 * @param long new speed property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setSpeed(long speed) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxSpeed.
-     */
-    @Deprecated    private long maxSpeed;
-    /**
-     * This method returns the NetworkAdapter.maxSpeed property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The maximum speed, in Bits per Second, for the Network
-     * Adapter.
-     *
-     * @return	long	current maxSpeed property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getMaxSpeed(){
+		this.speed = speed;
+	} // setSpeed
 
-    return this.maxSpeed;
-    } // getMaxSpeed
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxSpeed.
+	 */
+	@Deprecated
+	private long	maxSpeed;
 
-    /**
-     * This method sets the NetworkAdapter.maxSpeed property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The maximum speed, in Bits per Second, for the Network
-     * Adapter.
-     *
-     * @param	long	new maxSpeed property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setMaxSpeed(long maxSpeed) {
+	/**
+	 * This method returns the NetworkAdapter.maxSpeed property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The maximum speed, in Bits per Second, for the Network Adapter.
+	 * 
+	 * @return long current maxSpeed property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getMaxSpeed() {
 
-    this.maxSpeed = maxSpeed;
-    } // setMaxSpeed
+		return this.maxSpeed;
+	} // getMaxSpeed
 
+	/**
+	 * This method sets the NetworkAdapter.maxSpeed property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The maximum speed, in Bits per Second, for the Network Adapter.
+	 * 
+	 * @param long new maxSpeed property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setMaxSpeed(long maxSpeed) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property fullDuplex.
-     */
-    @Deprecated    private boolean fullDuplex;
-    /**
-     * This method returns the NetworkAdapter.fullDuplex property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: A Boolean that indicates that the Adapter is operating in
-     * full duplex mode.
-     *
-     * @return	boolean	current fullDuplex property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public boolean isFullDuplex(){
+		this.maxSpeed = maxSpeed;
+	} // setMaxSpeed
 
-    return this.fullDuplex;
-    } // getFullDuplex
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property fullDuplex.
+	 */
+	@Deprecated
+	private boolean	fullDuplex;
 
-    /**
-     * This method sets the NetworkAdapter.fullDuplex property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: A Boolean that indicates that the Adapter is operating in
-     * full duplex mode.
-     *
-     * @param	boolean	new fullDuplex property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setFullDuplex(boolean fullDuplex) {
+	/**
+	 * This method returns the NetworkAdapter.fullDuplex property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: A Boolean that indicates that the Adapter is operating in full duplex
+	 * mode.
+	 * 
+	 * @return boolean current fullDuplex property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public boolean isFullDuplex() {
 
-    this.fullDuplex = fullDuplex;
-    } // setFullDuplex
+		return this.fullDuplex;
+	} // getFullDuplex
 
+	/**
+	 * This method sets the NetworkAdapter.fullDuplex property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: A Boolean that indicates that the Adapter is operating in full duplex
+	 * mode.
+	 * 
+	 * @param boolean new fullDuplex property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setFullDuplex(boolean fullDuplex) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property autoSense.
-     */
-    @Deprecated    private boolean autoSense;
-    /**
-     * This method returns the NetworkAdapter.autoSense property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: A Boolean that indicates whether the NetworkAdapter is
-     * capable of automatically determining the speed or other communications
-     * characteristics of the attached network media.
-     *
-     * @return	boolean	current autoSense property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public boolean isAutoSense(){
+		this.fullDuplex = fullDuplex;
+	} // setFullDuplex
 
-    return this.autoSense;
-    } // getAutoSense
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property autoSense.
+	 */
+	@Deprecated
+	private boolean	autoSense;
 
-    /**
-     * This method sets the NetworkAdapter.autoSense property value. This
-     * property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: A Boolean that indicates whether the NetworkAdapter is
-     * capable of automatically determining the speed or other communications
-     * characteristics of the attached network media.
-     *
-     * @param	boolean	new autoSense property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setAutoSense(boolean autoSense) {
+	/**
+	 * This method returns the NetworkAdapter.autoSense property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: A Boolean that indicates whether the NetworkAdapter is capable of
+	 * automatically determining the speed or other communications characteristics of the attached network media.
+	 * 
+	 * @return boolean current autoSense property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public boolean isAutoSense() {
 
-    this.autoSense = autoSense;
-    } // setAutoSense
+		return this.autoSense;
+	} // getAutoSense
 
+	/**
+	 * This method sets the NetworkAdapter.autoSense property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: A Boolean that indicates whether the NetworkAdapter is capable of
+	 * automatically determining the speed or other communications characteristics of the attached network media.
+	 * 
+	 * @param boolean new autoSense property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAutoSense(boolean autoSense) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property octetsTransmitted.
-     */
-    @Deprecated    private long octetsTransmitted;
-    /**
-     * This method returns the NetworkAdapter.octetsTransmitted property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. The replacement is
-     * CIM_NetworkPortStatistics.BytesTransmitted.
-     *
-     * @return	long	current octetsTransmitted property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getOctetsTransmitted(){
+		this.autoSense = autoSense;
+	} // setAutoSense
 
-    return this.octetsTransmitted;
-    } // getOctetsTransmitted
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property octetsTransmitted.
+	 */
+	@Deprecated
+	private long	octetsTransmitted;
 
-    /**
-     * This method sets the NetworkAdapter.octetsTransmitted property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. The replacement is
-     * CIM_NetworkPortStatistics.BytesTransmitted.
-     *
-     * @param	long	new octetsTransmitted property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setOctetsTransmitted(long octetsTransmitted) {
+	/**
+	 * This method returns the NetworkAdapter.octetsTransmitted property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. The replacement is CIM_NetworkPortStatistics.BytesTransmitted.
+	 * 
+	 * @return long current octetsTransmitted property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getOctetsTransmitted() {
 
-    this.octetsTransmitted = octetsTransmitted;
-    } // setOctetsTransmitted
+		return this.octetsTransmitted;
+	} // getOctetsTransmitted
 
+	/**
+	 * This method sets the NetworkAdapter.octetsTransmitted property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. The replacement is CIM_NetworkPortStatistics.BytesTransmitted.
+	 * 
+	 * @param long new octetsTransmitted property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setOctetsTransmitted(long octetsTransmitted) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property octetsReceived.
-     */
-    @Deprecated    private long octetsReceived;
-    /**
-     * This method returns the NetworkAdapter.octetsReceived property value.
-     * This property is described as follows:
-     *
-     * Note: The use of OctetsReceived is deprecated. The replacement is
-     * CIM_NetworkPortStatistics.BytesReceived.
-     *
-     * @return	long	current octetsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getOctetsReceived(){
+		this.octetsTransmitted = octetsTransmitted;
+	} // setOctetsTransmitted
 
-    return this.octetsReceived;
-    } // getOctetsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property octetsReceived.
+	 */
+	@Deprecated
+	private long	octetsReceived;
 
-    /**
-     * This method sets the NetworkAdapter.octetsReceived property value. This
-     * property is described as follows:
-     *
-     * Note: The use of OctetsReceived is deprecated. The replacement is
-     * CIM_NetworkPortStatistics.BytesReceived.
-     *
-     * @param	long	new octetsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setOctetsReceived(long octetsReceived) {
+	/**
+	 * This method returns the NetworkAdapter.octetsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of OctetsReceived is deprecated. The replacement is CIM_NetworkPortStatistics.BytesReceived.
+	 * 
+	 * @return long current octetsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getOctetsReceived() {
 
-    this.octetsReceived = octetsReceived;
-    } // setOctetsReceived
+		return this.octetsReceived;
+	} // getOctetsReceived
 
+	/**
+	 * This method sets the NetworkAdapter.octetsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of OctetsReceived is deprecated. The replacement is CIM_NetworkPortStatistics.BytesReceived.
+	 * 
+	 * @param long new octetsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setOctetsReceived(long octetsReceived) {
 
+		this.octetsReceived = octetsReceived;
+	} // setOctetsReceived
 
 } // Class NetworkAdapter

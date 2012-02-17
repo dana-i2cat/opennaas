@@ -9,211 +9,182 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SSHCapabilities as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SSHCapabilitiesBean Interface. The CIM class SSHCapabilities is described
- * as follows:
- *
- * A subclass of ProtocolServiceCapabilities that defines the capabilities of
- * an SSH Service. An instance of CIM_SSHCapabilities is associated with an
- * instance of CIM_ProtocolService via the CIM_ElementCapabilities
- * association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SSHCapabilities as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SSHCapabilitiesBean Interface. The CIM class SSHCapabilities is described as
+ * follows:
+ * 
+ * A subclass of ProtocolServiceCapabilities that defines the capabilities of an SSH Service. An instance of CIM_SSHCapabilities is associated with an
+ * instance of CIM_ProtocolService via the CIM_ElementCapabilities association.
  */
 public class SSHCapabilities extends ProtocolServiceCapabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SSHCapabilitiesBeanImpl Class which
-     * implements the SSHCapabilitiesBean Interface, and encapsulates the CIM
-     * class SSHCapabilities in a Java Bean. The CIM class SSHCapabilities is
-     * described as follows:
-     *
-     * A subclass of ProtocolServiceCapabilities that defines the capabilities
-     * of an SSH Service. An instance of CIM_SSHCapabilities is associated
-     * with an instance of CIM_ProtocolService via the
-     * CIM_ElementCapabilities association.
-     */
-    public SSHCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedSSHVersions.
-     */
+	/**
+	 * This constructor creates a SSHCapabilitiesBeanImpl Class which implements the SSHCapabilitiesBean Interface, and encapsulates the CIM class
+	 * SSHCapabilities in a Java Bean. The CIM class SSHCapabilities is described as follows:
+	 * 
+	 * A subclass of ProtocolServiceCapabilities that defines the capabilities of an SSH Service. An instance of CIM_SSHCapabilities is associated
+	 * with an instance of CIM_ProtocolService via the CIM_ElementCapabilities association.
+	 */
+	public SSHCapabilities() {
+	};
 
-    public enum SupportedSSHVersions{
-    UNKNOWN,
-    OTHER,
-    SSHV1,
-    SSHV2,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SupportedSSHVersions supportedSSHVersions;
-    /**
-     * This method returns the SSHCapabilities.supportedSSHVersions property
-     * value. This property is described as follows:
-     *
-     * An array of integers indicating the version or versions of SSH protocol
-     * that the SSH service supports.
-     *
-     * @return	int	current supportedSSHVersions property value
-     * @exception	Exception
-     */
-    public SupportedSSHVersions getSupportedSSHVersions(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedSSHVersions.
+	 */
 
-    return this.supportedSSHVersions;
-    } // getSupportedSSHVersions
+	public enum SupportedSSHVersions {
+		UNKNOWN,
+		OTHER,
+		SSHV1,
+		SSHV2,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the SSHCapabilities.supportedSSHVersions property
-     * value. This property is described as follows:
-     *
-     * An array of integers indicating the version or versions of SSH protocol
-     * that the SSH service supports.
-     *
-     * @param	int	new supportedSSHVersions property value
-     * @exception	Exception
-     */
-    public void setSupportedSSHVersions(SupportedSSHVersions
-	supportedSSHVersions){
+	private SupportedSSHVersions	supportedSSHVersions;
 
-    this.supportedSSHVersions = supportedSSHVersions;
-    } // setSupportedSSHVersions
+	/**
+	 * This method returns the SSHCapabilities.supportedSSHVersions property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the version or versions of SSH protocol that the SSH service supports.
+	 * 
+	 * @return int current supportedSSHVersions property value
+	 * @exception Exception
+	 */
+	public SupportedSSHVersions getSupportedSSHVersions() {
 
+		return this.supportedSSHVersions;
+	} // getSupportedSSHVersions
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherSupportedSSHVersion.
-     */
-    private String otherSupportedSSHVersion;
-    /**
-     * This method returns the SSHCapabilities.otherSupportedSSHVersion
-     * property value. This property is described as follows:
-     *
-     * If the SupportedSSHVersions property is set to 1, "Other" then free
-     * form string providing more information about supported SSH protocols.
-     * If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherSupportedSSHVersion property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherSupportedSSHVersion(){
+	/**
+	 * This method sets the SSHCapabilities.supportedSSHVersions property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the version or versions of SSH protocol that the SSH service supports.
+	 * 
+	 * @param int new supportedSSHVersions property value
+	 * @exception Exception
+	 */
+	public void setSupportedSSHVersions(SupportedSSHVersions
+			supportedSSHVersions) {
 
-    return this.otherSupportedSSHVersion;
-    } // getOtherSupportedSSHVersion
+		this.supportedSSHVersions = supportedSSHVersions;
+	} // setSupportedSSHVersions
 
-    /**
-     * This method sets the SSHCapabilities.otherSupportedSSHVersion property
-     * value. This property is described as follows:
-     *
-     * If the SupportedSSHVersions property is set to 1, "Other" then free
-     * form string providing more information about supported SSH protocols.
-     * If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherSupportedSSHVersion property value
-     * @exception	Exception
-     */
-    public void setOtherSupportedSSHVersion(String otherSupportedSSHVersion)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherSupportedSSHVersion.
+	 */
+	private String	otherSupportedSSHVersion;
+
+	/**
+	 * This method returns the SSHCapabilities.otherSupportedSSHVersion property value. This property is described as follows:
+	 * 
+	 * If the SupportedSSHVersions property is set to 1, "Other" then free form string providing more information about supported SSH protocols. If
+	 * not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherSupportedSSHVersion property value
+	 * @exception Exception
+	 */
+	public String getOtherSupportedSSHVersion() {
+
+		return this.otherSupportedSSHVersion;
+	} // getOtherSupportedSSHVersion
+
+	/**
+	 * This method sets the SSHCapabilities.otherSupportedSSHVersion property value. This property is described as follows:
+	 * 
+	 * If the SupportedSSHVersions property is set to 1, "Other" then free form string providing more information about supported SSH protocols. If
+	 * not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherSupportedSSHVersion property value
+	 * @exception Exception
+	 */
+	public void setOtherSupportedSSHVersion(String otherSupportedSSHVersion)
 	{
 
-    this.otherSupportedSSHVersion = otherSupportedSSHVersion;
-    } // setOtherSupportedSSHVersion
+		this.otherSupportedSSHVersion = otherSupportedSSHVersion;
+	} // setOtherSupportedSSHVersion
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedEncryptionAlgorithms.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedEncryptionAlgorithms.
-     */
+	public enum SupportedEncryptionAlgorithms {
+		UNKNOWN,
+		OTHER,
+		DES,
+		DES3,
+		RC4,
+		IDEA,
+		SKIPJACK,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    public enum SupportedEncryptionAlgorithms{
-    UNKNOWN,
-    OTHER,
-    DES,
-    DES3,
-    RC4,
-    IDEA,
-    SKIPJACK,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SupportedEncryptionAlgorithms supportedEncryptionAlgorithms;
-    /**
-     * This method returns the SSHCapabilities.supportedEncryptionAlgorithms
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the encryption algorithms that the SSH
-     * service supports.
-     *
-     * @return	int	current supportedEncryptionAlgorithms
-     * property value
-     * @exception	Exception
-     */
-    public SupportedEncryptionAlgorithms getSupportedEncryptionAlgorithms(){
+	private SupportedEncryptionAlgorithms	supportedEncryptionAlgorithms;
 
-    return this.supportedEncryptionAlgorithms;
-    } // getSupportedEncryptionAlgorithms
+	/**
+	 * This method returns the SSHCapabilities.supportedEncryptionAlgorithms property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the encryption algorithms that the SSH service supports.
+	 * 
+	 * @return int current supportedEncryptionAlgorithms property value
+	 * @exception Exception
+	 */
+	public SupportedEncryptionAlgorithms getSupportedEncryptionAlgorithms() {
 
-    /**
-     * This method sets the SSHCapabilities.supportedEncryptionAlgorithms
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the encryption algorithms that the SSH
-     * service supports.
-     *
-     * @param	int	new supportedEncryptionAlgorithms property
-     * value
-     * @exception	Exception
-     */
-    public void setSupportedEncryptionAlgorithms(SupportedEncryptionAlgorithms
-	supportedEncryptionAlgorithms){
+		return this.supportedEncryptionAlgorithms;
+	} // getSupportedEncryptionAlgorithms
 
-    this.supportedEncryptionAlgorithms = supportedEncryptionAlgorithms;
-    } // setSupportedEncryptionAlgorithms
+	/**
+	 * This method sets the SSHCapabilities.supportedEncryptionAlgorithms property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the encryption algorithms that the SSH service supports.
+	 * 
+	 * @param int new supportedEncryptionAlgorithms property value
+	 * @exception Exception
+	 */
+	public void setSupportedEncryptionAlgorithms(SupportedEncryptionAlgorithms
+			supportedEncryptionAlgorithms) {
 
+		this.supportedEncryptionAlgorithms = supportedEncryptionAlgorithms;
+	} // setSupportedEncryptionAlgorithms
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherSupportedEncryptionAlgorithm.
-     */
-    private String otherSupportedEncryptionAlgorithm;
-    /**
-     * This method returns the
-     * SSHCapabilities.otherSupportedEncryptionAlgorithm property value. This
-     * property is described as follows:
-     *
-     * If the SupportedEncryptionAlgorithms property is set to 1, "Other" then
-     * free form string providing more information about supported
-     * algorithms. If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherSupportedEncryptionAlgorithm
-     * property value
-     * @exception	Exception
-     */
-    public String getOtherSupportedEncryptionAlgorithm(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherSupportedEncryptionAlgorithm.
+	 */
+	private String	otherSupportedEncryptionAlgorithm;
 
-    return this.otherSupportedEncryptionAlgorithm;
-    } // getOtherSupportedEncryptionAlgorithm
+	/**
+	 * This method returns the SSHCapabilities.otherSupportedEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the SupportedEncryptionAlgorithms property is set to 1, "Other" then free form string providing more information about supported algorithms.
+	 * If not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherSupportedEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public String getOtherSupportedEncryptionAlgorithm() {
 
-    /**
-     * This method sets the SSHCapabilities.otherSupportedEncryptionAlgorithm
-     * property value. This property is described as follows:
-     *
-     * If the SupportedEncryptionAlgorithms property is set to 1, "Other" then
-     * free form string providing more information about supported
-     * algorithms. If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherSupportedEncryptionAlgorithm
-     * property value
-     * @exception	Exception
-     */
-    public void setOtherSupportedEncryptionAlgorithm(String
-	otherSupportedEncryptionAlgorithm) {
+		return this.otherSupportedEncryptionAlgorithm;
+	} // getOtherSupportedEncryptionAlgorithm
 
-    this.otherSupportedEncryptionAlgorithm =
-	otherSupportedEncryptionAlgorithm;
-    } // setOtherSupportedEncryptionAlgorithm
+	/**
+	 * This method sets the SSHCapabilities.otherSupportedEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the SupportedEncryptionAlgorithms property is set to 1, "Other" then free form string providing more information about supported algorithms.
+	 * If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherSupportedEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherSupportedEncryptionAlgorithm(String
+			otherSupportedEncryptionAlgorithm) {
 
-
+		this.otherSupportedEncryptionAlgorithm =
+				otherSupportedEncryptionAlgorithm;
+	} // setOtherSupportedEncryptionAlgorithm
 
 } // Class SSHCapabilities
