@@ -6,8 +6,8 @@
   </parent>
   <!--  POM id -->
   	<!--  POM id -->
-	<groupId>org.opennaas.gretunnel.capability</groupId>
-  	<artifactId>org.opennaas.gretunnel.capability</artifactId>
+	<groupId>org.opennaas</groupId>
+  	<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
 	<!--  Maven configuration -->
   <modelVersion>4.0.0</modelVersion>
   <packaging>bundle</packaging>
@@ -49,9 +49,6 @@
 	  <resource>
 	    <directory>src/main/resources</directory>
 	  </resource>
-	  <resource>
-		<directory>src/test/resources</directory>
-	  </resource>
 	</resources>
 	<plugins>
 	<plugin>
@@ -71,7 +68,7 @@
 		  <instructions>
 		    <Bundle-SymbolicName>${project.artifactId} </Bundle-SymbolicName>
 		    <Bundle-Version>${project.version}</Bundle-Version>
-			<Bundle-Activator>org.opennaas.gretunnel.capability.Activator</Bundle-Activator>
+			<Bundle-Activator>org.opennaas.router.capability.gretunnel.Activator</Bundle-Activator>
 			<!--
 			| assume public classes are in the top package, and private
 			classes are under ".internal"

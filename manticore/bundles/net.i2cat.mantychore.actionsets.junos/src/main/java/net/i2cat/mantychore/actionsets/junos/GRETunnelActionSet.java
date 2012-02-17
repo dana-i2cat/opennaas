@@ -15,7 +15,6 @@ public class GRETunnelActionSet extends ActionSet {
 	public GRETunnelActionSet() {
 		super.setActionSetId("gretunnelActionSet");
 		// geconfig??
-		;
 		this.putAction(ActionConstants.CREATETUNNEL, CreateTunnelAction.class);
 		this.putAction(ActionConstants.DELETETUNNEL, DeleteTunnelAction.class);
 		this.putAction(ActionConstants.GETTUNNELCONFIG, GetTunnelConfigurationAction.class);

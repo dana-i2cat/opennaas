@@ -1,4 +1,4 @@
-package org.opennaas.gretunnel.tests.capability.mock;
+package org.opennaas.router.tests.capability.mock;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 

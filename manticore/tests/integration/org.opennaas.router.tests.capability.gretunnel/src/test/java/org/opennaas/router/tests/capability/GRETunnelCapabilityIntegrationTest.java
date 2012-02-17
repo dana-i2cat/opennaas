@@ -1,4 +1,4 @@
-package org.opennaas.gretunnel.tests.capability;
+package org.opennaas.router.tests.capability;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
@@ -34,7 +34,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.gretunnel.tests.capability.mock.MockBootstrapper;
+import org.opennaas.router.tests.capability.mock.MockBootstrapper;
 import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;

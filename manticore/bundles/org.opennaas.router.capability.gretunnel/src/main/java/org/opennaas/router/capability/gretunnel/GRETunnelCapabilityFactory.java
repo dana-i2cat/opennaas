@@ -1,4 +1,4 @@
-package org.opennaas.gretunnel.capability;
+package org.opennaas.router.capability.gretunnel;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
