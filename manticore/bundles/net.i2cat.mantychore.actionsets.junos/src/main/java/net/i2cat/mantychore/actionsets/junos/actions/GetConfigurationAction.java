@@ -8,7 +8,6 @@ import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
-import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -85,13 +84,10 @@ public class GetConfigurationAction extends JunosAction {
 				/* Parse interface info */
 				routerModel = parseInterfaces(routerModel, message);
 
-				/* Parse protocols info */
-				// Protocols parsing should be done before parsing routing-options:
+				/* Parse routing options info */
+				// Routing options parsing should be done after parsing protocols (protocols is required):
 				// Protocol parser creates classes in the model that require being updated by routing-options parser.
 				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
-				routerModel = parseProtocols(routerModel, message);
-
-				/* Parse routing options info */
 				routerModel = parseRoutingOptions(routerModel, message);
 			}
 		} catch (Exception e) {
@@ -156,29 +152,6 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	/**
-	 * Parses protocols data from message and puts in into routerModel.
-	 * 
-	 * @param routerModel
-	 *            to store parsed data
-	 * @param message
-	 *            to parse interfaces data from
-	 * @return routerModel updated with interfaces information from message.
-	 * @throws
-	 * @throws IOException
-	 * @throws SAXException
-	 */
-	private System parseProtocols(System routerModel, String message) throws IOException, SAXException {
-
-		ProtocolsParser protocolsParser = new ProtocolsParser(routerModel);
-		protocolsParser.init();
-		protocolsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
-
-		routerModel = protocolsParser.getModel();
-
-		return routerModel;
-	}
-
-	/**
 	 * Parses routing options data from message and puts in into routerModel.
 	 * 
 	 * @param routerModel
@@ -197,12 +170,6 @@ public class GetConfigurationAction extends JunosAction {
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
 
 		routerModel = routingOptionsParser.getModel();
-		// add to the router model
-		// for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
-		// NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
-		// routerModel.addNextHopRoute(nh);
-		// }
-
 		return routerModel;
 	}
 
