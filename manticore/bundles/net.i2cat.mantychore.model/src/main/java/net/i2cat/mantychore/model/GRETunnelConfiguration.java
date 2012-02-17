@@ -128,7 +128,6 @@ public class GRETunnelConfiguration extends LogicalElement implements
 	 * @return
 	 */
 	public GRETunnelService getGRETunnelService() {
-		return (GRETunnelService) this.getFromAssociatedElementsByType(GRETunnelServiceConfiguration.class);
-
+		return (GRETunnelService) this.getFirstFromAssociatedElementByType(GRETunnelServiceConfiguration.class);
 	}
 }
