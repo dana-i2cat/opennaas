@@ -79,7 +79,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 			throws InvalidSyntaxException {
 
 		Properties properties = new Properties();
-		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "ospf");
+		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME,
 				resourceId);
 		return createServiceFilter(IQueueManagerService.class.getName(),

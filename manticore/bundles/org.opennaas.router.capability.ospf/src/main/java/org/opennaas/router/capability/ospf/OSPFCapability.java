@@ -95,8 +95,16 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object activateOSPF(List<Interface> lInterface) {
+		Response response = null;
 
-		return sendMessage(ActionConstants.OSPF_ACTIVATE, lInterface);
+		for (Interface inter : lInterface) {
+			response = (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, inter);
+			if (response.getStatus().equals(Response.Status.OK)) {
+				break;
+			}
+		}
+
+		return response;
 	}
 
 	/*
