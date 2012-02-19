@@ -1,5 +1,7 @@
 package net.i2cat.nexus.tests;
 
+import org.ops4j.pax.exam.Option;
+
 import java.util.ArrayList;
 import java.util.List;
 

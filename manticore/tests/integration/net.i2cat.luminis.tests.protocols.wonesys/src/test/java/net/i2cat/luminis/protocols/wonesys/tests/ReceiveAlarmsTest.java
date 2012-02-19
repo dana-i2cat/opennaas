@@ -18,11 +18,6 @@ import javax.inject.Inject;
 
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
-import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
-
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;
@@ -41,11 +36,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-
-//import org.ops4j.pax.exam.Inject;
-//import org.ops4j.pax.exam.Option;
-//import org.ops4j.pax.exam.junit.Configuration;
-//import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
@@ -67,6 +57,11 @@ import uk.co.westhawk.snmp.stack.SnmpContext;
 import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
+
+import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 
 @RunWith(JUnit4TestRunner.class)
 public class ReceiveAlarmsTest implements EventHandler {
@@ -112,37 +107,6 @@ public class ReceiveAlarmsTest implements EventHandler {
 					   .unpackDirectory(new File("target/paxexam")),
 					   keepRuntimeFolder());
 	}
-
-	/*
-	@Configuration
-	public static Option[] configure() {
-		return combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		);
-	}
-	*/
-
-	/*
-	public void loadBundlesAndServices() {
-
-		assertNotNull(bundleContext);
-
-		// Wait for the activation of all the bundles 
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		assertNotNull(protocolManager);
-
-		eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
-
-		alarmConfig = getOsgiService(IWonesysAlarmConfigurator.class, 20000);
-		assertNotNull(alarmConfig);
-
-	}
-	*/
 
 	/**
 	 * 0. Obtain services <br>

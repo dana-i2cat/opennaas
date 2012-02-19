@@ -1,5 +1,7 @@
 package net.i2cat.nexus.tests;
 
+import org.ops4j.pax.exam.Option;
+
 import static org.ops4j.pax.exam.CoreOptions.equinox;
 import static org.ops4j.pax.exam.CoreOptions.felix;
 import static org.ops4j.pax.exam.CoreOptions.systemProperty;
