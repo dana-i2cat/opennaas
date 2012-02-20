@@ -102,7 +102,7 @@ public class SendCommandTest {
 		assertNotNull(protocolManager);
 	}*/
 
-	//@Test
+	@Test
 	public void testSendMultipleMessages() throws ProtocolException {
 
 		//loadBundles();
@@ -118,7 +118,7 @@ public class SendCommandTest {
 		//loadBundles();
 
 		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		//IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		sessionContext.addParameter("protocol.mock", "true");

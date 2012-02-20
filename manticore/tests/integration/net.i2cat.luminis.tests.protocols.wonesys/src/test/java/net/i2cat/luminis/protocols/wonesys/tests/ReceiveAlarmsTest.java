@@ -69,7 +69,7 @@ public class ReceiveAlarmsTest implements EventHandler {
 	private static Log log = LogFactory.getLog(ReceiveAlarmsTest.class);
 
 	@Inject
-	private BundleContext				bundleContext;
+	private BundleContext	bundleContext;
 
 	// private String resourceId = "Proteus-Pedrosa";
 	// private String hostIpAddress = "10.10.80.11";
