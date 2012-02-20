@@ -1,0 +1,28 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+
+	<protocols>
+		<protocols>
+			<ospf>
+				<area>
+					<name>$areaId</name>
+					<interface>
+						<name>$param.name</name>
+					</interface>
+				</area>
+			</ospf>
+		</protocols>
+	</protocols>
+
+
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

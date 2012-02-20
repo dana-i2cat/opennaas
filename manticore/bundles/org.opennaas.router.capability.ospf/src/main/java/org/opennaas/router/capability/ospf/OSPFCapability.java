@@ -95,11 +95,12 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object activateOSPF(List<LogicalPort> lLogicalPort) {
+
 		Response response = null;
 
 		for (LogicalPort logicalPort : lLogicalPort) {
-			response = (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, logicalPort);
-			if (response.getStatus().equals(Response.Status.OK)) {
+			response = (Response) sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, logicalPort);
+			if (response.getStatus().equals(Response.Status.ERROR)) {
 				break;
 			}
 		}
@@ -115,7 +116,16 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	@Override
 	public Object deactivateOSPF(List<LogicalPort> lLogicalPort) {
 
-		return sendMessage(ActionConstants.OSPF_DEACTIVATE, lLogicalPort);
+		Response response = null;
+
+		for (LogicalPort logicalPort : lLogicalPort) {
+			response = (Response) sendMessage(ActionConstants.OSPF_DISABLE_INTERFACE, logicalPort);
+			if (response.getStatus().equals(Response.Status.ERROR)) {
+				break;
+			}
+		}
+
+		return response;
 	}
 
 	/*
