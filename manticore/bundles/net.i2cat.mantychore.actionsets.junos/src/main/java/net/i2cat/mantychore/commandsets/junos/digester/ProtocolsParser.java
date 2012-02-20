@@ -1,11 +1,9 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 
+import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.OSPFArea;
@@ -157,10 +155,7 @@ public class ProtocolsParser extends DigesterEngine {
 	public void transformAndSetAreaID(String dottedAreaId) throws IOException {
 		assert (dottedAreaId != null);
 
-		// transform String ([0..255].[0..255].[0..255].[0..255]) into long
-		InetAddress address = Inet4Address.getByName(dottedAreaId);
-		ByteBuffer bb = ByteBuffer.wrap(address.getAddress());
-		long areaId = bb.getInt(); // reads four bytes and creates an int
+		long areaId = IPUtilsHelper.ipv4StringToLong(dottedAreaId);
 
 		// setAreaId
 		Object obj = peek(0);
