@@ -9,137 +9,104 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PrioritySchedulingElement as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * PrioritySchedulingElementBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PrioritySchedulingElement as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the PrioritySchedulingElementBean Interface. The CIM class
  * PrioritySchedulingElement is described as follows:
- *
- * This class is a subclass of the abstract class SchedulingElement. It
- * indicates that a scheduler is taking packets from a set of inputs using
- * the priority scheduling discipline. As is the case with all subclasses of
- * SchedulingElement, the input associated with an instance of
- * PrioritySchedulingElement is of one of two types: either a queue, or
- * another scheduler. The Priority property represents the priority for an
- * input, relative to the priorities of all the other inputs to which the
- * scheduler (that aggregates this PrioritySchedulingElement) is associated.
- * Inputs to which the scheduler is related via other scheduling disciplines
- * do not figure in this prioritization. Because scheduling of this type is
- * always work conserving, the inherited boolean property, WorkConserving, is
- * restricted to TRUE in this class.
+ * 
+ * This class is a subclass of the abstract class SchedulingElement. It indicates that a scheduler is taking packets from a set of inputs using the
+ * priority scheduling discipline. As is the case with all subclasses of SchedulingElement, the input associated with an instance of
+ * PrioritySchedulingElement is of one of two types: either a queue, or another scheduler. The Priority property represents the priority for an input,
+ * relative to the priorities of all the other inputs to which the scheduler (that aggregates this PrioritySchedulingElement) is associated. Inputs to
+ * which the scheduler is related via other scheduling disciplines do not figure in this prioritization. Because scheduling of this type is always
+ * work conserving, the inherited boolean property, WorkConserving, is restricted to TRUE in this class.
  */
 public class PrioritySchedulingElement extends SchedulingElement implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a PrioritySchedulingElementBeanImpl Class
-     * which implements the PrioritySchedulingElementBean Interface, and
-     * encapsulates the CIM class PrioritySchedulingElement in a Java Bean.
-     * The CIM class PrioritySchedulingElement is described as follows:
-     *
-     * This class is a subclass of the abstract class SchedulingElement. It
-     * indicates that a scheduler is taking packets from a set of inputs
-     * using the priority scheduling discipline. As is the case with all
-     * subclasses of SchedulingElement, the input associated with an instance
-     * of PrioritySchedulingElement is of one of two types: either a queue,
-     * or another scheduler. The Priority property represents the priority
-     * for an input, relative to the priorities of all the other inputs to
-     * which the scheduler (that aggregates this PrioritySchedulingElement)
-     * is associated. Inputs to which the scheduler is related via other
-     * scheduling disciplines do not figure in this prioritization. Because
-     * scheduling of this type is always work conserving, the inherited
-     * boolean property, WorkConserving, is restricted to TRUE in this class.
-     */
-    public PrioritySchedulingElement(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property workConserving.
-     */
-    private boolean workConserving;
-    /**
-     * This method returns the PrioritySchedulingElement.workConserving
-     * property value. This property is described as follows:
-     *
-     * A boolean property indicating whether the PacketSchedulingService tied
-     * to this instance (by the ElementInSchedulingService aggregation) is
-     * treating the queue/input tied to this instance, in a work-conserving
-     * manner. The queue/input is indicated by either the QueueToSchedule or
-     * SchedulingServiceToSchedule association. Note that this property is
-     * writeable, indicating that an administrator can change the behavior of
-     * the SchedulingElement - but only for those elements that can operate
-     * in a non-work conserving mode.
-     *
-     * @return	boolean	current workConserving property value
-     * @exception	Exception
-     */
-    @Override
-	public boolean isWorkConserving(){
+	/**
+	 * This constructor creates a PrioritySchedulingElementBeanImpl Class which implements the PrioritySchedulingElementBean Interface, and
+	 * encapsulates the CIM class PrioritySchedulingElement in a Java Bean. The CIM class PrioritySchedulingElement is described as follows:
+	 * 
+	 * This class is a subclass of the abstract class SchedulingElement. It indicates that a scheduler is taking packets from a set of inputs using
+	 * the priority scheduling discipline. As is the case with all subclasses of SchedulingElement, the input associated with an instance of
+	 * PrioritySchedulingElement is of one of two types: either a queue, or another scheduler. The Priority property represents the priority for an
+	 * input, relative to the priorities of all the other inputs to which the scheduler (that aggregates this PrioritySchedulingElement) is
+	 * associated. Inputs to which the scheduler is related via other scheduling disciplines do not figure in this prioritization. Because scheduling
+	 * of this type is always work conserving, the inherited boolean property, WorkConserving, is restricted to TRUE in this class.
+	 */
+	public PrioritySchedulingElement() {
+	};
 
-    return this.workConserving;
-    } // getWorkConserving
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property workConserving.
+	 */
+	private boolean	workConserving;
 
-    /**
-     * This method sets the PrioritySchedulingElement.workConserving property
-     * value. This property is described as follows:
-     *
-     * A boolean property indicating whether the PacketSchedulingService tied
-     * to this instance (by the ElementInSchedulingService aggregation) is
-     * treating the queue/input tied to this instance, in a work-conserving
-     * manner. The queue/input is indicated by either the QueueToSchedule or
-     * SchedulingServiceToSchedule association. Note that this property is
-     * writeable, indicating that an administrator can change the behavior of
-     * the SchedulingElement - but only for those elements that can operate
-     * in a non-work conserving mode.
-     *
-     * @param	boolean	new workConserving property value
-     * @exception	Exception
-     */
-    @Override
+	/**
+	 * This method returns the PrioritySchedulingElement.workConserving property value. This property is described as follows:
+	 * 
+	 * A boolean property indicating whether the PacketSchedulingService tied to this instance (by the ElementInSchedulingService aggregation) is
+	 * treating the queue/input tied to this instance, in a work-conserving manner. The queue/input is indicated by either the QueueToSchedule or
+	 * SchedulingServiceToSchedule association. Note that this property is writeable, indicating that an administrator can change the behavior of the
+	 * SchedulingElement - but only for those elements that can operate in a non-work conserving mode.
+	 * 
+	 * @return boolean current workConserving property value
+	 * @exception Exception
+	 */
+	@Override
+	public boolean isWorkConserving() {
+
+		return this.workConserving;
+	} // getWorkConserving
+
+	/**
+	 * This method sets the PrioritySchedulingElement.workConserving property value. This property is described as follows:
+	 * 
+	 * A boolean property indicating whether the PacketSchedulingService tied to this instance (by the ElementInSchedulingService aggregation) is
+	 * treating the queue/input tied to this instance, in a work-conserving manner. The queue/input is indicated by either the QueueToSchedule or
+	 * SchedulingServiceToSchedule association. Note that this property is writeable, indicating that an administrator can change the behavior of the
+	 * SchedulingElement - but only for those elements that can operate in a non-work conserving mode.
+	 * 
+	 * @param boolean new workConserving property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setWorkConserving(boolean workConserving) {
 
-    this.workConserving = workConserving;
-    } // setWorkConserving
+		this.workConserving = workConserving;
+	} // setWorkConserving
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property priority.
+	 */
+	private int	priority;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property priority.
-     */
-    private int priority;
-    /**
-     * This method returns the PrioritySchedulingElement.priority property
-     * value. This property is described as follows:
-     *
-     * A 16-bit unsigned integer indicating the priority level of this
-     * SchedulingElement's input, relative to the other inputs serviced by
-     * the SchedulingElement's aggregating PacketSchedulingService. A larger
-     * value represents a higher priority.
-     *
-     * @return	int	current priority property value
-     * @exception	Exception
-     */
-    public int getPriority(){
+	/**
+	 * This method returns the PrioritySchedulingElement.priority property value. This property is described as follows:
+	 * 
+	 * A 16-bit unsigned integer indicating the priority level of this SchedulingElement's input, relative to the other inputs serviced by the
+	 * SchedulingElement's aggregating PacketSchedulingService. A larger value represents a higher priority.
+	 * 
+	 * @return int current priority property value
+	 * @exception Exception
+	 */
+	public int getPriority() {
 
-    return this.priority;
-    } // getPriority
+		return this.priority;
+	} // getPriority
 
-    /**
-     * This method sets the PrioritySchedulingElement.priority property value.
-     * This property is described as follows:
-     *
-     * A 16-bit unsigned integer indicating the priority level of this
-     * SchedulingElement's input, relative to the other inputs serviced by
-     * the SchedulingElement's aggregating PacketSchedulingService. A larger
-     * value represents a higher priority.
-     *
-     * @param	int	new priority property value
-     * @exception	Exception
-     */
-    public void setPriority(int priority) {
+	/**
+	 * This method sets the PrioritySchedulingElement.priority property value. This property is described as follows:
+	 * 
+	 * A 16-bit unsigned integer indicating the priority level of this SchedulingElement's input, relative to the other inputs serviced by the
+	 * SchedulingElement's aggregating PacketSchedulingService. A larger value represents a higher priority.
+	 * 
+	 * @param int new priority property value
+	 * @exception Exception
+	 */
+	public void setPriority(int priority) {
 
-    this.priority = priority;
-    } // setPriority
-
-
+		this.priority = priority;
+	} // setPriority
 
 } // Class PrioritySchedulingElement

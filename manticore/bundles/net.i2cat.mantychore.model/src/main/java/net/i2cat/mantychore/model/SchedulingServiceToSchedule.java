@@ -8,54 +8,41 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SchedulingServiceToSchedule as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SchedulingServiceToScheduleBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SchedulingServiceToSchedule as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SchedulingServiceToScheduleBean Interface. The CIM class
  * SchedulingServiceToSchedule is described as follows:
- *
- * This is a top-level association, representing the relationship between a
- * scheduler (PacketSchedulingService) and a SchedulingElement, in a
- * configuration involving cascaded schedulers. The SchedulingElement, in
- * turn, represents the information in a packet scheduling service that is
- * specific to this scheduler, such as relative priority or allocated
- * bandwidth. Although it cannot be expressed formally with the association
- * cardinalities, there is an additional constraint on participation in this
- * association. A particular instance of (a subclass of) SchedulingElement
- * always participates either in exactly one instance of this association, or
- * in exactly one instance of the association QueueToSchedule.
+ * 
+ * This is a top-level association, representing the relationship between a scheduler (PacketSchedulingService) and a SchedulingElement, in a
+ * configuration involving cascaded schedulers. The SchedulingElement, in turn, represents the information in a packet scheduling service that is
+ * specific to this scheduler, such as relative priority or allocated bandwidth. Although it cannot be expressed formally with the association
+ * cardinalities, there is an additional constraint on participation in this association. A particular instance of (a subclass of) SchedulingElement
+ * always participates either in exactly one instance of this association, or in exactly one instance of the association QueueToSchedule.
  */
 public class SchedulingServiceToSchedule extends Association implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SchedulingServiceToScheduleBeanImpl Class
-     * which implements the SchedulingServiceToScheduleBean Interface, and
-     * encapsulates the CIM class SchedulingServiceToSchedule in a Java Bean.
-     * The CIM class SchedulingServiceToSchedule is described as follows:
-     *
-     * This is a top-level association, representing the relationship between
-     * a scheduler (PacketSchedulingService) and a SchedulingElement, in a
-     * configuration involving cascaded schedulers. The SchedulingElement, in
-     * turn, represents the information in a packet scheduling service that
-     * is specific to this scheduler, such as relative priority or allocated
-     * bandwidth. Although it cannot be expressed formally with the
-     * association cardinalities, there is an additional constraint on
-     * participation in this association. A particular instance of (a
-     * subclass of) SchedulingElement always participates either in exactly
-     * one instance of this association, or in exactly one instance of the
-     * association QueueToSchedule.
-     */
-    public SchedulingServiceToSchedule(){};
-    /**
-     * This method create an Association of the type
-     * SchedulingServiceToSchedule between one PacketSchedulingService object
-     * and SchedulingElement object
-     */
-    public static SchedulingServiceToSchedule link(PacketSchedulingService
-	schedService,SchedulingElement schedElement){
+	/**
+	 * This constructor creates a SchedulingServiceToScheduleBeanImpl Class which implements the SchedulingServiceToScheduleBean Interface, and
+	 * encapsulates the CIM class SchedulingServiceToSchedule in a Java Bean. The CIM class SchedulingServiceToSchedule is described as follows:
+	 * 
+	 * This is a top-level association, representing the relationship between a scheduler (PacketSchedulingService) and a SchedulingElement, in a
+	 * configuration involving cascaded schedulers. The SchedulingElement, in turn, represents the information in a packet scheduling service that is
+	 * specific to this scheduler, such as relative priority or allocated bandwidth. Although it cannot be expressed formally with the association
+	 * cardinalities, there is an additional constraint on participation in this association. A particular instance of (a subclass of)
+	 * SchedulingElement always participates either in exactly one instance of this association, or in exactly one instance of the association
+	 * QueueToSchedule.
+	 */
+	public SchedulingServiceToSchedule() {
+	};
 
-    return (SchedulingServiceToSchedule) Association.link(SchedulingServiceToSchedule.class,schedService,schedElement);
-    }//link
+	/**
+	 * This method create an Association of the type SchedulingServiceToSchedule between one PacketSchedulingService object and SchedulingElement
+	 * object
+	 */
+	public static SchedulingServiceToSchedule link(PacketSchedulingService
+			schedService, SchedulingElement schedElement) {
+
+		return (SchedulingServiceToSchedule) Association.link(SchedulingServiceToSchedule.class, schedService, schedElement);
+	}// link
 
 } // Class SchedulingServiceToSchedule

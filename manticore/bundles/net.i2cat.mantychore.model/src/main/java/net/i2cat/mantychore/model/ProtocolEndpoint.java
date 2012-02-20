@@ -49,7 +49,48 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 */
 	public Service getService() {
 		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+	}
 
+	/* BindsTo */
+	/**
+	 * 
+	 * @return list of ServiceAccessPoint associated with this ProtocolEndpoint through BindsTo dependency as dependent.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ServiceAccessPoint> getBindedServiceAccessPoints() {
+		return (List<ServiceAccessPoint>) this.getToAssociatedElementsByType(BindsTo.class);
+	}
+
+	/**
+	 * Binds sap to this ProtocolEndpoint using BindsTo dependency. This Protocol endpoint is the antecedent, and sap is de dependent.
+	 * 
+	 * @param sap
+	 * @return true if association has been created, false otherwise.
+	 */
+	public boolean bindServiceAccessPoint(ServiceAccessPoint sap) {
+		if (sap == null)
+			return false;
+
+		BindsTo.link(this, sap);
+		return true;
+	}
+
+	/**
+	 * Removes BindsTo association between this ProtocolEndpoint and sap, where this is the antecedent and sap the dependent, if any.
+	 * 
+	 * @param sap
+	 * @return true if association has been removed, false otherwise (also if there was no such association).
+	 */
+	public boolean unbindServiceAccessPoint(ServiceAccessPoint sap) {
+		if (sap == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(BindsTo.class, sap);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
 	}
 
 	// //Example when ProtocolEndpoint makes as FROM

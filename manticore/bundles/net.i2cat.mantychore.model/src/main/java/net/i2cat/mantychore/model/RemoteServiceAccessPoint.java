@@ -9,283 +9,246 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RemoteServiceAccessPoint as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * RemoteServiceAccessPointBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RemoteServiceAccessPoint as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the RemoteServiceAccessPointBean Interface. The CIM class
  * RemoteServiceAccessPoint is described as follows:
- *
- * RemoteServiceAccessPoint describes access or addressing information or a
- * combination of this information for a remote connection that is known to a
- * local network element. This information is scoped or contained by the
- * local network element, because this is the context in which the connection
- * is remote. The relevance of the remote access point and information on its
- * use are described by subclassing RemoteServiceAccessPoint or by
- * associating to it.
+ * 
+ * RemoteServiceAccessPoint describes access or addressing information or a combination of this information for a remote connection that is known to a
+ * local network element. This information is scoped or contained by the local network element, because this is the context in which the connection is
+ * remote. The relevance of the remote access point and information on its use are described by subclassing RemoteServiceAccessPoint or by associating
+ * to it.
  */
 public class RemoteServiceAccessPoint extends ServiceAccessPoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a RemoteServiceAccessPointBeanImpl Class which
-     * implements the RemoteServiceAccessPointBean Interface, and
-     * encapsulates the CIM class RemoteServiceAccessPoint in a Java Bean.
-     * The CIM class RemoteServiceAccessPoint is described as follows:
-     *
-     * RemoteServiceAccessPoint describes access or addressing information or
-     * a combination of this information for a remote connection that is
-     * known to a local network element. This information is scoped or
-     * contained by the local network element, because this is the context in
-     * which the connection is remote. The relevance of the remote access
-     * point and information on its use are described by subclassing
-     * RemoteServiceAccessPoint or by associating to it.
-     */
-    public RemoteServiceAccessPoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property accessInfo.
-     */
-    private String accessInfo;
-    /**
-     * This method returns the RemoteServiceAccessPoint.accessInfo property
-     * value. This property is described as follows:
-     *
-     * Access or addressing information or a combination of this information
-     * for a remote connection. This information can be a host name, network
-     * address, or similar information.
-     *
-     * @return	String	current accessInfo property value
-     * @exception	Exception
-     */
-    public String getAccessInfo(){
+	/**
+	 * This constructor creates a RemoteServiceAccessPointBeanImpl Class which implements the RemoteServiceAccessPointBean Interface, and encapsulates
+	 * the CIM class RemoteServiceAccessPoint in a Java Bean. The CIM class RemoteServiceAccessPoint is described as follows:
+	 * 
+	 * RemoteServiceAccessPoint describes access or addressing information or a combination of this information for a remote connection that is known
+	 * to a local network element. This information is scoped or contained by the local network element, because this is the context in which the
+	 * connection is remote. The relevance of the remote access point and information on its use are described by subclassing RemoteServiceAccessPoint
+	 * or by associating to it.
+	 */
+	public RemoteServiceAccessPoint() {
+	};
 
-    return this.accessInfo;
-    } // getAccessInfo
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property accessInfo.
+	 */
+	private String	accessInfo;
 
-    /**
-     * This method sets the RemoteServiceAccessPoint.accessInfo property
-     * value. This property is described as follows:
-     *
-     * Access or addressing information or a combination of this information
-     * for a remote connection. This information can be a host name, network
-     * address, or similar information.
-     *
-     * @param	String	new accessInfo property value
-     * @exception	Exception
-     */
-    public void setAccessInfo(String accessInfo) {
+	/**
+	 * This method returns the RemoteServiceAccessPoint.accessInfo property value. This property is described as follows:
+	 * 
+	 * Access or addressing information or a combination of this information for a remote connection. This information can be a host name, network
+	 * address, or similar information.
+	 * 
+	 * @return String current accessInfo property value
+	 * @exception Exception
+	 */
+	public String getAccessInfo() {
 
-    this.accessInfo = accessInfo;
-    } // setAccessInfo
+		return this.accessInfo;
+	} // getAccessInfo
 
+	/**
+	 * This method sets the RemoteServiceAccessPoint.accessInfo property value. This property is described as follows:
+	 * 
+	 * Access or addressing information or a combination of this information for a remote connection. This information can be a host name, network
+	 * address, or similar information.
+	 * 
+	 * @param String
+	 *            new accessInfo property value
+	 * @exception Exception
+	 */
+	public void setAccessInfo(String accessInfo) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property InfoFormat.
-     */
+		this.accessInfo = accessInfo;
+	} // setAccessInfo
 
-    public enum InfoFormat{
-    OTHER,
-    HOST_NAME,
-    IPV4_ADDRESS,
-    IPV6_ADDRESS,
-    IPX_ADDRESS,
-    DECNET_ADDRESS,
-    SNA_ADDRESS,
-    AUTONOMOUS_SYSTEM_NUMBER,
-    MPLS_LABEL,
-    IPV4_SUBNET_ADDRESS,
-    IPV6_SUBNET_ADDRESS,
-    IPV4_ADDRESS_RANGE,
-    IPV6_ADDRESS_RANGE,
-    DIAL_STRING,
-    ETHERNET_ADDRESS,
-    TOKEN_RING_ADDRESS,
-    ATM_ADDRESS,
-    FRAME_RELAY_ADDRESS,
-    URL,
-    FQDN,
-    USER_FQDN,
-    DER_ASN1_DN,
-    DER_ASN1_GN,
-    KEY_ID,
-    PARAMETERIZED_URL,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private InfoFormat infoFormat;
-    /**
-     * This method returns the RemoteServiceAccessPoint.infoFormat property
-     * value. This property is described as follows:
-     *
-     * An enumerated integer that describes the format and interpretation of
-     * the AccessInfo property. 206'Parameterized URL'- a URL containing
-     * ${parameterName} strings. Those strings are intended to be replaced in
-     * their entirety by the value of the named parameter. The interpretation
-     * of such parameters is not defined by this subclass. As an example use:
-     * If a parameter named 'CompanyURL' has a value of 'www.DMTF.org' and
-     * the value of AccessInfo was 'http:\${CompanyURL}', then the resultant
-     * URL is intended to be 'http:\www.dmtf.org'.
-     *
-     * @return	int	current infoFormat property value
-     * @exception	Exception
-     */
-    public InfoFormat getInfoFormat(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property InfoFormat.
+	 */
 
-    return this.infoFormat;
-    } // getInfoFormat
+	public enum InfoFormat {
+		OTHER,
+		HOST_NAME,
+		IPV4_ADDRESS,
+		IPV6_ADDRESS,
+		IPX_ADDRESS,
+		DECNET_ADDRESS,
+		SNA_ADDRESS,
+		AUTONOMOUS_SYSTEM_NUMBER,
+		MPLS_LABEL,
+		IPV4_SUBNET_ADDRESS,
+		IPV6_SUBNET_ADDRESS,
+		IPV4_ADDRESS_RANGE,
+		IPV6_ADDRESS_RANGE,
+		DIAL_STRING,
+		ETHERNET_ADDRESS,
+		TOKEN_RING_ADDRESS,
+		ATM_ADDRESS,
+		FRAME_RELAY_ADDRESS,
+		URL,
+		FQDN,
+		USER_FQDN,
+		DER_ASN1_DN,
+		DER_ASN1_GN,
+		KEY_ID,
+		PARAMETERIZED_URL,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the RemoteServiceAccessPoint.infoFormat property
-     * value. This property is described as follows:
-     *
-     * An enumerated integer that describes the format and interpretation of
-     * the AccessInfo property. 206'Parameterized URL'- a URL containing
-     * ${parameterName} strings. Those strings are intended to be replaced in
-     * their entirety by the value of the named parameter. The interpretation
-     * of such parameters is not defined by this subclass. As an example use:
-     * If a parameter named 'CompanyURL' has a value of 'www.DMTF.org' and
-     * the value of AccessInfo was 'http:\${CompanyURL}', then the resultant
-     * URL is intended to be 'http:\www.dmtf.org'.
-     *
-     * @param	int	new infoFormat property value
-     * @exception	Exception
-     */
-    public void setInfoFormat(InfoFormat infoFormat){
+	private InfoFormat	infoFormat;
 
-    this.infoFormat = infoFormat;
-    } // setInfoFormat
+	/**
+	 * This method returns the RemoteServiceAccessPoint.infoFormat property value. This property is described as follows:
+	 * 
+	 * An enumerated integer that describes the format and interpretation of the AccessInfo property. 206'Parameterized URL'- a URL containing
+	 * ${parameterName} strings. Those strings are intended to be replaced in their entirety by the value of the named parameter. The interpretation
+	 * of such parameters is not defined by this subclass. As an example use: If a parameter named 'CompanyURL' has a value of 'www.DMTF.org' and the
+	 * value of AccessInfo was 'http:\${CompanyURL}', then the resultant URL is intended to be 'http:\www.dmtf.org'.
+	 * 
+	 * @return int current infoFormat property value
+	 * @exception Exception
+	 */
+	public InfoFormat getInfoFormat() {
 
+		return this.infoFormat;
+	} // getInfoFormat
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherInfoFormatDescription.
-     */
-    private String otherInfoFormatDescription;
-    /**
-     * This method returns the
-     * RemoteServiceAccessPoint.otherInfoFormatDescription property value.
-     * This property is described as follows:
-     *
-     * Describes the format when the property InfoFormat is set to 1 (Other).
-     *
-     * @return	String	current otherInfoFormatDescription
-     * property value
-     * @exception	Exception
-     */
-    public String getOtherInfoFormatDescription(){
+	/**
+	 * This method sets the RemoteServiceAccessPoint.infoFormat property value. This property is described as follows:
+	 * 
+	 * An enumerated integer that describes the format and interpretation of the AccessInfo property. 206'Parameterized URL'- a URL containing
+	 * ${parameterName} strings. Those strings are intended to be replaced in their entirety by the value of the named parameter. The interpretation
+	 * of such parameters is not defined by this subclass. As an example use: If a parameter named 'CompanyURL' has a value of 'www.DMTF.org' and the
+	 * value of AccessInfo was 'http:\${CompanyURL}', then the resultant URL is intended to be 'http:\www.dmtf.org'.
+	 * 
+	 * @param int new infoFormat property value
+	 * @exception Exception
+	 */
+	public void setInfoFormat(InfoFormat infoFormat) {
 
-    return this.otherInfoFormatDescription;
-    } // getOtherInfoFormatDescription
+		this.infoFormat = infoFormat;
+	} // setInfoFormat
 
-    /**
-     * This method sets the
-     * RemoteServiceAccessPoint.otherInfoFormatDescription property value.
-     * This property is described as follows:
-     *
-     * Describes the format when the property InfoFormat is set to 1 (Other).
-     *
-     * @param	String	new otherInfoFormatDescription property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherInfoFormatDescription(String
-	otherInfoFormatDescription) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherInfoFormatDescription.
+	 */
+	private String	otherInfoFormatDescription;
 
-    this.otherInfoFormatDescription = otherInfoFormatDescription;
-    } // setOtherInfoFormatDescription
+	/**
+	 * This method returns the RemoteServiceAccessPoint.otherInfoFormatDescription property value. This property is described as follows:
+	 * 
+	 * Describes the format when the property InfoFormat is set to 1 (Other).
+	 * 
+	 * @return String current otherInfoFormatDescription property value
+	 * @exception Exception
+	 */
+	public String getOtherInfoFormatDescription() {
 
+		return this.otherInfoFormatDescription;
+	} // getOtherInfoFormatDescription
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AccessContext.
-     */
+	/**
+	 * This method sets the RemoteServiceAccessPoint.otherInfoFormatDescription property value. This property is described as follows:
+	 * 
+	 * Describes the format when the property InfoFormat is set to 1 (Other).
+	 * 
+	 * @param String
+	 *            new otherInfoFormatDescription property value
+	 * @exception Exception
+	 */
+	public void setOtherInfoFormatDescription(String
+			otherInfoFormatDescription) {
 
-    public enum AccessContext{
-    UNKNOWN,
-    OTHER,
-    DEFAULT_GATEWAY,
-    DNS_SERVER,
-    SNMP_TRAP_DESTINATION,
-    MPLS_TUNNEL_DESTINATION,
-    DHCP_SERVER,
-    SMTP_SERVER,
-    LDAP_SERVER,
-    NETWORK_TIME_PROTOCOL_NTP_SERVER,
-    MANAGEMENT_SERVICE,
-    INTERNET_STORAGE_NAME_SERVICE_ISNS,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private AccessContext accessContext;
-    /**
-     * This method returns the RemoteServiceAccessPoint.accessContext property
-     * value. This property is described as follows:
-     *
-     * The AccessContext property identifies the role this
-     * RemoteServiceAccessPoint is playing in the hosting system.
-     *
-     * @return	int	current accessContext property value
-     * @exception	Exception
-     */
-    public AccessContext getAccessContext(){
+		this.otherInfoFormatDescription = otherInfoFormatDescription;
+	} // setOtherInfoFormatDescription
 
-    return this.accessContext;
-    } // getAccessContext
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AccessContext.
+	 */
 
-    /**
-     * This method sets the RemoteServiceAccessPoint.accessContext property
-     * value. This property is described as follows:
-     *
-     * The AccessContext property identifies the role this
-     * RemoteServiceAccessPoint is playing in the hosting system.
-     *
-     * @param	int	new accessContext property value
-     * @exception	Exception
-     */
-    public void setAccessContext(AccessContext accessContext){
+	public enum AccessContext {
+		UNKNOWN,
+		OTHER,
+		DEFAULT_GATEWAY,
+		DNS_SERVER,
+		SNMP_TRAP_DESTINATION,
+		MPLS_TUNNEL_DESTINATION,
+		DHCP_SERVER,
+		SMTP_SERVER,
+		LDAP_SERVER,
+		NETWORK_TIME_PROTOCOL_NTP_SERVER,
+		MANAGEMENT_SERVICE,
+		INTERNET_STORAGE_NAME_SERVICE_ISNS,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.accessContext = accessContext;
-    } // setAccessContext
+	private AccessContext	accessContext;
 
+	/**
+	 * This method returns the RemoteServiceAccessPoint.accessContext property value. This property is described as follows:
+	 * 
+	 * The AccessContext property identifies the role this RemoteServiceAccessPoint is playing in the hosting system.
+	 * 
+	 * @return int current accessContext property value
+	 * @exception Exception
+	 */
+	public AccessContext getAccessContext() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherAccessContext.
-     */
-    private String otherAccessContext;
-    /**
-     * This method returns the RemoteServiceAccessPoint.otherAccessContext
-     * property value. This property is described as follows:
-     *
-     * When the AccessContext property contains a value of 1, "Other" then
-     * this is a free form string providing more information about the role
-     * of RemoteServiceAccessPoint in the hosting system.
-     *
-     * @return	String	current otherAccessContext property value
-     * @exception	Exception
-     */
-    public String getOtherAccessContext(){
+		return this.accessContext;
+	} // getAccessContext
 
-    return this.otherAccessContext;
-    } // getOtherAccessContext
+	/**
+	 * This method sets the RemoteServiceAccessPoint.accessContext property value. This property is described as follows:
+	 * 
+	 * The AccessContext property identifies the role this RemoteServiceAccessPoint is playing in the hosting system.
+	 * 
+	 * @param int new accessContext property value
+	 * @exception Exception
+	 */
+	public void setAccessContext(AccessContext accessContext) {
 
-    /**
-     * This method sets the RemoteServiceAccessPoint.otherAccessContext
-     * property value. This property is described as follows:
-     *
-     * When the AccessContext property contains a value of 1, "Other" then
-     * this is a free form string providing more information about the role
-     * of RemoteServiceAccessPoint in the hosting system.
-     *
-     * @param	String	new otherAccessContext property value
-     * @exception	Exception
-     */
-    public void setOtherAccessContext(String otherAccessContext) {
+		this.accessContext = accessContext;
+	} // setAccessContext
 
-    this.otherAccessContext = otherAccessContext;
-    } // setOtherAccessContext
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherAccessContext.
+	 */
+	private String	otherAccessContext;
 
+	/**
+	 * This method returns the RemoteServiceAccessPoint.otherAccessContext property value. This property is described as follows:
+	 * 
+	 * When the AccessContext property contains a value of 1, "Other" then this is a free form string providing more information about the role of
+	 * RemoteServiceAccessPoint in the hosting system.
+	 * 
+	 * @return String current otherAccessContext property value
+	 * @exception Exception
+	 */
+	public String getOtherAccessContext() {
 
+		return this.otherAccessContext;
+	} // getOtherAccessContext
+
+	/**
+	 * This method sets the RemoteServiceAccessPoint.otherAccessContext property value. This property is described as follows:
+	 * 
+	 * When the AccessContext property contains a value of 1, "Other" then this is a free form string providing more information about the role of
+	 * RemoteServiceAccessPoint in the hosting system.
+	 * 
+	 * @param String
+	 *            new otherAccessContext property value
+	 * @exception Exception
+	 */
+	public void setOtherAccessContext(String otherAccessContext) {
+
+		this.otherAccessContext = otherAccessContext;
+	} // setOtherAccessContext
 
 } // Class RemoteServiceAccessPoint

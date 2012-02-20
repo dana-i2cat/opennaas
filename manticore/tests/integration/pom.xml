@@ -27,6 +27,7 @@
   		<module>org.opennaas.bod.tests.capability.l2bod</module>
    		<module>org.opennaas.bod.tests</module>
    		<module>org.opennaas.router.tests.capability.gretunnel</module>
+		<module>org.opennaas.router.tests.capability.ospf</module>
 	</modules>
 	<!--  dependencies for integration tests -->
 	<dependencies>

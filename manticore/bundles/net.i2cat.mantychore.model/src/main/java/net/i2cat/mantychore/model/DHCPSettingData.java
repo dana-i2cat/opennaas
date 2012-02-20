@@ -9,466 +9,421 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DHCPSettingData as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DHCPSettingDataBean Interface. The CIM class DHCPSettingData is described
- * as follows:
- *
- * This class represents the desired configuration settings for the
- * DHCPProtocolEndpoint (i.e. DHCP client configuration.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DHCPSettingData as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the DHCPSettingDataBean Interface. The CIM class DHCPSettingData is described as
+ * follows:
+ * 
+ * This class represents the desired configuration settings for the DHCPProtocolEndpoint (i.e. DHCP client configuration.
  */
 public class DHCPSettingData extends IPAssignmentSettingData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DHCPSettingDataBeanImpl Class which
-     * implements the DHCPSettingDataBean Interface, and encapsulates the CIM
-     * class DHCPSettingData in a Java Bean. The CIM class DHCPSettingData is
-     * described as follows:
-     *
-     * This class represents the desired configuration settings for the
-     * DHCPProtocolEndpoint (i.e. DHCP client configuration.
-     */
-    public DHCPSettingData(){};
+	/**
+	 * This constructor creates a DHCPSettingDataBeanImpl Class which implements the DHCPSettingDataBean Interface, and encapsulates the CIM class
+	 * DHCPSettingData in a Java Bean. The CIM class DHCPSettingData is described as follows:
+	 * 
+	 * This class represents the desired configuration settings for the DHCPProtocolEndpoint (i.e. DHCP client configuration.
+	 */
+	public DHCPSettingData() {
+	};
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property requestedIPv4Address.
-     */
-    private String requestedIPv4Address;
-    /**
-     * This method returns the DHCPSettingData.requestedIPv4Address property
-     * value. This property is described as follows:
-     *
-     * A previously allocated IPv4 address for which the client is requesting
-     * re-allocation. This property is used in a client request (DHCPREQUEST)
-     * as the value of the ciaddr field.
-     *
-     * @return	String	current requestedIPv4Address property
-     * value
-     * @exception	Exception
-     */
-    public String getRequestedIPv4Address(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property requestedIPv4Address.
+	 */
+	private String	requestedIPv4Address;
 
-    return this.requestedIPv4Address;
-    } // getRequestedIPv4Address
+	/**
+	 * This method returns the DHCPSettingData.requestedIPv4Address property value. This property is described as follows:
+	 * 
+	 * A previously allocated IPv4 address for which the client is requesting re-allocation. This property is used in a client request (DHCPREQUEST)
+	 * as the value of the ciaddr field.
+	 * 
+	 * @return String current requestedIPv4Address property value
+	 * @exception Exception
+	 */
+	public String getRequestedIPv4Address() {
 
-    /**
-     * This method sets the DHCPSettingData.requestedIPv4Address property
-     * value. This property is described as follows:
-     *
-     * A previously allocated IPv4 address for which the client is requesting
-     * re-allocation. This property is used in a client request (DHCPREQUEST)
-     * as the value of the ciaddr field.
-     *
-     * @param	String	new requestedIPv4Address property value
-     * @exception	Exception
-     */
-    public void setRequestedIPv4Address(String requestedIPv4Address) {
+		return this.requestedIPv4Address;
+	} // getRequestedIPv4Address
 
-    this.requestedIPv4Address = requestedIPv4Address;
-    } // setRequestedIPv4Address
+	/**
+	 * This method sets the DHCPSettingData.requestedIPv4Address property value. This property is described as follows:
+	 * 
+	 * A previously allocated IPv4 address for which the client is requesting re-allocation. This property is used in a client request (DHCPREQUEST)
+	 * as the value of the ciaddr field.
+	 * 
+	 * @param String
+	 *            new requestedIPv4Address property value
+	 * @exception Exception
+	 */
+	public void setRequestedIPv4Address(String requestedIPv4Address) {
 
+		this.requestedIPv4Address = requestedIPv4Address;
+	} // setRequestedIPv4Address
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property requestedLeaseTime.
-     */
-    private long requestedLeaseTime;
-    /**
-     * This method returns the DHCPSettingData.requestedLeaseTime property
-     * value. This property is described as follows:
-     *
-     * This property is used in a client request (DHCPREQUEST) to allow the
-     * client to request a lease time for the IP address. The value shall be
-     * specified as an interval at a granularity of seconds. This value
-     * corresponds to the value for code 51 as defined in RFC2132.
-     *
-     * @return	long	current requestedLeaseTime property value
-     * @exception	Exception
-     */
-    public long getRequestedLeaseTime(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property requestedLeaseTime.
+	 */
+	private long	requestedLeaseTime;
 
-    return this.requestedLeaseTime;
-    } // getRequestedLeaseTime
+	/**
+	 * This method returns the DHCPSettingData.requestedLeaseTime property value. This property is described as follows:
+	 * 
+	 * This property is used in a client request (DHCPREQUEST) to allow the client to request a lease time for the IP address. The value shall be
+	 * specified as an interval at a granularity of seconds. This value corresponds to the value for code 51 as defined in RFC2132.
+	 * 
+	 * @return long current requestedLeaseTime property value
+	 * @exception Exception
+	 */
+	public long getRequestedLeaseTime() {
 
-    /**
-     * This method sets the DHCPSettingData.requestedLeaseTime property value.
-     * This property is described as follows:
-     *
-     * This property is used in a client request (DHCPREQUEST) to allow the
-     * client to request a lease time for the IP address. The value shall be
-     * specified as an interval at a granularity of seconds. This value
-     * corresponds to the value for code 51 as defined in RFC2132.
-     *
-     * @param	long	new requestedLeaseTime property value
-     * @exception	Exception
-     */
-    public void setRequestedLeaseTime(long requestedLeaseTime) {
+		return this.requestedLeaseTime;
+	} // getRequestedLeaseTime
 
-    this.requestedLeaseTime = requestedLeaseTime;
-    } // setRequestedLeaseTime
+	/**
+	 * This method sets the DHCPSettingData.requestedLeaseTime property value. This property is described as follows:
+	 * 
+	 * This property is used in a client request (DHCPREQUEST) to allow the client to request a lease time for the IP address. The value shall be
+	 * specified as an interval at a granularity of seconds. This value corresponds to the value for code 51 as defined in RFC2132.
+	 * 
+	 * @param long new requestedLeaseTime property value
+	 * @exception Exception
+	 */
+	public void setRequestedLeaseTime(long requestedLeaseTime) {
 
+		this.requestedLeaseTime = requestedLeaseTime;
+	} // setRequestedLeaseTime
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property clientIdentifier.
-     */
-    private String clientIdentifier;
-    /**
-     * This method returns the DHCPSettingData.clientIdentifier property
-     * value. This property is described as follows:
-     *
-     * This property is used by DHCP clients to specify their unique
-     * identifier. DHCP servers use this value to index their database of
-     * address bindings. This value is expected to be unique for all clients
-     * in an administrative domain. This corresponds to DHCP Option Code 61
-     * as defined in RFC2132. While this value is an option and therefore
-     * could be expressed using the RequestedOption property, it differs from
-     * other properties in that it includes a value when specified from the
-     * client.
-     *
-     * @return	String	current clientIdentifier property value
-     * @exception	Exception
-     */
-    public String getClientIdentifier(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property clientIdentifier.
+	 */
+	private String	clientIdentifier;
 
-    return this.clientIdentifier;
-    } // getClientIdentifier
+	/**
+	 * This method returns the DHCPSettingData.clientIdentifier property value. This property is described as follows:
+	 * 
+	 * This property is used by DHCP clients to specify their unique identifier. DHCP servers use this value to index their database of address
+	 * bindings. This value is expected to be unique for all clients in an administrative domain. This corresponds to DHCP Option Code 61 as defined
+	 * in RFC2132. While this value is an option and therefore could be expressed using the RequestedOption property, it differs from other properties
+	 * in that it includes a value when specified from the client.
+	 * 
+	 * @return String current clientIdentifier property value
+	 * @exception Exception
+	 */
+	public String getClientIdentifier() {
 
-    /**
-     * This method sets the DHCPSettingData.clientIdentifier property value.
-     * This property is described as follows:
-     *
-     * This property is used by DHCP clients to specify their unique
-     * identifier. DHCP servers use this value to index their database of
-     * address bindings. This value is expected to be unique for all clients
-     * in an administrative domain. This corresponds to DHCP Option Code 61
-     * as defined in RFC2132. While this value is an option and therefore
-     * could be expressed using the RequestedOption property, it differs from
-     * other properties in that it includes a value when specified from the
-     * client.
-     *
-     * @param	String	new clientIdentifier property value
-     * @exception	Exception
-     */
-    public void setClientIdentifier(String clientIdentifier) {
+		return this.clientIdentifier;
+	} // getClientIdentifier
 
-    this.clientIdentifier = clientIdentifier;
-    } // setClientIdentifier
+	/**
+	 * This method sets the DHCPSettingData.clientIdentifier property value. This property is described as follows:
+	 * 
+	 * This property is used by DHCP clients to specify their unique identifier. DHCP servers use this value to index their database of address
+	 * bindings. This value is expected to be unique for all clients in an administrative domain. This corresponds to DHCP Option Code 61 as defined
+	 * in RFC2132. While this value is an option and therefore could be expressed using the RequestedOption property, it differs from other properties
+	 * in that it includes a value when specified from the client.
+	 * 
+	 * @param String
+	 *            new clientIdentifier property value
+	 * @exception Exception
+	 */
+	public void setClientIdentifier(String clientIdentifier) {
 
+		this.clientIdentifier = clientIdentifier;
+	} // setClientIdentifier
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property vendorClassIdentifier.
-     */
-    private String vendorClassIdentifier;
-    /**
-     * This method returns the DHCPSettingData.vendorClassIdentifier property
-     * value. This property is described as follows:
-     *
-     * This property is used by DHCP clients to optionally identify the vendor
-     * type and configuration of a DHCP client. This corresponds to DHCP
-     * Option Code 60 as defined in RFC2132. While this is value is an option
-     * and therefore could be expressed using the RequestedOption property,
-     * it differs from other properties in that it includes a value when
-     * specified from the client.
-     *
-     * @return	String	current vendorClassIdentifier property
-     * value
-     * @exception	Exception
-     */
-    public String getVendorClassIdentifier(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property vendorClassIdentifier.
+	 */
+	private String	vendorClassIdentifier;
 
-    return this.vendorClassIdentifier;
-    } // getVendorClassIdentifier
+	/**
+	 * This method returns the DHCPSettingData.vendorClassIdentifier property value. This property is described as follows:
+	 * 
+	 * This property is used by DHCP clients to optionally identify the vendor type and configuration of a DHCP client. This corresponds to DHCP
+	 * Option Code 60 as defined in RFC2132. While this is value is an option and therefore could be expressed using the RequestedOption property, it
+	 * differs from other properties in that it includes a value when specified from the client.
+	 * 
+	 * @return String current vendorClassIdentifier property value
+	 * @exception Exception
+	 */
+	public String getVendorClassIdentifier() {
 
-    /**
-     * This method sets the DHCPSettingData.vendorClassIdentifier property
-     * value. This property is described as follows:
-     *
-     * This property is used by DHCP clients to optionally identify the vendor
-     * type and configuration of a DHCP client. This corresponds to DHCP
-     * Option Code 60 as defined in RFC2132. While this is value is an option
-     * and therefore could be expressed using the RequestedOption property,
-     * it differs from other properties in that it includes a value when
-     * specified from the client.
-     *
-     * @param	String	new vendorClassIdentifier property value
-     * @exception	Exception
-     */
-    public void setVendorClassIdentifier(String vendorClassIdentifier) {
+		return this.vendorClassIdentifier;
+	} // getVendorClassIdentifier
 
-    this.vendorClassIdentifier = vendorClassIdentifier;
-    } // setVendorClassIdentifier
+	/**
+	 * This method sets the DHCPSettingData.vendorClassIdentifier property value. This property is described as follows:
+	 * 
+	 * This property is used by DHCP clients to optionally identify the vendor type and configuration of a DHCP client. This corresponds to DHCP
+	 * Option Code 60 as defined in RFC2132. While this is value is an option and therefore could be expressed using the RequestedOption property, it
+	 * differs from other properties in that it includes a value when specified from the client.
+	 * 
+	 * @param String
+	 *            new vendorClassIdentifier property value
+	 * @exception Exception
+	 */
+	public void setVendorClassIdentifier(String vendorClassIdentifier) {
 
+		this.vendorClassIdentifier = vendorClassIdentifier;
+	} // setVendorClassIdentifier
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property RequestedOptions.
-     */
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RequestedOptions.
+	 */
 
-    public enum RequestedOptions{
-    UNKNOWN,
-    OTHER,
-    PAD,
-    SUBNET_MASK,
-    TIME_OFFSET,
-    ROUTER_OPTION,
-    TIME_SERVER,
-    NAME_SERVER,
-    DOMAIN_NAME_SERVER,
-    LOG_SERVER,
-    COOKIE_SERVER,
-    LPR_SERVER,
-    IMPRESS_SERVER,
-    RESOURCE_LOCATION_SERVER,
-    HOST_NAME,
-    BOOT_FILE_SIZE,
-    MERIT_DUMP_FILE,
-    DOMAIN_NAME,
-    SWAP_SERVER,
-    ROOT_PATH,
-    EXTENSIONS_PATH,
-    IP_FORWARDING_ENABLE_DISABLE,
-    NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
-    POLICY_FILTER,
-    MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
-    DEFAULT_IP_TIME_TO_LIVE,
-    PATH_MTU_AGING_TIMEOUT,
-    PATH_MTU_PLATEAU_TABLE,
-    INTERFACE_MTU,
-    ALL_SUBNETS_ARE_LOCAL,
-    BROADCAST_ADDRESS,
-    PERFORM_SUBNET_MASK_DISCOVERY,
-    MASK_SUPPLIER,
-    PERFORM_ROUTER_DISCOVERY,
-    ROUTER_SOLICITATION_ADDRESS,
-    STATIC_ROUTE,
-    TRAILER_ENCAPSULATION,
-    ARP_CACHE_TIMEOUT,
-    ETHERNET_ENCAPSULATION,
-    TCP_DEFAULT_TTL,
-    TCP_KEEPALIVE_INTERVAL,
-    TCP_KEEPALIVE_GARBAGE,
-    NETWORK_INFORMATION_SERVICE_DOMAIN,
-    NETWORK_INFORMATION_SERVERS,
-    NETWORK_TIME_PROTOCOL_SERVERS,
-    VENDOR_SPECIFIC_INFORMATION,
-    NETBIOS_OVER_TCP_IP_NAME_SERVER,
-    NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
-    NETBIOS_OVER_TCP_IP_NODE_TYPE,
-    NETBIOS_OVER_TCP_IP_SCOPE,
-    X_WINDOW_SYSTEM_FONT_SERVER,
-    X_WINDOW_SYSTEM_DISPLAY_MANAGER,
-    REQUESTED_IP_ADDRESS,
-    LEASE_TIME,
-    OPTION_OVERLOAD,
-    MESSAGE_TYPE,
-    SERVER_IDENTIFIER,
-    PARAMETER_REQUEST_LIST,
-    ERROR_MESSAGE,
-    MAXIMUM_MESSAGE_SIZE,
-    RENEWAL_T1_TIME,
-    REBINDING_T2_TIME,
-    VENDOR_CLASS_IDENTIFIER,
-    CLIENT_IDENTIFIER,
-    DMTF_RESERVED,
-    DMTF_RESERVED1,
-    NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
-    NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
-    TFTP_SERVER_NAME,
-    BOOTFILE_NAME,
-    MOBILE_IP_HOME_AGENT,
-    SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
-    POST_OFFICE_PROTOCOL_POP3_SERVER,
-    NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
-    DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
-    DEFAULT_FINGER_SERVER,
-    DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
-    STREETTALK_SERVER,
-    STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
-    USER_CLASS,
-    SLP_DIRECTORY_AGENT,
-    SLP_SERVICE_SCOPE,
-    DMTF_RESERVED2,
-    RELAY_AGENT_INFORMATION,
-    DMTF_RESERVED3,
-    NAME_SERVICE_SEARCH,
-    SUBNET_SELECTION,
-    DMTF_RESERVED4,
-    CLASSLESS_ROUTE,
-    DMTF_RESERVED5,
-    END,
-    DMTF_RESERVED6,
-    VENDOR_RESERVED
-    }
-    private RequestedOptions requestedOptions;
-    /**
-     * This method returns the DHCPSettingData.requestedOptions property
-     * value. This property is described as follows:
-     *
-     * The list of requested DHCP options which the client is capable of
-     * interpreting but not necessarily required for the client to operate
-     * properly. This list of DHCP options is for IPv4.
-     *
-     * @return	int	current requestedOptions property value
-     * @exception	Exception
-     */
-    public RequestedOptions getRequestedOptions(){
+	public enum RequestedOptions {
+		UNKNOWN,
+		OTHER,
+		PAD,
+		SUBNET_MASK,
+		TIME_OFFSET,
+		ROUTER_OPTION,
+		TIME_SERVER,
+		NAME_SERVER,
+		DOMAIN_NAME_SERVER,
+		LOG_SERVER,
+		COOKIE_SERVER,
+		LPR_SERVER,
+		IMPRESS_SERVER,
+		RESOURCE_LOCATION_SERVER,
+		HOST_NAME,
+		BOOT_FILE_SIZE,
+		MERIT_DUMP_FILE,
+		DOMAIN_NAME,
+		SWAP_SERVER,
+		ROOT_PATH,
+		EXTENSIONS_PATH,
+		IP_FORWARDING_ENABLE_DISABLE,
+		NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
+		POLICY_FILTER,
+		MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
+		DEFAULT_IP_TIME_TO_LIVE,
+		PATH_MTU_AGING_TIMEOUT,
+		PATH_MTU_PLATEAU_TABLE,
+		INTERFACE_MTU,
+		ALL_SUBNETS_ARE_LOCAL,
+		BROADCAST_ADDRESS,
+		PERFORM_SUBNET_MASK_DISCOVERY,
+		MASK_SUPPLIER,
+		PERFORM_ROUTER_DISCOVERY,
+		ROUTER_SOLICITATION_ADDRESS,
+		STATIC_ROUTE,
+		TRAILER_ENCAPSULATION,
+		ARP_CACHE_TIMEOUT,
+		ETHERNET_ENCAPSULATION,
+		TCP_DEFAULT_TTL,
+		TCP_KEEPALIVE_INTERVAL,
+		TCP_KEEPALIVE_GARBAGE,
+		NETWORK_INFORMATION_SERVICE_DOMAIN,
+		NETWORK_INFORMATION_SERVERS,
+		NETWORK_TIME_PROTOCOL_SERVERS,
+		VENDOR_SPECIFIC_INFORMATION,
+		NETBIOS_OVER_TCP_IP_NAME_SERVER,
+		NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
+		NETBIOS_OVER_TCP_IP_NODE_TYPE,
+		NETBIOS_OVER_TCP_IP_SCOPE,
+		X_WINDOW_SYSTEM_FONT_SERVER,
+		X_WINDOW_SYSTEM_DISPLAY_MANAGER,
+		REQUESTED_IP_ADDRESS,
+		LEASE_TIME,
+		OPTION_OVERLOAD,
+		MESSAGE_TYPE,
+		SERVER_IDENTIFIER,
+		PARAMETER_REQUEST_LIST,
+		ERROR_MESSAGE,
+		MAXIMUM_MESSAGE_SIZE,
+		RENEWAL_T1_TIME,
+		REBINDING_T2_TIME,
+		VENDOR_CLASS_IDENTIFIER,
+		CLIENT_IDENTIFIER,
+		DMTF_RESERVED,
+		DMTF_RESERVED1,
+		NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
+		NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
+		TFTP_SERVER_NAME,
+		BOOTFILE_NAME,
+		MOBILE_IP_HOME_AGENT,
+		SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
+		POST_OFFICE_PROTOCOL_POP3_SERVER,
+		NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
+		DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
+		DEFAULT_FINGER_SERVER,
+		DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
+		STREETTALK_SERVER,
+		STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
+		USER_CLASS,
+		SLP_DIRECTORY_AGENT,
+		SLP_SERVICE_SCOPE,
+		DMTF_RESERVED2,
+		RELAY_AGENT_INFORMATION,
+		DMTF_RESERVED3,
+		NAME_SERVICE_SEARCH,
+		SUBNET_SELECTION,
+		DMTF_RESERVED4,
+		CLASSLESS_ROUTE,
+		DMTF_RESERVED5,
+		END,
+		DMTF_RESERVED6,
+		VENDOR_RESERVED
+	}
 
-    return this.requestedOptions;
-    } // getRequestedOptions
+	private RequestedOptions	requestedOptions;
 
-    /**
-     * This method sets the DHCPSettingData.requestedOptions property value.
-     * This property is described as follows:
-     *
-     * The list of requested DHCP options which the client is capable of
-     * interpreting but not necessarily required for the client to operate
-     * properly. This list of DHCP options is for IPv4.
-     *
-     * @param	int	new requestedOptions property value
-     * @exception	Exception
-     */
-    public void setRequestedOptions(RequestedOptions requestedOptions){
+	/**
+	 * This method returns the DHCPSettingData.requestedOptions property value. This property is described as follows:
+	 * 
+	 * The list of requested DHCP options which the client is capable of interpreting but not necessarily required for the client to operate properly.
+	 * This list of DHCP options is for IPv4.
+	 * 
+	 * @return int current requestedOptions property value
+	 * @exception Exception
+	 */
+	public RequestedOptions getRequestedOptions() {
 
-    this.requestedOptions = requestedOptions;
-    } // setRequestedOptions
+		return this.requestedOptions;
+	} // getRequestedOptions
 
+	/**
+	 * This method sets the DHCPSettingData.requestedOptions property value. This property is described as follows:
+	 * 
+	 * The list of requested DHCP options which the client is capable of interpreting but not necessarily required for the client to operate properly.
+	 * This list of DHCP options is for IPv4.
+	 * 
+	 * @param int new requestedOptions property value
+	 * @exception Exception
+	 */
+	public void setRequestedOptions(RequestedOptions requestedOptions) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property RequiredOptions.
-     */
+		this.requestedOptions = requestedOptions;
+	} // setRequestedOptions
 
-    public enum RequiredOptions{
-    UNKNOWN,
-    OTHER,
-    PAD,
-    SUBNET_MASK,
-    TIME_OFFSET,
-    ROUTER_OPTION,
-    TIME_SERVER,
-    NAME_SERVER,
-    DOMAIN_NAME_SERVER,
-    LOG_SERVER,
-    COOKIE_SERVER,
-    LPR_SERVER,
-    IMPRESS_SERVER,
-    RESOURCE_LOCATION_SERVER,
-    HOST_NAME,
-    BOOT_FILE_SIZE,
-    MERIT_DUMP_FILE,
-    DOMAIN_NAME,
-    SWAP_SERVER,
-    ROOT_PATH,
-    EXTENSIONS_PATH,
-    IP_FORWARDING_ENABLE_DISABLE,
-    NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
-    POLICY_FILTER,
-    MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
-    DEFAULT_IP_TIME_TO_LIVE,
-    PATH_MTU_AGING_TIMEOUT,
-    PATH_MTU_PLATEAU_TABLE,
-    INTERFACE_MTU,
-    ALL_SUBNETS_ARE_LOCAL,
-    BROADCAST_ADDRESS,
-    PERFORM_SUBNET_MASK_DISCOVERY,
-    MASK_SUPPLIER,
-    PERFORM_ROUTER_DISCOVERY,
-    ROUTER_SOLICITATION_ADDRESS,
-    STATIC_ROUTE,
-    TRAILER_ENCAPSULATION,
-    ARP_CACHE_TIMEOUT,
-    ETHERNET_ENCAPSULATION,
-    TCP_DEFAULT_TTL,
-    TCP_KEEPALIVE_INTERVAL,
-    TCP_KEEPALIVE_GARBAGE,
-    NETWORK_INFORMATION_SERVICE_DOMAIN,
-    NETWORK_INFORMATION_SERVERS,
-    NETWORK_TIME_PROTOCOL_SERVERS,
-    VENDOR_SPECIFIC_INFORMATION,
-    NETBIOS_OVER_TCP_IP_NAME_SERVER,
-    NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
-    NETBIOS_OVER_TCP_IP_NODE_TYPE,
-    NETBIOS_OVER_TCP_IP_SCOPE,
-    X_WINDOW_SYSTEM_FONT_SERVER,
-    X_WINDOW_SYSTEM_DISPLAY_MANAGER,
-    REQUESTED_IP_ADDRESS,
-    LEASE_TIME,
-    OPTION_OVERLOAD,
-    MESSAGE_TYPE,
-    SERVER_IDENTIFIER,
-    PARAMETER_REQUEST_LIST,
-    ERROR_MESSAGE,
-    MAXIMUM_MESSAGE_SIZE,
-    RENEWAL_T1_TIME,
-    REBINDING_T2_TIME,
-    VENDOR_CLASS_IDENTIFIER,
-    CLIENT_IDENTIFIER,
-    DMTF_RESERVED,
-    DMTF_RESERVED1,
-    NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
-    NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
-    TFTP_SERVER_NAME,
-    BOOTFILE_NAME,
-    MOBILE_IP_HOME_AGENT,
-    SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
-    POST_OFFICE_PROTOCOL_POP3_SERVER,
-    NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
-    DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
-    DEFAULT_FINGER_SERVER,
-    DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
-    STREETTALK_SERVER,
-    STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
-    USER_CLASS,
-    SLP_DIRECTORY_AGENT,
-    SLP_SERVICE_SCOPE,
-    DMTF_RESERVED2,
-    RELAY_AGENT_INFORMATION,
-    DMTF_RESERVED3,
-    NAME_SERVICE_SEARCH,
-    SUBNET_SELECTION,
-    DMTF_RESERVED4,
-    CLASSLESS_ROUTE,
-    DMTF_RESERVED5,
-    END,
-    DMTF_RESERVED6,
-    VENDOR_RESERVED
-    }
-    private RequiredOptions requiredOptions;
-    /**
-     * This method returns the DHCPSettingData.requiredOptions property value.
-     * This property is described as follows:
-     *
-     * The list of DHCP options required for the client to operate properly.
-     * This list of DHCP options is for IPv4.
-     *
-     * @return	int	current requiredOptions property value
-     * @exception	Exception
-     */
-    public RequiredOptions getRequiredOptions(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RequiredOptions.
+	 */
 
-    return this.requiredOptions;
-    } // getRequiredOptions
+	public enum RequiredOptions {
+		UNKNOWN,
+		OTHER,
+		PAD,
+		SUBNET_MASK,
+		TIME_OFFSET,
+		ROUTER_OPTION,
+		TIME_SERVER,
+		NAME_SERVER,
+		DOMAIN_NAME_SERVER,
+		LOG_SERVER,
+		COOKIE_SERVER,
+		LPR_SERVER,
+		IMPRESS_SERVER,
+		RESOURCE_LOCATION_SERVER,
+		HOST_NAME,
+		BOOT_FILE_SIZE,
+		MERIT_DUMP_FILE,
+		DOMAIN_NAME,
+		SWAP_SERVER,
+		ROOT_PATH,
+		EXTENSIONS_PATH,
+		IP_FORWARDING_ENABLE_DISABLE,
+		NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
+		POLICY_FILTER,
+		MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
+		DEFAULT_IP_TIME_TO_LIVE,
+		PATH_MTU_AGING_TIMEOUT,
+		PATH_MTU_PLATEAU_TABLE,
+		INTERFACE_MTU,
+		ALL_SUBNETS_ARE_LOCAL,
+		BROADCAST_ADDRESS,
+		PERFORM_SUBNET_MASK_DISCOVERY,
+		MASK_SUPPLIER,
+		PERFORM_ROUTER_DISCOVERY,
+		ROUTER_SOLICITATION_ADDRESS,
+		STATIC_ROUTE,
+		TRAILER_ENCAPSULATION,
+		ARP_CACHE_TIMEOUT,
+		ETHERNET_ENCAPSULATION,
+		TCP_DEFAULT_TTL,
+		TCP_KEEPALIVE_INTERVAL,
+		TCP_KEEPALIVE_GARBAGE,
+		NETWORK_INFORMATION_SERVICE_DOMAIN,
+		NETWORK_INFORMATION_SERVERS,
+		NETWORK_TIME_PROTOCOL_SERVERS,
+		VENDOR_SPECIFIC_INFORMATION,
+		NETBIOS_OVER_TCP_IP_NAME_SERVER,
+		NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
+		NETBIOS_OVER_TCP_IP_NODE_TYPE,
+		NETBIOS_OVER_TCP_IP_SCOPE,
+		X_WINDOW_SYSTEM_FONT_SERVER,
+		X_WINDOW_SYSTEM_DISPLAY_MANAGER,
+		REQUESTED_IP_ADDRESS,
+		LEASE_TIME,
+		OPTION_OVERLOAD,
+		MESSAGE_TYPE,
+		SERVER_IDENTIFIER,
+		PARAMETER_REQUEST_LIST,
+		ERROR_MESSAGE,
+		MAXIMUM_MESSAGE_SIZE,
+		RENEWAL_T1_TIME,
+		REBINDING_T2_TIME,
+		VENDOR_CLASS_IDENTIFIER,
+		CLIENT_IDENTIFIER,
+		DMTF_RESERVED,
+		DMTF_RESERVED1,
+		NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
+		NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
+		TFTP_SERVER_NAME,
+		BOOTFILE_NAME,
+		MOBILE_IP_HOME_AGENT,
+		SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
+		POST_OFFICE_PROTOCOL_POP3_SERVER,
+		NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
+		DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
+		DEFAULT_FINGER_SERVER,
+		DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
+		STREETTALK_SERVER,
+		STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
+		USER_CLASS,
+		SLP_DIRECTORY_AGENT,
+		SLP_SERVICE_SCOPE,
+		DMTF_RESERVED2,
+		RELAY_AGENT_INFORMATION,
+		DMTF_RESERVED3,
+		NAME_SERVICE_SEARCH,
+		SUBNET_SELECTION,
+		DMTF_RESERVED4,
+		CLASSLESS_ROUTE,
+		DMTF_RESERVED5,
+		END,
+		DMTF_RESERVED6,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the DHCPSettingData.requiredOptions property value.
-     * This property is described as follows:
-     *
-     * The list of DHCP options required for the client to operate properly.
-     * This list of DHCP options is for IPv4.
-     *
-     * @param	int	new requiredOptions property value
-     * @exception	Exception
-     */
-    public void setRequiredOptions(RequiredOptions requiredOptions){
+	private RequiredOptions	requiredOptions;
 
-    this.requiredOptions = requiredOptions;
-    } // setRequiredOptions
+	/**
+	 * This method returns the DHCPSettingData.requiredOptions property value. This property is described as follows:
+	 * 
+	 * The list of DHCP options required for the client to operate properly. This list of DHCP options is for IPv4.
+	 * 
+	 * @return int current requiredOptions property value
+	 * @exception Exception
+	 */
+	public RequiredOptions getRequiredOptions() {
 
+		return this.requiredOptions;
+	} // getRequiredOptions
 
+	/**
+	 * This method sets the DHCPSettingData.requiredOptions property value. This property is described as follows:
+	 * 
+	 * The list of DHCP options required for the client to operate properly. This list of DHCP options is for IPv4.
+	 * 
+	 * @param int new requiredOptions property value
+	 * @exception Exception
+	 */
+	public void setRequiredOptions(RequiredOptions requiredOptions) {
+
+		this.requiredOptions = requiredOptions;
+	} // setRequiredOptions
 
 } // Class DHCPSettingData

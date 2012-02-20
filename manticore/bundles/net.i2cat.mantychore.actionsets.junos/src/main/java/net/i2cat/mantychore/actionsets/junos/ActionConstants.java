@@ -30,4 +30,12 @@ public class ActionConstants {
 	// TODO LISTLOGICALROUTER!!!
 	public static final String	LISTLOGICALROUTER		= "listLogicalRouter";
 
+	// OSPF actionset
+	public static final String	OSPF_CONFIGURE			= "configureOSPF";
+	public static final String	OSPF_GET_CONFIGURATION	= "getOSPFConfiguration";
+	public static final String	OSPF_ACTIVATE			= "activateOSPF";
+	public static final String	OSPF_DEACTIVATE			= "deactivateOSPF";
+	public static final String	OSPF_ENABLE_INTERFACE	= "enableOSPFInInterface";
+	public static final String	OSPF_DISABLE_INTERFACE	= "disableOSPFInInterface";
+
 }

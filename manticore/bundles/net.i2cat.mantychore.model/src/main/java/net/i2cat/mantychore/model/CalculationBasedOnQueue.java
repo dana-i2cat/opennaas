@@ -8,42 +8,34 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class CalculationBasedOnQueue as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * CalculationBasedOnQueueBean Interface. The CIM class
- * CalculationBasedOnQueue is described as follows:
- *
- * This association establishes a dependency relationship between a
- * QueuingService and an instance of the DropThresholdCalculationService
- * class. The queue's current depth is used by the CalculationService in
- * calculating an average/smoothed queue depth.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class CalculationBasedOnQueue as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the CalculationBasedOnQueueBean Interface. The CIM class CalculationBasedOnQueue
+ * is described as follows:
+ * 
+ * This association establishes a dependency relationship between a QueuingService and an instance of the DropThresholdCalculationService class. The
+ * queue's current depth is used by the CalculationService in calculating an average/smoothed queue depth.
  */
 public class CalculationBasedOnQueue extends ServiceServiceDependency
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a CalculationBasedOnQueueBeanImpl Class which
-     * implements the CalculationBasedOnQueueBean Interface, and encapsulates
-     * the CIM class CalculationBasedOnQueue in a Java Bean. The CIM class
-     * CalculationBasedOnQueue is described as follows:
-     *
-     * This association establishes a dependency relationship between a
-     * QueuingService and an instance of the DropThresholdCalculationService
-     * class. The queue's current depth is used by the CalculationService in
-     * calculating an average/smoothed queue depth.
-     */
-    public CalculationBasedOnQueue(){};
-    /**
-     * This method create an Association of the type CalculationBasedOnQueue
-     * between one QueuingService object and DropThresholdCalculationService
-     * object
-     */
-    public static CalculationBasedOnQueue link(QueuingService
-	antecedent,DropThresholdCalculationService dependent){
+	/**
+	 * This constructor creates a CalculationBasedOnQueueBeanImpl Class which implements the CalculationBasedOnQueueBean Interface, and encapsulates
+	 * the CIM class CalculationBasedOnQueue in a Java Bean. The CIM class CalculationBasedOnQueue is described as follows:
+	 * 
+	 * This association establishes a dependency relationship between a QueuingService and an instance of the DropThresholdCalculationService class.
+	 * The queue's current depth is used by the CalculationService in calculating an average/smoothed queue depth.
+	 */
+	public CalculationBasedOnQueue() {
+	};
 
-    return (CalculationBasedOnQueue)
-	Association.link(CalculationBasedOnQueue.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type CalculationBasedOnQueue between one QueuingService object and DropThresholdCalculationService
+	 * object
+	 */
+	public static CalculationBasedOnQueue link(QueuingService
+			antecedent, DropThresholdCalculationService dependent) {
+
+		return (CalculationBasedOnQueue) Association.link(CalculationBasedOnQueue.class, antecedent, dependent);
+	}// link
 
 } // Class CalculationBasedOnQueue

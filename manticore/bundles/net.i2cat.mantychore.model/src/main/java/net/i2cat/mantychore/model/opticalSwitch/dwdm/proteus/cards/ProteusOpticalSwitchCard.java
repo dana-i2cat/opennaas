@@ -16,13 +16,13 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
 
 /**
  * MANUALLY ADDED TO CIM (12/4/2011)
- *
+ * 
  * This class represents configurable cards providing functionalities for optical switching.
- *
+ * 
  * Uses ModulePort association to store ports in this Card.
- *
+ * 
  * @author isart
- *
+ * 
  */
 public class ProteusOpticalSwitchCard extends LogicalModule implements IOpticalSwitchCard {
 

@@ -46,5 +46,6 @@
 		<module>org.opennaas.bod.capability.l2bod</module>
 		<module>org.opennaas.bod.actionsets.dummy</module>
 		<module>org.opennaas.router.capability.gretunnel</module>
+		<module>org.opennaas.router.capability.ospf</module>
 	</modules>
 </project>

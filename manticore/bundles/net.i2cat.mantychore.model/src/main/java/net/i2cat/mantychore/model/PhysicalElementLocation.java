@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PhysicalElementLocation as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * PhysicalElementLocationBean Interface. The CIM class
- * PhysicalElementLocation is described as follows:
- *
- * PhysicalElementLocation associates a PhysicalElement with a Location object
- * for inventory or replacement purposes.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PhysicalElementLocation as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the PhysicalElementLocationBean Interface. The CIM class PhysicalElementLocation
+ * is described as follows:
+ * 
+ * PhysicalElementLocation associates a PhysicalElement with a Location object for inventory or replacement purposes.
  */
 public class PhysicalElementLocation extends ElementLocation implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a PhysicalElementLocationBeanImpl Class which
-     * implements the PhysicalElementLocationBean Interface, and encapsulates
-     * the CIM class PhysicalElementLocation in a Java Bean. The CIM class
-     * PhysicalElementLocation is described as follows:
-     *
-     * PhysicalElementLocation associates a PhysicalElement with a Location
-     * object for inventory or replacement purposes.
-     */
-    public PhysicalElementLocation(){};
-    /**
-     * This method create an Association of the type PhysicalElementLocation
-     * between one PhysicalElement object and Location object
-     */
-    public static PhysicalElementLocation link(PhysicalElement
-	element,Location physicalLocation){
+	/**
+	 * This constructor creates a PhysicalElementLocationBeanImpl Class which implements the PhysicalElementLocationBean Interface, and encapsulates
+	 * the CIM class PhysicalElementLocation in a Java Bean. The CIM class PhysicalElementLocation is described as follows:
+	 * 
+	 * PhysicalElementLocation associates a PhysicalElement with a Location object for inventory or replacement purposes.
+	 */
+	public PhysicalElementLocation() {
+	};
 
-    return (PhysicalElementLocation)
-	Association.link(PhysicalElementLocation.class,element,physicalLocation);
-    }//link
+	/**
+	 * This method create an Association of the type PhysicalElementLocation between one PhysicalElement object and Location object
+	 */
+	public static PhysicalElementLocation link(PhysicalElement
+			element, Location physicalLocation) {
+
+		return (PhysicalElementLocation) Association.link(PhysicalElementLocation.class, element, physicalLocation);
+	}// link
 
 } // Class PhysicalElementLocation

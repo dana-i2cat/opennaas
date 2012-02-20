@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProvidesEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProvidesEndpointBean Interface. The CIM class ProvidesEndpoint is
- * described as follows:
- *
- * This association represents a ProtocolEndpoint that is provided by a
- * Service to allow access to the Service.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProvidesEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ProvidesEndpointBean Interface. The CIM class ProvidesEndpoint is described as
+ * follows:
+ * 
+ * This association represents a ProtocolEndpoint that is provided by a Service to allow access to the Service.
  */
 public class ProvidesEndpoint extends ServiceAccessBySAP implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ProvidesEndpointBeanImpl Class which
-     * implements the ProvidesEndpointBean Interface, and encapsulates the
-     * CIM class ProvidesEndpoint in a Java Bean. The CIM class
-     * ProvidesEndpoint is described as follows:
-     *
-     * This association represents a ProtocolEndpoint that is provided by a
-     * Service to allow access to the Service.
-     */
-    public ProvidesEndpoint(){};
-    /**
-     * This method create an Association of the type ProvidesEndpoint between
-     * one Service object and ProtocolEndpoint object
-     */
-    public static ProvidesEndpoint link(Service antecedent,ProtocolEndpoint
-	dependent){
+	/**
+	 * This constructor creates a ProvidesEndpointBeanImpl Class which implements the ProvidesEndpointBean Interface, and encapsulates the CIM class
+	 * ProvidesEndpoint in a Java Bean. The CIM class ProvidesEndpoint is described as follows:
+	 * 
+	 * This association represents a ProtocolEndpoint that is provided by a Service to allow access to the Service.
+	 */
+	public ProvidesEndpoint() {
+	};
 
-    return (ProvidesEndpoint)
-	Association.link(ProvidesEndpoint.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ProvidesEndpoint between one Service object and ProtocolEndpoint object
+	 */
+	public static ProvidesEndpoint link(Service antecedent, ProtocolEndpoint
+			dependent) {
+
+		return (ProvidesEndpoint) Association.link(ProvidesEndpoint.class, antecedent, dependent);
+	}// link
 
 } // Class ProvidesEndpoint

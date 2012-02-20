@@ -9,146 +9,121 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ServiceAffectsElementWithQuota as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the ServiceAffectsElementWithQuotaBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAffectsElementWithQuota as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ServiceAffectsElementWithQuotaBean Interface. The CIM class
  * ServiceAffectsElementWithQuota is described as follows:
- *
- * ServiceAffectsElementWithQuota represents an extension of
- * ServiceAffectsElement to include a quota imposed on the AffectedElement by
- * the Service. The quota governs the amount of a resource controlled by the
- * Service that can be allocated by the AffectedElement in one or more
- * allocations.
+ * 
+ * ServiceAffectsElementWithQuota represents an extension of ServiceAffectsElement to include a quota imposed on the AffectedElement by the Service.
+ * The quota governs the amount of a resource controlled by the Service that can be allocated by the AffectedElement in one or more allocations.
  */
 public class ServiceAffectsElementWithQuota extends ServiceAffectsElement
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a ServiceAffectsElementWithQuotaBeanImpl Class
-     * which implements the ServiceAffectsElementWithQuotaBean Interface, and
-     * encapsulates the CIM class ServiceAffectsElementWithQuota in a Java
-     * Bean. The CIM class ServiceAffectsElementWithQuota is described as
-     * follows:
-     *
-     * ServiceAffectsElementWithQuota represents an extension of
-     * ServiceAffectsElement to include a quota imposed on the
-     * AffectedElement by the Service. The quota governs the amount of a
-     * resource controlled by the Service that can be allocated by the
-     * AffectedElement in one or more allocations.
-     */
-    public ServiceAffectsElementWithQuota(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property quota.
-     */
-    private long quota;
-    /**
-     * This method returns the ServiceAffectsElementWithQuota.quota property
-     * value. This property is described as follows:
-     *
-     * Quota is the maximum number of resource units that may be allocated to
-     * the AffectedElement.
-     *
-     * @return	long	current quota property value
-     * @exception	Exception
-     */
-    public long getQuota(){
+	/**
+	 * This constructor creates a ServiceAffectsElementWithQuotaBeanImpl Class which implements the ServiceAffectsElementWithQuotaBean Interface, and
+	 * encapsulates the CIM class ServiceAffectsElementWithQuota in a Java Bean. The CIM class ServiceAffectsElementWithQuota is described as follows:
+	 * 
+	 * ServiceAffectsElementWithQuota represents an extension of ServiceAffectsElement to include a quota imposed on the AffectedElement by the
+	 * Service. The quota governs the amount of a resource controlled by the Service that can be allocated by the AffectedElement in one or more
+	 * allocations.
+	 */
+	public ServiceAffectsElementWithQuota() {
+	};
 
-    return this.quota;
-    } // getQuota
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property quota.
+	 */
+	private long	quota;
 
-    /**
-     * This method sets the ServiceAffectsElementWithQuota.quota property
-     * value. This property is described as follows:
-     *
-     * Quota is the maximum number of resource units that may be allocated to
-     * the AffectedElement.
-     *
-     * @param	long	new quota property value
-     * @exception	Exception
-     */
-    public void setQuota(long quota) {
+	/**
+	 * This method returns the ServiceAffectsElementWithQuota.quota property value. This property is described as follows:
+	 * 
+	 * Quota is the maximum number of resource units that may be allocated to the AffectedElement.
+	 * 
+	 * @return long current quota property value
+	 * @exception Exception
+	 */
+	public long getQuota() {
 
-    this.quota = quota;
-    } // setQuota
+		return this.quota;
+	} // getQuota
 
+	/**
+	 * This method sets the ServiceAffectsElementWithQuota.quota property value. This property is described as follows:
+	 * 
+	 * Quota is the maximum number of resource units that may be allocated to the AffectedElement.
+	 * 
+	 * @param long new quota property value
+	 * @exception Exception
+	 */
+	public void setQuota(long quota) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property quotaUsed.
-     */
-    private long quotaUsed;
-    /**
-     * This method returns the ServiceAffectsElementWithQuota.quotaUsed
-     * property value. This property is described as follows:
-     *
-     * Quota is the number of resource units currently allocated to the
-     * AffectedElement.
-     *
-     * @return	long	current quotaUsed property value
-     * @exception	Exception
-     */
-    public long getQuotaUsed(){
+		this.quota = quota;
+	} // setQuota
 
-    return this.quotaUsed;
-    } // getQuotaUsed
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property quotaUsed.
+	 */
+	private long	quotaUsed;
 
-    /**
-     * This method sets the ServiceAffectsElementWithQuota.quotaUsed property
-     * value. This property is described as follows:
-     *
-     * Quota is the number of resource units currently allocated to the
-     * AffectedElement.
-     *
-     * @param	long	new quotaUsed property value
-     * @exception	Exception
-     */
-    public void setQuotaUsed(long quotaUsed) {
+	/**
+	 * This method returns the ServiceAffectsElementWithQuota.quotaUsed property value. This property is described as follows:
+	 * 
+	 * Quota is the number of resource units currently allocated to the AffectedElement.
+	 * 
+	 * @return long current quotaUsed property value
+	 * @exception Exception
+	 */
+	public long getQuotaUsed() {
 
-    this.quotaUsed = quotaUsed;
-    } // setQuotaUsed
+		return this.quotaUsed;
+	} // getQuotaUsed
 
+	/**
+	 * This method sets the ServiceAffectsElementWithQuota.quotaUsed property value. This property is described as follows:
+	 * 
+	 * Quota is the number of resource units currently allocated to the AffectedElement.
+	 * 
+	 * @param long new quotaUsed property value
+	 * @exception Exception
+	 */
+	public void setQuotaUsed(long quotaUsed) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property quotaUnits.
-     */
-    private String quotaUnits;
-    /**
-     * This method returns the ServiceAffectsElementWithQuota.quotaUnits
-     * property value. This property is described as follows:
-     *
-     * QuotaUnits specifies the type of unit used in the Quota and QuotaUsed
-     * properties. The value shall be formatted according to DSP0004 Appendix
-     * C1, where the base-unit is "byte"), and there are no occurrences of
-     * multiplied-base-unit and divided-base-unit.
-     *
-     * @return	String	current quotaUnits property value
-     * @exception	Exception
-     */
-    public String getQuotaUnits(){
+		this.quotaUsed = quotaUsed;
+	} // setQuotaUsed
 
-    return this.quotaUnits;
-    } // getQuotaUnits
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property quotaUnits.
+	 */
+	private String	quotaUnits;
 
-    /**
-     * This method sets the ServiceAffectsElementWithQuota.quotaUnits property
-     * value. This property is described as follows:
-     *
-     * QuotaUnits specifies the type of unit used in the Quota and QuotaUsed
-     * properties. The value shall be formatted according to DSP0004 Appendix
-     * C1, where the base-unit is "byte"), and there are no occurrences of
-     * multiplied-base-unit and divided-base-unit.
-     *
-     * @param	String	new quotaUnits property value
-     * @exception	Exception
-     */
-    public void setQuotaUnits(String quotaUnits) {
+	/**
+	 * This method returns the ServiceAffectsElementWithQuota.quotaUnits property value. This property is described as follows:
+	 * 
+	 * QuotaUnits specifies the type of unit used in the Quota and QuotaUsed properties. The value shall be formatted according to DSP0004 Appendix
+	 * C1, where the base-unit is "byte"), and there are no occurrences of multiplied-base-unit and divided-base-unit.
+	 * 
+	 * @return String current quotaUnits property value
+	 * @exception Exception
+	 */
+	public String getQuotaUnits() {
 
-    this.quotaUnits = quotaUnits;
-    } // setQuotaUnits
+		return this.quotaUnits;
+	} // getQuotaUnits
 
+	/**
+	 * This method sets the ServiceAffectsElementWithQuota.quotaUnits property value. This property is described as follows:
+	 * 
+	 * QuotaUnits specifies the type of unit used in the Quota and QuotaUsed properties. The value shall be formatted according to DSP0004 Appendix
+	 * C1, where the base-unit is "byte"), and there are no occurrences of multiplied-base-unit and divided-base-unit.
+	 * 
+	 * @param String
+	 *            new quotaUnits property value
+	 * @exception Exception
+	 */
+	public void setQuotaUnits(String quotaUnits) {
 
+		this.quotaUnits = quotaUnits;
+	} // setQuotaUnits
 
 } // Class ServiceAffectsElementWithQuota

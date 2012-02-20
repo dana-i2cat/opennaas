@@ -9,85 +9,74 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductProductDependency as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ProductProductDependencyBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductProductDependency as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ProductProductDependencyBean Interface. The CIM class
  * ProductProductDependency is described as follows:
- *
- * CIM_ProductProductDependency is an association between two Products,
- * indicating that one must be installed, or must be absent, for the other to
- * function. This is conceptually equivalent to the ServiceServiceDependency
- * association.
+ * 
+ * CIM_ProductProductDependency is an association between two Products, indicating that one must be installed, or must be absent, for the other to
+ * function. This is conceptually equivalent to the ServiceServiceDependency association.
  */
 public class ProductProductDependency extends Association implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ProductProductDependencyBeanImpl Class which
-     * implements the ProductProductDependencyBean Interface, and
-     * encapsulates the CIM class ProductProductDependency in a Java Bean.
-     * The CIM class ProductProductDependency is described as follows:
-     *
-     * CIM_ProductProductDependency is an association between two Products,
-     * indicating that one must be installed, or must be absent, for the
-     * other to function. This is conceptually equivalent to the
-     * ServiceServiceDependency association.
-     */
-    public ProductProductDependency(){};
-    /**
-     * This method create an Association of the type ProductProductDependency
-     * between one Product object and Product object
-     */
-    public static ProductProductDependency link(Product
-	requiredProduct,Product dependentProduct){
+	/**
+	 * This constructor creates a ProductProductDependencyBeanImpl Class which implements the ProductProductDependencyBean Interface, and encapsulates
+	 * the CIM class ProductProductDependency in a Java Bean. The CIM class ProductProductDependency is described as follows:
+	 * 
+	 * CIM_ProductProductDependency is an association between two Products, indicating that one must be installed, or must be absent, for the other to
+	 * function. This is conceptually equivalent to the ServiceServiceDependency association.
+	 */
+	public ProductProductDependency() {
+	};
 
-    return (ProductProductDependency) Association.link(ProductProductDependency.class,requiredProduct,dependentProduct);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TypeOfDependency.
-     */
+	/**
+	 * This method create an Association of the type ProductProductDependency between one Product object and Product object
+	 */
+	public static ProductProductDependency link(Product
+			requiredProduct, Product dependentProduct) {
 
-    public enum TypeOfDependency{
-    UNKNOWN,
-    OTHER,
-    PRODUCT_MUST_BE_INSTALLED,
-    PRODUCT_MUST_NOT_BE_INSTALLED
-    }
-    private TypeOfDependency typeOfDependency;
-    /**
-     * This method returns the ProductProductDependency.typeOfDependency
-     * property value. This property is described as follows:
-     *
-     * The nature of the Product dependency. This property describes that the
-     * associated Product must be installed (value=2) or must be absent
-     * (value=3) in order for the Product to function.
-     *
-     * @return	int	current typeOfDependency property value
-     * @exception	Exception
-     */
-    public TypeOfDependency getTypeOfDependency(){
+		return (ProductProductDependency) Association.link(ProductProductDependency.class, requiredProduct, dependentProduct);
+	}// link
 
-    return this.typeOfDependency;
-    } // getTypeOfDependency
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TypeOfDependency.
+	 */
 
-    /**
-     * This method sets the ProductProductDependency.typeOfDependency property
-     * value. This property is described as follows:
-     *
-     * The nature of the Product dependency. This property describes that the
-     * associated Product must be installed (value=2) or must be absent
-     * (value=3) in order for the Product to function.
-     *
-     * @param	int	new typeOfDependency property value
-     * @exception	Exception
-     */
-    public void setTypeOfDependency(TypeOfDependency typeOfDependency){
+	public enum TypeOfDependency {
+		UNKNOWN,
+		OTHER,
+		PRODUCT_MUST_BE_INSTALLED,
+		PRODUCT_MUST_NOT_BE_INSTALLED
+	}
 
-    this.typeOfDependency = typeOfDependency;
-    } // setTypeOfDependency
+	private TypeOfDependency	typeOfDependency;
 
+	/**
+	 * This method returns the ProductProductDependency.typeOfDependency property value. This property is described as follows:
+	 * 
+	 * The nature of the Product dependency. This property describes that the associated Product must be installed (value=2) or must be absent
+	 * (value=3) in order for the Product to function.
+	 * 
+	 * @return int current typeOfDependency property value
+	 * @exception Exception
+	 */
+	public TypeOfDependency getTypeOfDependency() {
 
+		return this.typeOfDependency;
+	} // getTypeOfDependency
+
+	/**
+	 * This method sets the ProductProductDependency.typeOfDependency property value. This property is described as follows:
+	 * 
+	 * The nature of the Product dependency. This property describes that the associated Product must be installed (value=2) or must be absent
+	 * (value=3) in order for the Product to function.
+	 * 
+	 * @param int new typeOfDependency property value
+	 * @exception Exception
+	 */
+	public void setTypeOfDependency(TypeOfDependency typeOfDependency) {
+
+		this.typeOfDependency = typeOfDependency;
+	} // setTypeOfDependency
 
 } // Class ProductProductDependency

@@ -18,6 +18,25 @@ import java.util.List;
  */
 public class Service extends EnabledLogicalElement implements Serializable {
 
+	/* HOSTED SERVICE */
+
+	/**
+	 * @return System associated with this Service through HostedService dependency.
+	 */
+	public System getHostSystem() {
+		return (System) this.getFirstFromAssociatedElementByType(HostedService.class);
+	}
+
+	/**
+	 * 
+	 * @param host
+	 *            System to be associated with this Service through HostedService dependency.
+	 */
+	public void setHostSystem(System host) {
+		if (host != null)
+			HostedService.link(host, this);
+	}
+
 	/**
 	 * This constructor creates a ServiceBeanImpl Class which implements the ServiceBean Interface, and encapsulates the CIM class Service in a Java
 	 * Bean. The CIM class Service is described as follows:

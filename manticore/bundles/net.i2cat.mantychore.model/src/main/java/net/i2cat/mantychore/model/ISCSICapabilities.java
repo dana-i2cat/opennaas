@@ -9,175 +9,138 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ISCSICapabilities as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ISCSICapabilitiesBean Interface. The CIM class ISCSICapabilities is
- * described as follows:
- *
- * The capabilites for an iSCSI Network Entity. An instance of this class will
- * be associated by ElementCapabilities to a instance of ComputerSystem that
- * represents the Network Entity. These capability properties are associated
- * to a Network Entity/ComputerSystem since they affect all login
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ISCSICapabilities as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ISCSICapabilitiesBean Interface. The CIM class ISCSICapabilities is described as
+ * follows:
+ * 
+ * The capabilites for an iSCSI Network Entity. An instance of this class will be associated by ElementCapabilities to a instance of ComputerSystem
+ * that represents the Network Entity. These capability properties are associated to a Network Entity/ComputerSystem since they affect all login
  * negotiations on all iSCSI ProtocolEndpoints aggregated to the system.
  */
 public class ISCSICapabilities extends Capabilities implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ISCSICapabilitiesBeanImpl Class which
-     * implements the ISCSICapabilitiesBean Interface, and encapsulates the
-     * CIM class ISCSICapabilities in a Java Bean. The CIM class
-     * ISCSICapabilities is described as follows:
-     *
-     * The capabilites for an iSCSI Network Entity. An instance of this class
-     * will be associated by ElementCapabilities to a instance of
-     * ComputerSystem that represents the Network Entity. These capability
-     * properties are associated to a Network Entity/ComputerSystem since
-     * they affect all login negotiations on all iSCSI ProtocolEndpoints
-     * aggregated to the system.
-     */
-    public ISCSICapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minimumSpecificationVersionSupported.
-     */
-    private short minimumSpecificationVersionSupported;
-    /**
-     * This method returns the
-     * iSCSICapabilities.minimumSpecificationVersionSupported property value.
-     * This property is described as follows:
-     *
-     * The minimum version number of the iSCSI specification such that this
-     * iSCSI instance supports this minimum value, the maximum value
-     * indicated by the corresponding property
-     * MaximumSpecificationVersionSupported, and all versions in between.
-     *
-     * @return	short	current
-     * minimumSpecificationVersionSupported property value
-     * @exception	Exception
-     */
-    public short getMinimumSpecificationVersionSupported(){
+	/**
+	 * This constructor creates a ISCSICapabilitiesBeanImpl Class which implements the ISCSICapabilitiesBean Interface, and encapsulates the CIM class
+	 * ISCSICapabilities in a Java Bean. The CIM class ISCSICapabilities is described as follows:
+	 * 
+	 * The capabilites for an iSCSI Network Entity. An instance of this class will be associated by ElementCapabilities to a instance of
+	 * ComputerSystem that represents the Network Entity. These capability properties are associated to a Network Entity/ComputerSystem since they
+	 * affect all login negotiations on all iSCSI ProtocolEndpoints aggregated to the system.
+	 */
+	public ISCSICapabilities() {
+	};
 
-    return this.minimumSpecificationVersionSupported;
-    } // getMinimumSpecificationVersionSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minimumSpecificationVersionSupported.
+	 */
+	private short	minimumSpecificationVersionSupported;
 
-    /**
-     * This method sets the
-     * iSCSICapabilities.minimumSpecificationVersionSupported property value.
-     * This property is described as follows:
-     *
-     * The minimum version number of the iSCSI specification such that this
-     * iSCSI instance supports this minimum value, the maximum value
-     * indicated by the corresponding property
-     * MaximumSpecificationVersionSupported, and all versions in between.
-     *
-     * @param	short	new minimumSpecificationVersionSupported
-     * property value
-     * @exception	Exception
-     */
-    public void setMinimumSpecificationVersionSupported(short
-	minimumSpecificationVersionSupported) {
+	/**
+	 * This method returns the iSCSICapabilities.minimumSpecificationVersionSupported property value. This property is described as follows:
+	 * 
+	 * The minimum version number of the iSCSI specification such that this iSCSI instance supports this minimum value, the maximum value indicated by
+	 * the corresponding property MaximumSpecificationVersionSupported, and all versions in between.
+	 * 
+	 * @return short current minimumSpecificationVersionSupported property value
+	 * @exception Exception
+	 */
+	public short getMinimumSpecificationVersionSupported() {
 
-    this.minimumSpecificationVersionSupported =
-	minimumSpecificationVersionSupported;
-    } // setMinimumSpecificationVersionSupported
+		return this.minimumSpecificationVersionSupported;
+	} // getMinimumSpecificationVersionSupported
 
+	/**
+	 * This method sets the iSCSICapabilities.minimumSpecificationVersionSupported property value. This property is described as follows:
+	 * 
+	 * The minimum version number of the iSCSI specification such that this iSCSI instance supports this minimum value, the maximum value indicated by
+	 * the corresponding property MaximumSpecificationVersionSupported, and all versions in between.
+	 * 
+	 * @param short new minimumSpecificationVersionSupported property value
+	 * @exception Exception
+	 */
+	public void setMinimumSpecificationVersionSupported(short
+			minimumSpecificationVersionSupported) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maximumSpecificationVersionSupported.
-     */
-    private short maximumSpecificationVersionSupported;
-    /**
-     * This method returns the
-     * iSCSICapabilities.maximumSpecificationVersionSupported property value.
-     * This property is described as follows:
-     *
-     * The maximum version number of the iSCSI specification such that this
-     * iSCSI instance supports this maximum value, the minimum value
-     * indicated by the corresponding property
-     * MinimumSpecificationVersionSupported, and all versions in between.
-     *
-     * @return	short	current
-     * maximumSpecificationVersionSupported property value
-     * @exception	Exception
-     */
-    public short getMaximumSpecificationVersionSupported(){
+		this.minimumSpecificationVersionSupported =
+				minimumSpecificationVersionSupported;
+	} // setMinimumSpecificationVersionSupported
 
-    return this.maximumSpecificationVersionSupported;
-    } // getMaximumSpecificationVersionSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maximumSpecificationVersionSupported.
+	 */
+	private short	maximumSpecificationVersionSupported;
 
-    /**
-     * This method sets the
-     * iSCSICapabilities.maximumSpecificationVersionSupported property value.
-     * This property is described as follows:
-     *
-     * The maximum version number of the iSCSI specification such that this
-     * iSCSI instance supports this maximum value, the minimum value
-     * indicated by the corresponding property
-     * MinimumSpecificationVersionSupported, and all versions in between.
-     *
-     * @param	short	new maximumSpecificationVersionSupported
-     * property value
-     * @exception	Exception
-     */
-    public void setMaximumSpecificationVersionSupported(short
-	maximumSpecificationVersionSupported) {
+	/**
+	 * This method returns the iSCSICapabilities.maximumSpecificationVersionSupported property value. This property is described as follows:
+	 * 
+	 * The maximum version number of the iSCSI specification such that this iSCSI instance supports this maximum value, the minimum value indicated by
+	 * the corresponding property MinimumSpecificationVersionSupported, and all versions in between.
+	 * 
+	 * @return short current maximumSpecificationVersionSupported property value
+	 * @exception Exception
+	 */
+	public short getMaximumSpecificationVersionSupported() {
 
-    this.maximumSpecificationVersionSupported =
-	maximumSpecificationVersionSupported;
-    } // setMaximumSpecificationVersionSupported
+		return this.maximumSpecificationVersionSupported;
+	} // getMaximumSpecificationVersionSupported
 
+	/**
+	 * This method sets the iSCSICapabilities.maximumSpecificationVersionSupported property value. This property is described as follows:
+	 * 
+	 * The maximum version number of the iSCSI specification such that this iSCSI instance supports this maximum value, the minimum value indicated by
+	 * the corresponding property MinimumSpecificationVersionSupported, and all versions in between.
+	 * 
+	 * @param short new maximumSpecificationVersionSupported property value
+	 * @exception Exception
+	 */
+	public void setMaximumSpecificationVersionSupported(short
+			maximumSpecificationVersionSupported) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AuthenticationMethodsSupported.
-     */
+		this.maximumSpecificationVersionSupported =
+				maximumSpecificationVersionSupported;
+	} // setMaximumSpecificationVersionSupported
 
-    public enum AuthenticationMethodsSupported{
-    NONE,
-    SRP,
-    CHAP,
-    KERBEROS
-    }
-    private AuthenticationMethodsSupported authenticationMethodsSupported;
-    /**
-     * This method returns the
-     * iSCSICapabilities.authenticationMethodsSupported property value. This
-     * property is described as follows:
-     *
-     * An array containing a list of authentication methods supported by this
-     * Network Entity.
-     *
-     * @return	int	current authenticationMethodsSupported
-     * property value
-     * @exception	Exception
-     */
-    public AuthenticationMethodsSupported
-	getAuthenticationMethodsSupported(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AuthenticationMethodsSupported.
+	 */
 
-    return this.authenticationMethodsSupported;
-    } // getAuthenticationMethodsSupported
+	public enum AuthenticationMethodsSupported {
+		NONE,
+		SRP,
+		CHAP,
+		KERBEROS
+	}
 
-    /**
-     * This method sets the iSCSICapabilities.authenticationMethodsSupported
-     * property value. This property is described as follows:
-     *
-     * An array containing a list of authentication methods supported by this
-     * Network Entity.
-     *
-     * @param	int	new authenticationMethodsSupported property
-     * value
-     * @exception	Exception
-     */
-    public void
-	setAuthenticationMethodsSupported(AuthenticationMethodsSupported
-	authenticationMethodsSupported){
+	private AuthenticationMethodsSupported	authenticationMethodsSupported;
 
-    this.authenticationMethodsSupported = authenticationMethodsSupported;
-    } // setAuthenticationMethodsSupported
+	/**
+	 * This method returns the iSCSICapabilities.authenticationMethodsSupported property value. This property is described as follows:
+	 * 
+	 * An array containing a list of authentication methods supported by this Network Entity.
+	 * 
+	 * @return int current authenticationMethodsSupported property value
+	 * @exception Exception
+	 */
+	public AuthenticationMethodsSupported
+			getAuthenticationMethodsSupported() {
 
+		return this.authenticationMethodsSupported;
+	} // getAuthenticationMethodsSupported
 
+	/**
+	 * This method sets the iSCSICapabilities.authenticationMethodsSupported property value. This property is described as follows:
+	 * 
+	 * An array containing a list of authentication methods supported by this Network Entity.
+	 * 
+	 * @param int new authenticationMethodsSupported property value
+	 * @exception Exception
+	 */
+	public void
+			setAuthenticationMethodsSupported(AuthenticationMethodsSupported
+					authenticationMethodsSupported) {
+
+		this.authenticationMethodsSupported = authenticationMethodsSupported;
+	} // setAuthenticationMethodsSupported
 
 } // Class ISCSICapabilities

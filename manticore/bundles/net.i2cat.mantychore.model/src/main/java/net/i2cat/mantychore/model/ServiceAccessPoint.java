@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAccessPoint as well as methods comparable to
@@ -17,6 +18,48 @@ import java.io.Serializable;
  */
 public class ServiceAccessPoint extends EnabledLogicalElement implements
 		Serializable {
+
+	/* BindsTo */
+	/**
+	 * 
+	 * @return list of ProtocolEndpoint associated with this ServiceAccessPoint through BindsTo dependency as antecedent.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<ProtocolEndpoint> getBindedProtocolEndpoints() {
+		return (List<ProtocolEndpoint>) this.getFromAssociatedElementsByType(BindsTo.class);
+	}
+
+	/**
+	 * Binds ep to this ServiceAccessPoint using BindsTo dependency. This is the dependent, and ep is the antecedent.
+	 * 
+	 * @param ep
+	 * @return true if association has been created, false otherwise.
+	 */
+	public boolean bindServiceAccessPoint(ProtocolEndpoint ep) {
+		if (ep == null)
+			return false;
+
+		BindsTo.link(ep, this);
+		return true;
+	}
+
+	/**
+	 * Removes BindsTo association between this ServiceAccessPoint and ep, where this is the dependent and ep the antecedent, if any.
+	 * 
+	 * @param ep
+	 * @return true if association has been removed, false otherwise (also if there was no such association).
+	 */
+	public boolean unbindServiceAccessPoint(ProtocolEndpoint ep) {
+		if (ep == null)
+			return false;
+
+		Association a = this.getFirstFromAssociationByTypeAndElement(BindsTo.class, ep);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+	}
 
 	/**
 	 * This constructor creates a ServiceAccessPointBeanImpl Class which implements the ServiceAccessPointBean Interface, and encapsulates the CIM

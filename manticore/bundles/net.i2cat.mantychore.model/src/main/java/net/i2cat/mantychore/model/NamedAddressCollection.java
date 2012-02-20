@@ -9,71 +9,58 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NamedAddressCollection as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * NamedAddressCollectionBean Interface. The CIM class NamedAddressCollection
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NamedAddressCollection as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the NamedAddressCollectionBean Interface. The CIM class NamedAddressCollection
  * is described as follows:
- *
- * A NamedAddressCollection groups ProtocolEndpoints/addresses and other
- * network identifiers for the purposes of assigning a single name (i.e., an
- * alias). It is a subclass of SystemSpecificCollection to force the
- * definition of the 'named collection' in the context of a System (for
- * example, either a ComputerSystem or an AdminDomain hosting a naming
- * alias).
+ * 
+ * A NamedAddressCollection groups ProtocolEndpoints/addresses and other network identifiers for the purposes of assigning a single name (i.e., an
+ * alias). It is a subclass of SystemSpecificCollection to force the definition of the 'named collection' in the context of a System (for example,
+ * either a ComputerSystem or an AdminDomain hosting a naming alias).
  */
 public class NamedAddressCollection extends SystemSpecificCollection
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a NamedAddressCollectionBeanImpl Class which
-     * implements the NamedAddressCollectionBean Interface, and encapsulates
-     * the CIM class NamedAddressCollection in a Java Bean. The CIM class
-     * NamedAddressCollection is described as follows:
-     *
-     * A NamedAddressCollection groups ProtocolEndpoints/addresses and other
-     * network identifiers for the purposes of assigning a single name (i.e.,
-     * an alias). It is a subclass of SystemSpecificCollection to force the
-     * definition of the 'named collection' in the context of a System (for
-     * example, either a ComputerSystem or an AdminDomain hosting a naming
-     * alias).
-     */
-    public NamedAddressCollection(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property collectionAlias.
-     */
-    private String collectionAlias;
-    /**
-     * This method returns the NamedAddressCollection.collectionAlias property
-     * value. This property is described as follows:
-     *
-     * A name (alias) for the NamedAddressCollection which is unique in the
-     * context of the hosting System.
-     *
-     * @return	String	current collectionAlias property value
-     * @exception	Exception
-     */
-    public String getCollectionAlias(){
+	/**
+	 * This constructor creates a NamedAddressCollectionBeanImpl Class which implements the NamedAddressCollectionBean Interface, and encapsulates the
+	 * CIM class NamedAddressCollection in a Java Bean. The CIM class NamedAddressCollection is described as follows:
+	 * 
+	 * A NamedAddressCollection groups ProtocolEndpoints/addresses and other network identifiers for the purposes of assigning a single name (i.e., an
+	 * alias). It is a subclass of SystemSpecificCollection to force the definition of the 'named collection' in the context of a System (for example,
+	 * either a ComputerSystem or an AdminDomain hosting a naming alias).
+	 */
+	public NamedAddressCollection() {
+	};
 
-    return this.collectionAlias;
-    } // getCollectionAlias
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property collectionAlias.
+	 */
+	private String	collectionAlias;
 
-    /**
-     * This method sets the NamedAddressCollection.collectionAlias property
-     * value. This property is described as follows:
-     *
-     * A name (alias) for the NamedAddressCollection which is unique in the
-     * context of the hosting System.
-     *
-     * @param	String	new collectionAlias property value
-     * @exception	Exception
-     */
-    public void setCollectionAlias(String collectionAlias) {
+	/**
+	 * This method returns the NamedAddressCollection.collectionAlias property value. This property is described as follows:
+	 * 
+	 * A name (alias) for the NamedAddressCollection which is unique in the context of the hosting System.
+	 * 
+	 * @return String current collectionAlias property value
+	 * @exception Exception
+	 */
+	public String getCollectionAlias() {
 
-    this.collectionAlias = collectionAlias;
-    } // setCollectionAlias
+		return this.collectionAlias;
+	} // getCollectionAlias
 
+	/**
+	 * This method sets the NamedAddressCollection.collectionAlias property value. This property is described as follows:
+	 * 
+	 * A name (alias) for the NamedAddressCollection which is unique in the context of the hosting System.
+	 * 
+	 * @param String
+	 *            new collectionAlias property value
+	 * @exception Exception
+	 */
+	public void setCollectionAlias(String collectionAlias) {
 
+		this.collectionAlias = collectionAlias;
+	} // setCollectionAlias
 
 } // Class NamedAddressCollection

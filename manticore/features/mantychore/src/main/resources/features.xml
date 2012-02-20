@@ -88,5 +88,6 @@
 	</feature>
 	<feature name="opennaas-router" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.gretunnel/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.ospf/1.0.0-SNAPSHOT</bundle>
 	</feature>
 </features>

@@ -9,268 +9,236 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BGPServiceBean Interface. The CIM class BGPService is described as
- * follows:
- *
- * This class is used to represent the basic operation of BGP. It is derived
- * from RouteCalculationService, the superclass of all routing protocols.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the BGPServiceBean Interface. The CIM class BGPService is described as follows:
+ * 
+ * This class is used to represent the basic operation of BGP. It is derived from RouteCalculationService, the superclass of all routing protocols.
  */
 public class BGPService extends RouteCalculationService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a BGPServiceBeanImpl Class which implements
-     * the BGPServiceBean Interface, and encapsulates the CIM class
-     * BGPService in a Java Bean. The CIM class BGPService is described as
-     * follows:
-     *
-     * This class is used to represent the basic operation of BGP. It is
-     * derived from RouteCalculationService, the superclass of all routing
-     * protocols.
-     */
-    public BGPService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property bGPVersion.
-     */
-    private short bGPVersion;
-    /**
-     * This method returns the BGPService.bGPVersion property value. This
-     * property is described as follows:
-     *
-     * The BGPVersion property defines the version of BGP that this router is
-     * using. This is part of the BGP peer negotiation process).
-     *
-     * @return	short	current bGPVersion property value
-     * @exception	Exception
-     */
-    public short getBGPVersion(){
+	/**
+	 * This constructor creates a BGPServiceBeanImpl Class which implements the BGPServiceBean Interface, and encapsulates the CIM class BGPService in
+	 * a Java Bean. The CIM class BGPService is described as follows:
+	 * 
+	 * This class is used to represent the basic operation of BGP. It is derived from RouteCalculationService, the superclass of all routing
+	 * protocols.
+	 */
+	public BGPService() {
+	};
 
-    return this.bGPVersion;
-    } // getBGPVersion
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property bGPVersion.
+	 */
+	private short	bGPVersion;
 
-    /**
-     * This method sets the BGPService.bGPVersion property value. This
-     * property is described as follows:
-     *
-     * The BGPVersion property defines the version of BGP that this router is
-     * using. This is part of the BGP peer negotiation process).
-     *
-     * @param	short	new bGPVersion property value
-     * @exception	Exception
-     */
-    public void setBGPVersion(short bGPVersion) {
+	/**
+	 * This method returns the BGPService.bGPVersion property value. This property is described as follows:
+	 * 
+	 * The BGPVersion property defines the version of BGP that this router is using. This is part of the BGP peer negotiation process).
+	 * 
+	 * @return short current bGPVersion property value
+	 * @exception Exception
+	 */
+	public short getBGPVersion() {
 
-    this.bGPVersion = bGPVersion;
-    } // setBGPVersion
+		return this.bGPVersion;
+	} // getBGPVersion
 
+	/**
+	 * This method sets the BGPService.bGPVersion property value. This property is described as follows:
+	 * 
+	 * The BGPVersion property defines the version of BGP that this router is using. This is part of the BGP peer negotiation process).
+	 * 
+	 * @param short new bGPVersion property value
+	 * @exception Exception
+	 */
+	public void setBGPVersion(short bGPVersion) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LastErrorCode.
-     */
+		this.bGPVersion = bGPVersion;
+	} // setBGPVersion
 
-    public enum LastErrorCode{
-    NONE,
-    MESSAGE_HEADER_ERROR,
-    OPEN_MESSAGE_ERROR,
-    UPDATE_MESSAGE_ERROR,
-    HOLD_TIMER_EXPIRED,
-    FINITE_STATE_MACHINE_ERROR,
-    CEASE
-    }
-    private LastErrorCode lastErrorCode;
-    /**
-     * This method returns the BGPService.lastErrorCode property value. This
-     * property is described as follows:
-     *
-     * BGP sends errors using a NOTIFICATION message. This message contains an
-     * error code, an error subcode, and error data. The error code defines
-     * the type of the notification. The 'Cease' error is for all fatal
-     * errors that are not one of the other five types of errors. For several
-     * of the errors, subcode information is also enumerated in other
-     * properties of this class.
-     *
-     * @return	int	current lastErrorCode property value
-     * @exception	Exception
-     */
-    public LastErrorCode getLastErrorCode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LastErrorCode.
+	 */
 
-    return this.lastErrorCode;
-    } // getLastErrorCode
+	public enum LastErrorCode {
+		NONE,
+		MESSAGE_HEADER_ERROR,
+		OPEN_MESSAGE_ERROR,
+		UPDATE_MESSAGE_ERROR,
+		HOLD_TIMER_EXPIRED,
+		FINITE_STATE_MACHINE_ERROR,
+		CEASE
+	}
 
-    /**
-     * This method sets the BGPService.lastErrorCode property value. This
-     * property is described as follows:
-     *
-     * BGP sends errors using a NOTIFICATION message. This message contains an
-     * error code, an error subcode, and error data. The error code defines
-     * the type of the notification. The 'Cease' error is for all fatal
-     * errors that are not one of the other five types of errors. For several
-     * of the errors, subcode information is also enumerated in other
-     * properties of this class.
-     *
-     * @param	int	new lastErrorCode property value
-     * @exception	Exception
-     */
-    public void setLastErrorCode(LastErrorCode lastErrorCode){
+	private LastErrorCode	lastErrorCode;
 
-    this.lastErrorCode = lastErrorCode;
-    } // setLastErrorCode
+	/**
+	 * This method returns the BGPService.lastErrorCode property value. This property is described as follows:
+	 * 
+	 * BGP sends errors using a NOTIFICATION message. This message contains an error code, an error subcode, and error data. The error code defines
+	 * the type of the notification. The 'Cease' error is for all fatal errors that are not one of the other five types of errors. For several of the
+	 * errors, subcode information is also enumerated in other properties of this class.
+	 * 
+	 * @return int current lastErrorCode property value
+	 * @exception Exception
+	 */
+	public LastErrorCode getLastErrorCode() {
 
+		return this.lastErrorCode;
+	} // getLastErrorCode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LastMessageErrorSubCode.
-     */
+	/**
+	 * This method sets the BGPService.lastErrorCode property value. This property is described as follows:
+	 * 
+	 * BGP sends errors using a NOTIFICATION message. This message contains an error code, an error subcode, and error data. The error code defines
+	 * the type of the notification. The 'Cease' error is for all fatal errors that are not one of the other five types of errors. For several of the
+	 * errors, subcode information is also enumerated in other properties of this class.
+	 * 
+	 * @param int new lastErrorCode property value
+	 * @exception Exception
+	 */
+	public void setLastErrorCode(LastErrorCode lastErrorCode) {
 
-    public enum LastMessageErrorSubCode{
-    NONE,
-    CONNECTION_NOT_SYNCHRONIZED,
-    BAD_MESSAGE_LENGTH,
-    BAD_MESSAGE_TYPE
-    }
-    private LastMessageErrorSubCode lastMessageErrorSubCode;
-    /**
-     * This method returns the BGPService.lastMessageErrorSubCode property
-     * value. This property is described as follows:
-     *
-     * This defines the BGP error subcode for message header errors
-     * (LastErrorCode = 1). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @return	int	current lastMessageErrorSubCode property
-     * value
-     * @exception	Exception
-     */
-    public LastMessageErrorSubCode getLastMessageErrorSubCode(){
+		this.lastErrorCode = lastErrorCode;
+	} // setLastErrorCode
 
-    return this.lastMessageErrorSubCode;
-    } // getLastMessageErrorSubCode
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LastMessageErrorSubCode.
+	 */
 
-    /**
-     * This method sets the BGPService.lastMessageErrorSubCode property value.
-     * This property is described as follows:
-     *
-     * This defines the BGP error subcode for message header errors
-     * (LastErrorCode = 1). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @param	int	new lastMessageErrorSubCode property value
-     * @exception	Exception
-     */
-    public void setLastMessageErrorSubCode(LastMessageErrorSubCode
-	lastMessageErrorSubCode){
+	public enum LastMessageErrorSubCode {
+		NONE,
+		CONNECTION_NOT_SYNCHRONIZED,
+		BAD_MESSAGE_LENGTH,
+		BAD_MESSAGE_TYPE
+	}
 
-    this.lastMessageErrorSubCode = lastMessageErrorSubCode;
-    } // setLastMessageErrorSubCode
+	private LastMessageErrorSubCode	lastMessageErrorSubCode;
 
+	/**
+	 * This method returns the BGPService.lastMessageErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for message header errors (LastErrorCode = 1). If LastErrorCode is any other value, then this property
+	 * should be set to NULL.
+	 * 
+	 * @return int current lastMessageErrorSubCode property value
+	 * @exception Exception
+	 */
+	public LastMessageErrorSubCode getLastMessageErrorSubCode() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LastOpenErrorSubCode.
-     */
+		return this.lastMessageErrorSubCode;
+	} // getLastMessageErrorSubCode
 
-    public enum LastOpenErrorSubCode{
-    NONE,
-    UNSUPPORTED_VERSION_NUMBER,
-    BAD_PEER_AS,
-    BAD_BGP_IDENTIFIER,
-    UNSUPPORTED_OPTIONAL_PARAMETER,
-    AUTHENTICATION_FAILURE,
-    UNACCEPTABLE_HOLD_TIME
-    }
-    private LastOpenErrorSubCode lastOpenErrorSubCode;
-    /**
-     * This method returns the BGPService.lastOpenErrorSubCode property value.
-     * This property is described as follows:
-     *
-     * This defines the BGP error subcode for OPEN message errors
-     * (LastErrorCode = 2). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @return	int	current lastOpenErrorSubCode property value
-     * @exception	Exception
-     */
-    public LastOpenErrorSubCode getLastOpenErrorSubCode(){
+	/**
+	 * This method sets the BGPService.lastMessageErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for message header errors (LastErrorCode = 1). If LastErrorCode is any other value, then this property
+	 * should be set to NULL.
+	 * 
+	 * @param int new lastMessageErrorSubCode property value
+	 * @exception Exception
+	 */
+	public void setLastMessageErrorSubCode(LastMessageErrorSubCode
+			lastMessageErrorSubCode) {
 
-    return this.lastOpenErrorSubCode;
-    } // getLastOpenErrorSubCode
+		this.lastMessageErrorSubCode = lastMessageErrorSubCode;
+	} // setLastMessageErrorSubCode
 
-    /**
-     * This method sets the BGPService.lastOpenErrorSubCode property value.
-     * This property is described as follows:
-     *
-     * This defines the BGP error subcode for OPEN message errors
-     * (LastErrorCode = 2). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @param	int	new lastOpenErrorSubCode property value
-     * @exception	Exception
-     */
-    public void setLastOpenErrorSubCode(LastOpenErrorSubCode
-	lastOpenErrorSubCode){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LastOpenErrorSubCode.
+	 */
 
-    this.lastOpenErrorSubCode = lastOpenErrorSubCode;
-    } // setLastOpenErrorSubCode
+	public enum LastOpenErrorSubCode {
+		NONE,
+		UNSUPPORTED_VERSION_NUMBER,
+		BAD_PEER_AS,
+		BAD_BGP_IDENTIFIER,
+		UNSUPPORTED_OPTIONAL_PARAMETER,
+		AUTHENTICATION_FAILURE,
+		UNACCEPTABLE_HOLD_TIME
+	}
 
+	private LastOpenErrorSubCode	lastOpenErrorSubCode;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LastUpdateErrorSubCode.
-     */
+	/**
+	 * This method returns the BGPService.lastOpenErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for OPEN message errors (LastErrorCode = 2). If LastErrorCode is any other value, then this property should
+	 * be set to NULL.
+	 * 
+	 * @return int current lastOpenErrorSubCode property value
+	 * @exception Exception
+	 */
+	public LastOpenErrorSubCode getLastOpenErrorSubCode() {
 
-    public enum LastUpdateErrorSubCode{
-    NONE,
-    MALFORMED_ATTRIBUTE_LIST,
-    UNRECOGNIZED_WELL_KNOWN_ATTRIBUTE,
-    MISSING_WELL_KNOWN_ATTRIBUTE,
-    ATTRIBUTE_FLAGS_ERROR,
-    ATTRIBUTE_LENGTH_ERROR,
-    INVALID_ORIGIN_ATTRIBUTE,
-    AS_ROUTING_LOOP,
-    INVALID_NEXT_HOP_ATTRIBUTE,
-    OPTIONAL_ATTRIBUTE_ERROR,
-    INVALID_NETWORK_FIELD,
-    MALFORMED_AS_PATH
-    }
-    private LastUpdateErrorSubCode lastUpdateErrorSubCode;
-    /**
-     * This method returns the BGPService.lastUpdateErrorSubCode property
-     * value. This property is described as follows:
-     *
-     * This defines the BGP error subcode for UPDATE message errors
-     * (LastErrorCode = 3). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @return	int	current lastUpdateErrorSubCode property value
-     * @exception	Exception
-     */
-    public LastUpdateErrorSubCode getLastUpdateErrorSubCode(){
+		return this.lastOpenErrorSubCode;
+	} // getLastOpenErrorSubCode
 
-    return this.lastUpdateErrorSubCode;
-    } // getLastUpdateErrorSubCode
+	/**
+	 * This method sets the BGPService.lastOpenErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for OPEN message errors (LastErrorCode = 2). If LastErrorCode is any other value, then this property should
+	 * be set to NULL.
+	 * 
+	 * @param int new lastOpenErrorSubCode property value
+	 * @exception Exception
+	 */
+	public void setLastOpenErrorSubCode(LastOpenErrorSubCode
+			lastOpenErrorSubCode) {
 
-    /**
-     * This method sets the BGPService.lastUpdateErrorSubCode property value.
-     * This property is described as follows:
-     *
-     * This defines the BGP error subcode for UPDATE message errors
-     * (LastErrorCode = 3). If LastErrorCode is any other value, then this
-     * property should be set to NULL.
-     *
-     * @param	int	new lastUpdateErrorSubCode property value
-     * @exception	Exception
-     */
-    public void setLastUpdateErrorSubCode(LastUpdateErrorSubCode
-	lastUpdateErrorSubCode){
+		this.lastOpenErrorSubCode = lastOpenErrorSubCode;
+	} // setLastOpenErrorSubCode
 
-    this.lastUpdateErrorSubCode = lastUpdateErrorSubCode;
-    } // setLastUpdateErrorSubCode
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LastUpdateErrorSubCode.
+	 */
 
+	public enum LastUpdateErrorSubCode {
+		NONE,
+		MALFORMED_ATTRIBUTE_LIST,
+		UNRECOGNIZED_WELL_KNOWN_ATTRIBUTE,
+		MISSING_WELL_KNOWN_ATTRIBUTE,
+		ATTRIBUTE_FLAGS_ERROR,
+		ATTRIBUTE_LENGTH_ERROR,
+		INVALID_ORIGIN_ATTRIBUTE,
+		AS_ROUTING_LOOP,
+		INVALID_NEXT_HOP_ATTRIBUTE,
+		OPTIONAL_ATTRIBUTE_ERROR,
+		INVALID_NETWORK_FIELD,
+		MALFORMED_AS_PATH
+	}
 
+	private LastUpdateErrorSubCode	lastUpdateErrorSubCode;
+
+	/**
+	 * This method returns the BGPService.lastUpdateErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for UPDATE message errors (LastErrorCode = 3). If LastErrorCode is any other value, then this property
+	 * should be set to NULL.
+	 * 
+	 * @return int current lastUpdateErrorSubCode property value
+	 * @exception Exception
+	 */
+	public LastUpdateErrorSubCode getLastUpdateErrorSubCode() {
+
+		return this.lastUpdateErrorSubCode;
+	} // getLastUpdateErrorSubCode
+
+	/**
+	 * This method sets the BGPService.lastUpdateErrorSubCode property value. This property is described as follows:
+	 * 
+	 * This defines the BGP error subcode for UPDATE message errors (LastErrorCode = 3). If LastErrorCode is any other value, then this property
+	 * should be set to NULL.
+	 * 
+	 * @param int new lastUpdateErrorSubCode property value
+	 * @exception Exception
+	 */
+	public void setLastUpdateErrorSubCode(LastUpdateErrorSubCode
+			lastUpdateErrorSubCode) {
+
+		this.lastUpdateErrorSubCode = lastUpdateErrorSubCode;
+	} // setLastUpdateErrorSubCode
 
 } // Class BGPService
