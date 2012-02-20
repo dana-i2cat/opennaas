@@ -28,7 +28,7 @@ public class ConfigureOSPFAction extends JunosAction {
 	 */
 	protected void initialize() {
 		this.setActionID(ActionConstants.OSPF_CONFIGURE);
-		setTemplate("/VM_files/configureOspf.vm");
+		setTemplate("/VM_files/ospfConfigure.vm");
 		this.protocolName = "netconf";
 	}
 

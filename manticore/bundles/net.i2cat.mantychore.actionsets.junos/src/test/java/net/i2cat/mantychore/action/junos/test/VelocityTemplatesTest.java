@@ -61,7 +61,7 @@ public class VelocityTemplatesTest {
 
 	@Test
 	public void testConfigureOSPFTemplate() throws Exception {
-		template = "/VM_files/configureOspf.vm";
+		template = "/VM_files/ospfConfigure.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
 		extraParams.put("disabledState", EnabledState.DISABLED);
@@ -72,13 +72,8 @@ public class VelocityTemplatesTest {
 		String message = callVelocity(template, createOSPFService(), extraParams);
 		Assert.assertNotNull(message);
 		// TODO Use xpath to check xml tree is correct
-		Assert.assertTrue(message.contains("0.0.0.0"));
-		Assert.assertTrue(message.contains("fe-0/3/0.1"));
-		Assert.assertTrue(message.contains("fe-0/3/0.2"));
-		Assert.assertTrue(message.contains("fe-0/3/1.0"));
 		Assert.assertTrue(message.contains("10.11.12.13"));
-		Assert.assertTrue(message.contains("<disabled/>"));
-		Assert.assertFalse(message.contains("<enabled/>"));
+		Assert.assertFalse(message.contains("<enable/>"));
 
 		log.info(XmlHelper.formatXML(message));
 	}
