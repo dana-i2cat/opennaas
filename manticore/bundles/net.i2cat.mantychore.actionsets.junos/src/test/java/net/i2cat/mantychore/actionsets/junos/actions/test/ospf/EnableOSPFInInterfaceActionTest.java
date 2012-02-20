@@ -11,6 +11,7 @@ import net.i2cat.mantychore.actionsets.junos.actions.test.ActionTestHelper;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.OSPFArea;
 import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
@@ -55,7 +56,7 @@ public class EnableOSPFInInterfaceActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/enableOSPFInterface.vm", action.getTemplate());
+		Assert.assertEquals("Not accepted param", "/VM_files/ospfEnableDisableInterface.vm", action.getTemplate());
 	}
 
 	@Test
@@ -91,17 +92,19 @@ public class EnableOSPFInInterfaceActionTest {
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName("fe-0/0/2");
 
-		// Add the OSPF EndPoint and the ospf area
+		// Add the OSPF EndPoints
 		List<ProtocolEndpoint> lProtocolEndpoints = new ArrayList<ProtocolEndpoint>();
 		OSPFProtocolEndpoint ospfProtocolEndpoint = new OSPFProtocolEndpoint();
 		lProtocolEndpoints.add(ospfProtocolEndpoint);
+		logicalPort.setProtocolEndpoints(lProtocolEndpoints);
 
 		// Add the OSPF Area
 		OSPFArea ospfArea = new OSPFArea();
 		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong("0.0.0.0"));
 		ospfProtocolEndpoint.setOSPFArea(ospfArea);
 
-		logicalPort.setProtocolEndpoints(lProtocolEndpoints);
+		// Add status
+		logicalPort.setOperationalStatus(OperationalStatus.OK);
 
 		return logicalPort;
 	}

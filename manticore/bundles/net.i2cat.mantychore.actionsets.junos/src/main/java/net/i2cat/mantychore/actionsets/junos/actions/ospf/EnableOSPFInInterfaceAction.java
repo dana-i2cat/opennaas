@@ -12,6 +12,7 @@ import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 
@@ -36,7 +37,7 @@ public class EnableOSPFInInterfaceAction extends JunosAction {
 	protected void initialize() {
 
 		setActionID(ActionConstants.OSPF_ENABLE_INTERFACE);
-		setTemplate("/VM_files/enableOSPFInterface.vm");
+		setTemplate("/VM_files/ospfEnableDisableInterface.vm");
 		this.protocolName = "netconf";
 	}
 
@@ -73,6 +74,8 @@ public class EnableOSPFInInterfaceAction extends JunosAction {
 
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("areaId", getAreaId((LogicalPort) params));
+			extraParams.put("statusDown", OperationalStatus.STOPPED.toString());
+			extraParams.put("statusUp", OperationalStatus.OK.toString());
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
