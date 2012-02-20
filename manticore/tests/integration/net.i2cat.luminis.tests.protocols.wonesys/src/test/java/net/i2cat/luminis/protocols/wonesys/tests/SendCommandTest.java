@@ -59,6 +59,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 public class SendCommandTest {
@@ -70,6 +71,10 @@ public class SendCommandTest {
 
 	@Inject
 	private IProtocolManager protocolManager;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	BlueprintContainer wonesysProtocolService;
 
 	private String			resourceId		= "Proteus-Pedrosa";
 	private String			hostIpAddress	= "10.10.80.11";
