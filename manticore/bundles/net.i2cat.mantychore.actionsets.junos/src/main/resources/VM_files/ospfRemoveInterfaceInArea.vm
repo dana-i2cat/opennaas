@@ -1,20 +1,19 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$elementName.equals("") )		
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
-			<name>$param.ElementName</name>
+			<name>$elementName</name>
 	#end
 	<protocols>	
 		<ospf>
-		#set( $ospfArea = $param.getOSPFArea())
 			<area>
-				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
-				#foreach( $ospfPep in $ospfArea.getEndpointsInArea())
+				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
+				#foreach($ospfPep in $param.getEndpointsInArea())
 				<interface operation="delete">
-					<name>$ospfPep.getLogicalPorts().get(0).getName().$ospfPep.getLogicalPorts().get(0).getPortNumber()</name>
+					<name>$ospfPep.getName()</name>
 				</interface>
 				#end
 			</area>
