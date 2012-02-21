@@ -6,7 +6,7 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 
-public class DeactivateOSPFAction extends JunosAction {
+public class ClearOSPFAction extends JunosAction {
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
