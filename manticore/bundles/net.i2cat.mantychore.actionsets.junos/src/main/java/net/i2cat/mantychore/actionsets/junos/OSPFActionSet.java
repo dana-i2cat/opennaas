@@ -1,12 +1,11 @@
 package net.i2cat.mantychore.actionsets.junos;
 
-import net.i2cat.mantychore.actionsets.junos.actions.ospf.ActivateOSPFAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.AddOSPFInterfaceInAreaAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.ClearOSPFAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFAreaAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFInterfaceStatusAction;
-import net.i2cat.mantychore.actionsets.junos.actions.ospf.DeactivateOSPFAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFStatusAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.GetOSPFConfigAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.RemoveOSPFAreaAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.RemoveOSPFInterfaceInAreaAction;
@@ -21,8 +20,8 @@ public class OSPFActionSet extends ActionSet {
 		this.putAction(ActionConstants.OSPF_GET_CONFIGURATION, GetOSPFConfigAction.class);
 		this.putAction(ActionConstants.OSPF_CONFIGURE, ConfigureOSPFAction.class);
 		this.putAction(ActionConstants.OSPF_CLEAR, ClearOSPFAction.class);
-		this.putAction(ActionConstants.OSPF_ACTIVATE, ActivateOSPFAction.class);
-		this.putAction(ActionConstants.OSPF_DEACTIVATE, DeactivateOSPFAction.class);
+		this.putAction(ActionConstants.OSPF_ACTIVATE, ConfigureOSPFStatusAction.class);
+		this.putAction(ActionConstants.OSPF_DEACTIVATE, ConfigureOSPFStatusAction.class);
 		this.putAction(ActionConstants.OSPF_ENABLE_INTERFACE, ConfigureOSPFInterfaceStatusAction.class);
 		this.putAction(ActionConstants.OSPF_DISABLE_INTERFACE, ConfigureOSPFInterfaceStatusAction.class);
 		this.putAction(ActionConstants.OSPF_CONFIGURE_AREA, ConfigureOSPFAreaAction.class);
