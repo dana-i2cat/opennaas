@@ -123,6 +123,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
+
 		OSPFService ospfService = null;
 
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
@@ -149,6 +150,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object activateOSPF() throws CapabilityException {
+
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.ENABLED);
 		return sendMessage(ActionConstants.OSPF_ACTIVATE, service);
@@ -161,6 +163,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object deactivateOSPF() throws CapabilityException {
+
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.DISABLED);
 		return sendMessage(ActionConstants.OSPF_DEACTIVATE, service);
@@ -173,6 +176,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException {
+
 		return sendMessage(ActionConstants.OSPF_CLEAR, ospfService);
 	}
 
@@ -183,6 +187,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+
 		return sendMessage(ActionConstants.OSPF_CONFIGURE_AREA, ospfAreaConfiguration);
 	}
 
@@ -193,6 +198,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	 */
 	@Override
 	public Object removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+
 		return sendMessage(ActionConstants.OSPF_REMOVE_AREA, ospfAreaConfiguration);
 	}
 
@@ -261,18 +267,18 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	public Object enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
 
 		// mark OSPFProtocolEndpoints to enable
-		List<OSPFProtocolEndpoint> toDisable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
-		OSPFProtocolEndpoint disabledPep;
+		List<OSPFProtocolEndpoint> toEnable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
+		OSPFProtocolEndpoint enablePep;
 		for (OSPFProtocolEndpoint pep : interfaces) {
-			disabledPep = new OSPFProtocolEndpoint();
-			disabledPep.setEnabledState(EnabledState.ENABLED);
-			disabledPep.setName(pep.getName());
-			disabledPep.setOSPFArea(pep.getOSPFArea());
-			disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
-			toDisable.add(disabledPep);
+			enablePep = new OSPFProtocolEndpoint();
+			enablePep.setEnabledState(EnabledState.ENABLED);
+			enablePep.setName(pep.getName());
+			enablePep.setOSPFArea(pep.getOSPFArea());
+			enablePep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			toEnable.add(enablePep);
 		}
 
-		return sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, toDisable);
+		return sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, toEnable);
 	}
 
 	/*

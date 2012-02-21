@@ -1,7 +1,7 @@
 <configuration>
-	#set($logicalRouter = "false")
-	#if(!$elementName.equals(""))		
-		#set($logicalRouter = "true")
+	#set($logicalRouter = "false" )
+	#if(!$elementName.equals("") )		
+		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
@@ -9,22 +9,21 @@
 	#end
 	<protocols>	
 		<ospf>
-			#foreach($ospfPep in $param)
+		#set($ospfArea = $param.getOSPFArea())
 			<area>
-				<name>$ipUtilsHelper.ipv4LongToString($ospfPep.getOSPFArea().getAreaID())</name>
-
-				<interface operation="none">
+				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
+				#foreach($ospfPep in $param.getEndpointsInArea())
+				<interface>
 					<name>$ospfPep.getName()</name>
 					##ENABLED/DISABLED
 					#if($ospfPep.getEnabledState().equals($disabledState))
-					<disable operation="create"/>
+					<disable/>
 					#else
 					<disable operation="delete"/>
 					#end
 				</interface>
-				
+				#end
 			</area>
-			#end
 		</ospf>
 	</protocols>
 	#if($logicalRouter.equals("true"))

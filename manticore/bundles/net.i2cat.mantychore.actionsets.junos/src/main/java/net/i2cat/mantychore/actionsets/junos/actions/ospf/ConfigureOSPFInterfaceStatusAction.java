@@ -92,6 +92,9 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 			extraParams.put("elementName", elementName);
 
+			OSPFProtocolEndpoint endpoint = new OSPFProtocolEndpoint();
+			endpoint.getName();
+
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);

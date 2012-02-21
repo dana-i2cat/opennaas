@@ -1,14 +1,11 @@
 package net.i2cat.mantychore.actionsets.junos.actions.test.ospf;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFInterfaceStatusAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ospf.AddOSPFInterfaceInAreaAction;
 import net.i2cat.mantychore.actionsets.junos.actions.test.ActionTestHelper;
-import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.OSPFArea;
@@ -22,16 +19,16 @@ import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 
-public class ConfigureOSPFInterfaceStatusActionTest {
-	Log													log	= LogFactory.getLog(ConfigureOSPFInterfaceStatusActionTest.class);
-	private static ConfigureOSPFInterfaceStatusAction	action;
-	static ActionTestHelper								helper;
-	static ProtocolSessionManager						protocolsessionmanager;
+public class AddOSPFInterfaceInAreaActionTest {
+	Log											log	= LogFactory.getLog(AddOSPFInterfaceInAreaActionTest.class);
+	private static AddOSPFInterfaceInAreaAction	action;
+	static ActionTestHelper						helper;
+	static ProtocolSessionManager				protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
 
-		action = new ConfigureOSPFInterfaceStatusAction();
+		action = new AddOSPFInterfaceInAreaAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
@@ -42,7 +39,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	@Test
 	public void actionIDTest() {
 
-		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE,
+		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_ADD_INTERFACE_IN_AREA,
 				action.getActionID());
 	}
 
@@ -55,7 +52,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/ospfConfigureInterfaceStatus.vm", action.getTemplate());
+		Assert.assertEquals("Not accepted param", "/VM_files/ospfAddInterfaceInArea.vm", action.getTemplate());
 	}
 
 	/**
@@ -69,13 +66,13 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 		action.setModelToUpdate(new ComputerSystem());
 
 		// Add params
-		List<OSPFProtocolEndpoint> lOSPFProtocolEndpoints = getListOSPFProtocolEndpoint();
-		action.setParams(lOSPFProtocolEndpoints);
+		OSPFArea ospfArea = getOSPFArea();
+		action.setParams(ospfArea);
 
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE));
+					.equals(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail();
@@ -89,20 +86,21 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	/**
 	 * Get the OSPFProtocolEndpoint's
 	 * 
-	 * @return LogicalPort
+	 * @return OSPFArea
 	 * @throws IOException
 	 */
-	private List<OSPFProtocolEndpoint> getListOSPFProtocolEndpoint() throws IOException {
+	private OSPFArea getOSPFArea() throws IOException {
 
-		// Add the OSPF EndPoints
-		List<OSPFProtocolEndpoint> lProtocolEndpoints = new ArrayList<OSPFProtocolEndpoint>();
+		// Add OSPFArea and areaId = 0.0.0.0
+		OSPFArea ospfArea = new OSPFArea();
+		ospfArea.setAreaID(0);
 
 		// Interface 1
-		lProtocolEndpoints.add(getOSPFProtocolEndpoint("0.0.0.0", "fe-0/0/2", "1"));
+		ospfArea.addEndpointInArea(getOSPFProtocolEndpoint("fe-0/0/2", "1"));
 		// Interface 2
-		lProtocolEndpoints.add(getOSPFProtocolEndpoint("0.0.0.1", "fe-0/0/2", "2"));
+		ospfArea.addEndpointInArea(getOSPFProtocolEndpoint("fe-0/0/2", "2"));
 
-		return lProtocolEndpoints;
+		return ospfArea;
 	}
 
 	/**
@@ -113,16 +111,10 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	 * @return OSPFProtocolEndpoint
 	 * @throws IOException
 	 */
-	private OSPFProtocolEndpoint getOSPFProtocolEndpoint(String areaId, String logicalPortName, String logicalPortNumber) throws IOException {
+	private OSPFProtocolEndpoint getOSPFProtocolEndpoint(String logicalPortName, String logicalPortNumber) throws IOException {
 
 		OSPFProtocolEndpoint ospfProtocolEndpoint = new OSPFProtocolEndpoint();
-
-		// Add the OSPF Area
-		OSPFArea ospfArea = new OSPFArea();
-		ospfArea.setAreaID(IPUtilsHelper.ipv4StringToLong(areaId));
-		ospfProtocolEndpoint.setOSPFArea(ospfArea);
 		ospfProtocolEndpoint.setName(logicalPortName + "." + logicalPortNumber);
-
 		ospfProtocolEndpoint.setEnabledState(EnabledState.ENABLED);
 
 		return ospfProtocolEndpoint;
