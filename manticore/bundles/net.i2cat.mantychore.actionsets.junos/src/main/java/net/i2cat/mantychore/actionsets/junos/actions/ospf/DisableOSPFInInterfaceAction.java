@@ -1,35 +1,25 @@
 package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
-import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
+public class DisableOSPFInInterfaceAction extends OSPFInInterfaceAction {
 
-public class DisableOSPFInInterfaceAction extends JunosAction {
-
-	@Override
-	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
-		// TODO Auto-generated method stub
-
+	/**
+	 * 
+	 */
+	public DisableOSPFInInterfaceAction() {
+		super();
+		initialize();
 	}
 
-	@Override
-	public void parseResponse(Object responseMessage, Object model) throws ActionException {
-		// TODO Auto-generated method stub
+	/**
+	 * Initialize protocolName, ActionId and velocity template
+	 */
+	protected void initialize() {
 
-	}
-
-	@Override
-	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void prepareMessage() throws ActionException {
-		// TODO Auto-generated method stub
-
+		setActionID(ActionConstants.OSPF_DISABLE_INTERFACE);
+		setTemplate("/VM_files/ospfEnableDisableInterface.vm");
+		this.protocolName = "netconf";
 	}
 
 }
