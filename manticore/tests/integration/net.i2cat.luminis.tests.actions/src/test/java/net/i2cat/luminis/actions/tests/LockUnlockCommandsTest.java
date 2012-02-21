@@ -1,42 +1,69 @@
 package net.i2cat.luminis.actions.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.LockNodeCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import java.io.File;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+
 @RunWith(JUnit4TestRunner.class)
-public class LockUnlockCommandsTest extends AbstractIntegrationTest {
+public class LockUnlockCommandsTest {
+
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
-	Log				log				= LogFactory.getLog(LockUnlockCommandsTest.class);
+	Log	log	= LogFactory.getLog(LockUnlockCommandsTest.class);
 
-	private String	resourceId		= "pedrosa";
-	private String	hostIpAddress	= "10.10.80.11";
-	private String	hostPort		= "27773";
-	private int		sessionCounter	= 0;
+	private String	resourceId			= "pedrosa";
+	private String	hostIpAddress		= "10.10.80.11";
+	private String	hostPort				= "27773";
+	private int			sessionCounter	= 0;
 
+	@Configuration
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
+	}
+
+	/*
 	@Configuration
 	public static Option[] configuration() throws Exception {
 
@@ -49,23 +76,24 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 
 		return options;
 	}
+	*/
 
+	/*
 	public void initBundles() {
 		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
+		// Wait for the activation of all the bundles
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 		log.info("Loaded all bundles");
-
 		log.info("INFO: Initialized!");
 	}
+	*/
 
 	/**
 	 * Test all we want loading container only once (to speed up tests)
 	 */
 	@Test
 	public void testLockUnlockFunctionality() {
-		initBundles();
-
+		//initBundles();
 		testLockUnlock();
 		testLockMultipleTimes();
 		testUnlockWithoutLock();
@@ -113,6 +141,7 @@ public class LockUnlockCommandsTest extends AbstractIntegrationTest {
 			log.error("Error happened!!!!", e);
 			Assert.fail(e.getLocalizedMessage());
 		}
+
 	}
 
 	private void testLockMultipleTimes() {
