@@ -1,11 +1,17 @@
 package org.opennaas.router.capability.ospf;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.NetworkPort;
+import net.i2cat.mantychore.model.OSPFArea;
+import net.i2cat.mantychore.model.OSPFAreaConfiguration;
+import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 import net.i2cat.mantychore.model.OSPFService;
 import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
@@ -73,7 +79,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	}
 
 	/**
-	 * Return the OSPF ActioSet
+	 * Return the OSPF ActionSet
 	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
@@ -88,63 +94,18 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#activateOSPF(java.util.List)
-	 */
-	@Override
-	public Object activateOSPF(List<LogicalPort> lLogicalPort) {
-		Response response = null;
-
-		for (LogicalPort logicalPort : lLogicalPort) {
-			response = (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, logicalPort);
-			if (response.getStatus().equals(Response.Status.OK)) {
-				break;
-			}
-		}
-
-		return response;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#deactivateOSPF(java.util.List)
-	 */
-	@Override
-	public Object deactivateOSPF(List<LogicalPort> lLogicalPort) {
-
-		return sendMessage(ActionConstants.OSPF_DEACTIVATE, lLogicalPort);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#configureOSPF(net.i2cat.mantychore.model.OSPFService)
-	 */
 	@Override
 	public Object configureOSPF(OSPFService ospfService) {
 
 		return sendMessage(ActionConstants.OSPF_CONFIGURE, ospfService);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#getOSPFConfiguration()
-	 */
 	@Override
 	public OSPFService getOSPFConfiguration() {
 
 		return (OSPFService) sendMessage(ActionConstants.OSPF_GET_CONFIGURATION, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.router.capability.ospf.IOSPFService#showOSPFConfiguration()
-	 */
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
 		OSPFService ospfService = null;
@@ -164,6 +125,113 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		}
 
 		return ospfService;
+	}
+
+	@Override
+	public Object activateOSPF() throws CapabilityException {
+		return sendMessage(ActionConstants.OSPF_ACTIVATE, null);
+	}
+
+	@Override
+	public Object deactivateOSPF() throws CapabilityException {
+		return sendMessage(ActionConstants.OSPF_DEACTIVATE, null);
+	}
+
+	@Override
+	public Object clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException {
+		return sendMessage(ActionConstants.OSPF_CLEAR, ospfService);
+	}
+
+	@Override
+	public Object configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+		return sendMessage(ActionConstants.OSPF_CONFIGURE_AREA, ospfAreaConfiguration);
+	}
+
+	@Override
+	public Object removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+		return sendMessage(ActionConstants.OSPF_REMOVE_AREA, ospfAreaConfiguration);
+	}
+
+	@Override
+	public Object addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
+
+		// create a copy of ospfArea with only the interfaces to add
+		OSPFArea area = new OSPFArea();
+		area.setAreaID(ospfArea.getAreaID());
+		area.setAreaType(ospfArea.getAreaType());
+		area.setConfiguration(ospfArea.getConfiguration());
+
+		OSPFProtocolEndpoint ospfPep;
+		for (LogicalPort logicalPort : interfaces) {
+			ospfPep = new OSPFProtocolEndpoint();
+			if (logicalPort instanceof NetworkPort) {
+				ospfPep.setName(logicalPort.getName() + "." + ((NetworkPort) logicalPort).getPortNumber());
+			} else {
+				ospfPep.setName(logicalPort.getName());
+			}
+			area.addEndpointInArea(ospfPep);
+		}
+
+		return sendMessage(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA, area);
+	}
+
+	@Override
+	public Object removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
+
+		// create a copy of ospfArea with only the interfaces to remove
+		OSPFArea area = new OSPFArea();
+		area.setAreaID(ospfArea.getAreaID());
+		area.setAreaType(ospfArea.getAreaType());
+		area.setConfiguration(ospfArea.getConfiguration());
+
+		OSPFProtocolEndpoint ospfPep;
+		for (LogicalPort logicalPort : interfaces) {
+			ospfPep = new OSPFProtocolEndpoint();
+			if (logicalPort instanceof NetworkPort) {
+				ospfPep.setName(logicalPort.getName() + "." + ((NetworkPort) logicalPort).getPortNumber());
+			} else {
+				ospfPep.setName(logicalPort.getName());
+			}
+			area.addEndpointInArea(ospfPep);
+		}
+
+		return sendMessage(ActionConstants.OSPF_REMOVE_INTERFACE_IN_AREA, area);
+	}
+
+	@Override
+	public Object enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
+
+		// mark OSPFProtocolEndpoints to enable
+		List<OSPFProtocolEndpoint> toDisable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
+		OSPFProtocolEndpoint disabledPep;
+		for (OSPFProtocolEndpoint pep : interfaces) {
+			disabledPep = new OSPFProtocolEndpoint();
+			disabledPep.setEnabledState(EnabledState.ENABLED);
+			disabledPep.setName(pep.getName());
+			disabledPep.setOSPFArea(pep.getOSPFArea());
+			disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			toDisable.add(disabledPep);
+		}
+
+		return sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, toDisable);
+	}
+
+	@Override
+	public Object disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
+
+		// mark OSPFProtocolEndpoints to disable
+		List<OSPFProtocolEndpoint> toDisable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
+		OSPFProtocolEndpoint disabledPep;
+		for (OSPFProtocolEndpoint pep : interfaces) {
+			disabledPep = new OSPFProtocolEndpoint();
+			disabledPep.setEnabledState(EnabledState.DISABLED);
+			disabledPep.setName(pep.getName());
+			disabledPep.setOSPFArea(pep.getOSPFArea());
+			disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			toDisable.add(disabledPep);
+		}
+
+		return sendMessage(ActionConstants.OSPF_DISABLE_INTERFACE, toDisable);
 	}
 
 	/*
