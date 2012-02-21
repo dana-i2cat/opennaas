@@ -1,17 +1,55 @@
 package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
+import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.OSPFService;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 
+/**
+ * This action is responsible of configuring enable/disable OSPF status in a Junos 10 router.
+ * 
+ * It takes an OSPFService as a parameter and retrieves desired status from it. It uses netconf to change router configuration.
+ * 
+ * @author Isart Canyameres
+ */
 public class ConfigureOSPFStatusAction extends JunosAction {
+
+	public ConfigureOSPFStatusAction() {
+		super();
+		initialize();
+	}
+
+	/**
+	 * Initialize protocolName, ActionId and velocity template
+	 */
+	protected void initialize() {
+		this.setActionID(ActionConstants.OSPF_ACTIVATE + "/" + ActionConstants.OSPF_DEACTIVATE);
+		setTemplate("/VM_files/ospfConfigureStatus.vm");
+		this.protocolName = "netconf";
+	}
 
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
-		// TODO Auto-generated method stub
-
+		try {
+			GetNetconfCommand command = new GetNetconfCommand(getVelocityMessage());
+			command.initialize();
+			Response response = sendCommandToProtocol(command, protocol);
+			actionResponse.addResponse(response);
+		} catch (Exception e) {
+			throw new ActionException(this.actionID, e);
+		}
+		validateAction(actionResponse);
 	}
 
 	@Override
@@ -22,13 +60,45 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
-		return false;
+		if (!(params instanceof OSPFService))
+			return false;
+		return true;
 	}
 
 	@Override
 	public void prepareMessage() throws ActionException {
-		// TODO Auto-generated method stub
+		if (template == null || template.equals(""))
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		checkParams(params);
+		try {
+			Object velocityParams = params;
+			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
+				// is logicalRouter, add LRName param
+				if (velocityParams == null)
+					velocityParams = new ComputerSystem();
+				((ManagedElement) velocityParams).setElementName(((ComputerSystem) modelToUpdate).getElementName());
+
+				// TODO If we don't have a ManagedElement initialized
+
+				// check params
+			} else if (params != null
+					&& params instanceof ManagedElement
+					&& ((ManagedElement) params).getElementName() == null) {
+
+				((ManagedElement) velocityParams).setElementName("");
+
+			} else if (params == null) {
+				velocityParams = "null";
+			}
+
+			Map<String, Object> extraParams = new HashMap<String, Object>();
+			extraParams.put("disabledState", EnabledState.DISABLED);
+			extraParams.put("enabledState", EnabledState.ENABLED);
+
+			setVelocityMessage(prepareVelocityCommand(velocityParams, template, extraParams));
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
 
 	}
 

@@ -66,8 +66,6 @@ public class VelocityTemplatesTest {
 		Map<String, Object> extraParams = new HashMap<String, Object>();
 		extraParams.put("disabledState", EnabledState.DISABLED);
 		extraParams.put("enabledState", EnabledState.ENABLED);
-		IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
-		extraParams.put("ipUtilsHelper", ipUtilsHelper);
 
 		String message = callVelocity(template, createOSPFService(), extraParams);
 		Assert.assertNotNull(message);
@@ -76,6 +74,36 @@ public class VelocityTemplatesTest {
 		Assert.assertFalse(message.contains("<enable/>"));
 
 		log.info(XmlHelper.formatXML(message));
+	}
+
+	@Test
+	public void testConfigureOSPFStatusTemplate() throws Exception {
+		template = "/VM_files/ospfConfigureStatus.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("disabledState", EnabledState.DISABLED);
+		extraParams.put("enabledState", EnabledState.ENABLED);
+
+		OSPFService service = new OSPFService();
+		service.setEnabledState(EnabledState.ENABLED);
+
+		String message1 = callVelocity(template, service, extraParams);
+		Assert.assertNotNull(message1);
+		// TODO Use xpath to check xml tree is correct
+
+		Assert.assertFalse(message1.contains("<disable/>"));
+
+		service.setEnabledState(EnabledState.DISABLED);
+		String message2 = callVelocity(template, service, extraParams);
+		Assert.assertTrue(message2.contains("<disable/>"));
+
+		service.setEnabledState(EnabledState.ENABLED);
+		String message3 = callVelocity(template, service, extraParams);
+		Assert.assertFalse(message3.contains("<disable/>"));
+
+		log.info(XmlHelper.formatXML(message1));
+		log.info(XmlHelper.formatXML(message2));
+		log.info(XmlHelper.formatXML(message3));
 	}
 
 	@Test
