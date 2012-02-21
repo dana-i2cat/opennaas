@@ -129,12 +129,16 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 
 	@Override
 	public Object activateOSPF() throws CapabilityException {
-		return sendMessage(ActionConstants.OSPF_ACTIVATE, null);
+		OSPFService service = new OSPFService();
+		service.setEnabledState(EnabledState.ENABLED);
+		return sendMessage(ActionConstants.OSPF_ACTIVATE, service);
 	}
 
 	@Override
 	public Object deactivateOSPF() throws CapabilityException {
-		return sendMessage(ActionConstants.OSPF_DEACTIVATE, null);
+		OSPFService service = new OSPFService();
+		service.setEnabledState(EnabledState.DISABLED);
+		return sendMessage(ActionConstants.OSPF_DEACTIVATE, service);
 	}
 
 	@Override
