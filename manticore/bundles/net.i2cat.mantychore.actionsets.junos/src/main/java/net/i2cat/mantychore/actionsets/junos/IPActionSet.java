@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
-import net.i2cat.mantychore.actionsets.junos.actions.SetIPv4Action;
-import net.i2cat.mantychore.actionsets.junos.actions.SetInterfaceDescriptionAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ipv4.SetIPv4Action;
+import net.i2cat.mantychore.actionsets.junos.actions.ipv4.SetInterfaceDescriptionAction;
 
 import org.opennaas.core.resources.action.ActionSet;
 
