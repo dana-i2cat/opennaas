@@ -1,14 +1,42 @@
 package net.i2cat.mantychore.commandsets.junos.commons;
 
+import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.regex.Pattern;
 
 /**
  * It is used to parse different messages
- *
- * @author Carlos BAez Ruiz
- *
+ * 
+ * @author Carlos Baez Ruiz
+ * 
  */
 public class IPUtilsHelper {
+
+	public static long ipv4StringToLong(String ip) throws IOException {
+		// transform String ([0..255].[0..255].[0..255].[0..255]) into long
+		InetAddress address = Inet4Address.getByName(ip);
+		ByteBuffer bb = ByteBuffer.wrap(address.getAddress());
+		long ipLong;
+		if (address.getAddress().length > 4) {
+			ipLong = bb.getLong();// reads 8 bytes and creates a long
+		} else {
+			ipLong = bb.getInt(); // reads 4 bytes and creates an int
+		}
+		return ipLong;
+	}
+
+	public static String ipv4LongToString(long ip) throws IOException {
+		// transform long into String ([0..255].[0..255].[0..255].[0..255])
+		ByteBuffer bb = ByteBuffer.allocate(8).putLong(ip);
+		byte[] bytes = new byte[4];
+		bb.position(4);
+		bb.get(bytes, 0, 4); // read 4 bytes starting at position 4.
+
+		InetAddress address = Inet4Address.getByAddress(bytes);
+		return address.getHostAddress();
+	}
 
 	public static short[] parseStrIPToBytesIP(String IP) {
 		short[] newIP = new short[4];
@@ -89,8 +117,8 @@ public class IPUtilsHelper {
 
 	public static boolean validateAnIpAddressWithRegularExpression(String iPaddress) {
 		final Pattern IP_PATTERN =
-					Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
-										+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
+				Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
+						+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
 		return IP_PATTERN.matcher(iPaddress).matches();
 	}
 
