@@ -1,0 +1,23 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<protocols>	
+		<ospf>
+		##ENABLED/DISABLED
+		#if( $param.getEnabledState().equals($disabledState))
+		<disable/>
+		#else
+		<disable operation="delete"/>
+		#end
+		</ospf>
+	</protocols>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
