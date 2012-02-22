@@ -1,15 +1,15 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$elementName.equals("") )		
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
-			<name>$param.ElementName</name>
+			<name>$elementName</name>
 	#end
 	<protocols>	
 		<ospf>
-		#set( $ospfArea = $param.getOSPFArea())
+		#set($ospfArea = $param.getOSPFArea())
 			<area operation="delete">
 				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
 			</area>

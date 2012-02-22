@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.ospf.ConfigureOSPFAreaAction;
+import net.i2cat.mantychore.actionsets.junos.actions.ospf.RemoveOSPFAreaAction;
 import net.i2cat.mantychore.actionsets.junos.actions.test.ActionTestHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
@@ -20,16 +20,16 @@ import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 
-public class ConfigureOSPFAreaActionTest {
-	Log										log	= LogFactory.getLog(ConfigureOSPFAreaActionTest.class);
-	private static ConfigureOSPFAreaAction	action;
-	static ActionTestHelper					helper;
-	static ProtocolSessionManager			protocolsessionmanager;
+public class RemoveOSPFAreaActionTest {
+	Log									log	= LogFactory.getLog(RemoveOSPFAreaActionTest.class);
+	private static RemoveOSPFAreaAction	action;
+	static ActionTestHelper				helper;
+	static ProtocolSessionManager		protocolsessionmanager;
 
 	@BeforeClass
 	public static void init() {
 
-		action = new ConfigureOSPFAreaAction();
+		action = new RemoveOSPFAreaAction();
 		action.setModelToUpdate(new ComputerSystem());
 		helper = new ActionTestHelper();
 		action.setParams(helper.newParamsInterfaceEthernet());
@@ -40,7 +40,7 @@ public class ConfigureOSPFAreaActionTest {
 	@Test
 	public void actionIDTest() {
 
-		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_CONFIGURE_AREA,
+		Assert.assertEquals("Wrong ActionID", ActionConstants.OSPF_REMOVE_AREA,
 				action.getActionID());
 	}
 
@@ -53,7 +53,7 @@ public class ConfigureOSPFAreaActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/ospfConfigureArea.vm", action.getTemplate());
+		Assert.assertEquals("Not accepted param", "/VM_files/ospfRemoveArea.vm", action.getTemplate());
 	}
 
 	/**
@@ -97,11 +97,6 @@ public class ConfigureOSPFAreaActionTest {
 		OSPFArea ospfArea = new OSPFArea();
 		ospfArea.setAreaID(0);
 		ospfAreaConfiguration.setOSPFArea(ospfArea);
-
-		// Interface 1
-		ospfArea.addEndpointInArea(getOSPFProtocolEndpoint("fe-0/0/2", "1"));
-		// Interface 2
-		ospfArea.addEndpointInArea(getOSPFProtocolEndpoint("fe-0/0/2", "2"));
 
 		return ospfAreaConfiguration;
 	}
