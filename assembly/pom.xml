@@ -34,6 +34,7 @@
 								<descriptor>src/main/assemble/distribution.xml</descriptor>
 							</descriptors>
 							<finalName>${opennaas.platform.name}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 							<outputDirectory>${project.build.directory}/assembly</outputDirectory>
 							<workDirectory>${project.build.directory}/work</workDirectory>
 						</configuration>
