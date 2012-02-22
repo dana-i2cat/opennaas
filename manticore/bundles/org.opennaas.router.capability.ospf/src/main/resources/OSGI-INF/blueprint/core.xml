@@ -60,5 +60,35 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="ospf/configureArea">
+			<action class="org.opennaas.router.capability.ospf.shell.ConfigureAreaCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="ospf/configureInterfaceInArea">
+			<action class="org.opennaas.router.capability.ospf.shell.ConfigureInterfaceInAreaCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="ospf/enableInterface">
+			<action class="org.opennaas.router.capability.ospf.shell.EnableInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="ospf/disableInterface">
+			<action class="org.opennaas.router.capability.ospf.shell.DisableInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		
+		
 	</command-bundle>
 </blueprint>

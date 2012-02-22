@@ -130,9 +130,24 @@ public class OSPFArea extends RoutingProtocolDomain implements Serializable
 	 */
 
 	public enum AreaType {
-		PLAIN,
-		STUB,
-		NSSA
+		PLAIN {
+			@Override
+			public String toString() {
+				return "PLAIN";
+			}
+		},
+		STUB {
+			@Override
+			public String toString() {
+				return "STUB";
+			}
+		},
+		NSSA {
+			@Override
+			public String toString() {
+				return "NSSA";
+			}
+		}
 	}
 
 	private AreaType	areaType;

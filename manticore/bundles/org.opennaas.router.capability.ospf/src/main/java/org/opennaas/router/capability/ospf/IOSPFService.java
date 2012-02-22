@@ -9,6 +9,7 @@ import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 import net.i2cat.mantychore.model.OSPFService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
 
 /**
  * @author Jordi Puig
@@ -22,7 +23,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object activateOSPF() throws CapabilityException;
+	public Response activateOSPF() throws CapabilityException;
 
 	/**
 	 * Disable OSPF on the router.
@@ -30,7 +31,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object deactivateOSPF() throws CapabilityException;
+	public Response deactivateOSPF() throws CapabilityException;
 
 	/**
 	 * Configure OSPF service.
@@ -41,7 +42,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object configureOSPF(OSPFService ospfService) throws CapabilityException;
+	public Response configureOSPF(OSPFService ospfService) throws CapabilityException;
 
 	/**
 	 * Removes all OSPF configuration.
@@ -50,7 +51,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
+	public Response clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
 
 	/**
 	 * Configures an OSPF area.
@@ -59,7 +60,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+	public Response configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
 
 	/**
 	 * Remove an OSPF area.
@@ -68,7 +69,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+	public Response removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
 
 	/**
 	 * Adds given interfaces to given OSPF area
@@ -78,7 +79,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
+	public Response addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
 
 	/**
 	 * Remove given interfaces from given OSPF area
@@ -88,7 +89,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
+	public Response removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
 
 	/**
 	 * Enable OSPF in given interfaces, if they are already configured.
@@ -97,7 +98,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+	public Response enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
 
 	/**
 	 * Disable OSPF in given interfaces, if they are already configured.
@@ -106,7 +107,7 @@ public interface IOSPFService {
 	 * @return
 	 * @throws CapabilityException
 	 */
-	public Object disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+	public Response disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
 
 	/**
 	 * Returns OSPF full configuration from the model
@@ -126,6 +127,6 @@ public interface IOSPFService {
 	 * @return ospfService
 	 * @throws CapabilityException
 	 */
-	public OSPFService getOSPFConfiguration() throws CapabilityException;
+	public Response getOSPFConfiguration() throws CapabilityException;
 
 }
