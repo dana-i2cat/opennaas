@@ -100,6 +100,7 @@ public class ProtocolsParser extends DigesterEngine {
 		assert (obj instanceof OSPFProtocolEndpoint);
 
 		OSPFProtocolEndpoint ospfEndpoint = (OSPFProtocolEndpoint) obj;
+		ospfEndpoint.setName(interfaceNameShort);
 
 		// get interface with given name from model
 		NetworkPort matchingInterface = null;

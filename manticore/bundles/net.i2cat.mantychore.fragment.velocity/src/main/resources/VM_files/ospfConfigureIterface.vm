@@ -8,32 +8,24 @@
 			<name>$param.ElementName</name>
 	#end
 	<protocols>	
-		<ospf operation="replace">
-		#foreach( $ospfAreaConfiguration in $param.getOSPFAreaConfiguration())
-		#set( $ospfArea = $ospfAreaConfiguration.getOSPFArea())
+		<ospf>
+		#set( $ospfArea = $param.getOSPFArea())
 			<area>
 				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
 				#foreach( $ospfPep in $ospfArea.getEndpointsInArea())
 				<interface>
 					<name>$ospfPep.getLogicalPorts().get(0).getName().$ospfPep.getLogicalPorts().get(0).getPortNumber()</name>
 					##ENABLED/DISABLED
-					##if( $ospfPep.getEnabledState().equals($disabledState))
-					##mark all interfaces as disabled (we are configuring, not activating)
-					<disabled/>
-					##end
+					#if( $ospfPep.getEnabledState().equals($disabledState))
+					<disable/>
+					#else
+					<disable operation="delete"/>
+					#end
 				</interface>
 				#end
 			</area>
-		#end
-		##ENABLED/DISABLED
-		#if( $param.getEnabledState().equals($disabledState))
-		<disabled/>
-		#end
 		</ospf>
 	</protocols>
-	<routing-options operation="merge">
-		<router-id>$param.getRouterID()</router-id>
-	</routing-options>
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end
