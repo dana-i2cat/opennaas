@@ -16,7 +16,7 @@
 				<interface operation="none">
 					<name>$ospfPep.getName()</name>
 					##ENABLED/DISABLED
-					#if($ospfPep.getEnabledState().equals($disabledState))
+					#if($ospfPep.getEnabledState().toString().equals($disabledState))
 					<disable operation="create"/>
 					#else
 					<disable operation="delete"/>
