@@ -1,0 +1,32 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<protocols>	
+		<ospf>
+		#set( $ospfArea = $param.getOSPFArea())
+			<area>
+				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
+				#foreach( $ospfPep in $ospfArea.getEndpointsInArea())
+				<interface operation="none">
+					<name>$ospfPep.getLogicalPorts().get(0).getName().$ospfPep.getLogicalPorts().get(0).getPortNumber()</name>
+					##ENABLED/DISABLED
+					#if( $ospfPep.getEnabledState().equals($disabledState))
+					<disable operation="create"/>
+					#else
+					<disable operation="delete"/>
+					#end
+				</interface>
+				#end
+			</area>
+		</ospf>
+	</protocols>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

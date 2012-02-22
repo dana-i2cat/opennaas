@@ -13,6 +13,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 
@@ -194,7 +195,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	/**
 	 * TODO A method don't have to return null!!! REFACTOR
-	 *
+	 * 
 	 * @param resourceId
 	 * @return
 	 * @throws ResourceException
@@ -266,5 +267,18 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 			throw new ResourceException(NOTCAPABILITIESINITIALIZED);
 		}
 		return true;
+	}
+
+	protected Object printResponseStatus(Response response) {
+		if (response.getStatus().equals(Response.Status.OK)) {
+			return null;
+		} else if (response.getStatus().equals(Response.Status.ERROR)) {
+			for (String error : response.getErrors())
+				printError(error);
+			return -1;
+		} else {
+			printSymbol(response.getStatus().toString());
+			return null;
+		}
 	}
 }
