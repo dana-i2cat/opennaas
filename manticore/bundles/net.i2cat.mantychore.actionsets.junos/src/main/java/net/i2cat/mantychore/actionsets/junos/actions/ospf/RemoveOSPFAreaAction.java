@@ -20,22 +20,17 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class RemoveOSPFAreaAction extends JunosAction {
 
+	private static final String	VELOCITY_TEMPLATE	= "/VM_files/ospfRemoveArea.vm";
+
+	private static final String	PROTOCOL_NAME		= "netconf";
+
 	/**
 	 * 
 	 */
 	public RemoveOSPFAreaAction() {
-		super();
-		initialize();
-	}
-
-	/**
-	 * Initialize protocolName, actionId and velocity template
-	 */
-	protected void initialize() {
-
 		setActionID(ActionConstants.OSPF_REMOVE_AREA);
-		setTemplate("/VM_files/ospfRemoveArea.vm");
-		this.protocolName = "netconf";
+		setTemplate(VELOCITY_TEMPLATE);
+		this.protocolName = PROTOCOL_NAME;
 	}
 
 	/**
@@ -67,15 +62,8 @@ public class RemoveOSPFAreaAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
-		// Check the template
-		if (!checkTemplate(template)) {
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		}
-
-		// Check the params
-		if (!checkParams(params)) {
-			throw new ActionException("Invalid parameters for action " + getActionID());
-		}
+		// validate input parameters
+		validate();
 
 		try {
 			String elementName = "";
@@ -118,7 +106,8 @@ public class RemoveOSPFAreaAction extends JunosAction {
 
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params instanceof OSPFAreaConfiguration)) {
+		if (params == null || !(params.getClass()
+				.isInstance(new OSPFAreaConfiguration()))) {
 			paramsOK = false;
 		}
 
@@ -139,5 +128,20 @@ public class RemoveOSPFAreaAction extends JunosAction {
 		}
 
 		return templateOK;
+	}
+
+	/**
+	 * @throws ActionException
+	 */
+	private void validate() throws ActionException {
+
+		if (!checkTemplate(template)) {
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		}
+
+		// Check the params
+		if (!checkParams(params)) {
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		}
 	}
 }

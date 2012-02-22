@@ -1,7 +1,7 @@
 package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -22,22 +22,17 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 
+	private static final String	VELOCITY_TEMPLATE	= "/VM_files/ospfConfigureInterfaceStatus.vm";
+
+	private static final String	PROTOCOL_NAME		= "netconf";
+
 	/**
 	 * 
 	 */
 	public ConfigureOSPFInterfaceStatusAction() {
-		super();
-		initialize();
-	}
-
-	/**
-	 * Initialize protocolName, actionId and velocity template
-	 */
-	protected void initialize() {
-
 		setActionID(ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE);
-		setTemplate("/VM_files/ospfConfigureInterfaceStatus.vm");
-		this.protocolName = "netconf";
+		setTemplate(VELOCITY_TEMPLATE);
+		this.protocolName = PROTOCOL_NAME;
 	}
 
 	/**
@@ -69,15 +64,8 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
-		// Check the template
-		if (!checkTemplate(template)) {
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		}
-
-		// Check the params
-		if (!checkParams(params)) {
-			throw new ActionException("Invalid parameters for action " + getActionID());
-		}
+		// validate input parameters
+		validate();
 
 		try {
 			String elementName = "";
@@ -125,15 +113,9 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params instanceof List<?>)) {
+		if (params == null || !(params.getClass()
+				.isInstance(new ArrayList<OSPFProtocolEndpoint>()))) {
 			paramsOK = false;
-		} else {
-			// Now we iterate over the list
-			for (Object object : (List<?>) params) {
-				if (!(object instanceof OSPFProtocolEndpoint)) {
-					paramsOK = false;
-				}
-			}
 		}
 
 		return paramsOK;
@@ -153,5 +135,20 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 		}
 
 		return templateOK;
+	}
+
+	/**
+	 * @throws ActionException
+	 */
+	private void validate() throws ActionException {
+
+		if (!checkTemplate(template)) {
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		}
+
+		// Check the params
+		if (!checkParams(params)) {
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		}
 	}
 }

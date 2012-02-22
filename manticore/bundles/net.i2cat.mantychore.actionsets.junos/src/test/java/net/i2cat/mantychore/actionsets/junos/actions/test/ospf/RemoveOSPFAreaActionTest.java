@@ -73,7 +73,7 @@ public class RemoveOSPFAreaActionTest {
 		try {
 			ActionResponse response = action.execute(protocolsessionmanager);
 			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.OSPF_CONFIGURE_AREA));
+					.equals(ActionConstants.OSPF_REMOVE_AREA));
 		} catch (ActionException e) {
 			e.printStackTrace();
 			Assert.fail();

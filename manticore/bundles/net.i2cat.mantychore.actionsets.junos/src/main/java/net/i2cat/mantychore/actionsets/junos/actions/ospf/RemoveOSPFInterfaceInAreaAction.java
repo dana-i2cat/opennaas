@@ -21,22 +21,17 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class RemoveOSPFInterfaceInAreaAction extends JunosAction {
 
+	private static final String	VELOCITY_TEMPLATE	= "/VM_files/ospfRemoveInterfaceInArea.vm";
+
+	private static final String	PROTOCOL_NAME		= "netconf";
+
 	/**
 	 * 
 	 */
 	public RemoveOSPFInterfaceInAreaAction() {
-		super();
-		initialize();
-	}
-
-	/**
-	 * Initialize protocolName, actionId and velocity template
-	 */
-	protected void initialize() {
-
 		setActionID(ActionConstants.OSPF_REMOVE_INTERFACE_IN_AREA);
-		setTemplate("/VM_files/ospfRemoveInterfaceInArea.vm");
-		this.protocolName = "netconf";
+		setTemplate(VELOCITY_TEMPLATE);
+		this.protocolName = PROTOCOL_NAME;
 	}
 
 	/**
@@ -68,15 +63,8 @@ public class RemoveOSPFInterfaceInAreaAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
-		// Check the template
-		if (!checkTemplate(template)) {
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		}
-
-		// Check the params
-		if (!checkParams(params)) {
-			throw new ActionException("Invalid parameters for action " + getActionID());
-		}
+		// validate input parameters
+		validate();
 
 		try {
 			String elementName = "";
@@ -121,7 +109,8 @@ public class RemoveOSPFInterfaceInAreaAction extends JunosAction {
 
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params instanceof OSPFArea)) {
+		if (params == null || !(params.getClass()
+				.isInstance(new OSPFArea()))) {
 			paramsOK = false;
 		}
 
@@ -142,5 +131,20 @@ public class RemoveOSPFInterfaceInAreaAction extends JunosAction {
 		}
 
 		return templateOK;
+	}
+
+	/**
+	 * @throws ActionException
+	 */
+	private void validate() throws ActionException {
+
+		if (!checkTemplate(template)) {
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		}
+
+		// Check the params
+		if (!checkParams(params)) {
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		}
 	}
 }
