@@ -14,8 +14,8 @@
 			<area>
 				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
 				##TODO Area type config should be included here (stub, nssa,...)
+
 				#foreach($ospfPep in $ospfArea.getEndpointsInArea())
-				
 				<interface>
 					<name>$ospfPep.getName()</name>
 					##ENABLED/DISABLED

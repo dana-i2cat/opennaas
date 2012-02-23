@@ -11,7 +11,12 @@ import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
+import net.i2cat.mantychore.model.OSPFArea;
+import net.i2cat.mantychore.model.OSPFAreaConfiguration;
 import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
+import net.i2cat.mantychore.model.OSPFProtocolEndpointBase;
+import net.i2cat.mantychore.model.OSPFService;
+import net.i2cat.mantychore.model.Service;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -75,13 +80,15 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 				elementName = ((ComputerSystem) modelToUpdate).getElementName();
 			}
 
+			OSPFService velocityParam = prepareVelocityParams((List<OSPFProtocolEndpoint>) params, (ComputerSystem) modelToUpdate);
+
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("disabledState", EnabledState.DISABLED.toString());
 			extraParams.put("enabledState", EnabledState.ENABLED.toString());
 			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 			extraParams.put("elementName", elementName);
 
-			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
+			setVelocityMessage(prepareVelocityCommand(velocityParam, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
@@ -120,10 +127,10 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			if (pep.getName() == null)
 				throw new ActionException("Invalid parameters for action " + getActionID() + ": Interface has no name");
 
-			if (pep.getOSPFArea() == null) {
-				throw new ActionException(
-						"Invalid parameters for action " + getActionID() + ": Could not get OSPF area for interface " + pep.getName());
-			}
+			// if (pep.getOSPFArea() == null) {
+			// throw new ActionException(
+			// "Invalid parameters for action " + getActionID() + ": Could not get OSPF area for interface " + pep.getName());
+			// }
 		}
 
 		return paramsOK;
@@ -159,4 +166,87 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			throw new ActionException("Invalid parameters for action " + getActionID());
 		}
 	}
+
+	/**
+	 * Returns an OSPFService containing a copy of each pepToConfig with its OSPFArea.
+	 * 
+	 * OSPFArea information is gathered from model_ro.
+	 * 
+	 * @param pepsToConfig
+	 *            unchanged list of OSPFProtocolEndpoints to configure
+	 * @param model_ro
+	 *            unchanged model to extract data from.
+	 * @return OSPFService containing a copy of each pepToConfig with its OSPFArea.
+	 * @throws ActionException
+	 *             if could not get required information from the model
+	 */
+	private OSPFService prepareVelocityParams(final List<OSPFProtocolEndpoint> pepsToConfig, final ComputerSystem model_ro) throws ActionException {
+
+		// getOSPFService
+		OSPFService ospfService = getOSPFService((ComputerSystem) modelToUpdate);
+		if (ospfService == null)
+			throw new ActionException("Could not get required information from the model. OSPFService missing");
+
+		OSPFService toReturn = new OSPFService();
+
+		// get OSPF area id for each pep to configure
+		OSPFArea tmpArea;
+		OSPFArea areaWithPep;
+		for (OSPFProtocolEndpoint pepToConfig : pepsToConfig) {
+			areaWithPep = getOSPFAreaContainingPEPWithName(ospfService, pepToConfig.getName());
+			if (areaWithPep == null)
+				throw new ActionException(
+						"Could not get required information from the model. OSPFAreaID missing for interface " + pepToConfig.getName());
+
+			tmpArea = getOSPFAreaFromID(toReturn, areaWithPep.getAreaID());
+			if (tmpArea == null) {
+				// create OSPFArea with desired id and add it to toReturn
+				tmpArea = new OSPFArea();
+				tmpArea.setAreaID(areaWithPep.getAreaID());
+				OSPFAreaConfiguration tmpConfig = new OSPFAreaConfiguration();
+				toReturn.addOSPFAreaConfiguration(tmpConfig);
+				tmpConfig.setOSPFArea(tmpArea);
+			}
+			// create a copy of pepToConfig with required information and link it to tmpArea
+			OSPFProtocolEndpoint tmpPep = new OSPFProtocolEndpoint();
+			tmpPep.setName(pepToConfig.getName());
+			tmpPep.setEnabledState(pepToConfig.getEnabledState());
+			tmpPep.setOSPFArea(tmpArea);
+		}
+
+		return toReturn;
+	}
+
+	private OSPFArea getOSPFAreaFromID(OSPFService ospfService, long areaId) {
+		for (OSPFAreaConfiguration configArea : ospfService.getOSPFAreaConfiguration()) {
+			if (configArea.getOSPFArea() != null) {
+				if (configArea.getOSPFArea().getAreaID() == areaId)
+					return configArea.getOSPFArea();
+			}
+		}
+		return null;
+	}
+
+	private OSPFArea getOSPFAreaContainingPEPWithName(OSPFService ospfService, String pepName) {
+		for (OSPFAreaConfiguration configArea : ospfService.getOSPFAreaConfiguration()) {
+			if (configArea.getOSPFArea() != null) {
+				for (OSPFProtocolEndpointBase pep : configArea.getOSPFArea().getEndpointsInArea()) {
+					if (pep.getName().equals(pepName)) {
+						return configArea.getOSPFArea();
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private OSPFService getOSPFService(ComputerSystem system) {
+		for (Service service : system.getHostedService()) {
+			if (service instanceof OSPFService) {
+				return (OSPFService) service;
+			}
+		}
+		return null;
+	}
+
 }
