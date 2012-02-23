@@ -106,8 +106,7 @@ public class RemoveOSPFAreaAction extends JunosAction {
 
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params.getClass()
-				.isInstance(new OSPFAreaConfiguration()))) {
+		if (params == null || !(params instanceof OSPFAreaConfiguration)) {
 			paramsOK = false;
 		}
 

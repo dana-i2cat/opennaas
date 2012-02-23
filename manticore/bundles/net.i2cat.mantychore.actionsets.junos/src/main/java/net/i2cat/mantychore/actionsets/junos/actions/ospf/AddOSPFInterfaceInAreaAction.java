@@ -109,8 +109,7 @@ public class AddOSPFInterfaceInAreaAction extends JunosAction {
 
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params.getClass()
-				.isInstance(new OSPFArea()))) {
+		if (params == null || !(params instanceof OSPFArea)) {
 			paramsOK = false;
 		}
 

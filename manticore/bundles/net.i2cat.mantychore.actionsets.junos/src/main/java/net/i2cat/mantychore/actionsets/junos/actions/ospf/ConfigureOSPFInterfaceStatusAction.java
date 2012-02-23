@@ -1,8 +1,9 @@
 package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
@@ -102,23 +103,40 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 	}
 
 	/**
-	 * Params must be a List<OSPFProtocolEndpoint>
+	 * Params must be a List<OSPFProtocolEndpoint> with values
 	 * 
 	 * @param params
-	 *            it should be a List<OSPFProtocolEndpoint>
-	 * @return false if params is null or is not a List<OSPFProtocolEndpoint>
+	 *            it should be a List<OSPFProtocolEndpoint> with values
+	 * @return false if params is null, is empty or is not a List<OSPFProtocolEndpoint>
 	 */
 	@Override
 	public boolean checkParams(Object params) {
-
 		boolean paramsOK = true;
-		// First we check the params object
-		if (params == null || !(params.getClass()
-				.isInstance(new ArrayList<OSPFProtocolEndpoint>()))) {
+
+		if (params == null || !(params instanceof List<?>)
+				|| ((List<?>) params).size() <= 0) {
 			paramsOK = false;
+		} else {
+			for (Object param : (List<?>) params) {
+				if (!(param instanceof OSPFProtocolEndpoint)) {
+					paramsOK = false;
+					break;
+				}
+			}
 		}
 
 		return paramsOK;
+	}
+
+	private Object	instance;
+
+	public void doSomething()
+	{
+		instance = new TreeMap<Integer, Integer>();
+		if (instance instanceof TreeMap<?, ?>) {
+
+		}
+
 	}
 
 	/**
