@@ -95,20 +95,37 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#configureOSPF(net.i2cat.mantychore.model.OSPFService)
+	 */
 	@Override
 	public Response configureOSPF(OSPFService ospfService) {
 		ospfService.setEnabledState(EnabledState.DISABLED); // mark OSPF as disabled, we are configuring only
 		return (Response) sendMessage(ActionConstants.OSPF_CONFIGURE, ospfService);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#getOSPFConfiguration()
+	 */
 	@Override
 	public Response getOSPFConfiguration() {
 
 		return (Response) sendMessage(ActionConstants.OSPF_GET_CONFIGURATION, null);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#showOSPFConfiguration()
+	 */
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
+
+		OSPFService ospfService = null;
 
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 		if (lServices == null || lServices.isEmpty()) {
@@ -116,7 +133,6 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		}
 
 		// Search OSPF Service in the Service list
-		OSPFService ospfService = null;
 		for (Service service : lServices) {
 			if (service instanceof OSPFService) {
 				ospfService = (OSPFService) service;
@@ -126,35 +142,70 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		return ospfService;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#activateOSPF()
+	 */
 	@Override
 	public Response activateOSPF() throws CapabilityException {
+
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.ENABLED);
 		return (Response) sendMessage(ActionConstants.OSPF_ACTIVATE, service);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#deactivateOSPF()
+	 */
 	@Override
 	public Response deactivateOSPF() throws CapabilityException {
+
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.DISABLED);
 		return (Response) sendMessage(ActionConstants.OSPF_DEACTIVATE, service);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#clearOSPFconfiguration(net.i2cat.mantychore.model.OSPFService)
+	 */
 	@Override
 	public Response clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException {
+
 		return (Response) sendMessage(ActionConstants.OSPF_CLEAR, ospfService);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#configureOSPFArea(net.i2cat.mantychore.model.OSPFAreaConfiguration)
+	 */
 	@Override
 	public Response configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+
 		return (Response) sendMessage(ActionConstants.OSPF_CONFIGURE_AREA, ospfAreaConfiguration);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#removeOSPFArea(net.i2cat.mantychore.model.OSPFAreaConfiguration)
+	 */
 	@Override
 	public Response removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+
 		return (Response) sendMessage(ActionConstants.OSPF_REMOVE_AREA, ospfAreaConfiguration);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#addInterfacesInOSPFArea(java.util.List, net.i2cat.mantychore.model.OSPFArea)
+	 */
 	@Override
 	public Response addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
 
@@ -178,6 +229,11 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		return (Response) sendMessage(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA, area);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#removeInterfacesInOSPFArea(java.util.List, net.i2cat.mantychore.model.OSPFArea)
+	 */
 	@Override
 	public Response removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
 
@@ -201,24 +257,34 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		return (Response) sendMessage(ActionConstants.OSPF_REMOVE_INTERFACE_IN_AREA, area);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#enableOSPFInterfaces(java.util.List)
+	 */
 	@Override
 	public Response enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
 
 		// mark OSPFProtocolEndpoints to enable
-		List<OSPFProtocolEndpoint> toDisable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
-		OSPFProtocolEndpoint disabledPep;
+		List<OSPFProtocolEndpoint> toEnable = new ArrayList<OSPFProtocolEndpoint>(interfaces.size());
+		OSPFProtocolEndpoint enablePep;
 		for (OSPFProtocolEndpoint pep : interfaces) {
-			disabledPep = new OSPFProtocolEndpoint();
-			disabledPep.setEnabledState(EnabledState.ENABLED);
-			disabledPep.setName(pep.getName());
-			disabledPep.setOSPFArea(pep.getOSPFArea());
-			disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
-			toDisable.add(disabledPep);
+			enablePep = new OSPFProtocolEndpoint();
+			enablePep.setEnabledState(EnabledState.ENABLED);
+			enablePep.setName(pep.getName());
+			enablePep.setOSPFArea(pep.getOSPFArea());
+			enablePep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			toEnable.add(enablePep);
 		}
 
-		return (Response) sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, toDisable);
+		return (Response) sendMessage(ActionConstants.OSPF_ENABLE_INTERFACE, toEnable);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.ospf.IOSPFService#disableOSPFInterfaces(java.util.List)
+	 */
 	@Override
 	public Response disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
 

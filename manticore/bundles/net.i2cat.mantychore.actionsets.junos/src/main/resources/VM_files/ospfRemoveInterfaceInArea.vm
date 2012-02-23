@@ -9,9 +9,13 @@
 	#end
 	<protocols>	
 		<ospf>
-		#set($ospfArea = $param.getOSPFArea())
-			<area operation="delete">
-				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
+			<area>
+				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
+				#foreach($ospfPep in $param.getEndpointsInArea())
+				<interface operation="delete">
+					<name>$ospfPep.getName()</name>
+				</interface>
+				#end
 			</area>
 		</ospf>
 	</protocols>
