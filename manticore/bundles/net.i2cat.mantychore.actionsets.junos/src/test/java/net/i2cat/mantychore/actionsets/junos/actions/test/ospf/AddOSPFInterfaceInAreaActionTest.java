@@ -80,7 +80,6 @@ public class AddOSPFInterfaceInAreaActionTest {
 
 		net.i2cat.mantychore.model.System computerSystem = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
 		Assert.assertNotNull(computerSystem);
-
 	}
 
 	/**

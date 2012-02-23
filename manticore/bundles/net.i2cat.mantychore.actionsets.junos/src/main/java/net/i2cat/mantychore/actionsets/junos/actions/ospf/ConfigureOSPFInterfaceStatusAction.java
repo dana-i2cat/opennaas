@@ -75,8 +75,8 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			}
 
 			Map<String, Object> extraParams = new HashMap<String, Object>();
-			extraParams.put("statusDown", EnabledState.DISABLED.toString());
-			extraParams.put("statusUp", EnabledState.ENABLED.toString());
+			extraParams.put("disabledState", EnabledState.DISABLED.toString());
+			extraParams.put("enabledState", EnabledState.ENABLED.toString());
 			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 			extraParams.put("elementName", elementName);
 
