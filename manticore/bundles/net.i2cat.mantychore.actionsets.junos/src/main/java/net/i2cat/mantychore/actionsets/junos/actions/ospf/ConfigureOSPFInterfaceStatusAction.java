@@ -2,6 +2,7 @@ package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -80,9 +81,6 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 			extraParams.put("elementName", elementName);
 
-			OSPFProtocolEndpoint endpoint = new OSPFProtocolEndpoint();
-			endpoint.getName();
-
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
@@ -109,13 +107,23 @@ public class ConfigureOSPFInterfaceStatusAction extends JunosAction {
 	 * @return false if params is null or is not a List<OSPFProtocolEndpoint>
 	 */
 	@Override
-	public boolean checkParams(Object params) {
+	public boolean checkParams(Object params) throws ActionException {
 
 		boolean paramsOK = true;
 		// First we check the params object
 		if (params == null || !(params.getClass()
 				.isInstance(new ArrayList<OSPFProtocolEndpoint>()))) {
 			paramsOK = false;
+		}
+
+		for (OSPFProtocolEndpoint pep : ((List<OSPFProtocolEndpoint>) params)) {
+			if (pep.getName() == null)
+				throw new ActionException("Invalid parameters for action " + getActionID() + ": Interface has no name");
+
+			if (pep.getOSPFArea() == null) {
+				throw new ActionException(
+						"Invalid parameters for action " + getActionID() + ": Could not get OSPF area for interface " + pep.getName());
+			}
 		}
 
 		return paramsOK;
