@@ -4,9 +4,11 @@ import java.util.HashMap;
 
 import mock.MockEventManager;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
+
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -71,4 +73,11 @@ public class ActionTestHelper {
 		eth.addProtocolEndpoint(ip);
 		return eth;
 	}
+
+	public Object newParamsGRETunnelService() {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setName("gre-0/1/0");
+		return greService;
+	}
+
 }
