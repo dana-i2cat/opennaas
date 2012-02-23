@@ -11,9 +11,6 @@ import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
@@ -89,6 +86,7 @@ public class GetConfigurationAction extends JunosAction {
 				// Protocols parsing should be done before parsing routing-options:
 				// Protocol parser creates classes in the model that require being updated by routing-options parser.
 				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
+
 				routerModel = parseProtocols(routerModel, message);
 
 				/* Parse routing options info */
@@ -140,18 +138,11 @@ public class GetConfigurationAction extends JunosAction {
 	private System parseInterfaces(System routerModel, String message)
 			throws IOException, SAXException {
 
-		DigesterEngine logicalInterfParser = new IPInterfaceParser();
-		logicalInterfParser.init();
-		logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
+		ipInterfaceParser.init();
+		ipInterfaceParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
-		// /TODO implements a better method to merge the elements in model
-		// now are deleted all the existing elements of the class EthernetPort
-		routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
-		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
-		for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
-			routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
-		}
-
+		routerModel = ipInterfaceParser.getModel();
 		return routerModel;
 	}
 

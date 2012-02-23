@@ -21,7 +21,7 @@ public class GRETunnelActionSet extends ActionSet {
 		this.putAction(ActionConstants.SHOWTUNNELS, ShowTunnelsAction.class);
 
 		/* add refresh actions */
-		this.refreshActions.add(ActionConstants.GETTUNNELCONFIG);
+		this.refreshActions.add(ActionConstants.GETCONFIG);
 
 	}
 
