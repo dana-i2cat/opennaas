@@ -273,7 +273,8 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 			enablePep.setEnabledState(EnabledState.ENABLED);
 			enablePep.setName(pep.getName());
 			enablePep.setOSPFArea(pep.getOSPFArea());
-			enablePep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			if (!pep.getLogicalPorts().isEmpty())
+				enablePep.addLogiaclPort(pep.getLogicalPorts().get(0));
 			toEnable.add(enablePep);
 		}
 
@@ -296,7 +297,8 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 			disabledPep.setEnabledState(EnabledState.DISABLED);
 			disabledPep.setName(pep.getName());
 			disabledPep.setOSPFArea(pep.getOSPFArea());
-			disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
+			if (!pep.getLogicalPorts().isEmpty())
+				disabledPep.addLogiaclPort(pep.getLogicalPorts().get(0));
 			toDisable.add(disabledPep);
 		}
 

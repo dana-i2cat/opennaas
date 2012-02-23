@@ -30,7 +30,8 @@ public class OSPFProtocolEndpointBase extends ProtocolEndpoint implements
 	 * Associates this OSPFProtocolEndpointBase with ospfArea through EndpointInArea aggregation
 	 */
 	public void setOSPFArea(OSPFArea ospfArea) {
-		EndpointInArea.link(ospfArea, this);
+		if (ospfArea != null)
+			EndpointInArea.link(ospfArea, this);
 	}
 
 	/**
