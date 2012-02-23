@@ -22,7 +22,7 @@ public class ClearOSPFAction extends JunosAction {
 	 */
 	protected void initialize() {
 		this.setActionID(ActionConstants.OSPF_CLEAR);
-		setTemplate("/VM_files/ospfRemove.vm");
+		setTemplate("/VM_files/ospfClear.vm");
 		this.protocolName = "netconf";
 	}
 
