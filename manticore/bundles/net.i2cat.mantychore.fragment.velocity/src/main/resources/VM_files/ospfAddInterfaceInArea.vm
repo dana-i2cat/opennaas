@@ -1,21 +1,18 @@
 <configuration>
-	#set( $logicalRouter = "false" )
+	#set($logicalRouter = "false" )
 	#if(!$elementName.equals("") )		
-		#set($logicalRouter = "true")
+		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
 			<name>$elementName</name>
 	#end
-	
 	<protocols>	
 		<ospf>
 		#set($ospfArea = $param.getOSPFArea())
 			<area>
-				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
-				##TODO Area type config should be included here (stub, nssa,...)
-				#foreach($ospfPep in $ospfArea.getEndpointsInArea())
-				
+				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
+				#foreach($ospfPep in $param.getEndpointsInArea())
 				<interface>
 					<name>$ospfPep.getName()</name>
 					##ENABLED/DISABLED
