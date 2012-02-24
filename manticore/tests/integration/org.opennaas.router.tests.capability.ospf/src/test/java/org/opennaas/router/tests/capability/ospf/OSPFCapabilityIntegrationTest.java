@@ -3,6 +3,7 @@ package org.opennaas.router.tests.capability.ospf;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Test to verify that OSPF Capability is available from the container
@@ -14,7 +15,7 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 	private static Log	log	= LogFactory
 									.getLog(OSPFCapabilityIntegrationTest.class);
 
-	// @Test
+	@Test
 	/**
 	 * Test to check if capability is available from OSGi.
 	 */
