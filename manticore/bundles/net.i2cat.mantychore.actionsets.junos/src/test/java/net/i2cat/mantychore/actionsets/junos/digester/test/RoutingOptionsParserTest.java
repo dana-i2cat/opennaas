@@ -60,7 +60,7 @@ public class RoutingOptionsParserTest {
 				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
 					if (pE instanceof GRETunnelEndpoint) {
 						GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
-						Assert.assertTrue(gE.getNextHopRoutes().size() > 0);
+						Assert.assertTrue(gE.getNextHopRoutes().size() == 1);
 
 					}
 				}
@@ -111,7 +111,7 @@ public class RoutingOptionsParserTest {
 		greConfig.setDestinationAddress("192.168.1.2");
 		greConfig.setKey(2);
 		greService.addGRETunnelConfiguration(greConfig);
-		greService.setName("gr-0/1/0.0");
+		greService.setName("gr-0/1/0");
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
 		gE.setIPv4Address("192.168.1.3");
 		gE.setSubnetMask("255.255.255.0");

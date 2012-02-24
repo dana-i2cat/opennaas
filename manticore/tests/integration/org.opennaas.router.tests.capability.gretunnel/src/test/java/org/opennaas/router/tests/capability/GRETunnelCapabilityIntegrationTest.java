@@ -151,8 +151,12 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
+			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETCONFIG, null);
+			Assert.assertTrue(resp.getStatus() == Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 4);
+			Assert.assertTrue(queue.size() == 5);
 
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 			Assert.assertTrue(queueResponse.getResponses().size() == 4);

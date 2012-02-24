@@ -3,11 +3,24 @@
 	<configuration junos:changed-seconds="1310541978"
 		junos:changed-localtime="2011-07-13 07:26:18 UTC">
 		<interfaces>
-		
 			<interface>
-				<name>fe-0/3/0</name>
+				<name>fe-0/2/0</name>
 				<unit>
 					<name>0</name>
+					<family>
+						<inet>
+							<address>
+								<name>10.2.2.2/30</name>
+							</address>
+
+						</inet>
+					</family>
+				</unit>
+			</interface>
+			<interface>
+				<name>fe-0/0/3</name>
+				<unit>
+					<name>45</name>
 					<family>
 						<inet>
 							<address>
@@ -60,10 +73,10 @@
 				<area>
 					<name>0.0.0.0</name>
 					<interface>
-						<name>fe-0/3/0.0</name>
+						<name>fe-0/3/3.45</name>
 					</interface>
 					<interface>
-						<name>fe-0/3/1.0</name>
+						<name>fe-0/0/2.0</name>
 					</interface>
 				</area>
 			</ospf>
@@ -75,7 +88,6 @@
 					<name>193.1.190.128/25</name>
 					<next-hop>fe-0/3/1.0</next-hop>
 				</route>
-
 				<route>
 					<name>192.168.254.0/24</name>
 					<next-hop>gr-0/1/0.0</next-hop>

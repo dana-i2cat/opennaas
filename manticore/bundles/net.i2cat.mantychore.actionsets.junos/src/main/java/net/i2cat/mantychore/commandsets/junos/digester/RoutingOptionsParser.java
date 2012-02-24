@@ -42,7 +42,6 @@ public class RoutingOptionsParser extends DigesterEngine {
 			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
 			// addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
 			/* Add NextHopIPRoute to mapElements */
-			// addMyRule("*/routing-options/static/route/next-hop", "addInterface", 0);
 			/* AddRouteUsesEndpoint */
 			addMyRule("*/routing-options/static/route/next-hop", "addInterface", 0);
 
@@ -140,7 +139,7 @@ public class RoutingOptionsParser extends DigesterEngine {
 		for (Service service : model.getHostedService()) {
 			if (service instanceof GRETunnelService) {
 				GRETunnelService greService = (GRETunnelService) service;
-				String name = service.getName();
+				String name = service.getName() + ".0";
 				if (name.equals(nextHop)) {
 					for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
 						if (pE instanceof GRETunnelEndpoint) {
