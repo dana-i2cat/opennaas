@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;

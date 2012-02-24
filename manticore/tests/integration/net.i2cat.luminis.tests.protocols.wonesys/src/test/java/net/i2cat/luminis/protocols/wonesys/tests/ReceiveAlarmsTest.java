@@ -16,8 +16,6 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;
