@@ -1,12 +1,19 @@
 package interfaces.configure;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import helpers.CheckParametersHelper;
 import helpers.ParamCreationHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -16,7 +23,8 @@ import net.i2cat.nexus.tests.InitializerTestHelper;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -30,11 +38,15 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * These tests check the subinterface configurations
@@ -44,30 +56,52 @@ import org.osgi.framework.BundleContext;
  */
 
 @RunWith(JUnit4TestRunner.class)
-public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ConfigureSubInterfaceTest
+{
+	@Inject
+	private BundleContext		bundleContext;
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private IResourceManager	resourceManager;
 
-	boolean				isMock;
-	ResourceDescriptor	resourceDescriptor;
-	IResource			resource		= null;
-	String				deviceID;
-	String				type;
-	IResourceManager	resourceManager;
-	IProfileManager		profileManager;
+	@Inject
+	private IProfileManager		profileManager;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	private boolean				isMock;
+	private ResourceDescriptor	resourceDescriptor;
+	private IResource			resource;
+	private String				deviceID;
+	private String				type;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer routerService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    private BlueprintContainer ipService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer queueService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public ConfigureSubInterfaceTest() {
@@ -83,12 +117,8 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 * @throws ProtocolException
 	 *
 	 */
+	@Before
 	public void setUp() throws ResourceException, ProtocolException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-		profileManager = getOsgiService(IProfileManager.class, 30000);
 
 		InitializerTestHelper.removeResources(resourceManager);
 
@@ -108,6 +138,7 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 * @throws ResourceException
 	 *
 	 */
+	@After
 	public void tearDown() throws ResourceException {
 		InitializerTestHelper.removeResources(resourceManager);
 
@@ -116,22 +147,11 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 
 	@Test
 	public void configureSubInterfaceTest() {
-		try {
-			setUp();
-		} catch (Exception e) {
-			Assert.fail("Impossible set up test: " + e.getMessage());
-		}
-
 		/* test to configure a simple subinterface */
 		simpleSubInterfaceConfigurationTest();
 
 		/* test to configure a subinterface */
 		subInterfaceConfigurationTest();
-		try {
-			tearDown();
-		} catch (ResourceException e) {
-			Assert.fail("Impossible tear down test: " + e.getMessage());
-		}
 	}
 
 	/**
@@ -235,8 +255,6 @@ public class ConfigureSubInterfaceTest extends AbstractIntegrationTest {
 	 * TODO This class has to be moved to the share helper
 	 */
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, ResourceHelper.newSessionContextNetconf());
-
 	}
 }
