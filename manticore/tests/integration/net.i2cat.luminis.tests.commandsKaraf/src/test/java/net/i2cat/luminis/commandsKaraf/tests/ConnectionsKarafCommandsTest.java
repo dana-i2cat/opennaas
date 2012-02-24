@@ -77,9 +77,13 @@ public class ConnectionsKarafCommandsTest
 	@Inject
 	private CommandProcessor    commandProcessor;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.connections)")
-    private BlueprintContainer connectionService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.connections)")
+	private BlueprintContainer connectionService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
 
 	String				resourceName	= "pedrosa";
 	String				chassisNum		= "0";
