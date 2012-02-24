@@ -17,11 +17,16 @@ ospf:configureArea router:junos20 0.0.0.0
 shell:echo "ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.1 fe-0/3/0.2"
 ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.1 fe-0/3/0.2 
 
-shell:echo "ospf:enableInterface router:junos20 fe-0/3/0.1"
-ospf:enableInterface router:junos20 fe-0/3/0.1
+# REFRESH MODEL IS REQUIRED (following operations need OSPFArea to be in model)
+queue:execute router:junos20
 
+# MOCK ONLY: we use fe-0/0/3.45 because it is the only one in netconf mock (so the only one in the model).
+shell:echo "ospf:enableInterface router:junos20 fe-0/3/0.1"
+ospf:enableInterface router:junos20 fe-0/0/3.45
+
+# MOCK ONLY: we use fe-0/0/3.45 because it is the only one in netconf mock (so the only one in the model).
 shell:echo "ospf:disableInterface router:junos20 fe-0/3/0.2"
-ospf:disableInterface router:junos20 fe-0/3/0.2
+ospf:disableInterface router:junos20 fe-0/0/3.45
 
 shell:echo "ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/0.2"
 ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/0.2
@@ -46,4 +51,4 @@ ospf:show router:junos20
 
 #Cleanup
 resource:stop router:junos20
-resource:remove router:junos20.
+resource:remove router:junos20
