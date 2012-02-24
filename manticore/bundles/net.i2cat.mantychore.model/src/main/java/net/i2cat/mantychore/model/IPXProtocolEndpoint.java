@@ -9,64 +9,56 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPXProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPXProtocolEndpointBean Interface. The CIM class IPXProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPXProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the IPXProtocolEndpointBean Interface. The CIM class IPXProtocolEndpoint is
  * described as follows:
- *
+ * 
  * An IPX communication point from which data may be sent or received.
  */
 public class IPXProtocolEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a IPXProtocolEndpointBeanImpl Class which
-     * implements the IPXProtocolEndpointBean Interface, and encapsulates the
-     * CIM class IPXProtocolEndpoint in a Java Bean. The CIM class
-     * IPXProtocolEndpoint is described as follows:
-     *
-     * An IPX communication point from which data may be sent or received.
-     */
-    public IPXProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property address.
-     */
-    private String address;
-    /**
-     * This method returns the IPXProtocolEndpoint.address property value.
-     * This property is described as follows:
-     *
-     * An IPX address formatted as eight hexadecimal digits representing the
-     * network number, followed by a colon, followed by twelve hexadecimal
-     * digits representing the host address (e.g. "00112233:010203040506").
-     *
-     * @return	String	current address property value
-     * @exception	Exception
-     */
-    public String getAddress(){
+	/**
+	 * This constructor creates a IPXProtocolEndpointBeanImpl Class which implements the IPXProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class IPXProtocolEndpoint in a Java Bean. The CIM class IPXProtocolEndpoint is described as follows:
+	 * 
+	 * An IPX communication point from which data may be sent or received.
+	 */
+	public IPXProtocolEndpoint() {
+	};
 
-    return this.address;
-    } // getAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property address.
+	 */
+	private String	address;
 
-    /**
-     * This method sets the IPXProtocolEndpoint.address property value. This
-     * property is described as follows:
-     *
-     * An IPX address formatted as eight hexadecimal digits representing the
-     * network number, followed by a colon, followed by twelve hexadecimal
-     * digits representing the host address (e.g. "00112233:010203040506").
-     *
-     * @param	String	new address property value
-     * @exception	Exception
-     */
-    public void setAddress(String address) {
+	/**
+	 * This method returns the IPXProtocolEndpoint.address property value. This property is described as follows:
+	 * 
+	 * An IPX address formatted as eight hexadecimal digits representing the network number, followed by a colon, followed by twelve hexadecimal
+	 * digits representing the host address (e.g. "00112233:010203040506").
+	 * 
+	 * @return String current address property value
+	 * @exception Exception
+	 */
+	public String getAddress() {
 
-    this.address = address;
-    } // setAddress
+		return this.address;
+	} // getAddress
 
+	/**
+	 * This method sets the IPXProtocolEndpoint.address property value. This property is described as follows:
+	 * 
+	 * An IPX address formatted as eight hexadecimal digits representing the network number, followed by a colon, followed by twelve hexadecimal
+	 * digits representing the host address (e.g. "00112233:010203040506").
+	 * 
+	 * @param String
+	 *            new address property value
+	 * @exception Exception
+	 */
+	public void setAddress(String address) {
 
-
+		this.address = address;
+	} // setAddress
 
 } // Class IPXProtocolEndpoint

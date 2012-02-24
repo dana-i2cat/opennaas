@@ -11,7 +11,7 @@ import java.io.Serializable;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemConfiguration as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the SystemConfigurationBean Interface. The CIM class SystemConfiguration is
  * described as follows:
- *
+ * 
  * Note: Similar to the deprecation of CIM_Configuration, this peer class is also deprecated in favor of aggregating instances of Setting or
  * SettingData into "higher-level" Settings or SettingData objects using the ConcreteComponent association. Deprecated description:
  * CIM_SystemConfiguration represents the general concept of a CIM_Configuration that is scoped by a System. This class is a peer of CIM_Configuration
@@ -24,7 +24,7 @@ public class SystemConfiguration extends ManagedElement implements
 	/**
 	 * This constructor creates a SystemConfigurationBeanImpl Class which implements the SystemConfigurationBean Interface, and encapsulates the CIM
 	 * class SystemConfiguration in a Java Bean. The CIM class SystemConfiguration is described as follows:
-	 *
+	 * 
 	 * Note: Similar to the deprecation of CIM_Configuration, this peer class is also deprecated in favor of aggregating instances of Setting or
 	 * SettingData into "higher-level" Settings or SettingData objects using the ConcreteComponent association. Deprecated description:
 	 * CIM_SystemConfiguration represents the general concept of a CIM_Configuration that is scoped by a System. This class is a peer of
@@ -41,9 +41,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method returns the SystemConfiguration.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: The CreationClassName of the scoping system.
-	 *
+	 * 
 	 * @return String current systemCreationClassName property value
 	 * @exception Exception
 	 */
@@ -55,9 +55,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method sets the SystemConfiguration.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: The CreationClassName of the scoping system.
-	 *
+	 * 
 	 * @param String
 	 *            new systemCreationClassName property value
 	 * @exception Exception
@@ -76,9 +76,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method returns the SystemConfiguration.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: The Name of the scoping system.
-	 *
+	 * 
 	 * @return String current systemName property value
 	 * @exception Exception
 	 */
@@ -90,9 +90,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method sets the SystemConfiguration.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: The Name of the scoping system.
-	 *
+	 * 
 	 * @param String
 	 *            new systemName property value
 	 * @exception Exception
@@ -111,11 +111,11 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method returns the SystemConfiguration.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: CreationClassName indicates the name of the class or the subclass used in
 	 * the creation of an instance. When used with the other key properties of this class, this property allows all instances of this class and its
 	 * subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @return String current creationClassName property value
 	 * @exception Exception
 	 */
@@ -127,11 +127,11 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method sets the SystemConfiguration.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * Note: The use of this element is deprecated. Deprecated description: CreationClassName indicates the name of the class or the subclass used in
 	 * the creation of an instance. When used with the other key properties of this class, this property allows all instances of this class and its
 	 * subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @param String
 	 *            new creationClassName property value
 	 * @exception Exception
@@ -150,9 +150,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method returns the SystemConfiguration.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The label by which the Configuration object is known.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -164,9 +164,9 @@ public class SystemConfiguration extends ManagedElement implements
 
 	/**
 	 * This method sets the SystemConfiguration.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The label by which the Configuration object is known.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception

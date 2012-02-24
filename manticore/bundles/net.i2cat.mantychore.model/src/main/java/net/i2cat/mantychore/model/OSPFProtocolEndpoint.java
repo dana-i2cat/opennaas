@@ -9,184 +9,154 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OSPFProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * OSPFProtocolEndpointBean Interface. The CIM class OSPFProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the OSPFProtocolEndpointBean Interface. The CIM class OSPFProtocolEndpoint is
  * described as follows:
- *
- * This class represents the OSPF configuration of an interface running OSPF.
- * The instance of this class should be connected to an IPProtocolEndpoint
- * instance via a BindsTo association. The IPProtocolEndpoint instance is the
- * Antecedent and the OSPFProtocolEndpoint instance is the Dependent in the
+ * 
+ * This class represents the OSPF configuration of an interface running OSPF. The instance of this class should be connected to an IPProtocolEndpoint
+ * instance via a BindsTo association. The IPProtocolEndpoint instance is the Antecedent and the OSPFProtocolEndpoint instance is the Dependent in the
  * BindsTo association.
  */
 public class OSPFProtocolEndpoint extends OSPFProtocolEndpointBase implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a OSPFProtocolEndpointBeanImpl Class which
-     * implements the OSPFProtocolEndpointBean Interface, and encapsulates
-     * the CIM class OSPFProtocolEndpoint in a Java Bean. The CIM class
-     * OSPFProtocolEndpoint is described as follows:
-     *
-     * This class represents the OSPF configuration of an interface running
-     * OSPF. The instance of this class should be connected to an
-     * IPProtocolEndpoint instance via a BindsTo association. The
-     * IPProtocolEndpoint instance is the Antecedent and the
-     * OSPFProtocolEndpoint instance is the Dependent in the BindsTo
-     * association.
-     */
-    public OSPFProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property priority.
-     */
-    private short priority;
-    /**
-     * This method returns the OSPFProtocolEndpoint.priority property value.
-     * This property is described as follows:
-     *
-     * When two routers attached to a network both attempt to become the
-     * Designated Router, the one with the highest (i.e. largest) Priority
-     * takes precedence, see C.3 in RFC 2328. Only routers with greater than
-     * zero priority are eligible to become Designated Router.
-     *
-     * @return	short	current priority property value
-     * @exception	Exception
-     */
-    public short getPriority(){
+	/**
+	 * This constructor creates a OSPFProtocolEndpointBeanImpl Class which implements the OSPFProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class OSPFProtocolEndpoint in a Java Bean. The CIM class OSPFProtocolEndpoint is described as follows:
+	 * 
+	 * This class represents the OSPF configuration of an interface running OSPF. The instance of this class should be connected to an
+	 * IPProtocolEndpoint instance via a BindsTo association. The IPProtocolEndpoint instance is the Antecedent and the OSPFProtocolEndpoint instance
+	 * is the Dependent in the BindsTo association.
+	 */
+	public OSPFProtocolEndpoint() {
+	};
 
-    return this.priority;
-    } // getPriority
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property priority.
+	 */
+	private short	priority;
 
-    /**
-     * This method sets the OSPFProtocolEndpoint.priority property value. This
-     * property is described as follows:
-     *
-     * When two routers attached to a network both attempt to become the
-     * Designated Router, the one with the highest (i.e. largest) Priority
-     * takes precedence, see C.3 in RFC 2328. Only routers with greater than
-     * zero priority are eligible to become Designated Router.
-     *
-     * @param	short	new priority property value
-     * @exception	Exception
-     */
-    public void setPriority(short priority) {
+	/**
+	 * This method returns the OSPFProtocolEndpoint.priority property value. This property is described as follows:
+	 * 
+	 * When two routers attached to a network both attempt to become the Designated Router, the one with the highest (i.e. largest) Priority takes
+	 * precedence, see C.3 in RFC 2328. Only routers with greater than zero priority are eligible to become Designated Router.
+	 * 
+	 * @return short current priority property value
+	 * @exception Exception
+	 */
+	public short getPriority() {
 
-    this.priority = priority;
-    } // setPriority
+		return this.priority;
+	} // getPriority
 
+	/**
+	 * This method sets the OSPFProtocolEndpoint.priority property value. This property is described as follows:
+	 * 
+	 * When two routers attached to a network both attempt to become the Designated Router, the one with the highest (i.e. largest) Priority takes
+	 * precedence, see C.3 in RFC 2328. Only routers with greater than zero priority are eligible to become Designated Router.
+	 * 
+	 * @param short new priority property value
+	 * @exception Exception
+	 */
+	public void setPriority(short priority) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pollInterval.
-     */
-    private int pollInterval;
-    /**
-     * This method returns the OSPFProtocolEndpoint.pollInterval property
-     * value. This property is described as follows:
-     *
-     * If a neighbouring router on an NBMA (NonBroadcast MultiAccess) link
-     * becomes inactive, it is still necessary to send Hello Packets to the
-     * dead neighbor. These packets will be sent at the reduced rate, which
-     * should be much larger than HelloInterval, see C.5 in RFC 2328.
-     *
-     * @return	int	current pollInterval property value
-     * @exception	Exception
-     */
-    public int getPollInterval(){
+		this.priority = priority;
+	} // setPriority
 
-    return this.pollInterval;
-    } // getPollInterval
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pollInterval.
+	 */
+	private int	pollInterval;
 
-    /**
-     * This method sets the OSPFProtocolEndpoint.pollInterval property value.
-     * This property is described as follows:
-     *
-     * If a neighbouring router on an NBMA (NonBroadcast MultiAccess) link
-     * becomes inactive, it is still necessary to send Hello Packets to the
-     * dead neighbor. These packets will be sent at the reduced rate, which
-     * should be much larger than HelloInterval, see C.5 in RFC 2328.
-     *
-     * @param	int	new pollInterval property value
-     * @exception	Exception
-     */
-    public void setPollInterval(int pollInterval) {
+	/**
+	 * This method returns the OSPFProtocolEndpoint.pollInterval property value. This property is described as follows:
+	 * 
+	 * If a neighbouring router on an NBMA (NonBroadcast MultiAccess) link becomes inactive, it is still necessary to send Hello Packets to the dead
+	 * neighbor. These packets will be sent at the reduced rate, which should be much larger than HelloInterval, see C.5 in RFC 2328.
+	 * 
+	 * @return int current pollInterval property value
+	 * @exception Exception
+	 */
+	public int getPollInterval() {
 
-    this.pollInterval = pollInterval;
-    } // setPollInterval
+		return this.pollInterval;
+	} // getPollInterval
 
+	/**
+	 * This method sets the OSPFProtocolEndpoint.pollInterval property value. This property is described as follows:
+	 * 
+	 * If a neighbouring router on an NBMA (NonBroadcast MultiAccess) link becomes inactive, it is still necessary to send Hello Packets to the dead
+	 * neighbor. These packets will be sent at the reduced rate, which should be much larger than HelloInterval, see C.5 in RFC 2328.
+	 * 
+	 * @param int new pollInterval property value
+	 * @exception Exception
+	 */
+	public void setPollInterval(int pollInterval) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property cost.
-     */
-    private int cost;
-    /**
-     * This method returns the OSPFProtocolEndpoint.cost property value. This
-     * property is described as follows:
-     *
-     * The cost of the routes through this OSPF endpoint, see C.3 in RFC 2328.
-     *
-     * @return	int	current cost property value
-     * @exception	Exception
-     */
-    public int getCost(){
+		this.pollInterval = pollInterval;
+	} // setPollInterval
 
-    return this.cost;
-    } // getCost
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property cost.
+	 */
+	private int	cost;
 
-    /**
-     * This method sets the OSPFProtocolEndpoint.cost property value. This
-     * property is described as follows:
-     *
-     * The cost of the routes through this OSPF endpoint, see C.3 in RFC 2328.
-     *
-     * @param	int	new cost property value
-     * @exception	Exception
-     */
-    public void setCost(int cost) {
+	/**
+	 * This method returns the OSPFProtocolEndpoint.cost property value. This property is described as follows:
+	 * 
+	 * The cost of the routes through this OSPF endpoint, see C.3 in RFC 2328.
+	 * 
+	 * @return int current cost property value
+	 * @exception Exception
+	 */
+	public int getCost() {
 
-    this.cost = cost;
-    } // setCost
+		return this.cost;
+	} // getCost
 
+	/**
+	 * This method sets the OSPFProtocolEndpoint.cost property value. This property is described as follows:
+	 * 
+	 * The cost of the routes through this OSPF endpoint, see C.3 in RFC 2328.
+	 * 
+	 * @param int new cost property value
+	 * @exception Exception
+	 */
+	public void setCost(int cost) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ifDemand.
-     */
-    private boolean ifDemand;
-    /**
-     * This method returns the OSPFProtocolEndpoint.ifDemand property value.
-     * This property is described as follows:
-     *
-     * Indicates whether the interface connects to an on-demand circuit, see
-     * RFC 1793.
-     *
-     * @return	boolean	current ifDemand property value
-     * @exception	Exception
-     */
-    public boolean isIfDemand(){
+		this.cost = cost;
+	} // setCost
 
-    return this.ifDemand;
-    } // getIfDemand
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ifDemand.
+	 */
+	private boolean	ifDemand;
 
-    /**
-     * This method sets the OSPFProtocolEndpoint.ifDemand property value. This
-     * property is described as follows:
-     *
-     * Indicates whether the interface connects to an on-demand circuit, see
-     * RFC 1793.
-     *
-     * @param	boolean	new ifDemand property value
-     * @exception	Exception
-     */
-    public void setIfDemand(boolean ifDemand) {
+	/**
+	 * This method returns the OSPFProtocolEndpoint.ifDemand property value. This property is described as follows:
+	 * 
+	 * Indicates whether the interface connects to an on-demand circuit, see RFC 1793.
+	 * 
+	 * @return boolean current ifDemand property value
+	 * @exception Exception
+	 */
+	public boolean isIfDemand() {
 
-    this.ifDemand = ifDemand;
-    } // setIfDemand
+		return this.ifDemand;
+	} // getIfDemand
 
+	/**
+	 * This method sets the OSPFProtocolEndpoint.ifDemand property value. This property is described as follows:
+	 * 
+	 * Indicates whether the interface connects to an on-demand circuit, see RFC 1793.
+	 * 
+	 * @param boolean new ifDemand property value
+	 * @exception Exception
+	 */
+	public void setIfDemand(boolean ifDemand) {
 
+		this.ifDemand = ifDemand;
+	} // setIfDemand
 
 } // Class OSPFProtocolEndpoint

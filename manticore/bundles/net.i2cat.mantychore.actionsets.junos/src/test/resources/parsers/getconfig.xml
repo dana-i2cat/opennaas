@@ -12,6 +12,18 @@
 				<name>gr-0/1/0</name>
 				<unit>
 					<name>0</name>
+					<tunnel>
+						<source>147.12.54.3</source>
+						<destination>193.47.8.12</destination>
+						<key>7</key>
+					</tunnel>
+					<family>
+						<inet>
+							<address>
+								<name>10.1.1.1/24</name>
+							</address>
+						</inet>
+					</family>
 				</unit>
 			</interface>
 			<interface>

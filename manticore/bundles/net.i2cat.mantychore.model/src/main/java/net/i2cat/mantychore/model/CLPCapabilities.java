@@ -9,142 +9,108 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class CLPCapabilities as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * CLPCapabilitiesBean Interface. The CIM class CLPCapabilities is described
- * as follows:
- *
- * A subclass of ProtocolServiceCapabilities that defines the capabilities of
- * a CLPService. An instance of CLPCapabilities is associated with a
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class CLPCapabilities as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the CLPCapabilitiesBean Interface. The CIM class CLPCapabilities is described as
+ * follows:
+ * 
+ * A subclass of ProtocolServiceCapabilities that defines the capabilities of a CLPService. An instance of CLPCapabilities is associated with a
  * ProtocolService using ElementCapabilities.
  */
 public class CLPCapabilities extends ProtocolServiceCapabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a CLPCapabilitiesBeanImpl Class which
-     * implements the CLPCapabilitiesBean Interface, and encapsulates the CIM
-     * class CLPCapabilities in a Java Bean. The CIM class CLPCapabilities is
-     * described as follows:
-     *
-     * A subclass of ProtocolServiceCapabilities that defines the capabilities
-     * of a CLPService. An instance of CLPCapabilities is associated with a
-     * ProtocolService using ElementCapabilities.
-     */
-    public CLPCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property cLPVersions.
-     */
-    private String[] cLPVersions;
-    /**
-     * This method returns the CLPCapabilities.cLPVersions property value.
-     * This property is described as follows:
-     *
-     * CLPVersion is an array of strings that specifies the versions of the SM
-     * CLP Specification, DMTF document DSP0214, that the CLP service
-     * supports. The format of the version string follows the conventions
-     * noted in DMTF document DSP4004 in current and historical versions of
-     * the document. Thus the version string format is "m.n.ud s" where m is
-     * the string value of the major version identifier in numeric form, n is
-     * the string value of the minor version identifier in numeric form , u
-     * is the optional string value of the update (errata or coordination
-     * changes) in numeric form, d is the optional draft in alphabetic form
-     * and s is one of the following string values in alphabetic form:
-     * "Work In Progress", "Draft Standard", "DMTF Standard",
-     * "Preliminary Standard" or "Final Standard".
-     *
-     * @return	String[]	current cLPVersions property value
-     * @exception	Exception
-     */
-    public String[] getCLPVersions(){
+	/**
+	 * This constructor creates a CLPCapabilitiesBeanImpl Class which implements the CLPCapabilitiesBean Interface, and encapsulates the CIM class
+	 * CLPCapabilities in a Java Bean. The CIM class CLPCapabilities is described as follows:
+	 * 
+	 * A subclass of ProtocolServiceCapabilities that defines the capabilities of a CLPService. An instance of CLPCapabilities is associated with a
+	 * ProtocolService using ElementCapabilities.
+	 */
+	public CLPCapabilities() {
+	};
 
-    return this.cLPVersions;
-    } // getCLPVersions
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property cLPVersions.
+	 */
+	private String[]	cLPVersions;
 
-    /**
-     * This method sets the CLPCapabilities.cLPVersions property value. This
-     * property is described as follows:
-     *
-     * CLPVersion is an array of strings that specifies the versions of the SM
-     * CLP Specification, DMTF document DSP0214, that the CLP service
-     * supports. The format of the version string follows the conventions
-     * noted in DMTF document DSP4004 in current and historical versions of
-     * the document. Thus the version string format is "m.n.ud s" where m is
-     * the string value of the major version identifier in numeric form, n is
-     * the string value of the minor version identifier in numeric form , u
-     * is the optional string value of the update (errata or coordination
-     * changes) in numeric form, d is the optional draft in alphabetic form
-     * and s is one of the following string values in alphabetic form:
-     * "Work In Progress", "Draft Standard", "DMTF Standard",
-     * "Preliminary Standard" or "Final Standard".
-     *
-     * @param	String[]	new cLPVersions property value
-     * @exception	Exception
-     */
-    public void setCLPVersions(String[] cLPVersions) {
+	/**
+	 * This method returns the CLPCapabilities.cLPVersions property value. This property is described as follows:
+	 * 
+	 * CLPVersion is an array of strings that specifies the versions of the SM CLP Specification, DMTF document DSP0214, that the CLP service
+	 * supports. The format of the version string follows the conventions noted in DMTF document DSP4004 in current and historical versions of the
+	 * document. Thus the version string format is "m.n.ud s" where m is the string value of the major version identifier in numeric form, n is the
+	 * string value of the minor version identifier in numeric form , u is the optional string value of the update (errata or coordination changes) in
+	 * numeric form, d is the optional draft in alphabetic form and s is one of the following string values in alphabetic form: "Work In Progress",
+	 * "Draft Standard", "DMTF Standard", "Preliminary Standard" or "Final Standard".
+	 * 
+	 * @return String[] current cLPVersions property value
+	 * @exception Exception
+	 */
+	public String[] getCLPVersions() {
 
-    this.cLPVersions = cLPVersions;
-    } // setCLPVersions
+		return this.cLPVersions;
+	} // getCLPVersions
 
+	/**
+	 * This method sets the CLPCapabilities.cLPVersions property value. This property is described as follows:
+	 * 
+	 * CLPVersion is an array of strings that specifies the versions of the SM CLP Specification, DMTF document DSP0214, that the CLP service
+	 * supports. The format of the version string follows the conventions noted in DMTF document DSP4004 in current and historical versions of the
+	 * document. Thus the version string format is "m.n.ud s" where m is the string value of the major version identifier in numeric form, n is the
+	 * string value of the minor version identifier in numeric form , u is the optional string value of the update (errata or coordination changes) in
+	 * numeric form, d is the optional draft in alphabetic form and s is one of the following string values in alphabetic form: "Work In Progress",
+	 * "Draft Standard", "DMTF Standard", "Preliminary Standard" or "Final Standard".
+	 * 
+	 * @param String
+	 *            [] new cLPVersions property value
+	 * @exception Exception
+	 */
+	public void setCLPVersions(String[] cLPVersions) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sMMEAddressVersions.
-     */
-    private String[] sMMEAddressVersions;
-    /**
-     * This method returns the CLPCapabilities.sMMEAddressVersions property
-     * value. This property is described as follows:
-     *
-     * SMMEAddressVersion is an array of strings that specify the versions of
-     * the Server Management Managed Element Address Specification, DMTF
-     * document DSP0215, that the CLP service supports. The format of the
-     * version string follows the conventions noted in DMTF document DSP4004
-     * in current and historical versions of the document. Thus the version
-     * string format is "m.n.ud s" where m is the string value of the major
-     * version identifier in numeric form, n is the string value of the minor
-     * version identifier in numeric form , u is the optional string value of
-     * the update (errata or coordination changes) in numeric form, d is the
-     * optional draft in alphabetic form and s is one of the following string
-     * values in alphabetic form: "Work In Progress", "Draft Standard",
-     * "Preliminary Standard" or "Final Standard".
-     *
-     * @return	String[]	current sMMEAddressVersions property
-     * value
-     * @exception	Exception
-     */
-    public String[] getSMMEAddressVersions(){
+		this.cLPVersions = cLPVersions;
+	} // setCLPVersions
 
-    return this.sMMEAddressVersions;
-    } // getSMMEAddressVersions
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sMMEAddressVersions.
+	 */
+	private String[]	sMMEAddressVersions;
 
-    /**
-     * This method sets the CLPCapabilities.sMMEAddressVersions property
-     * value. This property is described as follows:
-     *
-     * SMMEAddressVersion is an array of strings that specify the versions of
-     * the Server Management Managed Element Address Specification, DMTF
-     * document DSP0215, that the CLP service supports. The format of the
-     * version string follows the conventions noted in DMTF document DSP4004
-     * in current and historical versions of the document. Thus the version
-     * string format is "m.n.ud s" where m is the string value of the major
-     * version identifier in numeric form, n is the string value of the minor
-     * version identifier in numeric form , u is the optional string value of
-     * the update (errata or coordination changes) in numeric form, d is the
-     * optional draft in alphabetic form and s is one of the following string
-     * values in alphabetic form: "Work In Progress", "Draft Standard",
-     * "Preliminary Standard" or "Final Standard".
-     *
-     * @param	String[]	new sMMEAddressVersions property value
-     * @exception	Exception
-     */
-    public void setSMMEAddressVersions(String[] sMMEAddressVersions) {
+	/**
+	 * This method returns the CLPCapabilities.sMMEAddressVersions property value. This property is described as follows:
+	 * 
+	 * SMMEAddressVersion is an array of strings that specify the versions of the Server Management Managed Element Address Specification, DMTF
+	 * document DSP0215, that the CLP service supports. The format of the version string follows the conventions noted in DMTF document DSP4004 in
+	 * current and historical versions of the document. Thus the version string format is "m.n.ud s" where m is the string value of the major version
+	 * identifier in numeric form, n is the string value of the minor version identifier in numeric form , u is the optional string value of the
+	 * update (errata or coordination changes) in numeric form, d is the optional draft in alphabetic form and s is one of the following string values
+	 * in alphabetic form: "Work In Progress", "Draft Standard", "Preliminary Standard" or "Final Standard".
+	 * 
+	 * @return String[] current sMMEAddressVersions property value
+	 * @exception Exception
+	 */
+	public String[] getSMMEAddressVersions() {
 
-    this.sMMEAddressVersions = sMMEAddressVersions;
-    } // setSMMEAddressVersions
+		return this.sMMEAddressVersions;
+	} // getSMMEAddressVersions
 
+	/**
+	 * This method sets the CLPCapabilities.sMMEAddressVersions property value. This property is described as follows:
+	 * 
+	 * SMMEAddressVersion is an array of strings that specify the versions of the Server Management Managed Element Address Specification, DMTF
+	 * document DSP0215, that the CLP service supports. The format of the version string follows the conventions noted in DMTF document DSP4004 in
+	 * current and historical versions of the document. Thus the version string format is "m.n.ud s" where m is the string value of the major version
+	 * identifier in numeric form, n is the string value of the minor version identifier in numeric form , u is the optional string value of the
+	 * update (errata or coordination changes) in numeric form, d is the optional draft in alphabetic form and s is one of the following string values
+	 * in alphabetic form: "Work In Progress", "Draft Standard", "Preliminary Standard" or "Final Standard".
+	 * 
+	 * @param String
+	 *            [] new sMMEAddressVersions property value
+	 * @exception Exception
+	 */
+	public void setSMMEAddressVersions(String[] sMMEAddressVersions) {
 
+		this.sMMEAddressVersions = sMMEAddressVersions;
+	} // setSMMEAddressVersions
 
 } // Class CLPCapabilities

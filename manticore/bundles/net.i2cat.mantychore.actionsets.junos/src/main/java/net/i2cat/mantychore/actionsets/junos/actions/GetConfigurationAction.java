@@ -1,21 +1,18 @@
 package net.i2cat.mantychore.actionsets.junos.actions;
 
 import java.io.ByteArrayInputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
+import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
-import net.i2cat.mantychore.model.NextHopRoute;
+import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -25,6 +22,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.xml.sax.SAXException;
 
 public class GetConfigurationAction extends JunosAction {
 	Log	logger	= LogFactory.getLog(GetConfigurationAction.class);
@@ -60,13 +58,13 @@ public class GetConfigurationAction extends JunosAction {
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
 		/* the model have to be null and we have to initialize */
 
-		//FIXME This "if" is important because it resets the model if we want to update it
-		if (this.modelToUpdate == null ) this.modelToUpdate = new ComputerSystem();
-
+		// FIXME This "if" is important because it resets the model if we want to update it
+		if (this.modelToUpdate == null)
+			this.modelToUpdate = new ComputerSystem();
 
 		String message;
 		try {
-			net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) model;
+			System routerModel = (System) model;
 
 			/* getting interface information */
 			if (responseMessage instanceof Reply) {
@@ -77,54 +75,126 @@ public class GetConfigurationAction extends JunosAction {
 			}
 			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
 
-			/* Parse routing options info */
-			DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
-			listLogicalRoutersParser.init();
-			listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
-
 			if (message != null) {
+				/* Parse LR info */
+				routerModel = parseLRs(routerModel, message);
 
-				for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
+				/* Parse interface info */
+				routerModel = parseInterfaces(routerModel, message);
 
-					ComputerSystem system = new ComputerSystem();
-					system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
-					routerModel.addManagedSystemElement(system);
-				}
+				/* Parse protocols info */
+				// Protocols parsing should be done before parsing routing-options:
+				// Protocol parser creates classes in the model that require being updated by routing-options parser.
+				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
+
+				routerModel = parseProtocols(routerModel, message);
+
+				/* Parse routing options info */
+				routerModel = parseRoutingOptions(routerModel, message);
 			}
-			/* Parse LR info */
-
-			/* Parse interface options info */
-			DigesterEngine logicalInterfParser = new IPInterfaceParser();
-			logicalInterfParser.init();
-			logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
-
-			// /TODO implements a better method to merge the elements in model
-			// now are deleted all the existing elements of the class EthernetPort
-			routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
-			routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
-			for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
-				routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
-			}
-			/* Parse interface options info */
-
-			/* Parse routing options info */
-			DigesterEngine routingOptionsParser = new RoutingOptionsParser();
-			routingOptionsParser.init();
-
-			if (message != null) {
-
-				routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
-				// add to the router model
-				for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
-					NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
-					routerModel.addNextHopRoute(nh);
-				}
-			}
-			/* Parse routing options info */
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
+	}
 
+	/**
+	 * Parses logical routers data from message and puts it into routerModel.
+	 * 
+	 * @param routerModel
+	 *            to store parsed data
+	 * @param message
+	 *            to parse logical routers data from
+	 * @return routerModel updated with logical routers information from message.
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	private System parseLRs(System routerModel, String message)
+			throws IOException, SAXException {
+
+		DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
+		listLogicalRoutersParser.init();
+		listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
+			ComputerSystem system = new ComputerSystem();
+			system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
+			routerModel.addManagedSystemElement(system);
+		}
+
+		return routerModel;
+	}
+
+	/**
+	 * Parses interfaces data from message and puts in into routerModel.
+	 * 
+	 * @param routerModel
+	 *            to store parsed data
+	 * @param message
+	 *            to parse interfaces data from
+	 * @return routerModel updated with interfaces information from message.
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	private System parseInterfaces(System routerModel, String message)
+			throws IOException, SAXException {
+
+		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
+		ipInterfaceParser.init();
+		ipInterfaceParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		routerModel = ipInterfaceParser.getModel();
+		return routerModel;
+	}
+
+	/**
+	 * Parses protocols data from message and puts in into routerModel.
+	 * 
+	 * @param routerModel
+	 *            to store parsed data
+	 * @param message
+	 *            to parse interfaces data from
+	 * @return routerModel updated with interfaces information from message.
+	 * @throws
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	private System parseProtocols(System routerModel, String message) throws IOException, SAXException {
+
+		ProtocolsParser protocolsParser = new ProtocolsParser(routerModel);
+		protocolsParser.init();
+		protocolsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+
+		routerModel = protocolsParser.getModel();
+
+		return routerModel;
+	}
+
+	/**
+	 * Parses routing options data from message and puts in into routerModel.
+	 * 
+	 * @param routerModel
+	 *            to store parsed data
+	 * @param message
+	 *            to parse interfaces data from
+	 * @return routerModel updated with routing options information from message.
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	private System parseRoutingOptions(net.i2cat.mantychore.model.System routerModel, String message)
+			throws IOException, SAXException {
+
+		RoutingOptionsParser routingOptionsParser = new RoutingOptionsParser(routerModel);
+		routingOptionsParser.init();
+		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
+
+		routerModel = routingOptionsParser.getModel();
+		// add to the router model
+		// for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
+		// NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
+		// routerModel.addNextHopRoute(nh);
+		// }
+
+		return routerModel;
 	}
 
 	@Override
@@ -139,22 +209,22 @@ public class GetConfigurationAction extends JunosAction {
 		checkParams(params);
 		try {
 			Object velocityParams = params;
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
-				//is logicalRouter, add LRName param
+			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
+				// is logicalRouter, add LRName param
 				if (velocityParams == null)
 					velocityParams = new ComputerSystem();
-				((ManagedElement)velocityParams).setElementName(((ComputerSystem)modelToUpdate).getElementName());
+				((ManagedElement) velocityParams).setElementName(((ComputerSystem) modelToUpdate).getElementName());
 
-				//TODO If we don't have a ManagedElement initialized
+				// TODO If we don't have a ManagedElement initialized
 
-			// check params
-			} else if (params!= null
+				// check params
+			} else if (params != null
 					&& params instanceof ManagedElement
-					&& ((ManagedElement)params).getElementName()==null){
+					&& ((ManagedElement) params).getElementName() == null) {
 
-				((ManagedElement)velocityParams).setElementName("");
+				((ManagedElement) velocityParams).setElementName("");
 
-			} else if (params == null){
+			} else if (params == null) {
 				velocityParams = "null";
 			}
 			setVelocityMessage(prepareVelocityCommand(velocityParams, template));

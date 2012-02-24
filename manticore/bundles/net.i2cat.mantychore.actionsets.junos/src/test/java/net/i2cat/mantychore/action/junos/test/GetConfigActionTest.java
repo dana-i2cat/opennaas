@@ -10,20 +10,25 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 
 public class GetConfigActionTest {
 
@@ -57,9 +62,7 @@ public class GetConfigActionTest {
 		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
 
-
-
-	private void printTest (net.i2cat.mantychore.model.System routerModel) {
+	private void printTest(net.i2cat.mantychore.model.System routerModel) {
 
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
 
@@ -101,6 +104,28 @@ public class GetConfigActionTest {
 			}
 		}
 
+		for (Service service : routerModel.getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				log.info(" - GRE Tunnel");
+				GRETunnelService greService = (GRETunnelService) service;
+				log.info("Interface :" + greService.getName());
+				for (GRETunnelConfiguration greConf : greService.getGRETunnelConfiguration()) {
+					log.info("Source : " + greConf.getSourceAddress());
+					log.info("Destination : " + greConf.getDestinationAddress());
+				}
+				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+					GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+					if (gE.getIPv4Address() == null)
+						log.info("ipv6 : " + gE.getIPv6Address());
+					else
+						log.info("ipv4 : " + gE.getIPv4Address());
+
+					for (NextHopRoute nextHop : gE.getNextHopRoutes()) {
+						log.info("next-hop route for: " + nextHop.getDestinationAddress());
+					}
+				}
+			}
+		}
 
 	}
 
@@ -118,23 +143,23 @@ public class GetConfigActionTest {
 		printTest(routerModel);
 	}
 
-//	@Test
-//	public void testExecuteInLogicalRouter() {
-//		try {
-//			ActionResponse response = action.execute(protocolsessionmanager);
-//		} catch (ActionException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			Assert.fail();
-//		}
-//		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
-//		Assert.assertNotNull(routerModel);
-//		printTest(routerModel);
-//	}
+	// @Test
+	// public void testExecuteInLogicalRouter() {
+	// try {
+	// ActionResponse response = action.execute(protocolsessionmanager);
+	// } catch (ActionException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// Assert.fail();
+	// }
+	// net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
+	// Assert.assertNotNull(routerModel);
+	// printTest(routerModel);
+	// }
 
 	/**
 	 * Simple parser. It was used for proves with xml files
-	 *
+	 * 
 	 * @param stream
 	 * @return
 	 */

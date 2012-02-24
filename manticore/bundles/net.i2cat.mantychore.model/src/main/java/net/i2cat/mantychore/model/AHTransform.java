@@ -9,188 +9,158 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class AHTransform as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * AHTransformBean Interface. The CIM class AHTransform is described as
- * follows:
- *
- * AHTransform defines the parameters used for a phase 2 AH (Authentication
- * Header) Security Association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class AHTransform as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the AHTransformBean Interface. The CIM class AHTransform is described as follows:
+ * 
+ * AHTransform defines the parameters used for a phase 2 AH (Authentication Header) Security Association.
  */
 public class AHTransform extends SATransform implements Serializable {
 
-    /**
-     * This constructor creates a AHTransformBeanImpl Class which implements
-     * the AHTransformBean Interface, and encapsulates the CIM class
-     * AHTransform in a Java Bean. The CIM class AHTransform is described as
-     * follows:
-     *
-     * AHTransform defines the parameters used for a phase 2 AH
-     * (Authentication Header) Security Association.
-     */
-    public AHTransform(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AHTransformId.
-     */
+	/**
+	 * This constructor creates a AHTransformBeanImpl Class which implements the AHTransformBean Interface, and encapsulates the CIM class AHTransform
+	 * in a Java Bean. The CIM class AHTransform is described as follows:
+	 * 
+	 * AHTransform defines the parameters used for a phase 2 AH (Authentication Header) Security Association.
+	 */
+	public AHTransform() {
+	};
 
-    public enum AHTransformId{
-    OTHER,
-    MD5,
-    SHA_1,
-    DES
-    }
-    private AHTransformId aHTransformId;
-    /**
-     * This method returns the AHTransform.aHTransformId property value. This
-     * property is described as follows:
-     *
-     * AHTransformId is an enumeration that specifies the hash algorithm to be
-     * used. The list of values was generated from RFC2407, Section 4.4.3.
-     *
-     * @return	int	current aHTransformId property value
-     * @exception	Exception
-     */
-    public AHTransformId getAHTransformId(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AHTransformId.
+	 */
 
-    return this.aHTransformId;
-    } // getAHTransformId
+	public enum AHTransformId {
+		OTHER,
+		MD5,
+		SHA_1,
+		DES
+	}
 
-    /**
-     * This method sets the AHTransform.aHTransformId property value. This
-     * property is described as follows:
-     *
-     * AHTransformId is an enumeration that specifies the hash algorithm to be
-     * used. The list of values was generated from RFC2407, Section 4.4.3.
-     *
-     * @param	int	new aHTransformId property value
-     * @exception	Exception
-     */
-    public void setAHTransformId(AHTransformId aHTransformId){
+	private AHTransformId	aHTransformId;
 
-    this.aHTransformId = aHTransformId;
-    } // setAHTransformId
+	/**
+	 * This method returns the AHTransform.aHTransformId property value. This property is described as follows:
+	 * 
+	 * AHTransformId is an enumeration that specifies the hash algorithm to be used. The list of values was generated from RFC2407, Section 4.4.3.
+	 * 
+	 * @return int current aHTransformId property value
+	 * @exception Exception
+	 */
+	public AHTransformId getAHTransformId() {
 
+		return this.aHTransformId;
+	} // getAHTransformId
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherAHTransformId.
-     */
-    private String otherAHTransformId;
-    /**
-     * This method returns the AHTransform.otherAHTransformId property value.
-     * This property is described as follows:
-     *
-     * Description of the hash algorithm when the value 1 ("Other") is
-     * specified for the property, AHTransformId.
-     *
-     * @return	String	current otherAHTransformId property value
-     * @exception	Exception
-     */
-    public String getOtherAHTransformId(){
+	/**
+	 * This method sets the AHTransform.aHTransformId property value. This property is described as follows:
+	 * 
+	 * AHTransformId is an enumeration that specifies the hash algorithm to be used. The list of values was generated from RFC2407, Section 4.4.3.
+	 * 
+	 * @param int new aHTransformId property value
+	 * @exception Exception
+	 */
+	public void setAHTransformId(AHTransformId aHTransformId) {
 
-    return this.otherAHTransformId;
-    } // getOtherAHTransformId
+		this.aHTransformId = aHTransformId;
+	} // setAHTransformId
 
-    /**
-     * This method sets the AHTransform.otherAHTransformId property value.
-     * This property is described as follows:
-     *
-     * Description of the hash algorithm when the value 1 ("Other") is
-     * specified for the property, AHTransformId.
-     *
-     * @param	String	new otherAHTransformId property value
-     * @exception	Exception
-     */
-    public void setOtherAHTransformId(String otherAHTransformId) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherAHTransformId.
+	 */
+	private String	otherAHTransformId;
 
-    this.otherAHTransformId = otherAHTransformId;
-    } // setOtherAHTransformId
+	/**
+	 * This method returns the AHTransform.otherAHTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the hash algorithm when the value 1 ("Other") is specified for the property, AHTransformId.
+	 * 
+	 * @return String current otherAHTransformId property value
+	 * @exception Exception
+	 */
+	public String getOtherAHTransformId() {
 
+		return this.otherAHTransformId;
+	} // getOtherAHTransformId
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property useReplayPrevention.
-     */
-    private boolean useReplayPrevention;
-    /**
-     * This method returns the AHTransform.useReplayPrevention property value.
-     * This property is described as follows:
-     *
-     * UseReplayPrevention causes the local peer to enable replay prevention
-     * detection. This can be accomplished by using a sequence number when
-     * sending a packet or checking the sequence number upon receipt of a
-     * packet.
-     *
-     * @return	boolean	current useReplayPrevention property
-     * value
-     * @exception	Exception
-     */
-    public boolean isUseReplayPrevention(){
+	/**
+	 * This method sets the AHTransform.otherAHTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the hash algorithm when the value 1 ("Other") is specified for the property, AHTransformId.
+	 * 
+	 * @param String
+	 *            new otherAHTransformId property value
+	 * @exception Exception
+	 */
+	public void setOtherAHTransformId(String otherAHTransformId) {
 
-    return this.useReplayPrevention;
-    } // getUseReplayPrevention
+		this.otherAHTransformId = otherAHTransformId;
+	} // setOtherAHTransformId
 
-    /**
-     * This method sets the AHTransform.useReplayPrevention property value.
-     * This property is described as follows:
-     *
-     * UseReplayPrevention causes the local peer to enable replay prevention
-     * detection. This can be accomplished by using a sequence number when
-     * sending a packet or checking the sequence number upon receipt of a
-     * packet.
-     *
-     * @param	boolean	new useReplayPrevention property value
-     * @exception	Exception
-     */
-    public void setUseReplayPrevention(boolean useReplayPrevention) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property useReplayPrevention.
+	 */
+	private boolean	useReplayPrevention;
 
-    this.useReplayPrevention = useReplayPrevention;
-    } // setUseReplayPrevention
+	/**
+	 * This method returns the AHTransform.useReplayPrevention property value. This property is described as follows:
+	 * 
+	 * UseReplayPrevention causes the local peer to enable replay prevention detection. This can be accomplished by using a sequence number when
+	 * sending a packet or checking the sequence number upon receipt of a packet.
+	 * 
+	 * @return boolean current useReplayPrevention property value
+	 * @exception Exception
+	 */
+	public boolean isUseReplayPrevention() {
 
+		return this.useReplayPrevention;
+	} // getUseReplayPrevention
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property replayPreventionWindowSize.
-     */
-    private long replayPreventionWindowSize;
-    /**
-     * This method returns the AHTransform.replayPreventionWindowSize property
-     * value. This property is described as follows:
-     *
-     * ReplayPreventionWindowsSize specifies, in bits, the length of the
-     * sliding window used by the replay prevention mechanism. The value of
-     * this property is meaningless if UseReplayPrevention is false. The
-     * window size MUST be a power of 2.
-     *
-     * @return	long	current replayPreventionWindowSize property
-     * value
-     * @exception	Exception
-     */
-    public long getReplayPreventionWindowSize(){
+	/**
+	 * This method sets the AHTransform.useReplayPrevention property value. This property is described as follows:
+	 * 
+	 * UseReplayPrevention causes the local peer to enable replay prevention detection. This can be accomplished by using a sequence number when
+	 * sending a packet or checking the sequence number upon receipt of a packet.
+	 * 
+	 * @param boolean new useReplayPrevention property value
+	 * @exception Exception
+	 */
+	public void setUseReplayPrevention(boolean useReplayPrevention) {
 
-    return this.replayPreventionWindowSize;
-    } // getReplayPreventionWindowSize
+		this.useReplayPrevention = useReplayPrevention;
+	} // setUseReplayPrevention
 
-    /**
-     * This method sets the AHTransform.replayPreventionWindowSize property
-     * value. This property is described as follows:
-     *
-     * ReplayPreventionWindowsSize specifies, in bits, the length of the
-     * sliding window used by the replay prevention mechanism. The value of
-     * this property is meaningless if UseReplayPrevention is false. The
-     * window size MUST be a power of 2.
-     *
-     * @param	long	new replayPreventionWindowSize property value
-     * @exception	Exception
-     */
-    public void setReplayPreventionWindowSize(long replayPreventionWindowSize)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property replayPreventionWindowSize.
+	 */
+	private long	replayPreventionWindowSize;
+
+	/**
+	 * This method returns the AHTransform.replayPreventionWindowSize property value. This property is described as follows:
+	 * 
+	 * ReplayPreventionWindowsSize specifies, in bits, the length of the sliding window used by the replay prevention mechanism. The value of this
+	 * property is meaningless if UseReplayPrevention is false. The window size MUST be a power of 2.
+	 * 
+	 * @return long current replayPreventionWindowSize property value
+	 * @exception Exception
+	 */
+	public long getReplayPreventionWindowSize() {
+
+		return this.replayPreventionWindowSize;
+	} // getReplayPreventionWindowSize
+
+	/**
+	 * This method sets the AHTransform.replayPreventionWindowSize property value. This property is described as follows:
+	 * 
+	 * ReplayPreventionWindowsSize specifies, in bits, the length of the sliding window used by the replay prevention mechanism. The value of this
+	 * property is meaningless if UseReplayPrevention is false. The window size MUST be a power of 2.
+	 * 
+	 * @param long new replayPreventionWindowSize property value
+	 * @exception Exception
+	 */
+	public void setReplayPreventionWindowSize(long replayPreventionWindowSize)
 	{
 
-    this.replayPreventionWindowSize = replayPreventionWindowSize;
-    } // setReplayPreventionWindowSize
-
-
+		this.replayPreventionWindowSize = replayPreventionWindowSize;
+	} // setReplayPreventionWindowSize
 
 } // Class AHTransform

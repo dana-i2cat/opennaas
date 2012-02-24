@@ -8,25 +8,21 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VirtualSystemManagementService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the VirtualSystemManagementServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VirtualSystemManagementService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the VirtualSystemManagementServiceBean Interface. The CIM class
  * VirtualSystemManagementService is described as follows:
- *
+ * 
  * Service to define and manipulate virtual systems and their components
  */
 public class VirtualSystemManagementService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a VirtualSystemManagementServiceBeanImpl Class
-     * which implements the VirtualSystemManagementServiceBean Interface, and
-     * encapsulates the CIM class VirtualSystemManagementService in a Java
-     * Bean. The CIM class VirtualSystemManagementService is described as
-     * follows:
-     *
-     * Service to define and manipulate virtual systems and their components
-     */
-    public VirtualSystemManagementService(){};
+	/**
+	 * This constructor creates a VirtualSystemManagementServiceBeanImpl Class which implements the VirtualSystemManagementServiceBean Interface, and
+	 * encapsulates the CIM class VirtualSystemManagementService in a Java Bean. The CIM class VirtualSystemManagementService is described as follows:
+	 * 
+	 * Service to define and manipulate virtual systems and their components
+	 */
+	public VirtualSystemManagementService() {
+	};
 } // Class VirtualSystemManagementService

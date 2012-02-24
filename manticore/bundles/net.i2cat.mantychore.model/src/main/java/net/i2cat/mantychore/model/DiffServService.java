@@ -9,134 +9,102 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DiffServService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DiffServServiceBean Interface. The CIM class DiffServService is described
- * as follows:
- *
- * DiffServService represents the use of standard or custom DiffServ services
- * (associated with particular Per Hop Behaviors, PHBs) to implement a
- * (higher-level) QoSService. Note that the DiffServService may be just one
- * of a set of coordinated QoSSubServices that together implement a
- * higher-level QoSService. The relationship between the QoSServices is
- * described using the association, QoSSubService.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DiffServService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the DiffServServiceBean Interface. The CIM class DiffServService is described as
+ * follows:
+ * 
+ * DiffServService represents the use of standard or custom DiffServ services (associated with particular Per Hop Behaviors, PHBs) to implement a
+ * (higher-level) QoSService. Note that the DiffServService may be just one of a set of coordinated QoSSubServices that together implement a
+ * higher-level QoSService. The relationship between the QoSServices is described using the association, QoSSubService.
  */
 public class DiffServService extends QoSService implements Serializable {
 
-    /**
-     * This constructor creates a DiffServServiceBeanImpl Class which
-     * implements the DiffServServiceBean Interface, and encapsulates the CIM
-     * class DiffServService in a Java Bean. The CIM class DiffServService is
-     * described as follows:
-     *
-     * DiffServService represents the use of standard or custom DiffServ
-     * services (associated with particular Per Hop Behaviors, PHBs) to
-     * implement a (higher-level) QoSService. Note that the DiffServService
-     * may be just one of a set of coordinated QoSSubServices that together
-     * implement a higher-level QoSService. The relationship between the
-     * QoSServices is described using the association, QoSSubService.
-     */
-    public DiffServService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dSCP.
-     */
-    @Deprecated    private short dSCP;
-    /**
-     * This method returns the DiffServService.dSCP property value. This
-     * property is described as follows:
-     *
-     * This property is an unsigned 8-bit integer, and defines the
-     * Differentiated Services Code Point (DSCP) that this link uses to
-     * represent various types of differentiated services through
-     * device-specific configuration commands. It is deprecated since this
-     * information is conveyed via filter lists, associated with
-     * ClassifierElements. The DiffServService is better represented as a Per
-     * Hop Behavior.
-     *
-     * @return	short	current dSCP property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public short getDSCP(){
+	/**
+	 * This constructor creates a DiffServServiceBeanImpl Class which implements the DiffServServiceBean Interface, and encapsulates the CIM class
+	 * DiffServService in a Java Bean. The CIM class DiffServService is described as follows:
+	 * 
+	 * DiffServService represents the use of standard or custom DiffServ services (associated with particular Per Hop Behaviors, PHBs) to implement a
+	 * (higher-level) QoSService. Note that the DiffServService may be just one of a set of coordinated QoSSubServices that together implement a
+	 * higher-level QoSService. The relationship between the QoSServices is described using the association, QoSSubService.
+	 */
+	public DiffServService() {
+	};
 
-    return this.dSCP;
-    } // getDSCP
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dSCP.
+	 */
+	@Deprecated
+	private short	dSCP;
 
-    /**
-     * This method sets the DiffServService.dSCP property value. This property
-     * is described as follows:
-     *
-     * This property is an unsigned 8-bit integer, and defines the
-     * Differentiated Services Code Point (DSCP) that this link uses to
-     * represent various types of differentiated services through
-     * device-specific configuration commands. It is deprecated since this
-     * information is conveyed via filter lists, associated with
-     * ClassifierElements. The DiffServService is better represented as a Per
-     * Hop Behavior.
-     *
-     * @param	short	new dSCP property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setDSCP(short dSCP) {
+	/**
+	 * This method returns the DiffServService.dSCP property value. This property is described as follows:
+	 * 
+	 * This property is an unsigned 8-bit integer, and defines the Differentiated Services Code Point (DSCP) that this link uses to represent various
+	 * types of differentiated services through device-specific configuration commands. It is deprecated since this information is conveyed via filter
+	 * lists, associated with ClassifierElements. The DiffServService is better represented as a Per Hop Behavior.
+	 * 
+	 * @return short current dSCP property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public short getDSCP() {
 
-    this.dSCP = dSCP;
-    } // setDSCP
+		return this.dSCP;
+	} // getDSCP
 
+	/**
+	 * This method sets the DiffServService.dSCP property value. This property is described as follows:
+	 * 
+	 * This property is an unsigned 8-bit integer, and defines the Differentiated Services Code Point (DSCP) that this link uses to represent various
+	 * types of differentiated services through device-specific configuration commands. It is deprecated since this information is conveyed via filter
+	 * lists, associated with ClassifierElements. The DiffServService is better represented as a Per Hop Behavior.
+	 * 
+	 * @param short new dSCP property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setDSCP(short dSCP) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pHBID.
-     */
-    private int pHBID;
-    /**
-     * This method returns the DiffServService.pHBID property value. This
-     * property is described as follows:
-     *
-     * A 16-bit unsigned integer which identifies a particular per hop
-     * behavior, or family of per hop behaviors. The value is a Per Hop
-     * Behavior Identification Code, as defined in [R3140]. Note that as
-     * defined, these identification codes use the default, recommended, code
-     * points for PHBs as part of their structure. These values may well be
-     * different from the actual value used in the marker, as the marked
-     * value is domain-dependent. The ability to indicate the PHB
-     * Identification Code associated with a DiffServService is helpful when
-     * tying the QoSService to reference documents, and for inter-domain
-     * coordination and operation.
-     *
-     * @return	int	current pHBID property value
-     * @exception	Exception
-     */
-    public int getPHBID(){
+		this.dSCP = dSCP;
+	} // setDSCP
 
-    return this.pHBID;
-    } // getPHBID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pHBID.
+	 */
+	private int	pHBID;
 
-    /**
-     * This method sets the DiffServService.pHBID property value. This
-     * property is described as follows:
-     *
-     * A 16-bit unsigned integer which identifies a particular per hop
-     * behavior, or family of per hop behaviors. The value is a Per Hop
-     * Behavior Identification Code, as defined in [R3140]. Note that as
-     * defined, these identification codes use the default, recommended, code
-     * points for PHBs as part of their structure. These values may well be
-     * different from the actual value used in the marker, as the marked
-     * value is domain-dependent. The ability to indicate the PHB
-     * Identification Code associated with a DiffServService is helpful when
-     * tying the QoSService to reference documents, and for inter-domain
-     * coordination and operation.
-     *
-     * @param	int	new pHBID property value
-     * @exception	Exception
-     */
-    public void setPHBID(int pHBID) {
+	/**
+	 * This method returns the DiffServService.pHBID property value. This property is described as follows:
+	 * 
+	 * A 16-bit unsigned integer which identifies a particular per hop behavior, or family of per hop behaviors. The value is a Per Hop Behavior
+	 * Identification Code, as defined in [R3140]. Note that as defined, these identification codes use the default, recommended, code points for PHBs
+	 * as part of their structure. These values may well be different from the actual value used in the marker, as the marked value is
+	 * domain-dependent. The ability to indicate the PHB Identification Code associated with a DiffServService is helpful when tying the QoSService to
+	 * reference documents, and for inter-domain coordination and operation.
+	 * 
+	 * @return int current pHBID property value
+	 * @exception Exception
+	 */
+	public int getPHBID() {
 
-    this.pHBID = pHBID;
-    } // setPHBID
+		return this.pHBID;
+	} // getPHBID
 
+	/**
+	 * This method sets the DiffServService.pHBID property value. This property is described as follows:
+	 * 
+	 * A 16-bit unsigned integer which identifies a particular per hop behavior, or family of per hop behaviors. The value is a Per Hop Behavior
+	 * Identification Code, as defined in [R3140]. Note that as defined, these identification codes use the default, recommended, code points for PHBs
+	 * as part of their structure. These values may well be different from the actual value used in the marker, as the marked value is
+	 * domain-dependent. The ability to indicate the PHB Identification Code associated with a DiffServService is helpful when tying the QoSService to
+	 * reference documents, and for inter-domain coordination and operation.
+	 * 
+	 * @param int new pHBID property value
+	 * @exception Exception
+	 */
+	public void setPHBID(int pHBID) {
 
+		this.pHBID = pHBID;
+	} // setPHBID
 
 } // Class DiffServService

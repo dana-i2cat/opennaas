@@ -9,106 +9,88 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LaunchInContextCapabilities as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * LaunchInContextCapabilitiesBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LaunchInContextCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the LaunchInContextCapabilitiesBean Interface. The CIM class
  * LaunchInContextCapabilities is described as follows:
- *
+ * 
  * This class exposes the capabilities of the Launch in Context service.
  */
 public class LaunchInContextCapabilities extends
-    EnabledLogicalElementCapabilities implements Serializable {
+		EnabledLogicalElementCapabilities implements Serializable {
 
-    /**
-     * This constructor creates a LaunchInContextCapabilitiesBeanImpl Class
-     * which implements the LaunchInContextCapabilitiesBean Interface, and
-     * encapsulates the CIM class LaunchInContextCapabilities in a Java Bean.
-     * The CIM class LaunchInContextCapabilities is described as follows:
-     *
-     * This class exposes the capabilities of the Launch in Context service.
-     */
-    public LaunchInContextCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxRestrictionListSize.
-     */
-    private int maxRestrictionListSize;
-    /**
-     * This method returns the
-     * LaunchInContextCapabilities.maxRestrictionListSize property value.
-     * This property is described as follows:
-     *
-     * This property asserts the maximum accepted size of the
-     * RestrictedToElement array parameter used in the
-     * CIM_LaunchInContextService methods: CreateLaunchPoint,
-     * RemoveLaunchPoint, and AssertLaunchPoint. A zero indicates no defined
-     * limit.
-     *
-     * @return	int	current maxRestrictionListSize property value
-     * @exception	Exception
-     */
-    public int getMaxRestrictionListSize(){
+	/**
+	 * This constructor creates a LaunchInContextCapabilitiesBeanImpl Class which implements the LaunchInContextCapabilitiesBean Interface, and
+	 * encapsulates the CIM class LaunchInContextCapabilities in a Java Bean. The CIM class LaunchInContextCapabilities is described as follows:
+	 * 
+	 * This class exposes the capabilities of the Launch in Context service.
+	 */
+	public LaunchInContextCapabilities() {
+	};
 
-    return this.maxRestrictionListSize;
-    } // getMaxRestrictionListSize
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxRestrictionListSize.
+	 */
+	private int	maxRestrictionListSize;
 
-    /**
-     * This method sets the LaunchInContextCapabilities.maxRestrictionListSize
-     * property value. This property is described as follows:
-     *
-     * This property asserts the maximum accepted size of the
-     * RestrictedToElement array parameter used in the
-     * CIM_LaunchInContextService methods: CreateLaunchPoint,
-     * RemoveLaunchPoint, and AssertLaunchPoint. A zero indicates no defined
-     * limit.
-     *
-     * @param	int	new maxRestrictionListSize property value
-     * @exception	Exception
-     */
-    public void setMaxRestrictionListSize(int maxRestrictionListSize) {
+	/**
+	 * This method returns the LaunchInContextCapabilities.maxRestrictionListSize property value. This property is described as follows:
+	 * 
+	 * This property asserts the maximum accepted size of the RestrictedToElement array parameter used in the CIM_LaunchInContextService methods:
+	 * CreateLaunchPoint, RemoveLaunchPoint, and AssertLaunchPoint. A zero indicates no defined limit.
+	 * 
+	 * @return int current maxRestrictionListSize property value
+	 * @exception Exception
+	 */
+	public int getMaxRestrictionListSize() {
 
-    this.maxRestrictionListSize = maxRestrictionListSize;
-    } // setMaxRestrictionListSize
+		return this.maxRestrictionListSize;
+	} // getMaxRestrictionListSize
 
+	/**
+	 * This method sets the LaunchInContextCapabilities.maxRestrictionListSize property value. This property is described as follows:
+	 * 
+	 * This property asserts the maximum accepted size of the RestrictedToElement array parameter used in the CIM_LaunchInContextService methods:
+	 * CreateLaunchPoint, RemoveLaunchPoint, and AssertLaunchPoint. A zero indicates no defined limit.
+	 * 
+	 * @param int new maxRestrictionListSize property value
+	 * @exception Exception
+	 */
+	public void setMaxRestrictionListSize(int maxRestrictionListSize) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxLaunchPoints.
-     */
-    private int maxLaunchPoints;
-    /**
-     * This method returns the LaunchInContextCapabilities.maxLaunchPoints
-     * property value. This property is described as follows:
-     *
-     * This property asserts the maximum number of CIM_LaunchInContextSAP
-     * instances that may be instantiated at one time within the modeled
-     * implementation. A zero indicates no defined limit.
-     *
-     * @return	int	current maxLaunchPoints property value
-     * @exception	Exception
-     */
-    public int getMaxLaunchPoints(){
+		this.maxRestrictionListSize = maxRestrictionListSize;
+	} // setMaxRestrictionListSize
 
-    return this.maxLaunchPoints;
-    } // getMaxLaunchPoints
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxLaunchPoints.
+	 */
+	private int	maxLaunchPoints;
 
-    /**
-     * This method sets the LaunchInContextCapabilities.maxLaunchPoints
-     * property value. This property is described as follows:
-     *
-     * This property asserts the maximum number of CIM_LaunchInContextSAP
-     * instances that may be instantiated at one time within the modeled
-     * implementation. A zero indicates no defined limit.
-     *
-     * @param	int	new maxLaunchPoints property value
-     * @exception	Exception
-     */
-    public void setMaxLaunchPoints(int maxLaunchPoints) {
+	/**
+	 * This method returns the LaunchInContextCapabilities.maxLaunchPoints property value. This property is described as follows:
+	 * 
+	 * This property asserts the maximum number of CIM_LaunchInContextSAP instances that may be instantiated at one time within the modeled
+	 * implementation. A zero indicates no defined limit.
+	 * 
+	 * @return int current maxLaunchPoints property value
+	 * @exception Exception
+	 */
+	public int getMaxLaunchPoints() {
 
-    this.maxLaunchPoints = maxLaunchPoints;
-    } // setMaxLaunchPoints
+		return this.maxLaunchPoints;
+	} // getMaxLaunchPoints
 
+	/**
+	 * This method sets the LaunchInContextCapabilities.maxLaunchPoints property value. This property is described as follows:
+	 * 
+	 * This property asserts the maximum number of CIM_LaunchInContextSAP instances that may be instantiated at one time within the modeled
+	 * implementation. A zero indicates no defined limit.
+	 * 
+	 * @param int new maxLaunchPoints property value
+	 * @exception Exception
+	 */
+	public void setMaxLaunchPoints(int maxLaunchPoints) {
 
+		this.maxLaunchPoints = maxLaunchPoints;
+	} // setMaxLaunchPoints
 
 } // Class LaunchInContextCapabilities

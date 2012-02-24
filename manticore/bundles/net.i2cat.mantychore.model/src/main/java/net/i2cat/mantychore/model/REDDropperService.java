@@ -9,277 +9,217 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class REDDropperService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * REDDropperServiceBean Interface. The CIM class REDDropperService is
- * described as follows:
- *
- * REDDropperService represents the ability to drop network traffic using a
- * Random Early Detection (RED) algorithm. The purpose of a RED algorithm is
- * to avoid congestion (as opposed to managing congestion). Instead of
- * waiting for the queues to fill up, and then dropping large numbers of
- * packets, RED works by monitoring average queue depth. When the queue depth
- * exceeds a minimum threshold, packets are randomly discarded. These
- * discards cause TCP to slow its transmission rate for those connections
- * that experienced the packet discards. Other connections are not affected
- * by these discards. A RED dropper always drops packets from a single queue,
- * which is related to the dropper as the following Service in the
- * NextService association. The queue(s) examined by the drop algorithm are
- * found by following the CalculationServiceForDropper association(s) to
- * determine the dropper's DropThresholdCalculationService(s), and then
- * following the CalculationBasedOnQueue association to find the queue being
- * watched by each CalculationService.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class REDDropperService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the REDDropperServiceBean Interface. The CIM class REDDropperService is described as
+ * follows:
+ * 
+ * REDDropperService represents the ability to drop network traffic using a Random Early Detection (RED) algorithm. The purpose of a RED algorithm is
+ * to avoid congestion (as opposed to managing congestion). Instead of waiting for the queues to fill up, and then dropping large numbers of packets,
+ * RED works by monitoring average queue depth. When the queue depth exceeds a minimum threshold, packets are randomly discarded. These discards cause
+ * TCP to slow its transmission rate for those connections that experienced the packet discards. Other connections are not affected by these discards.
+ * A RED dropper always drops packets from a single queue, which is related to the dropper as the following Service in the NextService association.
+ * The queue(s) examined by the drop algorithm are found by following the CalculationServiceForDropper association(s) to determine the dropper's
+ * DropThresholdCalculationService(s), and then following the CalculationBasedOnQueue association to find the queue being watched by each
+ * CalculationService.
  */
 public class REDDropperService extends DropperService implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a REDDropperServiceBeanImpl Class which
-     * implements the REDDropperServiceBean Interface, and encapsulates the
-     * CIM class REDDropperService in a Java Bean. The CIM class
-     * REDDropperService is described as follows:
-     *
-     * REDDropperService represents the ability to drop network traffic using
-     * a Random Early Detection (RED) algorithm. The purpose of a RED
-     * algorithm is to avoid congestion (as opposed to managing congestion).
-     * Instead of waiting for the queues to fill up, and then dropping large
-     * numbers of packets, RED works by monitoring average queue depth. When
-     * the queue depth exceeds a minimum threshold, packets are randomly
-     * discarded. These discards cause TCP to slow its transmission rate for
-     * those connections that experienced the packet discards. Other
-     * connections are not affected by these discards. A RED dropper always
-     * drops packets from a single queue, which is related to the dropper as
-     * the following Service in the NextService association. The queue(s)
-     * examined by the drop algorithm are found by following the
-     * CalculationServiceForDropper association(s) to determine the dropper's
-     * DropThresholdCalculationService(s), and then following the
-     * CalculationBasedOnQueue association to find the queue being watched by
-     * each CalculationService.
-     */
-    public REDDropperService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minQueueThreshold.
-     */
-    private long minQueueThreshold;
-    /**
-     * This method returns the REDDropperService.minQueueThreshold property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that defines the minimum average
-     * queue depth at which packets are subject to being dropped. (See the
-     * ThresholdUnits property to determine the units of the threshold.) The
-     * slope of the drop probability function is described by the
-     * Start/StopProbability properties.
-     *
-     * @return	long	current minQueueThreshold property value
-     * @exception	Exception
-     */
-    public long getMinQueueThreshold(){
+	/**
+	 * This constructor creates a REDDropperServiceBeanImpl Class which implements the REDDropperServiceBean Interface, and encapsulates the CIM class
+	 * REDDropperService in a Java Bean. The CIM class REDDropperService is described as follows:
+	 * 
+	 * REDDropperService represents the ability to drop network traffic using a Random Early Detection (RED) algorithm. The purpose of a RED algorithm
+	 * is to avoid congestion (as opposed to managing congestion). Instead of waiting for the queues to fill up, and then dropping large numbers of
+	 * packets, RED works by monitoring average queue depth. When the queue depth exceeds a minimum threshold, packets are randomly discarded. These
+	 * discards cause TCP to slow its transmission rate for those connections that experienced the packet discards. Other connections are not affected
+	 * by these discards. A RED dropper always drops packets from a single queue, which is related to the dropper as the following Service in the
+	 * NextService association. The queue(s) examined by the drop algorithm are found by following the CalculationServiceForDropper association(s) to
+	 * determine the dropper's DropThresholdCalculationService(s), and then following the CalculationBasedOnQueue association to find the queue being
+	 * watched by each CalculationService.
+	 */
+	public REDDropperService() {
+	};
 
-    return this.minQueueThreshold;
-    } // getMinQueueThreshold
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minQueueThreshold.
+	 */
+	private long	minQueueThreshold;
 
-    /**
-     * This method sets the REDDropperService.minQueueThreshold property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that defines the minimum average
-     * queue depth at which packets are subject to being dropped. (See the
-     * ThresholdUnits property to determine the units of the threshold.) The
-     * slope of the drop probability function is described by the
-     * Start/StopProbability properties.
-     *
-     * @param	long	new minQueueThreshold property value
-     * @exception	Exception
-     */
-    public void setMinQueueThreshold(long minQueueThreshold) {
+	/**
+	 * This method returns the REDDropperService.minQueueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that defines the minimum average queue depth at which packets are subject to being dropped. (See the
+	 * ThresholdUnits property to determine the units of the threshold.) The slope of the drop probability function is described by the
+	 * Start/StopProbability properties.
+	 * 
+	 * @return long current minQueueThreshold property value
+	 * @exception Exception
+	 */
+	public long getMinQueueThreshold() {
 
-    this.minQueueThreshold = minQueueThreshold;
-    } // setMinQueueThreshold
+		return this.minQueueThreshold;
+	} // getMinQueueThreshold
 
+	/**
+	 * This method sets the REDDropperService.minQueueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that defines the minimum average queue depth at which packets are subject to being dropped. (See the
+	 * ThresholdUnits property to determine the units of the threshold.) The slope of the drop probability function is described by the
+	 * Start/StopProbability properties.
+	 * 
+	 * @param long new minQueueThreshold property value
+	 * @exception Exception
+	 */
+	public void setMinQueueThreshold(long minQueueThreshold) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxQueueThreshold.
-     */
-    private long maxQueueThreshold;
-    /**
-     * This method returns the REDDropperService.maxQueueThreshold property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that defines the maximum average
-     * queue length at which packets are subject to always being dropped,
-     * regardless of the dropping algorithm and probabilities being used.
-     * (See the ThresholdUnits property to determine the units of the
-     * threshold.)
-     *
-     * @return	long	current maxQueueThreshold property value
-     * @exception	Exception
-     */
-    public long getMaxQueueThreshold(){
+		this.minQueueThreshold = minQueueThreshold;
+	} // setMinQueueThreshold
 
-    return this.maxQueueThreshold;
-    } // getMaxQueueThreshold
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxQueueThreshold.
+	 */
+	private long	maxQueueThreshold;
 
-    /**
-     * This method sets the REDDropperService.maxQueueThreshold property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that defines the maximum average
-     * queue length at which packets are subject to always being dropped,
-     * regardless of the dropping algorithm and probabilities being used.
-     * (See the ThresholdUnits property to determine the units of the
-     * threshold.)
-     *
-     * @param	long	new maxQueueThreshold property value
-     * @exception	Exception
-     */
-    public void setMaxQueueThreshold(long maxQueueThreshold) {
+	/**
+	 * This method returns the REDDropperService.maxQueueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that defines the maximum average queue length at which packets are subject to always being dropped,
+	 * regardless of the dropping algorithm and probabilities being used. (See the ThresholdUnits property to determine the units of the threshold.)
+	 * 
+	 * @return long current maxQueueThreshold property value
+	 * @exception Exception
+	 */
+	public long getMaxQueueThreshold() {
 
-    this.maxQueueThreshold = maxQueueThreshold;
-    } // setMaxQueueThreshold
+		return this.maxQueueThreshold;
+	} // getMaxQueueThreshold
 
+	/**
+	 * This method sets the REDDropperService.maxQueueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that defines the maximum average queue length at which packets are subject to always being dropped,
+	 * regardless of the dropping algorithm and probabilities being used. (See the ThresholdUnits property to determine the units of the threshold.)
+	 * 
+	 * @param long new maxQueueThreshold property value
+	 * @exception Exception
+	 */
+	public void setMaxQueueThreshold(long maxQueueThreshold) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property startProbability.
-     */
-    private long startProbability;
-    /**
-     * This method returns the REDDropperService.startProbability property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer, used in conjunction with the
-     * StopDropProbability property. The start and stop probabilities define
-     * the slope of the drop probability function. This function governs the
-     * rate at which packets are subject to being dropped, as a function of
-     * the queue length. This property expresses a drop probability in drops
-     * per thousand packets. For example, the value 100 indicates a drop
-     * probability of 100 per 1000 packets, that is, 10%. Min and max values
-     * are 0 to 1000.
-     *
-     * @return	long	current startProbability property value
-     * @exception	Exception
-     */
-    public long getStartProbability(){
+		this.maxQueueThreshold = maxQueueThreshold;
+	} // setMaxQueueThreshold
 
-    return this.startProbability;
-    } // getStartProbability
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property startProbability.
+	 */
+	private long	startProbability;
 
-    /**
-     * This method sets the REDDropperService.startProbability property value.
-     * This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer, used in conjunction with the
-     * StopDropProbability property. The start and stop probabilities define
-     * the slope of the drop probability function. This function governs the
-     * rate at which packets are subject to being dropped, as a function of
-     * the queue length. This property expresses a drop probability in drops
-     * per thousand packets. For example, the value 100 indicates a drop
-     * probability of 100 per 1000 packets, that is, 10%. Min and max values
-     * are 0 to 1000.
-     *
-     * @param	long	new startProbability property value
-     * @exception	Exception
-     */
-    public void setStartProbability(long startProbability) {
+	/**
+	 * This method returns the REDDropperService.startProbability property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer, used in conjunction with the StopDropProbability property. The start and stop probabilities define the
+	 * slope of the drop probability function. This function governs the rate at which packets are subject to being dropped, as a function of the
+	 * queue length. This property expresses a drop probability in drops per thousand packets. For example, the value 100 indicates a drop probability
+	 * of 100 per 1000 packets, that is, 10%. Min and max values are 0 to 1000.
+	 * 
+	 * @return long current startProbability property value
+	 * @exception Exception
+	 */
+	public long getStartProbability() {
 
-    this.startProbability = startProbability;
-    } // setStartProbability
+		return this.startProbability;
+	} // getStartProbability
 
+	/**
+	 * This method sets the REDDropperService.startProbability property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer, used in conjunction with the StopDropProbability property. The start and stop probabilities define the
+	 * slope of the drop probability function. This function governs the rate at which packets are subject to being dropped, as a function of the
+	 * queue length. This property expresses a drop probability in drops per thousand packets. For example, the value 100 indicates a drop probability
+	 * of 100 per 1000 packets, that is, 10%. Min and max values are 0 to 1000.
+	 * 
+	 * @param long new startProbability property value
+	 * @exception Exception
+	 */
+	public void setStartProbability(long startProbability) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property stopProbability.
-     */
-    private long stopProbability;
-    /**
-     * This method returns the REDDropperService.stopProbability property
-     * value. This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer, used in conjunction with the
-     * StartDropProbability property. The start and stop probabilities define
-     * the slope of the drop probability function. This function governs the
-     * rate at which packets are subject to being dropped, as a function of
-     * the queue length. This property expresses a drop probability in drops
-     * per thousand packets. For example, the value 100 indicates a drop
-     * probability of 100 per 1000 packets, that is, 10%. Min and max values
-     * are 0 to 1000.
-     *
-     * @return	long	current stopProbability property value
-     * @exception	Exception
-     */
-    public long getStopProbability(){
+		this.startProbability = startProbability;
+	} // setStartProbability
 
-    return this.stopProbability;
-    } // getStopProbability
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property stopProbability.
+	 */
+	private long	stopProbability;
 
-    /**
-     * This method sets the REDDropperService.stopProbability property value.
-     * This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer, used in conjunction with the
-     * StartDropProbability property. The start and stop probabilities define
-     * the slope of the drop probability function. This function governs the
-     * rate at which packets are subject to being dropped, as a function of
-     * the queue length. This property expresses a drop probability in drops
-     * per thousand packets. For example, the value 100 indicates a drop
-     * probability of 100 per 1000 packets, that is, 10%. Min and max values
-     * are 0 to 1000.
-     *
-     * @param	long	new stopProbability property value
-     * @exception	Exception
-     */
-    public void setStopProbability(long stopProbability) {
+	/**
+	 * This method returns the REDDropperService.stopProbability property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer, used in conjunction with the StartDropProbability property. The start and stop probabilities define the
+	 * slope of the drop probability function. This function governs the rate at which packets are subject to being dropped, as a function of the
+	 * queue length. This property expresses a drop probability in drops per thousand packets. For example, the value 100 indicates a drop probability
+	 * of 100 per 1000 packets, that is, 10%. Min and max values are 0 to 1000.
+	 * 
+	 * @return long current stopProbability property value
+	 * @exception Exception
+	 */
+	public long getStopProbability() {
 
-    this.stopProbability = stopProbability;
-    } // setStopProbability
+		return this.stopProbability;
+	} // getStopProbability
 
+	/**
+	 * This method sets the REDDropperService.stopProbability property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer, used in conjunction with the StartDropProbability property. The start and stop probabilities define the
+	 * slope of the drop probability function. This function governs the rate at which packets are subject to being dropped, as a function of the
+	 * queue length. This property expresses a drop probability in drops per thousand packets. For example, the value 100 indicates a drop probability
+	 * of 100 per 1000 packets, that is, 10%. Min and max values are 0 to 1000.
+	 * 
+	 * @param long new stopProbability property value
+	 * @exception Exception
+	 */
+	public void setStopProbability(long stopProbability) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ThresholdUnits.
-     */
+		this.stopProbability = stopProbability;
+	} // setStopProbability
 
-    public enum ThresholdUnits{
-    BYTES,
-    PACKETS
-    }
-    private ThresholdUnits thresholdUnits;
-    /**
-     * This method returns the REDDropperService.thresholdUnits property
-     * value. This property is described as follows:
-     *
-     * ThresholdUnits is an enumerated integer that identifies the units for
-     * the Min and MaxQueueThreshold properties. The values are either bytes
-     * (1) or packets (2).
-     *
-     * @return	int	current thresholdUnits property value
-     * @exception	Exception
-     */
-    public ThresholdUnits getThresholdUnits(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ThresholdUnits.
+	 */
 
-    return this.thresholdUnits;
-    } // getThresholdUnits
+	public enum ThresholdUnits {
+		BYTES,
+		PACKETS
+	}
 
-    /**
-     * This method sets the REDDropperService.thresholdUnits property value.
-     * This property is described as follows:
-     *
-     * ThresholdUnits is an enumerated integer that identifies the units for
-     * the Min and MaxQueueThreshold properties. The values are either bytes
-     * (1) or packets (2).
-     *
-     * @param	int	new thresholdUnits property value
-     * @exception	Exception
-     */
-    public void setThresholdUnits(ThresholdUnits thresholdUnits){
+	private ThresholdUnits	thresholdUnits;
 
-    this.thresholdUnits = thresholdUnits;
-    } // setThresholdUnits
+	/**
+	 * This method returns the REDDropperService.thresholdUnits property value. This property is described as follows:
+	 * 
+	 * ThresholdUnits is an enumerated integer that identifies the units for the Min and MaxQueueThreshold properties. The values are either bytes (1)
+	 * or packets (2).
+	 * 
+	 * @return int current thresholdUnits property value
+	 * @exception Exception
+	 */
+	public ThresholdUnits getThresholdUnits() {
 
+		return this.thresholdUnits;
+	} // getThresholdUnits
 
+	/**
+	 * This method sets the REDDropperService.thresholdUnits property value. This property is described as follows:
+	 * 
+	 * ThresholdUnits is an enumerated integer that identifies the units for the Min and MaxQueueThreshold properties. The values are either bytes (1)
+	 * or packets (2).
+	 * 
+	 * @param int new thresholdUnits property value
+	 * @exception Exception
+	 */
+	public void setThresholdUnits(ThresholdUnits thresholdUnits) {
+
+		this.thresholdUnits = thresholdUnits;
+	} // setThresholdUnits
 
 } // Class REDDropperService

@@ -59,6 +59,7 @@
 		<feature version="1.0.0-SNAPSHOT">i2cat-mantychore-network</feature>
 		<feature version="1.0.0-SNAPSHOT">i2cat-nexus-testprofile</feature>
 		<feature version="1.0.0-SNAPSHOT">opennaas-bod</feature>
+		<feature version="1.0.0-SNAPSHOT">opennaas-router</feature>
 	</feature>
 	<feature name="i2cat-luminis-deps" version="1.0.0-SNAPSHOT">
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-jxpath/1.2_4</bundle>
@@ -84,5 +85,9 @@
 		<bundle>mvn:org.opennaas.bod.repository/org.opennaas.bod.repository/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas.bod.capability/org.opennaas.bod.capability.l2bod/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas.bod.actionsets/org.opennaas.bod.actionsets/1.0.0-SNAPSHOT</bundle>
+	</feature>
+	<feature name="opennaas-router" version="1.0.0-SNAPSHOT">
+		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.gretunnel/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.ospf/1.0.0-SNAPSHOT</bundle>
 	</feature>
 </features>

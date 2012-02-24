@@ -9,126 +9,96 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPIPRoute as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * BGPIPRouteBean Interface. The CIM class BGPIPRoute is described as
- * follows:
- *
- * BGPIPRoute describes a BGP routing entry that connects two peer routers
- * that are running BGP. The source and destination addresses may be either
- * specific IP endpoints or IP subnets. Examining the BGPIPRoute class
- * definition, note that its superclass IPRoute is deprecated. Unfortunately,
- * IPRoute cannot be removed from the object hierarchy without a major Schema
- * release. When/if this occurs, the IPRoute superclass will be removed, and
- * BGPIPRoute will subclass from CIM_NextHopRouting directly.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPIPRoute as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the BGPIPRouteBean Interface. The CIM class BGPIPRoute is described as follows:
+ * 
+ * BGPIPRoute describes a BGP routing entry that connects two peer routers that are running BGP. The source and destination addresses may be either
+ * specific IP endpoints or IP subnets. Examining the BGPIPRoute class definition, note that its superclass IPRoute is deprecated. Unfortunately,
+ * IPRoute cannot be removed from the object hierarchy without a major Schema release. When/if this occurs, the IPRoute superclass will be removed,
+ * and BGPIPRoute will subclass from CIM_NextHopRouting directly.
  */
 public class BGPIPRoute extends IPRoute implements Serializable {
 
-    /**
-     * This constructor creates a BGPIPRouteBeanImpl Class which implements
-     * the BGPIPRouteBean Interface, and encapsulates the CIM class
-     * BGPIPRoute in a Java Bean. The CIM class BGPIPRoute is described as
-     * follows:
-     *
-     * BGPIPRoute describes a BGP routing entry that connects two peer routers
-     * that are running BGP. The source and destination addresses may be
-     * either specific IP endpoints or IP subnets. Examining the BGPIPRoute
-     * class definition, note that its superclass IPRoute is deprecated.
-     * Unfortunately, IPRoute cannot be removed from the object hierarchy
-     * without a major Schema release. When/if this occurs, the IPRoute
-     * superclass will be removed, and BGPIPRoute will subclass from
-     * CIM_NextHopRouting directly.
-     */
-    public BGPIPRoute(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property isBackDoorRoute.
-     */
-    private boolean isBackDoorRoute;
-    /**
-     * This method returns the BGPIPRoute.isBackDoorRoute property value. This
-     * property is described as follows:
-     *
-     * Usually, the administrative distance is used to determine which route
-     * gets installed in the routing table. Using this scheme, routes learned
-     * via EBGP will win over routes learned via an IGP. If this is not
-     * desired, then this assigns the administrative distance of this route
-     * to be equal to that of a local route, which means that the same route
-     * learned by an IGP will have a lower administrative distance and be
-     * installed instead.
-     *
-     * @return	boolean	current isBackDoorRoute property value
-     * @exception	Exception
-     */
-    public boolean isIsBackDoorRoute(){
+	/**
+	 * This constructor creates a BGPIPRouteBeanImpl Class which implements the BGPIPRouteBean Interface, and encapsulates the CIM class BGPIPRoute in
+	 * a Java Bean. The CIM class BGPIPRoute is described as follows:
+	 * 
+	 * BGPIPRoute describes a BGP routing entry that connects two peer routers that are running BGP. The source and destination addresses may be
+	 * either specific IP endpoints or IP subnets. Examining the BGPIPRoute class definition, note that its superclass IPRoute is deprecated.
+	 * Unfortunately, IPRoute cannot be removed from the object hierarchy without a major Schema release. When/if this occurs, the IPRoute superclass
+	 * will be removed, and BGPIPRoute will subclass from CIM_NextHopRouting directly.
+	 */
+	public BGPIPRoute() {
+	};
 
-    return this.isBackDoorRoute;
-    } // getIsBackDoorRoute
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property isBackDoorRoute.
+	 */
+	private boolean	isBackDoorRoute;
 
-    /**
-     * This method sets the BGPIPRoute.isBackDoorRoute property value. This
-     * property is described as follows:
-     *
-     * Usually, the administrative distance is used to determine which route
-     * gets installed in the routing table. Using this scheme, routes learned
-     * via EBGP will win over routes learned via an IGP. If this is not
-     * desired, then this assigns the administrative distance of this route
-     * to be equal to that of a local route, which means that the same route
-     * learned by an IGP will have a lower administrative distance and be
-     * installed instead.
-     *
-     * @param	boolean	new isBackDoorRoute property value
-     * @exception	Exception
-     */
-    public void setIsBackDoorRoute(boolean isBackDoorRoute) {
+	/**
+	 * This method returns the BGPIPRoute.isBackDoorRoute property value. This property is described as follows:
+	 * 
+	 * Usually, the administrative distance is used to determine which route gets installed in the routing table. Using this scheme, routes learned
+	 * via EBGP will win over routes learned via an IGP. If this is not desired, then this assigns the administrative distance of this route to be
+	 * equal to that of a local route, which means that the same route learned by an IGP will have a lower administrative distance and be installed
+	 * instead.
+	 * 
+	 * @return boolean current isBackDoorRoute property value
+	 * @exception Exception
+	 */
+	public boolean isIsBackDoorRoute() {
 
-    this.isBackDoorRoute = isBackDoorRoute;
-    } // setIsBackDoorRoute
+		return this.isBackDoorRoute;
+	} // getIsBackDoorRoute
 
+	/**
+	 * This method sets the BGPIPRoute.isBackDoorRoute property value. This property is described as follows:
+	 * 
+	 * Usually, the administrative distance is used to determine which route gets installed in the routing table. Using this scheme, routes learned
+	 * via EBGP will win over routes learned via an IGP. If this is not desired, then this assigns the administrative distance of this route to be
+	 * equal to that of a local route, which means that the same route learned by an IGP will have a lower administrative distance and be installed
+	 * instead.
+	 * 
+	 * @param boolean new isBackDoorRoute property value
+	 * @exception Exception
+	 */
+	public void setIsBackDoorRoute(boolean isBackDoorRoute) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property usesLoopbackPeering.
-     */
-    private boolean usesLoopbackPeering;
-    /**
-     * This method returns the BGPIPRoute.usesLoopbackPeering property value.
-     * This property is described as follows:
-     *
-     * Loopback interfaces are often used by IBGP peers, because they
-     * eliminate a dependency that would otherwise occur if the actual IP
-     * address of a physical interface was used to configure BGP. The
-     * loopback interface instead instructs the router to use any available
-     * interface.
-     *
-     * @return	boolean	current usesLoopbackPeering property
-     * value
-     * @exception	Exception
-     */
-    public boolean isUsesLoopbackPeering(){
+		this.isBackDoorRoute = isBackDoorRoute;
+	} // setIsBackDoorRoute
 
-    return this.usesLoopbackPeering;
-    } // getUsesLoopbackPeering
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property usesLoopbackPeering.
+	 */
+	private boolean	usesLoopbackPeering;
 
-    /**
-     * This method sets the BGPIPRoute.usesLoopbackPeering property value.
-     * This property is described as follows:
-     *
-     * Loopback interfaces are often used by IBGP peers, because they
-     * eliminate a dependency that would otherwise occur if the actual IP
-     * address of a physical interface was used to configure BGP. The
-     * loopback interface instead instructs the router to use any available
-     * interface.
-     *
-     * @param	boolean	new usesLoopbackPeering property value
-     * @exception	Exception
-     */
-    public void setUsesLoopbackPeering(boolean usesLoopbackPeering) {
+	/**
+	 * This method returns the BGPIPRoute.usesLoopbackPeering property value. This property is described as follows:
+	 * 
+	 * Loopback interfaces are often used by IBGP peers, because they eliminate a dependency that would otherwise occur if the actual IP address of a
+	 * physical interface was used to configure BGP. The loopback interface instead instructs the router to use any available interface.
+	 * 
+	 * @return boolean current usesLoopbackPeering property value
+	 * @exception Exception
+	 */
+	public boolean isUsesLoopbackPeering() {
 
-    this.usesLoopbackPeering = usesLoopbackPeering;
-    } // setUsesLoopbackPeering
+		return this.usesLoopbackPeering;
+	} // getUsesLoopbackPeering
 
+	/**
+	 * This method sets the BGPIPRoute.usesLoopbackPeering property value. This property is described as follows:
+	 * 
+	 * Loopback interfaces are often used by IBGP peers, because they eliminate a dependency that would otherwise occur if the actual IP address of a
+	 * physical interface was used to configure BGP. The loopback interface instead instructs the router to use any available interface.
+	 * 
+	 * @param boolean new usesLoopbackPeering property value
+	 * @exception Exception
+	 */
+	public void setUsesLoopbackPeering(boolean usesLoopbackPeering) {
 
+		this.usesLoopbackPeering = usesLoopbackPeering;
+	} // setUsesLoopbackPeering
 
 } // Class BGPIPRoute

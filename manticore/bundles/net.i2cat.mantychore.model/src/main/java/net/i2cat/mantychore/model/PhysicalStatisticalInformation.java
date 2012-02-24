@@ -11,7 +11,7 @@ import java.io.Serializable;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class PhysicalStatisticalInformation as well as methods
  * comparable to the invokeMethods defined for this class. This Class implements the PhysicalStatisticalInformationBean Interface. The CIM class
  * PhysicalStatisticalInformation is described as follows:
- *
+ * 
  * Statistical information associated with a PhysicalElement or one of its subclasses.
  */
 public class PhysicalStatisticalInformation extends StatisticalInformation
@@ -20,7 +20,7 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 	/**
 	 * This constructor creates a PhysicalStatisticalInformationBeanImpl Class which implements the PhysicalStatisticalInformationBean Interface, and
 	 * encapsulates the CIM class PhysicalStatisticalInformation in a Java Bean. The CIM class PhysicalStatisticalInformation is described as follows:
-	 *
+	 * 
 	 * Statistical information associated with a PhysicalElement or one of its subclasses.
 	 */
 	public PhysicalStatisticalInformation() {
@@ -33,9 +33,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method returns the PhysicalStatisticalInformation.physicalCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping Element's CreationClassName.
-	 *
+	 * 
 	 * @return String current physicalCreationClassName property value
 	 * @exception Exception
 	 */
@@ -46,9 +46,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method sets the PhysicalStatisticalInformation.physicalCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping Element's CreationClassName.
-	 *
+	 * 
 	 * @param String
 	 *            new physicalCreationClassName property value
 	 * @exception Exception
@@ -65,9 +65,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method returns the PhysicalStatisticalInformation.tag property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping Element's identifying Tag.
-	 *
+	 * 
 	 * @return String current tag property value
 	 * @exception Exception
 	 */
@@ -78,9 +78,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method sets the PhysicalStatisticalInformation.tag property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping Element's identifying Tag.
-	 *
+	 * 
 	 * @param String
 	 *            new tag property value
 	 * @exception Exception
@@ -97,10 +97,10 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method returns the PhysicalStatisticalInformation.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @return String current creationClassName property value
 	 * @exception Exception
 	 */
@@ -111,10 +111,10 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method sets the PhysicalStatisticalInformation.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @param String
 	 *            new creationClassName property value
 	 * @exception Exception
@@ -131,9 +131,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method returns the PhysicalStatisticalInformation.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -144,9 +144,9 @@ public class PhysicalStatisticalInformation extends StatisticalInformation
 
 	/**
 	 * This method sets the PhysicalStatisticalInformation.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property, inherited from StatisticalInformation, serves as part of the object key.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception

@@ -8,36 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ServiceStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ServiceStatisticsBean Interface. The CIM class ServiceStatistics is
- * described as follows:
- *
- * ServiceStatistics relates the ServiceStatisticalInformation class to the
- * Service to which it applies.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceStatistics as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ServiceStatisticsBean Interface. The CIM class ServiceStatistics is described as
+ * follows:
+ * 
+ * ServiceStatistics relates the ServiceStatisticalInformation class to the Service to which it applies.
  */
 public class ServiceStatistics extends Statistics implements Serializable {
 
-    /**
-     * This constructor creates a ServiceStatisticsBeanImpl Class which
-     * implements the ServiceStatisticsBean Interface, and encapsulates the
-     * CIM class ServiceStatistics in a Java Bean. The CIM class
-     * ServiceStatistics is described as follows:
-     *
-     * ServiceStatistics relates the ServiceStatisticalInformation class to
-     * the Service to which it applies.
-     */
-    public ServiceStatistics(){};
-    /**
-     * This method create an Association of the type ServiceStatistics between
-     * one ServiceStatisticalInformation object and Service object
-     */
-    public static ServiceStatistics link(ServiceStatisticalInformation
-	stats,Service element){
+	/**
+	 * This constructor creates a ServiceStatisticsBeanImpl Class which implements the ServiceStatisticsBean Interface, and encapsulates the CIM class
+	 * ServiceStatistics in a Java Bean. The CIM class ServiceStatistics is described as follows:
+	 * 
+	 * ServiceStatistics relates the ServiceStatisticalInformation class to the Service to which it applies.
+	 */
+	public ServiceStatistics() {
+	};
 
-    return (ServiceStatistics)
-	Association.link(ServiceStatistics.class,stats,element);
-    }//link
+	/**
+	 * This method create an Association of the type ServiceStatistics between one ServiceStatisticalInformation object and Service object
+	 */
+	public static ServiceStatistics link(ServiceStatisticalInformation
+			stats, Service element) {
+
+		return (ServiceStatistics) Association.link(ServiceStatistics.class, stats, element);
+	}// link
 
 } // Class ServiceStatistics

@@ -9,181 +9,157 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPConnectivitySubnet as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPConnectivitySubnetBean Interface. The CIM class IPConnectivitySubnet is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPConnectivitySubnet as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the IPConnectivitySubnetBean Interface. The CIM class IPConnectivitySubnet is
  * described as follows:
- *
- * An IPConnectivitySubnet represents a group of related IPProtocolEndpoints
- * that can communicate with each other, as members of a subnet. The class
+ * 
+ * An IPConnectivitySubnet represents a group of related IPProtocolEndpoints that can communicate with each other, as members of a subnet. The class
  * describes the characteristics of the subnet.
  */
 public class IPConnectivitySubnet extends ConnectivityCollection implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a IPConnectivitySubnetBeanImpl Class which
-     * implements the IPConnectivitySubnetBean Interface, and encapsulates
-     * the CIM class IPConnectivitySubnet in a Java Bean. The CIM class
-     * IPConnectivitySubnet is described as follows:
-     *
-     * An IPConnectivitySubnet represents a group of related
-     * IPProtocolEndpoints that can communicate with each other, as members
-     * of a subnet. The class describes the characteristics of the subnet.
-     */
-    public IPConnectivitySubnet(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property subnetNumber.
-     */
-    private String subnetNumber;
-    /**
-     * This method returns the IPConnectivitySubnet.subnetNumber property
-     * value. This property is described as follows:
-     *
-     * The IP address of the entire subnet, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class.
-     *
-     * @return	String	current subnetNumber property value
-     * @exception	Exception
-     */
-    public String getSubnetNumber(){
+	/**
+	 * This constructor creates a IPConnectivitySubnetBeanImpl Class which implements the IPConnectivitySubnetBean Interface, and encapsulates the CIM
+	 * class IPConnectivitySubnet in a Java Bean. The CIM class IPConnectivitySubnet is described as follows:
+	 * 
+	 * An IPConnectivitySubnet represents a group of related IPProtocolEndpoints that can communicate with each other, as members of a subnet. The
+	 * class describes the characteristics of the subnet.
+	 */
+	public IPConnectivitySubnet() {
+	};
 
-    return this.subnetNumber;
-    } // getSubnetNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property subnetNumber.
+	 */
+	private String	subnetNumber;
 
-    /**
-     * This method sets the IPConnectivitySubnet.subnetNumber property value.
-     * This property is described as follows:
-     *
-     * The IP address of the entire subnet, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class.
-     *
-     * @param	String	new subnetNumber property value
-     * @exception	Exception
-     */
-    public void setSubnetNumber(String subnetNumber) {
+	/**
+	 * This method returns the IPConnectivitySubnet.subnetNumber property value. This property is described as follows:
+	 * 
+	 * The IP address of the entire subnet, formatted according to the appropriate convention as defined in the AddressType property of this class.
+	 * 
+	 * @return String current subnetNumber property value
+	 * @exception Exception
+	 */
+	public String getSubnetNumber() {
 
-    this.subnetNumber = subnetNumber;
-    } // setSubnetNumber
+		return this.subnetNumber;
+	} // getSubnetNumber
 
+	/**
+	 * This method sets the IPConnectivitySubnet.subnetNumber property value. This property is described as follows:
+	 * 
+	 * The IP address of the entire subnet, formatted according to the appropriate convention as defined in the AddressType property of this class.
+	 * 
+	 * @param String
+	 *            new subnetNumber property value
+	 * @exception Exception
+	 */
+	public void setSubnetNumber(String subnetNumber) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property subnetMask.
-     */
-    private String subnetMask;
-    /**
-     * This method returns the IPConnectivitySubnet.subnetMask property value.
-     * This property is described as follows:
-     *
-     * The mask for the starting IPv4 address of the IP subnet, if needed
-     * (i.e., if the AddressType property is 1, "IPv4").
-     *
-     * @return	String	current subnetMask property value
-     * @exception	Exception
-     */
-    public String getSubnetMask(){
+		this.subnetNumber = subnetNumber;
+	} // setSubnetNumber
 
-    return this.subnetMask;
-    } // getSubnetMask
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property subnetMask.
+	 */
+	private String	subnetMask;
 
-    /**
-     * This method sets the IPConnectivitySubnet.subnetMask property value.
-     * This property is described as follows:
-     *
-     * The mask for the starting IPv4 address of the IP subnet, if needed
-     * (i.e., if the AddressType property is 1, "IPv4").
-     *
-     * @param	String	new subnetMask property value
-     * @exception	Exception
-     */
-    public void setSubnetMask(String subnetMask) {
+	/**
+	 * This method returns the IPConnectivitySubnet.subnetMask property value. This property is described as follows:
+	 * 
+	 * The mask for the starting IPv4 address of the IP subnet, if needed (i.e., if the AddressType property is 1, "IPv4").
+	 * 
+	 * @return String current subnetMask property value
+	 * @exception Exception
+	 */
+	public String getSubnetMask() {
 
-    this.subnetMask = subnetMask;
-    } // setSubnetMask
+		return this.subnetMask;
+	} // getSubnetMask
 
+	/**
+	 * This method sets the IPConnectivitySubnet.subnetMask property value. This property is described as follows:
+	 * 
+	 * The mask for the starting IPv4 address of the IP subnet, if needed (i.e., if the AddressType property is 1, "IPv4").
+	 * 
+	 * @param String
+	 *            new subnetMask property value
+	 * @exception Exception
+	 */
+	public void setSubnetMask(String subnetMask) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property prefixLength.
-     */
-    private short prefixLength;
-    /**
-     * This method returns the IPConnectivitySubnet.prefixLength property
-     * value. This property is described as follows:
-     *
-     * The prefix length for IPv6 addresses in the IP subnet, if needed (i.e.,
-     * if the AddressType property is 2, "IPv6").
-     *
-     * @return	short	current prefixLength property value
-     * @exception	Exception
-     */
-    public short getPrefixLength(){
+		this.subnetMask = subnetMask;
+	} // setSubnetMask
 
-    return this.prefixLength;
-    } // getPrefixLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property prefixLength.
+	 */
+	private short	prefixLength;
 
-    /**
-     * This method sets the IPConnectivitySubnet.prefixLength property value.
-     * This property is described as follows:
-     *
-     * The prefix length for IPv6 addresses in the IP subnet, if needed (i.e.,
-     * if the AddressType property is 2, "IPv6").
-     *
-     * @param	short	new prefixLength property value
-     * @exception	Exception
-     */
-    public void setPrefixLength(short prefixLength) {
+	/**
+	 * This method returns the IPConnectivitySubnet.prefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for IPv6 addresses in the IP subnet, if needed (i.e., if the AddressType property is 2, "IPv6").
+	 * 
+	 * @return short current prefixLength property value
+	 * @exception Exception
+	 */
+	public short getPrefixLength() {
 
-    this.prefixLength = prefixLength;
-    } // setPrefixLength
+		return this.prefixLength;
+	} // getPrefixLength
 
+	/**
+	 * This method sets the IPConnectivitySubnet.prefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for IPv6 addresses in the IP subnet, if needed (i.e., if the AddressType property is 2, "IPv6").
+	 * 
+	 * @param short new prefixLength property value
+	 * @exception Exception
+	 */
+	public void setPrefixLength(short prefixLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AddressType.
-     */
+		this.prefixLength = prefixLength;
+	} // setPrefixLength
 
-    public enum AddressType{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
-    private AddressType addressType;
-    /**
-     * This method returns the IPConnectivitySubnet.addressType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that describes the format of the address properties in
-     * IPConnectivitySubnet.
-     *
-     * @return	int	current addressType property value
-     * @exception	Exception
-     */
-    public AddressType getAddressType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
+	 */
 
-    return this.addressType;
-    } // getAddressType
+	public enum AddressType {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
 
-    /**
-     * This method sets the IPConnectivitySubnet.addressType property value.
-     * This property is described as follows:
-     *
-     * An enumeration that describes the format of the address properties in
-     * IPConnectivitySubnet.
-     *
-     * @param	int	new addressType property value
-     * @exception	Exception
-     */
-    public void setAddressType(AddressType addressType){
+	private AddressType	addressType;
 
-    this.addressType = addressType;
-    } // setAddressType
+	/**
+	 * This method returns the IPConnectivitySubnet.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties in IPConnectivitySubnet.
+	 * 
+	 * @return int current addressType property value
+	 * @exception Exception
+	 */
+	public AddressType getAddressType() {
 
+		return this.addressType;
+	} // getAddressType
 
+	/**
+	 * This method sets the IPConnectivitySubnet.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties in IPConnectivitySubnet.
+	 * 
+	 * @param int new addressType property value
+	 * @exception Exception
+	 */
+	public void setAddressType(AddressType addressType) {
+
+		this.addressType = addressType;
+	} // setAddressType
 
 } // Class IPConnectivitySubnet

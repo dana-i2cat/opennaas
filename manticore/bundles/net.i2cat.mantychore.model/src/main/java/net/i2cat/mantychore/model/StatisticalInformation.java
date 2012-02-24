@@ -11,7 +11,7 @@ import java.io.Serializable;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class StatisticalInformation as well as methods comparable
  * to the invokeMethods defined for this class. This Class implements the StatisticalInformationBean Interface. The CIM class StatisticalInformation
  * is described as follows:
- *
+ * 
  * CIM_StatisticalInformation is a root class for any arbitrary collection of statistical data and/or metrics applicable to one or more
  * ManagedSystemElements. Note that the CIM_ StatisticalData class uses a simplified naming/identity algorithm as compared to this class.
  * StatisticalInformation is not deprecated since its naming algorithm is still in use in various implementations.
@@ -22,7 +22,7 @@ public class StatisticalInformation extends ManagedElement implements
 	/**
 	 * This constructor creates a StatisticalInformationBeanImpl Class which implements the StatisticalInformationBean Interface, and encapsulates the
 	 * CIM class StatisticalInformation in a Java Bean. The CIM class StatisticalInformation is described as follows:
-	 *
+	 * 
 	 * CIM_StatisticalInformation is a root class for any arbitrary collection of statistical data and/or metrics applicable to one or more
 	 * ManagedSystemElements. Note that the CIM_ StatisticalData class uses a simplified naming/identity algorithm as compared to this class.
 	 * StatisticalInformation is not deprecated since its naming algorithm is still in use in various implementations.
@@ -37,10 +37,10 @@ public class StatisticalInformation extends ManagedElement implements
 
 	/**
 	 * This method returns the StatisticalInformation.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property defines the label by which the statistic or metric is known. When subclassed, the property can be overridden to be a Key
 	 * property.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -50,10 +50,10 @@ public class StatisticalInformation extends ManagedElement implements
 
 	/**
 	 * This method sets the StatisticalInformation.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property defines the label by which the statistic or metric is known. When subclassed, the property can be overridden to be a Key
 	 * property.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception

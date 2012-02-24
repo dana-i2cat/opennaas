@@ -13,7 +13,7 @@ import java.util.List;
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedSystemElement as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the ManagedSystemElementBean Interface. The CIM class ManagedSystemElement is
  * described as follows:
- *
+ * 
  * CIM_ManagedSystemElement is the base class for the System Element hierarchy. Any distinguishable component of a System is a candidate for inclusion
  * in this class. Examples of system components include: - software components such as application servers, databases, and applications - operating
  * system components such as files, processes, and threads - device components such as disk drives, controllers, processors, and printers - physical
@@ -24,7 +24,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * Add a new SystemComponent association between system and this element
-	 *
+	 * 
 	 * @param logicalPort
 	 * @return
 	 */
@@ -36,7 +36,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * Remove the PortImplementsEndpoint association (will be deleted) between the system and this element
-	 *
+	 * 
 	 * @param logicalPort
 	 * @return
 	 */
@@ -56,7 +56,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	/**
 	 * This method returns the list of Systems from the fromAssociation vector that match with the type SystemComponent the association wouldn't be
 	 * deleted
-	 *
+	 * 
 	 * @return List<LogicalPort>
 	 */
 	@SuppressWarnings("unchecked")
@@ -67,7 +67,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	/**
 	 * This constructor creates a ManagedSystemElementBeanImpl Class which implements the ManagedSystemElementBean Interface, and encapsulates the CIM
 	 * class ManagedSystemElement in a Java Bean. The CIM class ManagedSystemElement is described as follows:
-	 *
+	 * 
 	 * CIM_ManagedSystemElement is the base class for the System Element hierarchy. Any distinguishable component of a System is a candidate for
 	 * inclusion in this class. Examples of system components include: - software components such as application servers, databases, and applications
 	 * - operating system components such as files, processes, and threads - device components such as disk drives, controllers, processors, and
@@ -83,9 +83,9 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.installDate property value. This property is described as follows:
-	 *
+	 * 
 	 * A datetime value that indicates when the object was installed. Lack of a value does not indicate that the object is not installed.
-	 *
+	 * 
 	 * @return Date current installDate property value
 	 * @exception Exception
 	 */
@@ -96,9 +96,9 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.installDate property value. This property is described as follows:
-	 *
+	 * 
 	 * A datetime value that indicates when the object was installed. Lack of a value does not indicate that the object is not installed.
-	 *
+	 * 
 	 * @param Date
 	 *            new installDate property value
 	 * @exception Exception
@@ -115,9 +115,9 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property defines the label by which the object is known. When subclassed, the Name property can be overridden to be a Key property.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -128,9 +128,9 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The Name property defines the label by which the object is known. When subclassed, the Name property can be overridden to be a Key property.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -199,7 +199,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.operationalStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates the current statuses of the element. Various operational statuses are defined. Many of the enumeration's values are self-explanatory.
 	 * However, a few are not and are described here in more detail. "Stressed" indicates that the element is functioning, but needs attention.
 	 * Examples of "Stressed" states are overload, overheated, and so on. "Predictive Failure" indicates that an element is functioning nominally but
@@ -219,7 +219,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * qualifier. Due to the widespread use of the existing Status property in management applications, it is strongly recommended that providers or
 	 * instrumentation provide both the Status and OperationalStatus properties. Further, the first value of OperationalStatus should contain the
 	 * primary status for the element. When instrumented, Status (because it is single-valued) should also provide the primary status of the element.
-	 *
+	 * 
 	 * @return int current operationalStatus property value
 	 * @exception Exception
 	 */
@@ -230,7 +230,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.operationalStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates the current statuses of the element. Various operational statuses are defined. Many of the enumeration's values are self-explanatory.
 	 * However, a few are not and are described here in more detail. "Stressed" indicates that the element is functioning, but needs attention.
 	 * Examples of "Stressed" states are overload, overheated, and so on. "Predictive Failure" indicates that an element is functioning nominally but
@@ -250,7 +250,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * qualifier. Due to the widespread use of the existing Status property in management applications, it is strongly recommended that providers or
 	 * instrumentation provide both the Status and OperationalStatus properties. Further, the first value of OperationalStatus should contain the
 	 * primary status for the element. When instrumented, Status (because it is single-valued) should also provide the primary status of the element.
-	 *
+	 * 
 	 * @param int new operationalStatus property value
 	 * @exception Exception
 	 */
@@ -266,11 +266,11 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.statusDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * Strings describing the various OperationalStatus array values. For example, if "Stopping" is the value assigned to OperationalStatus, then this
 	 * property may contain an explanation as to why an object is being stopped. Note that entries in this array are correlated with those at the same
 	 * array index in OperationalStatus.
-	 *
+	 * 
 	 * @return String[] current statusDescriptions property value
 	 * @exception Exception
 	 */
@@ -281,11 +281,11 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.statusDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * Strings describing the various OperationalStatus array values. For example, if "Stopping" is the value assigned to OperationalStatus, then this
 	 * property may contain an explanation as to why an object is being stopped. Note that entries in this array are correlated with those at the same
 	 * array index in OperationalStatus.
-	 *
+	 * 
 	 * @param String
 	 *            [] new statusDescriptions property value
 	 * @exception Exception
@@ -320,7 +320,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.status property value. This property is described as follows:
-	 *
+	 * 
 	 * A string indicating the current status of the object. Various operational and non-operational statuses are defined. This property is deprecated
 	 * in lieu of OperationalStatus, which includes the same semantics in its enumeration. This change is made for 3 reasons: 1) Status is more
 	 * correctly defined as an array. This definition overcomes the limitation of describing status using a single value, when it is really a
@@ -328,7 +328,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * values. 3) The change to a uint16 data type was discussed when CIM V2.0 was defined. However, existing V1.0 implementations used the string
 	 * property and did not want to modify their code. Therefore, Status was grandfathered into the Schema. Use of the deprecated qualifier allows the
 	 * maintenance of the existing property, but also permits an improved definition using OperationalStatus.
-	 *
+	 * 
 	 * @return String current status property value
 	 * @exception Exception
 	 */
@@ -340,7 +340,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.status property value. This property is described as follows:
-	 *
+	 * 
 	 * A string indicating the current status of the object. Various operational and non-operational statuses are defined. This property is deprecated
 	 * in lieu of OperationalStatus, which includes the same semantics in its enumeration. This change is made for 3 reasons: 1) Status is more
 	 * correctly defined as an array. This definition overcomes the limitation of describing status using a single value, when it is really a
@@ -348,7 +348,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * values. 3) The change to a uint16 data type was discussed when CIM V2.0 was defined. However, existing V1.0 implementations used the string
 	 * property and did not want to modify their code. Therefore, Status was grandfathered into the Schema. Use of the deprecated qualifier allows the
 	 * maintenance of the existing property, but also permits an improved definition using OperationalStatus.
-	 *
+	 * 
 	 * @param String
 	 *            new status property value
 	 * @exception Exception
@@ -378,7 +378,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.healthState property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates the current health of the element. This attribute expresses the health of this element but not necessarily that of its subcomponents.
 	 * The possible values are 0 to 30, where 5 means the element is entirely healthy and 30 means the element is completely non-functional. The
 	 * following continuum is defined: "Non-recoverable Error" (30) - The element has completely failed, and recovery is not possible. All
@@ -389,7 +389,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * might not be operating at optimal performance or it might be reporting recoverable errors. "OK" (5) - The element is fully functional and is
 	 * operating within normal operational parameters and without error. "Unknown" (0) - The implementation cannot report on HealthState at this time.
 	 * DMTF has reserved the unused portion of the continuum for additional HealthStates in the future.
-	 *
+	 * 
 	 * @return int current healthState property value
 	 * @exception Exception
 	 */
@@ -400,7 +400,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.healthState property value. This property is described as follows:
-	 *
+	 * 
 	 * Indicates the current health of the element. This attribute expresses the health of this element but not necessarily that of its subcomponents.
 	 * The possible values are 0 to 30, where 5 means the element is entirely healthy and 30 means the element is completely non-functional. The
 	 * following continuum is defined: "Non-recoverable Error" (30) - The element has completely failed, and recovery is not possible. All
@@ -411,7 +411,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * might not be operating at optimal performance or it might be reporting recoverable errors. "OK" (5) - The element is fully functional and is
 	 * operating within normal operational parameters and without error. "Unknown" (0) - The implementation cannot report on HealthState at this time.
 	 * DMTF has reserved the unused portion of the continuum for additional HealthStates in the future.
-	 *
+	 * 
 	 * @param int new healthState property value
 	 * @exception Exception
 	 */
@@ -438,7 +438,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.communicationStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * CommunicationStatus indicates the ability of the instrumentation to communicate with the underlying ManagedElement. CommunicationStatus
 	 * consists of one of the following values: Unknown, None, Communication OK, Lost Communication, or No Contact. A Null return indicates the
 	 * implementation (provider) does not implement this property. "Unknown" indicates the implementation is in general capable of returning this
@@ -448,7 +448,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * indicates communication is established with the element, but does not convey any quality of service. "No Contact" indicates that the monitoring
 	 * system has knowledge of this element, but has never been able to establish communications with it. "Lost Communication" indicates that the
 	 * Managed Element is known to exist and has been contacted successfully in the past, but is currently unreachable.
-	 *
+	 * 
 	 * @return int current communicationStatus property value
 	 * @exception Exception
 	 */
@@ -459,7 +459,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.communicationStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * CommunicationStatus indicates the ability of the instrumentation to communicate with the underlying ManagedElement. CommunicationStatus
 	 * consists of one of the following values: Unknown, None, Communication OK, Lost Communication, or No Contact. A Null return indicates the
 	 * implementation (provider) does not implement this property. "Unknown" indicates the implementation is in general capable of returning this
@@ -469,7 +469,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * indicates communication is established with the element, but does not convey any quality of service. "No Contact" indicates that the monitoring
 	 * system has knowledge of this element, but has never been able to establish communications with it. "Lost Communication" indicates that the
 	 * Managed Element is known to exist and has been contacted successfully in the past, but is currently unreachable.
-	 *
+	 * 
 	 * @param int new communicationStatus property value
 	 * @exception Exception
 	 */
@@ -498,7 +498,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.detailedStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * DetailedStatus compliments PrimaryStatus with additional status detail. It consists of one of the following values: Not Available, No
 	 * Additional Information, Stressed, Predictive Failure, Error, Non-Recoverable Error, SupportingEntityInError. Detailed status is used to expand
 	 * upon the PrimaryStatus of the element. A Null return indicates the implementation (provider) does not implement this property. "Not Available"
@@ -510,7 +510,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * future. "Non-Recoverable Error " indicates that this element is in an error condition that requires human intervention.
 	 * "Supporting Entity in Error" indicates that this element might be "OK" but that another element, on which it is dependent, is in error. An
 	 * example is a network service or endpoint that cannot function due to lower-layer networking problems.
-	 *
+	 * 
 	 * @return int current detailedStatus property value
 	 * @exception Exception
 	 */
@@ -521,7 +521,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.detailedStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * DetailedStatus compliments PrimaryStatus with additional status detail. It consists of one of the following values: Not Available, No
 	 * Additional Information, Stressed, Predictive Failure, Error, Non-Recoverable Error, SupportingEntityInError. Detailed status is used to expand
 	 * upon the PrimaryStatus of the element. A Null return indicates the implementation (provider) does not implement this property. "Not Available"
@@ -533,7 +533,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * future. "Non-Recoverable Error " indicates that this element is in an error condition that requires human intervention.
 	 * "Supporting Entity in Error" indicates that this element might be "OK" but that another element, on which it is dependent, is in error. An
 	 * example is a network service or endpoint that cannot function due to lower-layer networking problems.
-	 *
+	 * 
 	 * @param int new detailedStatus property value
 	 * @exception Exception
 	 */
@@ -572,7 +572,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.operatingStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * OperatingStatus provides a current status value for the operational condition of the element and can be used for providing more detail with
 	 * respect to the value of EnabledState. It can also provide the transitional states when an element is transitioning from one state to another,
 	 * such as when an element is transitioning between EnabledState and RequestedState, as well as other transitional conditions. OperatingStatus
@@ -592,7 +592,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * an element being brought to an abrupt stop. "In Test" element is performing test functions. "Transitioning" describes an element that is
 	 * between states, that is, it is not fully available in either its previous state or its next state. This value should be used if other values
 	 * indicating a transition to a specific state are not applicable. "In Service" describes an element that is in service and operational.
-	 *
+	 * 
 	 * @return int current operatingStatus property value
 	 * @exception Exception
 	 */
@@ -603,7 +603,7 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.operatingStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * OperatingStatus provides a current status value for the operational condition of the element and can be used for providing more detail with
 	 * respect to the value of EnabledState. It can also provide the transitional states when an element is transitioning from one state to another,
 	 * such as when an element is transitioning between EnabledState and RequestedState, as well as other transitional conditions. OperatingStatus
@@ -623,7 +623,7 @@ public class ManagedSystemElement extends ManagedElement implements
 	 * an element being brought to an abrupt stop. "In Test" element is performing test functions. "Transitioning" describes an element that is
 	 * between states, that is, it is not fully available in either its previous state or its next state. This value should be used if other values
 	 * indicating a transition to a specific state are not applicable. "In Service" describes an element that is in service and operational.
-	 *
+	 * 
 	 * @param int new operatingStatus property value
 	 * @exception Exception
 	 */
@@ -649,13 +649,13 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method returns the ManagedSystemElement.primaryStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * PrimaryStatus provides a high level status value, intended to align with Red-Yellow-Green type representation of status. It should be used in
 	 * conjunction with DetailedStatus to provide high level and detailed health status of the ManagedElement and its subcomponents. PrimaryStatus
 	 * consists of one of the following values: Unknown, OK, Degraded or Error. "Unknown" indicates the implementation is in general capable of
 	 * returning this property, but is unable to do so at this time. "OK" indicates the ManagedElement is functioning normally. "Degraded" indicates
 	 * the ManagedElement is functioning below normal. "Error" indicates the ManagedElement is in an Error condition.
-	 *
+	 * 
 	 * @return int current primaryStatus property value
 	 * @exception Exception
 	 */
@@ -666,13 +666,13 @@ public class ManagedSystemElement extends ManagedElement implements
 
 	/**
 	 * This method sets the ManagedSystemElement.primaryStatus property value. This property is described as follows:
-	 *
+	 * 
 	 * PrimaryStatus provides a high level status value, intended to align with Red-Yellow-Green type representation of status. It should be used in
 	 * conjunction with DetailedStatus to provide high level and detailed health status of the ManagedElement and its subcomponents. PrimaryStatus
 	 * consists of one of the following values: Unknown, OK, Degraded or Error. "Unknown" indicates the implementation is in general capable of
 	 * returning this property, but is unable to do so at this time. "OK" indicates the ManagedElement is functioning normally. "Degraded" indicates
 	 * the ManagedElement is functioning below normal. "Error" indicates the ManagedElement is in an Error condition.
-	 *
+	 * 
 	 * @param int new primaryStatus property value
 	 * @exception Exception
 	 */
