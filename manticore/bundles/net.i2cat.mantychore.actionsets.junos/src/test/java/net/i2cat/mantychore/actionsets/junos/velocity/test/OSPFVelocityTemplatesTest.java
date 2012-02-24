@@ -81,6 +81,29 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 	}
 
 	@Test
+	public void testConfigureOSPFTemplateWithoutRID() throws Exception {
+
+		template = "/VM_files/ospfConfigure.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("disabledState", EnabledState.DISABLED);
+		extraParams.put("enabledState", EnabledState.ENABLED);
+
+		OSPFService service = getOSPFService();
+		service.setRouterID(null);
+
+		String message = callVelocity(template, service, extraParams);
+		Assert.assertNotNull(message);
+
+		log.info(XmlHelper.formatXML(message));
+
+		// TODO Use xpath to check xml tree is correct
+		Assert.assertFalse("Rpc message must not change routing-options", message.contains("routing-options"));
+		Assert.assertFalse("Rpc message must not change router-id", message.contains("router-id"));
+		log.info(XmlHelper.formatXML(message));
+	}
+
+	@Test
 	public void testConfigureOSPFAreaTemplate() throws Exception {
 
 		template = "/VM_files/ospfConfigureArea.vm";

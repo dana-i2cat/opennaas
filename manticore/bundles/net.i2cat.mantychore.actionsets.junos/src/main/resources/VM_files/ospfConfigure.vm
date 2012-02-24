@@ -17,9 +17,13 @@
 		#end
 		</ospf>
 	</protocols>
+	#set( $routerId = "false" )
+	#set ($routerId = $param.getRouterID())
+	#if (!$routerId.equals("false"))
 	<routing-options operation="merge">
 		<router-id>$param.getRouterID()</router-id>
 	</routing-options>
+	#end
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end
