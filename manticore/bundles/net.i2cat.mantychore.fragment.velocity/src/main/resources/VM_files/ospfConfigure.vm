@@ -1,6 +1,6 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$param.ElementName.equals("") )
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
@@ -17,9 +17,13 @@
 		#end
 		</ospf>
 	</protocols>
+	#set( $routerId = "false" )
+	#set ($routerId = $param.getRouterID())
+	#if (!$routerId.equals("false"))
 	<routing-options operation="merge">
 		<router-id>$param.getRouterID()</router-id>
 	</routing-options>
+	#end
 	#if($logicalRouter.equals("true"))
 		</logical-systems>
 	#end

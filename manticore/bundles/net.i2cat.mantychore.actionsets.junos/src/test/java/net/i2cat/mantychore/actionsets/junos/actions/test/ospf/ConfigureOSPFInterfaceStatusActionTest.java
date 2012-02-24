@@ -12,7 +12,9 @@ import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.OSPFArea;
+import net.i2cat.mantychore.model.OSPFAreaConfiguration;
 import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
+import net.i2cat.mantychore.model.OSPFService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -66,7 +68,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 	@Test
 	public void executeActionTest() throws IOException {
 
-		action.setModelToUpdate(new ComputerSystem());
+		action.setModelToUpdate(craftModel());
 
 		// Add params
 		List<OSPFProtocolEndpoint> lOSPFProtocolEndpoints = getListOSPFProtocolEndpoint();
@@ -78,7 +80,7 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 					.equals(ActionConstants.OSPF_ENABLE_INTERFACE + "/" + ActionConstants.OSPF_DISABLE_INTERFACE));
 		} catch (ActionException e) {
 			e.printStackTrace();
-			Assert.fail();
+			Assert.fail(e.getMessage());
 		}
 
 		net.i2cat.mantychore.model.System computerSystem = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
@@ -127,4 +129,24 @@ public class ConfigureOSPFInterfaceStatusActionTest {
 
 		return ospfProtocolEndpoint;
 	}
+
+	private ComputerSystem craftModel() throws IOException {
+		ComputerSystem model = new ComputerSystem();
+
+		OSPFService ospfService = new OSPFService();
+
+		OSPFAreaConfiguration config1 = new OSPFAreaConfiguration();
+		OSPFProtocolEndpoint pep1 = getOSPFProtocolEndpoint("0.0.0.0", "fe-0/0/2", "1");
+		pep1.getOSPFArea().setConfiguration(config1);
+		ospfService.addOSPFAreaConfiguration(config1);
+
+		OSPFAreaConfiguration config2 = new OSPFAreaConfiguration();
+		OSPFProtocolEndpoint pep2 = getOSPFProtocolEndpoint("0.0.0.1", "fe-0/0/2", "2");
+		pep2.getOSPFArea().setConfiguration(config2);
+		ospfService.addOSPFAreaConfiguration(config2);
+
+		model.addHostedService(ospfService);
+		return model;
+	}
+
 }

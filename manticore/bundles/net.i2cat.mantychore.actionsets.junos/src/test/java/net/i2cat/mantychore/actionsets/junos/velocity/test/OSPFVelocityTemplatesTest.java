@@ -1,9 +1,7 @@
 package net.i2cat.mantychore.actionsets.junos.velocity.test;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -83,6 +81,29 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 	}
 
 	@Test
+	public void testConfigureOSPFTemplateWithoutRID() throws Exception {
+
+		template = "/VM_files/ospfConfigure.vm";
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("disabledState", EnabledState.DISABLED);
+		extraParams.put("enabledState", EnabledState.ENABLED);
+
+		OSPFService service = getOSPFService();
+		service.setRouterID(null);
+
+		String message = callVelocity(template, service, extraParams);
+		Assert.assertNotNull(message);
+
+		log.info(XmlHelper.formatXML(message));
+
+		// TODO Use xpath to check xml tree is correct
+		Assert.assertFalse("Rpc message must not change routing-options", message.contains("routing-options"));
+		Assert.assertFalse("Rpc message must not change router-id", message.contains("router-id"));
+		log.info(XmlHelper.formatXML(message));
+	}
+
+	@Test
 	public void testConfigureOSPFAreaTemplate() throws Exception {
 
 		template = "/VM_files/ospfConfigureArea.vm";
@@ -115,7 +136,7 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 
 		// Enable
-		String message = callVelocity(template, getListOSPFProtocolEndpoint(true), extraParams);
+		String message = callVelocity(template, getConfigureOSPFInterfaceStatusParameters(true), extraParams);
 
 		Assert.assertNotNull(message);
 		Assert.assertTrue(message.contains("<name>0.0.0.0</name>"));
@@ -124,7 +145,7 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue(message.contains("<disable operation=\"delete\"/>"));
 
 		// Disable
-		message = callVelocity(template, getListOSPFProtocolEndpoint(false), extraParams);
+		message = callVelocity(template, getConfigureOSPFInterfaceStatusParameters(false), extraParams);
 
 		Assert.assertNotNull(message);
 		Assert.assertTrue(message.contains("<name>0.0.0.0</name>"));
@@ -221,25 +242,42 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 	 * @return List<OSPFProtocolEndpoint>
 	 * @throws IOException
 	 */
-	private Object getListOSPFProtocolEndpoint(Boolean state) throws IOException {
+	private OSPFService getConfigureOSPFInterfaceStatusParameters(Boolean state) throws IOException {
 
-		List<OSPFProtocolEndpoint> lOSPFProtocolEndpoint = new ArrayList<OSPFProtocolEndpoint>();
-		OSPFProtocolEndpoint endpoint1 = getOSPFProtocolEndpoint("fe-0/0/2", "1");
-		OSPFProtocolEndpoint endpoint2 = getOSPFProtocolEndpoint("fe-0/0/2", "2");
+		OSPFService service = new OSPFService();
 
-		lOSPFProtocolEndpoint.add(endpoint1);
-		lOSPFProtocolEndpoint.add(endpoint2);
+		OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
+		service.addOSPFAreaConfiguration(areaConfig);
 
 		// Add OSPFArea and areaId = 0.0.0.0
 		OSPFArea ospfArea = new OSPFArea();
 		ospfArea.setAreaID(0);
-		endpoint1.setOSPFArea(ospfArea);
-		endpoint2.setOSPFArea(ospfArea);
+		areaConfig.setOSPFArea(ospfArea);
+
+		OSPFProtocolEndpoint endpoint1 = getOSPFProtocolEndpoint("fe-0/0/2", "1");
+		OSPFProtocolEndpoint endpoint2 = getOSPFProtocolEndpoint("fe-0/0/2", "2");
 
 		endpoint1.setEnabledState(state ? EnabledState.ENABLED : EnabledState.DISABLED);
 		endpoint2.setEnabledState(state ? EnabledState.ENABLED : EnabledState.DISABLED);
 
-		return lOSPFProtocolEndpoint;
+		ospfArea.addEndpointInArea(endpoint1);
+		ospfArea.addEndpointInArea(endpoint2);
+
+		OSPFAreaConfiguration areaConfig2 = new OSPFAreaConfiguration();
+		service.addOSPFAreaConfiguration(areaConfig2);
+
+		// Add OSPFArea and areaId = 0.0.0.2
+		OSPFArea ospfArea2 = new OSPFArea();
+		ospfArea2.setAreaID(2);
+		areaConfig2.setOSPFArea(ospfArea2);
+
+		OSPFProtocolEndpoint endpoint3 = getOSPFProtocolEndpoint("fe-0/0/3", "1");
+
+		endpoint3.setEnabledState(state ? EnabledState.ENABLED : EnabledState.DISABLED);
+
+		ospfArea2.addEndpointInArea(endpoint3);
+
+		return service;
 	}
 
 	/**
