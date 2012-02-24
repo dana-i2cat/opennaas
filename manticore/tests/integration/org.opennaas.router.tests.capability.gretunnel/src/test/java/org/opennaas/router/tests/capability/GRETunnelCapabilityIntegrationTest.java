@@ -2,12 +2,14 @@ package org.opennaas.router.tests.capability;
 
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
@@ -63,7 +65,7 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 				IntegrationTestsHelper.getMantychoreTestOptions(),
 				mavenBundle().groupId("net.i2cat.nexus").artifactId(
 						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+				, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
 				);
 		return options;
 	}
@@ -139,7 +141,8 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 			Response resp = (Response) gretunnelCapability.sendMessage(ActionConstants.CREATETUNNEL, null);
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG, null);
+
+			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG, newParamsGRETunnelService());
 			Assert.assertTrue(resp.getStatus() == Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
@@ -159,7 +162,7 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 			Assert.assertTrue(queue.size() == 5);
 
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.getResponses().size() == 4);
+			Assert.assertTrue(queueResponse.getResponses().size() == 5);
 
 			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
 			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
@@ -193,5 +196,11 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 		// ADDED
 		return protocolSessionContext;
 
+	}
+
+	private Object newParamsGRETunnelService() {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setName("gre-0/1/0");
+		return greService;
 	}
 }

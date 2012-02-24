@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.actions.CreateTunnelAction;
 import net.i2cat.mantychore.actionsets.junos.actions.DeleteTunnelAction;
+import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetTunnelConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ShowTunnelsAction;
 
@@ -19,6 +20,7 @@ public class GRETunnelActionSet extends ActionSet {
 		this.putAction(ActionConstants.DELETETUNNEL, DeleteTunnelAction.class);
 		this.putAction(ActionConstants.GETTUNNELCONFIG, GetTunnelConfigurationAction.class);
 		this.putAction(ActionConstants.SHOWTUNNELS, ShowTunnelsAction.class);
+		this.putAction(ActionConstants.GETCONFIG, GetConfigurationAction.class);
 
 		/* add refresh actions */
 		this.refreshActions.add(ActionConstants.GETCONFIG);
