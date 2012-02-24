@@ -10,7 +10,6 @@ import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
 
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import java.io.File;
 import javax.inject.Inject;
 
