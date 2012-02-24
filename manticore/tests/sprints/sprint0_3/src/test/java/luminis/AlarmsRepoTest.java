@@ -72,15 +72,19 @@ public class AlarmsRepoTest
 
 	@Inject
 	@Filter("(type=roadm)")
-	private IResourceRepository roadmRepo;
+	private IResourceRepository		roadmRepo;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	private BlueprintContainer		queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.monitoring)")
-    private BlueprintContainer monitoringService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.monitoring)")
+	private BlueprintContainer 		monitoringService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer      wonesysProtocolService;
 
 	private boolean				alarmReceived;
 	private final Object		lock			= new Object();
