@@ -71,8 +71,8 @@ public class AlarmsRepoTest
 	private IAlarmsRepository	alarmRepo;
 
 	@Inject
-	@Filter("(type=roadm)")
-	private IResourceRepository		roadmRepo;
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer		roadmRepositoryService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
