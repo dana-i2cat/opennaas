@@ -1,13 +1,13 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$param.ElementName.equals("") )
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
 			<name>$param.ElementName</name>
 	#end
-	<protocols>	
+	<protocols>
 		<ospf>
 		##ENABLED/DISABLED
 		#if( $param.getEnabledState().equals($disabledState))

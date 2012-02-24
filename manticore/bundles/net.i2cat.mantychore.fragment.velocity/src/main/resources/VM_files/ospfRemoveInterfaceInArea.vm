@@ -1,13 +1,13 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$elementName.equals("") )		
+	#if(!$elementName.equals("") )
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
 			<name>$elementName</name>
 	#end
-	<protocols>	
+	<protocols>
 		<ospf>
 			<area>
 				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>

@@ -1,6 +1,6 @@
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$param.ElementName.equals("") )
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))

@@ -7,7 +7,7 @@
 		<logical-systems>
 			<name>$elementName</name>
 	#end
-	<protocols>	
+	<protocols>
 		<ospf>
 		#set($ospfArea = $param.getOSPFArea())
 			<area operation="delete">
