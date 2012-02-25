@@ -5,11 +5,12 @@
 		<artifactId>mantychore-tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
 	<artifactId>itests-bundle-settings</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore :: POMS :: Integration Test</name>
 	<packaging>pom</packaging>
-	<!--  integration tests -->
+
 	<modules>
 		<module>net.i2cat.nexus.tests.events</module>
 		<module>net.i2cat.nexus.tests.resources</module>
@@ -26,29 +27,50 @@
   		<module>org.opennaas.bod.tests.capability.l2bod</module>
    		<module>org.opennaas.bod.tests</module>
 	</modules>
-	<!--  dependencies for integration tests -->
+
 	<dependencies>
-		<!-- Integration tests -->
 		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+			<artifactId>paxexam-karaf-container</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-container-default</artifactId>
+			<artifactId>pax-exam-junit4</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-junit</artifactId>
+			<groupId>net.i2cat.mantychore</groupId>
+			<artifactId>assembly</artifactId>
+			<type>zip</type>
+			<classifier>bin</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.karaf.tooling</groupId>
-			<artifactId>org.apache.karaf.tooling.testing</artifactId>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.servicemix</groupId>
-			<artifactId>apache-servicemix</artifactId>
-			<type>pom</type>
-		</dependency>-->
+		<dependency>
+			<groupId>org.ops4j.pax.swissbox</groupId>
+			<artifactId>pax-swissbox-framework</artifactId>
+		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
