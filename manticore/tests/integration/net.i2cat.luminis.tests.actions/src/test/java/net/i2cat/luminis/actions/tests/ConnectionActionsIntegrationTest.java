@@ -61,20 +61,6 @@ public class ConnectionActionsIntegrationTest {
 
 	private String	resourceId	= "pedrosa";
 
-	/*
-	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}*/
-
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
@@ -90,16 +76,8 @@ public class ConnectionActionsIntegrationTest {
 					   keepRuntimeFolder());
 	}
 
-	/*
-	public void initBundles() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("INFO: Initialized!");
-	}*/
-
 	@Test
 	public void testRefreshMakeAndRemoveConnectionsWithMock() {
-
-		//initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);
@@ -118,8 +96,6 @@ public class ConnectionActionsIntegrationTest {
 
 	// @Test //uses real connection
 	public void testRefreshMakeAndRemoveConnectionsReal() {
-
-		//initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);

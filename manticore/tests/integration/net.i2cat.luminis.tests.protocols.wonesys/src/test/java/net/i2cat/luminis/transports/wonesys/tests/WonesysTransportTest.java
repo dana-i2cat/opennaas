@@ -77,28 +77,9 @@ public class WonesysTransportTest implements ITransportListener {
 					   keepRuntimeFolder());
 	}
 
-	/*
-	public void loadBundles() {
-
-		assertNotNull(bundleContext);
-
-		// Wait for the activation of all the bundles 
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		//eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
-	}*/
-
-	@Test
-	public void dummyTest() {
-	}
-
 	// FIXME Uncomment to test transport works ok
 	// @Test //uses real connection
-	//@Test
 	public void sendAsyncTest() {
-
-		//loadBundles();
 
 		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		try {
@@ -129,8 +110,6 @@ public class WonesysTransportTest implements ITransportListener {
 	// FIXME Uncomment to test transport works ok
 	//@Test //uses real connection
 	public void sendReceiveTest() {
-
-		//loadBundles();
 
 		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		try {

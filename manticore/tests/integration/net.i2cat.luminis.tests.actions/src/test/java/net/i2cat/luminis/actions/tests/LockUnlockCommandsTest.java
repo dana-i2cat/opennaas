@@ -39,8 +39,6 @@ import static org.ops4j.pax.exam.CoreOptions.options;
 @RunWith(JUnit4TestRunner.class)
 public class LockUnlockCommandsTest {
 
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
 	Log	log	= LogFactory.getLog(LockUnlockCommandsTest.class);
 
 	private String	resourceId			= "pedrosa";
@@ -62,31 +60,6 @@ public class LockUnlockCommandsTest {
 					   .unpackDirectory(new File("target/paxexam")),
 					   keepRuntimeFolder());
 	}
-
-	/*
-	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-	*/
-
-	/*
-	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		// Wait for the activation of all the bundles
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-		log.info("INFO: Initialized!");
-	}
-	*/
 
 	/**
 	 * Test all we want loading container only once (to speed up tests)

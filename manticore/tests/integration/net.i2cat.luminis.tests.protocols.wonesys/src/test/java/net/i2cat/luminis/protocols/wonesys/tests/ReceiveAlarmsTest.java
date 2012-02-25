@@ -129,7 +129,6 @@ public class ReceiveAlarmsTest implements EventHandler {
 	public void testAlarms() throws IOException {
 
 		// set up
-		// loadBundlesAndServices();
 
 		this.alarmReceived = false;
 
