@@ -112,6 +112,12 @@
 				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
