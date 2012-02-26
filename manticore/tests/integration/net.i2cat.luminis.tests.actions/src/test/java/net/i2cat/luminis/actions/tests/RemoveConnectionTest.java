@@ -5,6 +5,7 @@ import java.io.IOException;
 import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
+
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
 import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
@@ -14,6 +15,7 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchCardFactory;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
+
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.command.Response;
@@ -21,13 +23,14 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 public class RemoveConnectionTest {
 	OpticalSwitchFactory	switchFactory;
 
-	Log						log	= LogFactory.getLog(RemoveConnectionTest.class);
+	Log log	= LogFactory.getLog(RemoveConnectionTest.class);
 
 	public RemoveConnectionTest() throws Exception {
 		switchFactory = new OpticalSwitchFactory();
