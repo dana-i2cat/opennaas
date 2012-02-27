@@ -5,9 +5,7 @@ import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
-import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.GRETunnelService;
 
 import org.opennaas.core.resources.action.ActionException;
@@ -71,9 +69,8 @@ public class DeleteTunnelAction extends JunosAction {
 			}
 
 			Map<String, Object> extraParams = new HashMap<String, Object>();
-			extraParams.put("disabledState", EnabledState.DISABLED.toString());
-			extraParams.put("enableState", EnabledState.ENABLED.toString());
-			extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
+			extraParams.put("portNumber", getPortNumber());
+			extraParams.put("name", getName());
 			extraParams.put("elementName", elementName);
 
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
@@ -107,7 +104,6 @@ public class DeleteTunnelAction extends JunosAction {
 		if (params == null || !(params instanceof GRETunnelService)) {
 			paramsOK = false;
 		}
-
 		return paramsOK;
 	}
 
@@ -122,20 +118,35 @@ public class DeleteTunnelAction extends JunosAction {
 		if (template == null || template.equals("")) {
 			templateOK = false;
 		}
-
 		return templateOK;
 	}
 
 	/**
+	 * Validate the template and the input parameters
+	 * 
 	 * @throws ActionException
 	 */
 	private void validate() throws ActionException {
-		if (!checkTemplate(template)) {
+		if (!checkTemplate(template))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		}
-
-		if (!checkParams(params)) {
+		if (!checkParams(params))
 			throw new ActionException("Invalid parameters for action " + getActionID());
-		}
 	}
+
+	/**
+	 * @return
+	 */
+	private Object getPortNumber() {
+		String[] name = ((GRETunnelService) params).getName().split("\\.");
+		return name.length > 1 ? name[1] : null;
+	}
+
+	/**
+	 * @return
+	 */
+	private Object getName() {
+		String[] name = ((GRETunnelService) params).getName().split("\\.");
+		return name.length > 1 ? name[0] : null;
+	}
+
 }
