@@ -1,5 +1,7 @@
 package org.opennaas.router.capability.gretunnel;
 
+import java.util.List;
+
 import net.i2cat.mantychore.model.GRETunnelService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -27,19 +29,10 @@ public interface IGRETunnelService {
 	public Response deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException;
 
 	/**
-	 * Get the GRETunnel configuration.
-	 * 
-	 * @param ospfService
-	 * @return
-	 * @throws CapabilityException
-	 */
-	public Response getGRETunnelConfiguration(GRETunnelService greTunnelService) throws CapabilityException;
-
-	/**
 	 * Show the GRETunnel configuration.
 	 * 
 	 * @return GRETunnelService
 	 * @throws CapabilityException
 	 */
-	public GRETunnelService showGRETunnelConfiguration() throws CapabilityException;
+	public List<GRETunnelService> showGRETunnelConfiguration() throws CapabilityException;
 }

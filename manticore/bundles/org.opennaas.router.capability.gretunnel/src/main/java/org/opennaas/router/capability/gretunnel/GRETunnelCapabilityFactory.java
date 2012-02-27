@@ -10,7 +10,7 @@ public class GRETunnelCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(GRETunnelCapability.GRETUNNEL),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(GRETunnelCapability.CAPABILITY_NAME),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
