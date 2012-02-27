@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import mock.MockEventManager;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
@@ -77,6 +79,22 @@ public class ActionTestHelper {
 	public Object newParamsGRETunnelService() {
 		GRETunnelService greService = new GRETunnelService();
 		greService.setName("gre-0/1/0");
+		return greService;
+	}
+
+	public Object newParamsGRETunnelServiceWithEndpoint() {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setName("gre-0/1/0");
+
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress("147.12.61.43");
+		greConfig.setDestinationAddress("193.23.1.12");
+		greService.setGRETunnelConfiguration(greConfig);
+
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+		gE.setIPv4Address("10.10.10.1/24");
+		greService.addProtocolEndpoint(gE);
+
 		return greService;
 	}
 

@@ -69,17 +69,17 @@ public class IPInterfaceParserTest {
 		for (Service service : model.getHostedService()) {
 			if (service instanceof GRETunnelService) {
 				String name = ((GRETunnelService) service).getName();
-				for (GRETunnelConfiguration gretunnelConfiguration : ((GRETunnelService) service).getGRETunnelConfiguration()) {
-					str += " - GRE Tunnel Configuration : " + "\n";
+				GRETunnelConfiguration gretunnelConfiguration = ((GRETunnelService) service).getGRETunnelConfiguration();
+				str += " - GRE Tunnel Configuration : " + "\n";
 
-					String source = gretunnelConfiguration.getSourceAddress();
-					String destination = gretunnelConfiguration.getDestinationAddress();
-					int key = gretunnelConfiguration.getKey();
-					str += name + "\n";
-					str += "key : " + String.valueOf(key) + "\n";
-					str += "source : " + source + "\n";
-					str += "destination : " + destination + "\n";
-				}
+				String source = gretunnelConfiguration.getSourceAddress();
+				String destination = gretunnelConfiguration.getDestinationAddress();
+				int key = gretunnelConfiguration.getKey();
+				str += name + "\n";
+				str += "key : " + String.valueOf(key) + "\n";
+				str += "source : " + source + "\n";
+				str += "destination : " + destination + "\n";
+
 				for (ProtocolEndpoint pE : service.getProtocolEndpoint()) {
 					if (pE instanceof GRETunnelEndpoint) {
 						GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;

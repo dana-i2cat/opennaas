@@ -183,10 +183,9 @@ public class IPInterfaceParser extends DigesterEngine {
 	private void addGreTunnel(EthernetPort ethernetPort) {
 
 		if (gretunnelConfiguration != null) {
-			gretunnelConfiguration.setName(ethernetPort.getName());
 			GRETunnelService gretunnelService = new GRETunnelService();
-			gretunnelService.setName(ethernetPort.getName());
-			gretunnelService.addGRETunnelConfiguration(gretunnelConfiguration);
+			gretunnelService.setName(ethernetPort.getName() + '.' + ethernetPort.getPortNumber());
+			gretunnelService.setGRETunnelConfiguration(gretunnelConfiguration);
 
 			for (ProtocolEndpoint pE : ethernetPort.getProtocolEndpoint()) {
 
