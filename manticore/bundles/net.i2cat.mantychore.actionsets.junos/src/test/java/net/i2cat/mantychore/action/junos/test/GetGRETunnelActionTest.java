@@ -112,10 +112,9 @@ public class GetGRETunnelActionTest {
 				log.info(" - GRE Tunnel");
 				GRETunnelService greService = (GRETunnelService) service;
 				log.info("Interface :" + greService.getName());
-				for (GRETunnelConfiguration greConf : greService.getGRETunnelConfiguration()) {
-					log.info("Source : " + greConf.getSourceAddress());
-					log.info("Destination : " + greConf.getDestinationAddress());
-				}
+				GRETunnelConfiguration greConf = greService.getGRETunnelConfiguration();
+				log.info("Source : " + greConf.getSourceAddress());
+				log.info("Destination : " + greConf.getDestinationAddress());
 				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
 					GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
 					if (gE.getIPv4Address() == null)

@@ -9,7 +9,7 @@
 				</unit>
 			</interface>
 			<interface>
-				<name>gr-0/1/0</name>
+				<name>gre</name>
 				<unit>
 					<name>0</name>
 					<tunnel>

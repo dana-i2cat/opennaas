@@ -108,7 +108,7 @@ public class ProtocolsParserTest {
 		greConfig.setSourceAddress("192.168.1.1");
 		greConfig.setDestinationAddress("192.168.1.2");
 		greConfig.setKey(2);
-		greService.addGRETunnelConfiguration(greConfig);
+		greService.setGRETunnelConfiguration(greConfig);
 		greService.setName("gr-0/1/0");
 		GRETunnelEndpoint gE = new GRETunnelEndpoint();
 		gE.setIPv4Address("192.168.1.3");

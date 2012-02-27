@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties of the IPConfigurationService class as well as methods comparable to the
@@ -19,7 +18,7 @@ public class GRETunnelService extends Service implements Serializable {
 	 * 
 	 * @param greTunnelConfiguration
 	 */
-	public void addGRETunnelConfiguration(GRETunnelConfiguration greTunnelConfiguration) {
+	public void setGRETunnelConfiguration(GRETunnelConfiguration greTunnelConfiguration) {
 		if (greTunnelConfiguration != null)
 			GRETunnelServiceConfiguration.link(this, greTunnelConfiguration);
 	}
@@ -42,8 +41,7 @@ public class GRETunnelService extends Service implements Serializable {
 	 * 
 	 * @return
 	 */
-	public List<GRETunnelConfiguration> getGRETunnelConfiguration() {
-		return (List<GRETunnelConfiguration>) this.getToAssociatedElementsByType(GRETunnelServiceConfiguration.class);
-
+	public GRETunnelConfiguration getGRETunnelConfiguration() {
+		return (GRETunnelConfiguration) this.getFirstToAssociatedElementByType(GRETunnelServiceConfiguration.class);
 	}
 }
