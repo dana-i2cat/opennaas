@@ -5,7 +5,7 @@ import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
-import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
 import net.i2cat.mantychore.model.ManagedElement;
@@ -42,7 +42,7 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
-			GetNetconfCommand command = new GetNetconfCommand(getVelocityMessage());
+			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
@@ -92,8 +92,8 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 			}
 
 			Map<String, Object> extraParams = new HashMap<String, Object>();
-			extraParams.put("disabledState", EnabledState.DISABLED);
-			extraParams.put("enabledState", EnabledState.ENABLED);
+			extraParams.put("disabledState", EnabledState.DISABLED.toString());
+			extraParams.put("enabledState", EnabledState.ENABLED.toString());
 
 			setVelocityMessage(prepareVelocityCommand(velocityParams, template, extraParams));
 		} catch (Exception e) {

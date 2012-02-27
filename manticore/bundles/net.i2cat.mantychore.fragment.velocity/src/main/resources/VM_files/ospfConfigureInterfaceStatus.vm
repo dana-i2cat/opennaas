@@ -8,7 +8,6 @@
 			<name>$elementName</name>
 	#end
 
-
 	<protocols>
 		<ospf>
 			#foreach($ospfAreaConfig in $param.getOSPFAreaConfiguration())
@@ -16,13 +15,12 @@
 			<area>
 				<name>$ipUtilsHelper.ipv4LongToString($ospfArea.getAreaID())</name>
 				#foreach($ospfPep in $ospfArea.getEndpointsInArea())
-				<interface operation="none">
+				##replace the content on interface with given name
+				<interface operation="replace">
 					<name>$ospfPep.getName()</name>
 					##ENABLED/DISABLED
-					#if($ospfPep.getEnabledState().equals($disabledState))
-					<disable operation="create"/>
-					#else
-					<disable operation="delete"/>
+					#if($ospfPep.getEnabledState().toString().equals($disabledState))
+					<disable/>
 					#end
 				</interface>
 				#end

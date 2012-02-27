@@ -10,10 +10,10 @@
 	<protocols>	
 		<ospf>
 		##ENABLED/DISABLED
-		#if( $param.getEnabledState().equals($disabledState))
+		#if( $param.getEnabledState().toString().equals($disabledState))
 		<disable/>
 		#else
-		<disable operation="delete"/>
+		<disable operation="delete"></disable>
 		#end
 		</ospf>
 	</protocols>

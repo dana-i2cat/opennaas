@@ -9,18 +9,11 @@
 	#end
 	<protocols>	
 		<ospf>
-		#set($ospfArea = $param.getOSPFArea())
-			<area>
+			<area operation="none">
 				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
 				#foreach($ospfPep in $param.getEndpointsInArea())
-				<interface>
+				<interface operation="create">
 					<name>$ospfPep.getName()</name>
-					##ENABLED/DISABLED
-					#if($ospfPep.getEnabledState().toString().equals($disabledState))
-					<disable/>
-					#else
-					<disable operation="delete"/>
-					#end
 				</interface>
 				#end
 			</area>

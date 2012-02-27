@@ -164,7 +164,7 @@ public class ProtocolsParser extends DigesterEngine {
 		((OSPFArea) obj).setAreaID(areaId);
 	}
 
-	public void setDisabledFlag() {
+	public void setDisabledFlag(String disabled) {
 		this.serviceDisabledFlag = true;
 	}
 

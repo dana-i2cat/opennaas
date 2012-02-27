@@ -80,8 +80,8 @@ public class ConfigureOSPFAction extends JunosAction {
 
 		IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 		extraParams.put("ipUtilsHelper", ipUtilsHelper);
 
 		try {
