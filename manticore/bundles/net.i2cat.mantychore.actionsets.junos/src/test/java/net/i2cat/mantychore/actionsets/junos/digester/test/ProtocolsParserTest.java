@@ -59,6 +59,38 @@ public class ProtocolsParserTest {
 		}
 	}
 
+	@Test
+	public void testParseEmptyOSPF() throws Exception {
+		String message = readStringFromFile("/parsers/getConfigWithEmptyOSPF.xml");
+
+		System model = createSampleModel();
+		ProtocolsParser parser = new ProtocolsParser(model);
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		System updatedModel = parser.getModel();
+
+		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
+		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		Assert.assertFalse("Service state must have been set", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
+	}
+
+	@Test
+	public void testParseDisabledEmptyOSPF() throws Exception {
+		String message = readStringFromFile("/parsers/getConfigWithDisabledEmptyOSPF.xml");
+
+		System model = createSampleModel();
+		ProtocolsParser parser = new ProtocolsParser(model);
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		System updatedModel = parser.getModel();
+
+		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
+		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		Assert.assertTrue("Service state must have been set to DISABLED", EnabledState.DISABLED.equals(ospfService.getEnabledState()));
+	}
+
 	/**
 	 * Simple parser. It was used for proves with xml files
 	 * 
