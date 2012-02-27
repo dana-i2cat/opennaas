@@ -1,7 +1,12 @@
 package org.opennaas.router.capability.gretunnel;
 
+import java.util.List;
 import java.util.Vector;
 
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
@@ -15,7 +20,7 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 
-public class GRETunnelCapability extends AbstractCapability {
+public class GRETunnelCapability extends AbstractCapability implements IGRETunnelService {
 
 	public final static String	GRETUNNEL	= "gretunnel";
 
@@ -61,6 +66,57 @@ public class GRETunnelCapability extends AbstractCapability {
 	}
 
 	@Override
+	public Response createGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
+		return (Response) sendMessage(ActionConstants.CREATETUNNEL, greTunnelService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#deleteGRETunnel(net.i2cat.mantychore.model.GRETunnelService)
+	 */
+	@Override
+	public Response deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
+		return (Response) sendMessage(ActionConstants.DELETETUNNEL, greTunnelService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#getGRETunnelConfiguration(net.i2cat.mantychore.model.GRETunnelService)
+	 */
+	@Override
+	public Response getGRETunnelConfiguration(GRETunnelService greTunnelService) throws CapabilityException {
+		return (Response) sendMessage(ActionConstants.GETTUNNELCONFIG, greTunnelService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#showGRETunnelConfiguration()
+	 */
+	@Override
+	public GRETunnelService showGRETunnelConfiguration() throws CapabilityException {
+		GRETunnelService tunnnelService = null;
+		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
+
+		// If hosted services is null or empty throw Exception
+		if (lServices == null || lServices.size() <= 0) {
+			throw new CapabilityException("No hosted services in this model.");
+		} else {
+			// Search OSPF Service in the Service list
+			for (Service service : lServices) {
+				if (service instanceof GRETunnelService) {
+					tunnnelService = (GRETunnelService) service;
+					break;
+				}
+			}
+		}
+
+		return tunnnelService;
+	}
+
+	@Override
 	protected void initializeCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
 
@@ -83,4 +139,5 @@ public class GRETunnelCapability extends AbstractCapability {
 		// TODO Auto-generated method stub
 
 	}
+
 }
