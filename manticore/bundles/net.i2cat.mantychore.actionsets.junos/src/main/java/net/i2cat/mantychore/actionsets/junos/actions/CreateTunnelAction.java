@@ -39,6 +39,7 @@ public class CreateTunnelAction extends JunosAction {
 			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
@@ -66,13 +67,18 @@ public class CreateTunnelAction extends JunosAction {
 	@Override
 	public void prepareMessage() throws ActionException {
 
-		if (template == null || template.equals(""))
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		checkParams(params);
 		try {
 			IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("ipUtilsHelper", ipUtilsHelper);
+
+			String name = ((GRETunnelService) params).getName();
+			String portNumber = name.split(".")[1];
+			name = name.split(".")[0];
+			((GRETunnelService) params).setName(name);
+			extraParams.put("portNumber", portNumber);
+
 			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
 				// is logicalRouter, add LRName param
 				((ManagedElement) params).setElementName(((ComputerSystem) modelToUpdate).getElementName());
