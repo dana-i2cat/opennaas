@@ -45,9 +45,13 @@ public class ProtocolsParserTest {
 		Assert.assertEquals(0l, ospfAreaConfig.getOSPFArea().getAreaID());
 
 		Assert.assertFalse(ospfAreaConfig.getOSPFArea().getEndpointsInArea().isEmpty());
+		int disabledInterfaceCount = 0;
 		for (OSPFProtocolEndpointBase ospfEndPointBase : ospfAreaConfig.getOSPFArea().getEndpointsInArea()) {
 			Assert.assertFalse("OSPFEndpoint state must have been set", EnabledState.UNKNOWN.equals(ospfEndPointBase.getEnabledState()));
 			Assert.assertFalse("OSPFEndpoint must be implemented by an existing interface", ospfEndPointBase.getLogicalPorts().isEmpty());
+
+			if (ospfEndPointBase.getEnabledState().equals(EnabledState.DISABLED))
+				disabledInterfaceCount++;
 
 			// FIXME Unsupported! Right now OSPFEndpoints are not binded (see ProtocolsParser)
 			// Assert.assertFalse("OSPFEndpoint must be binded to existing ProtocolEndpoints",
@@ -57,6 +61,8 @@ public class ProtocolsParserTest {
 			// pe instanceof IPProtocolEndpoint);
 			// }
 		}
+		Assert.assertTrue("There is a disabled interface", disabledInterfaceCount > 0);
+		Assert.assertTrue("Not all interfaces are disabled", disabledInterfaceCount < ospfAreaConfig.getOSPFArea().getEndpointsInArea().size());
 	}
 
 	@Test

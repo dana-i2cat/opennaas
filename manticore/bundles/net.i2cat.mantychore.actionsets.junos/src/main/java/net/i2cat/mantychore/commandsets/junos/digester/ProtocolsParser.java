@@ -51,6 +51,8 @@ public class ProtocolsParser extends DigesterEngine {
 			addMyRule("*/protocols/ospf/area/interface/disable", "disableOSPFProtocolEndpoint", 0);
 			addSetNext("*/protocols/ospf/area/interface", "addEndpointInArea");
 			addSetNext("*/protocols/ospf/area/", "addOSPFArea", OSPFArea.class.getName());
+			// OSPFService should be created also when addOSPFArea has not been called
+			addMyRule("*/protocols/ospf", "obtainOSPFService", -1); // -1 specifies we want no parameters
 		}
 	}
 
