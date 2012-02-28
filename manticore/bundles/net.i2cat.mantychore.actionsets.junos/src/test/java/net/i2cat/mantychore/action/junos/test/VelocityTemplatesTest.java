@@ -31,7 +31,7 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestGetConfigurationTemplate() {
+	public void testGetConfigurationTemplate() {
 		template = "/VM_files/getconfiguration.vm";
 		String message = callVelocity(template, null);
 		Assert.assertNotNull(message);
@@ -40,7 +40,7 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestsetIpv4Template() {
+	public void testsetIpv4Template() {
 		template = "/VM_files/configureIPv4.vm";
 		IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
 
@@ -50,7 +50,7 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestcreateGRETunnelTemplate() {
+	public void testCreateGRETunnelTemplate() {
 		template = "/VM_files/createTunnel.vm";
 		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
 

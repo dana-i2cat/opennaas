@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.DeleteTunnelAction;
+import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.DeleteTunnelAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.GRETunnelService;
 
@@ -48,7 +48,7 @@ public class DeleteTunnelTest {
 	}
 
 	/**
-	 * Create two OSPFProtocolEndpoint with state to enable
+	 * Execute the action
 	 * 
 	 * @throws IOException
 	 */

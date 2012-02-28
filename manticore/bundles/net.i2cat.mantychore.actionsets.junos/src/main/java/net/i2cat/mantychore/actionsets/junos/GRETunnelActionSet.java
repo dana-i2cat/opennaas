@@ -3,10 +3,10 @@ package net.i2cat.mantychore.actionsets.junos;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.actionsets.junos.actions.CreateTunnelAction;
-import net.i2cat.mantychore.actionsets.junos.actions.DeleteTunnelAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.actionsets.junos.actions.ShowTunnelsAction;
+import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.CreateTunnelAction;
+import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.DeleteTunnelAction;
 import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.GetTunnelConfigurationAction;
 
 import org.opennaas.core.resources.action.ActionSet;
