@@ -121,7 +121,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 			// Search OSPF Service in the Service list
 			for (Service service : lServices) {
 				if (service instanceof GRETunnelService) {
-					lServices.add(service);
+					listGreTunnelServices.add((GRETunnelService) service);
 				}
 			}
 		}

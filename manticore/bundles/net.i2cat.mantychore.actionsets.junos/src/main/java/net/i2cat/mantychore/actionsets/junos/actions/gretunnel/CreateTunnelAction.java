@@ -61,7 +61,7 @@ public class CreateTunnelAction extends JunosAction {
 			throw new ActionException("Params can't be null for the " + getActionID() + " action.");
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
-		if (checkNamePattern(((GRETunnelService) params).getName()))
+		if (!checkNamePattern(((GRETunnelService) params).getName()))
 			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
 		return true;
 	}
@@ -93,6 +93,10 @@ public class CreateTunnelAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
+	}
+
+	public static void main(String[] args) {
+		System.out.println(new CreateTunnelAction().checkNamePattern("gre.1"));
 	}
 
 	/**
