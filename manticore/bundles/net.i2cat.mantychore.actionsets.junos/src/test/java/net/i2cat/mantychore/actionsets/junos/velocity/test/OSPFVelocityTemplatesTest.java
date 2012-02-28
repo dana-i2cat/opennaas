@@ -34,8 +34,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfAddInterfaceInArea.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 		extraParams.put("elementName", "");
 		extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 
@@ -68,8 +68,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfConfigure.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 
 		String message = callVelocity(template, getOSPFService(), extraParams);
 		Assert.assertNotNull(message);
@@ -86,8 +86,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfConfigure.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 
 		OSPFService service = getOSPFService();
 		service.setRouterID(null);
@@ -109,8 +109,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfConfigureArea.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 		extraParams.put("elementName", "");
 		extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 
@@ -130,8 +130,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfConfigureInterfaceStatus.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 		extraParams.put("elementName", "");
 		extraParams.put("ipUtilsHelper", IPUtilsHelper.class);
 
@@ -142,7 +142,7 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue(message.contains("<name>0.0.0.0</name>"));
 		Assert.assertTrue(message.contains("<name>fe-0/0/2.1</name>"));
 		Assert.assertTrue(message.contains("<name>fe-0/0/2.2</name>"));
-		Assert.assertTrue(message.contains("<disable operation=\"delete\"/>"));
+		Assert.assertFalse(message.contains("<disable/>"));
 
 		// Disable
 		message = callVelocity(template, getConfigureOSPFInterfaceStatusParameters(false), extraParams);
@@ -151,7 +151,7 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue(message.contains("<name>0.0.0.0</name>"));
 		Assert.assertTrue(message.contains("<name>fe-0/0/2.1</name>"));
 		Assert.assertTrue(message.contains("<name>fe-0/0/2.2</name>"));
-		Assert.assertTrue(message.contains("<disable operation=\"create\"/>"));
+		Assert.assertTrue(message.contains("<disable/>"));
 
 		log.info(XmlHelper.formatXML(message));
 	}
@@ -162,8 +162,8 @@ public class OSPFVelocityTemplatesTest extends VelocityTemplatesTest {
 		template = "/VM_files/ospfConfigureStatus.vm";
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("disabledState", EnabledState.DISABLED);
-		extraParams.put("enabledState", EnabledState.ENABLED);
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 
 		OSPFService service = new OSPFService();
 

@@ -25,7 +25,7 @@ public class ConfigureOSPFStatusActionTest {
 		String enableMessage = action1.getVelocityMessage();
 
 		Assert.assertNotNull(enableMessage);
-		Assert.assertTrue(enableMessage.contains("<disable operation=\"delete\"/>"));
+		Assert.assertTrue(enableMessage.contains("<disable operation=\"delete\""));
 
 		OSPFService ospfDisabed = new OSPFService();
 		ospfDisabed.setEnabledState(EnabledState.DISABLED);
