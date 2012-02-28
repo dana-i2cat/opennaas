@@ -19,7 +19,9 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 
 public class CreateTunnelAction extends JunosAction {
 
-	Log	log	= LogFactory.getLog(CreateTunnelAction.class);
+	private static final String	NAME_PATTERN	= "gre.([\\d{1}&&[^0]])(\\d*)";
+
+	private final Log			log				= LogFactory.getLog(CreateTunnelAction.class);
 
 	public CreateTunnelAction() {
 		super();
@@ -50,19 +52,18 @@ public class CreateTunnelAction extends JunosAction {
 
 	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-
 		if (params == null)
 			throw new ActionException("Params can't be null for the " + getActionID() + " action.");
-		if (params instanceof GRETunnelService)
-			return true;
-		// TODO Auto-generated method stub
-		throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
+		if (!(params instanceof GRETunnelService))
+			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
+		if (checkNamePattern(((GRETunnelService) params).getName()))
+			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
+		return true;
 	}
 
 	@Override
@@ -92,6 +93,16 @@ public class CreateTunnelAction extends JunosAction {
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
-
 	}
+
+	/**
+	 * Check if name has this patter gre.{x} where x >= 1
+	 * 
+	 * @param name
+	 * @return true if name has the pattern
+	 */
+	private boolean checkNamePattern(String name) {
+		return name.matches(NAME_PATTERN);
+	}
+
 }
