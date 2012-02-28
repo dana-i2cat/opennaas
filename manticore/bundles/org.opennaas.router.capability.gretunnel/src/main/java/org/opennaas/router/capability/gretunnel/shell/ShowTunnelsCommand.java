@@ -18,7 +18,7 @@ import org.opennaas.router.capability.gretunnel.GRETunnelCapability;
  * @author Jordi Puig
  */
 @Command(scope = "gretunnel", name = "show", description = "Shows GRE tunnels in router.")
-public class ShowCommand extends GenericKarafCommand {
+public class ShowTunnelsCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to show the GRE Tunnels", required = true, multiValued = false)
 	private String	resourceId;

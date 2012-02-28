@@ -80,7 +80,7 @@
 			  *
 			</Import-Package>
 			<Export-Package>
-			  ${project.artifactId};version="${project.version}"
+			  org.opennaas.router.capability.gretunnel;version="${project.version}"
 			</Export-Package>
 		  </instructions>
 		</configuration>

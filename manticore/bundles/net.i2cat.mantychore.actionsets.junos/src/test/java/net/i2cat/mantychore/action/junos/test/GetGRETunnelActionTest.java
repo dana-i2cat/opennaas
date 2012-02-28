@@ -7,7 +7,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.actionsets.junos.actions.GetTunnelConfigurationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.GetTunnelConfigurationAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
