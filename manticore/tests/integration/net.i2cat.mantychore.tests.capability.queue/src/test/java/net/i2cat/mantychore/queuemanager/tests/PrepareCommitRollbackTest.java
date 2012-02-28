@@ -1,14 +1,20 @@
 package net.i2cat.mantychore.queuemanager.tests;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -32,45 +38,75 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+public class PrepareCommitRollbackTest
+{
+	private final static Log		log				= LogFactory.getLog(PrepareCommitRollbackTest.class);
 
-	static Log				log				= LogFactory
-													.getLog(PrepareCommitRollbackTest.class);
+	private final String			resourceID		= "junosResource";
 
-	MockResource			mockResource;
-	String					resourceID		= "junosResource";
-	// QueueManager queueManagerService;
-	ICapability				queueCapability;
-	IQueueManagerService	queueManagerService;
+	private MockResource			mockResource;
+	private ICapability				queueCapability;
+	private IQueueManagerService	queueManagerService;
 
 	@Inject
-	BundleContext			bundleContext	= null;
+	private BundleContext			bundleContext;
+
+	@Inject
+	private IProtocolManager		protocolManager;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory		queueManagerFactory;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer		routerService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer		queueService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   mavenBundle()
+					   .groupId("org.ops4j.base")
+					   .artifactId("ops4j-base-spi")
+					   .versionAsInProject(),
+					   mavenBundle()
+					   .groupId("org.ops4j.pax.swissbox")
+					   .artifactId("pax-swissbox-framework")
+					   .versionAsInProject(),
+					   keepRuntimeFolder());
 	}
 
 	/**
@@ -89,17 +125,11 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
-		// ADDED
 		return protocolSessionContext;
-
 	}
 
-	public void initBundles() throws ProtocolException {
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		/* initialize model */
+	@Before
+	public void before() throws ProtocolException, CapabilityException {
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
@@ -109,21 +139,12 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 50000);
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-		log.info("INFO: Initialized!");
-
-	}
-
-	public void before() throws ProtocolException, CapabilityException {
-		initBundles();
 		log.info("INFO: Before test, getting queue...");
-		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 50000);
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueManagerService = getOsgiService(IQueueManagerService.class,
-				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")", 50000);
-
+		queueManagerService = getService(bundleContext, IQueueManagerService.class, 50000,
+				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}
 
 	/*
@@ -143,13 +164,7 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void testPrepareRestoreAction() {
-		try {
-			before();
-		} catch (Exception e1) {
-			Assert.fail(e1.getMessage());
-		}
-
+	public void testPrepareRestoreAction() throws Exception {
 		String uri = System.getProperty("protocol.uri");
 
 		if (uri == null || uri.equals("${protocol.uri}")) {
@@ -158,14 +173,8 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		String compare = null;
 		String toCompare = null;
 		Query query = QueryFactory.newGetConfig("running", "<configuration></configuration>", null);
-		try {
-			Reply reply = sendNetconfMessage(query, uri);
-			compare = reply.getContain();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		Reply reply = sendNetconfMessage(query, uri);
+		compare = reply.getContain();
 
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
@@ -176,7 +185,6 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 
 		boolean isChecked = false;
 		try {
-
 			queueManagerService.execute();
 		} catch (Exception e) {
 			if (e instanceof CapabilityException)
@@ -185,17 +193,10 @@ public class PrepareCommitRollbackTest extends AbstractIntegrationTest {
 		if (!uri.startsWith("mock:"))
 			Assert.assertTrue(isChecked);
 
-		try {
-			Reply reply = sendNetconfMessage(query, uri);
-			toCompare = reply.getContain();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		reply = sendNetconfMessage(query, uri);
+		toCompare = reply.getContain();
 
 		Assert.assertEquals(compare, toCompare);
-
 	}
 
 	public Reply sendNetconfMessage(Query query, String uri) throws Exception {

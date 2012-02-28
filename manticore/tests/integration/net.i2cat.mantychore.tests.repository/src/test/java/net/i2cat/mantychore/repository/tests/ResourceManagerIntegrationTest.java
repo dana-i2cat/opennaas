@@ -1,10 +1,18 @@
 package net.i2cat.mantychore.repository.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import org.opennaas.core.resources.IResource;
@@ -16,67 +24,72 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	static Log					log				= LogFactory
-														.getLog(ResourceManagerIntegrationTest.class);
-
-	IResourceManager			rm;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ResourceManagerIntegrationTest
+{
+	private final static Log	log				= LogFactory.getLog(ResourceManagerIntegrationTest.class);
 
 	@Inject
-	BundleContext				bundleContext	= null;
+	private IResourceManager	rm;
 
+	@Inject
+	private BundleContext		bundleContext;
+
+	@Inject
+	@Filter("type=router")
 	private IResourceRepository	resourceRepo;
 
+	@Inject
+	private IProtocolManager	protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    private BlueprintContainer	chassisService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    private BlueprintContainer	ipService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer	queueService;
+
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-
-//		 , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-		);
-		return options;
-	}
-
-	@Before
-	public void initBundles() throws ResourceException {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
-		/* init capability */
-
-		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
-
-		rm = getOsgiService(IResourceManager.class, 50000);
-		resourceRepo = getOsgiService(IResourceRepository.class, "type=router", 50000);
-		log.info("INFO: Initialized!");
-
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
-
 	}
 
 	public static ProtocolSessionContext newSessionContextNetconf() {
@@ -91,13 +104,14 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
-		// ADDED
 		return protocolSessionContext;
 
 	}
 
 	@Test
-	public void resourceWorkflow() {
+	public void resourceWorkflow()
+		throws InterruptedException, ResourceException, ProtocolException
+	{
 		createResource();
 		startResource();
 		stopResource();
@@ -105,7 +119,7 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 		createResourcetwo();
 	}
 
-	public void createResource() {
+	public void createResource() throws ResourceException, ProtocolException {
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
@@ -113,92 +127,62 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 		capabilities.add("queue");
 
 		ResourceDescriptor descriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
-		try {
-			IResource resource = rm.createResource(descriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		IResource resource = rm.createResource(descriptor);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
+		Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 
-			List<IResource> resources = rm.listResourcesByType("router");
-			Assert.assertFalse(resources.isEmpty());
-
-			Assert.assertNotNull(resourceRepo);
-			List<IResource> resources1 = resourceRepo.listResources();
-			Assert.assertFalse(resources1.isEmpty());
-
-		} catch (ResourceException e) {
-
-			Assert.fail();
-		} catch (ProtocolException e) {
-
-			Assert.fail();
-		}
-
-	}
-
-	public void startResource() {
-		try {
-			Assert.assertNotNull(resourceRepo);
-			List<IResource> resources = resourceRepo.listResources();
-			Assert.assertFalse(resources.isEmpty());
-			List<IResource> resources1 = rm.listResourcesByType("router");
-			Assert.assertFalse(resources1.isEmpty());
-
-			IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-			Assert.assertNotNull(resource);
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
-
-			rm.startResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-
-			resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-			Assert.assertNotNull(resource);
-
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
-
-		} catch (ResourceException e) {
-			Assert.fail(e.getMessage());
-		}
-	}
-
-	public void stopResource() {
-		try {
-			List<IResource> resources = rm.listResourcesByType("router");
-			Assert.assertFalse(resources.isEmpty());
-
-			IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-			Assert.assertNotNull(resource);
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
-
-			rm.stopResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-			resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
-			Assert.assertNotNull(resource);
-
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} catch (ResourceException e) {
-			Assert.fail(e.getMessage());
-		}
-	}
-
-	public void removeResource() {
 		List<IResource> resources = rm.listResourcesByType("router");
 		Assert.assertFalse(resources.isEmpty());
-		try {
-			rm.removeResource(rm.getIdentifierFromResourceName("router", "junosm20"));
 
-		} catch (ResourceException e) {
-			Assert.fail(e.getMessage());
-		}
-
+		Assert.assertNotNull(resourceRepo);
+		List<IResource> resources1 = resourceRepo.listResources();
+		Assert.assertFalse(resources1.isEmpty());
 	}
 
-	public void createResourcetwo() {
+	public void startResource() throws ResourceException {
+		Assert.assertNotNull(resourceRepo);
+		List<IResource> resources = resourceRepo.listResources();
+		Assert.assertFalse(resources.isEmpty());
+		List<IResource> resources1 = rm.listResourcesByType("router");
+		Assert.assertFalse(resources1.isEmpty());
+
+		IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+		Assert.assertNotNull(resource);
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
+
+		rm.startResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+
+		resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+		Assert.assertNotNull(resource);
+
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
+	}
+
+	public void stopResource() throws ResourceException, InterruptedException {
+		List<IResource> resources = rm.listResourcesByType("router");
+		Assert.assertFalse(resources.isEmpty());
+
+		IResource resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+		Assert.assertNotNull(resource);
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
+
+		rm.stopResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+		resource = rm.getResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+		Assert.assertNotNull(resource);
+
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
+		Thread.sleep(5000);
+	}
+
+	public void removeResource() throws ResourceException {
+		List<IResource> resources = rm.listResourcesByType("router");
+		Assert.assertFalse(resources.isEmpty());
+		rm.removeResource(rm.getIdentifierFromResourceName("router", "junosm20"));
+	}
+
+	public void createResourcetwo() throws ResourceException, ProtocolException {
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
@@ -206,23 +190,13 @@ public class ResourceManagerIntegrationTest extends AbstractIntegrationTest {
 		capabilities.add("queue");
 
 		ResourceDescriptor descriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
-		try {
-			IResource resource = rm.createResource(descriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		IResource resource = rm.createResource(descriptor);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
-			Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
+		Assert.assertEquals("junosm20", rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
+		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
 
-			List<IResource> resources = rm.listResourcesByType("router");
-			Assert.assertFalse(resources.isEmpty());
-
-		} catch (ResourceException e) {
-
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-
-			Assert.fail(e.getMessage());
-		}
-
+		List<IResource> resources = rm.listResourcesByType("router");
+		Assert.assertFalse(resources.isEmpty());
 	}
 }

@@ -13,40 +13,40 @@
 		<feature>cxf</feature>
 		<feature>activemq</feature>
 
-		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/1.0.1</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/1.0.0</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/1.0.0</bundle>
+		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/${dynamicjava.classloading.version}</bundle>
+		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/${dynamicjava.version}</bundle>
+		<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/${dynamicjava.version}</bundle>
 		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/1.1.2</bundle>-->
-		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/1.8.0.10</bundle>
-		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.runtime/0.6.1</bundle>
-		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.command/0.6.1</bundle>
+		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.runtime/${felix.gogo.version}</bundle>
+		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.command/${felix.gogo.version}</bundle>
 		<!--<bundle>mvn:org.apache.felix/org.apache.felix.gogo.shell/0.6.1</bundle>-->
 		<!--<bundle>mvn:org.apache.karaf.shell/org.apache.karaf.shell.console/2.2.0-fuse-00-43</bundle>-->
 		<!--instead, we use FUSE's karaf bundle org.apache.karaf.shell.console-2.2.0-fuse-00-43 which is part of one of the features we import-->
 		<!-- nexus events stuff -->
-		<bundle>mvn:org.osgi/org.osgi.compendium/4.2.0</bundle>
+		<bundle>mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<!-- nexus events stuff end -->
 		<!-- mantychore needs these -->
 		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxp-ri/1.4.2_1</bundle>
 		<!--<bundle>mvn:commons-jxpath/commons-jxpath/1.3</bundle>-->
 		<!-- mantychore needs these end -->
 	</feature>
-	<feature name="opennaas-core" version="1.0.0-SNAPSHOT">
+	<feature name="opennaas-core" version="${project.version}">
 		<feature version="1.0.0-SNAPSHOT">opennaas-core-deps</feature>
-		<bundle>mvn:org.opennaas/opennaas-core-hibernate/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-persistence/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-events/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-resources/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-hibernate/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-persistence/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-events/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-resources/${project.version}</bundle>
 		<!--  TODO IT IS NOTR USED IT IS AN EXAMPLE  -->
 		<!--
 			<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.resourcemanager.soapendpoint/1.0.0-SNAPSHOT</bundle>
 		-->
-		<bundle>mvn:org.opennaas/opennaas-core-protocols-sessionmanager/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas-core-protocols-sessionmanager/${project.version}</bundle>
 	</feature>
 	<!--
-	<feature name="i2cat-nexus-testprofile" version="1.0.0-SNAPSHOT">
-		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/1.0.0-SNAPSHOT</bundle>
+	<feature name="i2cat-nexus-testprofile" version="${project.version}">
+		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/${project.version}</bundle>
 	</feature>-->
 </features>

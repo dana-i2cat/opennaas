@@ -1,10 +1,12 @@
 package net.i2cat.mantychore.queuemanager.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -20,57 +22,80 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class QueuemanagerTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class QueuemanagerTest
+{
+	private final static Log		log				= LogFactory.getLog(QueuemanagerTest.class);
 
-	static Log				log				= LogFactory
-													.getLog(QueuemanagerTest.class);
-
-	MockResource			mockResource;
-	String					resourceID		= "junosResource";
-	// QueueManager queueManagerService;
-	ICapability				queueCapability;
-	IQueueManagerService	queueManagerService;
+	private final String			resourceID		= "junosResource";
+	private MockResource			mockResource;
+	private ICapability				queueCapability;
+	private IQueueManagerService	queueManagerService;
 
 	@Inject
-	BundleContext			bundleContext	= null;
+	private BundleContext			bundleContext;
+
+	@Inject
+	private IProtocolManager		protocolManager;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory		queueManagerFactory;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer		routerService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer		queueService;
 
 	@Configuration
-	public static Option[] configure() {
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   mavenBundle()
+					   .groupId("org.ops4j.base")
+					   .artifactId("ops4j-base-spi")
+					   .versionAsInProject(),
+					   mavenBundle()
+					   .groupId("org.ops4j.pax.swissbox")
+					   .artifactId("pax-swissbox-framework")
+					   .versionAsInProject(),
+					   keepRuntimeFolder());
 	}
-
-	/*@Configuration
-	public Option[] additionalConfiguration() throws Exception {
-		return combine(configure(), new Customizer() {
-			@Override
-			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.opennaas.core.resources.protocol.*;status=provisional").build();
-			}
-		});
-	}*/
 
 	/**
 	 * Configure the protocol to connect
@@ -87,15 +112,11 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
-		// ADDED
 		return protocolSessionContext;
-
 	}
 
-	public void initBundles() throws ProtocolException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
+	@Before
+	public void before() throws ProtocolException, CapabilityException {
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
@@ -106,40 +127,22 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-		log.info("INFO: Initialized!");
-
-	}
-
-
-	@Before
-	public void before() throws ProtocolException, CapabilityException {
-		initBundles();
 		log.info("INFO: Before test, getting queue...");
-		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 20000);
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueManagerService = getOsgiService(IQueueManagerService.class,
-				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")", 20000);
-
+		queueManagerService = getService(bundleContext, IQueueManagerService.class, 20000,
+				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}
 
 	@After
 	public void after() {
 		log.info("INFO: After test, cleaning queue...");
 		queueManagerService.empty();
-
 	}
 
 	@Test
 	public void removeAction() {
-		// try {
-		// before();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// Assert.fail(e.getLocalizedMessage());
-		// }
 		log.info("INFO: Remove actions");
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
@@ -149,17 +152,10 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 		queueManagerService.empty();
 		Assert.assertTrue(queueManagerService.getActions().size() == 0);
 		log.info("INFO: OK!");
-		// after();
 	}
 
 	@Test
-	public void executeAction() {
-		// try {
-		// before();
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// Assert.fail(e.getLocalizedMessage());
-		// }
+	public void executeAction() throws ProtocolException, CapabilityException {
 		log.info("INFO: Execute actions");
 
 		IAction action = new MockAction();
@@ -167,25 +163,13 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 
 		queueManagerService.queueAction(action);
 		Assert.assertTrue(queueManagerService.getActions().size() == 1);
-		try {
-			queueManagerService.execute();
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		queueManagerService.execute();
 		Assert.assertTrue(queueManagerService.getActions().size() == 0);
 		log.info("INFO: OK!");
-		// after();
 	}
 
 	@Test
 	public void listActions() {
-//		try {
-//			before();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			Assert.fail(e.getLocalizedMessage());
-//		}
 		log.info("INFO: List actions");
 
 		IAction action = new MockAction();
@@ -199,7 +183,6 @@ public class QueuemanagerTest extends AbstractIntegrationTest {
 		}
 
 		log.info("INFO: OK!");
-		// after();
 	}
 
 }

@@ -1,12 +1,16 @@
 package net.i2cat.mantychore.ipcapability.test;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
-import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
@@ -14,12 +18,10 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,43 +42,61 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class IPCapabilityIntegrationTest
+{
+	private final static Log	log			= LogFactory.getLog(IPCapabilityIntegrationTest.class);
+	private final String		deviceID	= "junos";
+	private final String		queueID		= "queue";
 
-	static Log			log				= LogFactory
-												.getLog(IPCapabilityIntegrationTest.class);
-	static MockResource	mockResource;
-	String				deviceID		= "junos";
-	String				queueID			= "queue";
+	private MockResource		mockResource;
+	private ICapability			ipCapability;
+	private ICapability			queueCapability;
 
-	static ICapability	ipCapability;
 	@Inject
-	BundleContext		bundleContext	= null;
-	private ICapability	queueCapability;
+	private BundleContext		bundleContext;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory	queueManagerFactory;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	@Filter("(capability=ipv4)")
+	private ICapabilityFactory	ipFactory;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer	routerService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
-		String uri = System.getProperty("protocol.uri");
-		if (uri != null && !uri.equals("${protocol.uri}")) {
-			Option[] optionsWithURI = options(systemProperty("protocol.uri").value(uri));
-			options = combine(options, optionsWithURI);
-		}
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public void initResource() {
@@ -115,86 +135,59 @@ public class IPCapabilityIntegrationTest extends AbstractIntegrationTest {
 
 	}
 
-	public void initCapability() {
+	public void initCapability() throws Exception {
 
-		try {
-			log.info("INFO: Before test, getting queue...");
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
-			Assert.assertNotNull(queueManagerFactory);
+		log.info("INFO: Before test, getting queue...");
+		Assert.assertNotNull(queueManagerFactory);
 
-			queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability = queueManagerFactory.create(mockResource);
 
-			// IQueueManagerService queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
-			// "(capability=queue)(capability.name=" + deviceID + ")", 5000);
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
+		// Test elements not null
+		log.info("Checking ip factory");
+		Assert.assertNotNull(ipFactory);
+		log.info("Checking capability descriptor");
+		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ipv4"));
+		log.info("Creating ip capability");
+		ipCapability = ipFactory.create(mockResource);
+		Assert.assertNotNull(ipCapability);
+		ipCapability.initialize();
 
-			ICapabilityFactory ipFactory = getOsgiService(ICapabilityFactory.class, "capability=ipv4", 10000);
-			// Test elements not null
-			log.info("Checking ip factory");
-			Assert.assertNotNull(ipFactory);
-			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ipv4"));
-			log.info("Creating ip capability");
-			ipCapability = ipFactory.create(mockResource);
-			Assert.assertNotNull(ipCapability);
-			ipCapability.initialize();
-
-			mockResource.addCapability(ipCapability);
-			mockResource.addCapability(queueCapability);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			if (ExceptionUtils.getRootCause(e) != null) {
-				log.error(ExceptionUtils.getRootCause(e).getMessage());
-				Assert.fail(ExceptionUtils.getRootCause(e).getMessage());
-			}
-			Assert.fail(e.getMessage());
-		}
+		mockResource.addCapability(ipCapability);
+		mockResource.addCapability(queueCapability);
 	}
 
 	@Before
-	public void initBundles() {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
+	public void setup() throws Exception {
 		initResource();
 		initCapability();
 	}
 
 	@Test
-	public void TestIPAction() {
+	public void TestIPAction() throws CapabilityException {
 		log.info("TEST ip ACTION");
 
-		try {
-			Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 1);
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
+		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 1);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(queueResponse.getResponses().size() == 1);
-			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
-			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
-			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+		Assert.assertTrue(queueResponse.getResponses().size() == 1);
+		Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
+		Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+		Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
 
-			ActionResponse actionResponse = queueResponse.getResponses().get(0);
-			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
-			for (Response response : actionResponse.getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-
-			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
-
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
+		ActionResponse actionResponse = queueResponse.getResponses().get(0);
+		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
+		for (Response response : actionResponse.getResponses()) {
+			Assert.assertTrue(response.getStatus() == Response.Status.OK);
 		}
 
+		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
 	}
 
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
