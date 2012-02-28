@@ -26,6 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
@@ -167,6 +168,7 @@ public class ChassisCapabilityIntegrationTest
 	}
 
 	@Test
+	@Ignore
 	public void TestChassisAction() throws CapabilityException {
 		log.info("TEST CHASSIS ACTION");
 
