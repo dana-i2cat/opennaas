@@ -19,8 +19,8 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class DeleteTunnelAction extends JunosAction {
 
+	private static final String	NAME_PATTERN		= "gre.([\\d{1}&&[^0]])(\\d*)";
 	private static final String	VELOCITY_TEMPLATE	= "/VM_files/deleteTunnel.vm";
-
 	private static final String	PROTOCOL_NAME		= "netconf";
 
 	/**
@@ -97,15 +97,18 @@ public class DeleteTunnelAction extends JunosAction {
 	 * 
 	 * @param params
 	 *            it should be a GRETunnelService
-	 * @return false if params is null or is not a GRETunnelService
+	 * @return false if params is null, not a GRETunnelService or name != pattern gre.[1..n]
+	 * @throws ActionException
 	 */
 	@Override
-	public boolean checkParams(Object params) {
-		boolean paramsOK = true;
-		if (params == null || !(params instanceof GRETunnelService)) {
-			paramsOK = false;
-		}
-		return paramsOK;
+	public boolean checkParams(Object params) throws ActionException {
+		if (params == null)
+			throw new ActionException("Params can't be null for the " + getActionID() + " action.");
+		if (!(params instanceof GRETunnelService))
+			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
+		if (!checkNamePattern(((GRETunnelService) params).getName()))
+			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
+		return true;
 	}
 
 	/**
@@ -137,7 +140,7 @@ public class DeleteTunnelAction extends JunosAction {
 	/**
 	 * @return
 	 */
-	private Object getPortNumber() {
+	private String getPortNumber() {
 		String[] name = ((GRETunnelService) params).getName().split("\\.");
 		return name.length > 1 ? name[1] : null;
 	}
@@ -145,9 +148,19 @@ public class DeleteTunnelAction extends JunosAction {
 	/**
 	 * @return
 	 */
-	private Object getName() {
+	private String getName() {
 		String[] name = ((GRETunnelService) params).getName().split("\\.");
 		return name.length > 1 ? name[0] : null;
+	}
+
+	/**
+	 * Check if name has this patter gre.{x} where x >= 1
+	 * 
+	 * @param name
+	 * @return true if name has the pattern
+	 */
+	private boolean checkNamePattern(String name) {
+		return name.matches(NAME_PATTERN);
 	}
 
 }

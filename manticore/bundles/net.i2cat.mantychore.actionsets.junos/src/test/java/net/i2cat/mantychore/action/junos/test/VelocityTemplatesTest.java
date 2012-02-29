@@ -58,11 +58,20 @@ public class VelocityTemplatesTest {
 		log.info(message);
 	}
 
+	@Test
+	public void testDeleteGRETunnelTemplate() {
+		template = "/VM_files/deleteTunnel.vm";
+		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
+
+		Assert.assertNotNull(message);
+		log.info(message);
+	}
+
 	private GRETunnelService newParamsGRETunnelService() {
 
 		GRETunnelService greService = new GRETunnelService();
 		greService.setElementName("");
-		greService.setName("gre");
+		greService.setName("gre.3");
 
 		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
 		greConfig.setSourceAddress("147.56.89.62");

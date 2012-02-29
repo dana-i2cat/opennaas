@@ -19,7 +19,7 @@ public class DeleteTunnelCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to show the GRE Tunnels", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "tunnelName", description = "Name of the tunnel to delete", required = true, multiValued = true)
+	@Argument(index = 1, name = "tunnelName", description = "Name of the tunnel to delete", required = true, multiValued = false)
 	private String	tunnelName;
 
 	/*

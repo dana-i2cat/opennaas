@@ -95,10 +95,6 @@ public class CreateTunnelAction extends JunosAction {
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println(new CreateTunnelAction().checkNamePattern("gre.1"));
-	}
-
 	/**
 	 * Check if name has this patter gre.{x} where x >= 1
 	 * 

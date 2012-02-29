@@ -35,7 +35,11 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
 			List<GRETunnelService> lGRETunnelService = tunnelCapability.showGRETunnelConfiguration();
-			printGRETunnelConfiguration(lGRETunnelService);
+			if (lGRETunnelService == null || lGRETunnelService.size() <= 0) {
+				printInfo("No GRE tunnels configured on the router");
+			} else {
+				printGRETunnelConfiguration(lGRETunnelService);
+			}
 			return null;
 		} catch (ResourceException e) {
 			printError(e);
@@ -62,7 +66,7 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 			printSymbol("Gre Tunnel Name:" + greTunnelService.getName());
 			printSymbol("Source IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
 			printSymbol("Destiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
-			if (greTunnelService.getProtocolEndpoint().size() > 1) {
+			if (!greTunnelService.getProtocolEndpoint().isEmpty()) {
 				for (ProtocolEndpoint pep : greTunnelService.getProtocolEndpoint()) {
 					GRETunnelEndpoint greTunnelEndpoint = (GRETunnelEndpoint) pep;
 					printSymbol("Tunnel IP address: " + greTunnelEndpoint.getIPv4Address());

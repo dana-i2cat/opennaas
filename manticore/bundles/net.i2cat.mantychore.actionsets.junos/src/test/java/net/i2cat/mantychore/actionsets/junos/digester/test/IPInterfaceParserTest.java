@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -22,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 public class IPInterfaceParserTest {
-	private Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
+	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
 
 	@Test
 	public void testStatusParserTest() throws Exception {
@@ -66,8 +67,10 @@ public class IPInterfaceParserTest {
 
 	private String printGRETunnels(System model) {
 		String str = "";
+		int greCount = 0;
 		for (Service service : model.getHostedService()) {
 			if (service instanceof GRETunnelService) {
+				greCount++;
 				String name = ((GRETunnelService) service).getName();
 				GRETunnelConfiguration gretunnelConfiguration = ((GRETunnelService) service).getGRETunnelConfiguration();
 				str += " - GRE Tunnel Configuration : " + "\n";
@@ -80,8 +83,10 @@ public class IPInterfaceParserTest {
 				str += "source : " + source + "\n";
 				str += "destination : " + destination + "\n";
 
+				int protocolEpCount = 0;
 				for (ProtocolEndpoint pE : service.getProtocolEndpoint()) {
 					if (pE instanceof GRETunnelEndpoint) {
+						protocolEpCount++;
 						GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
 						String ip = gE.getIPv4Address();
 						if (ip == null) {
@@ -93,7 +98,9 @@ public class IPInterfaceParserTest {
 
 					}
 				}
+				Assert.assertTrue(protocolEpCount > 0);
 			}
+			Assert.assertTrue("There is only one gre service (we know in config there's only one)", greCount == 1);
 		}
 		return str;
 	}
