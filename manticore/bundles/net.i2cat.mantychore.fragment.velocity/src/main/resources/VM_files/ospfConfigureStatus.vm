@@ -9,10 +9,11 @@
 	#end
 	<protocols>
 		<ospf>
-		##ENABLED/DISABLED
 		#if( $param.getEnabledState().toString().equals($disabledState))
+		##this should be called with MERGE operation as default
 		<disable/>
 		#else
+		##this should be called with NONE operation as default
 		<disable operation="delete"></disable>
 		#end
 		</ospf>

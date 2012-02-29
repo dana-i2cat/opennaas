@@ -9,7 +9,7 @@
 	#end
 	<protocols>	
 		<ospf>
-			<area operation="none">
+			<area>
 				<name>$ipUtilsHelper.ipv4LongToString($param.getAreaID())</name>
 				#foreach($ospfPep in $param.getEndpointsInArea())
 				<interface operation="create">

@@ -2,6 +2,7 @@ package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.ManagedElement;
@@ -29,7 +30,8 @@ public class ClearOSPFAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
-			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
+			// when removing tags, none operation should be used as default
+			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
 			command.initialize();
 			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
 		} catch (Exception e) {

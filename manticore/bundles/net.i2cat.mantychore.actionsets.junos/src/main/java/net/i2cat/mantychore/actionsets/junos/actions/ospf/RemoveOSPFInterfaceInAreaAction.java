@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -45,7 +46,8 @@ public class RemoveOSPFInterfaceInAreaAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		try {
-			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
+			// when removing tags, none operation should be used as default
+			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);

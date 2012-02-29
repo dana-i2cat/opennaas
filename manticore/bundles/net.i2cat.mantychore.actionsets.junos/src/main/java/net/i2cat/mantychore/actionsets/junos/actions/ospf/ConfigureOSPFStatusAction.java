@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
@@ -42,7 +43,14 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
-			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
+			EditNetconfCommand command;
+
+			if (((OSPFService) params).getEnabledState().equals(EnabledState.ENABLED)) {
+				// to remove disabled tag the none operation should be used as default
+				command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
+			} else {
+				command = new EditNetconfCommand(getVelocityMessage());
+			}
 			command.initialize();
 			Response response = sendCommandToProtocol(command, protocol);
 			actionResponse.addResponse(response);
@@ -62,7 +70,12 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 	public boolean checkParams(Object params) throws ActionException {
 		if (!(params instanceof OSPFService))
 			return false;
-		return true;
+
+		if (((OSPFService) params).getEnabledState().equals(EnabledState.ENABLED) ||
+				((OSPFService) params).getEnabledState().equals(EnabledState.DISABLED))
+			return true;
+
+		return false;
 	}
 
 	@Override
