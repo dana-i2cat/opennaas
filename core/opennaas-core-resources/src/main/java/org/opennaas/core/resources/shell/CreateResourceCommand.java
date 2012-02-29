@@ -24,6 +24,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceManager;
+import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.xml.sax.SAXException;
@@ -81,27 +82,23 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			// Override profile in the descriptor
 			descriptor.setProfileId(profileName);
 		}
-		IResource resource = null;
 		try {
 			// printInfo("Creating Resource ...... ");
-			resource = manager.createResource(descriptor);
+			IResource resource = manager.createResource(descriptor);
+			Information information = resource.getResourceDescriptor().getInformation();
+			printInfo("Created resource " + information.getType() +
+					  ":" + information.getName());
+			return 0;
 		} catch (ResourceException e) {
-
 			printError(e.getLocalizedMessage());
-			ResourceManager rm = (ResourceManager) manager;
-			Hashtable<String, IResourceRepository> rr = (Hashtable<String, IResourceRepository>) rm.getResourceRepositories();
-			if (rr.isEmpty()) {
+			if (manager.getResourceTypes().isEmpty()) {
 				printError("There aren't any Resource Repositories registered.");
-				return -1;
 			}
 			return -1;
 		} catch (NullPointerException e) {
 			printError(e);
 			return -1;
 		}
-		printInfo("Created resource " + resource.getResourceDescriptor().getInformation().getType() + ":" + resource.getResourceDescriptor()
-				.getInformation().getName());
-		return 0;
 	}
 
 	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
