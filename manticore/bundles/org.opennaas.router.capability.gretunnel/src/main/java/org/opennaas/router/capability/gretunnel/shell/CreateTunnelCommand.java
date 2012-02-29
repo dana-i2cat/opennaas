@@ -68,16 +68,18 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		// Create the GRETunnelService
 		GRETunnelService greTunnelService = new GRETunnelService();
 		greTunnelService.setName(tunnelName);
+
 		// Create the tunnel configuration
 		GRETunnelConfiguration greTunnelConfiguration = new GRETunnelConfiguration();
 		greTunnelConfiguration.setSourceAddress(ipSource);
 		greTunnelConfiguration.setDestinationAddress(ipDestiny);
 		greTunnelService.setGRETunnelConfiguration(greTunnelConfiguration);
+
 		// Create the protocol endpoint
 		GRETunnelEndpoint greTunnelEndpoint = new GRETunnelEndpoint();
 		greTunnelEndpoint.setIPv4Address(ipv4Address);
 		greTunnelEndpoint.setSubnetMask(subnetMask);
-		greTunnelService.getProtocolEndpoint().add(greTunnelEndpoint);
+		greTunnelService.addProtocolEndpoint(greTunnelEndpoint);
 		return greTunnelService;
 	}
 }
