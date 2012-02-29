@@ -2,49 +2,37 @@
 <features>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
-	<repository>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</repository>
 	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
-	<feature name="opennaas-core-deps" version="${project.version}">
-		<feature>spring</feature>
-		<feature>jetty</feature> <!-- In 4.4.1-fuse-01-20 cxf is missing
-		                              this dependency -->
-		<feature>cxf</feature>
-		<feature>activemq</feature>
 
-		<bundle>mvn:org.dynamicjava.osgi/classloading-utils/${dynamicjava.classloading.version}</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/service-binding-utils/${dynamicjava.version}</bundle>
-		<bundle>mvn:org.dynamicjava.osgi/dynamic-jpa/${dynamicjava.version}</bundle>
-		<!--<bundle>mvn:org.apache.geronimo.specs/geronimo-jpa_1.0_spec/1.1.2</bundle>-->
-		<bundle>mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
-		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.runtime/${felix.gogo.version}</bundle>
-		<bundle>mvn:org.apache.felix/org.apache.felix.gogo.command/${felix.gogo.version}</bundle>
-		<!--<bundle>mvn:org.apache.felix/org.apache.felix.gogo.shell/0.6.1</bundle>-->
-		<!--<bundle>mvn:org.apache.karaf.shell/org.apache.karaf.shell.console/2.2.0-fuse-00-43</bundle>-->
-		<!--instead, we use FUSE's karaf bundle org.apache.karaf.shell.console-2.2.0-fuse-00-43 which is part of one of the features we import-->
-		<!-- nexus events stuff -->
-		<bundle>mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
-		<!-- nexus events stuff end -->
-		<!-- mantychore needs these -->
-		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.jaxp-ri/1.4.2_1</bundle>
-		<!--<bundle>mvn:commons-jxpath/commons-jxpath/1.3</bundle>-->
-		<!-- mantychore needs these end -->
-	</feature>
-	<feature name="opennaas-core" version="${project.version}">
-		<feature version="1.0.0-SNAPSHOT">opennaas-core-deps</feature>
+	<feature name="opennaas-persistence" version="${project.version}">
+		<feature>spring</feature>
+
+		<bundle dependency="true">mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
+		<bundle dependency="true">mvn:org.dynamicjava.osgi/dynamic-jpa/${dynamicjava.version}</bundle>
+		<bundle dependency="true">mvn:org.dynamicjava.osgi/service-binding-utils/${dynamicjava.version}</bundle>
+		<bundle dependency="true">mvn:org.dynamicjava.osgi/classloading-utils/${dynamicjava.classloading.version}</bundle>
+
 		<bundle>mvn:org.opennaas/opennaas-core-hibernate/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-persistence/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-core" version="${project.version}">
+		<feature>xml-specs</feature>
+		<feature version="${project.version}">opennaas-persistence</feature>
+
+		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+
 		<bundle>mvn:org.opennaas/opennaas-core-events/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-resources/${project.version}</bundle>
-		<!--  TODO IT IS NOTR USED IT IS AN EXAMPLE  -->
-		<!--
-			<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.resourcemanager.soapendpoint/1.0.0-SNAPSHOT</bundle>
-		-->
 		<bundle>mvn:org.opennaas/opennaas-core-protocols-sessionmanager/${project.version}</bundle>
 	</feature>
-	<!--
-	<feature name="i2cat-nexus-testprofile" version="${project.version}">
-		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.mockprofile/${project.version}</bundle>
-	</feature>-->
+
+	<feature name="opennaas-platform" version="${project.version}">
+		<feature>jetty</feature>
+		<feature>cxf</feature>
+
+		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/${project.version}</bundle>
+	</feature>
 </features>

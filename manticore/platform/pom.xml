@@ -80,7 +80,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+		<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<executions>
@@ -93,14 +93,25 @@
 						<configuration>
 							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
-								<descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
+								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/opennaas-core-features/${opennaas.version}/xml/features</descriptor>
+								<descriptor>mvn:net.i2cat.mantychore/mantychore/${project.version}/xml/features</descriptor>
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature>i2cat-mantychore-deps</feature>
-								<feature>i2cat-mantychore-core</feature>
-								<feature>i2cat-luminis-deps</feature>
-								<feature>i2cat-luminis-core</feature>
+								<feature>opennaas-alarms</feature>
+								<feature>mantychore-base</feature>
+								<feature>mantychore-netconf</feature>
+								<feature>mantychore-junos</feature>
+								<feature>mantychore-router</feature>
+								<feature>mantychore-network</feature>
+								<feature>mantychore-bod</feature>
+								<feature>mantychore</feature>
+								<feature>luminis</feature>
+								<feature>nexus-tests-helper</feature>
+								<feature>nexus-testprofile</feature>
 							</features>
 							<repository>${target-platform.path}/${opennaas.path}/system</repository>
 						</configuration>

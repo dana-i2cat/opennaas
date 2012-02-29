@@ -29,13 +29,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<ant.version>1.7.0_4</ant.version>
 		<activemq.version>5.5.1-fuse-01-20</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
+		<beanutils.version>1.8.0</beanutils.version>
 		<camel.version>2.8.0-fuse-01-20</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
-		<commons.configuration.version>1.2</commons.configuration.version>
+		<commons.codec.version>1.4</commons.codec.version>
+		<commons.collections.version>3.2.1_1</commons.collections.version>
+		<commons.configuration.version>1.6</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
+		<commons.io.version>1.4</commons.io.version>
+		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
+		<commons.lang.version>2.4_4</commons.lang.version>
 		<cxf.version>2.4.3-fuse-00-20</cxf.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
@@ -45,9 +52,11 @@
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
+		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<javamail.version>1.4.4</javamail.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.10</junit.version>
 		<karaf.version>2.2.2-fuse-02-20</karaf.version>
@@ -55,6 +64,7 @@
 		<netconf4j.version>0.0.2</netconf4j.version>
 		<nmr.version>1.5.1-fuse-01-20</nmr.version>
 		<opennaas.version>${project.version}</opennaas.version>
+		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
 		<paxexam-karaf-container.version>0.5.0</paxexam-karaf-container.version>
