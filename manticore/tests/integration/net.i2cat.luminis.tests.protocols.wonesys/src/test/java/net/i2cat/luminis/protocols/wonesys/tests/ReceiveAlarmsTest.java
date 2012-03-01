@@ -8,12 +8,15 @@ import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import javax.inject.Inject;
 
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
@@ -81,7 +84,7 @@ public class ReceiveAlarmsTest implements EventHandler {
 
 	private long alarmWaittime	= 5 * 1000;						// 5sec
 
-	private boolean	alarmReceived	= false;
+	private final CountDownLatch alarmReceived = new CountDownLatch(1);
 
 	// Required services
 	@Inject
@@ -130,8 +133,6 @@ public class ReceiveAlarmsTest implements EventHandler {
 
 		// set up
 
-		this.alarmReceived = false;
-
 		Properties alarmProperties = new Properties();
 		alarmProperties.setProperty(IWonesysAlarmConfigurator.ALARM_PORT_PROPERTY_NAME, alarmsPort);
 		alarmProperties.setProperty(IWonesysAlarmConfigurator.ALARM_WAITTIME_PROPERTY_NAME, Long.valueOf(alarmWaittime).toString());
@@ -151,13 +152,12 @@ public class ReceiveAlarmsTest implements EventHandler {
 
 			try {
 				log.info("Waiting for an alarm...");
-				Thread.sleep(alarmWaittime * 3);
+				alarmReceived.await(alarmWaittime * 3, MILLISECONDS);
 			} catch (InterruptedException e) {
 				log.warn("Interrupted!");
 			}
 
-			log.info("AlarmReceived = " + this.alarmReceived);
-			assertTrue(this.alarmReceived);
+			assertEquals(0, alarmReceived.getCount());
 
 		} finally {
 			// clean up
@@ -172,20 +172,17 @@ public class ReceiveAlarmsTest implements EventHandler {
 	/**
 	 * Called when the alarm is received
 	 */
+	@Override
 	public void handleEvent(Event event) {
 		assertNotNull(event);
 		assertTrue(event instanceof WonesysAlarmEvent);
 
 		WonesysAlarmEvent wevent = (WonesysAlarmEvent) event;
-
-		checkAnyAlarmReceived(wevent);
-	}
-
-	private void checkAnyAlarmReceived(WonesysAlarmEvent wevent) {
 		WonesysAlarm a = wevent.getAlarm();
 		assertNotNull(a);
 		log.info("Alarm received: " + a.toString());
-		this.alarmReceived = true;
+
+		alarmReceived.countDown();
 	}
 
 	private TrapPduv2 triggerAlarm() throws IOException {

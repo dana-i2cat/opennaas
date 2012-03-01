@@ -173,7 +173,6 @@ public class ResourceManagerIntegrationTest
 		Assert.assertNotNull(resource);
 
 		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.INITIALIZED, resource.getState());
-		Thread.sleep(5000);
 	}
 
 	public void removeResource() throws ResourceException {
