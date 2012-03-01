@@ -11,6 +11,9 @@ import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
@@ -137,6 +140,13 @@ public class GetConfigurationAction extends JunosAction {
 	 */
 	private System parseInterfaces(System routerModel, String message)
 			throws IOException, SAXException {
+
+		// TODO implements a better method to merge the elements in model
+		// now are deleted all the existing elements the parser creates
+		// before adding new ones (calling the parser)
+		routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
+		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
+		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();
