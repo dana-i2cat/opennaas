@@ -14,6 +14,10 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 import javax.inject.Inject;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -40,8 +44,8 @@ public class SendReceiveEventsTest
 {
 	private final static Log	log 	= LogFactory.getLog(SendReceiveEventsTest.class);
 
-	private Event				h1receivedEvent;
-	private Event				h2receivedEvent;
+	private final BlockingQueue<Event>	h1Received = new ArrayBlockingQueue<Event>(1);
+	private final BlockingQueue<Event>	h2Received = new ArrayBlockingQueue<Event>(1);
 
 	private final String		eventTopic			= "whatever/the/topic/is";
 	private final String		filterPropertyName	= "aPropertyName";
@@ -103,13 +107,14 @@ public class SendReceiveEventsTest
 		eventManager.publishEvent(event);
 		log.info("Publishing event... DONE");
 
-		Thread.sleep(10 * 1000);
+		Event h1Event = h1Received.poll(10, SECONDS);
+		Event h2Event = h2Received.poll(10, SECONDS);
 
 		log.info("Checking reception...");
-		assertNotNull(h1receivedEvent);
-		assertNotNull(h2receivedEvent);
-		assertNotNull(h2receivedEvent.getProperty(filterPropertyName));
-		assertTrue(h2receivedEvent.getProperty(filterPropertyName)
+		assertNotNull(h1Event);
+		assertNotNull(h2Event);
+		assertNotNull(h2Event.getProperty(filterPropertyName));
+		assertTrue(h2Event.getProperty(filterPropertyName)
 				.equals(filterPropertyValue));
 		log.info("Checking reception... DONE");
 
@@ -138,7 +143,7 @@ public class SendReceiveEventsTest
 				log.info("------------------------------------");
 				log.info("------------------------------------");
 
-				h1receivedEvent = event;
+				h1Received.add(event);
 			}
 		};
 		return handler;
@@ -163,7 +168,7 @@ public class SendReceiveEventsTest
 				log.info("------------------------------------");
 				log.info("------------------------------------");
 
-				h2receivedEvent = event;
+				h2Received.add(event);
 			}
 		};
 		return handler;
