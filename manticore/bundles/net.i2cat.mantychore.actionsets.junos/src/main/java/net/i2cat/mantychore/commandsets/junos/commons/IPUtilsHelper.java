@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 /**
  * It is used to parse different messages
- *
+ * 
  * @author Carlos BAez Ruiz
- *
+ * 
  */
 public class IPUtilsHelper {
 
@@ -89,8 +89,8 @@ public class IPUtilsHelper {
 
 	public static boolean validateAnIpAddressWithRegularExpression(String iPaddress) {
 		final Pattern IP_PATTERN =
-					Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
-										+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
+				Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
+						+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
 		return IP_PATTERN.matcher(iPaddress).matches();
 	}
 

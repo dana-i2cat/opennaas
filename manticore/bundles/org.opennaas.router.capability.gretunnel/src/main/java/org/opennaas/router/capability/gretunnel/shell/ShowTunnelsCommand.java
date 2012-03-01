@@ -3,6 +3,7 @@ package org.opennaas.router.capability.gretunnel.shell;
 import java.io.IOException;
 import java.util.List;
 
+import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
@@ -35,7 +36,7 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
 			List<GRETunnelService> lGRETunnelService = tunnelCapability.showGRETunnelConfiguration();
-			if (lGRETunnelService == null || lGRETunnelService.size() <= 0) {
+			if (lGRETunnelService == null || lGRETunnelService.isEmpty()) {
 				printInfo("No GRE tunnels configured on the router");
 			} else {
 				printGRETunnelConfiguration(lGRETunnelService);
@@ -59,20 +60,33 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 	 */
 	private void printGRETunnelConfiguration(List<GRETunnelService> lGRETunnelService) throws IOException {
 		if (lGRETunnelService == null) {
-			printSymbol("No GRE Tunnels in this router");
+			printSymbol("No GRE tunnels configured on the router");
 			return;
 		}
 		for (GRETunnelService greTunnelService : lGRETunnelService) {
-			printSymbol("Gre Tunnel Name:" + greTunnelService.getName());
+			printSymbol("GRE tunnel: " + greTunnelService.getName());
 			printSymbol("Source IP address: " + greTunnelService.getGRETunnelConfiguration().getSourceAddress());
 			printSymbol("Destiny IP address: " + greTunnelService.getGRETunnelConfiguration().getDestinationAddress());
 			if (!greTunnelService.getProtocolEndpoint().isEmpty()) {
 				for (ProtocolEndpoint pep : greTunnelService.getProtocolEndpoint()) {
 					GRETunnelEndpoint greTunnelEndpoint = (GRETunnelEndpoint) pep;
-					printSymbol("Tunnel IP address: " + greTunnelEndpoint.getIPv4Address());
+					printSymbol("Tunnel IP address: " + getIPTunnelAddress(greTunnelEndpoint));
 				}
 			}
 			printSymbol(doubleLine);
 		}
+	}
+
+	/**
+	 * Mount the ip address with the mask to show it.
+	 * 
+	 * @param greTunnelEndpoint
+	 * @return ip/mask
+	 */
+	private String getIPTunnelAddress(GRETunnelEndpoint greTunnelEndpoint) {
+		String ipAddress = greTunnelEndpoint.getIPv4Address();
+		String mask = greTunnelEndpoint.getSubnetMask() != null ?
+				IPUtilsHelper.parseLongToShortIpv4NetMask(greTunnelEndpoint.getSubnetMask()) : null;
+		return (ipAddress != null && mask != null) ? ipAddress + "/" + mask : "";
 	}
 }

@@ -64,7 +64,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
-		return Response.okResponse(idOperation);
+		return Response.queuedResponse(idOperation);
 	}
 
 	/*
