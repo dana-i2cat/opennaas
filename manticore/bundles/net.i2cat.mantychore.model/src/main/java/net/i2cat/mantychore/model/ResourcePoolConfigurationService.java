@@ -8,30 +8,24 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ResourcePoolConfigurationService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the ResourcePoolConfigurationServiceBean Interface. The CIM
- * class ResourcePoolConfigurationService is described as follows:
- *
- * This service provides for active management of Resource Pools. It allows
- * jobs to be started for the creation and deletion of ResourcePools as well
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ResourcePoolConfigurationService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ResourcePoolConfigurationServiceBean Interface. The CIM class
+ * ResourcePoolConfigurationService is described as follows:
+ * 
+ * This service provides for active management of Resource Pools. It allows jobs to be started for the creation and deletion of ResourcePools as well
  * as addition and subtraction of host resources from ResourcePools
  */
 public class ResourcePoolConfigurationService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ResourcePoolConfigurationServiceBeanImpl
-     * Class which implements the ResourcePoolConfigurationServiceBean
-     * Interface, and encapsulates the CIM class
-     * ResourcePoolConfigurationService in a Java Bean. The CIM class
-     * ResourcePoolConfigurationService is described as follows:
-     *
-     * This service provides for active management of Resource Pools. It
-     * allows jobs to be started for the creation and deletion of
-     * ResourcePools as well as addition and subtraction of host resources
-     * from ResourcePools
-     */
-    public ResourcePoolConfigurationService(){};
+	/**
+	 * This constructor creates a ResourcePoolConfigurationServiceBeanImpl Class which implements the ResourcePoolConfigurationServiceBean Interface,
+	 * and encapsulates the CIM class ResourcePoolConfigurationService in a Java Bean. The CIM class ResourcePoolConfigurationService is described as
+	 * follows:
+	 * 
+	 * This service provides for active management of Resource Pools. It allows jobs to be started for the creation and deletion of ResourcePools as
+	 * well as addition and subtraction of host resources from ResourcePools
+	 */
+	public ResourcePoolConfigurationService() {
+	};
 } // Class ResourcePoolConfigurationService

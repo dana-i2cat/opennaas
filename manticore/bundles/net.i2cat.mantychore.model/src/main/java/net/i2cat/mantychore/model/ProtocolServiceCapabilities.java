@@ -9,146 +9,118 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProtocolServiceCapabilities as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * ProtocolServiceCapabilitiesBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProtocolServiceCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ProtocolServiceCapabilitiesBean Interface. The CIM class
  * ProtocolServiceCapabilities is described as follows:
- *
- * A subclass of EnabledLogicalElementCapabilities that defines the
- * capabilities of a ProtocolService. An instance of
- * CIM_ProtocolServiceCapabilities is associated with a ProtocolService using
- * ElementCapabilities.
+ * 
+ * A subclass of EnabledLogicalElementCapabilities that defines the capabilities of a ProtocolService. An instance of CIM_ProtocolServiceCapabilities
+ * is associated with a ProtocolService using ElementCapabilities.
  */
 public class ProtocolServiceCapabilities extends
-    EnabledLogicalElementCapabilities implements Serializable {
+		EnabledLogicalElementCapabilities implements Serializable {
 
-    /**
-     * This constructor creates a ProtocolServiceCapabilitiesBeanImpl Class
-     * which implements the ProtocolServiceCapabilitiesBean Interface, and
-     * encapsulates the CIM class ProtocolServiceCapabilities in a Java Bean.
-     * The CIM class ProtocolServiceCapabilities is described as follows:
-     *
-     * A subclass of EnabledLogicalElementCapabilities that defines the
-     * capabilities of a ProtocolService. An instance of
-     * CIM_ProtocolServiceCapabilities is associated with a ProtocolService
-     * using ElementCapabilities.
-     */
-    public ProtocolServiceCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxConnections.
-     */
-    private int maxConnections;
-    /**
-     * This method returns the ProtocolServiceCapabilities.maxConnections
-     * property value. This property is described as follows:
-     *
-     * MaxConnections specifies the maximum number of connections supported by
-     * the protocol service.
-     *
-     * @return	int	current maxConnections property value
-     * @exception	Exception
-     */
-    public int getMaxConnections(){
+	/**
+	 * This constructor creates a ProtocolServiceCapabilitiesBeanImpl Class which implements the ProtocolServiceCapabilitiesBean Interface, and
+	 * encapsulates the CIM class ProtocolServiceCapabilities in a Java Bean. The CIM class ProtocolServiceCapabilities is described as follows:
+	 * 
+	 * A subclass of EnabledLogicalElementCapabilities that defines the capabilities of a ProtocolService. An instance of
+	 * CIM_ProtocolServiceCapabilities is associated with a ProtocolService using ElementCapabilities.
+	 */
+	public ProtocolServiceCapabilities() {
+	};
 
-    return this.maxConnections;
-    } // getMaxConnections
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxConnections.
+	 */
+	private int	maxConnections;
 
-    /**
-     * This method sets the ProtocolServiceCapabilities.maxConnections
-     * property value. This property is described as follows:
-     *
-     * MaxConnections specifies the maximum number of connections supported by
-     * the protocol service.
-     *
-     * @param	int	new maxConnections property value
-     * @exception	Exception
-     */
-    public void setMaxConnections(int maxConnections) {
+	/**
+	 * This method returns the ProtocolServiceCapabilities.maxConnections property value. This property is described as follows:
+	 * 
+	 * MaxConnections specifies the maximum number of connections supported by the protocol service.
+	 * 
+	 * @return int current maxConnections property value
+	 * @exception Exception
+	 */
+	public int getMaxConnections() {
 
-    this.maxConnections = maxConnections;
-    } // setMaxConnections
+		return this.maxConnections;
+	} // getMaxConnections
 
+	/**
+	 * This method sets the ProtocolServiceCapabilities.maxConnections property value. This property is described as follows:
+	 * 
+	 * MaxConnections specifies the maximum number of connections supported by the protocol service.
+	 * 
+	 * @param int new maxConnections property value
+	 * @exception Exception
+	 */
+	public void setMaxConnections(int maxConnections) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxListeningPorts.
-     */
-    private int maxListeningPorts;
-    /**
-     * This method returns the ProtocolServiceCapabilities.maxListeningPorts
-     * property value. This property is described as follows:
-     *
-     * MaxListeningPorts specifies the maximum number of ports on which a
-     * protocol service will listen.
-     *
-     * @return	int	current maxListeningPorts property value
-     * @exception	Exception
-     */
-    public int getMaxListeningPorts(){
+		this.maxConnections = maxConnections;
+	} // setMaxConnections
 
-    return this.maxListeningPorts;
-    } // getMaxListeningPorts
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxListeningPorts.
+	 */
+	private int	maxListeningPorts;
 
-    /**
-     * This method sets the ProtocolServiceCapabilities.maxListeningPorts
-     * property value. This property is described as follows:
-     *
-     * MaxListeningPorts specifies the maximum number of ports on which a
-     * protocol service will listen.
-     *
-     * @param	int	new maxListeningPorts property value
-     * @exception	Exception
-     */
-    public void setMaxListeningPorts(int maxListeningPorts) {
+	/**
+	 * This method returns the ProtocolServiceCapabilities.maxListeningPorts property value. This property is described as follows:
+	 * 
+	 * MaxListeningPorts specifies the maximum number of ports on which a protocol service will listen.
+	 * 
+	 * @return int current maxListeningPorts property value
+	 * @exception Exception
+	 */
+	public int getMaxListeningPorts() {
 
-    this.maxListeningPorts = maxListeningPorts;
-    } // setMaxListeningPorts
+		return this.maxListeningPorts;
+	} // getMaxListeningPorts
 
+	/**
+	 * This method sets the ProtocolServiceCapabilities.maxListeningPorts property value. This property is described as follows:
+	 * 
+	 * MaxListeningPorts specifies the maximum number of ports on which a protocol service will listen.
+	 * 
+	 * @param int new maxListeningPorts property value
+	 * @exception Exception
+	 */
+	public void setMaxListeningPorts(int maxListeningPorts) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property listeningPortManagementSupported.
-     */
-    private boolean listeningPortManagementSupported;
-    /**
-     * This method returns the
-     * ProtocolServiceCapabilities.listeningPortManagementSupported property
-     * value. This property is described as follows:
-     *
-     * ListeningPortManagementSupported indicates whether the management of
-     * the ports on which the associated ProtocolService listens is
-     * supported.
-     *
-     * @return	boolean	current listeningPortManagementSupported
-     * property value
-     * @exception	Exception
-     */
-    public boolean isListeningPortManagementSupported(){
+		this.maxListeningPorts = maxListeningPorts;
+	} // setMaxListeningPorts
 
-    return this.listeningPortManagementSupported;
-    } // getListeningPortManagementSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property listeningPortManagementSupported.
+	 */
+	private boolean	listeningPortManagementSupported;
 
-    /**
-     * This method sets the
-     * ProtocolServiceCapabilities.listeningPortManagementSupported property
-     * value. This property is described as follows:
-     *
-     * ListeningPortManagementSupported indicates whether the management of
-     * the ports on which the associated ProtocolService listens is
-     * supported.
-     *
-     * @param	boolean	new listeningPortManagementSupported
-     * property value
-     * @exception	Exception
-     */
-    public void setListeningPortManagementSupported(boolean
-	listeningPortManagementSupported) {
+	/**
+	 * This method returns the ProtocolServiceCapabilities.listeningPortManagementSupported property value. This property is described as follows:
+	 * 
+	 * ListeningPortManagementSupported indicates whether the management of the ports on which the associated ProtocolService listens is supported.
+	 * 
+	 * @return boolean current listeningPortManagementSupported property value
+	 * @exception Exception
+	 */
+	public boolean isListeningPortManagementSupported() {
 
-    this.listeningPortManagementSupported = listeningPortManagementSupported;
-    } // setListeningPortManagementSupported
+		return this.listeningPortManagementSupported;
+	} // getListeningPortManagementSupported
 
+	/**
+	 * This method sets the ProtocolServiceCapabilities.listeningPortManagementSupported property value. This property is described as follows:
+	 * 
+	 * ListeningPortManagementSupported indicates whether the management of the ports on which the associated ProtocolService listens is supported.
+	 * 
+	 * @param boolean new listeningPortManagementSupported property value
+	 * @exception Exception
+	 */
+	public void setListeningPortManagementSupported(boolean
+			listeningPortManagementSupported) {
 
+		this.listeningPortManagementSupported = listeningPortManagementSupported;
+	} // setListeningPortManagementSupported
 
 } // Class ProtocolServiceCapabilities

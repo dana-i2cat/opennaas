@@ -9,449 +9,374 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchPortSourceRoutingStatistics as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the SwitchPortSourceRoutingStatisticsBean Interface. The CIM
- * class SwitchPortSourceRoutingStatistics is described as follows:
- *
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchPortSourceRoutingStatistics as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SwitchPortSourceRoutingStatisticsBean Interface. The CIM class
+ * SwitchPortSourceRoutingStatistics is described as follows:
+ * 
  * Statistical information regarding a SwitchPort supporting source routing.
  */
 public class SwitchPortSourceRoutingStatistics extends
-    SAPStatisticalInformation implements Serializable {
+		SAPStatisticalInformation implements Serializable {
 
-    /**
-     * This constructor creates a SwitchPortSourceRoutingStatisticsBeanImpl
-     * Class which implements the SwitchPortSourceRoutingStatisticsBean
-     * Interface, and encapsulates the CIM class
-     * SwitchPortSourceRoutingStatistics in a Java Bean. The CIM class
-     * SwitchPortSourceRoutingStatistics is described as follows:
-     *
-     * Statistical information regarding a SwitchPort supporting source
-     * routing.
-     */
-    public SwitchPortSourceRoutingStatistics(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property specInFrames.
-     */
-    private long specInFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.specInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of Specifically Routed frames, also referred to as Source
-     * Routed Frames, that have been received from the segment attached to
-     * the port.
-     *
-     * @return	long	current specInFrames property value
-     * @exception	Exception
-     */
-    public long getSpecInFrames(){
+	/**
+	 * This constructor creates a SwitchPortSourceRoutingStatisticsBeanImpl Class which implements the SwitchPortSourceRoutingStatisticsBean
+	 * Interface, and encapsulates the CIM class SwitchPortSourceRoutingStatistics in a Java Bean. The CIM class SwitchPortSourceRoutingStatistics is
+	 * described as follows:
+	 * 
+	 * Statistical information regarding a SwitchPort supporting source routing.
+	 */
+	public SwitchPortSourceRoutingStatistics() {
+	};
 
-    return this.specInFrames;
-    } // getSpecInFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property specInFrames.
+	 */
+	private long	specInFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.specInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of Specifically Routed frames, also referred to as Source
-     * Routed Frames, that have been received from the segment attached to
-     * the port.
-     *
-     * @param	long	new specInFrames property value
-     * @exception	Exception
-     */
-    public void setSpecInFrames(long specInFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.specInFrames property value. This property is described as follows:
+	 * 
+	 * The number of Specifically Routed frames, also referred to as Source Routed Frames, that have been received from the segment attached to the
+	 * port.
+	 * 
+	 * @return long current specInFrames property value
+	 * @exception Exception
+	 */
+	public long getSpecInFrames() {
 
-    this.specInFrames = specInFrames;
-    } // setSpecInFrames
+		return this.specInFrames;
+	} // getSpecInFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.specInFrames property value. This property is described as follows:
+	 * 
+	 * The number of Specifically Routed frames, also referred to as Source Routed Frames, that have been received from the segment attached to the
+	 * port.
+	 * 
+	 * @param long new specInFrames property value
+	 * @exception Exception
+	 */
+	public void setSpecInFrames(long specInFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property specOutFrames.
-     */
-    private long specOutFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.specOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of Specifically Routed frames, also referred to as Source
-     * Routed Frames, that the port has transmitted on its segment.
-     *
-     * @return	long	current specOutFrames property value
-     * @exception	Exception
-     */
-    public long getSpecOutFrames(){
+		this.specInFrames = specInFrames;
+	} // setSpecInFrames
 
-    return this.specOutFrames;
-    } // getSpecOutFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property specOutFrames.
+	 */
+	private long	specOutFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.specOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of Specifically Routed frames, also referred to as Source
-     * Routed Frames, that the port has transmitted on its segment.
-     *
-     * @param	long	new specOutFrames property value
-     * @exception	Exception
-     */
-    public void setSpecOutFrames(long specOutFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.specOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of Specifically Routed frames, also referred to as Source Routed Frames, that the port has transmitted on its segment.
+	 * 
+	 * @return long current specOutFrames property value
+	 * @exception Exception
+	 */
+	public long getSpecOutFrames() {
 
-    this.specOutFrames = specOutFrames;
-    } // setSpecOutFrames
+		return this.specOutFrames;
+	} // getSpecOutFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.specOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of Specifically Routed frames, also referred to as Source Routed Frames, that the port has transmitted on its segment.
+	 * 
+	 * @param long new specOutFrames property value
+	 * @exception Exception
+	 */
+	public void setSpecOutFrames(long specOutFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property apeInFrames.
-     */
-    private long apeInFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.apeInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of All Paths Explorer frames, also referred to as All Routes
-     * Explorer frames, that have been received by the port from its segment.
-     *
-     * @return	long	current apeInFrames property value
-     * @exception	Exception
-     */
-    public long getApeInFrames(){
+		this.specOutFrames = specOutFrames;
+	} // setSpecOutFrames
 
-    return this.apeInFrames;
-    } // getApeInFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property apeInFrames.
+	 */
+	private long	apeInFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.apeInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of All Paths Explorer frames, also referred to as All Routes
-     * Explorer frames, that have been received by the port from its segment.
-     *
-     * @param	long	new apeInFrames property value
-     * @exception	Exception
-     */
-    public void setApeInFrames(long apeInFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.apeInFrames property value. This property is described as follows:
+	 * 
+	 * The number of All Paths Explorer frames, also referred to as All Routes Explorer frames, that have been received by the port from its segment.
+	 * 
+	 * @return long current apeInFrames property value
+	 * @exception Exception
+	 */
+	public long getApeInFrames() {
 
-    this.apeInFrames = apeInFrames;
-    } // setApeInFrames
+		return this.apeInFrames;
+	} // getApeInFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.apeInFrames property value. This property is described as follows:
+	 * 
+	 * The number of All Paths Explorer frames, also referred to as All Routes Explorer frames, that have been received by the port from its segment.
+	 * 
+	 * @param long new apeInFrames property value
+	 * @exception Exception
+	 */
+	public void setApeInFrames(long apeInFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property apeOutFrames.
-     */
-    private long apeOutFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.apeOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of all Paths Explorer Frames, also referred to as All Routes
-     * Explorer frames, that have been transmitted by the port on its
-     * segment.
-     *
-     * @return	long	current apeOutFrames property value
-     * @exception	Exception
-     */
-    public long getApeOutFrames(){
+		this.apeInFrames = apeInFrames;
+	} // setApeInFrames
 
-    return this.apeOutFrames;
-    } // getApeOutFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property apeOutFrames.
+	 */
+	private long	apeOutFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.apeOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of all Paths Explorer Frames, also referred to as All Routes
-     * Explorer frames, that have been transmitted by the port on its
-     * segment.
-     *
-     * @param	long	new apeOutFrames property value
-     * @exception	Exception
-     */
-    public void setApeOutFrames(long apeOutFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.apeOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of all Paths Explorer Frames, also referred to as All Routes Explorer frames, that have been transmitted by the port on its segment.
+	 * 
+	 * @return long current apeOutFrames property value
+	 * @exception Exception
+	 */
+	public long getApeOutFrames() {
 
-    this.apeOutFrames = apeOutFrames;
-    } // setApeOutFrames
+		return this.apeOutFrames;
+	} // getApeOutFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.apeOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of all Paths Explorer Frames, also referred to as All Routes Explorer frames, that have been transmitted by the port on its segment.
+	 * 
+	 * @param long new apeOutFrames property value
+	 * @exception Exception
+	 */
+	public void setApeOutFrames(long apeOutFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property steInFrames.
-     */
-    private long steInFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.steInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of spanning tree explorer frames that have been received by
-     * the port from its segment.
-     *
-     * @return	long	current steInFrames property value
-     * @exception	Exception
-     */
-    public long getSteInFrames(){
+		this.apeOutFrames = apeOutFrames;
+	} // setApeOutFrames
 
-    return this.steInFrames;
-    } // getSteInFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property steInFrames.
+	 */
+	private long	steInFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.steInFrames
-     * property value. This property is described as follows:
-     *
-     * The number of spanning tree explorer frames that have been received by
-     * the port from its segment.
-     *
-     * @param	long	new steInFrames property value
-     * @exception	Exception
-     */
-    public void setSteInFrames(long steInFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.steInFrames property value. This property is described as follows:
+	 * 
+	 * The number of spanning tree explorer frames that have been received by the port from its segment.
+	 * 
+	 * @return long current steInFrames property value
+	 * @exception Exception
+	 */
+	public long getSteInFrames() {
 
-    this.steInFrames = steInFrames;
-    } // setSteInFrames
+		return this.steInFrames;
+	} // getSteInFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.steInFrames property value. This property is described as follows:
+	 * 
+	 * The number of spanning tree explorer frames that have been received by the port from its segment.
+	 * 
+	 * @param long new steInFrames property value
+	 * @exception Exception
+	 */
+	public void setSteInFrames(long steInFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property steOutFrames.
-     */
-    private long steOutFrames;
-    /**
-     * This method returns the SwitchPortSourceRoutingStatistics.steOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of spanning tree explorer frames that have been transmitted
-     * by the port on its segment.
-     *
-     * @return	long	current steOutFrames property value
-     * @exception	Exception
-     */
-    public long getSteOutFrames(){
+		this.steInFrames = steInFrames;
+	} // setSteInFrames
 
-    return this.steOutFrames;
-    } // getSteOutFrames
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property steOutFrames.
+	 */
+	private long	steOutFrames;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.steOutFrames
-     * property value. This property is described as follows:
-     *
-     * The number of spanning tree explorer frames that have been transmitted
-     * by the port on its segment.
-     *
-     * @param	long	new steOutFrames property value
-     * @exception	Exception
-     */
-    public void setSteOutFrames(long steOutFrames) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.steOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of spanning tree explorer frames that have been transmitted by the port on its segment.
+	 * 
+	 * @return long current steOutFrames property value
+	 * @exception Exception
+	 */
+	public long getSteOutFrames() {
 
-    this.steOutFrames = steOutFrames;
-    } // setSteOutFrames
+		return this.steOutFrames;
+	} // getSteOutFrames
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.steOutFrames property value. This property is described as follows:
+	 * 
+	 * The number of spanning tree explorer frames that have been transmitted by the port on its segment.
+	 * 
+	 * @param long new steOutFrames property value
+	 * @exception Exception
+	 */
+	public void setSteOutFrames(long steOutFrames) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property segmentMismatchDiscards.
-     */
-    private long segmentMismatchDiscards;
-    /**
-     * This method returns the
-     * SwitchPortSourceRoutingStatistics.segmentMismatchDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of explorer frames that have been discarded by the port
-     * because the routing descriptor field contained an invalid adjacent
-     * segment value.
-     *
-     * @return	long	current segmentMismatchDiscards property
-     * value
-     * @exception	Exception
-     */
-    public long getSegmentMismatchDiscards(){
+		this.steOutFrames = steOutFrames;
+	} // setSteOutFrames
 
-    return this.segmentMismatchDiscards;
-    } // getSegmentMismatchDiscards
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property segmentMismatchDiscards.
+	 */
+	private long	segmentMismatchDiscards;
 
-    /**
-     * This method sets the
-     * SwitchPortSourceRoutingStatistics.segmentMismatchDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of explorer frames that have been discarded by the port
-     * because the routing descriptor field contained an invalid adjacent
-     * segment value.
-     *
-     * @param	long	new segmentMismatchDiscards property value
-     * @exception	Exception
-     */
-    public void setSegmentMismatchDiscards(long segmentMismatchDiscards) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.segmentMismatchDiscards property value. This property is described as follows:
+	 * 
+	 * The number of explorer frames that have been discarded by the port because the routing descriptor field contained an invalid adjacent segment
+	 * value.
+	 * 
+	 * @return long current segmentMismatchDiscards property value
+	 * @exception Exception
+	 */
+	public long getSegmentMismatchDiscards() {
 
-    this.segmentMismatchDiscards = segmentMismatchDiscards;
-    } // setSegmentMismatchDiscards
+		return this.segmentMismatchDiscards;
+	} // getSegmentMismatchDiscards
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.segmentMismatchDiscards property value. This property is described as follows:
+	 * 
+	 * The number of explorer frames that have been discarded by the port because the routing descriptor field contained an invalid adjacent segment
+	 * value.
+	 * 
+	 * @param long new segmentMismatchDiscards property value
+	 * @exception Exception
+	 */
+	public void setSegmentMismatchDiscards(long segmentMismatchDiscards) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property duplicateSegmentDiscards.
-     */
-    private long duplicateSegmentDiscards;
-    /**
-     * This method returns the
-     * SwitchPortSourceRoutingStatistics.duplicateSegmentDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of frames that have been discarded by the port because the
-     * routing descriptor field contained a duplicate segment identifier.
-     *
-     * @return	long	current duplicateSegmentDiscards property
-     * value
-     * @exception	Exception
-     */
-    public long getDuplicateSegmentDiscards(){
+		this.segmentMismatchDiscards = segmentMismatchDiscards;
+	} // setSegmentMismatchDiscards
 
-    return this.duplicateSegmentDiscards;
-    } // getDuplicateSegmentDiscards
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property duplicateSegmentDiscards.
+	 */
+	private long	duplicateSegmentDiscards;
 
-    /**
-     * This method sets the
-     * SwitchPortSourceRoutingStatistics.duplicateSegmentDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of frames that have been discarded by the port because the
-     * routing descriptor field contained a duplicate segment identifier.
-     *
-     * @param	long	new duplicateSegmentDiscards property value
-     * @exception	Exception
-     */
-    public void setDuplicateSegmentDiscards(long duplicateSegmentDiscards) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.duplicateSegmentDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames that have been discarded by the port because the routing descriptor field contained a duplicate segment identifier.
+	 * 
+	 * @return long current duplicateSegmentDiscards property value
+	 * @exception Exception
+	 */
+	public long getDuplicateSegmentDiscards() {
 
-    this.duplicateSegmentDiscards = duplicateSegmentDiscards;
-    } // setDuplicateSegmentDiscards
+		return this.duplicateSegmentDiscards;
+	} // getDuplicateSegmentDiscards
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.duplicateSegmentDiscards property value. This property is described as follows:
+	 * 
+	 * The number of frames that have been discarded by the port because the routing descriptor field contained a duplicate segment identifier.
+	 * 
+	 * @param long new duplicateSegmentDiscards property value
+	 * @exception Exception
+	 */
+	public void setDuplicateSegmentDiscards(long duplicateSegmentDiscards) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property hopCountExceedsDiscards.
-     */
-    private long hopCountExceedsDiscards;
-    /**
-     * This method returns the
-     * SwitchPortSourceRoutingStatistics.hopCountExceedsDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of explorer frames that have been discarded by the port
-     * because the Routing Information Field has exceeded the maximum route
-     * descriptor length.
-     *
-     * @return	long	current hopCountExceedsDiscards property
-     * value
-     * @exception	Exception
-     */
-    public long getHopCountExceedsDiscards(){
+		this.duplicateSegmentDiscards = duplicateSegmentDiscards;
+	} // setDuplicateSegmentDiscards
 
-    return this.hopCountExceedsDiscards;
-    } // getHopCountExceedsDiscards
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property hopCountExceedsDiscards.
+	 */
+	private long	hopCountExceedsDiscards;
 
-    /**
-     * This method sets the
-     * SwitchPortSourceRoutingStatistics.hopCountExceedsDiscards property
-     * value. This property is described as follows:
-     *
-     * The number of explorer frames that have been discarded by the port
-     * because the Routing Information Field has exceeded the maximum route
-     * descriptor length.
-     *
-     * @param	long	new hopCountExceedsDiscards property value
-     * @exception	Exception
-     */
-    public void setHopCountExceedsDiscards(long hopCountExceedsDiscards) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.hopCountExceedsDiscards property value. This property is described as follows:
+	 * 
+	 * The number of explorer frames that have been discarded by the port because the Routing Information Field has exceeded the maximum route
+	 * descriptor length.
+	 * 
+	 * @return long current hopCountExceedsDiscards property value
+	 * @exception Exception
+	 */
+	public long getHopCountExceedsDiscards() {
 
-    this.hopCountExceedsDiscards = hopCountExceedsDiscards;
-    } // setHopCountExceedsDiscards
+		return this.hopCountExceedsDiscards;
+	} // getHopCountExceedsDiscards
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.hopCountExceedsDiscards property value. This property is described as follows:
+	 * 
+	 * The number of explorer frames that have been discarded by the port because the Routing Information Field has exceeded the maximum route
+	 * descriptor length.
+	 * 
+	 * @param long new hopCountExceedsDiscards property value
+	 * @exception Exception
+	 */
+	public void setHopCountExceedsDiscards(long hopCountExceedsDiscards) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dupLanIdOrTreeErrors.
-     */
-    private long dupLanIdOrTreeErrors;
-    /**
-     * This method returns the
-     * SwitchPortSourceRoutingStatistics.dupLanIdOrTreeErrors property value.
-     * This property is described as follows:
-     *
-     * The number of duplicate LAN IDs or Tree errors. This helps in detection
-     * of problems in networks containing older Source Routing Bridges.
-     *
-     * @return	long	current dupLanIdOrTreeErrors property value
-     * @exception	Exception
-     */
-    public long getDupLanIdOrTreeErrors(){
+		this.hopCountExceedsDiscards = hopCountExceedsDiscards;
+	} // setHopCountExceedsDiscards
 
-    return this.dupLanIdOrTreeErrors;
-    } // getDupLanIdOrTreeErrors
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dupLanIdOrTreeErrors.
+	 */
+	private long	dupLanIdOrTreeErrors;
 
-    /**
-     * This method sets the
-     * SwitchPortSourceRoutingStatistics.dupLanIdOrTreeErrors property value.
-     * This property is described as follows:
-     *
-     * The number of duplicate LAN IDs or Tree errors. This helps in detection
-     * of problems in networks containing older Source Routing Bridges.
-     *
-     * @param	long	new dupLanIdOrTreeErrors property value
-     * @exception	Exception
-     */
-    public void setDupLanIdOrTreeErrors(long dupLanIdOrTreeErrors) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.dupLanIdOrTreeErrors property value. This property is described as follows:
+	 * 
+	 * The number of duplicate LAN IDs or Tree errors. This helps in detection of problems in networks containing older Source Routing Bridges.
+	 * 
+	 * @return long current dupLanIdOrTreeErrors property value
+	 * @exception Exception
+	 */
+	public long getDupLanIdOrTreeErrors() {
 
-    this.dupLanIdOrTreeErrors = dupLanIdOrTreeErrors;
-    } // setDupLanIdOrTreeErrors
+		return this.dupLanIdOrTreeErrors;
+	} // getDupLanIdOrTreeErrors
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.dupLanIdOrTreeErrors property value. This property is described as follows:
+	 * 
+	 * The number of duplicate LAN IDs or Tree errors. This helps in detection of problems in networks containing older Source Routing Bridges.
+	 * 
+	 * @param long new dupLanIdOrTreeErrors property value
+	 * @exception Exception
+	 */
+	public void setDupLanIdOrTreeErrors(long dupLanIdOrTreeErrors) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lanIdMismatches.
-     */
-    private long lanIdMismatches;
-    /**
-     * This method returns the
-     * SwitchPortSourceRoutingStatistics.lanIdMismatches property value. This
-     * property is described as follows:
-     *
-     * The number of ARE and STE frames that were discarded because the last
-     * LAN ID in the routing information field did not equal the LAN-in ID.
-     * This error can occur in implementations which do only a LAN-in ID and
-     * Bridge Number check instead of a LAN-in ID, Bridge Number, and LAN-out
-     * ID check before they forward broadcast frames.
-     *
-     * @return	long	current lanIdMismatches property value
-     * @exception	Exception
-     */
-    public long getLanIdMismatches(){
+		this.dupLanIdOrTreeErrors = dupLanIdOrTreeErrors;
+	} // setDupLanIdOrTreeErrors
 
-    return this.lanIdMismatches;
-    } // getLanIdMismatches
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lanIdMismatches.
+	 */
+	private long	lanIdMismatches;
 
-    /**
-     * This method sets the SwitchPortSourceRoutingStatistics.lanIdMismatches
-     * property value. This property is described as follows:
-     *
-     * The number of ARE and STE frames that were discarded because the last
-     * LAN ID in the routing information field did not equal the LAN-in ID.
-     * This error can occur in implementations which do only a LAN-in ID and
-     * Bridge Number check instead of a LAN-in ID, Bridge Number, and LAN-out
-     * ID check before they forward broadcast frames.
-     *
-     * @param	long	new lanIdMismatches property value
-     * @exception	Exception
-     */
-    public void setLanIdMismatches(long lanIdMismatches) {
+	/**
+	 * This method returns the SwitchPortSourceRoutingStatistics.lanIdMismatches property value. This property is described as follows:
+	 * 
+	 * The number of ARE and STE frames that were discarded because the last LAN ID in the routing information field did not equal the LAN-in ID. This
+	 * error can occur in implementations which do only a LAN-in ID and Bridge Number check instead of a LAN-in ID, Bridge Number, and LAN-out ID
+	 * check before they forward broadcast frames.
+	 * 
+	 * @return long current lanIdMismatches property value
+	 * @exception Exception
+	 */
+	public long getLanIdMismatches() {
 
-    this.lanIdMismatches = lanIdMismatches;
-    } // setLanIdMismatches
+		return this.lanIdMismatches;
+	} // getLanIdMismatches
 
+	/**
+	 * This method sets the SwitchPortSourceRoutingStatistics.lanIdMismatches property value. This property is described as follows:
+	 * 
+	 * The number of ARE and STE frames that were discarded because the last LAN ID in the routing information field did not equal the LAN-in ID. This
+	 * error can occur in implementations which do only a LAN-in ID and Bridge Number check instead of a LAN-in ID, Bridge Number, and LAN-out ID
+	 * check before they forward broadcast frames.
+	 * 
+	 * @param long new lanIdMismatches property value
+	 * @exception Exception
+	 */
+	public void setLanIdMismatches(long lanIdMismatches) {
 
+		this.lanIdMismatches = lanIdMismatches;
+	} // setLanIdMismatches
 
 } // Class SwitchPortSourceRoutingStatistics

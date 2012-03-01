@@ -8,44 +8,36 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RedundancyComponent as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RedundancyComponentBean Interface. The CIM class RedundancyComponent is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RedundancyComponent as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the RedundancyComponentBean Interface. The CIM class RedundancyComponent is
  * described as follows:
- *
- * A RedundancyGroup aggregates Managed System Elements and indicates that
- * these elements, taken together, provide redundancy. All elements
- * aggregated in a RedundancyGroup should be instantiations of the same
- * object class. The use of this class is being depreacted in lieu of using
+ * 
+ * A RedundancyGroup aggregates Managed System Elements and indicates that these elements, taken together, provide redundancy. All elements aggregated
+ * in a RedundancyGroup should be instantiations of the same object class. The use of this class is being depreacted in lieu of using
  * MemberOfCollection in conjunction with RedundancySet.
  */
-    @Deprecated
+@Deprecated
 public class RedundancyComponent extends Component implements Serializable {
 
-    /**
-     * This constructor creates a RedundancyComponentBeanImpl Class which
-     * implements the RedundancyComponentBean Interface, and encapsulates the
-     * CIM class RedundancyComponent in a Java Bean. The CIM class
-     * RedundancyComponent is described as follows:
-     *
-     * A RedundancyGroup aggregates Managed System Elements and indicates that
-     * these elements, taken together, provide redundancy. All elements
-     * aggregated in a RedundancyGroup should be instantiations of the same
-     * object class. The use of this class is being depreacted in lieu of
-     * using MemberOfCollection in conjunction with RedundancySet.
-     */
-    public RedundancyComponent(){};
-    /**
-     * This method create an Association of the type RedundancyComponent
-     * between one RedundancyGroup object and ManagedSystemElement object
-     */
-    @Deprecated
-    public static RedundancyComponent link(RedundancyGroup
-	groupComponent,ManagedSystemElement partComponent){
+	/**
+	 * This constructor creates a RedundancyComponentBeanImpl Class which implements the RedundancyComponentBean Interface, and encapsulates the CIM
+	 * class RedundancyComponent in a Java Bean. The CIM class RedundancyComponent is described as follows:
+	 * 
+	 * A RedundancyGroup aggregates Managed System Elements and indicates that these elements, taken together, provide redundancy. All elements
+	 * aggregated in a RedundancyGroup should be instantiations of the same object class. The use of this class is being depreacted in lieu of using
+	 * MemberOfCollection in conjunction with RedundancySet.
+	 */
+	public RedundancyComponent() {
+	};
 
-    return (RedundancyComponent)
-	Association.link(RedundancyComponent.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type RedundancyComponent between one RedundancyGroup object and ManagedSystemElement object
+	 */
+	@Deprecated
+	public static RedundancyComponent link(RedundancyGroup
+			groupComponent, ManagedSystemElement partComponent) {
+
+		return (RedundancyComponent) Association.link(RedundancyComponent.class, groupComponent, partComponent);
+	}// link
 
 } // Class RedundancyComponent

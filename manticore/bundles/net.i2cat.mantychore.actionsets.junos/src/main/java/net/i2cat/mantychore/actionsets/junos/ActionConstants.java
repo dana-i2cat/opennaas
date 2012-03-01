@@ -18,10 +18,24 @@ public class ActionConstants {
 	public static final String	CREATELOGICALROUTER		= "createLogicalRouter";
 	public static final String	SETINTERFACEDESCRIPTION	= "setInterfaceDescription";
 
+	// GRETunnel ActionSET
+	public static final String	CREATETUNNEL			= "createTunnel";
+	public static final String	DELETETUNNEL			= "deleteTunnel";
+	public static final String	GETTUNNELCONFIG			= "getTunnelConfiguration";
+	public static final String	SHOWTUNNELS				= "showTunnels";
+
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS		= "getLogicalRouters";
 
 	// TODO LISTLOGICALROUTER!!!
 	public static final String	LISTLOGICALROUTER		= "listLogicalRouter";
+
+	// OSPF actionset
+	public static final String	OSPF_CONFIGURE			= "configureOSPF";
+	public static final String	OSPF_GET_CONFIGURATION	= "getOSPFConfiguration";
+	public static final String	OSPF_ACTIVATE			= "activateOSPF";
+	public static final String	OSPF_DEACTIVATE			= "deactivateOSPF";
+	public static final String	OSPF_ENABLE_INTERFACE	= "enableOSPFInInterface";
+	public static final String	OSPF_DISABLE_INTERFACE	= "disableOSPFInInterface";
 
 }

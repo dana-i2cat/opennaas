@@ -9,307 +9,267 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LANEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * LANEndpointBean Interface. The CIM class LANEndpoint is described as
- * follows:
- *
- * A communication endpoint which, when its associated interface device is
- * connected to a LAN, may send and receive data frames. LANEndpoints include
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LANEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the LANEndpointBean Interface. The CIM class LANEndpoint is described as follows:
+ * 
+ * A communication endpoint which, when its associated interface device is connected to a LAN, may send and receive data frames. LANEndpoints include
  * Ethernet, Token Ring and FDDI interfaces.
  */
 public class LANEndpoint extends ProtocolEndpoint implements Serializable {
 
-    /**
-     * This constructor creates a LANEndpointBeanImpl Class which implements
-     * the LANEndpointBean Interface, and encapsulates the CIM class
-     * LANEndpoint in a Java Bean. The CIM class LANEndpoint is described as
-     * follows:
-     *
-     * A communication endpoint which, when its associated interface device is
-     * connected to a LAN, may send and receive data frames. LANEndpoints
-     * include Ethernet, Token Ring and FDDI interfaces.
-     */
-    public LANEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lANID.
-     */
-    private String lANID;
-    /**
-     * This method returns the LANEndpoint.lANID property value. This property
-     * is described as follows:
-     *
-     * A label or identifier for the LAN Segment to which the Endpoint is
-     * connected. If the Endpoint is not currently active/connected or this
-     * information is not known, then LANID is NULL.
-     *
-     * @return	String	current lANID property value
-     * @exception	Exception
-     */
-    public String getLANID(){
+	/**
+	 * This constructor creates a LANEndpointBeanImpl Class which implements the LANEndpointBean Interface, and encapsulates the CIM class LANEndpoint
+	 * in a Java Bean. The CIM class LANEndpoint is described as follows:
+	 * 
+	 * A communication endpoint which, when its associated interface device is connected to a LAN, may send and receive data frames. LANEndpoints
+	 * include Ethernet, Token Ring and FDDI interfaces.
+	 */
+	public LANEndpoint() {
+	};
 
-    return this.lANID;
-    } // getLANID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lANID.
+	 */
+	private String	lANID;
 
-    /**
-     * This method sets the LANEndpoint.lANID property value. This property is
-     * described as follows:
-     *
-     * A label or identifier for the LAN Segment to which the Endpoint is
-     * connected. If the Endpoint is not currently active/connected or this
-     * information is not known, then LANID is NULL.
-     *
-     * @param	String	new lANID property value
-     * @exception	Exception
-     */
-    public void setLANID(String lANID) {
+	/**
+	 * This method returns the LANEndpoint.lANID property value. This property is described as follows:
+	 * 
+	 * A label or identifier for the LAN Segment to which the Endpoint is connected. If the Endpoint is not currently active/connected or this
+	 * information is not known, then LANID is NULL.
+	 * 
+	 * @return String current lANID property value
+	 * @exception Exception
+	 */
+	public String getLANID() {
 
-    this.lANID = lANID;
-    } // setLANID
+		return this.lANID;
+	} // getLANID
 
+	/**
+	 * This method sets the LANEndpoint.lANID property value. This property is described as follows:
+	 * 
+	 * A label or identifier for the LAN Segment to which the Endpoint is connected. If the Endpoint is not currently active/connected or this
+	 * information is not known, then LANID is NULL.
+	 * 
+	 * @param String
+	 *            new lANID property value
+	 * @exception Exception
+	 */
+	public void setLANID(String lANID) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LANType.
-     */
-    @Deprecated
-    public enum LANType{
-    UNKNOWN,
-    OTHER,
-    ETHERNET,
-    TOKENRING,
-    FDDI
-    }
-    @Deprecated
-    private LANType lANType;
-    /**
-     * This method returns the LANEndpoint.lANType property value. This
-     * property is described as follows:
-     *
-     * An indication of the kind of technology used on the LAN. This property
-     * is deprecated in lieu of ProtocolType, which is an enumeration
-     * inherited from ProtocolEndpoint and which includes the Values
-     * specified here.
-     *
-     * @return	int	current lANType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public LANType getLANType(){
+		this.lANID = lANID;
+	} // setLANID
 
-    return this.lANType;
-    } // getLANType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LANType.
+	 */
+	@Deprecated
+	public enum LANType {
+		UNKNOWN,
+		OTHER,
+		ETHERNET,
+		TOKENRING,
+		FDDI
+	}
 
-    /**
-     * This method sets the LANEndpoint.lANType property value. This property
-     * is described as follows:
-     *
-     * An indication of the kind of technology used on the LAN. This property
-     * is deprecated in lieu of ProtocolType, which is an enumeration
-     * inherited from ProtocolEndpoint and which includes the Values
-     * specified here.
-     *
-     * @param	int	new lANType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setLANType(LANType lANType){
+	@Deprecated
+	private LANType	lANType;
 
-    this.lANType = lANType;
-    } // setLANType
+	/**
+	 * This method returns the LANEndpoint.lANType property value. This property is described as follows:
+	 * 
+	 * An indication of the kind of technology used on the LAN. This property is deprecated in lieu of ProtocolType, which is an enumeration inherited
+	 * from ProtocolEndpoint and which includes the Values specified here.
+	 * 
+	 * @return int current lANType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public LANType getLANType() {
 
+		return this.lANType;
+	} // getLANType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherLANType.
-     */
-    @Deprecated    private String otherLANType;
-    /**
-     * This method returns the LANEndpoint.otherLANType property value. This
-     * property is described as follows:
-     *
-     * A free-form string that describes the type of technology used on the
-     * LAN when the value of the LANType property is equal to 1 (i.e.,
-     * "Other"). This property is deprecated since its purpose overlaps with
-     * OtherTypeDescription, which which is inherited from ProtocolEndpoint.
-     *
-     * @return	String	current otherLANType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getOtherLANType(){
+	/**
+	 * This method sets the LANEndpoint.lANType property value. This property is described as follows:
+	 * 
+	 * An indication of the kind of technology used on the LAN. This property is deprecated in lieu of ProtocolType, which is an enumeration inherited
+	 * from ProtocolEndpoint and which includes the Values specified here.
+	 * 
+	 * @param int new lANType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setLANType(LANType lANType) {
 
-    return this.otherLANType;
-    } // getOtherLANType
+		this.lANType = lANType;
+	} // setLANType
 
-    /**
-     * This method sets the LANEndpoint.otherLANType property value. This
-     * property is described as follows:
-     *
-     * A free-form string that describes the type of technology used on the
-     * LAN when the value of the LANType property is equal to 1 (i.e.,
-     * "Other"). This property is deprecated since its purpose overlaps with
-     * OtherTypeDescription, which which is inherited from ProtocolEndpoint.
-     *
-     * @param	String	new otherLANType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setOtherLANType(String otherLANType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherLANType.
+	 */
+	@Deprecated
+	private String	otherLANType;
 
-    this.otherLANType = otherLANType;
-    } // setOtherLANType
+	/**
+	 * This method returns the LANEndpoint.otherLANType property value. This property is described as follows:
+	 * 
+	 * A free-form string that describes the type of technology used on the LAN when the value of the LANType property is equal to 1 (i.e., "Other").
+	 * This property is deprecated since its purpose overlaps with OtherTypeDescription, which which is inherited from ProtocolEndpoint.
+	 * 
+	 * @return String current otherLANType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getOtherLANType() {
 
+		return this.otherLANType;
+	} // getOtherLANType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property mACAddress.
-     */
-    private String mACAddress;
-    /**
-     * This method returns the LANEndpoint.mACAddress property value. This
-     * property is described as follows:
-     *
-     * The principal unicast address used in communication with the
-     * LANEndpoint. The MAC address is formatted as twelve hexadecimal digits
-     * (e.g., "010203040506"), with each pair representing one of the six
-     * octets of the MAC address in "canonical" bit order according to RFC
-     * 2469.
-     *
-     * @return	String	current mACAddress property value
-     * @exception	Exception
-     */
-    public String getMACAddress(){
+	/**
+	 * This method sets the LANEndpoint.otherLANType property value. This property is described as follows:
+	 * 
+	 * A free-form string that describes the type of technology used on the LAN when the value of the LANType property is equal to 1 (i.e., "Other").
+	 * This property is deprecated since its purpose overlaps with OtherTypeDescription, which which is inherited from ProtocolEndpoint.
+	 * 
+	 * @param String
+	 *            new otherLANType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setOtherLANType(String otherLANType) {
 
-    return this.mACAddress;
-    } // getMACAddress
+		this.otherLANType = otherLANType;
+	} // setOtherLANType
 
-    /**
-     * This method sets the LANEndpoint.mACAddress property value. This
-     * property is described as follows:
-     *
-     * The principal unicast address used in communication with the
-     * LANEndpoint. The MAC address is formatted as twelve hexadecimal digits
-     * (e.g., "010203040506"), with each pair representing one of the six
-     * octets of the MAC address in "canonical" bit order according to RFC
-     * 2469.
-     *
-     * @param	String	new mACAddress property value
-     * @exception	Exception
-     */
-    public void setMACAddress(String mACAddress) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property mACAddress.
+	 */
+	private String	mACAddress;
 
-    this.mACAddress = mACAddress;
-    } // setMACAddress
+	/**
+	 * This method returns the LANEndpoint.mACAddress property value. This property is described as follows:
+	 * 
+	 * The principal unicast address used in communication with the LANEndpoint. The MAC address is formatted as twelve hexadecimal digits (e.g.,
+	 * "010203040506"), with each pair representing one of the six octets of the MAC address in "canonical" bit order according to RFC 2469.
+	 * 
+	 * @return String current mACAddress property value
+	 * @exception Exception
+	 */
+	public String getMACAddress() {
 
+		return this.mACAddress;
+	} // getMACAddress
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property aliasAddresses.
-     */
-    private String[] aliasAddresses;
-    /**
-     * This method returns the LANEndpoint.aliasAddresses property value. This
-     * property is described as follows:
-     *
-     * Other unicast addresses that may be used to communicate with the
-     * LANEndpoint.
-     *
-     * @return	String[]	current aliasAddresses property value
-     * @exception	Exception
-     */
-    public String[] getAliasAddresses(){
+	/**
+	 * This method sets the LANEndpoint.mACAddress property value. This property is described as follows:
+	 * 
+	 * The principal unicast address used in communication with the LANEndpoint. The MAC address is formatted as twelve hexadecimal digits (e.g.,
+	 * "010203040506"), with each pair representing one of the six octets of the MAC address in "canonical" bit order according to RFC 2469.
+	 * 
+	 * @param String
+	 *            new mACAddress property value
+	 * @exception Exception
+	 */
+	public void setMACAddress(String mACAddress) {
 
-    return this.aliasAddresses;
-    } // getAliasAddresses
+		this.mACAddress = mACAddress;
+	} // setMACAddress
 
-    /**
-     * This method sets the LANEndpoint.aliasAddresses property value. This
-     * property is described as follows:
-     *
-     * Other unicast addresses that may be used to communicate with the
-     * LANEndpoint.
-     *
-     * @param	String[]	new aliasAddresses property value
-     * @exception	Exception
-     */
-    public void setAliasAddresses(String[] aliasAddresses) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property aliasAddresses.
+	 */
+	private String[]	aliasAddresses;
 
-    this.aliasAddresses = aliasAddresses;
-    } // setAliasAddresses
+	/**
+	 * This method returns the LANEndpoint.aliasAddresses property value. This property is described as follows:
+	 * 
+	 * Other unicast addresses that may be used to communicate with the LANEndpoint.
+	 * 
+	 * @return String[] current aliasAddresses property value
+	 * @exception Exception
+	 */
+	public String[] getAliasAddresses() {
 
+		return this.aliasAddresses;
+	} // getAliasAddresses
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property groupAddresses.
-     */
-    private String[] groupAddresses;
-    /**
-     * This method returns the LANEndpoint.groupAddresses property value. This
-     * property is described as follows:
-     *
-     * Multicast addresses to which the LANEndpoint listens.
-     *
-     * @return	String[]	current groupAddresses property value
-     * @exception	Exception
-     */
-    public String[] getGroupAddresses(){
+	/**
+	 * This method sets the LANEndpoint.aliasAddresses property value. This property is described as follows:
+	 * 
+	 * Other unicast addresses that may be used to communicate with the LANEndpoint.
+	 * 
+	 * @param String
+	 *            [] new aliasAddresses property value
+	 * @exception Exception
+	 */
+	public void setAliasAddresses(String[] aliasAddresses) {
 
-    return this.groupAddresses;
-    } // getGroupAddresses
+		this.aliasAddresses = aliasAddresses;
+	} // setAliasAddresses
 
-    /**
-     * This method sets the LANEndpoint.groupAddresses property value. This
-     * property is described as follows:
-     *
-     * Multicast addresses to which the LANEndpoint listens.
-     *
-     * @param	String[]	new groupAddresses property value
-     * @exception	Exception
-     */
-    public void setGroupAddresses(String[] groupAddresses) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property groupAddresses.
+	 */
+	private String[]	groupAddresses;
 
-    this.groupAddresses = groupAddresses;
-    } // setGroupAddresses
+	/**
+	 * This method returns the LANEndpoint.groupAddresses property value. This property is described as follows:
+	 * 
+	 * Multicast addresses to which the LANEndpoint listens.
+	 * 
+	 * @return String[] current groupAddresses property value
+	 * @exception Exception
+	 */
+	public String[] getGroupAddresses() {
 
+		return this.groupAddresses;
+	} // getGroupAddresses
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxDataSize.
-     */
-    private long maxDataSize;
-    /**
-     * This method returns the LANEndpoint.maxDataSize property value. This
-     * property is described as follows:
-     *
-     * The largest information field that may be sent or received by the
-     * LANEndpoint.
-     *
-     * @return	long	current maxDataSize property value
-     * @exception	Exception
-     */
-    public long getMaxDataSize(){
+	/**
+	 * This method sets the LANEndpoint.groupAddresses property value. This property is described as follows:
+	 * 
+	 * Multicast addresses to which the LANEndpoint listens.
+	 * 
+	 * @param String
+	 *            [] new groupAddresses property value
+	 * @exception Exception
+	 */
+	public void setGroupAddresses(String[] groupAddresses) {
 
-    return this.maxDataSize;
-    } // getMaxDataSize
+		this.groupAddresses = groupAddresses;
+	} // setGroupAddresses
 
-    /**
-     * This method sets the LANEndpoint.maxDataSize property value. This
-     * property is described as follows:
-     *
-     * The largest information field that may be sent or received by the
-     * LANEndpoint.
-     *
-     * @param	long	new maxDataSize property value
-     * @exception	Exception
-     */
-    public void setMaxDataSize(long maxDataSize) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxDataSize.
+	 */
+	private long	maxDataSize;
 
-    this.maxDataSize = maxDataSize;
-    } // setMaxDataSize
+	/**
+	 * This method returns the LANEndpoint.maxDataSize property value. This property is described as follows:
+	 * 
+	 * The largest information field that may be sent or received by the LANEndpoint.
+	 * 
+	 * @return long current maxDataSize property value
+	 * @exception Exception
+	 */
+	public long getMaxDataSize() {
 
+		return this.maxDataSize;
+	} // getMaxDataSize
 
+	/**
+	 * This method sets the LANEndpoint.maxDataSize property value. This property is described as follows:
+	 * 
+	 * The largest information field that may be sent or received by the LANEndpoint.
+	 * 
+	 * @param long new maxDataSize property value
+	 * @exception Exception
+	 */
+	public void setMaxDataSize(long maxDataSize) {
+
+		this.maxDataSize = maxDataSize;
+	} // setMaxDataSize
 
 } // Class LANEndpoint

@@ -9,445 +9,388 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class CLPProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * CLPProtocolEndpointBean Interface. The CIM class CLPProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class CLPProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the CLPProtocolEndpointBean Interface. The CIM class CLPProtocolEndpoint is
  * described as follows:
- *
- * A representation of a communication endpoint where the CLP protocol may be
- * accessed.
+ * 
+ * A representation of a communication endpoint where the CLP protocol may be accessed.
  */
 public class CLPProtocolEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a CLPProtocolEndpointBeanImpl Class which
-     * implements the CLPProtocolEndpointBean Interface, and encapsulates the
-     * CIM class CLPProtocolEndpoint in a Java Bean. The CIM class
-     * CLPProtocolEndpoint is described as follows:
-     *
-     * A representation of a communication endpoint where the CLP protocol may
-     * be accessed.
-     */
-    public CLPProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property currentDefaultTarget.
-     */
-    private String currentDefaultTarget;
-    /**
-     * This method returns the CLPProtocolEndpoint.currentDefaultTarget
-     * property value. This property is described as follows:
-     *
-     * Identifies the Current Default Target when a CLP Session is
-     * established. The Current Default Target is the CLP session environment
-     * setting that establishes a default base address for all command
-     * targets that are expressed as a relative target address and is used as
-     * the command target if no command target is specified in a command.
-     *
-     * @return	String	current currentDefaultTarget property
-     * value
-     * @exception	Exception
-     */
-    public String getCurrentDefaultTarget(){
+	/**
+	 * This constructor creates a CLPProtocolEndpointBeanImpl Class which implements the CLPProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class CLPProtocolEndpoint in a Java Bean. The CIM class CLPProtocolEndpoint is described as follows:
+	 * 
+	 * A representation of a communication endpoint where the CLP protocol may be accessed.
+	 */
+	public CLPProtocolEndpoint() {
+	};
 
-    return this.currentDefaultTarget;
-    } // getCurrentDefaultTarget
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property currentDefaultTarget.
+	 */
+	private String	currentDefaultTarget;
 
-    /**
-     * This method sets the CLPProtocolEndpoint.currentDefaultTarget property
-     * value. This property is described as follows:
-     *
-     * Identifies the Current Default Target when a CLP Session is
-     * established. The Current Default Target is the CLP session environment
-     * setting that establishes a default base address for all command
-     * targets that are expressed as a relative target address and is used as
-     * the command target if no command target is specified in a command.
-     *
-     * @param	String	new currentDefaultTarget property value
-     * @exception	Exception
-     */
-    public void setCurrentDefaultTarget(String currentDefaultTarget) {
+	/**
+	 * This method returns the CLPProtocolEndpoint.currentDefaultTarget property value. This property is described as follows:
+	 * 
+	 * Identifies the Current Default Target when a CLP Session is established. The Current Default Target is the CLP session environment setting that
+	 * establishes a default base address for all command targets that are expressed as a relative target address and is used as the command target if
+	 * no command target is specified in a command.
+	 * 
+	 * @return String current currentDefaultTarget property value
+	 * @exception Exception
+	 */
+	public String getCurrentDefaultTarget() {
 
-    this.currentDefaultTarget = currentDefaultTarget;
-    } // setCurrentDefaultTarget
+		return this.currentDefaultTarget;
+	} // getCurrentDefaultTarget
 
+	/**
+	 * This method sets the CLPProtocolEndpoint.currentDefaultTarget property value. This property is described as follows:
+	 * 
+	 * Identifies the Current Default Target when a CLP Session is established. The Current Default Target is the CLP session environment setting that
+	 * establishes a default base address for all command targets that are expressed as a relative target address and is used as the command target if
+	 * no command target is specified in a command.
+	 * 
+	 * @param String
+	 *            new currentDefaultTarget property value
+	 * @exception Exception
+	 */
+	public void setCurrentDefaultTarget(String currentDefaultTarget) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property keepTime.
-     */
-    private int keepTime;
-    /**
-     * This method returns the CLPProtocolEndpoint.keepTime property value.
-     * This property is described as follows:
-     *
-     * The amount of time in seconds that the CLP Session should retain a CLP
-     * command job status. A KeepTime value of zero shall be interpreted to
-     * mean keep forever.
-     *
-     * @return	int	current keepTime property value
-     * @exception	Exception
-     */
-    public int getKeepTime(){
+		this.currentDefaultTarget = currentDefaultTarget;
+	} // setCurrentDefaultTarget
 
-    return this.keepTime;
-    } // getKeepTime
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property keepTime.
+	 */
+	private int	keepTime;
 
-    /**
-     * This method sets the CLPProtocolEndpoint.keepTime property value. This
-     * property is described as follows:
-     *
-     * The amount of time in seconds that the CLP Session should retain a CLP
-     * command job status. A KeepTime value of zero shall be interpreted to
-     * mean keep forever.
-     *
-     * @param	int	new keepTime property value
-     * @exception	Exception
-     */
-    public void setKeepTime(int keepTime) {
+	/**
+	 * This method returns the CLPProtocolEndpoint.keepTime property value. This property is described as follows:
+	 * 
+	 * The amount of time in seconds that the CLP Session should retain a CLP command job status. A KeepTime value of zero shall be interpreted to
+	 * mean keep forever.
+	 * 
+	 * @return int current keepTime property value
+	 * @exception Exception
+	 */
+	public int getKeepTime() {
 
-    this.keepTime = keepTime;
-    } // setKeepTime
+		return this.keepTime;
+	} // getKeepTime
 
+	/**
+	 * This method sets the CLPProtocolEndpoint.keepTime property value. This property is described as follows:
+	 * 
+	 * The amount of time in seconds that the CLP Session should retain a CLP command job status. A KeepTime value of zero shall be interpreted to
+	 * mean keep forever.
+	 * 
+	 * @param int new keepTime property value
+	 * @exception Exception
+	 */
+	public void setKeepTime(int keepTime) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property waitBehavior.
-     */
-    private boolean waitBehavior;
-    /**
-     * This method returns the CLPProtocolEndpoint.waitBehavior property
-     * value. This property is described as follows:
-     *
-     * When TRUE the CLP Session will not return a command response until all
-     * spawned jobs have completed, otherwise it may.
-     *
-     * @return	boolean	current waitBehavior property value
-     * @exception	Exception
-     */
-    public boolean isWaitBehavior(){
+		this.keepTime = keepTime;
+	} // setKeepTime
 
-    return this.waitBehavior;
-    } // getWaitBehavior
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property waitBehavior.
+	 */
+	private boolean	waitBehavior;
 
-    /**
-     * This method sets the CLPProtocolEndpoint.waitBehavior property value.
-     * This property is described as follows:
-     *
-     * When TRUE the CLP Session will not return a command response until all
-     * spawned jobs have completed, otherwise it may.
-     *
-     * @param	boolean	new waitBehavior property value
-     * @exception	Exception
-     */
-    public void setWaitBehavior(boolean waitBehavior) {
+	/**
+	 * This method returns the CLPProtocolEndpoint.waitBehavior property value. This property is described as follows:
+	 * 
+	 * When TRUE the CLP Session will not return a command response until all spawned jobs have completed, otherwise it may.
+	 * 
+	 * @return boolean current waitBehavior property value
+	 * @exception Exception
+	 */
+	public boolean isWaitBehavior() {
 
-    this.waitBehavior = waitBehavior;
-    } // setWaitBehavior
+		return this.waitBehavior;
+	} // getWaitBehavior
 
+	/**
+	 * This method sets the CLPProtocolEndpoint.waitBehavior property value. This property is described as follows:
+	 * 
+	 * When TRUE the CLP Session will not return a command response until all spawned jobs have completed, otherwise it may.
+	 * 
+	 * @param boolean new waitBehavior property value
+	 * @exception Exception
+	 */
+	public void setWaitBehavior(boolean waitBehavior) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property OutputFormat.
-     */
+		this.waitBehavior = waitBehavior;
+	} // setWaitBehavior
 
-    public enum OutputFormat{
-    TEXT,
-    CLPCSV,
-    KEYWORD,
-    CLPXML,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private OutputFormat outputFormat;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputFormat property
-     * value. This property is described as follows:
-     *
-     * OutputFormat establishes the default CLP Session command output format,
-     * as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @return	int	current outputFormat property value
-     * @exception	Exception
-     */
-    public OutputFormat getOutputFormat(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OutputFormat.
+	 */
 
-    return this.outputFormat;
-    } // getOutputFormat
+	public enum OutputFormat {
+		TEXT,
+		CLPCSV,
+		KEYWORD,
+		CLPXML,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputFormat property value.
-     * This property is described as follows:
-     *
-     * OutputFormat establishes the default CLP Session command output format,
-     * as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @param	int	new outputFormat property value
-     * @exception	Exception
-     */
-    public void setOutputFormat(OutputFormat outputFormat){
+	private OutputFormat	outputFormat;
 
-    this.outputFormat = outputFormat;
-    } // setOutputFormat
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputFormat property value. This property is described as follows:
+	 * 
+	 * OutputFormat establishes the default CLP Session command output format, as described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @return int current outputFormat property value
+	 * @exception Exception
+	 */
+	public OutputFormat getOutputFormat() {
 
+		return this.outputFormat;
+	} // getOutputFormat
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property OutputVerbosity.
-     */
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputFormat property value. This property is described as follows:
+	 * 
+	 * OutputFormat establishes the default CLP Session command output format, as described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @param int new outputFormat property value
+	 * @exception Exception
+	 */
+	public void setOutputFormat(OutputFormat outputFormat) {
 
-    public enum OutputVerbosity{
-    ERROR,
-    TERSE,
-    VERBOSE,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private OutputVerbosity outputVerbosity;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputVerbosity property
-     * value. This property is described as follows:
-     *
-     * OutputVerbosity establishes the default CLP Session output level of
-     * detail, as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @return	int	current outputVerbosity property value
-     * @exception	Exception
-     */
-    public OutputVerbosity getOutputVerbosity(){
+		this.outputFormat = outputFormat;
+	} // setOutputFormat
 
-    return this.outputVerbosity;
-    } // getOutputVerbosity
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OutputVerbosity.
+	 */
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputVerbosity property
-     * value. This property is described as follows:
-     *
-     * OutputVerbosity establishes the default CLP Session output level of
-     * detail, as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @param	int	new outputVerbosity property value
-     * @exception	Exception
-     */
-    public void setOutputVerbosity(OutputVerbosity outputVerbosity){
+	public enum OutputVerbosity {
+		ERROR,
+		TERSE,
+		VERBOSE,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.outputVerbosity = outputVerbosity;
-    } // setOutputVerbosity
+	private OutputVerbosity	outputVerbosity;
 
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputVerbosity property value. This property is described as follows:
+	 * 
+	 * OutputVerbosity establishes the default CLP Session output level of detail, as described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @return int current outputVerbosity property value
+	 * @exception Exception
+	 */
+	public OutputVerbosity getOutputVerbosity() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property outputLanguage.
-     */
-    private String outputLanguage;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputLanguage property
-     * value. This property is described as follows:
-     *
-     * The default CLP Session command output language. As described in SM CLP
-     * Specification, DMTF document DSP0214, the language value is a
-     * 3-character string identifier of language as specified in ISO 639.2;
-     * "eng" is the default.
-     *
-     * @return	String	current outputLanguage property value
-     * @exception	Exception
-     */
-    public String getOutputLanguage(){
+		return this.outputVerbosity;
+	} // getOutputVerbosity
 
-    return this.outputLanguage;
-    } // getOutputLanguage
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputVerbosity property value. This property is described as follows:
+	 * 
+	 * OutputVerbosity establishes the default CLP Session output level of detail, as described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @param int new outputVerbosity property value
+	 * @exception Exception
+	 */
+	public void setOutputVerbosity(OutputVerbosity outputVerbosity) {
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputLanguage property value.
-     * This property is described as follows:
-     *
-     * The default CLP Session command output language. As described in SM CLP
-     * Specification, DMTF document DSP0214, the language value is a
-     * 3-character string identifier of language as specified in ISO 639.2;
-     * "eng" is the default.
-     *
-     * @param	String	new outputLanguage property value
-     * @exception	Exception
-     */
-    public void setOutputLanguage(String outputLanguage) {
+		this.outputVerbosity = outputVerbosity;
+	} // setOutputVerbosity
 
-    this.outputLanguage = outputLanguage;
-    } // setOutputLanguage
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property outputLanguage.
+	 */
+	private String	outputLanguage;
 
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputLanguage property value. This property is described as follows:
+	 * 
+	 * The default CLP Session command output language. As described in SM CLP Specification, DMTF document DSP0214, the language value is a
+	 * 3-character string identifier of language as specified in ISO 639.2; "eng" is the default.
+	 * 
+	 * @return String current outputLanguage property value
+	 * @exception Exception
+	 */
+	public String getOutputLanguage() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property OutputPosition.
-     */
+		return this.outputLanguage;
+	} // getOutputLanguage
 
-    public enum OutputPosition{
-    BEGIN,
-    END,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private OutputPosition outputPosition;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputPosition property
-     * value. This property is described as follows:
-     *
-     * OutputPosition establishes the default CLP Session command output
-     * beginning position when multiple items are returned in the command
-     * output, as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @return	int	current outputPosition property value
-     * @exception	Exception
-     */
-    public OutputPosition getOutputPosition(){
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputLanguage property value. This property is described as follows:
+	 * 
+	 * The default CLP Session command output language. As described in SM CLP Specification, DMTF document DSP0214, the language value is a
+	 * 3-character string identifier of language as specified in ISO 639.2; "eng" is the default.
+	 * 
+	 * @param String
+	 *            new outputLanguage property value
+	 * @exception Exception
+	 */
+	public void setOutputLanguage(String outputLanguage) {
 
-    return this.outputPosition;
-    } // getOutputPosition
+		this.outputLanguage = outputLanguage;
+	} // setOutputLanguage
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputPosition property value.
-     * This property is described as follows:
-     *
-     * OutputPosition establishes the default CLP Session command output
-     * beginning position when multiple items are returned in the command
-     * output, as described in SM CLP Specification, DMTF document DSP0214.
-     *
-     * @param	int	new outputPosition property value
-     * @exception	Exception
-     */
-    public void setOutputPosition(OutputPosition outputPosition){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OutputPosition.
+	 */
 
-    this.outputPosition = outputPosition;
-    } // setOutputPosition
+	public enum OutputPosition {
+		BEGIN,
+		END,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
+	private OutputPosition	outputPosition;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property OutputOrder.
-     */
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputPosition property value. This property is described as follows:
+	 * 
+	 * OutputPosition establishes the default CLP Session command output beginning position when multiple items are returned in the command output, as
+	 * described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @return int current outputPosition property value
+	 * @exception Exception
+	 */
+	public OutputPosition getOutputPosition() {
 
-    public enum OutputOrder{
-    DEFAULT,
-    REVERSE,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private OutputOrder outputOrder;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputOrder property value.
-     * This property is described as follows:
-     *
-     * OutputOrder establishes the default CLP Session command output order
-     * when multiple items are returned in the command output as described in
-     * SM CLP Specification, DMTF document DSP0214.
-     *
-     * @return	int	current outputOrder property value
-     * @exception	Exception
-     */
-    public OutputOrder getOutputOrder(){
+		return this.outputPosition;
+	} // getOutputPosition
 
-    return this.outputOrder;
-    } // getOutputOrder
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputPosition property value. This property is described as follows:
+	 * 
+	 * OutputPosition establishes the default CLP Session command output beginning position when multiple items are returned in the command output, as
+	 * described in SM CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @param int new outputPosition property value
+	 * @exception Exception
+	 */
+	public void setOutputPosition(OutputPosition outputPosition) {
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputOrder property value.
-     * This property is described as follows:
-     *
-     * OutputOrder establishes the default CLP Session command output order
-     * when multiple items are returned in the command output as described in
-     * SM CLP Specification, DMTF document DSP0214.
-     *
-     * @param	int	new outputOrder property value
-     * @exception	Exception
-     */
-    public void setOutputOrder(OutputOrder outputOrder){
+		this.outputPosition = outputPosition;
+	} // setOutputPosition
 
-    this.outputOrder = outputOrder;
-    } // setOutputOrder
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OutputOrder.
+	 */
 
+	public enum OutputOrder {
+		DEFAULT,
+		REVERSE,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property outputCount.
-     */
-    private long outputCount;
-    /**
-     * This method returns the CLPProtocolEndpoint.outputCount property value.
-     * This property is described as follows:
-     *
-     * Establishes the default CLP Session command output count number when
-     * multiple items are returned in the output as described in SM CLP
-     * Specification, DMTF document DSP0214. The value 0xFFFFFFFF shall be
-     * interpreted to mean that all items are to be returned. The maximum
-     * value for the count number is determined by the class of the target.
-     *
-     * @return	long	current outputCount property value
-     * @exception	Exception
-     */
-    public long getOutputCount(){
+	private OutputOrder	outputOrder;
 
-    return this.outputCount;
-    } // getOutputCount
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputOrder property value. This property is described as follows:
+	 * 
+	 * OutputOrder establishes the default CLP Session command output order when multiple items are returned in the command output as described in SM
+	 * CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @return int current outputOrder property value
+	 * @exception Exception
+	 */
+	public OutputOrder getOutputOrder() {
 
-    /**
-     * This method sets the CLPProtocolEndpoint.outputCount property value.
-     * This property is described as follows:
-     *
-     * Establishes the default CLP Session command output count number when
-     * multiple items are returned in the output as described in SM CLP
-     * Specification, DMTF document DSP0214. The value 0xFFFFFFFF shall be
-     * interpreted to mean that all items are to be returned. The maximum
-     * value for the count number is determined by the class of the target.
-     *
-     * @param	long	new outputCount property value
-     * @exception	Exception
-     */
-    public void setOutputCount(long outputCount) {
+		return this.outputOrder;
+	} // getOutputOrder
 
-    this.outputCount = outputCount;
-    } // setOutputCount
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputOrder property value. This property is described as follows:
+	 * 
+	 * OutputOrder establishes the default CLP Session command output order when multiple items are returned in the command output as described in SM
+	 * CLP Specification, DMTF document DSP0214.
+	 * 
+	 * @param int new outputOrder property value
+	 * @exception Exception
+	 */
+	public void setOutputOrder(OutputOrder outputOrder) {
 
+		this.outputOrder = outputOrder;
+	} // setOutputOrder
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property displayOption.
-     */
-    private String displayOption;
-    /**
-     * This method returns the CLPProtocolEndpoint.displayOption property
-     * value. This property is described as follows:
-     *
-     * Maintains the session default value for the display option. The
-     * argument string is stored "as-is" without normalization beyond
-     * capitalization. The argument string is compliant with the SM CLP
-     * command line grammar.
-     *
-     * @return	String	current displayOption property value
-     * @exception	Exception
-     */
-    public String getDisplayOption(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property outputCount.
+	 */
+	private long	outputCount;
 
-    return this.displayOption;
-    } // getDisplayOption
+	/**
+	 * This method returns the CLPProtocolEndpoint.outputCount property value. This property is described as follows:
+	 * 
+	 * Establishes the default CLP Session command output count number when multiple items are returned in the output as described in SM CLP
+	 * Specification, DMTF document DSP0214. The value 0xFFFFFFFF shall be interpreted to mean that all items are to be returned. The maximum value
+	 * for the count number is determined by the class of the target.
+	 * 
+	 * @return long current outputCount property value
+	 * @exception Exception
+	 */
+	public long getOutputCount() {
 
-    /**
-     * This method sets the CLPProtocolEndpoint.displayOption property value.
-     * This property is described as follows:
-     *
-     * Maintains the session default value for the display option. The
-     * argument string is stored "as-is" without normalization beyond
-     * capitalization. The argument string is compliant with the SM CLP
-     * command line grammar.
-     *
-     * @param	String	new displayOption property value
-     * @exception	Exception
-     */
-    public void setDisplayOption(String displayOption) {
+		return this.outputCount;
+	} // getOutputCount
 
-    this.displayOption = displayOption;
-    } // setDisplayOption
+	/**
+	 * This method sets the CLPProtocolEndpoint.outputCount property value. This property is described as follows:
+	 * 
+	 * Establishes the default CLP Session command output count number when multiple items are returned in the output as described in SM CLP
+	 * Specification, DMTF document DSP0214. The value 0xFFFFFFFF shall be interpreted to mean that all items are to be returned. The maximum value
+	 * for the count number is determined by the class of the target.
+	 * 
+	 * @param long new outputCount property value
+	 * @exception Exception
+	 */
+	public void setOutputCount(long outputCount) {
 
+		this.outputCount = outputCount;
+	} // setOutputCount
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property displayOption.
+	 */
+	private String	displayOption;
+
+	/**
+	 * This method returns the CLPProtocolEndpoint.displayOption property value. This property is described as follows:
+	 * 
+	 * Maintains the session default value for the display option. The argument string is stored "as-is" without normalization beyond capitalization.
+	 * The argument string is compliant with the SM CLP command line grammar.
+	 * 
+	 * @return String current displayOption property value
+	 * @exception Exception
+	 */
+	public String getDisplayOption() {
+
+		return this.displayOption;
+	} // getDisplayOption
+
+	/**
+	 * This method sets the CLPProtocolEndpoint.displayOption property value. This property is described as follows:
+	 * 
+	 * Maintains the session default value for the display option. The argument string is stored "as-is" without normalization beyond capitalization.
+	 * The argument string is compliant with the SM CLP command line grammar.
+	 * 
+	 * @param String
+	 *            new displayOption property value
+	 * @exception Exception
+	 */
+	public void setDisplayOption(String displayOption) {
+
+		this.displayOption = displayOption;
+	} // setDisplayOption
 
 } // Class CLPProtocolEndpoint
