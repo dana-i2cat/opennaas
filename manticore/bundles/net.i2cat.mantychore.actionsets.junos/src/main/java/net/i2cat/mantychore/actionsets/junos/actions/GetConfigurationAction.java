@@ -75,7 +75,6 @@ public class GetConfigurationAction extends JunosAction {
 			} else {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
-			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
 
 			if (message != null) {
 				/* Parse LR info */
@@ -109,10 +108,14 @@ public class GetConfigurationAction extends JunosAction {
 	private System parseLRs(System routerModel, String message)
 			throws IOException, SAXException {
 
+		// remove LR from the model before parsing new configuration
+		routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
+
 		DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
 		listLogicalRoutersParser.init();
 		listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
+		// put new LR in the model
 		for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
 			ComputerSystem system = new ComputerSystem();
 			system.setName((String) listLogicalRoutersParser.getMapElements().get(key));

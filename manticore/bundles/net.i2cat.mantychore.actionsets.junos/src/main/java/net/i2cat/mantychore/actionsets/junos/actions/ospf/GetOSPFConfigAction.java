@@ -85,7 +85,6 @@ public class GetOSPFConfigAction extends JunosAction {
 			} else {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
-			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
 
 			if (message != null) {
 
