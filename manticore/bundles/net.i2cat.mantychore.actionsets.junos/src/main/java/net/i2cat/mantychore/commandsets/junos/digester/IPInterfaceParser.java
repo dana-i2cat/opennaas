@@ -92,17 +92,6 @@ public class IPInterfaceParser extends DigesterEngine {
 	public IPInterfaceParser(System routerModel) {
 		ruleSet = new ParserRuleSet();
 		setModel(routerModel);
-		for (Service service : routerModel.getHostedService()) {
-			if (service instanceof GRETunnelService) {
-				GRETunnelService greService = (GRETunnelService) service;
-
-				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
-					if (pE instanceof GRETunnelEndpoint) {
-
-					}
-				}
-			}
-		}
 	}
 
 	public IPInterfaceParser() {
