@@ -10,7 +10,7 @@
 	<interfaces>	
 		<interface>
 			<name>$param.Name</name>
-			<unit operation="merge">
+			<unit operation="replace">
 				<name>$portNumber</name>
 				<tunnel>
 					<source>$param.GRETunnelConfiguration.getSourceAddress()</source>
