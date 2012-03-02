@@ -8,6 +8,7 @@ import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.Service;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -106,8 +107,10 @@ public class DeleteTunnelAction extends JunosAction {
 			throw new ActionException("Params can't be null for the " + getActionID() + " action.");
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
-		if (!checkNamePattern(((GRETunnelService) params).getName()))
+		if (!checkPatternName(((GRETunnelService) params).getName()))
 			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
+		if (!checkExistsName(((GRETunnelService) params).getName()))
+			throw new ActionException("The name of the GRE Tunnel not exist in this router");
 		return true;
 	}
 
@@ -159,8 +162,23 @@ public class DeleteTunnelAction extends JunosAction {
 	 * @param name
 	 * @return true if name has the pattern
 	 */
-	private boolean checkNamePattern(String name) {
+	private boolean checkPatternName(String name) {
 		return name.matches(NAME_PATTERN);
 	}
 
+	/**
+	 * Check if name of the GRE Tunnel to delete exists
+	 * 
+	 * @param name
+	 * @return true if exists, false otherwise
+	 */
+	private boolean checkExistsName(String name) {
+		boolean existsName = true;
+		for (Service service : ((ComputerSystem) modelToUpdate).getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				existsName = (((GRETunnelService) service).getName().equals(name));
+			}
+		}
+		return existsName;
+	}
 }

@@ -32,7 +32,7 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
 			Response resp = iGRETunnelService
 					.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 			Assert.assertTrue(queueResponse.isOk());
@@ -48,7 +48,7 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 		try {
 			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
 			Response resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
-			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 			Assert.assertTrue(queueResponse.isOk());
@@ -79,16 +79,16 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 		try {
 			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
 			Response resp = iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
 			resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
-			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
 			resp = (Response) greTunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG,
 					getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);

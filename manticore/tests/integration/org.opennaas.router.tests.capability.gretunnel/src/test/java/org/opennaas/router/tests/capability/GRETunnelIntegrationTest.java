@@ -186,4 +186,12 @@ public class GRETunnelIntegrationTest extends AbstractIntegrationTest {
 
 		return greService;
 	}
+
+	/**
+	 * Add service to the model
+	 */
+	private void addGRETunnelService() {
+		net.i2cat.mantychore.model.ComputerSystem system = new net.i2cat.mantychore.model.ComputerSystem();
+		system.addHostedService(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+	}
 }
