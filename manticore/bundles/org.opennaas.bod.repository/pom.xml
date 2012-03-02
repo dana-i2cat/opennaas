@@ -14,30 +14,17 @@
   	<packaging>bundle</packaging>
 	<name>BoD Repository</name>
 	<description>BoD Repository Implementation</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
  	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.model</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
  	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
@@ -46,7 +33,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.0.0</version>
 				<extensions>true</extensions>
 				<!--
 					| the following instructions build a simple set of public/private

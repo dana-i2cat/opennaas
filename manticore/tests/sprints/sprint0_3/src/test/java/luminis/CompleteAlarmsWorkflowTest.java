@@ -1,22 +1,27 @@
 package luminis;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+import javax.inject.Inject;
 
 import junit.framework.Assert;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.IEventManager;
@@ -34,60 +39,69 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 
 @RunWith(JUnit4TestRunner.class)
-public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-	static Log			log				= LogFactory.getLog(CompleteAlarmsWorkflowTest.class);
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class CompleteAlarmsWorkflowTest
+{
+	private static final Log	log				= LogFactory.getLog(CompleteAlarmsWorkflowTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private BundleContext		bundleContext;
 
-	List<Event>			receivedEvents	= new ArrayList<Event>();
-	final Object		lock			= new Object();
+	private List<Event>			receivedEvents	= new ArrayList<Event>();
+	private final Object		lock			= new Object();
 
-	IEventManager		eventManager;
-	IResourceManager	resourceManager;
-	IProtocolManager	protocolManager;
-	IAlarmsRepository	alarmsRepo;
+	@Inject
+	private IEventManager		eventManager;
+
+	@Inject
+	private IResourceManager	resourceManager;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	private IAlarmsRepository	alarmsRepo;
+
+	@Inject
+	@Filter("(capability=monitoring)")
+	private ICapabilityFactory monitoringFactory;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer roadmRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer wonesysProtocolService;
 
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("org.opennaas").artifactId(
-						"opennaas-core-events"),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-
-	private void initBundles() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		eventManager = getOsgiService(IEventManager.class, 5000);
-		resourceManager = getOsgiService(IResourceManager.class, 5000);
-		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		alarmsRepo = getOsgiService(IAlarmsRepository.class, 5000);
-
-		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 5000);
-		Assert.assertNotNull(monitoringFactory);
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	private TestInitInfo setUp() throws ResourceException, ProtocolException {
-
-		initBundles();
 
 		// clear resource repo
 		List<IResource> resources = resourceManager.listResources();
@@ -129,7 +143,7 @@ public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void completeAlarmsWorkflowTest() throws ResourceException, ProtocolException {
+	public void completeAlarmsWorkflowTest() throws Exception {
 
 		TestInitInfo initInfo = setUp();
 
@@ -151,9 +165,6 @@ public class CompleteAlarmsWorkflowTest extends AbstractIntegrationTest {
 
 			// Check alarm is identified as Channel plan changed alarm
 			Assert.assertTrue(alarms.get(0).getProperty(ResourceAlarm.ALARM_CODE_PROPERTY).equals("CPLANCHANGED"));
-
-		} catch (Exception e) {
-			Assert.fail(e.getLocalizedMessage());
 		} finally {
 			tearDown(initInfo);
 		}

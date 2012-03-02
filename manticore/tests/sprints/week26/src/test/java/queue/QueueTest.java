@@ -1,22 +1,26 @@
 package queue;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 import net.i2cat.mantychore.queuemanager.QueueManager;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,11 +41,17 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * Tests new queue operations. In the sprint for the week 26, it is planned to add new features in the queue.
@@ -57,39 +67,56 @@ import org.osgi.framework.BundleContext;
  *         jira ticket : http://jira.i2cat.net:8080/browse/MANTYCHORE-185
  */
 @RunWith(JUnit4TestRunner.class)
-public class QueueTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
+public class QueueTest
+{
+	/* Note that the tests in this class have to run in isolation;
+	 * this is because the initialization code is creating a new queue
+	 * before each test runs.
+	 */
 
-	static Log				log				= LogFactory
-													.getLog(QueueTest.class);
 
-	MockResource			mockResource;
-	String					resourceID		= "junosResource";
-	// QueueManager queueManagerService;
-	ICapability				queueCapability;
-	IQueueManagerService	queueManagerService;
+	private final static Log		log				= LogFactory.getLog(QueueTest.class);
+
+	private final static String		resourceID		= "junosResource";
+	private MockResource			mockResource;
+	private ICapability				queueCapability;
+	private IQueueManagerService	queueManagerService;
 
 	@Inject
-	BundleContext			bundleContext	= null;
+	private IProtocolManager		protocolManager;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory		queueManagerFactory;
+
+	@Inject
+	private BundleContext			bundleContext;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   mavenBundle()
+					   .groupId("org.ops4j.base")
+					   .artifactId("ops4j-base-spi")
+					   .versionAsInProject(),
+					   mavenBundle()
+					   .groupId("org.ops4j.pax.swissbox")
+					   .artifactId("pax-swissbox-framework")
+					   .versionAsInProject(),
+					   keepRuntimeFolder());
 	}
 
 	public void initBundles() throws ProtocolException {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-
 		/* init capability */
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
@@ -115,31 +142,32 @@ public class QueueTest extends AbstractIntegrationTest {
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceID, ResourceHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
 
 	}
 
-	// FIXME Before and After does not work with linux
-
 	@Before
 	public void before() throws ProtocolException, CapabilityException {
 		initBundles();
 		log.info("INFO: Before test, getting queue...");
-		ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 20000);
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueManagerService = getOsgiService(IQueueManagerService.class,
-				"(capability=queue)(capability.name=" + resourceID + ")", 20000);
 
+		/* The queue manager factory registers the new queue manager
+		 * as a service. Hence we cannot obtain this reference through
+		 * injection.
+		 */
+		queueManagerService =
+			getService(bundleContext, IQueueManagerService.class, 20000,
+					   String.format("(capability=queue)(capability.name=%s)",
+									 resourceID));
 	}
 
 	@After
 	public void after() {
 		log.info("INFO: After test, cleaning queue...");
 		queueManagerService.empty();
-
 	}
 
 	/**
@@ -154,20 +182,15 @@ public class QueueTest extends AbstractIntegrationTest {
 	 * 2.- Implement operation in the queue
 	 */
 	@Test
-	public void ModifyQueueTest() {
+	public void ModifyQueueTest() throws Exception {
 		// log.info("INFO: Remove actions");
 		// IAction action = new MockAction();
 		// action.setActionID("mockAction");
-
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action1"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionDiffsCommandOks("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionOK("action3"));
 
-		try {
-			queueCapability.sendMessage(QueueConstants.MODIFY, newQueueModifyParams());
-		} catch (Exception e) {
-			Assert.fail(e.getMessage());
-		}
+		queueCapability.sendMessage(QueueConstants.MODIFY, newQueueModifyParams());
 		Assert.assertTrue(queueManagerService.getActions().size() == 2);
 	}
 
@@ -190,17 +213,12 @@ public class QueueTest extends AbstractIntegrationTest {
 	 * 2.- Add necessary refactoring to add new information in the queue
 	 */
 	@Test
-	public void ResponseReportTest() {
+	public void ResponseReportTest() throws CapabilityException, InterruptedException {
 		queueManagerService.queueAction(MockActionFactory.newMockActionDiffsCommandOks("action1"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionVariousError("action3"));
 
-		QueueResponse queueResponse = null;
-		try {
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		} catch (CapabilityException e) {
-			Assert.fail(e.getMessage());
-		}
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
 		/* check prepare action */
 		ActionResponse prepareResponse = queueResponse.getPrepareResponse();
@@ -229,6 +247,5 @@ public class QueueTest extends AbstractIntegrationTest {
 		/* restore response */
 		ActionResponse restoreResponse = queueResponse.getRestoreResponse();
 		Assert.assertTrue(restoreResponse.getStatus() == ActionResponse.STATUS.OK);
-
 	}
 }

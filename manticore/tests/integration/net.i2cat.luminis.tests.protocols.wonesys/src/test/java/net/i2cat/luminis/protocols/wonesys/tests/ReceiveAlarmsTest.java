@@ -1,36 +1,53 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import javax.inject.Inject;
 
-import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.junit.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.runner.RunWith;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.ops4j.pax.exam.Inject;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
+
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
@@ -44,55 +61,54 @@ import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
-@RunWith(JUnit4TestRunner.class)
-public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventHandler {
+import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
+import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 
-	static Log							log				= LogFactory.getLog(ReceiveAlarmsTest.class);
+@RunWith(JUnit4TestRunner.class)
+public class ReceiveAlarmsTest implements EventHandler {
+
+	private static Log log = LogFactory.getLog(ReceiveAlarmsTest.class);
 
 	@Inject
-	private BundleContext				bundleContext;
+	private BundleContext	bundleContext;
 
 	// private String resourceId = "Proteus-Pedrosa";
 	// private String hostIpAddress = "10.10.80.11";
 	// private String hostPort = "27773";
 
-	private String						alarmsPort		= "32162";										// SNMP traps port (162). if different,
+	private String alarmsPort		= "32162";						// SNMP traps port (162). if different,
 																										// 162 needs to be redirected to this port
 																										// in order to receive traps.
-	private long						alarmWaittime	= 5 * 1000;									// 5sec
 
-	private boolean						alarmReceived	= false;
+	private long alarmWaittime	= 5 * 1000;						// 5sec
+
+	private final CountDownLatch alarmReceived = new CountDownLatch(1);
 
 	// Required services
-	private IProtocolManager			protocolManager	= null;
-	private IEventManager				eventManager	= null;
-	private IWonesysAlarmConfigurator	alarmConfig		= null;
+	@Inject
+	private IProtocolManager protocolManager;
+
+	@Inject
+	private IEventManager	eventManager;
+
+	@Inject
+	private IWonesysAlarmConfigurator	alarmConfig;
 
 	@Configuration
-	public static Option[] configure() {
-		return combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		);
-	}
-
-	public void loadBundlesAndServices() {
-
-		assertNotNull(bundleContext);
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		assertNotNull(protocolManager);
-
-		eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
-
-		alarmConfig = getOsgiService(IWonesysAlarmConfigurator.class, 20000);
-		assertNotNull(alarmConfig);
-
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	/**
@@ -116,9 +132,6 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	public void testAlarms() throws IOException {
 
 		// set up
-		loadBundlesAndServices();
-
-		this.alarmReceived = false;
 
 		Properties alarmProperties = new Properties();
 		alarmProperties.setProperty(IWonesysAlarmConfigurator.ALARM_PORT_PROPERTY_NAME, alarmsPort);
@@ -139,13 +152,12 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 
 			try {
 				log.info("Waiting for an alarm...");
-				Thread.sleep(alarmWaittime * 3);
+				alarmReceived.await(alarmWaittime * 3, MILLISECONDS);
 			} catch (InterruptedException e) {
 				log.warn("Interrupted!");
 			}
 
-			log.info("AlarmReceived = " + this.alarmReceived);
-			assertTrue(this.alarmReceived);
+			assertEquals(0, alarmReceived.getCount());
 
 		} finally {
 			// clean up
@@ -160,20 +172,17 @@ public class ReceiveAlarmsTest extends AbstractIntegrationTest implements EventH
 	/**
 	 * Called when the alarm is received
 	 */
+	@Override
 	public void handleEvent(Event event) {
 		assertNotNull(event);
 		assertTrue(event instanceof WonesysAlarmEvent);
 
 		WonesysAlarmEvent wevent = (WonesysAlarmEvent) event;
-
-		checkAnyAlarmReceived(wevent);
-	}
-
-	private void checkAnyAlarmReceived(WonesysAlarmEvent wevent) {
 		WonesysAlarm a = wevent.getAlarm();
 		assertNotNull(a);
 		log.info("Alarm received: " + a.toString());
-		this.alarmReceived = true;
+
+		alarmReceived.countDown();
 	}
 
 	private TrapPduv2 triggerAlarm() throws IOException {

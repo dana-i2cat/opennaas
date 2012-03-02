@@ -7,7 +7,6 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>assembly</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<name>Opennaas Framework :: Assembly</name>
 	<properties>
 		<opennaas.release.name>${project.version}</opennaas.release.name>
@@ -35,6 +34,7 @@
 								<descriptor>src/main/assemble/distribution.xml</descriptor>
 							</descriptors>
 							<finalName>${opennaas.platform.name}</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
 							<outputDirectory>${project.build.directory}/assembly</outputDirectory>
 							<workDirectory>${project.build.directory}/work</workDirectory>
 						</configuration>

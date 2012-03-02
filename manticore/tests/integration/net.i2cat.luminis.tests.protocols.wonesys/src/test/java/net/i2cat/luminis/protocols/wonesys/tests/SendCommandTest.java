@@ -1,26 +1,54 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
+
+import net.i2cat.nexus.tests.IntegrationTestsHelper;
+
+import org.junit.Test;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
 import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventHandler;
+
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -28,48 +56,61 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.framework.BundleContext;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
+
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class SendCommandTest extends AbstractIntegrationTest {
+public class SendCommandTest {
 
-	static Log				log				= LogFactory.getLog(SendCommandTest.class);
+	static Log log	= LogFactory.getLog(SendCommandTest.class);
 
 	@Inject
 	private BundleContext	bundleContext;
 
+	@Inject
+	private IProtocolManager protocolManager;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	BlueprintContainer wonesysProtocolService;
+
 	private String			resourceId		= "Proteus-Pedrosa";
 	private String			hostIpAddress	= "10.10.80.11";
-	private String			hostPort		= "27773";
+	private String			hostPort	 		= "27773";
 
 	@Configuration
-	public static Option[] configure() {
-		return combine(
-						IntegrationTestsHelper.getLuminisTestOptions(),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		);
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
+	/*
 	public void loadBundles() {
 
 		assertNotNull(bundleContext);
 
-		/* Wait for the activation of all the bundles */
+		// Wait for the activation of all the bundles 
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
+		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
 		assertNotNull(protocolManager);
-	}
+	}*/
 
 	@Test
 	public void testSendMultipleMessages() throws ProtocolException {
 
-		loadBundles();
+		//loadBundles();
 
 		sendMultipleMessages(1);
 
@@ -79,10 +120,10 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	@Test
 	public void sendCommandTest() throws ProtocolException, CommandException {
 
-		loadBundles();
+		//loadBundles();
 
 		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+		//IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		ProtocolSessionContext sessionContext = createWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		sessionContext.addParameter("protocol.mock", "true");
@@ -216,7 +257,7 @@ public class SendCommandTest extends AbstractIntegrationTest {
 	}
 
 	private IProtocolSession getProtocolSession(String resourceId, ProtocolSessionContext sessionContext) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
+		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		if (protocolManager == null)
 			return null;
 
