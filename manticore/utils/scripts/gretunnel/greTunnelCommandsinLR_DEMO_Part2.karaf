@@ -1,0 +1,24 @@
+
+
+protocols:context router:LS1 netconf URI
+resource:start router:LS1
+
+#Set IP address 
+ipv4:setIP router:LS1 fe-0/3/0.1 192.168.0.1 255.255.255.0
+ipv4:setinterfacedescription router:LS1 fe-0/3/0.1 "private network interface"
+queue:execute router:LS1
+
+
+shell:echo "_______CONFIGURING GRE_______"
+
+#Create the GRE tunnel
+shell:echo "gretunnel:create router:LS1 gre.1 192.168.0.10 255.255.255.0 192.168.254.1 192.168.254.2"
+gretunnel:create router:LS1 gre.1 192.168.0.10 255.255.255.0 193.1.244.66 147.83.206.88
+queue:execute router:LS1
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:LS1"
+gretunnel:show router:LS1
+
+
+shell:echo "PLEASE CONFIGURE YOUR SIDE OF THE TUNNEL AND TEST REACHABILITY"
