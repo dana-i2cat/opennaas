@@ -67,7 +67,7 @@ then
   nexthop=$7
 fi
 
-if [ $route ]
+if [ $# -eq "9" ]
 then
   if [ $8 == "local" ]
   then
@@ -108,7 +108,7 @@ echo "Tunnel interface: $interface"
 echo "Tunnel Address: $address"
 echo "Source Address: $s_address"
 echo "Destination Address: $d_address"
-if [ $route ]
+if [ $# -eq "9" ]
 then
   echo "Routing $nexthop through $interface interface"
 fi
