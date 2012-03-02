@@ -31,7 +31,7 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestGetConfigurationTemplate() {
+	public void testGetConfigurationTemplate() {
 		template = "/VM_files/getconfiguration.vm";
 		String message = callVelocity(template, null);
 		Assert.assertNotNull(message);
@@ -40,7 +40,7 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestsetIpv4Template() {
+	public void testsetIpv4Template() {
 		template = "/VM_files/configureIPv4.vm";
 		IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
 
@@ -50,8 +50,17 @@ public class VelocityTemplatesTest {
 	}
 
 	@Test
-	public void TestcreateGRETunnelTemplate() {
+	public void testCreateGRETunnelTemplate() {
 		template = "/VM_files/createTunnel.vm";
+		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
+
+		Assert.assertNotNull(message);
+		log.info(message);
+	}
+
+	@Test
+	public void testDeleteGRETunnelTemplate() {
+		template = "/VM_files/deleteTunnel.vm";
 		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
 
 		Assert.assertNotNull(message);
@@ -62,7 +71,7 @@ public class VelocityTemplatesTest {
 
 		GRETunnelService greService = new GRETunnelService();
 		greService.setElementName("");
-		greService.setName("gre");
+		greService.setName("gre.3");
 
 		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
 		greConfig.setSourceAddress("147.56.89.62");

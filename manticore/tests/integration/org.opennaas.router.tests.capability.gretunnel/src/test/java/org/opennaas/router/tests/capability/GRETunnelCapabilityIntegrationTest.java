@@ -1,168 +1,101 @@
 package org.opennaas.router.tests.capability;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.GRETunnelService;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockResource;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.router.tests.capability.mock.MockBootstrapper;
-import org.ops4j.pax.exam.Inject;
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.osgi.framework.BundleContext;
+import org.opennaas.router.capability.gretunnel.IGRETunnelService;
 
-@RunWith(JUnit4TestRunner.class)
-public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest {
 
-	static Log			log				= LogFactory
-												.getLog(GRETunnelCapabilityIntegrationTest.class);
-	static MockResource	mockResource;
+	/**
+	 * 
+	 */
+	private static Log	log	= LogFactory
+									.getLog(GRETunnelCapabilityIntegrationTest.class);
 
-	static ICapability	gretunnelCapability;
-
-	private ICapability	queueCapability;
-
-	@Inject
-	BundleContext		bundleContext	= null;
-
-	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				, vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
-	}
-
-	@Before
-	public void initBundles() {
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		initResource();
-		initCapability();
-	}
-
-	public void initResource() {
-
-		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
-		mockResource.setBootstrapper(new MockBootstrapper());
-
-		List<String> capabilities = new ArrayList<String>();
-
-		capabilities.add("gretunnel");
-		capabilities.add("queue");
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
-
-		mockResource.setResourceDescriptor(resourceDescriptor);
-
-		IResourceIdentifier resourceIdentifier = new ResourceIdentifier(resourceDescriptor.getInformation().getType(), resourceDescriptor.getId());
-		mockResource.setResourceIdentifier(resourceIdentifier);
-	}
-
-	public void initCapability() {
-
+	@Test
+	public void createGRETunnelTest() {
+		log.info("Test createGRETunnel method");
 		try {
-
-			log.info("INFO: Before Test, getting queue...");
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
-			Assert.assertNotNull(queueManagerFactory);
-
-			queueCapability = queueManagerFactory.create(mockResource);
-			queueCapability.initialize();
-
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
-
-			ICapabilityFactory gretunnelFactory = getOsgiService(ICapabilityFactory.class, "capability=gretunnel", 10000);
-			// Test elements not null
-			log.info("Checking gretunnel factory");
-			Assert.assertNotNull(gretunnelFactory);
-			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("gretunnel"));
-			log.info("Creating gretunnel capability");
-			gretunnelCapability = gretunnelFactory.create(mockResource);
-			Assert.assertNotNull(gretunnelCapability);
-			gretunnelCapability.initialize();
-
-			mockResource.addCapability(queueCapability);
-			mockResource.addCapability(gretunnelCapability);
-
-		} catch (Exception e) {
+			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
+			Response resp = iGRETunnelService
+					.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			Assert.assertTrue(queueResponse.isOk());
+		} catch (CapabilityException e) {
 			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail(e.getMessage());
+			Assert.fail(e.getLocalizedMessage());
 		}
 	}
 
 	@Test
-	public void TestGRETunnelAction() {
+	public void deleteGRETunnelTest() {
+		log.info("Test createGRETunnel method");
+		try {
+			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
+			Response resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
+			Assert.assertTrue(resp.getErrors().size() == 0);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			Assert.assertTrue(queueResponse.isOk());
+		} catch (CapabilityException e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
+		}
+	}
+
+	@Test
+	public void showGRETunnelConfigurationTest() {
+		log.info("Test showGRETunnelConfiguration method");
+		try {
+			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
+			List<GRETunnelService> resp = iGRETunnelService.showGRETunnelConfiguration();
+			Assert.assertTrue(resp.size() > 0);
+			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			Assert.assertTrue(queueResponse.isOk());
+		} catch (CapabilityException e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
+		}
+	}
+
+	@Test
+	public void testGRETunnelAction() {
 		log.info("TEST GRE TUNNEL ACTION");
 		try {
-
-			Response resp = (Response) gretunnelCapability.sendMessage(ActionConstants.CREATETUNNEL, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
+			iGRETunnelService = (IGRETunnelService) greTunnelCapability;
+			Response resp = iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG, newParamsGRETunnelService());
-			Assert.assertTrue(resp.getStatus() == Status.OK);
+			resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.DELETETUNNEL, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.SHOWTUNNELS, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			resp = (Response) gretunnelCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
+			resp = (Response) greTunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG,
+					getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+			Assert.assertTrue(resp.getStatus() == Response.Status.OK);
 			Assert.assertTrue(resp.getErrors().size() == 0);
 
 			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 5);
+			Assert.assertTrue(queue.size() == 3);
 
 			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.getResponses().size() == 5);
+			Assert.assertTrue(queueResponse.getResponses().size() == 3);
 
 			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
 			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
@@ -179,28 +112,4 @@ public class GRETunnelCapabilityIntegrationTest extends AbstractIntegrationTest 
 		}
 	}
 
-	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-		log.debug("FFFF test setup uri: " + uri + "Length: " + uri.length());
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
-
-	}
-
-	private Object newParamsGRETunnelService() {
-		GRETunnelService greService = new GRETunnelService();
-		greService.setName("gre-0/1/0");
-		return greService;
-	}
 }

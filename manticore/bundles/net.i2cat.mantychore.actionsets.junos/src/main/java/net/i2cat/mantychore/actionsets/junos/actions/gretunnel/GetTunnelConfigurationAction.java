@@ -1,9 +1,10 @@
-package net.i2cat.mantychore.actionsets.junos.actions;
+package net.i2cat.mantychore.actionsets.junos.actions.gretunnel;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;

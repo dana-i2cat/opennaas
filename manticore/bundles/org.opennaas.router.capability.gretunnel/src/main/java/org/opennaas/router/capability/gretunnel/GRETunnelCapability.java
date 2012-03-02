@@ -1,7 +1,13 @@
 package org.opennaas.router.capability.gretunnel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
@@ -15,19 +21,32 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 
-public class GRETunnelCapability extends AbstractCapability {
+/**
+ * @author Jordi
+ * 
+ */
+public class GRETunnelCapability extends AbstractCapability implements IGRETunnelService {
 
-	public final static String	GRETUNNEL	= "gretunnel";
+	public final static String	CAPABILITY_NAME	= "gretunnel";
 
-	private String				resourceID	= "";
-	Log							log			= LogFactory.getLog(GRETunnelCapability.class);
+	private String				resourceID		= "";
+	Log							log				= LogFactory.getLog(GRETunnelCapability.class);
 
+	/**
+	 * @param descriptor
+	 * @param resourceID
+	 */
 	public GRETunnelCapability(CapabilityDescriptor descriptor, String resourceID) {
 		super(descriptor);
 		this.resourceID = resourceID;
 		log.debug("Built new GRE Tunnel Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#sendMessage(java.lang.String, java.lang.Object)
+	 */
 	@Override
 	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
 		log.debug("Sending message to GRE Tunnel Capability");
@@ -45,9 +64,14 @@ public class GRETunnelCapability extends AbstractCapability {
 					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
-		return Response.okResponse(idOperation);
+		return Response.queuedResponse(idOperation);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
@@ -60,27 +84,89 @@ public class GRETunnelCapability extends AbstractCapability {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#createGRETunnel(net.i2cat.mantychore.model.GRETunnelService)
+	 */
+	@Override
+	public Response createGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
+		return (Response) sendMessage(ActionConstants.CREATETUNNEL, greTunnelService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#deleteGRETunnel(net.i2cat.mantychore.model.GRETunnelService)
+	 */
+	@Override
+	public Response deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException {
+		return (Response) sendMessage(ActionConstants.DELETETUNNEL, greTunnelService);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.router.capability.gretunnel.IGRETunnelService#showGRETunnelConfiguration()
+	 */
+	@Override
+	public List<GRETunnelService> showGRETunnelConfiguration() throws CapabilityException {
+		List<GRETunnelService> listGreTunnelServices = new ArrayList<GRETunnelService>();
+		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
+
+		// If hosted services is null or empty throw Exception
+		if (lServices == null || lServices.size() <= 0) {
+			throw new CapabilityException("No hosted services in this model.");
+		} else {
+			// Search GRETunnel Service in the Service list
+			for (Service service : lServices) {
+				if (service instanceof GRETunnelService) {
+					listGreTunnelServices.add((GRETunnelService) service);
+				}
+			}
+		}
+
+		return listGreTunnelServices;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
+	 */
 	@Override
 	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activateCapability()
+	 */
 	@Override
 	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivateCapability()
+	 */
 	@Override
 	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdownCapability()
+	 */
 	@Override
 	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		// Nothing to do
 	}
+
 }

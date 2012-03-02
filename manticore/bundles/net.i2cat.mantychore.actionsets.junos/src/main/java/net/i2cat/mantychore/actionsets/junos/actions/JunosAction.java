@@ -6,6 +6,9 @@ import java.util.Map;
 import net.i2cat.mantychore.commandsets.junos.commands.JunosCommand;
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSession;
+
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -14,14 +17,11 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
-
 public abstract class JunosAction extends Action {
-	VelocityEngine		velocityEngine;
-	String				template		= null;
-	protected String	protocolName	= null;
-	protected String	velocityMessage;
+	protected VelocityEngine	velocityEngine;
+	protected String			template		= null;
+	protected String			protocolName	= null;
+	protected String			velocityMessage;
 
 	public JunosAction() {
 		velocityEngine = new VelocityEngine();
@@ -57,7 +57,7 @@ public abstract class JunosAction extends Action {
 	}
 
 	public Response sendCommandToProtocol(JunosCommand command, IProtocolSession
-				generalProtocol) throws ProtocolException,
+			generalProtocol) throws ProtocolException,
 			ActionException {
 		// FIXME PARSE TO NETCONFPROTOCOL SESSION
 		NetconfProtocolSession protocol = (NetconfProtocolSession) generalProtocol;
