@@ -115,9 +115,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 
 		// If hosted services is null or empty throw Exception
-		if (lServices == null || lServices.size() <= 0) {
-			throw new CapabilityException("No hosted services in this model.");
-		} else {
+		if (lServices != null) {
 			// Search GRETunnel Service in the Service list
 			for (Service service : lServices) {
 				if (service instanceof GRETunnelService) {

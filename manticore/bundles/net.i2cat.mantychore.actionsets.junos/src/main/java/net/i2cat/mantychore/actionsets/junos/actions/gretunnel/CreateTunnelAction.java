@@ -62,7 +62,7 @@ public class CreateTunnelAction extends JunosAction {
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
 		if (!checkNamePattern(((GRETunnelService) params).getName()))
-			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
+			throw new ActionException("The name of the GRE tunnel must have the following format -> gre.[1..n]");
 		return true;
 	}
 

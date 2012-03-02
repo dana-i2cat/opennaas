@@ -108,9 +108,9 @@ public class DeleteTunnelAction extends JunosAction {
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
 		if (!checkPatternName(((GRETunnelService) params).getName()))
-			throw new ActionException("The name of the GRE Tunnel must have the following format gre.[1..n]");
+			throw new ActionException("The name of the GRE tunnel must have the following format -> gre.[1..n]");
 		if (!checkExistsName(((GRETunnelService) params).getName()))
-			throw new ActionException("The name of the GRE Tunnel not exist in this router");
+			throw new ActionException("The name of the GRE tunnel not exist in this router");
 		return true;
 	}
 
