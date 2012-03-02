@@ -76,9 +76,13 @@ public class ROADMRespositoryIntegrationTest
 	@Inject
 	private IResourceManager	resourceManger;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
-    private BlueprintContainer	repositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer	repositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {

@@ -85,6 +85,10 @@ public class ConnectionsCapabilityIntegrationTest
 	@Filter("(capability=connections)")
 	private ICapabilityFactory	connectionFactory;
 
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
