@@ -8,7 +8,12 @@ import java.io.InputStreamReader;
 import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.OSPFService;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.NetworkPort;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.RouteCalculationService;
 import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.model.System;
@@ -24,7 +29,7 @@ public class RoutingOptionsParserTest {
 	@Test
 	public void testParseRoutingOptions() throws Exception {
 
-		String message = readStringFromFile("/parsers/getConfigWithRoutingOptionsAndRouterId.xml");
+		String message = readStringFromFile("/parsers/getConfigWithRoutingOptionsAndRouterIdAndGRE.xml");
 
 		System model = createSampleModel();
 		RoutingOptionsParser parser = new RoutingOptionsParser(model);
@@ -49,8 +54,21 @@ public class RoutingOptionsParserTest {
 							((RouteCalculationService) service).getRouterID());
 				}
 			}
+			/* GRE Tunnel Routing-options */
+			else if (service instanceof GRETunnelService) {
+				GRETunnelService greService = (GRETunnelService) service;
+				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+					if (pE instanceof GRETunnelEndpoint) {
+						GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+						Assert.assertTrue(gE.getNextHopRoutes().size() == 1);
+
+					}
+				}
+
+			}
 		}
-		log.info(parser.toPrint());
+
+		log.info(parser.toPrint(updatedModel));
 	}
 
 	/**
@@ -81,9 +99,33 @@ public class RoutingOptionsParserTest {
 	private System createSampleModel() {
 		System model = new ComputerSystem();
 
-		RouteCalculationService service = new OSPFService();
-		model.addHostedService(service);
-		model.addHostedService(new OSPFService());
+		/* OSPF Service */
+		// RouteCalculationService service = new OSPFService();
+		// model.addHostedService(service);
+		// model.addHostedService(new OSPFService());
+
+		/* GRETunnel Service */
+		GRETunnelService greService = new GRETunnelService();
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress("192.168.1.1");
+		greConfig.setDestinationAddress("192.168.1.2");
+		greConfig.setKey(2);
+		greService.setGRETunnelConfiguration(greConfig);
+		greService.setName("gr-0/1/0");
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+		gE.setIPv4Address("192.168.1.3");
+		gE.setSubnetMask("255.255.255.0");
+		greService.addProtocolEndpoint(gE);
+		model.addHostedService(greService);
+
+		/* IPProtocolEndpoint */
+		NetworkPort port = new NetworkPort();
+		port.setName("fe-0/3/1");
+		port.setPortNumber(0);
+		IPProtocolEndpoint pE = new IPProtocolEndpoint();
+		pE.setIPv4Address("10.10.10.10/8");
+		port.addProtocolEndpoint(pE);
+		model.addLogicalDevice(port);
 
 		return model;
 	}

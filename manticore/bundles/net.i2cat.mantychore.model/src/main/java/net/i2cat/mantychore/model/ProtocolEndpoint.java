@@ -19,6 +19,38 @@ import java.util.List;
 public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {
 
+	/**
+	 * Sets the ProvidesEndpoint association between a given Service and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void setService(Service service) {
+		if (service != null)
+			ProvidesEndpoint.link(this, service);
+	}
+
+	/**
+	 * Removes the ProvidesEndpoint association between the given ProtocolEndpoint and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void unsetService(Service service) {
+		if (service != null) {
+			Association a = this.getFirstFromAssociationByTypeAndElement(ProvidesEndpoint.class, service);
+			if (a != null)
+				a.unlink();
+		}
+	}
+
+	/**
+	 * Returns the Service associated to this element.
+	 * 
+	 * @return
+	 */
+	public Service getService() {
+		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+	}
+
 	/* BindsTo */
 	/**
 	 * 

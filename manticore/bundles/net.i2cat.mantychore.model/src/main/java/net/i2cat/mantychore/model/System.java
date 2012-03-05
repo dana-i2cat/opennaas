@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,6 +61,32 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 		a.unlink();
 		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Service> List<T> getAllHostedServicesByType(T instance) {
+		List<Service> list = getHostedService();
+
+		ArrayList<T> desiredServices = new ArrayList<T>();
+		for (Service service : list) {
+			if (instance.getClass().isInstance(service)) {
+				desiredServices.add((T) service);
+			}
+		}
+		return desiredServices;
+	}
+
+	public boolean removeAllHostedServicesByType(Class<? extends Service> clazz) {
+		List<Service> list = getHostedService();
+
+		boolean somethingIsRemoved = false;
+		for (Service service : list) {
+			if (clazz.isInstance(service)) {
+				removeHostedService(service);
+				somethingIsRemoved = true;
+			}
+		}
+		return somethingIsRemoved;
 	}
 
 	/* NEXT HOP ROUTES */

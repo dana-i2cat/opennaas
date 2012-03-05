@@ -78,6 +78,15 @@ public class Response {
 		return response;
 	}
 
+	public static Response okResponse(String sentMessage, String information) {
+		Response response = new Response();
+		response.setSentMessage(sentMessage);
+		response.setStatus(Status.OK);
+		response.setInformation(information);
+		response.setErrors(new Vector<String>());
+		return response;
+	}
+
 	public static Response queuedResponse(String sentMessage) {
 		Response response = new Response();
 		response.setSentMessage(sentMessage);
@@ -86,14 +95,13 @@ public class Response {
 		return response;
 	}
 
-	public static Response okResponse(String sentMessage, String information) {
+	public static Response queuedResponse(String sentMessage, String information) {
 		Response response = new Response();
 		response.setSentMessage(sentMessage);
-		response.setStatus(Status.OK);
+		response.setStatus(Status.QUEUED);
 		response.setInformation(information);
 		response.setErrors(new Vector<String>());
 		return response;
-
 	}
 
 	public static Response errorResponse(String sentMessage, Vector<String> errors) {

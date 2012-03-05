@@ -6,6 +6,7 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class Service as well as methods comparable to the
@@ -326,5 +327,38 @@ public class Service extends EnabledLogicalElement implements Serializable {
 
 		this.started = started;
 	} // setStarted
+
+	/**
+	 * Adds a new ProvidesEndpoint association between a given ProtocolEndpoint and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void addProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
+		if (protocolEndpoint != null)
+			ProvidesEndpoint.link(this, protocolEndpoint);
+	}
+
+	/**
+	 * Removes the ProvidesEndpoint association between the given ProtocolEndpoint and this element.
+	 * 
+	 * @param protocolEndpoint
+	 */
+	public void removeProtocolEndpoint(ProtocolEndpoint protocolEndpoint) {
+		if (protocolEndpoint != null) {
+			Association a = this.getFirstToAssociationByTypeAndElement(ProvidesEndpoint.class, protocolEndpoint);
+			if (a != null)
+				a.unlink();
+		}
+	}
+
+	/**
+	 * Returns the list of all ProtocolEndpoint associated to this element.
+	 * 
+	 * @return
+	 */
+	public List<ProtocolEndpoint> getProtocolEndpoint() {
+		return (List<ProtocolEndpoint>) this.getToAssociatedElementsByType(ProvidesEndpoint.class);
+
+	}
 
 } // Class Service
