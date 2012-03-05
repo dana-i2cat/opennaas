@@ -3,52 +3,130 @@ package org.opennaas.router.capability.ospf;
 import java.util.List;
 
 import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.OSPFArea;
+import net.i2cat.mantychore.model.OSPFAreaConfiguration;
+import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 import net.i2cat.mantychore.model.OSPFService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
 
 /**
  * @author Jordi Puig
+ * @author Isart Canyameres
  */
 public interface IOSPFService {
 
 	/**
-	 * Enable OSPF on the interface.
+	 * Enable OSPF on the router.
 	 * 
-	 * @param lLogicalPort
-	 * @return requestStatus
+	 * @return
+	 * @throws CapabilityException
 	 */
-	public Object activateOSPF(List<LogicalPort> lLogicalPort);
+	public Response activateOSPF() throws CapabilityException;
 
 	/**
-	 * Disable OSPF on the interface.
+	 * Disable OSPF on the router.
 	 * 
-	 * @param lLogicalPort
-	 * @return requestStatus
+	 * @return
+	 * @throws CapabilityException
 	 */
-	public Object deactivateOSPF(List<LogicalPort> lLogicalPort);
+	public Response deactivateOSPF() throws CapabilityException;
 
 	/**
-	 * Configure a network interface in order to activate OSPF on it.
+	 * Configure OSPF service.
+	 * 
+	 * This configuration applies to the OSPF Service itself, but does not affect areas nor interfaces.
 	 * 
 	 * @param ospfService
-	 * @return requestStatus
+	 * @return
+	 * @throws CapabilityException
 	 */
-	public Object configureOSPF(OSPFService ospfService);
+	public Response configureOSPF(OSPFService ospfService) throws CapabilityException;
 
 	/**
-	 * Returns a list of all interfaces where the OSPF is configured and enabled (from model)
+	 * Removes all OSPF configuration.
 	 * 
-	 * @return ospfService
+	 * @param ospfService
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
+
+	/**
+	 * Configures an OSPF area.
+	 * 
+	 * @param ospfAreaConfiguration
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+
+	/**
+	 * Remove an OSPF area.
+	 * 
+	 * @param ospfAreaConfiguration
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
+
+	/**
+	 * Adds given interfaces to given OSPF area
+	 * 
+	 * @param interfaces
+	 * @param ospfArea
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
+
+	/**
+	 * Remove given interfaces from given OSPF area
+	 * 
+	 * @param interfaces
+	 * @param ospfArea
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
+
+	/**
+	 * Enable OSPF in given interfaces, if they are already configured.
+	 * 
+	 * @param interfaces
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+
+	/**
+	 * Disable OSPF in given interfaces, if they are already configured.
+	 * 
+	 * @param interfaces
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public Response disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
+
+	/**
+	 * Returns OSPF full configuration from the model
+	 * 
+	 * This includes service, areas, and interface status.
+	 * 
+	 * @return
 	 * @throws CapabilityException
 	 */
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
 
 	/**
-	 * Returns a list of all interfaces where the OSPF is configured and enabled (from router)
+	 * Returns OSPF full configuration from the router
+	 * 
+	 * This includes service, areas, and interface status.
 	 * 
 	 * @return ospfService
+	 * @throws CapabilityException
 	 */
-	public OSPFService getOSPFConfiguration();
+	public Response getOSPFConfiguration() throws CapabilityException;
 
 }

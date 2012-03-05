@@ -1,21 +1,25 @@
 package luminis;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.inject.Inject;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,54 +39,69 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class AlarmsRepoTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-	static Log			log				= LogFactory.getLog(AlarmsRepoTest.class);
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class AlarmsRepoTest
+{
+	private final static Log	log				= LogFactory.getLog(AlarmsRepoTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private BundleContext		bundleContext;
 
-	IEventManager		eventManager;
-	IResourceManager	resourceManager;
-	IProtocolManager	protocolManager;
-	IAlarmsRepository	alarmRepo;
+	@Inject
+	private IEventManager		eventManager;
 
-	boolean				alarmReceived;
-	final Object		lock			= new Object();
+	@Inject
+	private IResourceManager	resourceManager;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	private IAlarmsRepository	alarmRepo;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer		roadmRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	private BlueprintContainer		queueService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.monitoring)")
+	private BlueprintContainer 		monitoringService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer      wonesysProtocolService;
+
+	private boolean				alarmReceived;
+	private final Object		lock			= new Object();
 
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-					IntegrationTestsHelper.getLuminisTestOptions(),
-					mavenBundle().groupId("org.opennaas").artifactId(
-							"opennaas-core-events"),
-					mavenBundle().groupId("net.i2cat.nexus").artifactId(
-							"net.i2cat.nexus.tests.helper")
-
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-		);
-
-		return options;
-	}
-
-	private void initBundles() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		eventManager = getOsgiService(IEventManager.class, 5000);
-		resourceManager = getOsgiService(IResourceManager.class, 5000);
-		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-		alarmRepo = getOsgiService(IAlarmsRepository.class, 5000);
-		IResourceRepository roadmRepo = getOsgiService(IResourceRepository.class, "type=roadm", 5000);
-		Assert.assertNotNull(roadmRepo);
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	public IResource initResource() throws ResourceException {
@@ -97,38 +116,26 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void alarmsRepositoryTest() {
-
-		initBundles();
+	public void alarmsRepositoryTest() throws Exception {
 
 		String resourceId = new ResourceIdentifier("proteus").getId();
 
 		ResourceAlarm alarm = generateResourceAlarm(resourceId);
 
-		try {
-			Thread.sleep(15000);
-		} catch (InterruptedException e) {
-			Assert.fail("Interrupted!");
-		}
+		Thread.sleep(15000);
 
-		List<ResourceAlarm> alarms;
-		try {
-			alarms = alarmRepo.getResourceAlarms(resourceId);
+		List<ResourceAlarm> alarms = alarmRepo.getResourceAlarms(resourceId);
 
-			Assert.assertTrue(alarms.contains(alarm));
+		Assert.assertTrue(alarms.contains(alarm));
 
-			// boolean isFound = false;
-			// for (ResourceAlarm alarmToCompare : alarms) {
-			// if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
-			// isFound = true;
-			// break;
-			// }
-			// }
-			// Assert.assertTrue(isFound);
-
-		} catch (ResourceNotFoundException e1) {
-			Assert.fail(e1.getMessage());
-		}
+		// boolean isFound = false;
+		// for (ResourceAlarm alarmToCompare : alarms) {
+		// if (alarmToCompare.getProperty(ResourceAlarm.RESOURCE_ID_PROPERTY).equals(resourceId)) {
+		// isFound = true;
+		// break;
+		// }
+		// }
+		// Assert.assertTrue(isFound);
 
 		alarms = alarmRepo.getAlarms();
 
@@ -144,57 +151,35 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 
 		alarmRepo.clear();
 
-		try {
-			Assert.assertTrue(alarmRepo.getResourceAlarms(resourceId).isEmpty());
-		} catch (ResourceNotFoundException e) {
-			Assert.fail(e.getMessage());
-		}
+		Assert.assertTrue(alarmRepo.getResourceAlarms(resourceId).isEmpty());
 		Assert.assertTrue(alarmRepo.getAlarms().isEmpty());
 	}
 
 	@Test
-	public void repoReceivesAlarmsCausedByAlarmsInSession() {
+	public void repoReceivesAlarmsCausedByAlarmsInSession() throws Exception {
 
-		try {
-			initBundles();
+		IResource resource = initResource();
 
-			IResource resource = initResource();
+		IProtocolSessionManager sessionManager =
+			protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(),
+																 newWonesysSessionContextMock());
 
-			IProtocolSessionManager sessionManager = protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier()
-						.getId(),
-						newWonesysSessionContextMock());
+		resourceManager.startResource(resource.getResourceIdentifier());
 
-			resourceManager.startResource(resource.getResourceIdentifier());
+		alarmRepo.clear();
 
-			alarmRepo.clear();
+		// generate WonesysAlarm
+		generateWonesysAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
 
-			// generate WonesysAlarm
-			generateWonesysAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
+		Thread.sleep(10000);
 
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				Assert.fail("Interrupted!");
-			}
+		// Check alarmRepo has an alarm (only one)
+		List<ResourceAlarm> alarms = alarmRepo.getResourceAlarms(resource.getResourceIdentifier().getId());
+		Assert.assertFalse(alarms.isEmpty());
+		Assert.assertTrue(alarms.size() == 1);
 
-			// Check alarmRepo has an alarm (only one)
-			List<ResourceAlarm> alarms = alarmRepo.getResourceAlarms(resource.getResourceIdentifier().getId());
-			Assert.assertFalse(alarms.isEmpty());
-			Assert.assertTrue(alarms.size() == 1);
-
-			resourceManager.stopResource(resource.getResourceIdentifier());
-			resourceManager.removeResource(resource.getResourceIdentifier());
-
-		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		resourceManager.removeResource(resource.getResourceIdentifier());
 	}
 
 	/**
@@ -208,7 +193,6 @@ public class AlarmsRepoTest extends AbstractIntegrationTest {
 					"protocol.mock", "true");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 					"wonesys");
-		// ADDED
 		return protocolSessionContext;
 	}
 

@@ -23,14 +23,15 @@ public class OSPFProtocolEndpointBase extends ProtocolEndpoint implements
 	 * @return OSPFArea associated to this OSPFProtocolEndpointBase through EndpointInArea aggregation.
 	 */
 	public OSPFArea getOSPFArea() {
-		return (OSPFArea) this.getFromAssociatedElementsByType(EndpointInArea.class);
+		return (OSPFArea) this.getFirstFromAssociatedElementByType(EndpointInArea.class);
 	}
 
 	/**
 	 * Associates this OSPFProtocolEndpointBase with ospfArea through EndpointInArea aggregation
 	 */
 	public void setOSPFArea(OSPFArea ospfArea) {
-		EndpointInArea.link(ospfArea, this);
+		if (ospfArea != null)
+			EndpointInArea.link(ospfArea, this);
 	}
 
 	/**

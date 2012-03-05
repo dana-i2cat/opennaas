@@ -8,7 +8,6 @@ import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
-import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -58,6 +57,7 @@ public class GetConfigurationAction extends JunosAction {
 
 	}
 
+	@Override
 	public void parseResponse(Object responseMessage, Object model) throws ActionException {
 		/* the model have to be null and we have to initialize */
 
@@ -76,7 +76,6 @@ public class GetConfigurationAction extends JunosAction {
 			} else {
 				throw new CommandException("Error parsing response: the response is not a Reply message");
 			}
-			routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
 
 			if (message != null) {
 				/* Parse LR info */
@@ -85,14 +84,10 @@ public class GetConfigurationAction extends JunosAction {
 				/* Parse interface info */
 				routerModel = parseInterfaces(routerModel, message);
 
-				/* Parse protocols info */
-				// Protocols parsing should be done before parsing routing-options:
+				/* Parse routing options info */
+				// Routing options parsing should be done after parsing protocols (protocols is required):
 				// Protocol parser creates classes in the model that require being updated by routing-options parser.
 				// That's the case of RouteCalculationServices which routerID is set by RoutingOptionsParser
-
-				routerModel = parseProtocols(routerModel, message);
-
-				/* Parse routing options info */
 				routerModel = parseRoutingOptions(routerModel, message);
 			}
 		} catch (Exception e) {
@@ -114,10 +109,14 @@ public class GetConfigurationAction extends JunosAction {
 	private System parseLRs(System routerModel, String message)
 			throws IOException, SAXException {
 
+		// remove LR from the model before parsing new configuration
+		routerModel.removeAllremoveManagedSystemElementByType(ComputerSystem.class);
+
 		DigesterEngine listLogicalRoutersParser = new ListLogicalRoutersParser();
 		listLogicalRoutersParser.init();
 		listLogicalRoutersParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
 
+		// put new LR in the model
 		for (String key : listLogicalRoutersParser.getMapElements().keySet()) {
 			ComputerSystem system = new ComputerSystem();
 			system.setName((String) listLogicalRoutersParser.getMapElements().get(key));
@@ -157,29 +156,6 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	/**
-	 * Parses protocols data from message and puts in into routerModel.
-	 * 
-	 * @param routerModel
-	 *            to store parsed data
-	 * @param message
-	 *            to parse interfaces data from
-	 * @return routerModel updated with interfaces information from message.
-	 * @throws
-	 * @throws IOException
-	 * @throws SAXException
-	 */
-	private System parseProtocols(System routerModel, String message) throws IOException, SAXException {
-
-		ProtocolsParser protocolsParser = new ProtocolsParser(routerModel);
-		protocolsParser.init();
-		protocolsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
-
-		routerModel = protocolsParser.getModel();
-
-		return routerModel;
-	}
-
-	/**
 	 * Parses routing options data from message and puts in into routerModel.
 	 * 
 	 * @param routerModel
@@ -198,12 +174,6 @@ public class GetConfigurationAction extends JunosAction {
 		routingOptionsParser.configurableParse(new ByteArrayInputStream(message.getBytes("UTF-8")));
 
 		routerModel = routingOptionsParser.getModel();
-		// add to the router model
-		// for (String keyInterf : routingOptionsParser.getMapElements().keySet()) {
-		// NextHopRoute nh = (NextHopRoute) routingOptionsParser.getMapElements().get(keyInterf);
-		// routerModel.addNextHopRoute(nh);
-		// }
-
 		return routerModel;
 	}
 
@@ -213,6 +183,7 @@ public class GetConfigurationAction extends JunosAction {
 		return true;
 	}
 
+	@Override
 	public void prepareMessage() throws ActionException {
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");

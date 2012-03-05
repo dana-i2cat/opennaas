@@ -1,14 +1,24 @@
 package net.i2cat.mantychore.commandsets.junos.commons;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
+
+import net.i2cat.mantychore.model.utils.ModelHelper;
 
 /**
  * It is used to parse different messages
  * 
- * @author Carlos BAez Ruiz
- * 
+ * @author Carlos Baez Ruiz
  */
 public class IPUtilsHelper {
+
+	public static long ipv4StringToLong(String ip) throws IOException {
+		return ModelHelper.ipv4StringToLong(ip);
+	}
+
+	public static String ipv4LongToString(long ip) throws IOException {
+		return ModelHelper.ipv4LongToString(ip);
+	}
 
 	public static short[] parseStrIPToBytesIP(String IP) {
 		short[] newIP = new short[4];
@@ -20,7 +30,6 @@ public class IPUtilsHelper {
 		newIP[3] = Short.parseShort(splittedIP[3]);
 
 		return newIP;
-
 	}
 
 	public static int parseAddressToInt(String address) {

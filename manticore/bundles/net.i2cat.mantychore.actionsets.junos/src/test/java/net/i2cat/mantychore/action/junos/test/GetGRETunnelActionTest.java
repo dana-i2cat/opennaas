@@ -8,6 +8,7 @@ import java.util.List;
 import junit.framework.Assert;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.gretunnel.GetTunnelConfigurationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.test.ActionTestHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
@@ -99,7 +100,7 @@ public class GetGRETunnelActionTest {
 
 		log.info("Found " + routerModel.getChildren().size() + " logical resources.");
 		for (Object systemElement : routerModel.getChildren()) {
-			log.info((String) systemElement);
+			log.info(systemElement);
 			if (systemElement instanceof ComputerSystem) {
 				ComputerSystem logicalrouter = (ComputerSystem) systemElement;
 				// check that the element is a Logical Router

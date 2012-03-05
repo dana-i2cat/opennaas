@@ -67,6 +67,11 @@ public interface IResourceManager {
 	public List<IResource> listResources();
 
 	/**
+	 * Returns a list of available resource types.
+	 */
+	public List<String> getResourceTypes();
+
+	/**
 	 * Get an existing resource
 	 *
 	 * @param resourceIdentifier
