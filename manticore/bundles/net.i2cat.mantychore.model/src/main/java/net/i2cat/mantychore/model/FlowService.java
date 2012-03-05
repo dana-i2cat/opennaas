@@ -9,64 +9,54 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class FlowService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * FlowServiceBean Interface. The CIM class FlowService is described as
- * follows:
- *
- * This class represents a service that supports a particular microflow. The
- * microflow is identified by the string-valued property FlowID. In some
- * implementations, an instance of this class corresponds to an entry in the
- * implementation's flow table.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FlowService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the FlowServiceBean Interface. The CIM class FlowService is described as follows:
+ * 
+ * This class represents a service that supports a particular microflow. The microflow is identified by the string-valued property FlowID. In some
+ * implementations, an instance of this class corresponds to an entry in the implementation's flow table.
  */
 public class FlowService extends QoSService implements Serializable {
 
-    /**
-     * This constructor creates a FlowServiceBeanImpl Class which implements
-     * the FlowServiceBean Interface, and encapsulates the CIM class
-     * FlowService in a Java Bean. The CIM class FlowService is described as
-     * follows:
-     *
-     * This class represents a service that supports a particular microflow.
-     * The microflow is identified by the string-valued property FlowID. In
-     * some implementations, an instance of this class corresponds to an
-     * entry in the implementation's flow table.
-     */
-    public FlowService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property flowID.
-     */
-    private String flowID;
-    /**
-     * This method returns the FlowService.flowID property value. This
-     * property is described as follows:
-     *
-     * This property is a string containing an identifier for a microflow.
-     *
-     * @return	String	current flowID property value
-     * @exception	Exception
-     */
-    public String getFlowID(){
+	/**
+	 * This constructor creates a FlowServiceBeanImpl Class which implements the FlowServiceBean Interface, and encapsulates the CIM class FlowService
+	 * in a Java Bean. The CIM class FlowService is described as follows:
+	 * 
+	 * This class represents a service that supports a particular microflow. The microflow is identified by the string-valued property FlowID. In some
+	 * implementations, an instance of this class corresponds to an entry in the implementation's flow table.
+	 */
+	public FlowService() {
+	};
 
-    return this.flowID;
-    } // getFlowID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property flowID.
+	 */
+	private String	flowID;
 
-    /**
-     * This method sets the FlowService.flowID property value. This property
-     * is described as follows:
-     *
-     * This property is a string containing an identifier for a microflow.
-     *
-     * @param	String	new flowID property value
-     * @exception	Exception
-     */
-    public void setFlowID(String flowID) {
+	/**
+	 * This method returns the FlowService.flowID property value. This property is described as follows:
+	 * 
+	 * This property is a string containing an identifier for a microflow.
+	 * 
+	 * @return String current flowID property value
+	 * @exception Exception
+	 */
+	public String getFlowID() {
 
-    this.flowID = flowID;
-    } // setFlowID
+		return this.flowID;
+	} // getFlowID
 
+	/**
+	 * This method sets the FlowService.flowID property value. This property is described as follows:
+	 * 
+	 * This property is a string containing an identifier for a microflow.
+	 * 
+	 * @param String
+	 *            new flowID property value
+	 * @exception Exception
+	 */
+	public void setFlowID(String flowID) {
 
+		this.flowID = flowID;
+	} // setFlowID
 
 } // Class FlowService

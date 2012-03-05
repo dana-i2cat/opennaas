@@ -8,36 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchesAmong as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SwitchesAmongBean Interface. The CIM class SwitchesAmong is described as
- * follows:
- *
- * A SwitchService switches frames between SwitchPorts. This association makes
- * that relationship explicit.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchesAmong as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SwitchesAmongBean Interface. The CIM class SwitchesAmong is described as follows:
+ * 
+ * A SwitchService switches frames between SwitchPorts. This association makes that relationship explicit.
  */
 public class SwitchesAmong extends ForwardsAmong implements Serializable {
 
-    /**
-     * This constructor creates a SwitchesAmongBeanImpl Class which implements
-     * the SwitchesAmongBean Interface, and encapsulates the CIM class
-     * SwitchesAmong in a Java Bean. The CIM class SwitchesAmong is described
-     * as follows:
-     *
-     * A SwitchService switches frames between SwitchPorts. This association
-     * makes that relationship explicit.
-     */
-    public SwitchesAmong(){};
-    /**
-     * This method create an Association of the type SwitchesAmong between one
-     * SwitchPort object and SwitchService object
-     */
-    public static SwitchesAmong link(SwitchPort antecedent,SwitchService
-	dependent){
+	/**
+	 * This constructor creates a SwitchesAmongBeanImpl Class which implements the SwitchesAmongBean Interface, and encapsulates the CIM class
+	 * SwitchesAmong in a Java Bean. The CIM class SwitchesAmong is described as follows:
+	 * 
+	 * A SwitchService switches frames between SwitchPorts. This association makes that relationship explicit.
+	 */
+	public SwitchesAmong() {
+	};
 
-    return (SwitchesAmong)
-	Association.link(SwitchesAmong.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type SwitchesAmong between one SwitchPort object and SwitchService object
+	 */
+	public static SwitchesAmong link(SwitchPort antecedent, SwitchService
+			dependent) {
+
+		return (SwitchesAmong) Association.link(SwitchesAmong.class, antecedent, dependent);
+	}// link
 
 } // Class SwitchesAmong

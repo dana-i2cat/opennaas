@@ -24,6 +24,12 @@ public class Response {
 				return "WAIT";
 			}
 		},
+		QUEUED {
+			@Override
+			public String toString() {
+				return "QUEUED";
+			}
+		},
 	}
 
 	private String			commandName;
@@ -70,7 +76,6 @@ public class Response {
 		response.setStatus(Status.OK);
 		response.setErrors(new Vector<String>());
 		return response;
-
 	}
 
 	public static Response okResponse(String sentMessage, String information) {
@@ -80,7 +85,23 @@ public class Response {
 		response.setInformation(information);
 		response.setErrors(new Vector<String>());
 		return response;
+	}
 
+	public static Response queuedResponse(String sentMessage) {
+		Response response = new Response();
+		response.setSentMessage(sentMessage);
+		response.setStatus(Status.QUEUED);
+		response.setErrors(new Vector<String>());
+		return response;
+	}
+
+	public static Response queuedResponse(String sentMessage, String information) {
+		Response response = new Response();
+		response.setSentMessage(sentMessage);
+		response.setStatus(Status.QUEUED);
+		response.setInformation(information);
+		response.setErrors(new Vector<String>());
+		return response;
 	}
 
 	public static Response errorResponse(String sentMessage, Vector<String> errors) {

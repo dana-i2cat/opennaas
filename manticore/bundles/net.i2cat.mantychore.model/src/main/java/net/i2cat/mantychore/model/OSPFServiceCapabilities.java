@@ -9,135 +9,115 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OSPFServiceCapabilities as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * OSPFServiceCapabilitiesBean Interface. The CIM class
- * OSPFServiceCapabilities is described as follows:
- *
- * The OSPFServiceCapabilities class represents the capabilities of an OSPF
- * service.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFServiceCapabilities as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the OSPFServiceCapabilitiesBean Interface. The CIM class OSPFServiceCapabilities
+ * is described as follows:
+ * 
+ * The OSPFServiceCapabilities class represents the capabilities of an OSPF service.
  */
 public class OSPFServiceCapabilities extends Capabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a OSPFServiceCapabilitiesBeanImpl Class which
-     * implements the OSPFServiceCapabilitiesBean Interface, and encapsulates
-     * the CIM class OSPFServiceCapabilities in a Java Bean. The CIM class
-     * OSPFServiceCapabilities is described as follows:
-     *
-     * The OSPFServiceCapabilities class represents the capabilities of an
-     * OSPF service.
-     */
-    public OSPFServiceCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property supportNSSA.
-     */
-    private boolean supportNSSA;
-    /**
-     * This method returns the OSPFServiceCapabilities.supportNSSA property
-     * value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports NSSA
-     * ("not-so-stubby") areas or not, see RFC 1587.
-     *
-     * @return	boolean	current supportNSSA property value
-     * @exception	Exception
-     */
-    public boolean isSupportNSSA(){
+	/**
+	 * This constructor creates a OSPFServiceCapabilitiesBeanImpl Class which implements the OSPFServiceCapabilitiesBean Interface, and encapsulates
+	 * the CIM class OSPFServiceCapabilities in a Java Bean. The CIM class OSPFServiceCapabilities is described as follows:
+	 * 
+	 * The OSPFServiceCapabilities class represents the capabilities of an OSPF service.
+	 */
+	public OSPFServiceCapabilities() {
+	};
 
-    return this.supportNSSA;
-    } // getSupportNSSA
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property supportNSSA.
+	 */
+	private boolean	supportNSSA;
 
-    /**
-     * This method sets the OSPFServiceCapabilities.supportNSSA property
-     * value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports NSSA
-     * ("not-so-stubby") areas or not, see RFC 1587.
-     *
-     * @param	boolean	new supportNSSA property value
-     * @exception	Exception
-     */
-    public void setSupportNSSA(boolean supportNSSA) {
+	/**
+	 * This method returns the OSPFServiceCapabilities.supportNSSA property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports NSSA ("not-so-stubby") areas or not, see RFC 1587.
+	 * 
+	 * @return boolean current supportNSSA property value
+	 * @exception Exception
+	 */
+	public boolean isSupportNSSA() {
 
-    this.supportNSSA = supportNSSA;
-    } // setSupportNSSA
+		return this.supportNSSA;
+	} // getSupportNSSA
 
+	/**
+	 * This method sets the OSPFServiceCapabilities.supportNSSA property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports NSSA ("not-so-stubby") areas or not, see RFC 1587.
+	 * 
+	 * @param boolean new supportNSSA property value
+	 * @exception Exception
+	 */
+	public void setSupportNSSA(boolean supportNSSA) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property supportOnDemand.
-     */
-    private boolean supportOnDemand;
-    /**
-     * This method returns the OSPFServiceCapabilities.supportOnDemand
-     * property value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports on-demand
-     * circuits or not, see RFC 1793.
-     *
-     * @return	boolean	current supportOnDemand property value
-     * @exception	Exception
-     */
-    public boolean isSupportOnDemand(){
+		this.supportNSSA = supportNSSA;
+	} // setSupportNSSA
 
-    return this.supportOnDemand;
-    } // getSupportOnDemand
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property supportOnDemand.
+	 */
+	private boolean	supportOnDemand;
 
-    /**
-     * This method sets the OSPFServiceCapabilities.supportOnDemand property
-     * value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports on-demand
-     * circuits or not, see RFC 1793.
-     *
-     * @param	boolean	new supportOnDemand property value
-     * @exception	Exception
-     */
-    public void setSupportOnDemand(boolean supportOnDemand) {
+	/**
+	 * This method returns the OSPFServiceCapabilities.supportOnDemand property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports on-demand circuits or not, see RFC 1793.
+	 * 
+	 * @return boolean current supportOnDemand property value
+	 * @exception Exception
+	 */
+	public boolean isSupportOnDemand() {
 
-    this.supportOnDemand = supportOnDemand;
-    } // setSupportOnDemand
+		return this.supportOnDemand;
+	} // getSupportOnDemand
 
+	/**
+	 * This method sets the OSPFServiceCapabilities.supportOnDemand property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports on-demand circuits or not, see RFC 1793.
+	 * 
+	 * @param boolean new supportOnDemand property value
+	 * @exception Exception
+	 */
+	public void setSupportOnDemand(boolean supportOnDemand) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property supportMOSPF.
-     */
-    private boolean supportMOSPF;
-    /**
-     * This method returns the OSPFServiceCapabilities.supportMOSPF property
-     * value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports MOSPF (multicast
-     * enhancements to OSPF) or not, see B.1 in RFC 1584.
-     *
-     * @return	boolean	current supportMOSPF property value
-     * @exception	Exception
-     */
-    public boolean isSupportMOSPF(){
+		this.supportOnDemand = supportOnDemand;
+	} // setSupportOnDemand
 
-    return this.supportMOSPF;
-    } // getSupportMOSPF
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property supportMOSPF.
+	 */
+	private boolean	supportMOSPF;
 
-    /**
-     * This method sets the OSPFServiceCapabilities.supportMOSPF property
-     * value. This property is described as follows:
-     *
-     * This attribute indicates whether this router supports MOSPF (multicast
-     * enhancements to OSPF) or not, see B.1 in RFC 1584.
-     *
-     * @param	boolean	new supportMOSPF property value
-     * @exception	Exception
-     */
-    public void setSupportMOSPF(boolean supportMOSPF) {
+	/**
+	 * This method returns the OSPFServiceCapabilities.supportMOSPF property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports MOSPF (multicast enhancements to OSPF) or not, see B.1 in RFC 1584.
+	 * 
+	 * @return boolean current supportMOSPF property value
+	 * @exception Exception
+	 */
+	public boolean isSupportMOSPF() {
 
-    this.supportMOSPF = supportMOSPF;
-    } // setSupportMOSPF
+		return this.supportMOSPF;
+	} // getSupportMOSPF
 
+	/**
+	 * This method sets the OSPFServiceCapabilities.supportMOSPF property value. This property is described as follows:
+	 * 
+	 * This attribute indicates whether this router supports MOSPF (multicast enhancements to OSPF) or not, see B.1 in RFC 1584.
+	 * 
+	 * @param boolean new supportMOSPF property value
+	 * @exception Exception
+	 */
+	public void setSupportMOSPF(boolean supportMOSPF) {
 
+		this.supportMOSPF = supportMOSPF;
+	} // setSupportMOSPF
 
 } // Class OSPFServiceCapabilities

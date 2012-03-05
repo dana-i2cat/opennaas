@@ -9,193 +9,170 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPSubnet as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPSubnetBean Interface. The CIM class IPSubnet is described as follows:
- *
- * An IPSubnet represents a group of related IPProtocolEndpoints that can
- * communicate with each other directly using IP. It is used for describing
- * the characteristics of the grouping. Since this class' superclass
- * (LogicalNetwork) has been deprecated (in order to define more consistent
- * 'collection' semantics), this class is also deprecated.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPSubnet as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the IPSubnetBean Interface. The CIM class IPSubnet is described as follows:
+ * 
+ * An IPSubnet represents a group of related IPProtocolEndpoints that can communicate with each other directly using IP. It is used for describing the
+ * characteristics of the grouping. Since this class' superclass (LogicalNetwork) has been deprecated (in order to define more consistent 'collection'
+ * semantics), this class is also deprecated.
  */
-    @Deprecated
+@Deprecated
 public class IPSubnet extends LogicalNetwork implements Serializable {
 
-    /**
-     * This constructor creates a IPSubnetBeanImpl Class which implements the
-     * IPSubnetBean Interface, and encapsulates the CIM class IPSubnet in a
-     * Java Bean. The CIM class IPSubnet is described as follows:
-     *
-     * An IPSubnet represents a group of related IPProtocolEndpoints that can
-     * communicate with each other directly using IP. It is used for
-     * describing the characteristics of the grouping. Since this class'
-     * superclass (LogicalNetwork) has been deprecated (in order to define
-     * more consistent 'collection' semantics), this class is also
-     * deprecated.
-     */
-    public IPSubnet(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property subnetNumber.
-     */
-    @Deprecated    private String subnetNumber;
-    /**
-     * This method returns the IPSubnet.subnetNumber property value. This
-     * property is described as follows:
-     *
-     * The IP address of the entire subnet, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class.
-     *
-     * @return	String	current subnetNumber property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getSubnetNumber(){
+	/**
+	 * This constructor creates a IPSubnetBeanImpl Class which implements the IPSubnetBean Interface, and encapsulates the CIM class IPSubnet in a
+	 * Java Bean. The CIM class IPSubnet is described as follows:
+	 * 
+	 * An IPSubnet represents a group of related IPProtocolEndpoints that can communicate with each other directly using IP. It is used for describing
+	 * the characteristics of the grouping. Since this class' superclass (LogicalNetwork) has been deprecated (in order to define more consistent
+	 * 'collection' semantics), this class is also deprecated.
+	 */
+	public IPSubnet() {
+	};
 
-    return this.subnetNumber;
-    } // getSubnetNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property subnetNumber.
+	 */
+	@Deprecated
+	private String	subnetNumber;
 
-    /**
-     * This method sets the IPSubnet.subnetNumber property value. This
-     * property is described as follows:
-     *
-     * The IP address of the entire subnet, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class.
-     *
-     * @param	String	new subnetNumber property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setSubnetNumber(String subnetNumber) {
+	/**
+	 * This method returns the IPSubnet.subnetNumber property value. This property is described as follows:
+	 * 
+	 * The IP address of the entire subnet, formatted according to the appropriate convention as defined in the AddressType property of this class.
+	 * 
+	 * @return String current subnetNumber property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getSubnetNumber() {
 
-    this.subnetNumber = subnetNumber;
-    } // setSubnetNumber
+		return this.subnetNumber;
+	} // getSubnetNumber
 
+	/**
+	 * This method sets the IPSubnet.subnetNumber property value. This property is described as follows:
+	 * 
+	 * The IP address of the entire subnet, formatted according to the appropriate convention as defined in the AddressType property of this class.
+	 * 
+	 * @param String
+	 *            new subnetNumber property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setSubnetNumber(String subnetNumber) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property subnetMask.
-     */
-    @Deprecated    private String subnetMask;
-    /**
-     * This method returns the IPSubnet.subnetMask property value. This
-     * property is described as follows:
-     *
-     * The mask for the starting IPv4 address of the IPSubnet, if needed
-     * (i.e., if the AddressType property is 1, "IPv4").
-     *
-     * @return	String	current subnetMask property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getSubnetMask(){
+		this.subnetNumber = subnetNumber;
+	} // setSubnetNumber
 
-    return this.subnetMask;
-    } // getSubnetMask
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property subnetMask.
+	 */
+	@Deprecated
+	private String	subnetMask;
 
-    /**
-     * This method sets the IPSubnet.subnetMask property value. This property
-     * is described as follows:
-     *
-     * The mask for the starting IPv4 address of the IPSubnet, if needed
-     * (i.e., if the AddressType property is 1, "IPv4").
-     *
-     * @param	String	new subnetMask property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setSubnetMask(String subnetMask) {
+	/**
+	 * This method returns the IPSubnet.subnetMask property value. This property is described as follows:
+	 * 
+	 * The mask for the starting IPv4 address of the IPSubnet, if needed (i.e., if the AddressType property is 1, "IPv4").
+	 * 
+	 * @return String current subnetMask property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getSubnetMask() {
 
-    this.subnetMask = subnetMask;
-    } // setSubnetMask
+		return this.subnetMask;
+	} // getSubnetMask
 
+	/**
+	 * This method sets the IPSubnet.subnetMask property value. This property is described as follows:
+	 * 
+	 * The mask for the starting IPv4 address of the IPSubnet, if needed (i.e., if the AddressType property is 1, "IPv4").
+	 * 
+	 * @param String
+	 *            new subnetMask property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setSubnetMask(String subnetMask) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property prefixLength.
-     */
-    @Deprecated    private short prefixLength;
-    /**
-     * This method returns the IPSubnet.prefixLength property value. This
-     * property is described as follows:
-     *
-     * The prefix length for IPv6 addresses in the IPSubnet, if needed (i.e.,
-     * if the AddressType property is 2, "IPv6").
-     *
-     * @return	short	current prefixLength property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public short getPrefixLength(){
+		this.subnetMask = subnetMask;
+	} // setSubnetMask
 
-    return this.prefixLength;
-    } // getPrefixLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property prefixLength.
+	 */
+	@Deprecated
+	private short	prefixLength;
 
-    /**
-     * This method sets the IPSubnet.prefixLength property value. This
-     * property is described as follows:
-     *
-     * The prefix length for IPv6 addresses in the IPSubnet, if needed (i.e.,
-     * if the AddressType property is 2, "IPv6").
-     *
-     * @param	short	new prefixLength property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPrefixLength(short prefixLength) {
+	/**
+	 * This method returns the IPSubnet.prefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for IPv6 addresses in the IPSubnet, if needed (i.e., if the AddressType property is 2, "IPv6").
+	 * 
+	 * @return short current prefixLength property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public short getPrefixLength() {
 
-    this.prefixLength = prefixLength;
-    } // setPrefixLength
+		return this.prefixLength;
+	} // getPrefixLength
 
+	/**
+	 * This method sets the IPSubnet.prefixLength property value. This property is described as follows:
+	 * 
+	 * The prefix length for IPv6 addresses in the IPSubnet, if needed (i.e., if the AddressType property is 2, "IPv6").
+	 * 
+	 * @param short new prefixLength property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPrefixLength(short prefixLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AddressType.
-     */
-    @Deprecated
-    public enum AddressType{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
-    @Deprecated
-    private AddressType addressType;
-    /**
-     * This method returns the IPSubnet.addressType property value. This
-     * property is described as follows:
-     *
-     * An enumeration that describes the format of the address properties in
-     * IPSubnet.
-     *
-     * @return	int	current addressType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public AddressType getAddressType(){
+		this.prefixLength = prefixLength;
+	} // setPrefixLength
 
-    return this.addressType;
-    } // getAddressType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
+	 */
+	@Deprecated
+	public enum AddressType {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
 
-    /**
-     * This method sets the IPSubnet.addressType property value. This property
-     * is described as follows:
-     *
-     * An enumeration that describes the format of the address properties in
-     * IPSubnet.
-     *
-     * @param	int	new addressType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setAddressType(AddressType addressType){
+	@Deprecated
+	private AddressType	addressType;
 
-    this.addressType = addressType;
-    } // setAddressType
+	/**
+	 * This method returns the IPSubnet.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties in IPSubnet.
+	 * 
+	 * @return int current addressType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public AddressType getAddressType() {
 
+		return this.addressType;
+	} // getAddressType
 
+	/**
+	 * This method sets the IPSubnet.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the format of the address properties in IPSubnet.
+	 * 
+	 * @param int new addressType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAddressType(AddressType addressType) {
+
+		this.addressType = addressType;
+	} // setAddressType
 
 } // Class IPSubnet

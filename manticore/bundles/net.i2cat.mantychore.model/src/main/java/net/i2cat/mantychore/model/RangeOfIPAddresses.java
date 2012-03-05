@@ -9,149 +9,130 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RangeOfIPAddresses as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RangeOfIPAddressesBean Interface. The CIM class RangeOfIPAddresses is
- * described as follows:
- *
- * The class RangeOfIPAddresses represents an implicit grouping (or 'pool') of
- * IP addresses specified by the properties, Start and EndAddress. It is
- * defined as scoped/contained by a system such as an individual network
- * element or an admin domain.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RangeOfIPAddresses as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the RangeOfIPAddressesBean Interface. The CIM class RangeOfIPAddresses is described
+ * as follows:
+ * 
+ * The class RangeOfIPAddresses represents an implicit grouping (or 'pool') of IP addresses specified by the properties, Start and EndAddress. It is
+ * defined as scoped/contained by a system such as an individual network element or an admin domain.
  */
 public class RangeOfIPAddresses extends SystemSpecificCollection implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a RangeOfIPAddressesBeanImpl Class which
-     * implements the RangeOfIPAddressesBean Interface, and encapsulates the
-     * CIM class RangeOfIPAddresses in a Java Bean. The CIM class
-     * RangeOfIPAddresses is described as follows:
-     *
-     * The class RangeOfIPAddresses represents an implicit grouping (or
-     * 'pool') of IP addresses specified by the properties, Start and
-     * EndAddress. It is defined as scoped/contained by a system such as an
-     * individual network element or an admin domain.
-     */
-    public RangeOfIPAddresses(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property startAddress.
-     */
-    private String startAddress;
-    /**
-     * This method returns the RangeOfIPAddresses.startAddress property value.
-     * This property is described as follows:
-     *
-     * The starting IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @return	String	current startAddress property value
-     * @exception	Exception
-     */
-    public String getStartAddress(){
+	/**
+	 * This constructor creates a RangeOfIPAddressesBeanImpl Class which implements the RangeOfIPAddressesBean Interface, and encapsulates the CIM
+	 * class RangeOfIPAddresses in a Java Bean. The CIM class RangeOfIPAddresses is described as follows:
+	 * 
+	 * The class RangeOfIPAddresses represents an implicit grouping (or 'pool') of IP addresses specified by the properties, Start and EndAddress. It
+	 * is defined as scoped/contained by a system such as an individual network element or an admin domain.
+	 */
+	public RangeOfIPAddresses() {
+	};
 
-    return this.startAddress;
-    } // getStartAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property startAddress.
+	 */
+	private String	startAddress;
 
-    /**
-     * This method sets the RangeOfIPAddresses.startAddress property value.
-     * This property is described as follows:
-     *
-     * The starting IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @param	String	new startAddress property value
-     * @exception	Exception
-     */
-    public void setStartAddress(String startAddress) {
+	/**
+	 * This method returns the RangeOfIPAddresses.startAddress property value. This property is described as follows:
+	 * 
+	 * The starting IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @return String current startAddress property value
+	 * @exception Exception
+	 */
+	public String getStartAddress() {
 
-    this.startAddress = startAddress;
-    } // setStartAddress
+		return this.startAddress;
+	} // getStartAddress
 
+	/**
+	 * This method sets the RangeOfIPAddresses.startAddress property value. This property is described as follows:
+	 * 
+	 * The starting IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @param String
+	 *            new startAddress property value
+	 * @exception Exception
+	 */
+	public void setStartAddress(String startAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property endAddress.
-     */
-    private String endAddress;
-    /**
-     * This method returns the RangeOfIPAddresses.endAddress property value.
-     * This property is described as follows:
-     *
-     * The ending IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @return	String	current endAddress property value
-     * @exception	Exception
-     */
-    public String getEndAddress(){
+		this.startAddress = startAddress;
+	} // setStartAddress
 
-    return this.endAddress;
-    } // getEndAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property endAddress.
+	 */
+	private String	endAddress;
 
-    /**
-     * This method sets the RangeOfIPAddresses.endAddress property value. This
-     * property is described as follows:
-     *
-     * The ending IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @param	String	new endAddress property value
-     * @exception	Exception
-     */
-    public void setEndAddress(String endAddress) {
+	/**
+	 * This method returns the RangeOfIPAddresses.endAddress property value. This property is described as follows:
+	 * 
+	 * The ending IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @return String current endAddress property value
+	 * @exception Exception
+	 */
+	public String getEndAddress() {
 
-    this.endAddress = endAddress;
-    } // setEndAddress
+		return this.endAddress;
+	} // getEndAddress
 
+	/**
+	 * This method sets the RangeOfIPAddresses.endAddress property value. This property is described as follows:
+	 * 
+	 * The ending IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @param String
+	 *            new endAddress property value
+	 * @exception Exception
+	 */
+	public void setEndAddress(String endAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AddressType.
-     */
+		this.endAddress = endAddress;
+	} // setEndAddress
 
-    public enum AddressType{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
-    private AddressType addressType;
-    /**
-     * This method returns the RangeOfIPAddresses.addressType property value.
-     * This property is described as follows:
-     *
-     * An enumeration that defines how the address and mask properties are
-     * formatted.
-     *
-     * @return	int	current addressType property value
-     * @exception	Exception
-     */
-    public AddressType getAddressType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
+	 */
 
-    return this.addressType;
-    } // getAddressType
+	public enum AddressType {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
 
-    /**
-     * This method sets the RangeOfIPAddresses.addressType property value.
-     * This property is described as follows:
-     *
-     * An enumeration that defines how the address and mask properties are
-     * formatted.
-     *
-     * @param	int	new addressType property value
-     * @exception	Exception
-     */
-    public void setAddressType(AddressType addressType){
+	private AddressType	addressType;
 
-    this.addressType = addressType;
-    } // setAddressType
+	/**
+	 * This method returns the RangeOfIPAddresses.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that defines how the address and mask properties are formatted.
+	 * 
+	 * @return int current addressType property value
+	 * @exception Exception
+	 */
+	public AddressType getAddressType() {
 
+		return this.addressType;
+	} // getAddressType
 
+	/**
+	 * This method sets the RangeOfIPAddresses.addressType property value. This property is described as follows:
+	 * 
+	 * An enumeration that defines how the address and mask properties are formatted.
+	 * 
+	 * @param int new addressType property value
+	 * @exception Exception
+	 */
+	public void setAddressType(AddressType addressType) {
+
+		this.addressType = addressType;
+	} // setAddressType
 
 } // Class RangeOfIPAddresses

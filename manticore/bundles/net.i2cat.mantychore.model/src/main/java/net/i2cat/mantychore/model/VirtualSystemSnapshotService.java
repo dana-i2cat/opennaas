@@ -8,25 +8,21 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VirtualSystemSnapshotService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the VirtualSystemSnapshotServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VirtualSystemSnapshotService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the VirtualSystemSnapshotServiceBean Interface. The CIM class
  * VirtualSystemSnapshotService is described as follows:
- *
+ * 
  * Service to create, apply and destroy snapshots of virtual systems.
  */
 public class VirtualSystemSnapshotService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a VirtualSystemSnapshotServiceBeanImpl Class
-     * which implements the VirtualSystemSnapshotServiceBean Interface, and
-     * encapsulates the CIM class VirtualSystemSnapshotService in a Java
-     * Bean. The CIM class VirtualSystemSnapshotService is described as
-     * follows:
-     *
-     * Service to create, apply and destroy snapshots of virtual systems.
-     */
-    public VirtualSystemSnapshotService(){};
+	/**
+	 * This constructor creates a VirtualSystemSnapshotServiceBeanImpl Class which implements the VirtualSystemSnapshotServiceBean Interface, and
+	 * encapsulates the CIM class VirtualSystemSnapshotService in a Java Bean. The CIM class VirtualSystemSnapshotService is described as follows:
+	 * 
+	 * Service to create, apply and destroy snapshots of virtual systems.
+	 */
+	public VirtualSystemSnapshotService() {
+	};
 } // Class VirtualSystemSnapshotService

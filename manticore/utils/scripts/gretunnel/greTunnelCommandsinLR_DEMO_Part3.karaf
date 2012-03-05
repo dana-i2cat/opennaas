@@ -1,0 +1,22 @@
+
+shell:echo "_______REMOVING GRE_______"
+
+#Delete the GRE tunnel
+shell:echo "gretunnel:delete router:LS1 gre.1"
+gretunnel:delete router:LS1 gre.1
+queue:execute router:LS1
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:LS1"
+gretunnel:show router:LS1
+
+
+#Cleanup
+resource:stop router:LS1
+resource:remove router:LS1
+
+resource:stop router:junos20
+resource:remove router:junos20
+
+shell:echo "PLEASE DELETE LS1 MANUALLY (but keep ge-0/2/0.39 config)"
+shell:echo "OPENNAAS CANNOT DO IT FOR YOU DUE TO A BUG"

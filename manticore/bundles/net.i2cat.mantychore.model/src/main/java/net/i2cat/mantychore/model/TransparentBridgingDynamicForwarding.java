@@ -8,41 +8,36 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TransparentBridgingDynamicForwarding as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the TransparentBridgingDynamicForwardingBean Interface. The CIM
- * class TransparentBridgingDynamicForwarding is described as follows:
- *
- * This association links an instance of the Transparent BridgingService to
- * the entries of its forwarding database. The forwarding database is weak to
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TransparentBridgingDynamicForwarding as well as
+ * methods comparable to the invokeMethods defined for this class. This Class implements the TransparentBridgingDynamicForwardingBean Interface. The
+ * CIM class TransparentBridgingDynamicForwarding is described as follows:
+ * 
+ * This association links an instance of the Transparent BridgingService to the entries of its forwarding database. The forwarding database is weak to
  * the Service.
  */
 public class TransparentBridgingDynamicForwarding extends Dependency
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a TransparentBridgingDynamicForwardingBeanImpl
-     * Class which implements the TransparentBridgingDynamicForwardingBean
-     * Interface, and encapsulates the CIM class
-     * TransparentBridgingDynamicForwarding in a Java Bean. The CIM class
-     * TransparentBridgingDynamicForwarding is described as follows:
-     *
-     * This association links an instance of the Transparent BridgingService
-     * to the entries of its forwarding database. The forwarding database is
-     * weak to the Service.
-     */
-    public TransparentBridgingDynamicForwarding(){};
-    /**
-     * This method create an Association of the type
-     * TransparentBridgingDynamicForwarding between one
-     * TransparentBridgingService object and DynamicForwardingEntry object
-     */
-    public static TransparentBridgingDynamicForwarding
-	link(TransparentBridgingService antecedent,DynamicForwardingEntry
-	dependent){
+	/**
+	 * This constructor creates a TransparentBridgingDynamicForwardingBeanImpl Class which implements the TransparentBridgingDynamicForwardingBean
+	 * Interface, and encapsulates the CIM class TransparentBridgingDynamicForwarding in a Java Bean. The CIM class
+	 * TransparentBridgingDynamicForwarding is described as follows:
+	 * 
+	 * This association links an instance of the Transparent BridgingService to the entries of its forwarding database. The forwarding database is
+	 * weak to the Service.
+	 */
+	public TransparentBridgingDynamicForwarding() {
+	};
 
-    return (TransparentBridgingDynamicForwarding) Association.link(TransparentBridgingDynamicForwarding.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type TransparentBridgingDynamicForwarding between one TransparentBridgingService object and
+	 * DynamicForwardingEntry object
+	 */
+	public static TransparentBridgingDynamicForwarding
+			link(TransparentBridgingService antecedent, DynamicForwardingEntry
+					dependent) {
+
+		return (TransparentBridgingDynamicForwarding) Association.link(TransparentBridgingDynamicForwarding.class, antecedent, dependent);
+	}// link
 
 } // Class TransparentBridgingDynamicForwarding

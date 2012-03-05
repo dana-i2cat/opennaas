@@ -20,17 +20,17 @@ public class Association {
 		return to;
 	}
 
-//	public static Association link(ManagedElement from, ManagedElement to) {
-//		Association assoc = new Association();
-//
-//		assoc.setFrom(from);
-//		assoc.setTo(to);
-//
-//		assoc.getFrom().addToAssociation(assoc);
-//		assoc.getTo().addFromAssociation(assoc);
-//
-//		return assoc;
-//	};
+	// public static Association link(ManagedElement from, ManagedElement to) {
+	// Association assoc = new Association();
+	//
+	// assoc.setFrom(from);
+	// assoc.setTo(to);
+	//
+	// assoc.getFrom().addToAssociation(assoc);
+	// assoc.getTo().addFromAssociation(assoc);
+	//
+	// return assoc;
+	// };
 
 	public static Association link(Class<? extends Association> clazz, ManagedElement from, ManagedElement to) {
 		Association assoc = null;

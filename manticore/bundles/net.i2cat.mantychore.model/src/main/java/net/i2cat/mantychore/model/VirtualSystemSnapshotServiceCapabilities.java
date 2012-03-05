@@ -9,176 +9,153 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VirtualSystemSnapshotServiceCapabilities as well as
- * methods comparable to the invokeMethods defined for this class. This Class
- * implements the VirtualSystemSnapshotServiceCapabilitiesBean Interface. The
- * CIM class VirtualSystemSnapshotServiceCapabilities is described as
- * follows:
- *
- * The CIM_VirtualSystemSnapshotServiceCapabilities class defines the
- * properties that describe the capabilities of a virtual system snapshot
- * service, like for example which snapshot operations are implemented.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VirtualSystemSnapshotServiceCapabilities as well as
+ * methods comparable to the invokeMethods defined for this class. This Class implements the VirtualSystemSnapshotServiceCapabilitiesBean Interface.
+ * The CIM class VirtualSystemSnapshotServiceCapabilities is described as follows:
+ * 
+ * The CIM_VirtualSystemSnapshotServiceCapabilities class defines the properties that describe the capabilities of a virtual system snapshot service,
+ * like for example which snapshot operations are implemented.
  */
 public class VirtualSystemSnapshotServiceCapabilities extends Capabilities
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a
-     * VirtualSystemSnapshotServiceCapabilitiesBeanImpl Class which
-     * implements the VirtualSystemSnapshotServiceCapabilitiesBean Interface,
-     * and encapsulates the CIM class
-     * VirtualSystemSnapshotServiceCapabilities in a Java Bean. The CIM class
-     * VirtualSystemSnapshotServiceCapabilities is described as follows:
-     *
-     * The CIM_VirtualSystemSnapshotServiceCapabilities class defines the
-     * properties that describe the capabilities of a virtual system snapshot
-     * service, like for example which snapshot operations are implemented.
-     */
-    public VirtualSystemSnapshotServiceCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SynchronousMethodsSupported.
-     */
+	/**
+	 * This constructor creates a VirtualSystemSnapshotServiceCapabilitiesBeanImpl Class which implements the
+	 * VirtualSystemSnapshotServiceCapabilitiesBean Interface, and encapsulates the CIM class VirtualSystemSnapshotServiceCapabilities in a Java Bean.
+	 * The CIM class VirtualSystemSnapshotServiceCapabilities is described as follows:
+	 * 
+	 * The CIM_VirtualSystemSnapshotServiceCapabilities class defines the properties that describe the capabilities of a virtual system snapshot
+	 * service, like for example which snapshot operations are implemented.
+	 */
+	public VirtualSystemSnapshotServiceCapabilities() {
+	};
 
-    public enum SynchronousMethodsSupported{
-    CREATESNAPSHOTSUPPORTED,
-    DESTROYSNAPSHOTSUPPORTED,
-    APPLYSNAPSHOTSUPPORTED,
-    DMTF_RESERVED
-    }
-    private SynchronousMethodsSupported synchronousMethodsSupported;
-    /**
-     * This method returns the
-     * VirtualSystemSnapshotServiceCapabilities.synchronousMethodsSupported
-     * property value. This property is described as follows:
-     *
-     * Enumeration of method identifiers each identifying a method of class
-     * CIM_VirtualSystemSnapshotService that is supported synchronously by
-     * the implementation.
-     *
-     * @return	int	current synchronousMethodsSupported property
-     * value
-     * @exception	Exception
-     */
-    public SynchronousMethodsSupported getSynchronousMethodsSupported(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SynchronousMethodsSupported.
+	 */
 
-    return this.synchronousMethodsSupported;
-    } // getSynchronousMethodsSupported
+	public enum SynchronousMethodsSupported {
+		CREATESNAPSHOTSUPPORTED,
+		DESTROYSNAPSHOTSUPPORTED,
+		APPLYSNAPSHOTSUPPORTED,
+		DMTF_RESERVED
+	}
 
-    /**
-     * This method sets the
-     * VirtualSystemSnapshotServiceCapabilities.synchronousMethodsSupported
-     * property value. This property is described as follows:
-     *
-     * Enumeration of method identifiers each identifying a method of class
-     * CIM_VirtualSystemSnapshotService that is supported synchronously by
-     * the implementation.
-     *
-     * @param	int	new synchronousMethodsSupported property value
-     * @exception	Exception
-     */
-    public void setSynchronousMethodsSupported(SynchronousMethodsSupported
-	synchronousMethodsSupported){
+	private SynchronousMethodsSupported	synchronousMethodsSupported;
 
-    this.synchronousMethodsSupported = synchronousMethodsSupported;
-    } // setSynchronousMethodsSupported
+	/**
+	 * This method returns the VirtualSystemSnapshotServiceCapabilities.synchronousMethodsSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * Enumeration of method identifiers each identifying a method of class CIM_VirtualSystemSnapshotService that is supported synchronously by the
+	 * implementation.
+	 * 
+	 * @return int current synchronousMethodsSupported property value
+	 * @exception Exception
+	 */
+	public SynchronousMethodsSupported getSynchronousMethodsSupported() {
 
+		return this.synchronousMethodsSupported;
+	} // getSynchronousMethodsSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AynchronousMethodsSupported.
-     */
+	/**
+	 * This method sets the VirtualSystemSnapshotServiceCapabilities.synchronousMethodsSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * Enumeration of method identifiers each identifying a method of class CIM_VirtualSystemSnapshotService that is supported synchronously by the
+	 * implementation.
+	 * 
+	 * @param int new synchronousMethodsSupported property value
+	 * @exception Exception
+	 */
+	public void setSynchronousMethodsSupported(SynchronousMethodsSupported
+			synchronousMethodsSupported) {
 
-    public enum AynchronousMethodsSupported{
-    CREATESNAPSHOTSUPPORTED,
-    DESTROYSNAPSHOTSUPPORTED,
-    APPLYSNAPSHOTSUPPORTED,
-    DMTF_RESERVED
-    }
-    private AynchronousMethodsSupported aynchronousMethodsSupported;
-    /**
-     * This method returns the
-     * VirtualSystemSnapshotServiceCapabilities.aynchronousMethodsSupported
-     * property value. This property is described as follows:
-     *
-     * Enumeration of method identifiers each identifying a method of class
-     * CIM_VirtualSystemSnapshotService that is supported synchronously and
-     * asynchronously by the implementation.
-     *
-     * @return	int	current aynchronousMethodsSupported property
-     * value
-     * @exception	Exception
-     */
-    public AynchronousMethodsSupported getAynchronousMethodsSupported(){
+		this.synchronousMethodsSupported = synchronousMethodsSupported;
+	} // setSynchronousMethodsSupported
 
-    return this.aynchronousMethodsSupported;
-    } // getAynchronousMethodsSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AynchronousMethodsSupported.
+	 */
 
-    /**
-     * This method sets the
-     * VirtualSystemSnapshotServiceCapabilities.aynchronousMethodsSupported
-     * property value. This property is described as follows:
-     *
-     * Enumeration of method identifiers each identifying a method of class
-     * CIM_VirtualSystemSnapshotService that is supported synchronously and
-     * asynchronously by the implementation.
-     *
-     * @param	int	new aynchronousMethodsSupported property value
-     * @exception	Exception
-     */
-    public void setAynchronousMethodsSupported(AynchronousMethodsSupported
-	aynchronousMethodsSupported){
+	public enum AynchronousMethodsSupported {
+		CREATESNAPSHOTSUPPORTED,
+		DESTROYSNAPSHOTSUPPORTED,
+		APPLYSNAPSHOTSUPPORTED,
+		DMTF_RESERVED
+	}
 
-    this.aynchronousMethodsSupported = aynchronousMethodsSupported;
-    } // setAynchronousMethodsSupported
+	private AynchronousMethodsSupported	aynchronousMethodsSupported;
 
+	/**
+	 * This method returns the VirtualSystemSnapshotServiceCapabilities.aynchronousMethodsSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * Enumeration of method identifiers each identifying a method of class CIM_VirtualSystemSnapshotService that is supported synchronously and
+	 * asynchronously by the implementation.
+	 * 
+	 * @return int current aynchronousMethodsSupported property value
+	 * @exception Exception
+	 */
+	public AynchronousMethodsSupported getAynchronousMethodsSupported() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SnapshotTypesSupported.
-     */
+		return this.aynchronousMethodsSupported;
+	} // getAynchronousMethodsSupported
 
-    public enum SnapshotTypesSupported{
-    FULL_SNAPSHOT,
-    DISK_SNAPSHOT,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIC
-    }
-    private SnapshotTypesSupported snapshotTypesSupported;
-    /**
-     * This method returns the
-     * VirtualSystemSnapshotServiceCapabilities.snapshotTypesSupported
-     * property value. This property is described as follows:
-     *
-     * Supported snapshot types: Full Snapshot: Complete snapshot of the
-     * virtual system. Disk Snapshot: Snapshot of virtual system disks.
-     *
-     * @return	int	current snapshotTypesSupported property value
-     * @exception	Exception
-     */
-    public SnapshotTypesSupported getSnapshotTypesSupported(){
+	/**
+	 * This method sets the VirtualSystemSnapshotServiceCapabilities.aynchronousMethodsSupported property value. This property is described as
+	 * follows:
+	 * 
+	 * Enumeration of method identifiers each identifying a method of class CIM_VirtualSystemSnapshotService that is supported synchronously and
+	 * asynchronously by the implementation.
+	 * 
+	 * @param int new aynchronousMethodsSupported property value
+	 * @exception Exception
+	 */
+	public void setAynchronousMethodsSupported(AynchronousMethodsSupported
+			aynchronousMethodsSupported) {
 
-    return this.snapshotTypesSupported;
-    } // getSnapshotTypesSupported
+		this.aynchronousMethodsSupported = aynchronousMethodsSupported;
+	} // setAynchronousMethodsSupported
 
-    /**
-     * This method sets the
-     * VirtualSystemSnapshotServiceCapabilities.snapshotTypesSupported
-     * property value. This property is described as follows:
-     *
-     * Supported snapshot types: Full Snapshot: Complete snapshot of the
-     * virtual system. Disk Snapshot: Snapshot of virtual system disks.
-     *
-     * @param	int	new snapshotTypesSupported property value
-     * @exception	Exception
-     */
-    public void setSnapshotTypesSupported(SnapshotTypesSupported
-	snapshotTypesSupported){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SnapshotTypesSupported.
+	 */
 
-    this.snapshotTypesSupported = snapshotTypesSupported;
-    } // setSnapshotTypesSupported
+	public enum SnapshotTypesSupported {
+		FULL_SNAPSHOT,
+		DISK_SNAPSHOT,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIC
+	}
 
+	private SnapshotTypesSupported	snapshotTypesSupported;
 
+	/**
+	 * This method returns the VirtualSystemSnapshotServiceCapabilities.snapshotTypesSupported property value. This property is described as follows:
+	 * 
+	 * Supported snapshot types: Full Snapshot: Complete snapshot of the virtual system. Disk Snapshot: Snapshot of virtual system disks.
+	 * 
+	 * @return int current snapshotTypesSupported property value
+	 * @exception Exception
+	 */
+	public SnapshotTypesSupported getSnapshotTypesSupported() {
+
+		return this.snapshotTypesSupported;
+	} // getSnapshotTypesSupported
+
+	/**
+	 * This method sets the VirtualSystemSnapshotServiceCapabilities.snapshotTypesSupported property value. This property is described as follows:
+	 * 
+	 * Supported snapshot types: Full Snapshot: Complete snapshot of the virtual system. Disk Snapshot: Snapshot of virtual system disks.
+	 * 
+	 * @param int new snapshotTypesSupported property value
+	 * @exception Exception
+	 */
+	public void setSnapshotTypesSupported(SnapshotTypesSupported
+			snapshotTypesSupported) {
+
+		this.snapshotTypesSupported = snapshotTypesSupported;
+	} // setSnapshotTypesSupported
 
 } // Class VirtualSystemSnapshotServiceCapabilities
