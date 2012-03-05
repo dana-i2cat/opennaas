@@ -12,6 +12,7 @@ import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;
 import net.i2cat.luminis.transports.wonesys.mock.MockTransport;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
+import static net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator.getEventManagerService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,7 +55,6 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 	private final Object							mutex						= new Object();
 	private Object									response;
 	private long									timeout;
-	CommandResponseListener							responseListener;
 
 	RawSocketAlarmListener							rawSocketAlarmListener;
 
@@ -96,68 +96,65 @@ public class WonesysProtocolSession implements IProtocolSession, ITransportListe
 		throw new ProtocolException("Unsupported Operation");
 	}
 
+	/**
+	 * Send a message to the device, and wait for the response.
+	 */
 	@Override
-	synchronized public Object sendReceive(Object requestMessage) throws ProtocolException {
-		// Send a message to the device, and wait for the response
-		String reply = null;
+	synchronized public Object sendReceive(Object requestMessage)
+		throws ProtocolException
+	{
 		try {
 			String message = (String) requestMessage;
-
-			responseListener = new CommandResponseListener(message);
-			responseListener.start();
-			registerToTransport(responseListener, RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
-
-			wonesysTransport.sendMsg(message);
-			log.info("Message sent");
-
-			reply = (String) waitResponse(responseListener); // wait CommandResponseListener to get the reply
-
+			CommandResponseListener responseListener =
+				new CommandResponseListener(message);
+			int serviceId =
+				registerToTransport(responseListener,
+									RawSocketTransport.MSG_RCVD_EVENT_TOPIC);
+			try {
+				wonesysTransport.sendMsg(message);
+				log.info("Message sent");
+				return waitResponse(responseListener);
+			} finally {
+				getEventManagerService().unregisterHandler(serviceId);
+			}
 		} catch (ProtocolException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new ProtocolException("TransportException: ", e);
 		}
-		return reply;
 	}
 
-	private int registerToTransport(EventHandler listener, String topic) throws ProtocolException {
-
+	private int registerToTransport(EventHandler listener, String topic)
+		throws ProtocolException
+	{
 		try {
-			IEventManager eventManager = WonesysProtocolBundleActivator.getEventManagerService();
-
 			Properties properties = new Properties();
 			properties.setProperty(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, wonesysTransport.getTransportID());
 			EventFilter filter = new EventFilter(new String[] { topic }, properties);
 
+			IEventManager eventManager = getEventManagerService();
 			return eventManager.registerEventHandler(listener, filter);
-
 		} catch (ActivatorException e) {
 			throw new ProtocolException("Failed to register to transport events.", e);
 		}
 	}
 
-	private Object waitResponse(CommandResponseListener responseListener) throws ProtocolException {
+	private String waitResponse(CommandResponseListener responseListener)
+		throws ProtocolException
+	{
 		try {
+			long start = System.currentTimeMillis();
+			log.debug("Waiting for a response within " + timeout + "ms @ " + start);
+			String response = responseListener.getResponse(timeout);
+			log.debug("Finished waiting. Waited during " + (System.currentTimeMillis() - start) + "ms");
 
-			String response = null;
-
-			synchronized (responseListener) {
-				long date = new Date().getTime();
-				log.debug("Waiting for a response within " + timeout + "ms @ " + date);
-				responseListener.wait(timeout);
-				log.debug("Finished waiting. Waited during " + (new Date().getTime() - date) + "ms");
-				response = responseListener.getResponse();
-				responseListener.cancel();
-				responseListener.interrupt();
+			if (response == null) {
+				throw new ProtocolException("Timeout waiting for a command response");
 			}
 
-			if (response == null)
-				throw new ProtocolException("Timeout waiting for a command response");
-
 			return response;
-
 		} catch (InterruptedException e) {
-			throw new ProtocolException("Error while receiving message response: ", e);
+			throw new ProtocolException("Error while receiving message response: " + e.getMessage(), e);
 		}
 	}
 
