@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedBGPRouteMap as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedBGPRouteMapBean Interface. The CIM class HostedBGPRouteMap is
- * described as follows:
- *
- * A BGPRouteMap is weak to the AutonomousSystem that contains it. This
- * association formalizes that relationship.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedBGPRouteMap as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the HostedBGPRouteMapBean Interface. The CIM class HostedBGPRouteMap is described as
+ * follows:
+ * 
+ * A BGPRouteMap is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
  */
 public class HostedBGPRouteMap extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedBGPRouteMapBeanImpl Class which
-     * implements the HostedBGPRouteMapBean Interface, and encapsulates the
-     * CIM class HostedBGPRouteMap in a Java Bean. The CIM class
-     * HostedBGPRouteMap is described as follows:
-     *
-     * A BGPRouteMap is weak to the AutonomousSystem that contains it. This
-     * association formalizes that relationship.
-     */
-    public HostedBGPRouteMap(){};
-    /**
-     * This method create an Association of the type HostedBGPRouteMap between
-     * one AutonomousSystem object and BGPRouteMap object
-     */
-    public static HostedBGPRouteMap link(AutonomousSystem
-	antecedent,BGPRouteMap dependent){
+	/**
+	 * This constructor creates a HostedBGPRouteMapBeanImpl Class which implements the HostedBGPRouteMapBean Interface, and encapsulates the CIM class
+	 * HostedBGPRouteMap in a Java Bean. The CIM class HostedBGPRouteMap is described as follows:
+	 * 
+	 * A BGPRouteMap is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
+	 */
+	public HostedBGPRouteMap() {
+	};
 
-    return (HostedBGPRouteMap)
-	Association.link(HostedBGPRouteMap.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedBGPRouteMap between one AutonomousSystem object and BGPRouteMap object
+	 */
+	public static HostedBGPRouteMap link(AutonomousSystem
+			antecedent, BGPRouteMap dependent) {
+
+		return (HostedBGPRouteMap) Association.link(HostedBGPRouteMap.class, antecedent, dependent);
+	}// link
 
 } // Class HostedBGPRouteMap

@@ -1,13 +1,20 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
+import java.util.HashMap;
+
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NextHopIPRoute;
+import net.i2cat.mantychore.model.RouteCalculationService;
+import net.i2cat.mantychore.model.Service;
+import net.i2cat.mantychore.model.System;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 
 public class RoutingOptionsParser extends DigesterEngine {
+
+	private System	model;
 
 	class ParserRuleSet extends RuleSetBase {
 		private String	prefix	= "";
@@ -24,23 +31,38 @@ public class RoutingOptionsParser extends DigesterEngine {
 		public void addRuleInstances(Digester arg0) {
 			// FIXME the path pattern can't be global , must distinguish between
 			// routers
+			addMyRule("*/routing-options/router-id", "setRouterIdInServices", 0);
 			addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
 			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
 			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
-			/* Add NesxtHopIpRoute to the parent */
-			addSetNext("*/routing-options/static/route/next-hop", "addInterface");
+			/* Add NextHopIPRoute to mapElements */
+			addMyRule("*/routing-options/static/route/next-hop", "addInterface", 0);
+			/* Add NextHopIpRoute to the parent */
+			addSetNext("*/routing-options/static/route/", "addNextHopRoute");
 		}
 	}
 
-	public RoutingOptionsParser() {
+	public RoutingOptionsParser(System model) {
 		ruleSet = new ParserRuleSet();
+		setModel(model);
 	}
 
-	public RoutingOptionsParser(String prefix) {
+	public RoutingOptionsParser(String prefix, System model) {
 		ruleSet = new ParserRuleSet(prefix);
+		setModel(model);
 	}
 
-	public void addInterface(NextHopIPRoute ipRoute) {
+	@Override
+	public void init() {
+		// puts this and model in the stack
+		push(this); // next-to-top
+		push(model);// top
+		mapElements = new HashMap<String, Object>();
+	}
+
+	public void addInterface(String nextHop) {
+		NextHopIPRoute ipRoute = (NextHopIPRoute) peek(0);
+
 		String location = ipRoute.getDestinationAddress();
 		// TODO implements the case where is needed merge the classes, if it is.
 		// also, add merge method into the class
@@ -85,6 +107,25 @@ public class RoutingOptionsParser extends DigesterEngine {
 		}
 	}
 
+	/**
+	 * Look for RouteCalculationServices in the model and set RouterId in them.
+	 * 
+	 * Assumes a System is in the top of the stack.
+	 * 
+	 * @param routerId
+	 */
+	public void setRouterIdInServices(String routerId) {
+		Object obj = peek(0);
+		assert (obj instanceof System);
+		System routerModel = (System) obj;
+
+		for (Service service : routerModel.getHostedService()) {
+			if (service instanceof RouteCalculationService) {
+				((RouteCalculationService) service).setRouterID(routerId);
+			}
+		}
+	}
+
 	public String toPrint() {
 
 		String str = "" + '\n';
@@ -97,5 +138,13 @@ public class RoutingOptionsParser extends DigesterEngine {
 			str += "Next hop " + (((IPProtocolEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
 		}
 		return str;
+	}
+
+	public System getModel() {
+		return model;
+	}
+
+	public void setModel(System model) {
+		this.model = model;
 	}
 }

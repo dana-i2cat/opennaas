@@ -9,150 +9,132 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LANConnectivitySegment as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * LANConnectivitySegmentBean Interface. The CIM class LANConnectivitySegment
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LANConnectivitySegment as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the LANConnectivitySegmentBean Interface. The CIM class LANConnectivitySegment
  * is described as follows:
- *
- * A collection of LAN Endpoints of a particular type (i.e., Ethernet or Token
- * Ring), that are able to intercommunicate without the assistance of
+ * 
+ * A collection of LAN Endpoints of a particular type (i.e., Ethernet or Token Ring), that are able to intercommunicate without the assistance of
  * bridging or routing services.
  */
 public class LANConnectivitySegment extends ConnectivityCollection implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a LANConnectivitySegmentBeanImpl Class which
-     * implements the LANConnectivitySegmentBean Interface, and encapsulates
-     * the CIM class LANConnectivitySegment in a Java Bean. The CIM class
-     * LANConnectivitySegment is described as follows:
-     *
-     * A collection of LAN Endpoints of a particular type (i.e., Ethernet or
-     * Token Ring), that are able to intercommunicate without the assistance
-     * of bridging or routing services.
-     */
-    public LANConnectivitySegment(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lANID.
-     */
-    private String lANID;
-    /**
-     * This method returns the LANConnectivitySegment.lANID property value.
-     * This property is described as follows:
-     *
-     * A label or identifier for the LAN segment.
-     *
-     * @return	String	current lANID property value
-     * @exception	Exception
-     */
-    public String getLANID(){
+	/**
+	 * This constructor creates a LANConnectivitySegmentBeanImpl Class which implements the LANConnectivitySegmentBean Interface, and encapsulates the
+	 * CIM class LANConnectivitySegment in a Java Bean. The CIM class LANConnectivitySegment is described as follows:
+	 * 
+	 * A collection of LAN Endpoints of a particular type (i.e., Ethernet or Token Ring), that are able to intercommunicate without the assistance of
+	 * bridging or routing services.
+	 */
+	public LANConnectivitySegment() {
+	};
 
-    return this.lANID;
-    } // getLANID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lANID.
+	 */
+	private String	lANID;
 
-    /**
-     * This method sets the LANConnectivitySegment.lANID property value. This
-     * property is described as follows:
-     *
-     * A label or identifier for the LAN segment.
-     *
-     * @param	String	new lANID property value
-     * @exception	Exception
-     */
-    public void setLANID(String lANID) {
+	/**
+	 * This method returns the LANConnectivitySegment.lANID property value. This property is described as follows:
+	 * 
+	 * A label or identifier for the LAN segment.
+	 * 
+	 * @return String current lANID property value
+	 * @exception Exception
+	 */
+	public String getLANID() {
 
-    this.lANID = lANID;
-    } // setLANID
+		return this.lANID;
+	} // getLANID
 
+	/**
+	 * This method sets the LANConnectivitySegment.lANID property value. This property is described as follows:
+	 * 
+	 * A label or identifier for the LAN segment.
+	 * 
+	 * @param String
+	 *            new lANID property value
+	 * @exception Exception
+	 */
+	public void setLANID(String lANID) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ConnectivityType.
-     */
+		this.lANID = lANID;
+	} // setLANID
 
-    public enum ConnectivityType{
-    UNKNOWN,
-    OTHER,
-    ETHERNET,
-    TOKENRING,
-    FDDI
-    }
-    private ConnectivityType connectivityType;
-    /**
-     * This method returns the LANConnectivitySegment.connectivityType
-     * property value. This property is described as follows:
-     *
-     * An enumeration that categorizes and classifies instances of this class.
-     * Instances SHOULD aggregate entities of the appropriate 'type', as
-     * defined by the value of this enumeration.
-     *
-     * @return	int	current connectivityType property value
-     * @exception	Exception
-     */
-    public ConnectivityType getConnectivityType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ConnectivityType.
+	 */
 
-    return this.connectivityType;
-    } // getConnectivityType
+	public enum ConnectivityType {
+		UNKNOWN,
+		OTHER,
+		ETHERNET,
+		TOKENRING,
+		FDDI
+	}
 
-    /**
-     * This method sets the LANConnectivitySegment.connectivityType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that categorizes and classifies instances of this class.
-     * Instances SHOULD aggregate entities of the appropriate 'type', as
-     * defined by the value of this enumeration.
-     *
-     * @param	int	new connectivityType property value
-     * @exception	Exception
-     */
-    public void setConnectivityType(ConnectivityType connectivityType){
+	private ConnectivityType	connectivityType;
 
-    this.connectivityType = connectivityType;
-    } // setConnectivityType
+	/**
+	 * This method returns the LANConnectivitySegment.connectivityType property value. This property is described as follows:
+	 * 
+	 * An enumeration that categorizes and classifies instances of this class. Instances SHOULD aggregate entities of the appropriate 'type', as
+	 * defined by the value of this enumeration.
+	 * 
+	 * @return int current connectivityType property value
+	 * @exception Exception
+	 */
+	public ConnectivityType getConnectivityType() {
 
+		return this.connectivityType;
+	} // getConnectivityType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherTypeDescription.
-     */
-    private String otherTypeDescription;
-    /**
-     * This method returns the LANConnectivitySegment.otherTypeDescription
-     * property value. This property is described as follows:
-     *
-     * A string describing the type of connectivity that is supported by this
-     * Collection, when the value of the Type property is set to 1 (i.e.,
-     * "Other"). This property should be set to NULL when the Type property
-     * is any value other than 1.
-     *
-     * @return	String	current otherTypeDescription property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherTypeDescription(){
+	/**
+	 * This method sets the LANConnectivitySegment.connectivityType property value. This property is described as follows:
+	 * 
+	 * An enumeration that categorizes and classifies instances of this class. Instances SHOULD aggregate entities of the appropriate 'type', as
+	 * defined by the value of this enumeration.
+	 * 
+	 * @param int new connectivityType property value
+	 * @exception Exception
+	 */
+	public void setConnectivityType(ConnectivityType connectivityType) {
 
-    return this.otherTypeDescription;
-    } // getOtherTypeDescription
+		this.connectivityType = connectivityType;
+	} // setConnectivityType
 
-    /**
-     * This method sets the LANConnectivitySegment.otherTypeDescription
-     * property value. This property is described as follows:
-     *
-     * A string describing the type of connectivity that is supported by this
-     * Collection, when the value of the Type property is set to 1 (i.e.,
-     * "Other"). This property should be set to NULL when the Type property
-     * is any value other than 1.
-     *
-     * @param	String	new otherTypeDescription property value
-     * @exception	Exception
-     */
-    public void setOtherTypeDescription(String otherTypeDescription) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherTypeDescription.
+	 */
+	private String	otherTypeDescription;
 
-    this.otherTypeDescription = otherTypeDescription;
-    } // setOtherTypeDescription
+	/**
+	 * This method returns the LANConnectivitySegment.otherTypeDescription property value. This property is described as follows:
+	 * 
+	 * A string describing the type of connectivity that is supported by this Collection, when the value of the Type property is set to 1 (i.e.,
+	 * "Other"). This property should be set to NULL when the Type property is any value other than 1.
+	 * 
+	 * @return String current otherTypeDescription property value
+	 * @exception Exception
+	 */
+	public String getOtherTypeDescription() {
 
+		return this.otherTypeDescription;
+	} // getOtherTypeDescription
 
+	/**
+	 * This method sets the LANConnectivitySegment.otherTypeDescription property value. This property is described as follows:
+	 * 
+	 * A string describing the type of connectivity that is supported by this Collection, when the value of the Type property is set to 1 (i.e.,
+	 * "Other"). This property should be set to NULL when the Type property is any value other than 1.
+	 * 
+	 * @param String
+	 *            new otherTypeDescription property value
+	 * @exception Exception
+	 */
+	public void setOtherTypeDescription(String otherTypeDescription) {
+
+		this.otherTypeDescription = otherTypeDescription;
+	} // setOtherTypeDescription
 
 } // Class LANConnectivitySegment

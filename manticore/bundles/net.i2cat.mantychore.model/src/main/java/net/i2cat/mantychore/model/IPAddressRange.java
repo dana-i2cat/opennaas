@@ -9,224 +9,196 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPAddressRange as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPAddressRangeBean Interface. The CIM class IPAddressRange is described as
- * follows:
- *
- * IPAddressRange represents a grouping of specific addresses, and provides
- * additional semantics for this group if appropriate. The class is
- * deprecated in lieu of the concrete class RangeOfIPAddresses since there is
- * sufficient information for the class to be instantiated. In addition, an
- * address range should be defined in the context of a System (for example, a
- * network element or an admin domain). These semantics are incorporated in
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPAddressRange as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the IPAddressRangeBean Interface. The CIM class IPAddressRange is described as follows:
+ * 
+ * IPAddressRange represents a grouping of specific addresses, and provides additional semantics for this group if appropriate. The class is
+ * deprecated in lieu of the concrete class RangeOfIPAddresses since there is sufficient information for the class to be instantiated. In addition, an
+ * address range should be defined in the context of a System (for example, a network element or an admin domain). These semantics are incorporated in
  * the RangeOfIPAddresses class.
  */
-    @Deprecated
+@Deprecated
 public class IPAddressRange extends CollectionOfMSEs implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a IPAddressRangeBeanImpl Class which
-     * implements the IPAddressRangeBean Interface, and encapsulates the CIM
-     * class IPAddressRange in a Java Bean. The CIM class IPAddressRange is
-     * described as follows:
-     *
-     * IPAddressRange represents a grouping of specific addresses, and
-     * provides additional semantics for this group if appropriate. The class
-     * is deprecated in lieu of the concrete class RangeOfIPAddresses since
-     * there is sufficient information for the class to be instantiated. In
-     * addition, an address range should be defined in the context of a
-     * System (for example, a network element or an admin domain). These
-     * semantics are incorporated in the RangeOfIPAddresses class.
-     */
-    protected IPAddressRange(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property startAddress.
-     */
-    @Deprecated    private String startAddress;
-    /**
-     * This method returns the IPAddressRange.startAddress property value.
-     * This property is described as follows:
-     *
-     * The starting IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @return	String	current startAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getStartAddress(){
+	/**
+	 * This constructor creates a IPAddressRangeBeanImpl Class which implements the IPAddressRangeBean Interface, and encapsulates the CIM class
+	 * IPAddressRange in a Java Bean. The CIM class IPAddressRange is described as follows:
+	 * 
+	 * IPAddressRange represents a grouping of specific addresses, and provides additional semantics for this group if appropriate. The class is
+	 * deprecated in lieu of the concrete class RangeOfIPAddresses since there is sufficient information for the class to be instantiated. In
+	 * addition, an address range should be defined in the context of a System (for example, a network element or an admin domain). These semantics
+	 * are incorporated in the RangeOfIPAddresses class.
+	 */
+	protected IPAddressRange() {
+	};
 
-    return this.startAddress;
-    } // getStartAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property startAddress.
+	 */
+	@Deprecated
+	private String	startAddress;
 
-    /**
-     * This method sets the IPAddressRange.startAddress property value. This
-     * property is described as follows:
-     *
-     * The starting IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @param	String	new startAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setStartAddress(String startAddress) {
+	/**
+	 * This method returns the IPAddressRange.startAddress property value. This property is described as follows:
+	 * 
+	 * The starting IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @return String current startAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getStartAddress() {
 
-    this.startAddress = startAddress;
-    } // setStartAddress
+		return this.startAddress;
+	} // getStartAddress
 
+	/**
+	 * This method sets the IPAddressRange.startAddress property value. This property is described as follows:
+	 * 
+	 * The starting IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @param String
+	 *            new startAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setStartAddress(String startAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property endAddress.
-     */
-    @Deprecated    private String endAddress;
-    /**
-     * This method returns the IPAddressRange.endAddress property value. This
-     * property is described as follows:
-     *
-     * The ending IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @return	String	current endAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public String getEndAddress(){
+		this.startAddress = startAddress;
+	} // setStartAddress
 
-    return this.endAddress;
-    } // getEndAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property endAddress.
+	 */
+	@Deprecated
+	private String	endAddress;
 
-    /**
-     * This method sets the IPAddressRange.endAddress property value. This
-     * property is described as follows:
-     *
-     * The ending IP address of the AddressRange, formatted according to the
-     * appropriate convention as defined in the AddressType property of this
-     * class (e.g., 171.79.6.40).
-     *
-     * @param	String	new endAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setEndAddress(String endAddress) {
+	/**
+	 * This method returns the IPAddressRange.endAddress property value. This property is described as follows:
+	 * 
+	 * The ending IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @return String current endAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public String getEndAddress() {
 
-    this.endAddress = endAddress;
-    } // setEndAddress
+		return this.endAddress;
+	} // getEndAddress
 
+	/**
+	 * This method sets the IPAddressRange.endAddress property value. This property is described as follows:
+	 * 
+	 * The ending IP address of the AddressRange, formatted according to the appropriate convention as defined in the AddressType property of this
+	 * class (e.g., 171.79.6.40).
+	 * 
+	 * @param String
+	 *            new endAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setEndAddress(String endAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TypeOfAddress.
-     */
-    @Deprecated
-    public enum TypeOfAddress{
-    UNKNOWN,
-    IPV4,
-    IPV6
-    }
-    @Deprecated
-    private TypeOfAddress typeOfAddress;
-    /**
-     * This method returns the IPAddressRange.typeOfAddress property value.
-     * This property is described as follows:
-     *
-     * An enumeration that defines how to format the address and mask of the
-     * address range that defines this IPSubnet. Whenever possible,
-     * IPv4-compatible addresses should be used instead of IPv6 addresses
-     * (see RFC 2373, section 2.5.4). In order to have a consistent format
-     * for IPv4 addresses in a mixed IPv4/v6 environment, all IPv4 addresses
-     * and both IPv4-compatible IPv6 addresses and IPv4-mapped IPv6
-     * addresses, per RFC 2373, section 2.5.4, should be formatted in
-     * standard IPv4 format.
-     *
-     * @return	int	current typeOfAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public TypeOfAddress getTypeOfAddress(){
+		this.endAddress = endAddress;
+	} // setEndAddress
 
-    return this.typeOfAddress;
-    } // getTypeOfAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TypeOfAddress.
+	 */
+	@Deprecated
+	public enum TypeOfAddress {
+		UNKNOWN,
+		IPV4,
+		IPV6
+	}
 
-    /**
-     * This method sets the IPAddressRange.typeOfAddress property value. This
-     * property is described as follows:
-     *
-     * An enumeration that defines how to format the address and mask of the
-     * address range that defines this IPSubnet. Whenever possible,
-     * IPv4-compatible addresses should be used instead of IPv6 addresses
-     * (see RFC 2373, section 2.5.4). In order to have a consistent format
-     * for IPv4 addresses in a mixed IPv4/v6 environment, all IPv4 addresses
-     * and both IPv4-compatible IPv6 addresses and IPv4-mapped IPv6
-     * addresses, per RFC 2373, section 2.5.4, should be formatted in
-     * standard IPv4 format.
-     *
-     * @param	int	new typeOfAddress property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setTypeOfAddress(TypeOfAddress typeOfAddress){
+	@Deprecated
+	private TypeOfAddress	typeOfAddress;
 
-    this.typeOfAddress = typeOfAddress;
-    } // setTypeOfAddress
+	/**
+	 * This method returns the IPAddressRange.typeOfAddress property value. This property is described as follows:
+	 * 
+	 * An enumeration that defines how to format the address and mask of the address range that defines this IPSubnet. Whenever possible,
+	 * IPv4-compatible addresses should be used instead of IPv6 addresses (see RFC 2373, section 2.5.4). In order to have a consistent format for IPv4
+	 * addresses in a mixed IPv4/v6 environment, all IPv4 addresses and both IPv4-compatible IPv6 addresses and IPv4-mapped IPv6 addresses, per RFC
+	 * 2373, section 2.5.4, should be formatted in standard IPv4 format.
+	 * 
+	 * @return int current typeOfAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public TypeOfAddress getTypeOfAddress() {
 
+		return this.typeOfAddress;
+	} // getTypeOfAddress
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AllocationRegion.
-     */
-    @Deprecated
-    public enum AllocationRegion{
-    UNKNOWN,
-    MULTIREGIONAL_192_0_0_0_TO_193_255_255_255,
-    EUROPE_194_0_0_0_TO_195_255_255_255,
-    OTHERS_196_0_0_0_TO_197_255_255_255,
-    NORTH_AMERICA_198_0_0_0_TO_199_255_255_255,
-    CENTRAL_SOUTH_AMERICA_200_0_0_0_TO_201_255_255_255,
-    PACIFIC_RIM_202_0_0_0_TO_203_255_255_255,
-    OTHERS_204_0_0_0_TO_205_255_255_255,
-    OTHERS_206_0_0_0_TO_207_255_255_255
-    }
-    @Deprecated
-    private AllocationRegion allocationRegion;
-    /**
-     * This method returns the IPAddressRange.allocationRegion property value.
-     * This property is described as follows:
-     *
-     * This attribute defines the region that addresses can be allocated to.
-     *
-     * @return	int	current allocationRegion property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public AllocationRegion getAllocationRegion(){
+	/**
+	 * This method sets the IPAddressRange.typeOfAddress property value. This property is described as follows:
+	 * 
+	 * An enumeration that defines how to format the address and mask of the address range that defines this IPSubnet. Whenever possible,
+	 * IPv4-compatible addresses should be used instead of IPv6 addresses (see RFC 2373, section 2.5.4). In order to have a consistent format for IPv4
+	 * addresses in a mixed IPv4/v6 environment, all IPv4 addresses and both IPv4-compatible IPv6 addresses and IPv4-mapped IPv6 addresses, per RFC
+	 * 2373, section 2.5.4, should be formatted in standard IPv4 format.
+	 * 
+	 * @param int new typeOfAddress property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setTypeOfAddress(TypeOfAddress typeOfAddress) {
 
-    return this.allocationRegion;
-    } // getAllocationRegion
+		this.typeOfAddress = typeOfAddress;
+	} // setTypeOfAddress
 
-    /**
-     * This method sets the IPAddressRange.allocationRegion property value.
-     * This property is described as follows:
-     *
-     * This attribute defines the region that addresses can be allocated to.
-     *
-     * @param	int	new allocationRegion property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setAllocationRegion(AllocationRegion allocationRegion){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AllocationRegion.
+	 */
+	@Deprecated
+	public enum AllocationRegion {
+		UNKNOWN,
+		MULTIREGIONAL_192_0_0_0_TO_193_255_255_255,
+		EUROPE_194_0_0_0_TO_195_255_255_255,
+		OTHERS_196_0_0_0_TO_197_255_255_255,
+		NORTH_AMERICA_198_0_0_0_TO_199_255_255_255,
+		CENTRAL_SOUTH_AMERICA_200_0_0_0_TO_201_255_255_255,
+		PACIFIC_RIM_202_0_0_0_TO_203_255_255_255,
+		OTHERS_204_0_0_0_TO_205_255_255_255,
+		OTHERS_206_0_0_0_TO_207_255_255_255
+	}
 
-    this.allocationRegion = allocationRegion;
-    } // setAllocationRegion
+	@Deprecated
+	private AllocationRegion	allocationRegion;
 
+	/**
+	 * This method returns the IPAddressRange.allocationRegion property value. This property is described as follows:
+	 * 
+	 * This attribute defines the region that addresses can be allocated to.
+	 * 
+	 * @return int current allocationRegion property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public AllocationRegion getAllocationRegion() {
 
+		return this.allocationRegion;
+	} // getAllocationRegion
+
+	/**
+	 * This method sets the IPAddressRange.allocationRegion property value. This property is described as follows:
+	 * 
+	 * This attribute defines the region that addresses can be allocated to.
+	 * 
+	 * @param int new allocationRegion property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAllocationRegion(AllocationRegion allocationRegion) {
+
+		this.allocationRegion = allocationRegion;
+	} // setAllocationRegion
 
 } // Class IPAddressRange

@@ -8,51 +8,38 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LogicalIdentity as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * LogicalIdentityBean Interface. The CIM class LogicalIdentity is described
- * as follows:
- *
- * CIM_LogicalIdentity is an abstract and generic association, indicating that
- * two ManagedElements represent different aspects of the same underlying
- * entity. This relationship conveys what could be defined with multiple
- * inheritance. In most scenarios, the Identity relationship is determined by
- * the equivalence of Keys or some other identifying properties of the
- * related Elements. This relationship is reasonable in several scenarios.
- * For example, it could be used to represent that a LogicalDevice is both a
- * 'bus' entity and a 'functional' entity. A Device could be both a USB (bus)
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalIdentity as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the LogicalIdentityBean Interface. The CIM class LogicalIdentity is described as
+ * follows:
+ * 
+ * CIM_LogicalIdentity is an abstract and generic association, indicating that two ManagedElements represent different aspects of the same underlying
+ * entity. This relationship conveys what could be defined with multiple inheritance. In most scenarios, the Identity relationship is determined by
+ * the equivalence of Keys or some other identifying properties of the related Elements. This relationship is reasonable in several scenarios. For
+ * example, it could be used to represent that a LogicalDevice is both a 'bus' entity and a 'functional' entity. A Device could be both a USB (bus)
  * and a Keyboard (functional) entity.
  */
 public class LogicalIdentity extends Association implements Serializable {
 
-    /**
-     * This constructor creates a LogicalIdentityBeanImpl Class which
-     * implements the LogicalIdentityBean Interface, and encapsulates the CIM
-     * class LogicalIdentity in a Java Bean. The CIM class LogicalIdentity is
-     * described as follows:
-     *
-     * CIM_LogicalIdentity is an abstract and generic association, indicating
-     * that two ManagedElements represent different aspects of the same
-     * underlying entity. This relationship conveys what could be defined
-     * with multiple inheritance. In most scenarios, the Identity
-     * relationship is determined by the equivalence of Keys or some other
-     * identifying properties of the related Elements. This relationship is
-     * reasonable in several scenarios. For example, it could be used to
-     * represent that a LogicalDevice is both a 'bus' entity and a
-     * 'functional' entity. A Device could be both a USB (bus) and a Keyboard
-     * (functional) entity.
-     */
-    protected LogicalIdentity(){};
-    /**
-     * This method create an Association of the type LogicalIdentity between
-     * one ManagedElement object and ManagedElement object
-     */
-    public static LogicalIdentity link(ManagedElement
-	systemElement,ManagedElement sameElement){
+	/**
+	 * This constructor creates a LogicalIdentityBeanImpl Class which implements the LogicalIdentityBean Interface, and encapsulates the CIM class
+	 * LogicalIdentity in a Java Bean. The CIM class LogicalIdentity is described as follows:
+	 * 
+	 * CIM_LogicalIdentity is an abstract and generic association, indicating that two ManagedElements represent different aspects of the same
+	 * underlying entity. This relationship conveys what could be defined with multiple inheritance. In most scenarios, the Identity relationship is
+	 * determined by the equivalence of Keys or some other identifying properties of the related Elements. This relationship is reasonable in several
+	 * scenarios. For example, it could be used to represent that a LogicalDevice is both a 'bus' entity and a 'functional' entity. A Device could be
+	 * both a USB (bus) and a Keyboard (functional) entity.
+	 */
+	protected LogicalIdentity() {
+	};
 
-    return (LogicalIdentity)
-	Association.link(LogicalIdentity.class,systemElement,sameElement);
-    }//link
+	/**
+	 * This method create an Association of the type LogicalIdentity between one ManagedElement object and ManagedElement object
+	 */
+	public static LogicalIdentity link(ManagedElement
+			systemElement, ManagedElement sameElement) {
+
+		return (LogicalIdentity) Association.link(LogicalIdentity.class, systemElement, sameElement);
+	}// link
 
 } // Class LogicalIdentity

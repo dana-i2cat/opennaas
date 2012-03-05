@@ -9,62 +9,53 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchPort as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SwitchPortBean Interface. The CIM class SwitchPort is described as
- * follows:
- *
- * Switch Port from which frames are received and out which they are
- * transmitted. This endpoint is associated with its networking interface
- * (such as Ethernet) via the EndpointIdentity relationship.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchPort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SwitchPortBean Interface. The CIM class SwitchPort is described as follows:
+ * 
+ * Switch Port from which frames are received and out which they are transmitted. This endpoint is associated with its networking interface (such as
+ * Ethernet) via the EndpointIdentity relationship.
  */
 public class SwitchPort extends ProtocolEndpoint implements Serializable {
 
-    /**
-     * This constructor creates a SwitchPortBeanImpl Class which implements
-     * the SwitchPortBean Interface, and encapsulates the CIM class
-     * SwitchPort in a Java Bean. The CIM class SwitchPort is described as
-     * follows:
-     *
-     * Switch Port from which frames are received and out which they are
-     * transmitted. This endpoint is associated with its networking interface
-     * (such as Ethernet) via the EndpointIdentity relationship.
-     */
-    public SwitchPort(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property portNumber.
-     */
-    private int portNumber;
-    /**
-     * This method returns the SwitchPort.portNumber property value. This
-     * property is described as follows:
-     *
-     * Numeric identifier for a switch port.
-     *
-     * @return	int	current portNumber property value
-     * @exception	Exception
-     */
-    public int getPortNumber(){
+	/**
+	 * This constructor creates a SwitchPortBeanImpl Class which implements the SwitchPortBean Interface, and encapsulates the CIM class SwitchPort in
+	 * a Java Bean. The CIM class SwitchPort is described as follows:
+	 * 
+	 * Switch Port from which frames are received and out which they are transmitted. This endpoint is associated with its networking interface (such
+	 * as Ethernet) via the EndpointIdentity relationship.
+	 */
+	public SwitchPort() {
+	};
 
-    return this.portNumber;
-    } // getPortNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property portNumber.
+	 */
+	private int	portNumber;
 
-    /**
-     * This method sets the SwitchPort.portNumber property value. This
-     * property is described as follows:
-     *
-     * Numeric identifier for a switch port.
-     *
-     * @param	int	new portNumber property value
-     * @exception	Exception
-     */
-    public void setPortNumber(int portNumber) {
+	/**
+	 * This method returns the SwitchPort.portNumber property value. This property is described as follows:
+	 * 
+	 * Numeric identifier for a switch port.
+	 * 
+	 * @return int current portNumber property value
+	 * @exception Exception
+	 */
+	public int getPortNumber() {
 
-    this.portNumber = portNumber;
-    } // setPortNumber
+		return this.portNumber;
+	} // getPortNumber
 
+	/**
+	 * This method sets the SwitchPort.portNumber property value. This property is described as follows:
+	 * 
+	 * Numeric identifier for a switch port.
+	 * 
+	 * @param int new portNumber property value
+	 * @exception Exception
+	 */
+	public void setPortNumber(int portNumber) {
 
+		this.portNumber = portNumber;
+	} // setPortNumber
 
 } // Class SwitchPort

@@ -9,208 +9,171 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class EnabledLogicalElementCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the EnabledLogicalElementCapabilitiesBean Interface. The CIM
- * class EnabledLogicalElementCapabilities is described as follows:
- *
- * EnabledLogicalElementCapabilities describes the capabilities supported for
- * changing the state of the associated EnabledLogicalElement.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class EnabledLogicalElementCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the EnabledLogicalElementCapabilitiesBean Interface. The CIM class
+ * EnabledLogicalElementCapabilities is described as follows:
+ * 
+ * EnabledLogicalElementCapabilities describes the capabilities supported for changing the state of the associated EnabledLogicalElement.
  */
 public class EnabledLogicalElementCapabilities extends Capabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a EnabledLogicalElementCapabilitiesBeanImpl
-     * Class which implements the EnabledLogicalElementCapabilitiesBean
-     * Interface, and encapsulates the CIM class
-     * EnabledLogicalElementCapabilities in a Java Bean. The CIM class
-     * EnabledLogicalElementCapabilities is described as follows:
-     *
-     * EnabledLogicalElementCapabilities describes the capabilities supported
-     * for changing the state of the associated EnabledLogicalElement.
-     */
-    public EnabledLogicalElementCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property elementNameEditSupported.
-     */
-    private boolean elementNameEditSupported;
-    /**
-     * This method returns the
-     * EnabledLogicalElementCapabilities.elementNameEditSupported property
-     * value. This property is described as follows:
-     *
-     * Boolean indicating whether the ElementName can be modified.
-     *
-     * @return	boolean	current elementNameEditSupported property
-     * value
-     * @exception	Exception
-     */
-    public boolean isElementNameEditSupported(){
+	/**
+	 * This constructor creates a EnabledLogicalElementCapabilitiesBeanImpl Class which implements the EnabledLogicalElementCapabilitiesBean
+	 * Interface, and encapsulates the CIM class EnabledLogicalElementCapabilities in a Java Bean. The CIM class EnabledLogicalElementCapabilities is
+	 * described as follows:
+	 * 
+	 * EnabledLogicalElementCapabilities describes the capabilities supported for changing the state of the associated EnabledLogicalElement.
+	 */
+	public EnabledLogicalElementCapabilities() {
+	};
 
-    return this.elementNameEditSupported;
-    } // getElementNameEditSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property elementNameEditSupported.
+	 */
+	private boolean	elementNameEditSupported;
 
-    /**
-     * This method sets the
-     * EnabledLogicalElementCapabilities.elementNameEditSupported property
-     * value. This property is described as follows:
-     *
-     * Boolean indicating whether the ElementName can be modified.
-     *
-     * @param	boolean	new elementNameEditSupported property
-     * value
-     * @exception	Exception
-     */
-    public void setElementNameEditSupported(boolean elementNameEditSupported)
+	/**
+	 * This method returns the EnabledLogicalElementCapabilities.elementNameEditSupported property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether the ElementName can be modified.
+	 * 
+	 * @return boolean current elementNameEditSupported property value
+	 * @exception Exception
+	 */
+	public boolean isElementNameEditSupported() {
+
+		return this.elementNameEditSupported;
+	} // getElementNameEditSupported
+
+	/**
+	 * This method sets the EnabledLogicalElementCapabilities.elementNameEditSupported property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether the ElementName can be modified.
+	 * 
+	 * @param boolean new elementNameEditSupported property value
+	 * @exception Exception
+	 */
+	public void setElementNameEditSupported(boolean elementNameEditSupported)
 	{
 
-    this.elementNameEditSupported = elementNameEditSupported;
-    } // setElementNameEditSupported
+		this.elementNameEditSupported = elementNameEditSupported;
+	} // setElementNameEditSupported
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxElementNameLen.
+	 */
+	private int	maxElementNameLen;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxElementNameLen.
-     */
-    private int maxElementNameLen;
-    /**
-     * This method returns the
-     * EnabledLogicalElementCapabilities.maxElementNameLen property value.
-     * This property is described as follows:
-     *
-     * Maximum supported ElementName length.
-     *
-     * @return	int	current maxElementNameLen property value
-     * @exception	Exception
-     */
-    public int getMaxElementNameLen(){
+	/**
+	 * This method returns the EnabledLogicalElementCapabilities.maxElementNameLen property value. This property is described as follows:
+	 * 
+	 * Maximum supported ElementName length.
+	 * 
+	 * @return int current maxElementNameLen property value
+	 * @exception Exception
+	 */
+	public int getMaxElementNameLen() {
 
-    return this.maxElementNameLen;
-    } // getMaxElementNameLen
+		return this.maxElementNameLen;
+	} // getMaxElementNameLen
 
-    /**
-     * This method sets the
-     * EnabledLogicalElementCapabilities.maxElementNameLen property value.
-     * This property is described as follows:
-     *
-     * Maximum supported ElementName length.
-     *
-     * @param	int	new maxElementNameLen property value
-     * @exception	Exception
-     */
-    public void setMaxElementNameLen(int maxElementNameLen) {
+	/**
+	 * This method sets the EnabledLogicalElementCapabilities.maxElementNameLen property value. This property is described as follows:
+	 * 
+	 * Maximum supported ElementName length.
+	 * 
+	 * @param int new maxElementNameLen property value
+	 * @exception Exception
+	 */
+	public void setMaxElementNameLen(int maxElementNameLen) {
 
-    this.maxElementNameLen = maxElementNameLen;
-    } // setMaxElementNameLen
+		this.maxElementNameLen = maxElementNameLen;
+	} // setMaxElementNameLen
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RequestedStatesSupported.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property RequestedStatesSupported.
-     */
+	public enum RequestedStatesSupported {
+		ENABLED,
+		DISABLED,
+		SHUT_DOWN,
+		OFFLINE,
+		TEST,
+		DEFER,
+		QUIESCE,
+		REBOOT,
+		RESET
+	}
 
-    public enum RequestedStatesSupported{
-    ENABLED,
-    DISABLED,
-    SHUT_DOWN,
-    OFFLINE,
-    TEST,
-    DEFER,
-    QUIESCE,
-    REBOOT,
-    RESET
-    }
-    private RequestedStatesSupported requestedStatesSupported;
-    /**
-     * This method returns the
-     * EnabledLogicalElementCapabilities.requestedStatesSupported property
-     * value. This property is described as follows:
-     *
-     * RequestedStatesSupported indicates the possible states that can be
-     * requested when using the method RequestStateChange on the
-     * EnabledLogicalElement.
-     *
-     * @return	int	current requestedStatesSupported property
-     * value
-     * @exception	Exception
-     */
-    public RequestedStatesSupported getRequestedStatesSupported(){
+	private RequestedStatesSupported	requestedStatesSupported;
 
-    return this.requestedStatesSupported;
-    } // getRequestedStatesSupported
+	/**
+	 * This method returns the EnabledLogicalElementCapabilities.requestedStatesSupported property value. This property is described as follows:
+	 * 
+	 * RequestedStatesSupported indicates the possible states that can be requested when using the method RequestStateChange on the
+	 * EnabledLogicalElement.
+	 * 
+	 * @return int current requestedStatesSupported property value
+	 * @exception Exception
+	 */
+	public RequestedStatesSupported getRequestedStatesSupported() {
 
-    /**
-     * This method sets the
-     * EnabledLogicalElementCapabilities.requestedStatesSupported property
-     * value. This property is described as follows:
-     *
-     * RequestedStatesSupported indicates the possible states that can be
-     * requested when using the method RequestStateChange on the
-     * EnabledLogicalElement.
-     *
-     * @param	int	new requestedStatesSupported property value
-     * @exception	Exception
-     */
-    public void setRequestedStatesSupported(RequestedStatesSupported
-	requestedStatesSupported){
+		return this.requestedStatesSupported;
+	} // getRequestedStatesSupported
 
-    this.requestedStatesSupported = requestedStatesSupported;
-    } // setRequestedStatesSupported
+	/**
+	 * This method sets the EnabledLogicalElementCapabilities.requestedStatesSupported property value. This property is described as follows:
+	 * 
+	 * RequestedStatesSupported indicates the possible states that can be requested when using the method RequestStateChange on the
+	 * EnabledLogicalElement.
+	 * 
+	 * @param int new requestedStatesSupported property value
+	 * @exception Exception
+	 */
+	public void setRequestedStatesSupported(RequestedStatesSupported
+			requestedStatesSupported) {
 
+		this.requestedStatesSupported = requestedStatesSupported;
+	} // setRequestedStatesSupported
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property elementNameMask.
-     */
-    private String elementNameMask;
-    /**
-     * This method returns the
-     * EnabledLogicalElementCapabilities.elementNameMask property value. This
-     * property is described as follows:
-     *
-     * This string expresses the restrictions on ElementName.The mask is
-     * expressed as a regular expression.See DMTF standard ABNF with the
-     * Management Profile Specification Usage Guide, appendix C for the
-     * regular expression syntax permitted. Since the ElementNameMask can
-     * describe the maximum length of the ElementName,any length defined in
-     * the regexp is in addition to the restriction defined in
-     * MaxElementNameLen (causing the smaller value to be the maximum length)
-     * The ElementName value satisfies the restriction, if and only if it
-     * matches the regular expression
-     *
-     * @return	String	current elementNameMask property value
-     * @exception	Exception
-     */
-    public String getElementNameMask(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property elementNameMask.
+	 */
+	private String	elementNameMask;
 
-    return this.elementNameMask;
-    } // getElementNameMask
+	/**
+	 * This method returns the EnabledLogicalElementCapabilities.elementNameMask property value. This property is described as follows:
+	 * 
+	 * This string expresses the restrictions on ElementName.The mask is expressed as a regular expression.See DMTF standard ABNF with the Management
+	 * Profile Specification Usage Guide, appendix C for the regular expression syntax permitted. Since the ElementNameMask can describe the maximum
+	 * length of the ElementName,any length defined in the regexp is in addition to the restriction defined in MaxElementNameLen (causing the smaller
+	 * value to be the maximum length) The ElementName value satisfies the restriction, if and only if it matches the regular expression
+	 * 
+	 * @return String current elementNameMask property value
+	 * @exception Exception
+	 */
+	public String getElementNameMask() {
 
-    /**
-     * This method sets the EnabledLogicalElementCapabilities.elementNameMask
-     * property value. This property is described as follows:
-     *
-     * This string expresses the restrictions on ElementName.The mask is
-     * expressed as a regular expression.See DMTF standard ABNF with the
-     * Management Profile Specification Usage Guide, appendix C for the
-     * regular expression syntax permitted. Since the ElementNameMask can
-     * describe the maximum length of the ElementName,any length defined in
-     * the regexp is in addition to the restriction defined in
-     * MaxElementNameLen (causing the smaller value to be the maximum length)
-     * The ElementName value satisfies the restriction, if and only if it
-     * matches the regular expression
-     *
-     * @param	String	new elementNameMask property value
-     * @exception	Exception
-     */
-    public void setElementNameMask(String elementNameMask) {
+		return this.elementNameMask;
+	} // getElementNameMask
 
-    this.elementNameMask = elementNameMask;
-    } // setElementNameMask
+	/**
+	 * This method sets the EnabledLogicalElementCapabilities.elementNameMask property value. This property is described as follows:
+	 * 
+	 * This string expresses the restrictions on ElementName.The mask is expressed as a regular expression.See DMTF standard ABNF with the Management
+	 * Profile Specification Usage Guide, appendix C for the regular expression syntax permitted. Since the ElementNameMask can describe the maximum
+	 * length of the ElementName,any length defined in the regexp is in addition to the restriction defined in MaxElementNameLen (causing the smaller
+	 * value to be the maximum length) The ElementName value satisfies the restriction, if and only if it matches the regular expression
+	 * 
+	 * @param String
+	 *            new elementNameMask property value
+	 * @exception Exception
+	 */
+	public void setElementNameMask(String elementNameMask) {
 
-
+		this.elementNameMask = elementNameMask;
+	} // setElementNameMask
 
 } // Class EnabledLogicalElementCapabilities

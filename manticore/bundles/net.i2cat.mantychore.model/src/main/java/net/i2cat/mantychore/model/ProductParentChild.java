@@ -8,38 +8,32 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductParentChild as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProductParentChildBean Interface. The CIM class ProductParentChild is
- * described as follows:
- *
- * The CIM_ProductParentChild association defines a parent child hierarchy
- * among Products. For example, a Product may come bundled with other
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductParentChild as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ProductParentChildBean Interface. The CIM class ProductParentChild is described
+ * as follows:
+ * 
+ * The CIM_ProductParentChild association defines a parent child hierarchy among Products. For example, a Product may come bundled with other
  * Products.
  */
 public class ProductParentChild extends Association implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ProductParentChildBeanImpl Class which
-     * implements the ProductParentChildBean Interface, and encapsulates the
-     * CIM class ProductParentChild in a Java Bean. The CIM class
-     * ProductParentChild is described as follows:
-     *
-     * The CIM_ProductParentChild association defines a parent child hierarchy
-     * among Products. For example, a Product may come bundled with other
-     * Products.
-     */
-    public ProductParentChild(){};
-    /**
-     * This method create an Association of the type ProductParentChild
-     * between one Product object and Product object
-     */
-    public static ProductParentChild link(Product parent,Product child){
+	/**
+	 * This constructor creates a ProductParentChildBeanImpl Class which implements the ProductParentChildBean Interface, and encapsulates the CIM
+	 * class ProductParentChild in a Java Bean. The CIM class ProductParentChild is described as follows:
+	 * 
+	 * The CIM_ProductParentChild association defines a parent child hierarchy among Products. For example, a Product may come bundled with other
+	 * Products.
+	 */
+	public ProductParentChild() {
+	};
 
-    return (ProductParentChild)
-	Association.link(ProductParentChild.class,parent,child);
-    }//link
+	/**
+	 * This method create an Association of the type ProductParentChild between one Product object and Product object
+	 */
+	public static ProductParentChild link(Product parent, Product child) {
+
+		return (ProductParentChild) Association.link(ProductParentChild.class, parent, child);
+	}// link
 
 } // Class ProductParentChild
