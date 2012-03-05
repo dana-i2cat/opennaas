@@ -8,26 +8,21 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPConfigurationService as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * IPConfigurationServiceBean Interface. The CIM class IPConfigurationService
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPConfigurationService as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the IPConfigurationServiceBean Interface. The CIM class IPConfigurationService
  * is described as follows:
- *
- * CIM_IPConfigurationService provides management of the IP configuration
- * associated with a LANEndpoint or IPProtocolEndpoint.
+ * 
+ * CIM_IPConfigurationService provides management of the IP configuration associated with a LANEndpoint or IPProtocolEndpoint.
  */
 public class IPConfigurationService extends Service implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a IPConfigurationServiceBeanImpl Class which
-     * implements the IPConfigurationServiceBean Interface, and encapsulates
-     * the CIM class IPConfigurationService in a Java Bean. The CIM class
-     * IPConfigurationService is described as follows:
-     *
-     * CIM_IPConfigurationService provides management of the IP configuration
-     * associated with a LANEndpoint or IPProtocolEndpoint.
-     */
-    public IPConfigurationService(){};
+	/**
+	 * This constructor creates a IPConfigurationServiceBeanImpl Class which implements the IPConfigurationServiceBean Interface, and encapsulates the
+	 * CIM class IPConfigurationService in a Java Bean. The CIM class IPConfigurationService is described as follows:
+	 * 
+	 * CIM_IPConfigurationService provides management of the IP configuration associated with a LANEndpoint or IPProtocolEndpoint.
+	 */
+	public IPConfigurationService() {
+	};
 } // Class IPConfigurationService

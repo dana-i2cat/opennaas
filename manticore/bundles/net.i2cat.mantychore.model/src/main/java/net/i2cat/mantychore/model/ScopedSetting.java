@@ -8,37 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ScopedSetting as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ScopedSettingBean Interface. The CIM class ScopedSetting is described as
- * follows:
- *
- * ScopedSetting defines a setting in the context of the ManagedElement in
- * which it is located.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ScopedSetting as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ScopedSettingBean Interface. The CIM class ScopedSetting is described as follows:
+ * 
+ * ScopedSetting defines a setting in the context of the ManagedElement in which it is located.
  */
 public class ScopedSetting extends HostedDependency implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ScopedSettingBeanImpl Class which implements
-     * the ScopedSettingBean Interface, and encapsulates the CIM class
-     * ScopedSetting in a Java Bean. The CIM class ScopedSetting is described
-     * as follows:
-     *
-     * ScopedSetting defines a setting in the context of the ManagedElement in
-     * which it is located.
-     */
-    public ScopedSetting(){};
-    /**
-     * This method create an Association of the type ScopedSetting between one
-     * ManagedElement object and ScopedSettingData object
-     */
-    public static ScopedSetting link(ManagedElement
-	antecedent,ScopedSettingData dependent){
+	/**
+	 * This constructor creates a ScopedSettingBeanImpl Class which implements the ScopedSettingBean Interface, and encapsulates the CIM class
+	 * ScopedSetting in a Java Bean. The CIM class ScopedSetting is described as follows:
+	 * 
+	 * ScopedSetting defines a setting in the context of the ManagedElement in which it is located.
+	 */
+	public ScopedSetting() {
+	};
 
-    return (ScopedSetting)
-	Association.link(ScopedSetting.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ScopedSetting between one ManagedElement object and ScopedSettingData object
+	 */
+	public static ScopedSetting link(ManagedElement
+			antecedent, ScopedSettingData dependent) {
+
+		return (ScopedSetting) Association.link(ScopedSetting.class, antecedent, dependent);
+	}// link
 
 } // Class ScopedSetting

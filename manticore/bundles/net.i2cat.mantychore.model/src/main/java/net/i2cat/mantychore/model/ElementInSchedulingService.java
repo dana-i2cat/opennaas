@@ -8,40 +8,34 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ElementInSchedulingService as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * ElementInSchedulingServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ElementInSchedulingService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ElementInSchedulingServiceBean Interface. The CIM class
  * ElementInSchedulingService is described as follows:
- *
- * This association represents the relationship between a
- * PacketSchedulingService and the set of SchedulingElements that tie it to
- * its inputs (either QueuingServices or other PacketSchedulingServices).
+ * 
+ * This association represents the relationship between a PacketSchedulingService and the set of SchedulingElements that tie it to its inputs (either
+ * QueuingServices or other PacketSchedulingServices).
  */
 public class ElementInSchedulingService extends Component implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ElementInSchedulingServiceBeanImpl Class
-     * which implements the ElementInSchedulingServiceBean Interface, and
-     * encapsulates the CIM class ElementInSchedulingService in a Java Bean.
-     * The CIM class ElementInSchedulingService is described as follows:
-     *
-     * This association represents the relationship between a
-     * PacketSchedulingService and the set of SchedulingElements that tie it
-     * to its inputs (either QueuingServices or other
-     * PacketSchedulingServices).
-     */
-    public ElementInSchedulingService(){};
-    /**
-     * This method create an Association of the type
-     * ElementInSchedulingService between one PacketSchedulingService object
-     * and SchedulingElement object
-     */
-    public static ElementInSchedulingService link(PacketSchedulingService
-	groupComponent,SchedulingElement partComponent){
+	/**
+	 * This constructor creates a ElementInSchedulingServiceBeanImpl Class which implements the ElementInSchedulingServiceBean Interface, and
+	 * encapsulates the CIM class ElementInSchedulingService in a Java Bean. The CIM class ElementInSchedulingService is described as follows:
+	 * 
+	 * This association represents the relationship between a PacketSchedulingService and the set of SchedulingElements that tie it to its inputs
+	 * (either QueuingServices or other PacketSchedulingServices).
+	 */
+	public ElementInSchedulingService() {
+	};
 
-    return (ElementInSchedulingService) Association.link(ElementInSchedulingService.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ElementInSchedulingService between one PacketSchedulingService object and SchedulingElement
+	 * object
+	 */
+	public static ElementInSchedulingService link(PacketSchedulingService
+			groupComponent, SchedulingElement partComponent) {
+
+		return (ElementInSchedulingService) Association.link(ElementInSchedulingService.class, groupComponent, partComponent);
+	}// link
 
 } // Class ElementInSchedulingService

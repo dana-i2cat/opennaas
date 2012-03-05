@@ -8,41 +8,35 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchServiceVLAN as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SwitchServiceVLANBean Interface. The CIM class SwitchServiceVLAN is
- * described as follows:
- *
- * This class is deprecated as a fall out of the previous deprecations within
- * the existing model An association linking SwitchService to a component
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchServiceVLAN as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SwitchServiceVLANBean Interface. The CIM class SwitchServiceVLAN is described as
+ * follows:
+ * 
+ * This class is deprecated as a fall out of the previous deprecations within the existing model An association linking SwitchService to a component
  * VLANService.
  */
-    @Deprecated
+@Deprecated
 public class SwitchServiceVLAN extends ServiceComponent implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SwitchServiceVLANBeanImpl Class which
-     * implements the SwitchServiceVLANBean Interface, and encapsulates the
-     * CIM class SwitchServiceVLAN in a Java Bean. The CIM class
-     * SwitchServiceVLAN is described as follows:
-     *
-     * This class is deprecated as a fall out of the previous deprecations
-     * within the existing model An association linking SwitchService to a
-     * component VLANService.
-     */
-    public SwitchServiceVLAN(){};
-    /**
-     * This method create an Association of the type SwitchServiceVLAN between
-     * one SwitchService object and VLANService object
-     */
-    @Deprecated
-    public static SwitchServiceVLAN link(SwitchService
-	groupComponent,VLANService partComponent){
+	/**
+	 * This constructor creates a SwitchServiceVLANBeanImpl Class which implements the SwitchServiceVLANBean Interface, and encapsulates the CIM class
+	 * SwitchServiceVLAN in a Java Bean. The CIM class SwitchServiceVLAN is described as follows:
+	 * 
+	 * This class is deprecated as a fall out of the previous deprecations within the existing model An association linking SwitchService to a
+	 * component VLANService.
+	 */
+	public SwitchServiceVLAN() {
+	};
 
-    return (SwitchServiceVLAN)
-	Association.link(SwitchServiceVLAN.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type SwitchServiceVLAN between one SwitchService object and VLANService object
+	 */
+	@Deprecated
+	public static SwitchServiceVLAN link(SwitchService
+			groupComponent, VLANService partComponent) {
+
+		return (SwitchServiceVLAN) Association.link(SwitchServiceVLAN.class, groupComponent, partComponent);
+	}// link
 
 } // Class SwitchServiceVLAN

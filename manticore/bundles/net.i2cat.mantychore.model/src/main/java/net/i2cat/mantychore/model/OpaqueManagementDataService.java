@@ -10,161 +10,130 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OpaqueManagementDataService as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * OpaqueManagementDataServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OpaqueManagementDataService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the OpaqueManagementDataServiceBean Interface. The CIM class
  * OpaqueManagementDataService is described as follows:
- *
- * A class derived from Service that contains global properties of the opaque
- * management data functionality in the CIM server, and provides methods for
- * using this functionality.
+ * 
+ * A class derived from Service that contains global properties of the opaque management data functionality in the CIM server, and provides methods
+ * for using this functionality.
  */
 public class OpaqueManagementDataService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a OpaqueManagementDataServiceBeanImpl Class
-     * which implements the OpaqueManagementDataServiceBean Interface, and
-     * encapsulates the CIM class OpaqueManagementDataService in a Java Bean.
-     * The CIM class OpaqueManagementDataService is described as follows:
-     *
-     * A class derived from Service that contains global properties of the
-     * opaque management data functionality in the CIM server, and provides
-     * methods for using this functionality.
-     */
-    public OpaqueManagementDataService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property availableStorage.
-     */
-    private long availableStorage;
-    /**
-     * This method returns the OpaqueManagementDataService.availableStorage
-     * property value. This property is described as follows:
-     *
-     * The number of bytes of opaque management data storage available from
-     * the CIM_OpaqueManagementDataService. The value of AvailableStorage
-     * shall not exceed the value of MaxAvailableStorage in the associated
-     * CIM_OpaqueManagementDataCapabilities.
-     *
-     * @return	long	current availableStorage property value
-     * @exception	Exception
-     */
-    public long getAvailableStorage(){
+	/**
+	 * This constructor creates a OpaqueManagementDataServiceBeanImpl Class which implements the OpaqueManagementDataServiceBean Interface, and
+	 * encapsulates the CIM class OpaqueManagementDataService in a Java Bean. The CIM class OpaqueManagementDataService is described as follows:
+	 * 
+	 * A class derived from Service that contains global properties of the opaque management data functionality in the CIM server, and provides
+	 * methods for using this functionality.
+	 */
+	public OpaqueManagementDataService() {
+	};
 
-    return this.availableStorage;
-    } // getAvailableStorage
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property availableStorage.
+	 */
+	private long	availableStorage;
 
-    /**
-     * This method sets the OpaqueManagementDataService.availableStorage
-     * property value. This property is described as follows:
-     *
-     * The number of bytes of opaque management data storage available from
-     * the CIM_OpaqueManagementDataService. The value of AvailableStorage
-     * shall not exceed the value of MaxAvailableStorage in the associated
-     * CIM_OpaqueManagementDataCapabilities.
-     *
-     * @param	long	new availableStorage property value
-     * @exception	Exception
-     */
-    public void setAvailableStorage(long availableStorage) {
+	/**
+	 * This method returns the OpaqueManagementDataService.availableStorage property value. This property is described as follows:
+	 * 
+	 * The number of bytes of opaque management data storage available from the CIM_OpaqueManagementDataService. The value of AvailableStorage shall
+	 * not exceed the value of MaxAvailableStorage in the associated CIM_OpaqueManagementDataCapabilities.
+	 * 
+	 * @return long current availableStorage property value
+	 * @exception Exception
+	 */
+	public long getAvailableStorage() {
 
-    this.availableStorage = availableStorage;
-    } // setAvailableStorage
+		return this.availableStorage;
+	} // getAvailableStorage
 
+	/**
+	 * This method sets the OpaqueManagementDataService.availableStorage property value. This property is described as follows:
+	 * 
+	 * The number of bytes of opaque management data storage available from the CIM_OpaqueManagementDataService. The value of AvailableStorage shall
+	 * not exceed the value of MaxAvailableStorage in the associated CIM_OpaqueManagementDataCapabilities.
+	 * 
+	 * @param long new availableStorage property value
+	 * @exception Exception
+	 */
+	public void setAvailableStorage(long availableStorage) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lockTimeout.
-     */
-    private Date lockTimeout;
-    /**
-     * This method returns the OpaqueManagementDataService.lockTimeout
-     * property value. This property is described as follows:
-     *
-     * The amount of time a lock on a CIM_OpaqueManagementData instance shall
-     * remain in effect without execution of any
-     * CIM_OpaqueManagementDataService extrinsic methods on that
-     * CIM_OpaqueManagementData instance by the Identity that holds the lock.
-     * Locks on CIM_OpaqueManagementData are created by Lock(). The intent of
-     * the timeout is to ensure that a lock is released if the lock holder
-     * neglects to release it or is unable to release it. The value of
-     * LockTimeout shall be a duration.
-     *
-     * @return	Date	current lockTimeout property value
-     * @exception	Exception
-     */
-    public Date getLockTimeout(){
+		this.availableStorage = availableStorage;
+	} // setAvailableStorage
 
-    return this.lockTimeout;
-    } // getLockTimeout
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lockTimeout.
+	 */
+	private Date	lockTimeout;
 
-    /**
-     * This method sets the OpaqueManagementDataService.lockTimeout property
-     * value. This property is described as follows:
-     *
-     * The amount of time a lock on a CIM_OpaqueManagementData instance shall
-     * remain in effect without execution of any
-     * CIM_OpaqueManagementDataService extrinsic methods on that
-     * CIM_OpaqueManagementData instance by the Identity that holds the lock.
-     * Locks on CIM_OpaqueManagementData are created by Lock(). The intent of
-     * the timeout is to ensure that a lock is released if the lock holder
-     * neglects to release it or is unable to release it. The value of
-     * LockTimeout shall be a duration.
-     *
-     * @param	Date	new lockTimeout property value
-     * @exception	Exception
-     */
-    public void setLockTimeout(Date lockTimeout) {
+	/**
+	 * This method returns the OpaqueManagementDataService.lockTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time a lock on a CIM_OpaqueManagementData instance shall remain in effect without execution of any
+	 * CIM_OpaqueManagementDataService extrinsic methods on that CIM_OpaqueManagementData instance by the Identity that holds the lock. Locks on
+	 * CIM_OpaqueManagementData are created by Lock(). The intent of the timeout is to ensure that a lock is released if the lock holder neglects to
+	 * release it or is unable to release it. The value of LockTimeout shall be a duration.
+	 * 
+	 * @return Date current lockTimeout property value
+	 * @exception Exception
+	 */
+	public Date getLockTimeout() {
 
-    this.lockTimeout = lockTimeout;
-    } // setLockTimeout
+		return this.lockTimeout;
+	} // getLockTimeout
 
+	/**
+	 * This method sets the OpaqueManagementDataService.lockTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time a lock on a CIM_OpaqueManagementData instance shall remain in effect without execution of any
+	 * CIM_OpaqueManagementDataService extrinsic methods on that CIM_OpaqueManagementData instance by the Identity that holds the lock. Locks on
+	 * CIM_OpaqueManagementData are created by Lock(). The intent of the timeout is to ensure that a lock is released if the lock holder neglects to
+	 * release it or is unable to release it. The value of LockTimeout shall be a duration.
+	 * 
+	 * @param Date
+	 *            new lockTimeout property value
+	 * @exception Exception
+	 */
+	public void setLockTimeout(Date lockTimeout) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxCreateSize.
-     */
-    private long maxCreateSize;
-    /**
-     * This method returns the OpaqueManagementDataService.maxCreateSize
-     * property value. This property is described as follows:
-     *
-     * MaxCreateSize shall contain the maximum value that the implementation
-     * will currently accept in the MaxSize property of the
-     * OpaqueManagementDataTemplate embedded instance parameter in a call to
-     * Create(). This value may change over time for any reason, including
-     * but not limited to fragmentation of the storage resources managed by
-     * the service.
-     *
-     * @return	long	current maxCreateSize property value
-     * @exception	Exception
-     */
-    public long getMaxCreateSize(){
+		this.lockTimeout = lockTimeout;
+	} // setLockTimeout
 
-    return this.maxCreateSize;
-    } // getMaxCreateSize
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxCreateSize.
+	 */
+	private long	maxCreateSize;
 
-    /**
-     * This method sets the OpaqueManagementDataService.maxCreateSize property
-     * value. This property is described as follows:
-     *
-     * MaxCreateSize shall contain the maximum value that the implementation
-     * will currently accept in the MaxSize property of the
-     * OpaqueManagementDataTemplate embedded instance parameter in a call to
-     * Create(). This value may change over time for any reason, including
-     * but not limited to fragmentation of the storage resources managed by
-     * the service.
-     *
-     * @param	long	new maxCreateSize property value
-     * @exception	Exception
-     */
-    public void setMaxCreateSize(long maxCreateSize) {
+	/**
+	 * This method returns the OpaqueManagementDataService.maxCreateSize property value. This property is described as follows:
+	 * 
+	 * MaxCreateSize shall contain the maximum value that the implementation will currently accept in the MaxSize property of the
+	 * OpaqueManagementDataTemplate embedded instance parameter in a call to Create(). This value may change over time for any reason, including but
+	 * not limited to fragmentation of the storage resources managed by the service.
+	 * 
+	 * @return long current maxCreateSize property value
+	 * @exception Exception
+	 */
+	public long getMaxCreateSize() {
 
-    this.maxCreateSize = maxCreateSize;
-    } // setMaxCreateSize
+		return this.maxCreateSize;
+	} // getMaxCreateSize
 
+	/**
+	 * This method sets the OpaqueManagementDataService.maxCreateSize property value. This property is described as follows:
+	 * 
+	 * MaxCreateSize shall contain the maximum value that the implementation will currently accept in the MaxSize property of the
+	 * OpaqueManagementDataTemplate embedded instance parameter in a call to Create(). This value may change over time for any reason, including but
+	 * not limited to fragmentation of the storage resources managed by the service.
+	 * 
+	 * @param long new maxCreateSize property value
+	 * @exception Exception
+	 */
+	public void setMaxCreateSize(long maxCreateSize) {
 
+		this.maxCreateSize = maxCreateSize;
+	} // setMaxCreateSize
 
 } // Class OpaqueManagementDataService

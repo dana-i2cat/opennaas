@@ -8,37 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ASBGPEndpoints as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ASBGPEndpointsBean Interface. The CIM class ASBGPEndpoints is described as
- * follows:
- *
- * This aggregation defines the different router interfaces that are running
- * BGP in the AutonomousSystem.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ASBGPEndpoints as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ASBGPEndpointsBean Interface. The CIM class ASBGPEndpoints is described as follows:
+ * 
+ * This aggregation defines the different router interfaces that are running BGP in the AutonomousSystem.
  */
 public class ASBGPEndpoints extends SystemComponent implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ASBGPEndpointsBeanImpl Class which
-     * implements the ASBGPEndpointsBean Interface, and encapsulates the CIM
-     * class ASBGPEndpoints in a Java Bean. The CIM class ASBGPEndpoints is
-     * described as follows:
-     *
-     * This aggregation defines the different router interfaces that are
-     * running BGP in the AutonomousSystem.
-     */
-    public ASBGPEndpoints(){};
-    /**
-     * This method create an Association of the type ASBGPEndpoints between
-     * one AutonomousSystem object and BGPProtocolEndpoint object
-     */
-    public static ASBGPEndpoints link(AutonomousSystem
-	groupComponent,BGPProtocolEndpoint partComponent){
+	/**
+	 * This constructor creates a ASBGPEndpointsBeanImpl Class which implements the ASBGPEndpointsBean Interface, and encapsulates the CIM class
+	 * ASBGPEndpoints in a Java Bean. The CIM class ASBGPEndpoints is described as follows:
+	 * 
+	 * This aggregation defines the different router interfaces that are running BGP in the AutonomousSystem.
+	 */
+	public ASBGPEndpoints() {
+	};
 
-    return (ASBGPEndpoints)
-	Association.link(ASBGPEndpoints.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ASBGPEndpoints between one AutonomousSystem object and BGPProtocolEndpoint object
+	 */
+	public static ASBGPEndpoints link(AutonomousSystem
+			groupComponent, BGPProtocolEndpoint partComponent) {
+
+		return (ASBGPEndpoints) Association.link(ASBGPEndpoints.class, groupComponent, partComponent);
+	}// link
 
 } // Class ASBGPEndpoints

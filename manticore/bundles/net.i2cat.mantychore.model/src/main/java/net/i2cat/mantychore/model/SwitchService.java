@@ -9,196 +9,171 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SwitchServiceBean Interface. The CIM class SwitchService is described as
- * follows:
- *
- * Generic switch (bridging) service class. Additional switching functions are
- * incorporated as subordinate services related to this class via
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SwitchServiceBean Interface. The CIM class SwitchService is described as follows:
+ * 
+ * Generic switch (bridging) service class. Additional switching functions are incorporated as subordinate services related to this class via
  * ServiceComponent associations.
  */
 public class SwitchService extends ForwardingService implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a SwitchServiceBeanImpl Class which implements
-     * the SwitchServiceBean Interface, and encapsulates the CIM class
-     * SwitchService in a Java Bean. The CIM class SwitchService is described
-     * as follows:
-     *
-     * Generic switch (bridging) service class. Additional switching functions
-     * are incorporated as subordinate services related to this class via
-     * ServiceComponent associations.
-     */
-    public SwitchService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property bridgeAddress.
-     */
-    private String bridgeAddress;
-    /**
-     * This method returns the SwitchService.bridgeAddress property value.
-     * This property is described as follows:
-     *
-     * Address used by this SwitchService when it must be uniquely identified.
-     * For an ethernet bridge, the MAC Address serves as the BridgeAddress.
-     * When concatenated with a SpanningTreeService Priority, a unique bridge
-     * identifier results. The MAC address is formatted as twelve hexadecimal
-     * digits (e.g., "010203040506"), with each pair representing one of the
-     * six octets of the MAC address in "canonical" bit order according to
-     * RFC 2469. In other scenarios, like Ipv6, the address is formatted as
-     * "ffff:ffff:ffff:ffff".
-     *
-     * @return	String	current bridgeAddress property value
-     * @exception	Exception
-     */
-    public String getBridgeAddress(){
+	/**
+	 * This constructor creates a SwitchServiceBeanImpl Class which implements the SwitchServiceBean Interface, and encapsulates the CIM class
+	 * SwitchService in a Java Bean. The CIM class SwitchService is described as follows:
+	 * 
+	 * Generic switch (bridging) service class. Additional switching functions are incorporated as subordinate services related to this class via
+	 * ServiceComponent associations.
+	 */
+	public SwitchService() {
+	};
 
-    return this.bridgeAddress;
-    } // getBridgeAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property bridgeAddress.
+	 */
+	private String	bridgeAddress;
 
-    /**
-     * This method sets the SwitchService.bridgeAddress property value. This
-     * property is described as follows:
-     *
-     * Address used by this SwitchService when it must be uniquely identified.
-     * For an ethernet bridge, the MAC Address serves as the BridgeAddress.
-     * When concatenated with a SpanningTreeService Priority, a unique bridge
-     * identifier results. The MAC address is formatted as twelve hexadecimal
-     * digits (e.g., "010203040506"), with each pair representing one of the
-     * six octets of the MAC address in "canonical" bit order according to
-     * RFC 2469. In other scenarios, like Ipv6, the address is formatted as
-     * "ffff:ffff:ffff:ffff".
-     *
-     * @param	String	new bridgeAddress property value
-     * @exception	Exception
-     */
-    public void setBridgeAddress(String bridgeAddress) {
+	/**
+	 * This method returns the SwitchService.bridgeAddress property value. This property is described as follows:
+	 * 
+	 * Address used by this SwitchService when it must be uniquely identified. For an ethernet bridge, the MAC Address serves as the BridgeAddress.
+	 * When concatenated with a SpanningTreeService Priority, a unique bridge identifier results. The MAC address is formatted as twelve hexadecimal
+	 * digits (e.g., "010203040506"), with each pair representing one of the six octets of the MAC address in "canonical" bit order according to RFC
+	 * 2469. In other scenarios, like Ipv6, the address is formatted as "ffff:ffff:ffff:ffff".
+	 * 
+	 * @return String current bridgeAddress property value
+	 * @exception Exception
+	 */
+	public String getBridgeAddress() {
 
-    this.bridgeAddress = bridgeAddress;
-    } // setBridgeAddress
+		return this.bridgeAddress;
+	} // getBridgeAddress
 
+	/**
+	 * This method sets the SwitchService.bridgeAddress property value. This property is described as follows:
+	 * 
+	 * Address used by this SwitchService when it must be uniquely identified. For an ethernet bridge, the MAC Address serves as the BridgeAddress.
+	 * When concatenated with a SpanningTreeService Priority, a unique bridge identifier results. The MAC address is formatted as twelve hexadecimal
+	 * digits (e.g., "010203040506"), with each pair representing one of the six octets of the MAC address in "canonical" bit order according to RFC
+	 * 2469. In other scenarios, like Ipv6, the address is formatted as "ffff:ffff:ffff:ffff".
+	 * 
+	 * @param String
+	 *            new bridgeAddress property value
+	 * @exception Exception
+	 */
+	public void setBridgeAddress(String bridgeAddress) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property numPorts.
-     */
-    private int numPorts;
-    /**
-     * This method returns the SwitchService.numPorts property value. This
-     * property is described as follows:
-     *
-     * The number of switch ports controlled by this switching service.
-     *
-     * @return	int	current numPorts property value
-     * @exception	Exception
-     */
-    public int getNumPorts(){
+		this.bridgeAddress = bridgeAddress;
+	} // setBridgeAddress
 
-    return this.numPorts;
-    } // getNumPorts
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property numPorts.
+	 */
+	private int	numPorts;
 
-    /**
-     * This method sets the SwitchService.numPorts property value. This
-     * property is described as follows:
-     *
-     * The number of switch ports controlled by this switching service.
-     *
-     * @param	int	new numPorts property value
-     * @exception	Exception
-     */
-    public void setNumPorts(int numPorts) {
+	/**
+	 * This method returns the SwitchService.numPorts property value. This property is described as follows:
+	 * 
+	 * The number of switch ports controlled by this switching service.
+	 * 
+	 * @return int current numPorts property value
+	 * @exception Exception
+	 */
+	public int getNumPorts() {
 
-    this.numPorts = numPorts;
-    } // setNumPorts
+		return this.numPorts;
+	} // getNumPorts
 
+	/**
+	 * This method sets the SwitchService.numPorts property value. This property is described as follows:
+	 * 
+	 * The number of switch ports controlled by this switching service.
+	 * 
+	 * @param int new numPorts property value
+	 * @exception Exception
+	 */
+	public void setNumPorts(int numPorts) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property BridgeType.
-     */
+		this.numPorts = numPorts;
+	} // setNumPorts
 
-    public enum BridgeType{
-    UNKNOWN,
-    TRANSPARENT_ONLY,
-    SOURCEROUTE_ONLY,
-    SRT
-    }
-    private BridgeType bridgeType;
-    /**
-     * This method returns the SwitchService.bridgeType property value. This
-     * property is described as follows:
-     *
-     * Indicates what type of switching service can be performed.
-     *
-     * @return	short	current bridgeType property value
-     * @exception	Exception
-     */
-    public BridgeType getBridgeType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property BridgeType.
+	 */
 
-    return this.bridgeType;
-    } // getBridgeType
+	public enum BridgeType {
+		UNKNOWN,
+		TRANSPARENT_ONLY,
+		SOURCEROUTE_ONLY,
+		SRT
+	}
 
-    /**
-     * This method sets the SwitchService.bridgeType property value. This
-     * property is described as follows:
-     *
-     * Indicates what type of switching service can be performed.
-     *
-     * @param	short	new bridgeType property value
-     * @exception	Exception
-     */
-    public void setBridgeType(BridgeType bridgeType){
+	private BridgeType	bridgeType;
 
-    this.bridgeType = bridgeType;
-    } // setBridgeType
+	/**
+	 * This method returns the SwitchService.bridgeType property value. This property is described as follows:
+	 * 
+	 * Indicates what type of switching service can be performed.
+	 * 
+	 * @return short current bridgeType property value
+	 * @exception Exception
+	 */
+	public BridgeType getBridgeType() {
 
+		return this.bridgeType;
+	} // getBridgeType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property BridgeAddressType.
-     */
+	/**
+	 * This method sets the SwitchService.bridgeType property value. This property is described as follows:
+	 * 
+	 * Indicates what type of switching service can be performed.
+	 * 
+	 * @param short new bridgeType property value
+	 * @exception Exception
+	 */
+	public void setBridgeType(BridgeType bridgeType) {
 
-    public enum BridgeAddressType{
-    OTHER,
-    IPV4,
-    IPV6,
-    MAC,
-    MAC_PLUS_SPANNING_TREE_PRIORITYPLUS
-    }
-    private BridgeAddressType bridgeAddressType;
-    /**
-     * This method returns the SwitchService.bridgeAddressType property value.
-     * This property is described as follows:
-     *
-     * BridgeAddressType defines the type of addressing scheme used for this
-     * Bridge and its BridgeAddress property.
-     *
-     * @return	int	current bridgeAddressType property value
-     * @exception	Exception
-     */
-    public BridgeAddressType getBridgeAddressType(){
+		this.bridgeType = bridgeType;
+	} // setBridgeType
 
-    return this.bridgeAddressType;
-    } // getBridgeAddressType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property BridgeAddressType.
+	 */
 
-    /**
-     * This method sets the SwitchService.bridgeAddressType property value.
-     * This property is described as follows:
-     *
-     * BridgeAddressType defines the type of addressing scheme used for this
-     * Bridge and its BridgeAddress property.
-     *
-     * @param	int	new bridgeAddressType property value
-     * @exception	Exception
-     */
-    public void setBridgeAddressType(BridgeAddressType bridgeAddressType){
+	public enum BridgeAddressType {
+		OTHER,
+		IPV4,
+		IPV6,
+		MAC,
+		MAC_PLUS_SPANNING_TREE_PRIORITYPLUS
+	}
 
-    this.bridgeAddressType = bridgeAddressType;
-    } // setBridgeAddressType
+	private BridgeAddressType	bridgeAddressType;
 
+	/**
+	 * This method returns the SwitchService.bridgeAddressType property value. This property is described as follows:
+	 * 
+	 * BridgeAddressType defines the type of addressing scheme used for this Bridge and its BridgeAddress property.
+	 * 
+	 * @return int current bridgeAddressType property value
+	 * @exception Exception
+	 */
+	public BridgeAddressType getBridgeAddressType() {
 
+		return this.bridgeAddressType;
+	} // getBridgeAddressType
+
+	/**
+	 * This method sets the SwitchService.bridgeAddressType property value. This property is described as follows:
+	 * 
+	 * BridgeAddressType defines the type of addressing scheme used for this Bridge and its BridgeAddress property.
+	 * 
+	 * @param int new bridgeAddressType property value
+	 * @exception Exception
+	 */
+	public void setBridgeAddressType(BridgeAddressType bridgeAddressType) {
+
+		this.bridgeAddressType = bridgeAddressType;
+	} // setBridgeAddressType
 
 } // Class SwitchService

@@ -1,0 +1,54 @@
+shell:echo Script to test ospf commands for a router
+
+#Creating and initializing resource
+resource:create /home/isart/workspace/opennaas/opennaas/manticore/utils/routerWithOSPF.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+
+ospf:show router:junos20
+
+shell:echo "ospf:configure -rid 10.11.12.13 router:junos20"
+ospf:configure -rid 10.11.12.13 router:junos20
+
+shell:echo "ospf:configureArea router:junos20 0.0.0.0 "
+ospf:configureArea router:junos20 0.0.0.0 
+
+shell:echo "ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.1 fe-0/3/0.2"
+ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.1 fe-0/3/0.2 
+
+# REFRESH MODEL IS REQUIRED (following operations need OSPFArea to be in model)
+queue:execute router:junos20
+
+# MOCK ONLY: we use fe-0/0/3.45 because it is the only one in netconf mock (so the only one in the model).
+shell:echo "ospf:enableInterface router:junos20 fe-0/3/0.1"
+ospf:enableInterface router:junos20 fe-0/0/3.45
+
+# MOCK ONLY: we use fe-0/0/3.45 because it is the only one in netconf mock (so the only one in the model).
+shell:echo "ospf:disableInterface router:junos20 fe-0/3/0.2"
+ospf:disableInterface router:junos20 fe-0/0/3.45
+
+shell:echo "ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/0.2"
+ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/0.2
+
+shell:echo "ospf:activate router:junos20"
+ospf:activate router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+shell:echo "ospf:deativate router:junos20"
+ospf:deactivate router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+shell:echo "ospf:configure --delete router:junos20"
+ospf:configure --delete router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+#Cleanup
+resource:stop router:junos20
+resource:remove router:junos20
