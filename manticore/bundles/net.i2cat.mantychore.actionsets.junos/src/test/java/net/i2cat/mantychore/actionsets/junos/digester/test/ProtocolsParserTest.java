@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
@@ -80,7 +81,10 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals(1, ospfServices.size());
+
+		OSPFService ospfService = ospfServices.get(0);
 		Assert.assertFalse("Service state must have been set", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
 	}
 
@@ -96,7 +100,10 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals(1, ospfServices.size());
+
+		OSPFService ospfService = (OSPFService) ospfServices.get(0);
 		Assert.assertTrue("Service state must have been set to DISABLED", EnabledState.DISABLED.equals(ospfService.getEnabledState()));
 	}
 
