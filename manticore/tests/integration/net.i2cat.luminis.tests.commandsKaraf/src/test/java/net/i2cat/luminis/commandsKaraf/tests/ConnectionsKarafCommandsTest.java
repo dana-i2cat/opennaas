@@ -94,8 +94,8 @@ public class ConnectionsKarafCommandsTest
 	int					channelNum		= 32;
 
 	@Test
-	public void getInventoryCommandBasicTest() {
-
+	public void getInventoryCommandBasicTest() throws Exception
+	{
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		capabilityDescriptors.add(RepositoryHelper.newConnectionsCapabilityDescriptor());
@@ -104,78 +104,59 @@ public class ConnectionsKarafCommandsTest
 
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		repository.startResource(resource.getResourceDescriptor().getId());
+
 		try {
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertNotNull(resource);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
+			String responseStr;
 
-			try {
+			// // FIXME refresh should skip the queue
+			// log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+			// log.debug(responseStr);
+			// // Assert.assertNotNull(response);
+			// if (responseStr != null)
+			// Assert.fail("Error in the getInventory command");
 
-				String responseStr;
+			// check model is updated (start Resource should get Inventory)
+			ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
+			Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
+			Assert.assertFalse(proteus.getFiberConnections().isEmpty());
+			int connectionsInitialSize = proteus.getFiberConnections().size();
 
-				// // FIXME refresh should skip the queue
-				// log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				// log.debug(responseStr);
-				// // Assert.assertNotNull(response);
-				// if (responseStr != null)
-				// Assert.fail("Error in the getInventory command");
+			ProteusOpticalSwitchCard srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
+			Assert.assertNotNull(srcCard);
+			Assert.assertNotNull(srcCard.getChannelPlan());
 
-				// check model is updated (start Resource should get Inventory)
-				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
-				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
-				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
-				int connectionsInitialSize = proteus.getFiberConnections().size();
+			ProteusOpticalSwitchCard dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
+			Assert.assertNotNull(dstCard);
+			Assert.assertNotNull(dstCard.getChannelPlan());
 
-				ProteusOpticalSwitchCard srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
-				Assert.assertNotNull(srcCard);
-				Assert.assertNotNull(srcCard.getChannelPlan());
+			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the getInventory command");
 
-				ProteusOpticalSwitchCard dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
-				Assert.assertNotNull(dstCard);
-				Assert.assertNotNull(dstCard.getChannelPlan());
+			// check model is updated
+			proteus = (ProteusOpticalSwitch) resource.getModel();
+			Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
+			Assert.assertFalse(proteus.getFiberConnections().isEmpty());
 
-				log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-				responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+			srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
+			Assert.assertNotNull(srcCard);
+			Assert.assertNotNull(srcCard.getChannelPlan());
 
-				// check model is updated
-				proteus = (ProteusOpticalSwitch) resource.getModel();
-				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
-				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
+			dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
+			Assert.assertNotNull(dstCard);
+			Assert.assertNotNull(dstCard.getChannelPlan());
 
-				srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
-				Assert.assertNotNull(srcCard);
-				Assert.assertNotNull(srcCard.getChannelPlan());
-
-				dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
-				Assert.assertNotNull(dstCard);
-				Assert.assertNotNull(dstCard.getChannelPlan());
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-				Assert.fail(e.getLocalizedMessage());
-			} finally {
-				repository.stopResource(resource.getResourceIdentifier().getId());
-				repository.removeResource(resource.getResourceIdentifier().getId());
-
-				Thread.sleep(10000);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			Assert.fail(e.getLocalizedMessage());
+		} finally {
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		}
 	}
 
@@ -190,91 +171,77 @@ public class ConnectionsKarafCommandsTest
 
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
+		log.info("Creating resource...");
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource);
+
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		repository.startResource(resource.getResourceDescriptor().getId());
+
 		try {
-			log.info("Creating resource...");
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertNotNull(resource);
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
+			String responseStr;
 
-			try {
+			// // TODO should refresh manually????
+			// // FIXME refresh should skip the queue
+			// log.info("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			// log.debug(responseStr);
+			// // Assert.assertNotNull(response);
+			// if (responseStr != null)
+			// Assert.fail("Error in the getInventory command");
 
-				String responseStr;
+			String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
+			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
-				// // TODO should refresh manually????
-				// // FIXME refresh should skip the queue
-				// log.info("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-				// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
-				// log.debug(responseStr);
-				// // Assert.assertNotNull(response);
-				// if (responseStr != null)
-				// Assert.fail("Error in the getInventory command");
+			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
+																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
+			double lambda = channel.getLambda();
 
-				String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
-				String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
+			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the makeConnection command");
 
-				WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-						Integer.parseInt(srcCardNum)).getChannelPlan();
-				DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
-				double lambda = channel.getLambda();
+			log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.debug(response);
+			// Assert.assertNotNull(response);
+			if (response != null)
+				Assert.fail("Error in the execute queue command");
 
-				log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-				responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the makeConnection command");
-
-				log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
-				Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
-				log.debug(response);
-				// Assert.assertNotNull(response);
-				if (response != null)
-					Assert.fail("Error in the execute queue command");
-
-				// check model is updated
-				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
-				boolean found = false;
-				for (FiberConnection connection : proteus.getFiberConnections()) {
-					if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
-							connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
-							connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
-							connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
-							connection.getSrcFiberChannel().getLambda() == lambda &&
-							connection.getDstFiberChannel().getLambda() == lambda) {
-						found = true;
-						break;
-					}
+			// check model is updated
+			ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
+			boolean found = false;
+			for (FiberConnection connection : proteus.getFiberConnections()) {
+				if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
+					connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
+					connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
+					connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
+					connection.getSrcFiberChannel().getLambda() == lambda &&
+					connection.getDstFiberChannel().getLambda() == lambda) {
+					found = true;
+					break;
 				}
-				Assert.assertTrue(found);
-
-				log.info("executeCommand(connections:list " + resourceFriendlyID);
-				responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
-				if (responseStr != null)
-					Assert.fail("Error in the listConnections command");
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-				Assert.fail(e.getLocalizedMessage());
-
-			} finally {
-				repository.stopResource(resource.getResourceIdentifier().getId());
-				repository.removeResource(resource.getResourceIdentifier().getId());
-				Thread.sleep(10000);
 			}
+			Assert.assertTrue(found);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			Thread.sleep(5000);
-			Assert.fail(e.getLocalizedMessage());
+			log.info("executeCommand(connections:list " + resourceFriendlyID);
+			responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
+			if (responseStr != null)
+				Assert.fail("Error in the listConnections command");
+
+		} finally {
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		}
-
 	}
 
 	@Test
-	public void removeConnectionCommandsTest() {
+	public void removeConnectionCommandsTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = RepositoryHelper.newResourceDescriptor("roadm", resourceName);
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -284,100 +251,83 @@ public class ConnectionsKarafCommandsTest
 
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
+		log.info("Creating resource...");
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		repository.startResource(resource.getResourceDescriptor().getId());
+
 		try {
-			log.info("Creating resource...");
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertNotNull(resource);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
 
-			try {
+			String responseStr;
+			// // TODO should refresh manually????
+			// // FIXME refresh should skip the queue
+			// log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+			// log.debug(responseStr);
+			// // Assert.assertNotNull(response);
+			// if (responseStr != null)
+			// Assert.fail("Error in getInventory command");
 
-				String responseStr;
-				// // TODO should refresh manually????
-				// // FIXME refresh should skip the queue
-				// log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-				// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
-				// log.debug(responseStr);
-				// // Assert.assertNotNull(response);
-				// if (responseStr != null)
-				// Assert.fail("Error in getInventory command");
+			String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
+			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
-				String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
-				String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
+			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
+																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
+			double lambda = channel.getLambda();
 
-				WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-						Integer.parseInt(srcCardNum)).getChannelPlan();
-				DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
-				double lambda = channel.getLambda();
+			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the makeConnection command");
 
-				log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-				responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the makeConnection command");
+			// should print out of date information
+			log.info("executeCommand(connections:list " + resourceFriendlyID);
+			responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
+			if (responseStr != null)
+				Assert.fail("Error in the listConnections command");
 
-				// should print out of date information
-				log.info("executeCommand(connections:list " + resourceFriendlyID);
-				responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
-				if (responseStr != null)
-					Assert.fail("Error in the listConnections command");
+			log.info("executeCommand(connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommand("connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the removeConnection command");
 
-				log.info("executeCommand(connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-				responseStr = (String) executeCommand("connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the removeConnection command");
+			log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.debug(response);
+			// Assert.assertNotNull(response);
+			if (response != null)
+				Assert.fail("Error in the execute queue command");
 
-				log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
-				Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
-				log.debug(response);
-				// Assert.assertNotNull(response);
-				if (response != null)
-					Assert.fail("Error in the execute queue command");
-
-				// check model is updated
-				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
-				boolean found = false;
-				for (FiberConnection connection : proteus.getFiberConnections()) {
-					if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
-							connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
-							connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
-							connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
-							connection.getSrcFiberChannel().getLambda() == lambda &&
-							connection.getDstFiberChannel().getLambda() == lambda) {
-						found = true;
-						break;
-					}
+			// check model is updated
+			ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
+			boolean found = false;
+			for (FiberConnection connection : proteus.getFiberConnections()) {
+				if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
+					connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
+					connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
+					connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
+					connection.getSrcFiberChannel().getLambda() == lambda &&
+					connection.getDstFiberChannel().getLambda() == lambda) {
+					found = true;
+					break;
 				}
-				Assert.assertFalse(found);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				Assert.fail(e.getLocalizedMessage());
-			} finally {
-				repository.stopResource(resource.getResourceIdentifier().getId());
-				repository.removeResource(resource.getResourceIdentifier().getId());
-				Thread.sleep(10000);
 			}
+			Assert.assertFalse(found);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			Assert.fail(e.getLocalizedMessage());
+		} finally {
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		}
-
 	}
 
 	@Test
-	public void getInventoryCommandCompleteTest() {
+	public void getInventoryCommandCompleteTest() throws Exception {
 		// connections:getInventory
 		// cards, number of connections
 		// -r (refresh model before)
@@ -390,122 +340,103 @@ public class ConnectionsKarafCommandsTest
 
 		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
 
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		repository.startResource(resource.getResourceDescriptor().getId());
+
 		try {
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertNotNull(resource);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
 
-			try {
+			String responseStr;
 
-				String responseStr;
+			// // FIXME refresh should skip the queue
+			// log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			// log.debug(responseStr);
+			// // Assert.assertNotNull(response);
+			// if (responseStr != null)
+			// Assert.fail("Error in the getInventory command");
 
-				// // FIXME refresh should skip the queue
-				// log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-				// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
-				// log.debug(responseStr);
-				// // Assert.assertNotNull(response);
-				// if (responseStr != null)
-				// Assert.fail("Error in the getInventory command");
+			// check model is updated (startResource should have loaded inventory)
+			ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
+			Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
+			Assert.assertFalse(proteus.getFiberConnections().isEmpty());
+			int connectionsInitialSize = proteus.getFiberConnections().size();
 
-				// check model is updated (startResource should have loaded inventory)
-				ProteusOpticalSwitch proteus = (ProteusOpticalSwitch) resource.getModel();
-				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
-				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
-				int connectionsInitialSize = proteus.getFiberConnections().size();
+			ProteusOpticalSwitchCard srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
+			Assert.assertNotNull(srcCard);
+			Assert.assertNotNull(srcCard.getChannelPlan());
 
-				ProteusOpticalSwitchCard srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
-				Assert.assertNotNull(srcCard);
-				Assert.assertNotNull(srcCard.getChannelPlan());
+			ProteusOpticalSwitchCard dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
+			Assert.assertNotNull(dstCard);
+			Assert.assertNotNull(dstCard.getChannelPlan());
 
-				ProteusOpticalSwitchCard dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
-				Assert.assertNotNull(dstCard);
-				Assert.assertNotNull(dstCard.getChannelPlan());
+			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the getInventory command");
 
-				log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-				responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+			// check model is updated
+			proteus = (ProteusOpticalSwitch) resource.getModel();
+			Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
+			Assert.assertFalse(proteus.getFiberConnections().isEmpty());
 
-				// check model is updated
-				proteus = (ProteusOpticalSwitch) resource.getModel();
-				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
-				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
+			srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
+			Assert.assertNotNull(srcCard);
+			Assert.assertNotNull(srcCard.getChannelPlan());
 
-				srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
-				Assert.assertNotNull(srcCard);
-				Assert.assertNotNull(srcCard.getChannelPlan());
+			dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
+			Assert.assertNotNull(dstCard);
+			Assert.assertNotNull(dstCard.getChannelPlan());
 
-				dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
-				Assert.assertNotNull(dstCard);
-				Assert.assertNotNull(dstCard.getChannelPlan());
+			String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
+			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
-				String srcPortId = chassisNum + "-" + srcCardNum + "-" + srcPortNum;
-				String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
+			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
+																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
+			double lambda = channel.getLambda();
 
-				WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-						Integer.parseInt(srcCardNum)).getChannelPlan();
-				DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
-				double lambda = channel.getLambda();
+			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the makeConnection command");
 
-				log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-				responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the makeConnection command");
+			log.debug("executeCommand(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.debug(response);
+			// Assert.assertNotNull(response);
+			if (response != null)
+				Assert.fail("Error in the execute queue command");
 
-				log.debug("executeCommand(queue:execute " + resourceFriendlyID + ")");
-				Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
-				log.debug(response);
-				// Assert.assertNotNull(response);
-				if (response != null)
-					Assert.fail("Error in the execute queue command");
+			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug(responseStr);
+			// Assert.assertNotNull(response);
+			if (responseStr != null)
+				Assert.fail("Error in the getInventory command");
 
-				log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-				responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
-				log.debug(responseStr);
-				// Assert.assertNotNull(response);
-				if (responseStr != null)
-					Assert.fail("Error in the getInventory command");
+			// check model is updated
+			proteus = (ProteusOpticalSwitch) resource.getModel();
+			Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
+			Assert.assertFalse(proteus.getFiberConnections().isEmpty());
+			Assert.assertTrue(proteus.getFiberConnections().size() > connectionsInitialSize);
 
-				// check model is updated
-				proteus = (ProteusOpticalSwitch) resource.getModel();
-				Assert.assertFalse(proteus.getLogicalDevices().isEmpty());
-				Assert.assertFalse(proteus.getFiberConnections().isEmpty());
-				Assert.assertTrue(proteus.getFiberConnections().size() > connectionsInitialSize);
+			srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
+			Assert.assertNotNull(srcCard);
+			Assert.assertNotNull(srcCard.getChannelPlan());
 
-				srcCard = proteus.getCard(0, Integer.parseInt(srcCardNum));
-				Assert.assertNotNull(srcCard);
-				Assert.assertNotNull(srcCard.getChannelPlan());
-
-				dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
-				Assert.assertNotNull(dstCard);
-				Assert.assertNotNull(dstCard.getChannelPlan());
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-				Assert.fail(e.getLocalizedMessage());
-			} finally {
-				repository.stopResource(resource.getResourceIdentifier().getId());
-				repository.removeResource(resource.getResourceIdentifier().getId());
-				Thread.sleep(10000);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			Assert.fail(e.getLocalizedMessage());
+			dstCard = proteus.getCard(0, Integer.parseInt(dstCardNum));
+			Assert.assertNotNull(dstCard);
+			Assert.assertNotNull(dstCard.getChannelPlan());
+		} finally {
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		}
-
 	}
 
     @ProbeBuilder
