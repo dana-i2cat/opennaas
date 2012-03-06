@@ -45,6 +45,8 @@ public class IPInterfaceParserTest {
 		for (LogicalDevice device : model.getLogicalDevices()) {
 			if (device instanceof EthernetPort) {
 				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperatingStatus());
+
 				str += "- EthernetPort: " + '\n';
 				str += port.getName() + '\n';
 				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
