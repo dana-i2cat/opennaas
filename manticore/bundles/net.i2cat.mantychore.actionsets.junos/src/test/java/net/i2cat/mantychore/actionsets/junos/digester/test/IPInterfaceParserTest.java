@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
@@ -44,6 +45,8 @@ public class IPInterfaceParserTest {
 		for (LogicalDevice device : model.getLogicalDevices()) {
 			if (device instanceof EthernetPort) {
 				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperatingStatus());
+
 				str += "- EthernetPort: " + '\n';
 				str += port.getName() + '\n';
 				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
@@ -61,6 +64,46 @@ public class IPInterfaceParserTest {
 			}
 
 		}
+
+		log.info(str);
+	}
+
+	@Test
+	public void testGREIsNotCreatedIfNoUnitConfigurated() throws Exception {
+
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getconfigWithoutGREUnit.xml");
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		model = parser.getModel();
+
+		List<GRETunnelService> greServices = model.getAllHostedServicesByType(new GRETunnelService());
+		Assert.assertTrue("There should be no GREService if no gre unit is configured", greServices.isEmpty());
+
+		log.info(str);
+	}
+
+	@Test
+	public void testGREIsNotCreatedIfNoGRE() throws Exception {
+
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getconfigWithoutGRE.xml");
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		model = parser.getModel();
+
+		List<GRETunnelService> greServices = model.getAllHostedServicesByType(new GRETunnelService());
+		Assert.assertTrue("There should be no GREService if no gre is configured", greServices.isEmpty());
 
 		log.info(str);
 	}
