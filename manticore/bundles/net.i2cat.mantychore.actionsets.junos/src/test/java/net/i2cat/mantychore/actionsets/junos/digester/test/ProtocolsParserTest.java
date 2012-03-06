@@ -10,9 +10,6 @@ import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.GRETunnelConfiguration;
-import net.i2cat.mantychore.model.GRETunnelEndpoint;
-import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.OSPFAreaConfiguration;
 import net.i2cat.mantychore.model.OSPFProtocolEndpointBase;
@@ -29,7 +26,7 @@ public class ProtocolsParserTest {
 
 	@Test
 	public void testParseOSPFProtocol() throws Exception {
-		String message = readStringFromFile("/parsers/getConfigWithRoutingOptionsAndRouterIdAndGRE.xml");
+		String message = readStringFromFile("/parsers/getConfigWithOSPF.xml");
 
 		System model = createSampleModel();
 		ProtocolsParser parser = new ProtocolsParser(model);
@@ -39,7 +36,11 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(1);
+
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals("There is only one OSPFService", 1, ospfServices.size());
+
+		OSPFService ospfService = ospfServices.get(0);
 		Assert.assertFalse("Service state must have been set", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
 
 		Assert.assertFalse("Service must have (at least) an area configuration", ospfService.getOSPFAreaConfiguration().isEmpty());
@@ -137,29 +138,15 @@ public class ProtocolsParserTest {
 
 		// create interfaces to check OSPFEnpoint is created on them
 		NetworkPort interface1 = new NetworkPort();
-		interface1.setName("fe-0/3/3");
-		interface1.setPortNumber(45);
+		interface1.setName("fe-0/3/0");
+		interface1.setPortNumber(0);
 
 		NetworkPort interface2 = new NetworkPort();
-		interface2.setName("fe-0/0/2");
+		interface2.setName("fe-0/3/1");
 		interface2.setPortNumber(0);
 
 		model.addLogicalDevice(interface1);
 		model.addLogicalDevice(interface2);
-
-		/* GRETunnel Service */
-		GRETunnelService greService = new GRETunnelService();
-		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
-		greConfig.setSourceAddress("192.168.1.1");
-		greConfig.setDestinationAddress("192.168.1.2");
-		greConfig.setKey(2);
-		greService.setGRETunnelConfiguration(greConfig);
-		greService.setName("gr-0/1/0");
-		GRETunnelEndpoint gE = new GRETunnelEndpoint();
-		gE.setIPv4Address("192.168.1.3");
-		gE.setSubnetMask("255.255.255.0");
-		greService.addProtocolEndpoint(gE);
-		model.addHostedService(greService);
 
 		return model;
 	}
