@@ -91,9 +91,11 @@
 							<goal>add-features-to-repo</goal>
 						</goals>
 						<configuration>
+							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
 								<descriptor>mvn:net.i2cat.mantychore/mantychore/1.0.0-SNAPSHOT/xml/features</descriptor>
 							</descriptors>
+							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
 								<feature>i2cat-mantychore-deps</feature>
 								<feature>i2cat-mantychore-core</feature>

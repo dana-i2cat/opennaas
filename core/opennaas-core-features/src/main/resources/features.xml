@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <features>
 	<repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
-	<repository>mvn:org.apache.servicemix/apache-servicemix/${servicemix.version}/xml/features</repository>
 	<repository>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</repository>
 	<repository>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</repository>
-	<!--
-	<repository>mvn:org.apache.camel.karaf/apache-camel/2.7.1-fuse-00-43/xml/features</repository>-->
+	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 	<feature name="opennaas-core-deps" version="${project.version}">
 		<feature>spring</feature>
 		<feature>jetty</feature> <!-- In 4.4.1-fuse-01-20 cxf is missing
