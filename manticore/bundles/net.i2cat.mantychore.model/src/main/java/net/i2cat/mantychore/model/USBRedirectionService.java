@@ -8,28 +8,22 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class USBRedirectionService as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * USBRedirectionServiceBean Interface. The CIM class USBRedirectionService
- * is described as follows:
- *
- * USBRedirectionService describes the service that manages the USB
- * Redirection of a system.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class USBRedirectionService as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the USBRedirectionServiceBean Interface. The CIM class USBRedirectionService is
+ * described as follows:
+ * 
+ * USBRedirectionService describes the service that manages the USB Redirection of a system.
  */
 public class USBRedirectionService extends RedirectionService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a USBRedirectionServiceBeanImpl Class which
-     * implements the USBRedirectionServiceBean Interface, and encapsulates
-     * the CIM class USBRedirectionService in a Java Bean. The CIM class
-     * USBRedirectionService is described as follows:
-     *
-     * USBRedirectionService describes the service that manages the USB
-     * Redirection of a system.
-     */
-    public USBRedirectionService(){};
-
+	/**
+	 * This constructor creates a USBRedirectionServiceBeanImpl Class which implements the USBRedirectionServiceBean Interface, and encapsulates the
+	 * CIM class USBRedirectionService in a Java Bean. The CIM class USBRedirectionService is described as follows:
+	 * 
+	 * USBRedirectionService describes the service that manages the USB Redirection of a system.
+	 */
+	public USBRedirectionService() {
+	};
 
 } // Class USBRedirectionService

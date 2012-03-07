@@ -9,159 +9,137 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TextRedirectionSAP as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * TextRedirectionSAPBean Interface. The CIM class TextRedirectionSAP is
- * described as follows:
- *
- * TextRedirectionSAP describes an access point to start the text redirection.
- * One access point represents access to a single text redirection stream.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TextRedirectionSAP as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the TextRedirectionSAPBean Interface. The CIM class TextRedirectionSAP is described
+ * as follows:
+ * 
+ * TextRedirectionSAP describes an access point to start the text redirection. One access point represents access to a single text redirection stream.
  */
 public class TextRedirectionSAP extends ServiceAccessPoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a TextRedirectionSAPBeanImpl Class which
-     * implements the TextRedirectionSAPBean Interface, and encapsulates the
-     * CIM class TextRedirectionSAP in a Java Bean. The CIM class
-     * TextRedirectionSAP is described as follows:
-     *
-     * TextRedirectionSAP describes an access point to start the text
-     * redirection. One access point represents access to a single text
-     * redirection stream.
-     */
-    public TextRedirectionSAP(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionTerminateSequence.
-     */
-    private String sessionTerminateSequence;
-    /**
-     * This method returns the TextRedirectionSAP.sessionTerminateSequence
-     * property value. This property is described as follows:
-     *
-     * A string sequence that allows the supervisor using the command line
-     * session to terminate the redirection stream. This is required because
-     * once the text redirection is started then the supervisor may lose the
-     * ability to interact with the command line session, and be unable to
-     * perform a RequestStateChange operation.
-     *
-     * @return	String	current sessionTerminateSequence property
-     * value
-     * @exception	Exception
-     */
-    public String getSessionTerminateSequence(){
+	/**
+	 * This constructor creates a TextRedirectionSAPBeanImpl Class which implements the TextRedirectionSAPBean Interface, and encapsulates the CIM
+	 * class TextRedirectionSAP in a Java Bean. The CIM class TextRedirectionSAP is described as follows:
+	 * 
+	 * TextRedirectionSAP describes an access point to start the text redirection. One access point represents access to a single text redirection
+	 * stream.
+	 */
+	public TextRedirectionSAP() {
+	};
 
-    return this.sessionTerminateSequence;
-    } // getSessionTerminateSequence
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionTerminateSequence.
+	 */
+	private String	sessionTerminateSequence;
 
-    /**
-     * This method sets the TextRedirectionSAP.sessionTerminateSequence
-     * property value. This property is described as follows:
-     *
-     * A string sequence that allows the supervisor using the command line
-     * session to terminate the redirection stream. This is required because
-     * once the text redirection is started then the supervisor may lose the
-     * ability to interact with the command line session, and be unable to
-     * perform a RequestStateChange operation.
-     *
-     * @param	String	new sessionTerminateSequence property value
-     * @exception	Exception
-     */
-    public void setSessionTerminateSequence(String sessionTerminateSequence)
+	/**
+	 * This method returns the TextRedirectionSAP.sessionTerminateSequence property value. This property is described as follows:
+	 * 
+	 * A string sequence that allows the supervisor using the command line session to terminate the redirection stream. This is required because once
+	 * the text redirection is started then the supervisor may lose the ability to interact with the command line session, and be unable to perform a
+	 * RequestStateChange operation.
+	 * 
+	 * @return String current sessionTerminateSequence property value
+	 * @exception Exception
+	 */
+	public String getSessionTerminateSequence() {
+
+		return this.sessionTerminateSequence;
+	} // getSessionTerminateSequence
+
+	/**
+	 * This method sets the TextRedirectionSAP.sessionTerminateSequence property value. This property is described as follows:
+	 * 
+	 * A string sequence that allows the supervisor using the command line session to terminate the redirection stream. This is required because once
+	 * the text redirection is started then the supervisor may lose the ability to interact with the command line session, and be unable to perform a
+	 * RequestStateChange operation.
+	 * 
+	 * @param String
+	 *            new sessionTerminateSequence property value
+	 * @exception Exception
+	 */
+	public void setSessionTerminateSequence(String sessionTerminateSequence)
 	{
 
-    this.sessionTerminateSequence = sessionTerminateSequence;
-    } // setSessionTerminateSequence
+		this.sessionTerminateSequence = sessionTerminateSequence;
+	} // setSessionTerminateSequence
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TextFlowType.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TextFlowType.
-     */
+	public enum TextFlowType {
+		UNKNOWN,
+		OTHER,
+		CHARACTER_STREAM,
+		TERMINAL_MODE,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIED
+	}
 
-    public enum TextFlowType{
-    UNKNOWN,
-    OTHER,
-    CHARACTER_STREAM,
-    TERMINAL_MODE,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIED
-    }
-    private TextFlowType textFlowType;
-    /**
-     * This method returns the TextRedirectionSAP.textFlowType property value.
-     * This property is described as follows:
-     *
-     * An enumeration specifying the type of the text stream supported on this
-     * SAP. In some cases this may be a raw character steam, with the
-     * characters having no special meaning. However, in other cases it may
-     * support a Terminal Mode where some characters have special meanings
-     * like backspace, positioning of the character on the screen, etc.
-     *
-     * @return	int	current textFlowType property value
-     * @exception	Exception
-     */
-    public TextFlowType getTextFlowType(){
+	private TextFlowType	textFlowType;
 
-    return this.textFlowType;
-    } // getTextFlowType
+	/**
+	 * This method returns the TextRedirectionSAP.textFlowType property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of the text stream supported on this SAP. In some cases this may be a raw character steam, with the
+	 * characters having no special meaning. However, in other cases it may support a Terminal Mode where some characters have special meanings like
+	 * backspace, positioning of the character on the screen, etc.
+	 * 
+	 * @return int current textFlowType property value
+	 * @exception Exception
+	 */
+	public TextFlowType getTextFlowType() {
 
-    /**
-     * This method sets the TextRedirectionSAP.textFlowType property value.
-     * This property is described as follows:
-     *
-     * An enumeration specifying the type of the text stream supported on this
-     * SAP. In some cases this may be a raw character steam, with the
-     * characters having no special meaning. However, in other cases it may
-     * support a Terminal Mode where some characters have special meanings
-     * like backspace, positioning of the character on the screen, etc.
-     *
-     * @param	int	new textFlowType property value
-     * @exception	Exception
-     */
-    public void setTextFlowType(TextFlowType textFlowType){
+		return this.textFlowType;
+	} // getTextFlowType
 
-    this.textFlowType = textFlowType;
-    } // setTextFlowType
+	/**
+	 * This method sets the TextRedirectionSAP.textFlowType property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of the text stream supported on this SAP. In some cases this may be a raw character steam, with the
+	 * characters having no special meaning. However, in other cases it may support a Terminal Mode where some characters have special meanings like
+	 * backspace, positioning of the character on the screen, etc.
+	 * 
+	 * @param int new textFlowType property value
+	 * @exception Exception
+	 */
+	public void setTextFlowType(TextFlowType textFlowType) {
 
+		this.textFlowType = textFlowType;
+	} // setTextFlowType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherTextFlowType.
-     */
-    private String otherTextFlowType;
-    /**
-     * This method returns the TextRedirectionSAP.otherTextFlowType property
-     * value. This property is described as follows:
-     *
-     * An string describing the TextFlowType when the value of the
-     * TextFlowType property is set to 1 = "Other".
-     *
-     * @return	String	current otherTextFlowType property value
-     * @exception	Exception
-     */
-    public String getOtherTextFlowType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherTextFlowType.
+	 */
+	private String	otherTextFlowType;
 
-    return this.otherTextFlowType;
-    } // getOtherTextFlowType
+	/**
+	 * This method returns the TextRedirectionSAP.otherTextFlowType property value. This property is described as follows:
+	 * 
+	 * An string describing the TextFlowType when the value of the TextFlowType property is set to 1 = "Other".
+	 * 
+	 * @return String current otherTextFlowType property value
+	 * @exception Exception
+	 */
+	public String getOtherTextFlowType() {
 
-    /**
-     * This method sets the TextRedirectionSAP.otherTextFlowType property
-     * value. This property is described as follows:
-     *
-     * An string describing the TextFlowType when the value of the
-     * TextFlowType property is set to 1 = "Other".
-     *
-     * @param	String	new otherTextFlowType property value
-     * @exception	Exception
-     */
-    public void setOtherTextFlowType(String otherTextFlowType) {
+		return this.otherTextFlowType;
+	} // getOtherTextFlowType
 
-    this.otherTextFlowType = otherTextFlowType;
-    } // setOtherTextFlowType
+	/**
+	 * This method sets the TextRedirectionSAP.otherTextFlowType property value. This property is described as follows:
+	 * 
+	 * An string describing the TextFlowType when the value of the TextFlowType property is set to 1 = "Other".
+	 * 
+	 * @param String
+	 *            new otherTextFlowType property value
+	 * @exception Exception
+	 */
+	public void setOtherTextFlowType(String otherTextFlowType) {
 
-
+		this.otherTextFlowType = otherTextFlowType;
+	} // setOtherTextFlowType
 
 } // Class TextRedirectionSAP

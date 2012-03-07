@@ -8,43 +8,35 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ConfigurationForSystem as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ConfigurationForSystemBean Interface. The CIM class ConfigurationForSystem
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ConfigurationForSystem as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ConfigurationForSystemBean Interface. The CIM class ConfigurationForSystem
  * is described as follows:
- *
- * Note: The use of this element is deprecated. Deprecated description:
- * CIM_ConfigurationForSystem defines a Configuration in the context of the
- * System on which it is located. Because the Configuration class is
- * deprecated, this association is similarly deprecated.
+ * 
+ * Note: The use of this element is deprecated. Deprecated description: CIM_ConfigurationForSystem defines a Configuration in the context of the
+ * System on which it is located. Because the Configuration class is deprecated, this association is similarly deprecated.
  */
-    @Deprecated
+@Deprecated
 public class ConfigurationForSystem extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ConfigurationForSystemBeanImpl Class which
-     * implements the ConfigurationForSystemBean Interface, and encapsulates
-     * the CIM class ConfigurationForSystem in a Java Bean. The CIM class
-     * ConfigurationForSystem is described as follows:
-     *
-     * Note: The use of this element is deprecated. Deprecated description:
-     * CIM_ConfigurationForSystem defines a Configuration in the context of
-     * the System on which it is located. Because the Configuration class is
-     * deprecated, this association is similarly deprecated.
-     */
-    public ConfigurationForSystem(){};
-    /**
-     * This method create an Association of the type ConfigurationForSystem
-     * between one System object and SystemConfiguration object
-     */
-    @Deprecated
-    public static ConfigurationForSystem link(System
-	antecedent,SystemConfiguration dependent){
+	/**
+	 * This constructor creates a ConfigurationForSystemBeanImpl Class which implements the ConfigurationForSystemBean Interface, and encapsulates the
+	 * CIM class ConfigurationForSystem in a Java Bean. The CIM class ConfigurationForSystem is described as follows:
+	 * 
+	 * Note: The use of this element is deprecated. Deprecated description: CIM_ConfigurationForSystem defines a Configuration in the context of the
+	 * System on which it is located. Because the Configuration class is deprecated, this association is similarly deprecated.
+	 */
+	public ConfigurationForSystem() {
+	};
 
-    return (ConfigurationForSystem)
-	Association.link(ConfigurationForSystem.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ConfigurationForSystem between one System object and SystemConfiguration object
+	 */
+	@Deprecated
+	public static ConfigurationForSystem link(System
+			antecedent, SystemConfiguration dependent) {
+
+		return (ConfigurationForSystem) Association.link(ConfigurationForSystem.class, antecedent, dependent);
+	}// link
 
 } // Class ConfigurationForSystem

@@ -8,41 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PortImplementsEndpoint as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * PortImplementsEndpointBean Interface. The CIM class PortImplementsEndpoint
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PortImplementsEndpoint as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the PortImplementsEndpointBean Interface. The CIM class PortImplementsEndpoint
  * is described as follows:
- *
- * PortImplementsEndpoint associates a LogicalPort with one or more
- * ProtocolEndpoints that are implemented on it. This class specializes the
- * DeviceSAPImplementation association. It indicates that the referenced
- * Endpoint is dependent on the operations of the Port Device.
+ * 
+ * PortImplementsEndpoint associates a LogicalPort with one or more ProtocolEndpoints that are implemented on it. This class specializes the
+ * DeviceSAPImplementation association. It indicates that the referenced Endpoint is dependent on the operations of the Port Device.
  */
 public class PortImplementsEndpoint extends DeviceSAPImplementation implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a PortImplementsEndpointBeanImpl Class which
-     * implements the PortImplementsEndpointBean Interface, and encapsulates
-     * the CIM class PortImplementsEndpoint in a Java Bean. The CIM class
-     * PortImplementsEndpoint is described as follows:
-     *
-     * PortImplementsEndpoint associates a LogicalPort with one or more
-     * ProtocolEndpoints that are implemented on it. This class specializes
-     * the DeviceSAPImplementation association. It indicates that the
-     * referenced Endpoint is dependent on the operations of the Port Device.
-     */
-    public PortImplementsEndpoint(){};
-    /**
-     * This method create an Association of the type PortImplementsEndpoint
-     * between one LogicalPort object and ProtocolEndpoint object
-     */
-    public static PortImplementsEndpoint link(LogicalPort
-	antecedent,ProtocolEndpoint dependent){
+	/**
+	 * This constructor creates a PortImplementsEndpointBeanImpl Class which implements the PortImplementsEndpointBean Interface, and encapsulates the
+	 * CIM class PortImplementsEndpoint in a Java Bean. The CIM class PortImplementsEndpoint is described as follows:
+	 * 
+	 * PortImplementsEndpoint associates a LogicalPort with one or more ProtocolEndpoints that are implemented on it. This class specializes the
+	 * DeviceSAPImplementation association. It indicates that the referenced Endpoint is dependent on the operations of the Port Device.
+	 */
+	public PortImplementsEndpoint() {
+	};
 
-    return (PortImplementsEndpoint)
-	Association.link(PortImplementsEndpoint.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type PortImplementsEndpoint between one LogicalPort object and ProtocolEndpoint object
+	 */
+	public static PortImplementsEndpoint link(LogicalPort
+			antecedent, ProtocolEndpoint dependent) {
+
+		return (PortImplementsEndpoint) Association.link(PortImplementsEndpoint.class, antecedent, dependent);
+	}// link
 
 } // Class PortImplementsEndpoint

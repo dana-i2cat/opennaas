@@ -9,60 +9,53 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class UDPProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * UDPProtocolEndpointBean Interface. The CIM class UDPProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class UDPProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the UDPProtocolEndpointBean Interface. The CIM class UDPProtocolEndpoint is
  * described as follows:
- *
+ * 
  * A protocol endpoint that is dedicated to running UDP.
  */
 public class UDPProtocolEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a UDPProtocolEndpointBeanImpl Class which
-     * implements the UDPProtocolEndpointBean Interface, and encapsulates the
-     * CIM class UDPProtocolEndpoint in a Java Bean. The CIM class
-     * UDPProtocolEndpoint is described as follows:
-     *
-     * A protocol endpoint that is dedicated to running UDP.
-     */
-    public UDPProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property portNumber.
-     */
-    private long portNumber;
-    /**
-     * This method returns the UDPProtocolEndpoint.portNumber property value.
-     * This property is described as follows:
-     *
-     * The UDP port number.
-     *
-     * @return	long	current portNumber property value
-     * @exception	Exception
-     */
-    public long getPortNumber(){
+	/**
+	 * This constructor creates a UDPProtocolEndpointBeanImpl Class which implements the UDPProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class UDPProtocolEndpoint in a Java Bean. The CIM class UDPProtocolEndpoint is described as follows:
+	 * 
+	 * A protocol endpoint that is dedicated to running UDP.
+	 */
+	public UDPProtocolEndpoint() {
+	};
 
-    return this.portNumber;
-    } // getPortNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property portNumber.
+	 */
+	private long	portNumber;
 
-    /**
-     * This method sets the UDPProtocolEndpoint.portNumber property value.
-     * This property is described as follows:
-     *
-     * The UDP port number.
-     *
-     * @param	long	new portNumber property value
-     * @exception	Exception
-     */
-    public void setPortNumber(long portNumber) {
+	/**
+	 * This method returns the UDPProtocolEndpoint.portNumber property value. This property is described as follows:
+	 * 
+	 * The UDP port number.
+	 * 
+	 * @return long current portNumber property value
+	 * @exception Exception
+	 */
+	public long getPortNumber() {
 
-    this.portNumber = portNumber;
-    } // setPortNumber
+		return this.portNumber;
+	} // getPortNumber
 
+	/**
+	 * This method sets the UDPProtocolEndpoint.portNumber property value. This property is described as follows:
+	 * 
+	 * The UDP port number.
+	 * 
+	 * @param long new portNumber property value
+	 * @exception Exception
+	 */
+	public void setPortNumber(long portNumber) {
 
-
+		this.portNumber = portNumber;
+	} // setPortNumber
 
 } // Class UDPProtocolEndpoint

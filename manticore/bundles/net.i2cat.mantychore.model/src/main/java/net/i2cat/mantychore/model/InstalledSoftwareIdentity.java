@@ -8,42 +8,35 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class InstalledSoftwareIdentity as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * InstalledSoftwareIdentityBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class InstalledSoftwareIdentity as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the InstalledSoftwareIdentityBean Interface. The CIM class
  * InstalledSoftwareIdentity is described as follows:
- *
- * The InstalledSoftwareIdentity association identifies the System on which a
- * SoftwareIdentity is installed. This class is a corollary to
- * InstalledSoftwareElement, but deals with the asset aspects of software (as
- * indicated by SoftwareIdentity), versus the deployment aspects (as
+ * 
+ * The InstalledSoftwareIdentity association identifies the System on which a SoftwareIdentity is installed. This class is a corollary to
+ * InstalledSoftwareElement, but deals with the asset aspects of software (as indicated by SoftwareIdentity), versus the deployment aspects (as
  * indicated by SoftwareElement).
  */
 public class InstalledSoftwareIdentity extends Association implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a InstalledSoftwareIdentityBeanImpl Class
-     * which implements the InstalledSoftwareIdentityBean Interface, and
-     * encapsulates the CIM class InstalledSoftwareIdentity in a Java Bean.
-     * The CIM class InstalledSoftwareIdentity is described as follows:
-     *
-     * The InstalledSoftwareIdentity association identifies the System on
-     * which a SoftwareIdentity is installed. This class is a corollary to
-     * InstalledSoftwareElement, but deals with the asset aspects of software
-     * (as indicated by SoftwareIdentity), versus the deployment aspects (as
-     * indicated by SoftwareElement).
-     */
-    public InstalledSoftwareIdentity(){};
-    /**
-     * This method create an Association of the type InstalledSoftwareIdentity
-     * between one System object and SoftwareIdentity object
-     */
-    public static InstalledSoftwareIdentity link(System
-	system,SoftwareIdentity installedSoftware){
+	/**
+	 * This constructor creates a InstalledSoftwareIdentityBeanImpl Class which implements the InstalledSoftwareIdentityBean Interface, and
+	 * encapsulates the CIM class InstalledSoftwareIdentity in a Java Bean. The CIM class InstalledSoftwareIdentity is described as follows:
+	 * 
+	 * The InstalledSoftwareIdentity association identifies the System on which a SoftwareIdentity is installed. This class is a corollary to
+	 * InstalledSoftwareElement, but deals with the asset aspects of software (as indicated by SoftwareIdentity), versus the deployment aspects (as
+	 * indicated by SoftwareElement).
+	 */
+	public InstalledSoftwareIdentity() {
+	};
 
-    return (InstalledSoftwareIdentity) Association.link(InstalledSoftwareIdentity.class,system,installedSoftware);
-    }//link
+	/**
+	 * This method create an Association of the type InstalledSoftwareIdentity between one System object and SoftwareIdentity object
+	 */
+	public static InstalledSoftwareIdentity link(System
+			system, SoftwareIdentity installedSoftware) {
+
+		return (InstalledSoftwareIdentity) Association.link(InstalledSoftwareIdentity.class, system, installedSoftware);
+	}// link
 
 } // Class InstalledSoftwareIdentity

@@ -9,94 +9,74 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ClassifierElementInClassifierService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the ClassifierElementInClassifierServiceBean Interface. The CIM
- * class ClassifierElementInClassifierService is described as follows:
- *
- * This aggregation represents the relationship between a ClassifierService
- * and the ClassifierElements that provide its fan-out function.
- * ClassifierElements represent the traffic selectors for the Service. A
- * ClassifierService typically aggregates multiple ClassifierElements. An
- * individual Element, however, is aggregated only by a single
- * ClassifierService.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ClassifierElementInClassifierService as well as
+ * methods comparable to the invokeMethods defined for this class. This Class implements the ClassifierElementInClassifierServiceBean Interface. The
+ * CIM class ClassifierElementInClassifierService is described as follows:
+ * 
+ * This aggregation represents the relationship between a ClassifierService and the ClassifierElements that provide its fan-out function.
+ * ClassifierElements represent the traffic selectors for the Service. A ClassifierService typically aggregates multiple ClassifierElements. An
+ * individual Element, however, is aggregated only by a single ClassifierService.
  */
 public class ClassifierElementInClassifierService extends ServiceComponent
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a ClassifierElementInClassifierServiceBeanImpl
-     * Class which implements the ClassifierElementInClassifierServiceBean
-     * Interface, and encapsulates the CIM class
-     * ClassifierElementInClassifierService in a Java Bean. The CIM class
-     * ClassifierElementInClassifierService is described as follows:
-     *
-     * This aggregation represents the relationship between a
-     * ClassifierService and the ClassifierElements that provide its fan-out
-     * function. ClassifierElements represent the traffic selectors for the
-     * Service. A ClassifierService typically aggregates multiple
-     * ClassifierElements. An individual Element, however, is aggregated only
-     * by a single ClassifierService.
-     */
-    public ClassifierElementInClassifierService(){};
-    /**
-     * This method create an Association of the type
-     * ClassifierElementInClassifierService between one ClassifierService
-     * object and ClassifierElement object
-     */
-    public static ClassifierElementInClassifierService link(ClassifierService
-	groupComponent,ClassifierElement partComponent){
+	/**
+	 * This constructor creates a ClassifierElementInClassifierServiceBeanImpl Class which implements the ClassifierElementInClassifierServiceBean
+	 * Interface, and encapsulates the CIM class ClassifierElementInClassifierService in a Java Bean. The CIM class
+	 * ClassifierElementInClassifierService is described as follows:
+	 * 
+	 * This aggregation represents the relationship between a ClassifierService and the ClassifierElements that provide its fan-out function.
+	 * ClassifierElements represent the traffic selectors for the Service. A ClassifierService typically aggregates multiple ClassifierElements. An
+	 * individual Element, however, is aggregated only by a single ClassifierService.
+	 */
+	public ClassifierElementInClassifierService() {
+	};
 
-    return (ClassifierElementInClassifierService) Association.link(ClassifierElementInClassifierService.class,groupComponent,partComponent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property classifierOrder.
-     */
-    private long classifierOrder;
-    /**
-     * This method returns the
-     * ClassifierElementInClassifierService.classifierOrder property value.
-     * This property is described as follows:
-     *
-     * Because the filters for a classifier can overlap, it is necessary to
-     * specify the order in which the ClassifierElements are aggregated by a
-     * ClassifierService. This then dictates the order in which packets
-     * coming into the classifier are presented. Values are represented in
-     * ascending order: first '1', then '2', and so on. Different values MUST
-     * be assigned for each of the ClassifierElements aggregated by a given
-     * ClassifierService.
-     *
-     * @return	long	current classifierOrder property value
-     * @exception	Exception
-     */
-    public long getClassifierOrder(){
+	/**
+	 * This method create an Association of the type ClassifierElementInClassifierService between one ClassifierService object and ClassifierElement
+	 * object
+	 */
+	public static ClassifierElementInClassifierService link(ClassifierService
+			groupComponent, ClassifierElement partComponent) {
 
-    return this.classifierOrder;
-    } // getClassifierOrder
+		return (ClassifierElementInClassifierService) Association.link(ClassifierElementInClassifierService.class, groupComponent, partComponent);
+	}// link
 
-    /**
-     * This method sets the
-     * ClassifierElementInClassifierService.classifierOrder property value.
-     * This property is described as follows:
-     *
-     * Because the filters for a classifier can overlap, it is necessary to
-     * specify the order in which the ClassifierElements are aggregated by a
-     * ClassifierService. This then dictates the order in which packets
-     * coming into the classifier are presented. Values are represented in
-     * ascending order: first '1', then '2', and so on. Different values MUST
-     * be assigned for each of the ClassifierElements aggregated by a given
-     * ClassifierService.
-     *
-     * @param	long	new classifierOrder property value
-     * @exception	Exception
-     */
-    public void setClassifierOrder(long classifierOrder) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property classifierOrder.
+	 */
+	private long	classifierOrder;
 
-    this.classifierOrder = classifierOrder;
-    } // setClassifierOrder
+	/**
+	 * This method returns the ClassifierElementInClassifierService.classifierOrder property value. This property is described as follows:
+	 * 
+	 * Because the filters for a classifier can overlap, it is necessary to specify the order in which the ClassifierElements are aggregated by a
+	 * ClassifierService. This then dictates the order in which packets coming into the classifier are presented. Values are represented in ascending
+	 * order: first '1', then '2', and so on. Different values MUST be assigned for each of the ClassifierElements aggregated by a given
+	 * ClassifierService.
+	 * 
+	 * @return long current classifierOrder property value
+	 * @exception Exception
+	 */
+	public long getClassifierOrder() {
 
+		return this.classifierOrder;
+	} // getClassifierOrder
 
+	/**
+	 * This method sets the ClassifierElementInClassifierService.classifierOrder property value. This property is described as follows:
+	 * 
+	 * Because the filters for a classifier can overlap, it is necessary to specify the order in which the ClassifierElements are aggregated by a
+	 * ClassifierService. This then dictates the order in which packets coming into the classifier are presented. Values are represented in ascending
+	 * order: first '1', then '2', and so on. Different values MUST be assigned for each of the ClassifierElements aggregated by a given
+	 * ClassifierService.
+	 * 
+	 * @param long new classifierOrder property value
+	 * @exception Exception
+	 */
+	public void setClassifierOrder(long classifierOrder) {
+
+		this.classifierOrder = classifierOrder;
+	} // setClassifierOrder
 
 } // Class ClassifierElementInClassifierService

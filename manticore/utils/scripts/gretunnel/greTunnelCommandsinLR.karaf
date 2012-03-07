@@ -1,0 +1,62 @@
+shell:echo Script to test GRE tunnel commands for a router
+
+#Creating and initializing resource
+resource:create PATH_TO_OPENNAAS_SRC/opennaas/manticore/utils/routerWithGRE.descriptor
+protocols:context router:junos20 netconf URI
+resource:start router:junos20
+
+shell:echo "_______CONFIGURING LOGICAL ROUTER_______"
+#Create logical interface
+chassis:createsubinterface -v 301 router:junos20 fe-0/3/0.1
+chassis:createsubinterface -v 311 router:junos20 fe-0/3/1.1
+queue:execute router:junos20
+
+#Create logical router with interface
+chassis:createlogicalrouter router:junos20 LS1 fe-0/3/1.1 fe-0/3/0.1
+queue:execute router:junos20
+
+protocols:context router:LS1 netconf URI
+resource:start router:LS1
+
+#Set IP address 
+ipv4:setIP router:LS1 fe-0/3/0.1 192.168.0.1 255.255.255.0
+ipv4:setinterfacedescription router:LS1 fe-0/3/0.1 "private network interface"
+ipv4:setIP router:LS1 fe-0/3/1.1 192.168.254.1 255.255.255.0
+ipv4:setinterfacedescription router:LS1 fe-0/3/1.1 "Connected to internet"
+queue:execute router:LS1
+
+
+shell:echo "_______CONFIGURING GRE_______"
+
+#Create the GRE tunnel
+shell:echo "gretunnel:create router:LS1 gre.1 192.168.0.2 255.255.255.0 192.168.254.1 192.168.254.2"
+gretunnel:create router:LS1 gre.1 192.168.0.10 255.255.255.0 192.168.254.1 192.168.254.2
+queue:execute router:LS1
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:LS1"
+gretunnel:show router:LS1
+
+
+shell:echo "_______REMOVING GRE_______"
+
+#Delete the GRE tunnel
+shell:echo "gretunnel:delete router:LS1 gre.1"
+gretunnel:delete router:LS1 gre.1
+queue:execute router:LS1
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:LS1"
+gretunnel:show router:LS1
+
+
+#Cleanup
+shell:echo "_______REMOVING LOGICAL ROUTER_______"
+resource:stop router:LS1
+resource:remove router:LS1
+
+chassis:deletelogicalrouter router:junos20 LS1
+queue:execute router:junos20
+
+resource:stop router:junos20
+resource:remove router:junos20

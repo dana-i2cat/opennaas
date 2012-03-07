@@ -9,114 +9,95 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class QueuingService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * QueuingServiceBean Interface. The CIM class QueuingService is described as
- * follows:
- *
- * QueuingService represents the ability to queue network traffic, and to
- * specify the characteristics for determining long-term congestion. It is
- * modeled as a ConditioningService so that it can be aggregated into a
- * QoSService (using the QoSConditioningSubService association). This
- * indicates that its functionality underlies the QoSService.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class QueuingService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the QueuingServiceBean Interface. The CIM class QueuingService is described as follows:
+ * 
+ * QueuingService represents the ability to queue network traffic, and to specify the characteristics for determining long-term congestion. It is
+ * modeled as a ConditioningService so that it can be aggregated into a QoSService (using the QoSConditioningSubService association). This indicates
+ * that its functionality underlies the QoSService.
  */
 public class QueuingService extends ConditioningService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a QueuingServiceBeanImpl Class which
-     * implements the QueuingServiceBean Interface, and encapsulates the CIM
-     * class QueuingService in a Java Bean. The CIM class QueuingService is
-     * described as follows:
-     *
-     * QueuingService represents the ability to queue network traffic, and to
-     * specify the characteristics for determining long-term congestion. It
-     * is modeled as a ConditioningService so that it can be aggregated into
-     * a QoSService (using the QoSConditioningSubService association). This
-     * indicates that its functionality underlies the QoSService.
-     */
-    public QueuingService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property currentQueueDepth.
-     */
-    private long currentQueueDepth;
-    /**
-     * This method returns the QueuingService.currentQueueDepth property
-     * value. This property is described as follows:
-     *
-     * Indicates the current depth of this queue in units specified by
-     * DepthUnits. This value may be important in diagnosing unexpected
-     * behavior.
-     *
-     * @return	long	current currentQueueDepth property value
-     * @exception	Exception
-     */
-    public long getCurrentQueueDepth(){
+	/**
+	 * This constructor creates a QueuingServiceBeanImpl Class which implements the QueuingServiceBean Interface, and encapsulates the CIM class
+	 * QueuingService in a Java Bean. The CIM class QueuingService is described as follows:
+	 * 
+	 * QueuingService represents the ability to queue network traffic, and to specify the characteristics for determining long-term congestion. It is
+	 * modeled as a ConditioningService so that it can be aggregated into a QoSService (using the QoSConditioningSubService association). This
+	 * indicates that its functionality underlies the QoSService.
+	 */
+	public QueuingService() {
+	};
 
-    return this.currentQueueDepth;
-    } // getCurrentQueueDepth
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property currentQueueDepth.
+	 */
+	private long	currentQueueDepth;
 
-    /**
-     * This method sets the QueuingService.currentQueueDepth property value.
-     * This property is described as follows:
-     *
-     * Indicates the current depth of this queue in units specified by
-     * DepthUnits. This value may be important in diagnosing unexpected
-     * behavior.
-     *
-     * @param	long	new currentQueueDepth property value
-     * @exception	Exception
-     */
-    public void setCurrentQueueDepth(long currentQueueDepth) {
+	/**
+	 * This method returns the QueuingService.currentQueueDepth property value. This property is described as follows:
+	 * 
+	 * Indicates the current depth of this queue in units specified by DepthUnits. This value may be important in diagnosing unexpected behavior.
+	 * 
+	 * @return long current currentQueueDepth property value
+	 * @exception Exception
+	 */
+	public long getCurrentQueueDepth() {
 
-    this.currentQueueDepth = currentQueueDepth;
-    } // setCurrentQueueDepth
+		return this.currentQueueDepth;
+	} // getCurrentQueueDepth
 
+	/**
+	 * This method sets the QueuingService.currentQueueDepth property value. This property is described as follows:
+	 * 
+	 * Indicates the current depth of this queue in units specified by DepthUnits. This value may be important in diagnosing unexpected behavior.
+	 * 
+	 * @param long new currentQueueDepth property value
+	 * @exception Exception
+	 */
+	public void setCurrentQueueDepth(long currentQueueDepth) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DepthUnits.
-     */
+		this.currentQueueDepth = currentQueueDepth;
+	} // setCurrentQueueDepth
 
-    public enum DepthUnits{
-    BYTES,
-    PACKETS
-    }
-    private DepthUnits depthUnits;
-    /**
-     * This method returns the QueuingService.depthUnits property value. This
-     * property is described as follows:
-     *
-     * DepthUnits is an enumerated integer that identifies the units for the
-     * CurrentQueueDepth property. The values are either bytes (1) or packets
-     * (2).
-     *
-     * @return	int	current depthUnits property value
-     * @exception	Exception
-     */
-    public DepthUnits getDepthUnits(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DepthUnits.
+	 */
 
-    return this.depthUnits;
-    } // getDepthUnits
+	public enum DepthUnits {
+		BYTES,
+		PACKETS
+	}
 
-    /**
-     * This method sets the QueuingService.depthUnits property value. This
-     * property is described as follows:
-     *
-     * DepthUnits is an enumerated integer that identifies the units for the
-     * CurrentQueueDepth property. The values are either bytes (1) or packets
-     * (2).
-     *
-     * @param	int	new depthUnits property value
-     * @exception	Exception
-     */
-    public void setDepthUnits(DepthUnits depthUnits){
+	private DepthUnits	depthUnits;
 
-    this.depthUnits = depthUnits;
-    } // setDepthUnits
+	/**
+	 * This method returns the QueuingService.depthUnits property value. This property is described as follows:
+	 * 
+	 * DepthUnits is an enumerated integer that identifies the units for the CurrentQueueDepth property. The values are either bytes (1) or packets
+	 * (2).
+	 * 
+	 * @return int current depthUnits property value
+	 * @exception Exception
+	 */
+	public DepthUnits getDepthUnits() {
 
+		return this.depthUnits;
+	} // getDepthUnits
 
+	/**
+	 * This method sets the QueuingService.depthUnits property value. This property is described as follows:
+	 * 
+	 * DepthUnits is an enumerated integer that identifies the units for the CurrentQueueDepth property. The values are either bytes (1) or packets
+	 * (2).
+	 * 
+	 * @param int new depthUnits property value
+	 * @exception Exception
+	 */
+	public void setDepthUnits(DepthUnits depthUnits) {
+
+		this.depthUnits = depthUnits;
+	} // setDepthUnits
 
 } // Class QueuingService

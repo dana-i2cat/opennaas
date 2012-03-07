@@ -10,170 +10,141 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class USBRedirectionSAP as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * USBRedirectionSAPBean Interface. The CIM class USBRedirectionSAP is
- * described as follows:
- *
- * USBRedirectionSAP is a logical representation of a USB redirection session.
- * One access point represents access to a single USB redirection session.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class USBRedirectionSAP as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the USBRedirectionSAPBean Interface. The CIM class USBRedirectionSAP is described as
+ * follows:
+ * 
+ * USBRedirectionSAP is a logical representation of a USB redirection session. One access point represents access to a single USB redirection session.
  */
 public class USBRedirectionSAP extends ServiceAccessPoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a USBRedirectionSAPBeanImpl Class which
-     * implements the USBRedirectionSAPBean Interface, and encapsulates the
-     * CIM class USBRedirectionSAP in a Java Bean. The CIM class
-     * USBRedirectionSAP is described as follows:
-     *
-     * USBRedirectionSAP is a logical representation of a USB redirection
-     * session. One access point represents access to a single USB
-     * redirection session.
-     */
-    public USBRedirectionSAP(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ConnectionMode.
-     */
+	/**
+	 * This constructor creates a USBRedirectionSAPBeanImpl Class which implements the USBRedirectionSAPBean Interface, and encapsulates the CIM class
+	 * USBRedirectionSAP in a Java Bean. The CIM class USBRedirectionSAP is described as follows:
+	 * 
+	 * USBRedirectionSAP is a logical representation of a USB redirection session. One access point represents access to a single USB redirection
+	 * session.
+	 */
+	public USBRedirectionSAP() {
+	};
 
-    public enum ConnectionMode{
-    UNKNOWN,
-    LISTEN,
-    CONNECT,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIED
-    }
-    private ConnectionMode connectionMode;
-    /**
-     * This method returns the USBRedirectionSAP.connectionMode property
-     * value. This property is described as follows:
-     *
-     * An enumeration specifying the type of connection mode supported by the
-     * session. A value set to 2 = "Listen" shall indicate that the SAP will
-     * listen for a connection request from the remote USB redirection
-     * server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be
-     * used to represent where the SAP is listening for the connection
-     * request. A value set to 3 = "Connect" shall indicate that the the SAP
-     * shall initiate the connection to the remote USB redirection server. A
-     * CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote USB redirection server.
-     *
-     * @return	int	current connectionMode property value
-     * @exception	Exception
-     */
-    public ConnectionMode getConnectionMode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ConnectionMode.
+	 */
 
-    return this.connectionMode;
-    } // getConnectionMode
+	public enum ConnectionMode {
+		UNKNOWN,
+		LISTEN,
+		CONNECT,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIED
+	}
 
-    /**
-     * This method sets the USBRedirectionSAP.connectionMode property value.
-     * This property is described as follows:
-     *
-     * An enumeration specifying the type of connection mode supported by the
-     * session. A value set to 2 = "Listen" shall indicate that the SAP will
-     * listen for a connection request from the remote USB redirection
-     * server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be
-     * used to represent where the SAP is listening for the connection
-     * request. A value set to 3 = "Connect" shall indicate that the the SAP
-     * shall initiate the connection to the remote USB redirection server. A
-     * CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote USB redirection server.
-     *
-     * @param	int	new connectionMode property value
-     * @exception	Exception
-     */
-    public void setConnectionMode(ConnectionMode connectionMode){
+	private ConnectionMode	connectionMode;
 
-    this.connectionMode = connectionMode;
-    } // setConnectionMode
+	/**
+	 * This method returns the USBRedirectionSAP.connectionMode property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of connection mode supported by the session. A value set to 2 = "Listen" shall indicate that the SAP will
+	 * listen for a connection request from the remote USB redirection server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be used to
+	 * represent where the SAP is listening for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate
+	 * the connection to the remote USB redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may be
+	 * used to represent where the SAP shall connect to the remote USB redirection server.
+	 * 
+	 * @return int current connectionMode property value
+	 * @exception Exception
+	 */
+	public ConnectionMode getConnectionMode() {
 
+		return this.connectionMode;
+	} // getConnectionMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property resetTimeout.
-     */
-    private Date resetTimeout;
-    /**
-     * This method returns the USBRedirectionSAP.resetTimeout property value.
-     * This property is described as follows:
-     *
-     * The amount of time the session shall wait after sending a Reset to the
-     * Remote System before concluding that the Remote System is not
-     * responding in a timely fashion, it may be hung or busy. When the Reset
-     * Timeout is exceeded the managed system tries to establish a new
-     * connection with the Remote System. This property uses the interval
-     * format of the datetime type
-     *
-     * @return	Date	current resetTimeout property value
-     * @exception	Exception
-     */
-    public Date getResetTimeout(){
+	/**
+	 * This method sets the USBRedirectionSAP.connectionMode property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of connection mode supported by the session. A value set to 2 = "Listen" shall indicate that the SAP will
+	 * listen for a connection request from the remote USB redirection server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be used to
+	 * represent where the SAP is listening for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate
+	 * the connection to the remote USB redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may be
+	 * used to represent where the SAP shall connect to the remote USB redirection server.
+	 * 
+	 * @param int new connectionMode property value
+	 * @exception Exception
+	 */
+	public void setConnectionMode(ConnectionMode connectionMode) {
 
-    return this.resetTimeout;
-    } // getResetTimeout
+		this.connectionMode = connectionMode;
+	} // setConnectionMode
 
-    /**
-     * This method sets the USBRedirectionSAP.resetTimeout property value.
-     * This property is described as follows:
-     *
-     * The amount of time the session shall wait after sending a Reset to the
-     * Remote System before concluding that the Remote System is not
-     * responding in a timely fashion, it may be hung or busy. When the Reset
-     * Timeout is exceeded the managed system tries to establish a new
-     * connection with the Remote System. This property uses the interval
-     * format of the datetime type
-     *
-     * @param	Date	new resetTimeout property value
-     * @exception	Exception
-     */
-    public void setResetTimeout(Date resetTimeout) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property resetTimeout.
+	 */
+	private Date	resetTimeout;
 
-    this.resetTimeout = resetTimeout;
-    } // setResetTimeout
+	/**
+	 * This method returns the USBRedirectionSAP.resetTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session shall wait after sending a Reset to the Remote System before concluding that the Remote System is not responding
+	 * in a timely fashion, it may be hung or busy. When the Reset Timeout is exceeded the managed system tries to establish a new connection with the
+	 * Remote System. This property uses the interval format of the datetime type
+	 * 
+	 * @return Date current resetTimeout property value
+	 * @exception Exception
+	 */
+	public Date getResetTimeout() {
 
+		return this.resetTimeout;
+	} // getResetTimeout
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionTimeout.
-     */
-    private Date sessionTimeout;
-    /**
-     * This method returns the USBRedirectionSAP.sessionTimeout property
-     * value. This property is described as follows:
-     *
-     * The amount of time the session will wait for a Remote System to
-     * establish a new connection before the USB Device is detached. This
-     * property uses the interval format of the datetime type.
-     *
-     * @return	Date	current sessionTimeout property value
-     * @exception	Exception
-     */
-    public Date getSessionTimeout(){
+	/**
+	 * This method sets the USBRedirectionSAP.resetTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session shall wait after sending a Reset to the Remote System before concluding that the Remote System is not responding
+	 * in a timely fashion, it may be hung or busy. When the Reset Timeout is exceeded the managed system tries to establish a new connection with the
+	 * Remote System. This property uses the interval format of the datetime type
+	 * 
+	 * @param Date
+	 *            new resetTimeout property value
+	 * @exception Exception
+	 */
+	public void setResetTimeout(Date resetTimeout) {
 
-    return this.sessionTimeout;
-    } // getSessionTimeout
+		this.resetTimeout = resetTimeout;
+	} // setResetTimeout
 
-    /**
-     * This method sets the USBRedirectionSAP.sessionTimeout property value.
-     * This property is described as follows:
-     *
-     * The amount of time the session will wait for a Remote System to
-     * establish a new connection before the USB Device is detached. This
-     * property uses the interval format of the datetime type.
-     *
-     * @param	Date	new sessionTimeout property value
-     * @exception	Exception
-     */
-    public void setSessionTimeout(Date sessionTimeout) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionTimeout.
+	 */
+	private Date	sessionTimeout;
 
-    this.sessionTimeout = sessionTimeout;
-    } // setSessionTimeout
+	/**
+	 * This method returns the USBRedirectionSAP.sessionTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session will wait for a Remote System to establish a new connection before the USB Device is detached. This property
+	 * uses the interval format of the datetime type.
+	 * 
+	 * @return Date current sessionTimeout property value
+	 * @exception Exception
+	 */
+	public Date getSessionTimeout() {
 
+		return this.sessionTimeout;
+	} // getSessionTimeout
 
+	/**
+	 * This method sets the USBRedirectionSAP.sessionTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session will wait for a Remote System to establish a new connection before the USB Device is detached. This property
+	 * uses the interval format of the datetime type.
+	 * 
+	 * @param Date
+	 *            new sessionTimeout property value
+	 * @exception Exception
+	 */
+	public void setSessionTimeout(Date sessionTimeout) {
+
+		this.sessionTimeout = sessionTimeout;
+	} // setSessionTimeout
 
 } // Class USBRedirectionSAP

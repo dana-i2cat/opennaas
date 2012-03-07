@@ -8,45 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ForwardedRoutes as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ForwardedRoutesBean Interface. The CIM class ForwardedRoutes is described
- * as follows:
- *
- * This assocation makes explicit the IP routes that are defined in the
- * context of a specific ForwardingService. Every ForwardingService can have
- * its own unique set of IP routing destinations. The association is
- * deprecated since it is incorrect to mandate the existence of a
- * ForwardingService in order to define the existence of a route.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ForwardedRoutes as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ForwardedRoutesBean Interface. The CIM class ForwardedRoutes is described as
+ * follows:
+ * 
+ * This assocation makes explicit the IP routes that are defined in the context of a specific ForwardingService. Every ForwardingService can have its
+ * own unique set of IP routing destinations. The association is deprecated since it is incorrect to mandate the existence of a ForwardingService in
+ * order to define the existence of a route.
  */
-    @Deprecated
+@Deprecated
 public class ForwardedRoutes extends RouteForwardedByService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ForwardedRoutesBeanImpl Class which
-     * implements the ForwardedRoutesBean Interface, and encapsulates the CIM
-     * class ForwardedRoutes in a Java Bean. The CIM class ForwardedRoutes is
-     * described as follows:
-     *
-     * This assocation makes explicit the IP routes that are defined in the
-     * context of a specific ForwardingService. Every ForwardingService can
-     * have its own unique set of IP routing destinations. The association is
-     * deprecated since it is incorrect to mandate the existence of a
-     * ForwardingService in order to define the existence of a route.
-     */
-    public ForwardedRoutes(){};
-    /**
-     * This method create an Association of the type ForwardedRoutes between
-     * one ForwardingService object and IPRoute object
-     */
-    @Deprecated
-    public static ForwardedRoutes link(ForwardingService antecedent,IPRoute
-	dependent){
+	/**
+	 * This constructor creates a ForwardedRoutesBeanImpl Class which implements the ForwardedRoutesBean Interface, and encapsulates the CIM class
+	 * ForwardedRoutes in a Java Bean. The CIM class ForwardedRoutes is described as follows:
+	 * 
+	 * This assocation makes explicit the IP routes that are defined in the context of a specific ForwardingService. Every ForwardingService can have
+	 * its own unique set of IP routing destinations. The association is deprecated since it is incorrect to mandate the existence of a
+	 * ForwardingService in order to define the existence of a route.
+	 */
+	public ForwardedRoutes() {
+	};
 
-    return (ForwardedRoutes)
-	Association.link(ForwardedRoutes.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ForwardedRoutes between one ForwardingService object and IPRoute object
+	 */
+	@Deprecated
+	public static ForwardedRoutes link(ForwardingService antecedent, IPRoute
+			dependent) {
+
+		return (ForwardedRoutes) Association.link(ForwardedRoutes.class, antecedent, dependent);
+	}// link
 
 } // Class ForwardedRoutes

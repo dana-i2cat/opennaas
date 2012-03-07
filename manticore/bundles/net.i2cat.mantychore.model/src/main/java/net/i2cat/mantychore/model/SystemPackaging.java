@@ -8,40 +8,32 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SystemPackaging as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SystemPackagingBean Interface. The CIM class SystemPackaging is described
- * as follows:
- *
- * Similar to the way that LogicalDevices are 'Realized' by PhysicalElements,
- * Systems can be associated with specific packaging or PhysicalElements.
- * This association explicitly defines the relationship between a System and
- * its packaging.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemPackaging as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SystemPackagingBean Interface. The CIM class SystemPackaging is described as
+ * follows:
+ * 
+ * Similar to the way that LogicalDevices are 'Realized' by PhysicalElements, Systems can be associated with specific packaging or PhysicalElements.
+ * This association explicitly defines the relationship between a System and its packaging.
  */
 public class SystemPackaging extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a SystemPackagingBeanImpl Class which
-     * implements the SystemPackagingBean Interface, and encapsulates the CIM
-     * class SystemPackaging in a Java Bean. The CIM class SystemPackaging is
-     * described as follows:
-     *
-     * Similar to the way that LogicalDevices are 'Realized' by
-     * PhysicalElements, Systems can be associated with specific packaging or
-     * PhysicalElements. This association explicitly defines the relationship
-     * between a System and its packaging.
-     */
-    public SystemPackaging(){};
-    /**
-     * This method create an Association of the type SystemPackaging between
-     * one PhysicalElement object and System object
-     */
-    public static SystemPackaging link(PhysicalElement antecedent,System
-	dependent){
+	/**
+	 * This constructor creates a SystemPackagingBeanImpl Class which implements the SystemPackagingBean Interface, and encapsulates the CIM class
+	 * SystemPackaging in a Java Bean. The CIM class SystemPackaging is described as follows:
+	 * 
+	 * Similar to the way that LogicalDevices are 'Realized' by PhysicalElements, Systems can be associated with specific packaging or
+	 * PhysicalElements. This association explicitly defines the relationship between a System and its packaging.
+	 */
+	public SystemPackaging() {
+	};
 
-    return (SystemPackaging)
-	Association.link(SystemPackaging.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type SystemPackaging between one PhysicalElement object and System object
+	 */
+	public static SystemPackaging link(PhysicalElement antecedent, System
+			dependent) {
+
+		return (SystemPackaging) Association.link(SystemPackaging.class, antecedent, dependent);
+	}// link
 
 } // Class SystemPackaging

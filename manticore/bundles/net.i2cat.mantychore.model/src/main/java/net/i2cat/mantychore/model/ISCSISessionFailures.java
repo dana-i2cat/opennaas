@@ -9,305 +9,257 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ISCSISessionFailures as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ISCSISessionFailuresBean Interface. The CIM class ISCSISessionFailures is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ISCSISessionFailures as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ISCSISessionFailuresBean Interface. The CIM class ISCSISessionFailures is
  * described as follows:
- *
- * Failure Statistics for Sessions associated with a iSCSI Node. An instance
- * of this class will be associated by ElementStatisticalData to an instance
- * of SCSIProtocolController representing an iSCSI Node. These statistics are
- * associated to a Node since they describe the aggregated Session data for
- * all failed Sessions associated to iSCSI protocol endpoints used by the
- * Node.
+ * 
+ * Failure Statistics for Sessions associated with a iSCSI Node. An instance of this class will be associated by ElementStatisticalData to an instance
+ * of SCSIProtocolController representing an iSCSI Node. These statistics are associated to a Node since they describe the aggregated Session data for
+ * all failed Sessions associated to iSCSI protocol endpoints used by the Node.
  */
 public class ISCSISessionFailures extends StatisticalData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ISCSISessionFailuresBeanImpl Class which
-     * implements the ISCSISessionFailuresBean Interface, and encapsulates
-     * the CIM class ISCSISessionFailures in a Java Bean. The CIM class
-     * ISCSISessionFailures is described as follows:
-     *
-     * Failure Statistics for Sessions associated with a iSCSI Node. An
-     * instance of this class will be associated by ElementStatisticalData to
-     * an instance of SCSIProtocolController representing an iSCSI Node.
-     * These statistics are associated to a Node since they describe the
-     * aggregated Session data for all failed Sessions associated to iSCSI
-     * protocol endpoints used by the Node.
-     */
-    public ISCSISessionFailures(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionFailures.
-     */
-    private long sessionFailures;
-    /**
-     * This method returns the iSCSISessionFailures.sessionFailures property
-     * value. This property is described as follows:
-     *
-     * The number of times a session belonging to this Network Entity has been
-     * failed.
-     *
-     * @return	long	current sessionFailures property value
-     * @exception	Exception
-     */
-    public long getSessionFailures(){
+	/**
+	 * This constructor creates a ISCSISessionFailuresBeanImpl Class which implements the ISCSISessionFailuresBean Interface, and encapsulates the CIM
+	 * class ISCSISessionFailures in a Java Bean. The CIM class ISCSISessionFailures is described as follows:
+	 * 
+	 * Failure Statistics for Sessions associated with a iSCSI Node. An instance of this class will be associated by ElementStatisticalData to an
+	 * instance of SCSIProtocolController representing an iSCSI Node. These statistics are associated to a Node since they describe the aggregated
+	 * Session data for all failed Sessions associated to iSCSI protocol endpoints used by the Node.
+	 */
+	public ISCSISessionFailures() {
+	};
 
-    return this.sessionFailures;
-    } // getSessionFailures
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionFailures.
+	 */
+	private long	sessionFailures;
 
-    /**
-     * This method sets the iSCSISessionFailures.sessionFailures property
-     * value. This property is described as follows:
-     *
-     * The number of times a session belonging to this Network Entity has been
-     * failed.
-     *
-     * @param	long	new sessionFailures property value
-     * @exception	Exception
-     */
-    public void setSessionFailures(long sessionFailures) {
+	/**
+	 * This method returns the iSCSISessionFailures.sessionFailures property value. This property is described as follows:
+	 * 
+	 * The number of times a session belonging to this Network Entity has been failed.
+	 * 
+	 * @return long current sessionFailures property value
+	 * @exception Exception
+	 */
+	public long getSessionFailures() {
 
-    this.sessionFailures = sessionFailures;
-    } // setSessionFailures
+		return this.sessionFailures;
+	} // getSessionFailures
 
+	/**
+	 * This method sets the iSCSISessionFailures.sessionFailures property value. This property is described as follows:
+	 * 
+	 * The number of times a session belonging to this Network Entity has been failed.
+	 * 
+	 * @param long new sessionFailures property value
+	 * @exception Exception
+	 */
+	public void setSessionFailures(long sessionFailures) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LastSessionFailureType.
-     */
+		this.sessionFailures = sessionFailures;
+	} // setSessionFailures
 
-    public enum LastSessionFailureType{
-    OTHER,
-    DIGEST,
-    TIMEOUT,
-    FORMAT
-    }
-    private LastSessionFailureType lastSessionFailureType;
-    /**
-     * This method returns the iSCSISessionFailures.lastSessionFailureType
-     * property value. This property is described as follows:
-     *
-     * The type of the last session failure.
-     *
-     * @return	int	current lastSessionFailureType property value
-     * @exception	Exception
-     */
-    public LastSessionFailureType getLastSessionFailureType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LastSessionFailureType.
+	 */
 
-    return this.lastSessionFailureType;
-    } // getLastSessionFailureType
+	public enum LastSessionFailureType {
+		OTHER,
+		DIGEST,
+		TIMEOUT,
+		FORMAT
+	}
 
-    /**
-     * This method sets the iSCSISessionFailures.lastSessionFailureType
-     * property value. This property is described as follows:
-     *
-     * The type of the last session failure.
-     *
-     * @param	int	new lastSessionFailureType property value
-     * @exception	Exception
-     */
-    public void setLastSessionFailureType(LastSessionFailureType
-	lastSessionFailureType){
+	private LastSessionFailureType	lastSessionFailureType;
 
-    this.lastSessionFailureType = lastSessionFailureType;
-    } // setLastSessionFailureType
+	/**
+	 * This method returns the iSCSISessionFailures.lastSessionFailureType property value. This property is described as follows:
+	 * 
+	 * The type of the last session failure.
+	 * 
+	 * @return int current lastSessionFailureType property value
+	 * @exception Exception
+	 */
+	public LastSessionFailureType getLastSessionFailureType() {
 
+		return this.lastSessionFailureType;
+	} // getLastSessionFailureType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherLastSessionFailureType.
-     */
-    private String otherLastSessionFailureType;
-    /**
-     * This method returns the
-     * iSCSISessionFailures.otherLastSessionFailureType property value. This
-     * property is described as follows:
-     *
-     * A string describing the type of the last Session failure when
-     * LastSessionFailureType is equal to the value 1, "Other".
-     *
-     * @return	String	current otherLastSessionFailureType
-     * property value
-     * @exception	Exception
-     */
-    public String getOtherLastSessionFailureType(){
+	/**
+	 * This method sets the iSCSISessionFailures.lastSessionFailureType property value. This property is described as follows:
+	 * 
+	 * The type of the last session failure.
+	 * 
+	 * @param int new lastSessionFailureType property value
+	 * @exception Exception
+	 */
+	public void setLastSessionFailureType(LastSessionFailureType
+			lastSessionFailureType) {
 
-    return this.otherLastSessionFailureType;
-    } // getOtherLastSessionFailureType
+		this.lastSessionFailureType = lastSessionFailureType;
+	} // setLastSessionFailureType
 
-    /**
-     * This method sets the iSCSISessionFailures.otherLastSessionFailureType
-     * property value. This property is described as follows:
-     *
-     * A string describing the type of the last Session failure when
-     * LastSessionFailureType is equal to the value 1, "Other".
-     *
-     * @param	String	new otherLastSessionFailureType property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherLastSessionFailureType(String
-	otherLastSessionFailureType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherLastSessionFailureType.
+	 */
+	private String	otherLastSessionFailureType;
 
-    this.otherLastSessionFailureType = otherLastSessionFailureType;
-    } // setOtherLastSessionFailureType
+	/**
+	 * This method returns the iSCSISessionFailures.otherLastSessionFailureType property value. This property is described as follows:
+	 * 
+	 * A string describing the type of the last Session failure when LastSessionFailureType is equal to the value 1, "Other".
+	 * 
+	 * @return String current otherLastSessionFailureType property value
+	 * @exception Exception
+	 */
+	public String getOtherLastSessionFailureType() {
 
+		return this.otherLastSessionFailureType;
+	} // getOtherLastSessionFailureType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lastSessionFailureRemoteNodeName.
-     */
-    private String lastSessionFailureRemoteNodeName;
-    /**
-     * This method returns the
-     * iSCSISessionFailures.lastSessionFailureRemoteNodeName property value.
-     * This property is described as follows:
-     *
-     * The iSCSI name of the remote node from the failed session.
-     *
-     * @return	String	current lastSessionFailureRemoteNodeName
-     * property value
-     * @exception	Exception
-     */
-    public String getLastSessionFailureRemoteNodeName(){
+	/**
+	 * This method sets the iSCSISessionFailures.otherLastSessionFailureType property value. This property is described as follows:
+	 * 
+	 * A string describing the type of the last Session failure when LastSessionFailureType is equal to the value 1, "Other".
+	 * 
+	 * @param String
+	 *            new otherLastSessionFailureType property value
+	 * @exception Exception
+	 */
+	public void setOtherLastSessionFailureType(String
+			otherLastSessionFailureType) {
 
-    return this.lastSessionFailureRemoteNodeName;
-    } // getLastSessionFailureRemoteNodeName
+		this.otherLastSessionFailureType = otherLastSessionFailureType;
+	} // setOtherLastSessionFailureType
 
-    /**
-     * This method sets the
-     * iSCSISessionFailures.lastSessionFailureRemoteNodeName property value.
-     * This property is described as follows:
-     *
-     * The iSCSI name of the remote node from the failed session.
-     *
-     * @param	String	new lastSessionFailureRemoteNodeName
-     * property value
-     * @exception	Exception
-     */
-    public void setLastSessionFailureRemoteNodeName(String
-	lastSessionFailureRemoteNodeName) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lastSessionFailureRemoteNodeName.
+	 */
+	private String	lastSessionFailureRemoteNodeName;
 
-    this.lastSessionFailureRemoteNodeName = lastSessionFailureRemoteNodeName;
-    } // setLastSessionFailureRemoteNodeName
+	/**
+	 * This method returns the iSCSISessionFailures.lastSessionFailureRemoteNodeName property value. This property is described as follows:
+	 * 
+	 * The iSCSI name of the remote node from the failed session.
+	 * 
+	 * @return String current lastSessionFailureRemoteNodeName property value
+	 * @exception Exception
+	 */
+	public String getLastSessionFailureRemoteNodeName() {
 
+		return this.lastSessionFailureRemoteNodeName;
+	} // getLastSessionFailureRemoteNodeName
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionDigestFailures.
-     */
-    private long sessionDigestFailures;
-    /**
-     * This method returns the iSCSISessionFailures.sessionDigestFailures
-     * property value. This property is described as follows:
-     *
-     * The count of sessions which were failed due to receipt of a PDU
-     * containing header or data digest errors.
-     *
-     * @return	long	current sessionDigestFailures property value
-     * @exception	Exception
-     */
-    public long getSessionDigestFailures(){
+	/**
+	 * This method sets the iSCSISessionFailures.lastSessionFailureRemoteNodeName property value. This property is described as follows:
+	 * 
+	 * The iSCSI name of the remote node from the failed session.
+	 * 
+	 * @param String
+	 *            new lastSessionFailureRemoteNodeName property value
+	 * @exception Exception
+	 */
+	public void setLastSessionFailureRemoteNodeName(String
+			lastSessionFailureRemoteNodeName) {
 
-    return this.sessionDigestFailures;
-    } // getSessionDigestFailures
+		this.lastSessionFailureRemoteNodeName = lastSessionFailureRemoteNodeName;
+	} // setLastSessionFailureRemoteNodeName
 
-    /**
-     * This method sets the iSCSISessionFailures.sessionDigestFailures
-     * property value. This property is described as follows:
-     *
-     * The count of sessions which were failed due to receipt of a PDU
-     * containing header or data digest errors.
-     *
-     * @param	long	new sessionDigestFailures property value
-     * @exception	Exception
-     */
-    public void setSessionDigestFailures(long sessionDigestFailures) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionDigestFailures.
+	 */
+	private long	sessionDigestFailures;
 
-    this.sessionDigestFailures = sessionDigestFailures;
-    } // setSessionDigestFailures
+	/**
+	 * This method returns the iSCSISessionFailures.sessionDigestFailures property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to receipt of a PDU containing header or data digest errors.
+	 * 
+	 * @return long current sessionDigestFailures property value
+	 * @exception Exception
+	 */
+	public long getSessionDigestFailures() {
 
+		return this.sessionDigestFailures;
+	} // getSessionDigestFailures
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionConnectionTimeoutFailures.
-     */
-    private long sessionConnectionTimeoutFailures;
-    /**
-     * This method returns the
-     * iSCSISessionFailures.sessionConnectionTimeoutFailures property value.
-     * This property is described as follows:
-     *
-     * The count of sessions which were failed due to a sequence exceeding a
-     * time limit.
-     *
-     * @return	long	current sessionConnectionTimeoutFailures
-     * property value
-     * @exception	Exception
-     */
-    public long getSessionConnectionTimeoutFailures(){
+	/**
+	 * This method sets the iSCSISessionFailures.sessionDigestFailures property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to receipt of a PDU containing header or data digest errors.
+	 * 
+	 * @param long new sessionDigestFailures property value
+	 * @exception Exception
+	 */
+	public void setSessionDigestFailures(long sessionDigestFailures) {
 
-    return this.sessionConnectionTimeoutFailures;
-    } // getSessionConnectionTimeoutFailures
+		this.sessionDigestFailures = sessionDigestFailures;
+	} // setSessionDigestFailures
 
-    /**
-     * This method sets the
-     * iSCSISessionFailures.sessionConnectionTimeoutFailures property value.
-     * This property is described as follows:
-     *
-     * The count of sessions which were failed due to a sequence exceeding a
-     * time limit.
-     *
-     * @param	long	new sessionConnectionTimeoutFailures property
-     * value
-     * @exception	Exception
-     */
-    public void setSessionConnectionTimeoutFailures(long
-	sessionConnectionTimeoutFailures) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionConnectionTimeoutFailures.
+	 */
+	private long	sessionConnectionTimeoutFailures;
 
-    this.sessionConnectionTimeoutFailures = sessionConnectionTimeoutFailures;
-    } // setSessionConnectionTimeoutFailures
+	/**
+	 * This method returns the iSCSISessionFailures.sessionConnectionTimeoutFailures property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to a sequence exceeding a time limit.
+	 * 
+	 * @return long current sessionConnectionTimeoutFailures property value
+	 * @exception Exception
+	 */
+	public long getSessionConnectionTimeoutFailures() {
 
+		return this.sessionConnectionTimeoutFailures;
+	} // getSessionConnectionTimeoutFailures
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionFormatErrors.
-     */
-    private long sessionFormatErrors;
-    /**
-     * This method returns the iSCSISessionFailures.sessionFormatErrors
-     * property value. This property is described as follows:
-     *
-     * The count of sessions which were failed due to receipt of a PDU which
-     * contained a format error.
-     *
-     * @return	long	current sessionFormatErrors property value
-     * @exception	Exception
-     */
-    public long getSessionFormatErrors(){
+	/**
+	 * This method sets the iSCSISessionFailures.sessionConnectionTimeoutFailures property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to a sequence exceeding a time limit.
+	 * 
+	 * @param long new sessionConnectionTimeoutFailures property value
+	 * @exception Exception
+	 */
+	public void setSessionConnectionTimeoutFailures(long
+			sessionConnectionTimeoutFailures) {
 
-    return this.sessionFormatErrors;
-    } // getSessionFormatErrors
+		this.sessionConnectionTimeoutFailures = sessionConnectionTimeoutFailures;
+	} // setSessionConnectionTimeoutFailures
 
-    /**
-     * This method sets the iSCSISessionFailures.sessionFormatErrors property
-     * value. This property is described as follows:
-     *
-     * The count of sessions which were failed due to receipt of a PDU which
-     * contained a format error.
-     *
-     * @param	long	new sessionFormatErrors property value
-     * @exception	Exception
-     */
-    public void setSessionFormatErrors(long sessionFormatErrors) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionFormatErrors.
+	 */
+	private long	sessionFormatErrors;
 
-    this.sessionFormatErrors = sessionFormatErrors;
-    } // setSessionFormatErrors
+	/**
+	 * This method returns the iSCSISessionFailures.sessionFormatErrors property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to receipt of a PDU which contained a format error.
+	 * 
+	 * @return long current sessionFormatErrors property value
+	 * @exception Exception
+	 */
+	public long getSessionFormatErrors() {
 
+		return this.sessionFormatErrors;
+	} // getSessionFormatErrors
 
+	/**
+	 * This method sets the iSCSISessionFailures.sessionFormatErrors property value. This property is described as follows:
+	 * 
+	 * The count of sessions which were failed due to receipt of a PDU which contained a format error.
+	 * 
+	 * @param long new sessionFormatErrors property value
+	 * @exception Exception
+	 */
+	public void setSessionFormatErrors(long sessionFormatErrors) {
+
+		this.sessionFormatErrors = sessionFormatErrors;
+	} // setSessionFormatErrors
 
 } // Class ISCSISessionFailures

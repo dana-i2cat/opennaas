@@ -1,0 +1,61 @@
+
+#OPTIONAL enable/disable OSPF in interfaces
+shell:echo "disabling ospf in some interfaces" 
+ospf:disableinterface router:LS1 lt-1/2/0.0
+ospf:disableinterface router:LS3 lt-1/2/0.5
+queue:execute router:LS1
+queue:execute router:LS3
+
+shell:echo "ospf:show in logical routers" 
+ospf:show router:LS1
+ospf:show router:LS2
+ospf:show router:LS3
+
+
+#Deactivate ospf on the three routers
+shell:echo "Deactivate OSPF in the three routers"
+ospf:deactivate router:LS1
+queue:execute router:LS1
+ospf:deactivate router:LS2
+queue:execute router:LS2
+ospf:deactivate router:LS3
+queue:execute router:LS3
+
+shell:echo "ospf:show in logical routers" 
+ospf:show router:LS1
+ospf:show router:LS2
+ospf:show router:LS3
+
+shell:echo "________REMOVING OSPF CONFIGURATION________"
+
+#Deconfigure ospf in LRs
+shell:echo "Deconfigure ospf in LRs"
+ospf:configure --delete router:LS1
+ospf:configure --delete router:LS2
+ospf:configure --delete router:LS3
+queue:execute router:LS1
+queue:execute router:LS2
+queue:execute router:LS3
+
+shell:echo "ospf:show in logical routers" 
+ospf:show router:LS1
+ospf:show router:LS2
+ospf:show router:LS3
+
+shell:echo "________REMOVING LOGICAL ROUTERS________"
+resource:stop router:LS1
+resource:stop router:LS2
+resource:stop router:LS3
+
+resource:remove router:LS1
+resource:remove router:LS2
+resource:remove router:LS3
+
+chassis:deleteLogicalRouter router:junos20 LS1
+chassis:deleteLogicalRouter router:junos20 LS2
+chassis:deleteLogicalRouter router:junos20 LS3
+queue:execute -d router:junos20
+
+resource:list
+
+
