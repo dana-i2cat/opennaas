@@ -20,7 +20,7 @@ public interface IOSPFService {
 	/**
 	 * Enable OSPF on the router.
 	 * 
-	 * @return
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response activateOSPF() throws CapabilityException;
@@ -28,7 +28,7 @@ public interface IOSPFService {
 	/**
 	 * Disable OSPF on the router.
 	 * 
-	 * @return
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response deactivateOSPF() throws CapabilityException;
@@ -39,7 +39,8 @@ public interface IOSPFService {
 	 * This configuration applies to the OSPF Service itself, but does not affect areas nor interfaces.
 	 * 
 	 * @param ospfService
-	 * @return
+	 *            containing all desired configuration details.
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response configureOSPF(OSPFService ospfService) throws CapabilityException;
@@ -48,7 +49,8 @@ public interface IOSPFService {
 	 * Removes all OSPF configuration.
 	 * 
 	 * @param ospfService
-	 * @return
+	 *            to be removed.
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException;
@@ -57,6 +59,7 @@ public interface IOSPFService {
 	 * Configures an OSPF area.
 	 * 
 	 * @param ospfAreaConfiguration
+	 *            containing all desired configuration of the area
 	 * @return
 	 * @throws CapabilityException
 	 */
@@ -66,7 +69,8 @@ public interface IOSPFService {
 	 * Remove an OSPF area.
 	 * 
 	 * @param ospfAreaConfiguration
-	 * @return
+	 *            to be removed
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException;
@@ -75,8 +79,10 @@ public interface IOSPFService {
 	 * Adds given interfaces to given OSPF area
 	 * 
 	 * @param interfaces
+	 *            to be added
 	 * @param ospfArea
-	 * @return
+	 *            where interfaces should be added to.
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
@@ -85,8 +91,10 @@ public interface IOSPFService {
 	 * Remove given interfaces from given OSPF area
 	 * 
 	 * @param interfaces
+	 *            to be removed from ospfArea
 	 * @param ospfArea
-	 * @return
+	 *            where interfaces should be removed from.
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException;
@@ -95,7 +103,8 @@ public interface IOSPFService {
 	 * Enable OSPF in given interfaces, if they are already configured.
 	 * 
 	 * @param interfaces
-	 * @return
+	 *            to enable ospf in
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException;
@@ -104,6 +113,7 @@ public interface IOSPFService {
 	 * Disable OSPF in given interfaces, if they are already configured.
 	 * 
 	 * @param interfaces
+	 *            to disable ospf in
 	 * @return
 	 * @throws CapabilityException
 	 */
@@ -114,7 +124,7 @@ public interface IOSPFService {
 	 * 
 	 * This includes service, areas, and interface status.
 	 * 
-	 * @return
+	 * @return OSPFService containing full ospf configuration
 	 * @throws CapabilityException
 	 */
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
@@ -124,7 +134,7 @@ public interface IOSPFService {
 	 * 
 	 * This includes service, areas, and interface status.
 	 * 
-	 * @return ospfService
+	 * @return Response containing the status of the request.
 	 * @throws CapabilityException
 	 */
 	public Response getOSPFConfiguration() throws CapabilityException;
