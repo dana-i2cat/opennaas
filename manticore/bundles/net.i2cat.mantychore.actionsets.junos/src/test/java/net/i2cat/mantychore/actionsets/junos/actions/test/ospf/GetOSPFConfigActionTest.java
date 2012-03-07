@@ -1,9 +1,10 @@
 package net.i2cat.mantychore.actionsets.junos.actions.test.ospf;
 
-import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 import net.i2cat.mantychore.actionsets.junos.actions.ospf.GetOSPFConfigAction;
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -18,11 +19,17 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.action.ActionException;
 
+import com.google.common.io.Files;
+
 public class GetOSPFConfigActionTest {
 
 	@Test
-	public void testsParseOSPFConfigTwice() throws IOException, ActionException {
-		String netconfReply = readStringFromFile("/parsers/getConfigWithOSPF.xml");
+	public void testsParseOSPFConfigTwice() throws IOException, ActionException, URISyntaxException {
+
+		String configFilePath = "/parsers/getConfigWithOSPF.xml";
+		URL configFileURL = getClass().getResource(configFilePath);
+		String netconfReply = Files.toString(new File(configFileURL.toURI()), Charset.forName("UTF-8"));
+
 		Reply rpcReply = new Reply();
 		rpcReply.setContain(netconfReply);
 
@@ -50,9 +57,12 @@ public class GetOSPFConfigActionTest {
 	}
 
 	@Test
-	public void testsParseRemoveOSPFCorreclty() throws IOException, ActionException {
-		String netconfReply1 = readStringFromFile("/parsers/getConfigWithOSPF.xml");
-		String netconfReply2 = readStringFromFile("/parsers/getConfigWithoutOSPF.xml");
+	public void testsParseRemoveOSPFCorreclty() throws IOException, ActionException, URISyntaxException {
+
+		String netconfReply1 = Files.toString(new File(getClass().getResource("/parsers/getConfigWithOSPF.xml").toURI()),
+				Charset.forName("UTF-8"));
+		String netconfReply2 = Files.toString(new File(getClass().getResource("/parsers/getConfigWithoutOSPF.xml").toURI()),
+				Charset.forName("UTF-8"));
 
 		Reply rpcReply1 = new Reply();
 		rpcReply1.setContain(netconfReply1);
@@ -77,31 +87,6 @@ public class GetOSPFConfigActionTest {
 					Assert.fail("A NetworkPort must have no OSPFProtocolEndpoint");
 			}
 		}
-	}
-
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 * 
-	 * @param stream
-	 * @return
-	 */
-	private String readStringFromFile(String pathFile) throws IOException {
-		String answer = null;
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
 	}
 
 }

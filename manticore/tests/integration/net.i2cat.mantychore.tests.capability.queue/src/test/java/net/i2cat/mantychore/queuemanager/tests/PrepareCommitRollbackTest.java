@@ -212,23 +212,4 @@ public class PrepareCommitRollbackTest
 
 	}
 
-	public String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
-	}
-
 }

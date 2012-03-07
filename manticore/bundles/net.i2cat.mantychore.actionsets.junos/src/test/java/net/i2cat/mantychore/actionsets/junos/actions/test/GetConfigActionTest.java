@@ -1,8 +1,5 @@
 package net.i2cat.mantychore.actionsets.junos.actions.test;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -16,14 +13,14 @@ import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 
 public class GetConfigActionTest {
 
@@ -57,9 +54,7 @@ public class GetConfigActionTest {
 		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
 
-
-
-	private void printTest (net.i2cat.mantychore.model.System routerModel) {
+	private void printTest(net.i2cat.mantychore.model.System routerModel) {
 
 		List<LogicalDevice> ld = routerModel.getLogicalDevices();
 
@@ -101,7 +96,6 @@ public class GetConfigActionTest {
 			}
 		}
 
-
 	}
 
 	@Test
@@ -118,45 +112,18 @@ public class GetConfigActionTest {
 		printTest(routerModel);
 	}
 
-//	@Test
-//	public void testExecuteInLogicalRouter() {
-//		try {
-//			ActionResponse response = action.execute(protocolsessionmanager);
-//		} catch (ActionException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			Assert.fail();
-//		}
-//		net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
-//		Assert.assertNotNull(routerModel);
-//		printTest(routerModel);
-//	}
-
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 *
-	 * @param stream
-	 * @return
-	 */
-	public String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		// InputStream inputFile =
-		// ClassLoader.getSystemResourceAsStream(pathFile);
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
-	}
+	// @Test
+	// public void testExecuteInLogicalRouter() {
+	// try {
+	// ActionResponse response = action.execute(protocolsessionmanager);
+	// } catch (ActionException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// Assert.fail();
+	// }
+	// net.i2cat.mantychore.model.System routerModel = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
+	// Assert.assertNotNull(routerModel);
+	// printTest(routerModel);
+	// }
 
 }
