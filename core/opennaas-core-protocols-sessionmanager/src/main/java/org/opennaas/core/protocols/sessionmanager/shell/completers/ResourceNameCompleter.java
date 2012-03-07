@@ -2,16 +2,20 @@ package org.opennaas.core.protocols.sessionmanager.shell.completers;
 
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.karaf.shell.console.Completer;
+import org.apache.karaf.shell.console.completer.StringsCompleter;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 
-import org.apache.karaf.shell.console.Completer;
-import org.apache.karaf.shell.console.completer.StringsCompleter;
-
 public class ResourceNameCompleter implements Completer {
 
-	public int complete(String arg0, int arg1, List<String> arg2) {
+	Log	log	= LogFactory.getLog(ResourceNameCompleter.class);
+
+	@Override
+	public int complete(String buffer, int cursor, List<String> candidates) {
 		IResourceManager resourceManager = null;
 		List<IResource> list = null;
 		StringsCompleter delegate = new StringsCompleter();
@@ -19,15 +23,17 @@ public class ResourceNameCompleter implements Completer {
 		try {
 			resourceManager = Activator.getResourceManagerService();
 			list = resourceManager.listResources();
+
+			for (IResource resource : list) {
+				String value = resource.getResourceDescriptor().getInformation().getType() + ":" + resource.getResourceDescriptor().getInformation()
+						.getName();
+				delegate.getStrings().add(value);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// log exception and ignore it (completer would have no options for completion))
+			log.error(e);
 		}
-		for (IResource resource : list) {
-			String value = resource.getResourceDescriptor().getInformation().getType() + ":" + resource.getResourceDescriptor().getInformation()
-					.getName();
-			delegate.getStrings().add(value);
-		}
-		// complete(java.lang.String buffer, int cursor, java.util.List candidates)
-		return delegate.complete(arg0, arg1, arg2);
+
+		return delegate.complete(buffer, cursor, candidates);
 	}
 }
