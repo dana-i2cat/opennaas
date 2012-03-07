@@ -8,39 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class InSegment as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * InSegmentBean Interface. The CIM class InSegment is described as follows:
- *
- * Defines a LANEndpoint as a member of a specific LANSegment. Note that one
- * of this association's references (LANSegment) is deprecated, as well as
- * its superclass (InLogicalNetwork). Following the same logic as its parent,
- * this association is deprecated to the MemberOfCollection association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class InSegment as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the InSegmentBean Interface. The CIM class InSegment is described as follows:
+ * 
+ * Defines a LANEndpoint as a member of a specific LANSegment. Note that one of this association's references (LANSegment) is deprecated, as well as
+ * its superclass (InLogicalNetwork). Following the same logic as its parent, this association is deprecated to the MemberOfCollection association.
  */
-    @Deprecated
+@Deprecated
 public class InSegment extends InLogicalNetwork implements Serializable {
 
-    /**
-     * This constructor creates a InSegmentBeanImpl Class which implements the
-     * InSegmentBean Interface, and encapsulates the CIM class InSegment in a
-     * Java Bean. The CIM class InSegment is described as follows:
-     *
-     * Defines a LANEndpoint as a member of a specific LANSegment. Note that
-     * one of this association's references (LANSegment) is deprecated, as
-     * well as its superclass (InLogicalNetwork). Following the same logic as
-     * its parent, this association is deprecated to the MemberOfCollection
-     * association.
-     */
-    public InSegment(){};
-    /**
-     * This method create an Association of the type InSegment between one
-     * LANSegment object and LANEndpoint object
-     */
-    @Deprecated
-    public static InSegment link(LANSegment collection,LANEndpoint member){
+	/**
+	 * This constructor creates a InSegmentBeanImpl Class which implements the InSegmentBean Interface, and encapsulates the CIM class InSegment in a
+	 * Java Bean. The CIM class InSegment is described as follows:
+	 * 
+	 * Defines a LANEndpoint as a member of a specific LANSegment. Note that one of this association's references (LANSegment) is deprecated, as well
+	 * as its superclass (InLogicalNetwork). Following the same logic as its parent, this association is deprecated to the MemberOfCollection
+	 * association.
+	 */
+	public InSegment() {
+	};
 
-    return (InSegment) Association.link(InSegment.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type InSegment between one LANSegment object and LANEndpoint object
+	 */
+	@Deprecated
+	public static InSegment link(LANSegment collection, LANEndpoint member) {
+
+		return (InSegment) Association.link(InSegment.class, collection, member);
+	}// link
 
 } // Class InSegment

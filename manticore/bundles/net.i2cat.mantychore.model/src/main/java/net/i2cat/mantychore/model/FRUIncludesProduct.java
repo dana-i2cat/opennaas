@@ -8,44 +8,36 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class FRUIncludesProduct as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * FRUIncludesProductBean Interface. The CIM class FRUIncludesProduct is
- * described as follows:
- *
- * Indicates that a FRU may be composed of other Product(s). Indicates that a
- * FRU may be composed of other Product(s). The use of this association has
- * been deprecated since the FRU class itself has been deprecated. The
- * composition of ReplacementFRUs is described by the ConcreteComponent
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FRUIncludesProduct as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the FRUIncludesProductBean Interface. The CIM class FRUIncludesProduct is described
+ * as follows:
+ * 
+ * Indicates that a FRU may be composed of other Product(s). Indicates that a FRU may be composed of other Product(s). The use of this association has
+ * been deprecated since the FRU class itself has been deprecated. The composition of ReplacementFRUs is described by the ConcreteComponent
  * association.
  */
-    @Deprecated
+@Deprecated
 public class FRUIncludesProduct extends Association implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a FRUIncludesProductBeanImpl Class which
-     * implements the FRUIncludesProductBean Interface, and encapsulates the
-     * CIM class FRUIncludesProduct in a Java Bean. The CIM class
-     * FRUIncludesProduct is described as follows:
-     *
-     * Indicates that a FRU may be composed of other Product(s). Indicates
-     * that a FRU may be composed of other Product(s). The use of this
-     * association has been deprecated since the FRU class itself has been
-     * deprecated. The composition of ReplacementFRUs is described by the
-     * ConcreteComponent association.
-     */
-    public FRUIncludesProduct(){};
-    /**
-     * This method create an Association of the type FRUIncludesProduct
-     * between one FRU object and Product object
-     */
-    @Deprecated
-    public static FRUIncludesProduct link(FRU fRU,Product component){
+	/**
+	 * This constructor creates a FRUIncludesProductBeanImpl Class which implements the FRUIncludesProductBean Interface, and encapsulates the CIM
+	 * class FRUIncludesProduct in a Java Bean. The CIM class FRUIncludesProduct is described as follows:
+	 * 
+	 * Indicates that a FRU may be composed of other Product(s). Indicates that a FRU may be composed of other Product(s). The use of this association
+	 * has been deprecated since the FRU class itself has been deprecated. The composition of ReplacementFRUs is described by the ConcreteComponent
+	 * association.
+	 */
+	public FRUIncludesProduct() {
+	};
 
-    return (FRUIncludesProduct)
-	Association.link(FRUIncludesProduct.class,fRU,component);
-    }//link
+	/**
+	 * This method create an Association of the type FRUIncludesProduct between one FRU object and Product object
+	 */
+	@Deprecated
+	public static FRUIncludesProduct link(FRU fRU, Product component) {
+
+		return (FRUIncludesProduct) Association.link(FRUIncludesProduct.class, fRU, component);
+	}// link
 
 } // Class FRUIncludesProduct

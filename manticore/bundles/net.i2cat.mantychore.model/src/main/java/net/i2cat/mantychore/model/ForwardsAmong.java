@@ -8,39 +8,32 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ForwardsAmong as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ForwardsAmongBean Interface. The CIM class ForwardsAmong is described as
- * follows:
- *
- * This association represents the dependency that exists between the
- * ProtocolEndpoints that are used to forward data and the ForwardingService
- * that is performing the forwarding of data.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ForwardsAmong as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ForwardsAmongBean Interface. The CIM class ForwardsAmong is described as follows:
+ * 
+ * This association represents the dependency that exists between the ProtocolEndpoints that are used to forward data and the ForwardingService that
+ * is performing the forwarding of data.
  */
 public class ForwardsAmong extends ServiceSAPDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ForwardsAmongBeanImpl Class which implements
-     * the ForwardsAmongBean Interface, and encapsulates the CIM class
-     * ForwardsAmong in a Java Bean. The CIM class ForwardsAmong is described
-     * as follows:
-     *
-     * This association represents the dependency that exists between the
-     * ProtocolEndpoints that are used to forward data and the
-     * ForwardingService that is performing the forwarding of data.
-     */
-    public ForwardsAmong(){};
-    /**
-     * This method create an Association of the type ForwardsAmong between one
-     * ProtocolEndpoint object and ForwardingService object
-     */
-    public static ForwardsAmong link(ProtocolEndpoint
-	antecedent,ForwardingService dependent){
+	/**
+	 * This constructor creates a ForwardsAmongBeanImpl Class which implements the ForwardsAmongBean Interface, and encapsulates the CIM class
+	 * ForwardsAmong in a Java Bean. The CIM class ForwardsAmong is described as follows:
+	 * 
+	 * This association represents the dependency that exists between the ProtocolEndpoints that are used to forward data and the ForwardingService
+	 * that is performing the forwarding of data.
+	 */
+	public ForwardsAmong() {
+	};
 
-    return (ForwardsAmong)
-	Association.link(ForwardsAmong.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ForwardsAmong between one ProtocolEndpoint object and ForwardingService object
+	 */
+	public static ForwardsAmong link(ProtocolEndpoint
+			antecedent, ForwardingService dependent) {
+
+		return (ForwardsAmong) Association.link(ForwardsAmong.class, antecedent, dependent);
+	}// link
 
 } // Class ForwardsAmong

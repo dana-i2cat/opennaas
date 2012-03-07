@@ -8,7 +8,7 @@ public interface IOpticalSwitchCard {
 
 	/**
 	 * Connects srcChannel in srcPort with dstChannel in dstPort.
-	 *
+	 * 
 	 * @param srcChannel
 	 * @param srcPort
 	 * @param dstChannel
@@ -26,7 +26,7 @@ public interface IOpticalSwitchCard {
 	/**
 	 * Returns channels ready to be configured on given port. Notice it is not the same as free channels on given port, as this card may introduce
 	 * further restrictions. Assumes given port is in this card
-	 *
+	 * 
 	 * @param port
 	 * @return
 	 */

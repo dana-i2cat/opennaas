@@ -9,511 +9,458 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SSHSettingData as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SSHSettingDataBean Interface. The CIM class SSHSettingData is described as
- * follows:
- *
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SSHSettingData as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SSHSettingDataBean Interface. The CIM class SSHSettingData is described as follows:
+ * 
  * A representation of the SettingData of an SSH endpoint.
  */
 public class SSHSettingData extends SettingData implements Serializable {
 
-    /**
-     * This constructor creates a SSHSettingDataBeanImpl Class which
-     * implements the SSHSettingDataBean Interface, and encapsulates the CIM
-     * class SSHSettingData in a Java Bean. The CIM class SSHSettingData is
-     * described as follows:
-     *
-     * A representation of the SettingData of an SSH endpoint.
-     */
-    public SSHSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EnabledSSHVersions.
-     */
+	/**
+	 * This constructor creates a SSHSettingDataBeanImpl Class which implements the SSHSettingDataBean Interface, and encapsulates the CIM class
+	 * SSHSettingData in a Java Bean. The CIM class SSHSettingData is described as follows:
+	 * 
+	 * A representation of the SettingData of an SSH endpoint.
+	 */
+	public SSHSettingData() {
+	};
 
-    public enum EnabledSSHVersions{
-    UNKNOWN,
-    OTHER,
-    SSHV1,
-    SSHV2,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private EnabledSSHVersions enabledSSHVersions;
-    /**
-     * This method returns the SSHSettingData.enabledSSHVersions property
-     * value. This property is described as follows:
-     *
-     * An array of integers indicating the version or versions of SSH protocol
-     * that will be enabled for the SSH endpoint.
-     *
-     * @return	int	current enabledSSHVersions property value
-     * @exception	Exception
-     */
-    public EnabledSSHVersions getEnabledSSHVersions(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EnabledSSHVersions.
+	 */
 
-    return this.enabledSSHVersions;
-    } // getEnabledSSHVersions
+	public enum EnabledSSHVersions {
+		UNKNOWN,
+		OTHER,
+		SSHV1,
+		SSHV2,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the SSHSettingData.enabledSSHVersions property value.
-     * This property is described as follows:
-     *
-     * An array of integers indicating the version or versions of SSH protocol
-     * that will be enabled for the SSH endpoint.
-     *
-     * @param	int	new enabledSSHVersions property value
-     * @exception	Exception
-     */
-    public void setEnabledSSHVersions(EnabledSSHVersions
-	enabledSSHVersions){
+	private EnabledSSHVersions	enabledSSHVersions;
 
-    this.enabledSSHVersions = enabledSSHVersions;
-    } // setEnabledSSHVersions
+	/**
+	 * This method returns the SSHSettingData.enabledSSHVersions property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the version or versions of SSH protocol that will be enabled for the SSH endpoint.
+	 * 
+	 * @return int current enabledSSHVersions property value
+	 * @exception Exception
+	 */
+	public EnabledSSHVersions getEnabledSSHVersions() {
 
+		return this.enabledSSHVersions;
+	} // getEnabledSSHVersions
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherEnabledSSHVersion.
-     */
-    private String otherEnabledSSHVersion;
-    /**
-     * This method returns the SSHSettingData.otherEnabledSSHVersion property
-     * value. This property is described as follows:
-     *
-     * When the EnabledSSHVersions property contains a value of 1, "Other"
-     * then this is a free form string providing more information about the
-     * SSH protocol. If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherEnabledSSHVersion property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherEnabledSSHVersion(){
+	/**
+	 * This method sets the SSHSettingData.enabledSSHVersions property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the version or versions of SSH protocol that will be enabled for the SSH endpoint.
+	 * 
+	 * @param int new enabledSSHVersions property value
+	 * @exception Exception
+	 */
+	public void setEnabledSSHVersions(EnabledSSHVersions
+			enabledSSHVersions) {
 
-    return this.otherEnabledSSHVersion;
-    } // getOtherEnabledSSHVersion
+		this.enabledSSHVersions = enabledSSHVersions;
+	} // setEnabledSSHVersions
 
-    /**
-     * This method sets the SSHSettingData.otherEnabledSSHVersion property
-     * value. This property is described as follows:
-     *
-     * When the EnabledSSHVersions property contains a value of 1, "Other"
-     * then this is a free form string providing more information about the
-     * SSH protocol. If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherEnabledSSHVersion property value
-     * @exception	Exception
-     */
-    public void setOtherEnabledSSHVersion(String otherEnabledSSHVersion) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherEnabledSSHVersion.
+	 */
+	private String	otherEnabledSSHVersion;
 
-    this.otherEnabledSSHVersion = otherEnabledSSHVersion;
-    } // setOtherEnabledSSHVersion
+	/**
+	 * This method returns the SSHSettingData.otherEnabledSSHVersion property value. This property is described as follows:
+	 * 
+	 * When the EnabledSSHVersions property contains a value of 1, "Other" then this is a free form string providing more information about the SSH
+	 * protocol. If not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherEnabledSSHVersion property value
+	 * @exception Exception
+	 */
+	public String getOtherEnabledSSHVersion() {
 
+		return this.otherEnabledSSHVersion;
+	} // getOtherEnabledSSHVersion
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SSHVersion.
-     */
+	/**
+	 * This method sets the SSHSettingData.otherEnabledSSHVersion property value. This property is described as follows:
+	 * 
+	 * When the EnabledSSHVersions property contains a value of 1, "Other" then this is a free form string providing more information about the SSH
+	 * protocol. If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherEnabledSSHVersion property value
+	 * @exception Exception
+	 */
+	public void setOtherEnabledSSHVersion(String otherEnabledSSHVersion) {
 
-    public enum SSHVersion{
-    UNKNOWN,
-    OTHER,
-    SSHV1,
-    SSHV2,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SSHVersion sSHVersion;
-    /**
-     * This method returns the SSHSettingData.sSHVersion property value. This
-     * property is described as follows:
-     *
-     * The version of SSH that will be in use if this SettingData is applied.
-     *
-     * @return	int	current sSHVersion property value
-     * @exception	Exception
-     */
-    public SSHVersion getSSHVersion(){
+		this.otherEnabledSSHVersion = otherEnabledSSHVersion;
+	} // setOtherEnabledSSHVersion
 
-    return this.sSHVersion;
-    } // getSSHVersion
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SSHVersion.
+	 */
 
-    /**
-     * This method sets the SSHSettingData.sSHVersion property value. This
-     * property is described as follows:
-     *
-     * The version of SSH that will be in use if this SettingData is applied.
-     *
-     * @param	int	new sSHVersion property value
-     * @exception	Exception
-     */
-    public void setSSHVersion(SSHVersion sSHVersion){
+	public enum SSHVersion {
+		UNKNOWN,
+		OTHER,
+		SSHV1,
+		SSHV2,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.sSHVersion = sSHVersion;
-    } // setSSHVersion
+	private SSHVersion	sSHVersion;
 
+	/**
+	 * This method returns the SSHSettingData.sSHVersion property value. This property is described as follows:
+	 * 
+	 * The version of SSH that will be in use if this SettingData is applied.
+	 * 
+	 * @return int current sSHVersion property value
+	 * @exception Exception
+	 */
+	public SSHVersion getSSHVersion() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherSSHVersion.
-     */
-    private String[] otherSSHVersion;
-    /**
-     * This method returns the SSHSettingData.otherSSHVersion property value.
-     * This property is described as follows:
-     *
-     * If the CurrentSSHVersion property is set to 1, "Other" then this is a
-     * free form string providing more information about the current SSH
-     * protocol. If not set to 1, this string has no meaning.
-     *
-     * @return	String[]	current otherSSHVersion property value
-     * @exception	Exception
-     */
-    public String[] getOtherSSHVersion(){
+		return this.sSHVersion;
+	} // getSSHVersion
 
-    return this.otherSSHVersion;
-    } // getOtherSSHVersion
+	/**
+	 * This method sets the SSHSettingData.sSHVersion property value. This property is described as follows:
+	 * 
+	 * The version of SSH that will be in use if this SettingData is applied.
+	 * 
+	 * @param int new sSHVersion property value
+	 * @exception Exception
+	 */
+	public void setSSHVersion(SSHVersion sSHVersion) {
 
-    /**
-     * This method sets the SSHSettingData.otherSSHVersion property value.
-     * This property is described as follows:
-     *
-     * If the CurrentSSHVersion property is set to 1, "Other" then this is a
-     * free form string providing more information about the current SSH
-     * protocol. If not set to 1, this string has no meaning.
-     *
-     * @param	String[]	new otherSSHVersion property value
-     * @exception	Exception
-     */
-    public void setOtherSSHVersion(String[] otherSSHVersion) {
+		this.sSHVersion = sSHVersion;
+	} // setSSHVersion
 
-    this.otherSSHVersion = otherSSHVersion;
-    } // setOtherSSHVersion
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherSSHVersion.
+	 */
+	private String[]	otherSSHVersion;
 
+	/**
+	 * This method returns the SSHSettingData.otherSSHVersion property value. This property is described as follows:
+	 * 
+	 * If the CurrentSSHVersion property is set to 1, "Other" then this is a free form string providing more information about the current SSH
+	 * protocol. If not set to 1, this string has no meaning.
+	 * 
+	 * @return String[] current otherSSHVersion property value
+	 * @exception Exception
+	 */
+	public String[] getOtherSSHVersion() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EnabledEncryptionAlgorithms.
-     */
+		return this.otherSSHVersion;
+	} // getOtherSSHVersion
 
-    public enum EnabledEncryptionAlgorithms{
-    UNKNOWN,
-    OTHER,
-    DES,
-    DES3,
-    RC4,
-    IDEA,
-    SKIPJACK,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private EnabledEncryptionAlgorithms enabledEncryptionAlgorithms;
-    /**
-     * This method returns the SSHSettingData.enabledEncryptionAlgorithms
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the encryption algorithms that are
-     * enabled for this SSH service. Its possible for an encryption algorithm
-     * to be supported and not currently enabled to be used.
-     *
-     * @return	int	current enabledEncryptionAlgorithms property
-     * value
-     * @exception	Exception
-     */
-    public EnabledEncryptionAlgorithms getEnabledEncryptionAlgorithms(){
+	/**
+	 * This method sets the SSHSettingData.otherSSHVersion property value. This property is described as follows:
+	 * 
+	 * If the CurrentSSHVersion property is set to 1, "Other" then this is a free form string providing more information about the current SSH
+	 * protocol. If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            [] new otherSSHVersion property value
+	 * @exception Exception
+	 */
+	public void setOtherSSHVersion(String[] otherSSHVersion) {
 
-    return this.enabledEncryptionAlgorithms;
-    } // getEnabledEncryptionAlgorithms
+		this.otherSSHVersion = otherSSHVersion;
+	} // setOtherSSHVersion
 
-    /**
-     * This method sets the SSHSettingData.enabledEncryptionAlgorithms
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the encryption algorithms that are
-     * enabled for this SSH service. Its possible for an encryption algorithm
-     * to be supported and not currently enabled to be used.
-     *
-     * @param	int	new enabledEncryptionAlgorithms property value
-     * @exception	Exception
-     */
-    public void setEnabledEncryptionAlgorithms(EnabledEncryptionAlgorithms
-	enabledEncryptionAlgorithms){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EnabledEncryptionAlgorithms.
+	 */
 
-    this.enabledEncryptionAlgorithms = enabledEncryptionAlgorithms;
-    } // setEnabledEncryptionAlgorithms
+	public enum EnabledEncryptionAlgorithms {
+		UNKNOWN,
+		OTHER,
+		DES,
+		DES3,
+		RC4,
+		IDEA,
+		SKIPJACK,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
+	private EnabledEncryptionAlgorithms	enabledEncryptionAlgorithms;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherEnabledEncryptionAlgorithm.
-     */
-    private String[] otherEnabledEncryptionAlgorithm;
-    /**
-     * This method returns the SSHSettingData.otherEnabledEncryptionAlgorithm
-     * property value. This property is described as follows:
-     *
-     * If the EnabledEncryptionAlgorithms property is set 1, "Other" this
-     * property contains a free form string providing more information about
-     * supported algorithms. If not set to 1, this string has no meaning.
-     *
-     * @return	String[]	current otherEnabledEncryptionAlgorithm
-     * property value
-     * @exception	Exception
-     */
-    public String[] getOtherEnabledEncryptionAlgorithm(){
+	/**
+	 * This method returns the SSHSettingData.enabledEncryptionAlgorithms property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the encryption algorithms that are enabled for this SSH service. Its possible for an encryption algorithm to be
+	 * supported and not currently enabled to be used.
+	 * 
+	 * @return int current enabledEncryptionAlgorithms property value
+	 * @exception Exception
+	 */
+	public EnabledEncryptionAlgorithms getEnabledEncryptionAlgorithms() {
 
-    return this.otherEnabledEncryptionAlgorithm;
-    } // getOtherEnabledEncryptionAlgorithm
+		return this.enabledEncryptionAlgorithms;
+	} // getEnabledEncryptionAlgorithms
 
-    /**
-     * This method sets the SSHSettingData.otherEnabledEncryptionAlgorithm
-     * property value. This property is described as follows:
-     *
-     * If the EnabledEncryptionAlgorithms property is set 1, "Other" this
-     * property contains a free form string providing more information about
-     * supported algorithms. If not set to 1, this string has no meaning.
-     *
-     * @param	String[]	new otherEnabledEncryptionAlgorithm
-     * property value
-     * @exception	Exception
-     */
-    public void setOtherEnabledEncryptionAlgorithm(String[]
-	otherEnabledEncryptionAlgorithm) {
+	/**
+	 * This method sets the SSHSettingData.enabledEncryptionAlgorithms property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the encryption algorithms that are enabled for this SSH service. Its possible for an encryption algorithm to be
+	 * supported and not currently enabled to be used.
+	 * 
+	 * @param int new enabledEncryptionAlgorithms property value
+	 * @exception Exception
+	 */
+	public void setEnabledEncryptionAlgorithms(EnabledEncryptionAlgorithms
+			enabledEncryptionAlgorithms) {
 
-    this.otherEnabledEncryptionAlgorithm = otherEnabledEncryptionAlgorithm;
-    } // setOtherEnabledEncryptionAlgorithm
+		this.enabledEncryptionAlgorithms = enabledEncryptionAlgorithms;
+	} // setEnabledEncryptionAlgorithms
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherEnabledEncryptionAlgorithm.
+	 */
+	private String[]	otherEnabledEncryptionAlgorithm;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EncryptionAlgorithm.
-     */
+	/**
+	 * This method returns the SSHSettingData.otherEnabledEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the EnabledEncryptionAlgorithms property is set 1, "Other" this property contains a free form string providing more information about
+	 * supported algorithms. If not set to 1, this string has no meaning.
+	 * 
+	 * @return String[] current otherEnabledEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public String[] getOtherEnabledEncryptionAlgorithm() {
 
-    public enum EncryptionAlgorithm{
-    UNKNOWN,
-    OTHER,
-    DES,
-    DES3,
-    RC4,
-    IDEA,
-    SKIPJACK,
-    DMTF_RESERVED
-    }
-    private EncryptionAlgorithm encryptionAlgorithm;
-    /**
-     * This method returns the SSHSettingData.encryptionAlgorithm property
-     * value. This property is described as follows:
-     *
-     * The encryption algorithm that will be in use if this SettingData is
-     * applied.
-     *
-     * @return	int	current encryptionAlgorithm property value
-     * @exception	Exception
-     */
-    public EncryptionAlgorithm getEncryptionAlgorithm(){
+		return this.otherEnabledEncryptionAlgorithm;
+	} // getOtherEnabledEncryptionAlgorithm
 
-    return this.encryptionAlgorithm;
-    } // getEncryptionAlgorithm
+	/**
+	 * This method sets the SSHSettingData.otherEnabledEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the EnabledEncryptionAlgorithms property is set 1, "Other" this property contains a free form string providing more information about
+	 * supported algorithms. If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            [] new otherEnabledEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherEnabledEncryptionAlgorithm(String[]
+			otherEnabledEncryptionAlgorithm) {
 
-    /**
-     * This method sets the SSHSettingData.encryptionAlgorithm property value.
-     * This property is described as follows:
-     *
-     * The encryption algorithm that will be in use if this SettingData is
-     * applied.
-     *
-     * @param	int	new encryptionAlgorithm property value
-     * @exception	Exception
-     */
-    public void setEncryptionAlgorithm(EncryptionAlgorithm
-	encryptionAlgorithm){
+		this.otherEnabledEncryptionAlgorithm = otherEnabledEncryptionAlgorithm;
+	} // setOtherEnabledEncryptionAlgorithm
 
-    this.encryptionAlgorithm = encryptionAlgorithm;
-    } // setEncryptionAlgorithm
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EncryptionAlgorithm.
+	 */
 
+	public enum EncryptionAlgorithm {
+		UNKNOWN,
+		OTHER,
+		DES,
+		DES3,
+		RC4,
+		IDEA,
+		SKIPJACK,
+		DMTF_RESERVED
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherEncryptionAlgorithm.
-     */
-    private String otherEncryptionAlgorithm;
-    /**
-     * This method returns the SSHSettingData.otherEncryptionAlgorithm
-     * property value. This property is described as follows:
-     *
-     * If the EncryptionAlgorithm property is set 1, "Other" then this is a
-     * free form string providing more information about the encryption
-     * algorithm in use. If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherEncryptionAlgorithm property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherEncryptionAlgorithm(){
+	private EncryptionAlgorithm	encryptionAlgorithm;
 
-    return this.otherEncryptionAlgorithm;
-    } // getOtherEncryptionAlgorithm
+	/**
+	 * This method returns the SSHSettingData.encryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * The encryption algorithm that will be in use if this SettingData is applied.
+	 * 
+	 * @return int current encryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public EncryptionAlgorithm getEncryptionAlgorithm() {
 
-    /**
-     * This method sets the SSHSettingData.otherEncryptionAlgorithm property
-     * value. This property is described as follows:
-     *
-     * If the EncryptionAlgorithm property is set 1, "Other" then this is a
-     * free form string providing more information about the encryption
-     * algorithm in use. If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherEncryptionAlgorithm property value
-     * @exception	Exception
-     */
-    public void setOtherEncryptionAlgorithm(String otherEncryptionAlgorithm)
+		return this.encryptionAlgorithm;
+	} // getEncryptionAlgorithm
+
+	/**
+	 * This method sets the SSHSettingData.encryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * The encryption algorithm that will be in use if this SettingData is applied.
+	 * 
+	 * @param int new encryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setEncryptionAlgorithm(EncryptionAlgorithm
+			encryptionAlgorithm) {
+
+		this.encryptionAlgorithm = encryptionAlgorithm;
+	} // setEncryptionAlgorithm
+
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherEncryptionAlgorithm.
+	 */
+	private String	otherEncryptionAlgorithm;
+
+	/**
+	 * This method returns the SSHSettingData.otherEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the EncryptionAlgorithm property is set 1, "Other" then this is a free form string providing more information about the encryption algorithm
+	 * in use. If not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public String getOtherEncryptionAlgorithm() {
+
+		return this.otherEncryptionAlgorithm;
+	} // getOtherEncryptionAlgorithm
+
+	/**
+	 * This method sets the SSHSettingData.otherEncryptionAlgorithm property value. This property is described as follows:
+	 * 
+	 * If the EncryptionAlgorithm property is set 1, "Other" then this is a free form string providing more information about the encryption algorithm
+	 * in use. If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherEncryptionAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherEncryptionAlgorithm(String otherEncryptionAlgorithm)
 	{
 
-    this.otherEncryptionAlgorithm = otherEncryptionAlgorithm;
-    } // setOtherEncryptionAlgorithm
+		this.otherEncryptionAlgorithm = otherEncryptionAlgorithm;
+	} // setOtherEncryptionAlgorithm
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property idleTimeout.
+	 */
+	private long	idleTimeout;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property idleTimeout.
-     */
-    private long idleTimeout;
-    /**
-     * This method returns the SSHSettingData.idleTimeout property value. This
-     * property is described as follows:
-     *
-     * IdleTimeout specifies how long the connection can be idle before the
-     * connection is terminated. The default value, 0, indicates that there
-     * is no idle timeout period.
-     *
-     * @return	long	current idleTimeout property value
-     * @exception	Exception
-     */
-    public long getIdleTimeout(){
+	/**
+	 * This method returns the SSHSettingData.idleTimeout property value. This property is described as follows:
+	 * 
+	 * IdleTimeout specifies how long the connection can be idle before the connection is terminated. The default value, 0, indicates that there is no
+	 * idle timeout period.
+	 * 
+	 * @return long current idleTimeout property value
+	 * @exception Exception
+	 */
+	public long getIdleTimeout() {
 
-    return this.idleTimeout;
-    } // getIdleTimeout
+		return this.idleTimeout;
+	} // getIdleTimeout
 
-    /**
-     * This method sets the SSHSettingData.idleTimeout property value. This
-     * property is described as follows:
-     *
-     * IdleTimeout specifies how long the connection can be idle before the
-     * connection is terminated. The default value, 0, indicates that there
-     * is no idle timeout period.
-     *
-     * @param	long	new idleTimeout property value
-     * @exception	Exception
-     */
-    public void setIdleTimeout(long idleTimeout) {
+	/**
+	 * This method sets the SSHSettingData.idleTimeout property value. This property is described as follows:
+	 * 
+	 * IdleTimeout specifies how long the connection can be idle before the connection is terminated. The default value, 0, indicates that there is no
+	 * idle timeout period.
+	 * 
+	 * @param long new idleTimeout property value
+	 * @exception Exception
+	 */
+	public void setIdleTimeout(long idleTimeout) {
 
-    this.idleTimeout = idleTimeout;
-    } // setIdleTimeout
+		this.idleTimeout = idleTimeout;
+	} // setIdleTimeout
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property keepAlive.
+	 */
+	private boolean	keepAlive;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property keepAlive.
-     */
-    private boolean keepAlive;
-    /**
-     * This method returns the SSHSettingData.keepAlive property value. This
-     * property is described as follows:
-     *
-     * If this property is true, the SSH keep alive timer is enabled.
-     *
-     * @return	boolean	current keepAlive property value
-     * @exception	Exception
-     */
-    public boolean isKeepAlive(){
+	/**
+	 * This method returns the SSHSettingData.keepAlive property value. This property is described as follows:
+	 * 
+	 * If this property is true, the SSH keep alive timer is enabled.
+	 * 
+	 * @return boolean current keepAlive property value
+	 * @exception Exception
+	 */
+	public boolean isKeepAlive() {
 
-    return this.keepAlive;
-    } // getKeepAlive
+		return this.keepAlive;
+	} // getKeepAlive
 
-    /**
-     * This method sets the SSHSettingData.keepAlive property value. This
-     * property is described as follows:
-     *
-     * If this property is true, the SSH keep alive timer is enabled.
-     *
-     * @param	boolean	new keepAlive property value
-     * @exception	Exception
-     */
-    public void setKeepAlive(boolean keepAlive) {
+	/**
+	 * This method sets the SSHSettingData.keepAlive property value. This property is described as follows:
+	 * 
+	 * If this property is true, the SSH keep alive timer is enabled.
+	 * 
+	 * @param boolean new keepAlive property value
+	 * @exception Exception
+	 */
+	public void setKeepAlive(boolean keepAlive) {
 
-    this.keepAlive = keepAlive;
-    } // setKeepAlive
+		this.keepAlive = keepAlive;
+	} // setKeepAlive
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property forwardX11.
+	 */
+	private boolean	forwardX11;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property forwardX11.
-     */
-    private boolean forwardX11;
-    /**
-     * This method returns the SSHSettingData.forwardX11 property value. This
-     * property is described as follows:
-     *
-     * If this property is true, the SSH X11 forwarding mode is enabled.
-     *
-     * @return	boolean	current forwardX11 property value
-     * @exception	Exception
-     */
-    public boolean isForwardX11(){
+	/**
+	 * This method returns the SSHSettingData.forwardX11 property value. This property is described as follows:
+	 * 
+	 * If this property is true, the SSH X11 forwarding mode is enabled.
+	 * 
+	 * @return boolean current forwardX11 property value
+	 * @exception Exception
+	 */
+	public boolean isForwardX11() {
 
-    return this.forwardX11;
-    } // getForwardX11
+		return this.forwardX11;
+	} // getForwardX11
 
-    /**
-     * This method sets the SSHSettingData.forwardX11 property value. This
-     * property is described as follows:
-     *
-     * If this property is true, the SSH X11 forwarding mode is enabled.
-     *
-     * @param	boolean	new forwardX11 property value
-     * @exception	Exception
-     */
-    public void setForwardX11(boolean forwardX11) {
+	/**
+	 * This method sets the SSHSettingData.forwardX11 property value. This property is described as follows:
+	 * 
+	 * If this property is true, the SSH X11 forwarding mode is enabled.
+	 * 
+	 * @param boolean new forwardX11 property value
+	 * @exception Exception
+	 */
+	public void setForwardX11(boolean forwardX11) {
 
-    this.forwardX11 = forwardX11;
-    } // setForwardX11
+		this.forwardX11 = forwardX11;
+	} // setForwardX11
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property compression.
+	 */
+	private boolean	compression;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property compression.
-     */
-    private boolean compression;
-    /**
-     * This method returns the SSHSettingData.compression property value. This
-     * property is described as follows:
-     *
-     * If this property is true, SSH compression is enabled.
-     *
-     * @return	boolean	current compression property value
-     * @exception	Exception
-     */
-    public boolean isCompression(){
+	/**
+	 * This method returns the SSHSettingData.compression property value. This property is described as follows:
+	 * 
+	 * If this property is true, SSH compression is enabled.
+	 * 
+	 * @return boolean current compression property value
+	 * @exception Exception
+	 */
+	public boolean isCompression() {
 
-    return this.compression;
-    } // getCompression
+		return this.compression;
+	} // getCompression
 
-    /**
-     * This method sets the SSHSettingData.compression property value. This
-     * property is described as follows:
-     *
-     * If this property is true, SSH compression is enabled.
-     *
-     * @param	boolean	new compression property value
-     * @exception	Exception
-     */
-    public void setCompression(boolean compression) {
+	/**
+	 * This method sets the SSHSettingData.compression property value. This property is described as follows:
+	 * 
+	 * If this property is true, SSH compression is enabled.
+	 * 
+	 * @param boolean new compression property value
+	 * @exception Exception
+	 */
+	public void setCompression(boolean compression) {
 
-    this.compression = compression;
-    } // setCompression
-
-
+		this.compression = compression;
+	} // setCompression
 
 } // Class SSHSettingData

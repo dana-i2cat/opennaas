@@ -8,36 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SystemStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SystemStatisticsBean Interface. The CIM class SystemStatistics is
- * described as follows:
- *
- * SystemStatistics relates the SystemStatisticalInformation class to the
- * System to which it applies.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemStatistics as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SystemStatisticsBean Interface. The CIM class SystemStatistics is described as
+ * follows:
+ * 
+ * SystemStatistics relates the SystemStatisticalInformation class to the System to which it applies.
  */
 public class SystemStatistics extends Statistics implements Serializable {
 
-    /**
-     * This constructor creates a SystemStatisticsBeanImpl Class which
-     * implements the SystemStatisticsBean Interface, and encapsulates the
-     * CIM class SystemStatistics in a Java Bean. The CIM class
-     * SystemStatistics is described as follows:
-     *
-     * SystemStatistics relates the SystemStatisticalInformation class to the
-     * System to which it applies.
-     */
-    public SystemStatistics(){};
-    /**
-     * This method create an Association of the type SystemStatistics between
-     * one SystemStatisticalInformation object and System object
-     */
-    public static SystemStatistics link(SystemStatisticalInformation
-	stats,System element){
+	/**
+	 * This constructor creates a SystemStatisticsBeanImpl Class which implements the SystemStatisticsBean Interface, and encapsulates the CIM class
+	 * SystemStatistics in a Java Bean. The CIM class SystemStatistics is described as follows:
+	 * 
+	 * SystemStatistics relates the SystemStatisticalInformation class to the System to which it applies.
+	 */
+	public SystemStatistics() {
+	};
 
-    return (SystemStatistics)
-	Association.link(SystemStatistics.class,stats,element);
-    }//link
+	/**
+	 * This method create an Association of the type SystemStatistics between one SystemStatisticalInformation object and System object
+	 */
+	public static SystemStatistics link(SystemStatisticalInformation
+			stats, System element) {
+
+		return (SystemStatistics) Association.link(SystemStatistics.class, stats, element);
+	}// link
 
 } // Class SystemStatistics

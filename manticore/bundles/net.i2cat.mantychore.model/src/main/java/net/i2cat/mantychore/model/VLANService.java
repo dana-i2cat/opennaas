@@ -8,40 +8,28 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VLANService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * VLANServiceBean Interface. The CIM class VLANService is described as
- * follows:
- *
- * This class is deprecated following discussion as to the need of a modeling
- * a VLAN as a service. It was determined that a VLAN service was not needed.
- * VLANService represents the VLAN aspects of the function performed by a
- * switch. Some VLAN-aware devices participate in protocols where VLAN
- * information is propagated among switches, e.g., GVRP in 802.1Q switches
- * and VTP in Cisco Catalyst switches. VLANService also represents the
- * function performed by the switch as a participant in such a protocol.
- * VLANService must be subclassed so that the type of instance can be
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VLANService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the VLANServiceBean Interface. The CIM class VLANService is described as follows:
+ * 
+ * This class is deprecated following discussion as to the need of a modeling a VLAN as a service. It was determined that a VLAN service was not
+ * needed. VLANService represents the VLAN aspects of the function performed by a switch. Some VLAN-aware devices participate in protocols where VLAN
+ * information is propagated among switches, e.g., GVRP in 802.1Q switches and VTP in Cisco Catalyst switches. VLANService also represents the
+ * function performed by the switch as a participant in such a protocol. VLANService must be subclassed so that the type of instance can be
  * distinguished by its class.
  */
-    @Deprecated
+@Deprecated
 public class VLANService extends Service implements Serializable {
 
-    /**
-     * This constructor creates a VLANServiceBeanImpl Class which implements
-     * the VLANServiceBean Interface, and encapsulates the CIM class
-     * VLANService in a Java Bean. The CIM class VLANService is described as
-     * follows:
-     *
-     * This class is deprecated following discussion as to the need of a
-     * modeling a VLAN as a service. It was determined that a VLAN service
-     * was not needed. VLANService represents the VLAN aspects of the
-     * function performed by a switch. Some VLAN-aware devices participate in
-     * protocols where VLAN information is propagated among switches, e.g.,
-     * GVRP in 802.1Q switches and VTP in Cisco Catalyst switches.
-     * VLANService also represents the function performed by the switch as a
-     * participant in such a protocol. VLANService must be subclassed so that
-     * the type of instance can be distinguished by its class.
-     */
-    protected VLANService(){};
+	/**
+	 * This constructor creates a VLANServiceBeanImpl Class which implements the VLANServiceBean Interface, and encapsulates the CIM class VLANService
+	 * in a Java Bean. The CIM class VLANService is described as follows:
+	 * 
+	 * This class is deprecated following discussion as to the need of a modeling a VLAN as a service. It was determined that a VLAN service was not
+	 * needed. VLANService represents the VLAN aspects of the function performed by a switch. Some VLAN-aware devices participate in protocols where
+	 * VLAN information is propagated among switches, e.g., GVRP in 802.1Q switches and VTP in Cisco Catalyst switches. VLANService also represents
+	 * the function performed by the switch as a participant in such a protocol. VLANService must be subclassed so that the type of instance can be
+	 * distinguished by its class.
+	 */
+	protected VLANService() {
+	};
 } // Class VLANService

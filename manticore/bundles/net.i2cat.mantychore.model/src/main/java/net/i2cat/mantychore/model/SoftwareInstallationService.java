@@ -8,26 +8,21 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SoftwareInstallationService as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SoftwareInstallationServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SoftwareInstallationService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SoftwareInstallationServiceBean Interface. The CIM class
  * SoftwareInstallationService is described as follows:
- *
- * A subclass of service which provides methods to install (or update)
- * Software Identities in ManagedElements.
+ * 
+ * A subclass of service which provides methods to install (or update) Software Identities in ManagedElements.
  */
 public class SoftwareInstallationService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SoftwareInstallationServiceBeanImpl Class
-     * which implements the SoftwareInstallationServiceBean Interface, and
-     * encapsulates the CIM class SoftwareInstallationService in a Java Bean.
-     * The CIM class SoftwareInstallationService is described as follows:
-     *
-     * A subclass of service which provides methods to install (or update)
-     * Software Identities in ManagedElements.
-     */
-    public SoftwareInstallationService(){};
+	/**
+	 * This constructor creates a SoftwareInstallationServiceBeanImpl Class which implements the SoftwareInstallationServiceBean Interface, and
+	 * encapsulates the CIM class SoftwareInstallationService in a Java Bean. The CIM class SoftwareInstallationService is described as follows:
+	 * 
+	 * A subclass of service which provides methods to install (or update) Software Identities in ManagedElements.
+	 */
+	public SoftwareInstallationService() {
+	};
 } // Class SoftwareInstallationService

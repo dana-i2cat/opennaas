@@ -9,114 +9,97 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ExtraCapacityGroup as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ExtraCapacityGroupBean Interface. The CIM class ExtraCapacityGroup is
- * described as follows:
- *
- * A class derived from RedundancyGroup indicating that the aggregated
- * elements have more capacity or capability than is needed. An example of
- * this type of redundancy is the installation of N+1 power supplies or fans
- * in a system. The use of this class is being deprecated in lieu of using
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ExtraCapacityGroup as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ExtraCapacityGroupBean Interface. The CIM class ExtraCapacityGroup is described
+ * as follows:
+ * 
+ * A class derived from RedundancyGroup indicating that the aggregated elements have more capacity or capability than is needed. An example of this
+ * type of redundancy is the installation of N+1 power supplies or fans in a system. The use of this class is being deprecated in lieu of using
  * RedundancySet.
  */
-    @Deprecated
+@Deprecated
 public class ExtraCapacityGroup extends RedundancyGroup implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ExtraCapacityGroupBeanImpl Class which
-     * implements the ExtraCapacityGroupBean Interface, and encapsulates the
-     * CIM class ExtraCapacityGroup in a Java Bean. The CIM class
-     * ExtraCapacityGroup is described as follows:
-     *
-     * A class derived from RedundancyGroup indicating that the aggregated
-     * elements have more capacity or capability than is needed. An example
-     * of this type of redundancy is the installation of N+1 power supplies
-     * or fans in a system. The use of this class is being deprecated in lieu
-     * of using RedundancySet.
-     */
-    public ExtraCapacityGroup(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minNumberNeeded.
-     */
-    @Deprecated    private long minNumberNeeded;
-    /**
-     * This method returns the ExtraCapacityGroup.minNumberNeeded property
-     * value. This property is described as follows:
-     *
-     * MinNumberNeeded indicates the smallest number of elements that must be
-     * operational in order to have redundancy. For example, in an N+1
-     * redundancy relationship, the MinNumberNeeded property should be set
-     * equal to N.
-     *
-     * @return	long	current minNumberNeeded property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getMinNumberNeeded(){
+	/**
+	 * This constructor creates a ExtraCapacityGroupBeanImpl Class which implements the ExtraCapacityGroupBean Interface, and encapsulates the CIM
+	 * class ExtraCapacityGroup in a Java Bean. The CIM class ExtraCapacityGroup is described as follows:
+	 * 
+	 * A class derived from RedundancyGroup indicating that the aggregated elements have more capacity or capability than is needed. An example of
+	 * this type of redundancy is the installation of N+1 power supplies or fans in a system. The use of this class is being deprecated in lieu of
+	 * using RedundancySet.
+	 */
+	public ExtraCapacityGroup() {
+	};
 
-    return this.minNumberNeeded;
-    } // getMinNumberNeeded
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minNumberNeeded.
+	 */
+	@Deprecated
+	private long	minNumberNeeded;
 
-    /**
-     * This method sets the ExtraCapacityGroup.minNumberNeeded property value.
-     * This property is described as follows:
-     *
-     * MinNumberNeeded indicates the smallest number of elements that must be
-     * operational in order to have redundancy. For example, in an N+1
-     * redundancy relationship, the MinNumberNeeded property should be set
-     * equal to N.
-     *
-     * @param	long	new minNumberNeeded property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setMinNumberNeeded(long minNumberNeeded) {
+	/**
+	 * This method returns the ExtraCapacityGroup.minNumberNeeded property value. This property is described as follows:
+	 * 
+	 * MinNumberNeeded indicates the smallest number of elements that must be operational in order to have redundancy. For example, in an N+1
+	 * redundancy relationship, the MinNumberNeeded property should be set equal to N.
+	 * 
+	 * @return long current minNumberNeeded property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getMinNumberNeeded() {
 
-    this.minNumberNeeded = minNumberNeeded;
-    } // setMinNumberNeeded
+		return this.minNumberNeeded;
+	} // getMinNumberNeeded
 
+	/**
+	 * This method sets the ExtraCapacityGroup.minNumberNeeded property value. This property is described as follows:
+	 * 
+	 * MinNumberNeeded indicates the smallest number of elements that must be operational in order to have redundancy. For example, in an N+1
+	 * redundancy relationship, the MinNumberNeeded property should be set equal to N.
+	 * 
+	 * @param long new minNumberNeeded property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setMinNumberNeeded(long minNumberNeeded) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property loadBalancedGroup.
-     */
-    @Deprecated    private boolean loadBalancedGroup;
-    /**
-     * This method returns the ExtraCapacityGroup.loadBalancedGroup property
-     * value. This property is described as follows:
-     *
-     * Boolean indicating whether load balancing is supported by the
-     * ExtraCapacityGroup.
-     *
-     * @return	boolean	current loadBalancedGroup property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public boolean isLoadBalancedGroup(){
+		this.minNumberNeeded = minNumberNeeded;
+	} // setMinNumberNeeded
 
-    return this.loadBalancedGroup;
-    } // getLoadBalancedGroup
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property loadBalancedGroup.
+	 */
+	@Deprecated
+	private boolean	loadBalancedGroup;
 
-    /**
-     * This method sets the ExtraCapacityGroup.loadBalancedGroup property
-     * value. This property is described as follows:
-     *
-     * Boolean indicating whether load balancing is supported by the
-     * ExtraCapacityGroup.
-     *
-     * @param	boolean	new loadBalancedGroup property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setLoadBalancedGroup(boolean loadBalancedGroup) {
+	/**
+	 * This method returns the ExtraCapacityGroup.loadBalancedGroup property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether load balancing is supported by the ExtraCapacityGroup.
+	 * 
+	 * @return boolean current loadBalancedGroup property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public boolean isLoadBalancedGroup() {
 
-    this.loadBalancedGroup = loadBalancedGroup;
-    } // setLoadBalancedGroup
+		return this.loadBalancedGroup;
+	} // getLoadBalancedGroup
 
+	/**
+	 * This method sets the ExtraCapacityGroup.loadBalancedGroup property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether load balancing is supported by the ExtraCapacityGroup.
+	 * 
+	 * @param boolean new loadBalancedGroup property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setLoadBalancedGroup(boolean loadBalancedGroup) {
 
+		this.loadBalancedGroup = loadBalancedGroup;
+	} // setLoadBalancedGroup
 
 } // Class ExtraCapacityGroup

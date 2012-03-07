@@ -8,46 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkVirtualAdapter as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * NetworkVirtualAdapterBean Interface. The CIM class NetworkVirtualAdapter
- * is described as follows:
- *
- * Note: The use of the CIM_NetworkVirtualAdapter class has been deprecated. A
- * specific association is not needed. Instead use the CIM_ConcreteIdentity
- * class. Deprecated description: NetworkVirtual Adapter describes that an
- * instance of NetworkAdapter is actually the result of several Adapters
- * participating in a load-balanced RedundancyGroup.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkVirtualAdapter as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the NetworkVirtualAdapterBean Interface. The CIM class NetworkVirtualAdapter is
+ * described as follows:
+ * 
+ * Note: The use of the CIM_NetworkVirtualAdapter class has been deprecated. A specific association is not needed. Instead use the
+ * CIM_ConcreteIdentity class. Deprecated description: NetworkVirtual Adapter describes that an instance of NetworkAdapter is actually the result of
+ * several Adapters participating in a load-balanced RedundancyGroup.
  */
-    @Deprecated
+@Deprecated
 public class NetworkVirtualAdapter extends LogicalIdentity implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a NetworkVirtualAdapterBeanImpl Class which
-     * implements the NetworkVirtualAdapterBean Interface, and encapsulates
-     * the CIM class NetworkVirtualAdapter in a Java Bean. The CIM class
-     * NetworkVirtualAdapter is described as follows:
-     *
-     * Note: The use of the CIM_NetworkVirtualAdapter class has been
-     * deprecated. A specific association is not needed. Instead use the
-     * CIM_ConcreteIdentity class. Deprecated description: NetworkVirtual
-     * Adapter describes that an instance of NetworkAdapter is actually the
-     * result of several Adapters participating in a load-balanced
-     * RedundancyGroup.
-     */
-    public NetworkVirtualAdapter(){};
-    /**
-     * This method create an Association of the type NetworkVirtualAdapter
-     * between one NetworkAdapter object and ExtraCapacityGroup object
-     */
-    @Deprecated
-    public static NetworkVirtualAdapter link(NetworkAdapter
-	systemElement,ExtraCapacityGroup sameElement){
+	/**
+	 * This constructor creates a NetworkVirtualAdapterBeanImpl Class which implements the NetworkVirtualAdapterBean Interface, and encapsulates the
+	 * CIM class NetworkVirtualAdapter in a Java Bean. The CIM class NetworkVirtualAdapter is described as follows:
+	 * 
+	 * Note: The use of the CIM_NetworkVirtualAdapter class has been deprecated. A specific association is not needed. Instead use the
+	 * CIM_ConcreteIdentity class. Deprecated description: NetworkVirtual Adapter describes that an instance of NetworkAdapter is actually the result
+	 * of several Adapters participating in a load-balanced RedundancyGroup.
+	 */
+	public NetworkVirtualAdapter() {
+	};
 
-    return (NetworkVirtualAdapter)
-	Association.link(NetworkVirtualAdapter.class,systemElement,sameElement);
-    }//link
+	/**
+	 * This method create an Association of the type NetworkVirtualAdapter between one NetworkAdapter object and ExtraCapacityGroup object
+	 */
+	@Deprecated
+	public static NetworkVirtualAdapter link(NetworkAdapter
+			systemElement, ExtraCapacityGroup sameElement) {
+
+		return (NetworkVirtualAdapter) Association.link(NetworkVirtualAdapter.class, systemElement, sameElement);
+	}// link
 
 } // Class NetworkVirtualAdapter

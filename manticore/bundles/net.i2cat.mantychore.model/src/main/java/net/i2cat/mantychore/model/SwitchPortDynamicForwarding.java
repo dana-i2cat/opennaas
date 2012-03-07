@@ -8,38 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SwitchPortDynamicForwarding as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SwitchPortDynamicForwardingBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SwitchPortDynamicForwarding as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SwitchPortDynamicForwardingBean Interface. The CIM class
  * SwitchPortDynamicForwarding is described as follows:
- *
- * This association links a DynamicForwardingEntry and the SwitchPort to which
- * the entry applies.
+ * 
+ * This association links a DynamicForwardingEntry and the SwitchPort to which the entry applies.
  */
 public class SwitchPortDynamicForwarding extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SwitchPortDynamicForwardingBeanImpl Class
-     * which implements the SwitchPortDynamicForwardingBean Interface, and
-     * encapsulates the CIM class SwitchPortDynamicForwarding in a Java Bean.
-     * The CIM class SwitchPortDynamicForwarding is described as follows:
-     *
-     * This association links a DynamicForwardingEntry and the SwitchPort to
-     * which the entry applies.
-     */
-    public SwitchPortDynamicForwarding(){};
-    /**
-     * This method create an Association of the type
-     * SwitchPortDynamicForwarding between one SwitchPort object and
-     * DynamicForwardingEntry object
-     */
-    public static SwitchPortDynamicForwarding link(SwitchPort
-	antecedent,DynamicForwardingEntry dependent){
+	/**
+	 * This constructor creates a SwitchPortDynamicForwardingBeanImpl Class which implements the SwitchPortDynamicForwardingBean Interface, and
+	 * encapsulates the CIM class SwitchPortDynamicForwarding in a Java Bean. The CIM class SwitchPortDynamicForwarding is described as follows:
+	 * 
+	 * This association links a DynamicForwardingEntry and the SwitchPort to which the entry applies.
+	 */
+	public SwitchPortDynamicForwarding() {
+	};
 
-    return (SwitchPortDynamicForwarding)
-	Association.link(SwitchPortDynamicForwarding.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type SwitchPortDynamicForwarding between one SwitchPort object and DynamicForwardingEntry object
+	 */
+	public static SwitchPortDynamicForwarding link(SwitchPort
+			antecedent, DynamicForwardingEntry dependent) {
+
+		return (SwitchPortDynamicForwarding) Association.link(SwitchPortDynamicForwarding.class, antecedent, dependent);
+	}// link
 
 } // Class SwitchPortDynamicForwarding

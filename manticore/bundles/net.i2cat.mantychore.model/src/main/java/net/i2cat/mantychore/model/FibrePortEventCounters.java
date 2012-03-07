@@ -9,346 +9,299 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class FibrePortEventCounters as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * FibrePortEventCountersBean Interface. The CIM class FibrePortEventCounters
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FibrePortEventCounters as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the FibrePortEventCountersBean Interface. The CIM class FibrePortEventCounters
  * is described as follows:
- *
- * Note: The use of the FibrePortEventCounters class is deprecated because
- * FibrePort is deprecated. FCPortStatistics should be used instead, but it
- * redefines the level at which data is collected. Therefore, there is no
- * direct translation of the individual counters between the two classes.
- * Deprecated description: This object defines error counters that are
- * specific to a FibrePort.
+ * 
+ * Note: The use of the FibrePortEventCounters class is deprecated because FibrePort is deprecated. FCPortStatistics should be used instead, but it
+ * redefines the level at which data is collected. Therefore, there is no direct translation of the individual counters between the two classes.
+ * Deprecated description: This object defines error counters that are specific to a FibrePort.
  */
-    @Deprecated
+@Deprecated
 public class FibrePortEventCounters extends DeviceStatisticalInformation
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a FibrePortEventCountersBeanImpl Class which
-     * implements the FibrePortEventCountersBean Interface, and encapsulates
-     * the CIM class FibrePortEventCounters in a Java Bean. The CIM class
-     * FibrePortEventCounters is described as follows:
-     *
-     * Note: The use of the FibrePortEventCounters class is deprecated because
-     * FibrePort is deprecated. FCPortStatistics should be used instead, but
-     * it redefines the level at which data is collected. Therefore, there is
-     * no direct translation of the individual counters between the two
-     * classes. Deprecated description: This object defines error counters
-     * that are specific to a FibrePort.
-     */
-    public FibrePortEventCounters(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGIsReceived.
-     */
-    @Deprecated    private long pLOGIsReceived;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGIsReceived property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of login frames received.
-     *
-     * @return	long	current pLOGIsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGIsReceived(){
+	/**
+	 * This constructor creates a FibrePortEventCountersBeanImpl Class which implements the FibrePortEventCountersBean Interface, and encapsulates the
+	 * CIM class FibrePortEventCounters in a Java Bean. The CIM class FibrePortEventCounters is described as follows:
+	 * 
+	 * Note: The use of the FibrePortEventCounters class is deprecated because FibrePort is deprecated. FCPortStatistics should be used instead, but
+	 * it redefines the level at which data is collected. Therefore, there is no direct translation of the individual counters between the two
+	 * classes. Deprecated description: This object defines error counters that are specific to a FibrePort.
+	 */
+	public FibrePortEventCounters() {
+	};
 
-    return this.pLOGIsReceived;
-    } // getPLOGIsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGIsReceived.
+	 */
+	@Deprecated
+	private long	pLOGIsReceived;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGIsReceived property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of login frames received.
-     *
-     * @param	long	new pLOGIsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGIsReceived(long pLOGIsReceived) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGIsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of login frames received.
+	 * 
+	 * @return long current pLOGIsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGIsReceived() {
 
-    this.pLOGIsReceived = pLOGIsReceived;
-    } // setPLOGIsReceived
+		return this.pLOGIsReceived;
+	} // getPLOGIsReceived
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGIsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of login frames received.
+	 * 
+	 * @param long new pLOGIsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGIsReceived(long pLOGIsReceived) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGIsSent.
-     */
-    @Deprecated    private long pLOGIsSent;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGIsSent property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of login frames sent.
-     *
-     * @return	long	current pLOGIsSent property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGIsSent(){
+		this.pLOGIsReceived = pLOGIsReceived;
+	} // setPLOGIsReceived
 
-    return this.pLOGIsSent;
-    } // getPLOGIsSent
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGIsSent.
+	 */
+	@Deprecated
+	private long	pLOGIsSent;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGIsSent property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of login frames sent.
-     *
-     * @param	long	new pLOGIsSent property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGIsSent(long pLOGIsSent) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGIsSent property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of login frames sent.
+	 * 
+	 * @return long current pLOGIsSent property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGIsSent() {
 
-    this.pLOGIsSent = pLOGIsSent;
-    } // setPLOGIsSent
+		return this.pLOGIsSent;
+	} // getPLOGIsSent
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGIsSent property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of login frames sent.
+	 * 
+	 * @param long new pLOGIsSent property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGIsSent(long pLOGIsSent) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property eOFAbortsReceived.
-     */
-    @Deprecated    private long eOFAbortsReceived;
-    /**
-     * This method returns the FibrePortEventCounters.eOFAbortsReceived
-     * property value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: Number of frames received that contain 'EOF Abort'.
-     *
-     * @return	long	current eOFAbortsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getEOFAbortsReceived(){
+		this.pLOGIsSent = pLOGIsSent;
+	} // setPLOGIsSent
 
-    return this.eOFAbortsReceived;
-    } // getEOFAbortsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property eOFAbortsReceived.
+	 */
+	@Deprecated
+	private long	eOFAbortsReceived;
 
-    /**
-     * This method sets the FibrePortEventCounters.eOFAbortsReceived property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: Number of frames received that contain 'EOF Abort'.
-     *
-     * @param	long	new eOFAbortsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setEOFAbortsReceived(long eOFAbortsReceived) {
+	/**
+	 * This method returns the FibrePortEventCounters.eOFAbortsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: Number of frames received that contain 'EOF Abort'.
+	 * 
+	 * @return long current eOFAbortsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getEOFAbortsReceived() {
 
-    this.eOFAbortsReceived = eOFAbortsReceived;
-    } // setEOFAbortsReceived
+		return this.eOFAbortsReceived;
+	} // getEOFAbortsReceived
 
+	/**
+	 * This method sets the FibrePortEventCounters.eOFAbortsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: Number of frames received that contain 'EOF Abort'.
+	 * 
+	 * @param long new eOFAbortsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setEOFAbortsReceived(long eOFAbortsReceived) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property eOFAbortsTransmitted.
-     */
-    @Deprecated    private long eOFAbortsTransmitted;
-    /**
-     * This method returns the FibrePortEventCounters.eOFAbortsTransmitted
-     * property value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: Number of frames transmitted that contain 'EOF Abort'.
-     *
-     * @return	long	current eOFAbortsTransmitted property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getEOFAbortsTransmitted(){
+		this.eOFAbortsReceived = eOFAbortsReceived;
+	} // setEOFAbortsReceived
 
-    return this.eOFAbortsTransmitted;
-    } // getEOFAbortsTransmitted
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property eOFAbortsTransmitted.
+	 */
+	@Deprecated
+	private long	eOFAbortsTransmitted;
 
-    /**
-     * This method sets the FibrePortEventCounters.eOFAbortsTransmitted
-     * property value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: Number of frames transmitted that contain 'EOF Abort'.
-     *
-     * @param	long	new eOFAbortsTransmitted property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setEOFAbortsTransmitted(long eOFAbortsTransmitted) {
+	/**
+	 * This method returns the FibrePortEventCounters.eOFAbortsTransmitted property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: Number of frames transmitted that contain 'EOF Abort'.
+	 * 
+	 * @return long current eOFAbortsTransmitted property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getEOFAbortsTransmitted() {
 
-    this.eOFAbortsTransmitted = eOFAbortsTransmitted;
-    } // setEOFAbortsTransmitted
+		return this.eOFAbortsTransmitted;
+	} // getEOFAbortsTransmitted
 
+	/**
+	 * This method sets the FibrePortEventCounters.eOFAbortsTransmitted property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: Number of frames transmitted that contain 'EOF Abort'.
+	 * 
+	 * @param long new eOFAbortsTransmitted property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setEOFAbortsTransmitted(long eOFAbortsTransmitted) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGOsReceived.
-     */
-    @Deprecated    private long pLOGOsReceived;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGOsReceived property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of logouts that were received from various
-     * targets.
-     *
-     * @return	long	current pLOGOsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGOsReceived(){
+		this.eOFAbortsTransmitted = eOFAbortsTransmitted;
+	} // setEOFAbortsTransmitted
 
-    return this.pLOGOsReceived;
-    } // getPLOGOsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGOsReceived.
+	 */
+	@Deprecated
+	private long	pLOGOsReceived;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGOsReceived property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of logouts that were received from various
-     * targets.
-     *
-     * @param	long	new pLOGOsReceived property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGOsReceived(long pLOGOsReceived) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGOsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of logouts that were received from various targets.
+	 * 
+	 * @return long current pLOGOsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGOsReceived() {
 
-    this.pLOGOsReceived = pLOGOsReceived;
-    } // setPLOGOsReceived
+		return this.pLOGOsReceived;
+	} // getPLOGOsReceived
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGOsReceived property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of logouts that were received from various targets.
+	 * 
+	 * @param long new pLOGOsReceived property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGOsReceived(long pLOGOsReceived) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGOsSent.
-     */
-    @Deprecated    private long pLOGOsSent;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGOsSent property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of logout frames sent.
-     *
-     * @return	long	current pLOGOsSent property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGOsSent(){
+		this.pLOGOsReceived = pLOGOsReceived;
+	} // setPLOGOsReceived
 
-    return this.pLOGOsSent;
-    } // getPLOGOsSent
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGOsSent.
+	 */
+	@Deprecated
+	private long	pLOGOsSent;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGOsSent property value.
-     * This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of logout frames sent.
-     *
-     * @param	long	new pLOGOsSent property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGOsSent(long pLOGOsSent) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGOsSent property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of logout frames sent.
+	 * 
+	 * @return long current pLOGOsSent property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGOsSent() {
 
-    this.pLOGOsSent = pLOGOsSent;
-    } // setPLOGOsSent
+		return this.pLOGOsSent;
+	} // getPLOGOsSent
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGOsSent property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of logout frames sent.
+	 * 
+	 * @param long new pLOGOsSent property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGOsSent(long pLOGOsSent) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGIsRejected.
-     */
-    @Deprecated    private long pLOGIsRejected;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGIsRejected property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of PLOGI frames sent where the response was
-     * LS_RJT.
-     *
-     * @return	long	current pLOGIsRejected property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGIsRejected(){
+		this.pLOGOsSent = pLOGOsSent;
+	} // setPLOGOsSent
 
-    return this.pLOGIsRejected;
-    } // getPLOGIsRejected
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGIsRejected.
+	 */
+	@Deprecated
+	private long	pLOGIsRejected;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGIsRejected property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of PLOGI frames sent where the response was
-     * LS_RJT.
-     *
-     * @param	long	new pLOGIsRejected property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGIsRejected(long pLOGIsRejected) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGIsRejected property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of PLOGI frames sent where the response was LS_RJT.
+	 * 
+	 * @return long current pLOGIsRejected property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGIsRejected() {
 
-    this.pLOGIsRejected = pLOGIsRejected;
-    } // setPLOGIsRejected
+		return this.pLOGIsRejected;
+	} // getPLOGIsRejected
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGIsRejected property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of PLOGI frames sent where the response was LS_RJT.
+	 * 
+	 * @param long new pLOGIsRejected property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGIsRejected(long pLOGIsRejected) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pLOGOsRejected.
-     */
-    @Deprecated    private long pLOGOsRejected;
-    /**
-     * This method returns the FibrePortEventCounters.pLOGOsRejected property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of PLOGO frames sent where the response was
-     * LS_RJT.
-     *
-     * @return	long	current pLOGOsRejected property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public long getPLOGOsRejected(){
+		this.pLOGIsRejected = pLOGIsRejected;
+	} // setPLOGIsRejected
 
-    return this.pLOGOsRejected;
-    } // getPLOGOsRejected
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pLOGOsRejected.
+	 */
+	@Deprecated
+	private long	pLOGOsRejected;
 
-    /**
-     * This method sets the FibrePortEventCounters.pLOGOsRejected property
-     * value. This property is described as follows:
-     *
-     * Note: The use of this method has been deprecated. Deprecated
-     * description: The number of PLOGO frames sent where the response was
-     * LS_RJT.
-     *
-     * @param	long	new pLOGOsRejected property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPLOGOsRejected(long pLOGOsRejected) {
+	/**
+	 * This method returns the FibrePortEventCounters.pLOGOsRejected property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of PLOGO frames sent where the response was LS_RJT.
+	 * 
+	 * @return long current pLOGOsRejected property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public long getPLOGOsRejected() {
 
-    this.pLOGOsRejected = pLOGOsRejected;
-    } // setPLOGOsRejected
+		return this.pLOGOsRejected;
+	} // getPLOGOsRejected
 
+	/**
+	 * This method sets the FibrePortEventCounters.pLOGOsRejected property value. This property is described as follows:
+	 * 
+	 * Note: The use of this method has been deprecated. Deprecated description: The number of PLOGO frames sent where the response was LS_RJT.
+	 * 
+	 * @param long new pLOGOsRejected property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPLOGOsRejected(long pLOGOsRejected) {
 
+		this.pLOGOsRejected = pLOGOsRejected;
+	} // setPLOGOsRejected
 
 } // Class FibrePortEventCounters

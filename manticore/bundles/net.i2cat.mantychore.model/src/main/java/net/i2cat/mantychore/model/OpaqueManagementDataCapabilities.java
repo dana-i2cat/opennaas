@@ -9,412 +9,338 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OpaqueManagementDataCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the OpaqueManagementDataCapabilitiesBean Interface. The CIM
- * class OpaqueManagementDataCapabilities is described as follows:
- *
- * CIM_OpaqueManagementDataCapabilities describes the capabilities of
- * CIM_OpaqueManagementDataService.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OpaqueManagementDataCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the OpaqueManagementDataCapabilitiesBean Interface. The CIM class
+ * OpaqueManagementDataCapabilities is described as follows:
+ * 
+ * CIM_OpaqueManagementDataCapabilities describes the capabilities of CIM_OpaqueManagementDataService.
  */
 public class OpaqueManagementDataCapabilities extends
-    EnabledLogicalElementCapabilities implements Serializable {
+		EnabledLogicalElementCapabilities implements Serializable {
 
-    /**
-     * This constructor creates a OpaqueManagementDataCapabilitiesBeanImpl
-     * Class which implements the OpaqueManagementDataCapabilitiesBean
-     * Interface, and encapsulates the CIM class
-     * OpaqueManagementDataCapabilities in a Java Bean. The CIM class
-     * OpaqueManagementDataCapabilities is described as follows:
-     *
-     * CIM_OpaqueManagementDataCapabilities describes the capabilities of
-     * CIM_OpaqueManagementDataService.
-     */
-    public OpaqueManagementDataCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxAvailableStorage.
-     */
-    private long maxAvailableStorage;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.maxAvailableStorage property value.
-     * This property is described as follows:
-     *
-     * The maximum number of bytes of opaque management data storage managed
-     * by the associated CIM_OpaqueManagementDataService, and hence the
-     * maximum value of the AvailableStorage property in the associated
-     * CIM_OpaqueManagementDataService.
-     *
-     * @return	long	current maxAvailableStorage property value
-     * @exception	Exception
-     */
-    public long getMaxAvailableStorage(){
+	/**
+	 * This constructor creates a OpaqueManagementDataCapabilitiesBeanImpl Class which implements the OpaqueManagementDataCapabilitiesBean Interface,
+	 * and encapsulates the CIM class OpaqueManagementDataCapabilities in a Java Bean. The CIM class OpaqueManagementDataCapabilities is described as
+	 * follows:
+	 * 
+	 * CIM_OpaqueManagementDataCapabilities describes the capabilities of CIM_OpaqueManagementDataService.
+	 */
+	public OpaqueManagementDataCapabilities() {
+	};
 
-    return this.maxAvailableStorage;
-    } // getMaxAvailableStorage
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxAvailableStorage.
+	 */
+	private long	maxAvailableStorage;
 
-    /**
-     * This method sets the
-     * OpaqueManagementDataCapabilities.maxAvailableStorage property value.
-     * This property is described as follows:
-     *
-     * The maximum number of bytes of opaque management data storage managed
-     * by the associated CIM_OpaqueManagementDataService, and hence the
-     * maximum value of the AvailableStorage property in the associated
-     * CIM_OpaqueManagementDataService.
-     *
-     * @param	long	new maxAvailableStorage property value
-     * @exception	Exception
-     */
-    public void setMaxAvailableStorage(long maxAvailableStorage) {
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.maxAvailableStorage property value. This property is described as follows:
+	 * 
+	 * The maximum number of bytes of opaque management data storage managed by the associated CIM_OpaqueManagementDataService, and hence the maximum
+	 * value of the AvailableStorage property in the associated CIM_OpaqueManagementDataService.
+	 * 
+	 * @return long current maxAvailableStorage property value
+	 * @exception Exception
+	 */
+	public long getMaxAvailableStorage() {
 
-    this.maxAvailableStorage = maxAvailableStorage;
-    } // setMaxAvailableStorage
+		return this.maxAvailableStorage;
+	} // getMaxAvailableStorage
 
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.maxAvailableStorage property value. This property is described as follows:
+	 * 
+	 * The maximum number of bytes of opaque management data storage managed by the associated CIM_OpaqueManagementDataService, and hence the maximum
+	 * value of the AvailableStorage property in the associated CIM_OpaqueManagementDataService.
+	 * 
+	 * @param long new maxAvailableStorage property value
+	 * @exception Exception
+	 */
+	public void setMaxAvailableStorage(long maxAvailableStorage) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxReadLength.
-     */
-    private long maxReadLength;
-    /**
-     * This method returns the OpaqueManagementDataCapabilities.maxReadLength
-     * property value. This property is described as follows:
-     *
-     * MaxReadLength indicates the maximum value that the service supports in
-     * the Length parameter of the ReadOpaqueManagementData method. Larger
-     * extents can be read by successively invoking ReadOpaqueManagementData
-     * on chunks of the data and reassembling them in the management client.
-     * When this is done, the LockOpaqueManagementData method should be used
-     * to prevent modification of the data by other clients between
-     * successive reads.
-     *
-     * @return	long	current maxReadLength property value
-     * @exception	Exception
-     */
-    public long getMaxReadLength(){
+		this.maxAvailableStorage = maxAvailableStorage;
+	} // setMaxAvailableStorage
 
-    return this.maxReadLength;
-    } // getMaxReadLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxReadLength.
+	 */
+	private long	maxReadLength;
 
-    /**
-     * This method sets the OpaqueManagementDataCapabilities.maxReadLength
-     * property value. This property is described as follows:
-     *
-     * MaxReadLength indicates the maximum value that the service supports in
-     * the Length parameter of the ReadOpaqueManagementData method. Larger
-     * extents can be read by successively invoking ReadOpaqueManagementData
-     * on chunks of the data and reassembling them in the management client.
-     * When this is done, the LockOpaqueManagementData method should be used
-     * to prevent modification of the data by other clients between
-     * successive reads.
-     *
-     * @param	long	new maxReadLength property value
-     * @exception	Exception
-     */
-    public void setMaxReadLength(long maxReadLength) {
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.maxReadLength property value. This property is described as follows:
+	 * 
+	 * MaxReadLength indicates the maximum value that the service supports in the Length parameter of the ReadOpaqueManagementData method. Larger
+	 * extents can be read by successively invoking ReadOpaqueManagementData on chunks of the data and reassembling them in the management client.
+	 * When this is done, the LockOpaqueManagementData method should be used to prevent modification of the data by other clients between successive
+	 * reads.
+	 * 
+	 * @return long current maxReadLength property value
+	 * @exception Exception
+	 */
+	public long getMaxReadLength() {
 
-    this.maxReadLength = maxReadLength;
-    } // setMaxReadLength
+		return this.maxReadLength;
+	} // getMaxReadLength
 
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.maxReadLength property value. This property is described as follows:
+	 * 
+	 * MaxReadLength indicates the maximum value that the service supports in the Length parameter of the ReadOpaqueManagementData method. Larger
+	 * extents can be read by successively invoking ReadOpaqueManagementData on chunks of the data and reassembling them in the management client.
+	 * When this is done, the LockOpaqueManagementData method should be used to prevent modification of the data by other clients between successive
+	 * reads.
+	 * 
+	 * @param long new maxReadLength property value
+	 * @exception Exception
+	 */
+	public void setMaxReadLength(long maxReadLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxWriteLength.
-     */
-    private long maxWriteLength;
-    /**
-     * This method returns the OpaqueManagementDataCapabilities.maxWriteLength
-     * property value. This property is described as follows:
-     *
-     * MaxWriteLength indicates the maximum value that the service supports in
-     * the Length parameter of the WriteOpaqueManagementData method. Larger
-     * extents can be written by successively invoking
-     * WriteOpaqueManagementData on chunks of the data and reassembling them
-     * in the management client. When this is done, the
-     * LockOpaqueManagementData method should be used to prevent modification
-     * of the data by other clients between successive writes.
-     *
-     * @return	long	current maxWriteLength property value
-     * @exception	Exception
-     */
-    public long getMaxWriteLength(){
+		this.maxReadLength = maxReadLength;
+	} // setMaxReadLength
 
-    return this.maxWriteLength;
-    } // getMaxWriteLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxWriteLength.
+	 */
+	private long	maxWriteLength;
 
-    /**
-     * This method sets the OpaqueManagementDataCapabilities.maxWriteLength
-     * property value. This property is described as follows:
-     *
-     * MaxWriteLength indicates the maximum value that the service supports in
-     * the Length parameter of the WriteOpaqueManagementData method. Larger
-     * extents can be written by successively invoking
-     * WriteOpaqueManagementData on chunks of the data and reassembling them
-     * in the management client. When this is done, the
-     * LockOpaqueManagementData method should be used to prevent modification
-     * of the data by other clients between successive writes.
-     *
-     * @param	long	new maxWriteLength property value
-     * @exception	Exception
-     */
-    public void setMaxWriteLength(long maxWriteLength) {
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.maxWriteLength property value. This property is described as follows:
+	 * 
+	 * MaxWriteLength indicates the maximum value that the service supports in the Length parameter of the WriteOpaqueManagementData method. Larger
+	 * extents can be written by successively invoking WriteOpaqueManagementData on chunks of the data and reassembling them in the management client.
+	 * When this is done, the LockOpaqueManagementData method should be used to prevent modification of the data by other clients between successive
+	 * writes.
+	 * 
+	 * @return long current maxWriteLength property value
+	 * @exception Exception
+	 */
+	public long getMaxWriteLength() {
 
-    this.maxWriteLength = maxWriteLength;
-    } // setMaxWriteLength
+		return this.maxWriteLength;
+	} // getMaxWriteLength
 
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.maxWriteLength property value. This property is described as follows:
+	 * 
+	 * MaxWriteLength indicates the maximum value that the service supports in the Length parameter of the WriteOpaqueManagementData method. Larger
+	 * extents can be written by successively invoking WriteOpaqueManagementData on chunks of the data and reassembling them in the management client.
+	 * When this is done, the LockOpaqueManagementData method should be used to prevent modification of the data by other clients between successive
+	 * writes.
+	 * 
+	 * @param long new maxWriteLength property value
+	 * @exception Exception
+	 */
+	public void setMaxWriteLength(long maxWriteLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedExportURISchemes.
-     */
+		this.maxWriteLength = maxWriteLength;
+	} // setMaxWriteLength
 
-    public enum SupportedExportURISchemes{
-    DATA,
-    FILE,
-    FTP,
-    HTTP,
-    HTTPS,
-    NFS,
-    TFTP,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIC
-    }
-    private SupportedExportURISchemes supportedExportURISchemes;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.supportedExportURISchemes property
-     * value. This property is described as follows:
-     *
-     * This property lists the URI schemes supported by
-     * OpaqueManagementDataService.ExportOpaqueManagementDataToURI().
-     *
-     * @return	int	current supportedExportURISchemes property
-     * value
-     * @exception	Exception
-     */
-    public SupportedExportURISchemes getSupportedExportURISchemes(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedExportURISchemes.
+	 */
 
-    return this.supportedExportURISchemes;
-    } // getSupportedExportURISchemes
+	public enum SupportedExportURISchemes {
+		DATA,
+		FILE,
+		FTP,
+		HTTP,
+		HTTPS,
+		NFS,
+		TFTP,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIC
+	}
 
-    /**
-     * This method sets the
-     * OpaqueManagementDataCapabilities.supportedExportURISchemes property
-     * value. This property is described as follows:
-     *
-     * This property lists the URI schemes supported by
-     * OpaqueManagementDataService.ExportOpaqueManagementDataToURI().
-     *
-     * @param	int	new supportedExportURISchemes property value
-     * @exception	Exception
-     */
-    public void setSupportedExportURISchemes(SupportedExportURISchemes
-	supportedExportURISchemes){
+	private SupportedExportURISchemes	supportedExportURISchemes;
 
-    this.supportedExportURISchemes = supportedExportURISchemes;
-    } // setSupportedExportURISchemes
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.supportedExportURISchemes property value. This property is described as follows:
+	 * 
+	 * This property lists the URI schemes supported by OpaqueManagementDataService.ExportOpaqueManagementDataToURI().
+	 * 
+	 * @return int current supportedExportURISchemes property value
+	 * @exception Exception
+	 */
+	public SupportedExportURISchemes getSupportedExportURISchemes() {
 
+		return this.supportedExportURISchemes;
+	} // getSupportedExportURISchemes
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedImportURISchemes.
-     */
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.supportedExportURISchemes property value. This property is described as follows:
+	 * 
+	 * This property lists the URI schemes supported by OpaqueManagementDataService.ExportOpaqueManagementDataToURI().
+	 * 
+	 * @param int new supportedExportURISchemes property value
+	 * @exception Exception
+	 */
+	public void setSupportedExportURISchemes(SupportedExportURISchemes
+			supportedExportURISchemes) {
 
-    public enum SupportedImportURISchemes{
-    DATA,
-    FILE,
-    FTP,
-    HTTP,
-    HTTPS,
-    NFS,
-    TFTP,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIC
-    }
-    private SupportedImportURISchemes supportedImportURISchemes;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.supportedImportURISchemes property
-     * value. This property is described as follows:
-     *
-     * This property lists the URI schemes supported by
-     * OpaqueManagementDataService.ImportOpaqueManagementDataFromURI().
-     *
-     * @return	int	current supportedImportURISchemes property
-     * value
-     * @exception	Exception
-     */
-    public SupportedImportURISchemes getSupportedImportURISchemes(){
+		this.supportedExportURISchemes = supportedExportURISchemes;
+	} // setSupportedExportURISchemes
 
-    return this.supportedImportURISchemes;
-    } // getSupportedImportURISchemes
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedImportURISchemes.
+	 */
 
-    /**
-     * This method sets the
-     * OpaqueManagementDataCapabilities.supportedImportURISchemes property
-     * value. This property is described as follows:
-     *
-     * This property lists the URI schemes supported by
-     * OpaqueManagementDataService.ImportOpaqueManagementDataFromURI().
-     *
-     * @param	int	new supportedImportURISchemes property value
-     * @exception	Exception
-     */
-    public void setSupportedImportURISchemes(SupportedImportURISchemes
-	supportedImportURISchemes){
+	public enum SupportedImportURISchemes {
+		DATA,
+		FILE,
+		FTP,
+		HTTP,
+		HTTPS,
+		NFS,
+		TFTP,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIC
+	}
 
-    this.supportedImportURISchemes = supportedImportURISchemes;
-    } // setSupportedImportURISchemes
+	private SupportedImportURISchemes	supportedImportURISchemes;
 
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.supportedImportURISchemes property value. This property is described as follows:
+	 * 
+	 * This property lists the URI schemes supported by OpaqueManagementDataService.ImportOpaqueManagementDataFromURI().
+	 * 
+	 * @return int current supportedImportURISchemes property value
+	 * @exception Exception
+	 */
+	public SupportedImportURISchemes getSupportedImportURISchemes() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedMethods.
-     */
+		return this.supportedImportURISchemes;
+	} // getSupportedImportURISchemes
 
-    public enum SupportedMethods{
-    OTHER,
-    CREATE,
-    READ,
-    EXPORTTOURI,
-    WRITE,
-    IMPORTFROMURI,
-    LOCK,
-    REASSIGNOWNERSHIP,
-    ASSIGNACCESS,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIC
-    }
-    private SupportedMethods supportedMethods;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.supportedMethods property value. This
-     * property is described as follows:
-     *
-     * This property advertises the methods that are supported by the service.
-     *
-     * @return	int	current supportedMethods property value
-     * @exception	Exception
-     */
-    public SupportedMethods getSupportedMethods(){
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.supportedImportURISchemes property value. This property is described as follows:
+	 * 
+	 * This property lists the URI schemes supported by OpaqueManagementDataService.ImportOpaqueManagementDataFromURI().
+	 * 
+	 * @param int new supportedImportURISchemes property value
+	 * @exception Exception
+	 */
+	public void setSupportedImportURISchemes(SupportedImportURISchemes
+			supportedImportURISchemes) {
 
-    return this.supportedMethods;
-    } // getSupportedMethods
+		this.supportedImportURISchemes = supportedImportURISchemes;
+	} // setSupportedImportURISchemes
 
-    /**
-     * This method sets the OpaqueManagementDataCapabilities.supportedMethods
-     * property value. This property is described as follows:
-     *
-     * This property advertises the methods that are supported by the service.
-     *
-     * @param	int	new supportedMethods property value
-     * @exception	Exception
-     */
-    public void setSupportedMethods(SupportedMethods supportedMethods){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedMethods.
+	 */
 
-    this.supportedMethods = supportedMethods;
-    } // setSupportedMethods
+	public enum SupportedMethods {
+		OTHER,
+		CREATE,
+		READ,
+		EXPORTTOURI,
+		WRITE,
+		IMPORTFROMURI,
+		LOCK,
+		REASSIGNOWNERSHIP,
+		ASSIGNACCESS,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIC
+	}
 
+	private SupportedMethods	supportedMethods;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property truncationSupported.
-     */
-    private boolean truncationSupported;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.truncationSupported property value.
-     * This property is described as follows:
-     *
-     * TruncationSupported indicates whether the associated
-     * CIM_OpaqueManagementDataService allows a client to truncate the data
-     * in a CIM_OpaqueManagementData instance by reducing the value of its
-     * DataSize property. If TruncationSupported = true, then the Service
-     * shall support reduction of the value of
-     * CIM_OpaqueManagementData.DataSize .If TruncationSupported = false or
-     * is null, then the Service shall not support reduction of the value of
-     * CIM_OpaqueManagementData.DataSize
-     *
-     * @return	boolean	current truncationSupported property
-     * value
-     * @exception	Exception
-     */
-    public boolean isTruncationSupported(){
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.supportedMethods property value. This property is described as follows:
+	 * 
+	 * This property advertises the methods that are supported by the service.
+	 * 
+	 * @return int current supportedMethods property value
+	 * @exception Exception
+	 */
+	public SupportedMethods getSupportedMethods() {
 
-    return this.truncationSupported;
-    } // getTruncationSupported
+		return this.supportedMethods;
+	} // getSupportedMethods
 
-    /**
-     * This method sets the
-     * OpaqueManagementDataCapabilities.truncationSupported property value.
-     * This property is described as follows:
-     *
-     * TruncationSupported indicates whether the associated
-     * CIM_OpaqueManagementDataService allows a client to truncate the data
-     * in a CIM_OpaqueManagementData instance by reducing the value of its
-     * DataSize property. If TruncationSupported = true, then the Service
-     * shall support reduction of the value of
-     * CIM_OpaqueManagementData.DataSize .If TruncationSupported = false or
-     * is null, then the Service shall not support reduction of the value of
-     * CIM_OpaqueManagementData.DataSize
-     *
-     * @param	boolean	new truncationSupported property value
-     * @exception	Exception
-     */
-    public void setTruncationSupported(boolean truncationSupported) {
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.supportedMethods property value. This property is described as follows:
+	 * 
+	 * This property advertises the methods that are supported by the service.
+	 * 
+	 * @param int new supportedMethods property value
+	 * @exception Exception
+	 */
+	public void setSupportedMethods(SupportedMethods supportedMethods) {
 
-    this.truncationSupported = truncationSupported;
-    } // setTruncationSupported
+		this.supportedMethods = supportedMethods;
+	} // setSupportedMethods
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property truncationSupported.
+	 */
+	private boolean	truncationSupported;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxInstancesSupported.
-     */
-    private int maxInstancesSupported;
-    /**
-     * This method returns the
-     * OpaqueManagementDataCapabilities.maxInstancesSupported property value.
-     * This property is described as follows:
-     *
-     * MaxInstancesSupported shall indicate the maximum number of opaque
-     * management data instances that may exist within the scope of the
-     * CIM_OpaqueManagementDataService and managed by the associated instance
-     * of the CIM_OpaqueManagementDataService. A value of zero shall indicate
-     * that the maximum number of instances is unknown or that the maximum
-     * number of instances is not enforced.
-     *
-     * @return	int	current maxInstancesSupported property value
-     * @exception	Exception
-     */
-    public int getMaxInstancesSupported(){
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.truncationSupported property value. This property is described as follows:
+	 * 
+	 * TruncationSupported indicates whether the associated CIM_OpaqueManagementDataService allows a client to truncate the data in a
+	 * CIM_OpaqueManagementData instance by reducing the value of its DataSize property. If TruncationSupported = true, then the Service shall support
+	 * reduction of the value of CIM_OpaqueManagementData.DataSize .If TruncationSupported = false or is null, then the Service shall not support
+	 * reduction of the value of CIM_OpaqueManagementData.DataSize
+	 * 
+	 * @return boolean current truncationSupported property value
+	 * @exception Exception
+	 */
+	public boolean isTruncationSupported() {
 
-    return this.maxInstancesSupported;
-    } // getMaxInstancesSupported
+		return this.truncationSupported;
+	} // getTruncationSupported
 
-    /**
-     * This method sets the
-     * OpaqueManagementDataCapabilities.maxInstancesSupported property value.
-     * This property is described as follows:
-     *
-     * MaxInstancesSupported shall indicate the maximum number of opaque
-     * management data instances that may exist within the scope of the
-     * CIM_OpaqueManagementDataService and managed by the associated instance
-     * of the CIM_OpaqueManagementDataService. A value of zero shall indicate
-     * that the maximum number of instances is unknown or that the maximum
-     * number of instances is not enforced.
-     *
-     * @param	int	new maxInstancesSupported property value
-     * @exception	Exception
-     */
-    public void setMaxInstancesSupported(int maxInstancesSupported) {
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.truncationSupported property value. This property is described as follows:
+	 * 
+	 * TruncationSupported indicates whether the associated CIM_OpaqueManagementDataService allows a client to truncate the data in a
+	 * CIM_OpaqueManagementData instance by reducing the value of its DataSize property. If TruncationSupported = true, then the Service shall support
+	 * reduction of the value of CIM_OpaqueManagementData.DataSize .If TruncationSupported = false or is null, then the Service shall not support
+	 * reduction of the value of CIM_OpaqueManagementData.DataSize
+	 * 
+	 * @param boolean new truncationSupported property value
+	 * @exception Exception
+	 */
+	public void setTruncationSupported(boolean truncationSupported) {
 
-    this.maxInstancesSupported = maxInstancesSupported;
-    } // setMaxInstancesSupported
+		this.truncationSupported = truncationSupported;
+	} // setTruncationSupported
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxInstancesSupported.
+	 */
+	private int	maxInstancesSupported;
 
+	/**
+	 * This method returns the OpaqueManagementDataCapabilities.maxInstancesSupported property value. This property is described as follows:
+	 * 
+	 * MaxInstancesSupported shall indicate the maximum number of opaque management data instances that may exist within the scope of the
+	 * CIM_OpaqueManagementDataService and managed by the associated instance of the CIM_OpaqueManagementDataService. A value of zero shall indicate
+	 * that the maximum number of instances is unknown or that the maximum number of instances is not enforced.
+	 * 
+	 * @return int current maxInstancesSupported property value
+	 * @exception Exception
+	 */
+	public int getMaxInstancesSupported() {
+
+		return this.maxInstancesSupported;
+	} // getMaxInstancesSupported
+
+	/**
+	 * This method sets the OpaqueManagementDataCapabilities.maxInstancesSupported property value. This property is described as follows:
+	 * 
+	 * MaxInstancesSupported shall indicate the maximum number of opaque management data instances that may exist within the scope of the
+	 * CIM_OpaqueManagementDataService and managed by the associated instance of the CIM_OpaqueManagementDataService. A value of zero shall indicate
+	 * that the maximum number of instances is unknown or that the maximum number of instances is not enforced.
+	 * 
+	 * @param int new maxInstancesSupported property value
+	 * @exception Exception
+	 */
+	public void setMaxInstancesSupported(int maxInstancesSupported) {
+
+		this.maxInstancesSupported = maxInstancesSupported;
+	} // setMaxInstancesSupported
 
 } // Class OpaqueManagementDataCapabilities

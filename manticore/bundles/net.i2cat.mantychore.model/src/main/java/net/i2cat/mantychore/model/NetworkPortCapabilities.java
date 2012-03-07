@@ -9,229 +9,202 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkPortCapabilities as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * NetworkPortCapabilitiesBean Interface. The CIM class
- * NetworkPortCapabilities is described as follows:
- *
- * NetworkPortCapabilities describes the capabilities supported for properties
- * that are configurable in NetworkPort.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPortCapabilities as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the NetworkPortCapabilitiesBean Interface. The CIM class NetworkPortCapabilities
+ * is described as follows:
+ * 
+ * NetworkPortCapabilities describes the capabilities supported for properties that are configurable in NetworkPort.
  */
 public class NetworkPortCapabilities extends LogicalPortCapabilities
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a NetworkPortCapabilitiesBeanImpl Class which
-     * implements the NetworkPortCapabilitiesBean Interface, and encapsulates
-     * the CIM class NetworkPortCapabilities in a Java Bean. The CIM class
-     * NetworkPortCapabilities is described as follows:
-     *
-     * NetworkPortCapabilities describes the capabilities supported for
-     * properties that are configurable in NetworkPort.
-     */
-    public NetworkPortCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property speedConfigurable.
-     */
-    private boolean speedConfigurable;
-    /**
-     * This method returns the NetworkPortCapabilities.speedConfigurable
-     * property value. This property is described as follows:
-     *
-     * Boolean that indicates whether the Speed can be configured.
-     *
-     * @return	boolean	current speedConfigurable property value
-     * @exception	Exception
-     */
-    public boolean isSpeedConfigurable(){
+	/**
+	 * This constructor creates a NetworkPortCapabilitiesBeanImpl Class which implements the NetworkPortCapabilitiesBean Interface, and encapsulates
+	 * the CIM class NetworkPortCapabilities in a Java Bean. The CIM class NetworkPortCapabilities is described as follows:
+	 * 
+	 * NetworkPortCapabilities describes the capabilities supported for properties that are configurable in NetworkPort.
+	 */
+	public NetworkPortCapabilities() {
+	};
 
-    return this.speedConfigurable;
-    } // getSpeedConfigurable
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property speedConfigurable.
+	 */
+	private boolean	speedConfigurable;
 
-    /**
-     * This method sets the NetworkPortCapabilities.speedConfigurable property
-     * value. This property is described as follows:
-     *
-     * Boolean that indicates whether the Speed can be configured.
-     *
-     * @param	boolean	new speedConfigurable property value
-     * @exception	Exception
-     */
-    public void setSpeedConfigurable(boolean speedConfigurable) {
+	/**
+	 * This method returns the NetworkPortCapabilities.speedConfigurable property value. This property is described as follows:
+	 * 
+	 * Boolean that indicates whether the Speed can be configured.
+	 * 
+	 * @return boolean current speedConfigurable property value
+	 * @exception Exception
+	 */
+	public boolean isSpeedConfigurable() {
 
-    this.speedConfigurable = speedConfigurable;
-    } // setSpeedConfigurable
+		return this.speedConfigurable;
+	} // getSpeedConfigurable
 
+	/**
+	 * This method sets the NetworkPortCapabilities.speedConfigurable property value. This property is described as follows:
+	 * 
+	 * Boolean that indicates whether the Speed can be configured.
+	 * 
+	 * @param boolean new speedConfigurable property value
+	 * @exception Exception
+	 */
+	public void setSpeedConfigurable(boolean speedConfigurable) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property portSpeedsSupported.
-     */
-    private long[] portSpeedsSupported;
-    /**
-     * This method returns the NetworkPortCapabilities.portSpeedsSupported
-     * property value. This property is described as follows:
-     *
-     * List of supported port speeds that can be configured on
-     * NetworkPort.Speed.
-     *
-     * @return	long[]	current portSpeedsSupported property value
-     * @exception	Exception
-     */
-    public long[] getPortSpeedsSupported(){
+		this.speedConfigurable = speedConfigurable;
+	} // setSpeedConfigurable
 
-    return this.portSpeedsSupported;
-    } // getPortSpeedsSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property portSpeedsSupported.
+	 */
+	private long[]	portSpeedsSupported;
 
-    /**
-     * This method sets the NetworkPortCapabilities.portSpeedsSupported
-     * property value. This property is described as follows:
-     *
-     * List of supported port speeds that can be configured on
-     * NetworkPort.Speed.
-     *
-     * @param	long[]	new portSpeedsSupported property value
-     * @exception	Exception
-     */
-    public void setPortSpeedsSupported(long[] portSpeedsSupported) {
+	/**
+	 * This method returns the NetworkPortCapabilities.portSpeedsSupported property value. This property is described as follows:
+	 * 
+	 * List of supported port speeds that can be configured on NetworkPort.Speed.
+	 * 
+	 * @return long[] current portSpeedsSupported property value
+	 * @exception Exception
+	 */
+	public long[] getPortSpeedsSupported() {
 
-    this.portSpeedsSupported = portSpeedsSupported;
-    } // setPortSpeedsSupported
+		return this.portSpeedsSupported;
+	} // getPortSpeedsSupported
 
+	/**
+	 * This method sets the NetworkPortCapabilities.portSpeedsSupported property value. This property is described as follows:
+	 * 
+	 * List of supported port speeds that can be configured on NetworkPort.Speed.
+	 * 
+	 * @param long[] new portSpeedsSupported property value
+	 * @exception Exception
+	 */
+	public void setPortSpeedsSupported(long[] portSpeedsSupported) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property networkIDsConfigurable.
-     */
-    private boolean networkIDsConfigurable;
-    /**
-     * This method returns the NetworkPortCapabilities.networkIDsConfigurable
-     * property value. This property is described as follows:
-     *
-     * Boolean indicating whether the NetworkPort can be configured to connect
-     * to specific Networks.
-     *
-     * @return	boolean	current networkIDsConfigurable property
-     * value
-     * @exception	Exception
-     */
-    public boolean isNetworkIDsConfigurable(){
+		this.portSpeedsSupported = portSpeedsSupported;
+	} // setPortSpeedsSupported
 
-    return this.networkIDsConfigurable;
-    } // getNetworkIDsConfigurable
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property networkIDsConfigurable.
+	 */
+	private boolean	networkIDsConfigurable;
 
-    /**
-     * This method sets the NetworkPortCapabilities.networkIDsConfigurable
-     * property value. This property is described as follows:
-     *
-     * Boolean indicating whether the NetworkPort can be configured to connect
-     * to specific Networks.
-     *
-     * @param	boolean	new networkIDsConfigurable property value
-     * @exception	Exception
-     */
-    public void setNetworkIDsConfigurable(boolean networkIDsConfigurable) {
+	/**
+	 * This method returns the NetworkPortCapabilities.networkIDsConfigurable property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether the NetworkPort can be configured to connect to specific Networks.
+	 * 
+	 * @return boolean current networkIDsConfigurable property value
+	 * @exception Exception
+	 */
+	public boolean isNetworkIDsConfigurable() {
 
-    this.networkIDsConfigurable = networkIDsConfigurable;
-    } // setNetworkIDsConfigurable
+		return this.networkIDsConfigurable;
+	} // getNetworkIDsConfigurable
 
+	/**
+	 * This method sets the NetworkPortCapabilities.networkIDsConfigurable property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether the NetworkPort can be configured to connect to specific Networks.
+	 * 
+	 * @param boolean new networkIDsConfigurable property value
+	 * @exception Exception
+	 */
+	public void setNetworkIDsConfigurable(boolean networkIDsConfigurable) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property NetworkIDsFormat.
-     */
+		this.networkIDsConfigurable = networkIDsConfigurable;
+	} // setNetworkIDsConfigurable
 
-    public enum NetworkIDsFormat{
-    VIRTUAL_FABRIC_ID,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private NetworkIDsFormat networkIDsFormat;
-    /**
-     * This method returns the NetworkPortCapabilities.networkIDsFormat
-     * property value. This property is described as follows:
-     *
-     * The format that is expected to populate the NetworkIds for the
-     * associated NetworkPortSettings.list of supported LinkTechnologies of
-     * the NetworkPort is defined in the NetworkPortCapabilities.
-     *
-     * @return	int	current networkIDsFormat property value
-     * @exception	Exception
-     */
-    public NetworkIDsFormat getNetworkIDsFormat(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property NetworkIDsFormat.
+	 */
 
-    return this.networkIDsFormat;
-    } // getNetworkIDsFormat
+	public enum NetworkIDsFormat {
+		VIRTUAL_FABRIC_ID,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the NetworkPortCapabilities.networkIDsFormat property
-     * value. This property is described as follows:
-     *
-     * The format that is expected to populate the NetworkIds for the
-     * associated NetworkPortSettings.list of supported LinkTechnologies of
-     * the NetworkPort is defined in the NetworkPortCapabilities.
-     *
-     * @param	int	new networkIDsFormat property value
-     * @exception	Exception
-     */
-    public void setNetworkIDsFormat(NetworkIDsFormat networkIDsFormat){
+	private NetworkIDsFormat	networkIDsFormat;
 
-    this.networkIDsFormat = networkIDsFormat;
-    } // setNetworkIDsFormat
+	/**
+	 * This method returns the NetworkPortCapabilities.networkIDsFormat property value. This property is described as follows:
+	 * 
+	 * The format that is expected to populate the NetworkIds for the associated NetworkPortSettings.list of supported LinkTechnologies of the
+	 * NetworkPort is defined in the NetworkPortCapabilities.
+	 * 
+	 * @return int current networkIDsFormat property value
+	 * @exception Exception
+	 */
+	public NetworkIDsFormat getNetworkIDsFormat() {
 
+		return this.networkIDsFormat;
+	} // getNetworkIDsFormat
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LinkTechnologiesSupported.
-     */
+	/**
+	 * This method sets the NetworkPortCapabilities.networkIDsFormat property value. This property is described as follows:
+	 * 
+	 * The format that is expected to populate the NetworkIds for the associated NetworkPortSettings.list of supported LinkTechnologies of the
+	 * NetworkPort is defined in the NetworkPortCapabilities.
+	 * 
+	 * @param int new networkIDsFormat property value
+	 * @exception Exception
+	 */
+	public void setNetworkIDsFormat(NetworkIDsFormat networkIDsFormat) {
 
-    public enum LinkTechnologiesSupported{
-    ETHERNET,
-    IB,
-    FC,
-    FDDI,
-    ATM,
-    TOKEN_RING,
-    FRAME_RELAY,
-    INFRARED,
-    BLUETOOTH,
-    WIRELESS_LAN,
-    DMTF_RESERVED
-    }
-    private LinkTechnologiesSupported linkTechnologiesSupported;
-    /**
-     * This method returns the
-     * NetworkPortCapabilities.linkTechnologiesSupported property value. This
-     * property is described as follows:
-     *
-     * List of the LinkTechnologies supported by the the NetworkPort.
-     *
-     * @return	int	current linkTechnologiesSupported property
-     * value
-     * @exception	Exception
-     */
-    public LinkTechnologiesSupported getLinkTechnologiesSupported(){
+		this.networkIDsFormat = networkIDsFormat;
+	} // setNetworkIDsFormat
 
-    return this.linkTechnologiesSupported;
-    } // getLinkTechnologiesSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LinkTechnologiesSupported.
+	 */
 
-    /**
-     * This method sets the NetworkPortCapabilities.linkTechnologiesSupported
-     * property value. This property is described as follows:
-     *
-     * List of the LinkTechnologies supported by the the NetworkPort.
-     *
-     * @param	int	new linkTechnologiesSupported property value
-     * @exception	Exception
-     */
-    public void setLinkTechnologiesSupported(LinkTechnologiesSupported
-	linkTechnologiesSupported){
+	public enum LinkTechnologiesSupported {
+		ETHERNET,
+		IB,
+		FC,
+		FDDI,
+		ATM,
+		TOKEN_RING,
+		FRAME_RELAY,
+		INFRARED,
+		BLUETOOTH,
+		WIRELESS_LAN,
+		DMTF_RESERVED
+	}
 
-    this.linkTechnologiesSupported = linkTechnologiesSupported;
-    } // setLinkTechnologiesSupported
+	private LinkTechnologiesSupported	linkTechnologiesSupported;
 
+	/**
+	 * This method returns the NetworkPortCapabilities.linkTechnologiesSupported property value. This property is described as follows:
+	 * 
+	 * List of the LinkTechnologies supported by the the NetworkPort.
+	 * 
+	 * @return int current linkTechnologiesSupported property value
+	 * @exception Exception
+	 */
+	public LinkTechnologiesSupported getLinkTechnologiesSupported() {
 
+		return this.linkTechnologiesSupported;
+	} // getLinkTechnologiesSupported
+
+	/**
+	 * This method sets the NetworkPortCapabilities.linkTechnologiesSupported property value. This property is described as follows:
+	 * 
+	 * List of the LinkTechnologies supported by the the NetworkPort.
+	 * 
+	 * @param int new linkTechnologiesSupported property value
+	 * @exception Exception
+	 */
+	public void setLinkTechnologiesSupported(LinkTechnologiesSupported
+			linkTechnologiesSupported) {
+
+		this.linkTechnologiesSupported = linkTechnologiesSupported;
+	} // setLinkTechnologiesSupported
 
 } // Class NetworkPortCapabilities

@@ -9,501 +9,427 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ISCSIConnection as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ISCSIConnectionBean Interface. The CIM class ISCSIConnection is described
- * as follows:
- *
- * This class contains the attributes of and negotiated values for, an iSCSI
- * Connection which is modeled as a subclass of NetworkPipe. The original
- * settings that are a starting point for negotiation are found in the class
- * iSCSIConnectionSettings.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ISCSIConnection as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ISCSIConnectionBean Interface. The CIM class ISCSIConnection is described as
+ * follows:
+ * 
+ * This class contains the attributes of and negotiated values for, an iSCSI Connection which is modeled as a subclass of NetworkPipe. The original
+ * settings that are a starting point for negotiation are found in the class iSCSIConnectionSettings.
  */
 public class ISCSIConnection extends NetworkPipe implements Serializable {
 
-    /**
-     * This constructor creates a ISCSIConnectionBeanImpl Class which
-     * implements the ISCSIConnectionBean Interface, and encapsulates the CIM
-     * class ISCSIConnection in a Java Bean. The CIM class ISCSIConnection is
-     * described as follows:
-     *
-     * This class contains the attributes of and negotiated values for, an
-     * iSCSI Connection which is modeled as a subclass of NetworkPipe. The
-     * original settings that are a starting point for negotiation are found
-     * in the class iSCSIConnectionSettings.
-     */
-    public ISCSIConnection(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property connectionID.
-     */
-    private long connectionID;
-    /**
-     * This method returns the iSCSIConnection.connectionID property value.
-     * This property is described as follows:
-     *
-     * The iSCSI Connection ID for this connection.
-     *
-     * @return	long	current connectionID property value
-     * @exception	Exception
-     */
-    public long getConnectionID(){
+	/**
+	 * This constructor creates a ISCSIConnectionBeanImpl Class which implements the ISCSIConnectionBean Interface, and encapsulates the CIM class
+	 * ISCSIConnection in a Java Bean. The CIM class ISCSIConnection is described as follows:
+	 * 
+	 * This class contains the attributes of and negotiated values for, an iSCSI Connection which is modeled as a subclass of NetworkPipe. The
+	 * original settings that are a starting point for negotiation are found in the class iSCSIConnectionSettings.
+	 */
+	public ISCSIConnection() {
+	};
 
-    return this.connectionID;
-    } // getConnectionID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property connectionID.
+	 */
+	private long	connectionID;
 
-    /**
-     * This method sets the iSCSIConnection.connectionID property value. This
-     * property is described as follows:
-     *
-     * The iSCSI Connection ID for this connection.
-     *
-     * @param	long	new connectionID property value
-     * @exception	Exception
-     */
-    public void setConnectionID(long connectionID) {
+	/**
+	 * This method returns the iSCSIConnection.connectionID property value. This property is described as follows:
+	 * 
+	 * The iSCSI Connection ID for this connection.
+	 * 
+	 * @return long current connectionID property value
+	 * @exception Exception
+	 */
+	public long getConnectionID() {
 
-    this.connectionID = connectionID;
-    } // setConnectionID
+		return this.connectionID;
+	} // getConnectionID
 
+	/**
+	 * This method sets the iSCSIConnection.connectionID property value. This property is described as follows:
+	 * 
+	 * The iSCSI Connection ID for this connection.
+	 * 
+	 * @param long new connectionID property value
+	 * @exception Exception
+	 */
+	public void setConnectionID(long connectionID) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxReceiveDataSegmentLength.
-     */
-    private long maxReceiveDataSegmentLength;
-    /**
-     * This method returns the iSCSIConnection.maxReceiveDataSegmentLength
-     * property value. This property is described as follows:
-     *
-     * The maximum data payload size supported for command or data PDUs able
-     * to be received on this connection.
-     *
-     * @return	long	current maxReceiveDataSegmentLength property
-     * value
-     * @exception	Exception
-     */
-    public long getMaxReceiveDataSegmentLength(){
+		this.connectionID = connectionID;
+	} // setConnectionID
 
-    return this.maxReceiveDataSegmentLength;
-    } // getMaxReceiveDataSegmentLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxReceiveDataSegmentLength.
+	 */
+	private long	maxReceiveDataSegmentLength;
 
-    /**
-     * This method sets the iSCSIConnection.maxReceiveDataSegmentLength
-     * property value. This property is described as follows:
-     *
-     * The maximum data payload size supported for command or data PDUs able
-     * to be received on this connection.
-     *
-     * @param	long	new maxReceiveDataSegmentLength property
-     * value
-     * @exception	Exception
-     */
-    public void setMaxReceiveDataSegmentLength(long
-	maxReceiveDataSegmentLength) {
+	/**
+	 * This method returns the iSCSIConnection.maxReceiveDataSegmentLength property value. This property is described as follows:
+	 * 
+	 * The maximum data payload size supported for command or data PDUs able to be received on this connection.
+	 * 
+	 * @return long current maxReceiveDataSegmentLength property value
+	 * @exception Exception
+	 */
+	public long getMaxReceiveDataSegmentLength() {
 
-    this.maxReceiveDataSegmentLength = maxReceiveDataSegmentLength;
-    } // setMaxReceiveDataSegmentLength
+		return this.maxReceiveDataSegmentLength;
+	} // getMaxReceiveDataSegmentLength
 
+	/**
+	 * This method sets the iSCSIConnection.maxReceiveDataSegmentLength property value. This property is described as follows:
+	 * 
+	 * The maximum data payload size supported for command or data PDUs able to be received on this connection.
+	 * 
+	 * @param long new maxReceiveDataSegmentLength property value
+	 * @exception Exception
+	 */
+	public void setMaxReceiveDataSegmentLength(long
+			maxReceiveDataSegmentLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxTransmitDataSegmentLength.
-     */
-    private long maxTransmitDataSegmentLength;
-    /**
-     * This method returns the iSCSIConnection.maxTransmitDataSegmentLength
-     * property value. This property is described as follows:
-     *
-     * The maximum data payload size supported for command or data PDUs to be
-     * sent on this connection.
-     *
-     * @return	long	current maxTransmitDataSegmentLength
-     * property value
-     * @exception	Exception
-     */
-    public long getMaxTransmitDataSegmentLength(){
+		this.maxReceiveDataSegmentLength = maxReceiveDataSegmentLength;
+	} // setMaxReceiveDataSegmentLength
 
-    return this.maxTransmitDataSegmentLength;
-    } // getMaxTransmitDataSegmentLength
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxTransmitDataSegmentLength.
+	 */
+	private long	maxTransmitDataSegmentLength;
 
-    /**
-     * This method sets the iSCSIConnection.maxTransmitDataSegmentLength
-     * property value. This property is described as follows:
-     *
-     * The maximum data payload size supported for command or data PDUs to be
-     * sent on this connection.
-     *
-     * @param	long	new maxTransmitDataSegmentLength property
-     * value
-     * @exception	Exception
-     */
-    public void setMaxTransmitDataSegmentLength(long
-	maxTransmitDataSegmentLength) {
+	/**
+	 * This method returns the iSCSIConnection.maxTransmitDataSegmentLength property value. This property is described as follows:
+	 * 
+	 * The maximum data payload size supported for command or data PDUs to be sent on this connection.
+	 * 
+	 * @return long current maxTransmitDataSegmentLength property value
+	 * @exception Exception
+	 */
+	public long getMaxTransmitDataSegmentLength() {
 
-    this.maxTransmitDataSegmentLength = maxTransmitDataSegmentLength;
-    } // setMaxTransmitDataSegmentLength
+		return this.maxTransmitDataSegmentLength;
+	} // getMaxTransmitDataSegmentLength
 
+	/**
+	 * This method sets the iSCSIConnection.maxTransmitDataSegmentLength property value. This property is described as follows:
+	 * 
+	 * The maximum data payload size supported for command or data PDUs to be sent on this connection.
+	 * 
+	 * @param long new maxTransmitDataSegmentLength property value
+	 * @exception Exception
+	 */
+	public void setMaxTransmitDataSegmentLength(long
+			maxTransmitDataSegmentLength) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property HeaderDigestMethod.
-     */
+		this.maxTransmitDataSegmentLength = maxTransmitDataSegmentLength;
+	} // setMaxTransmitDataSegmentLength
 
-    public enum HeaderDigestMethod{
-    OTHER,
-    NO_DIGEST,
-    CRC32C
-    }
-    private HeaderDigestMethod headerDigestMethod;
-    /**
-     * This method returns the iSCSIConnection.headerDigestMethod property
-     * value. This property is described as follows:
-     *
-     * This property identifies the iSCSI header digest scheme in use within
-     * this connection.
-     *
-     * @return	int	current headerDigestMethod property value
-     * @exception	Exception
-     */
-    public HeaderDigestMethod getHeaderDigestMethod(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property HeaderDigestMethod.
+	 */
 
-    return this.headerDigestMethod;
-    } // getHeaderDigestMethod
+	public enum HeaderDigestMethod {
+		OTHER,
+		NO_DIGEST,
+		CRC32C
+	}
 
-    /**
-     * This method sets the iSCSIConnection.headerDigestMethod property value.
-     * This property is described as follows:
-     *
-     * This property identifies the iSCSI header digest scheme in use within
-     * this connection.
-     *
-     * @param	int	new headerDigestMethod property value
-     * @exception	Exception
-     */
-    public void setHeaderDigestMethod(HeaderDigestMethod
-	headerDigestMethod){
+	private HeaderDigestMethod	headerDigestMethod;
 
-    this.headerDigestMethod = headerDigestMethod;
-    } // setHeaderDigestMethod
+	/**
+	 * This method returns the iSCSIConnection.headerDigestMethod property value. This property is described as follows:
+	 * 
+	 * This property identifies the iSCSI header digest scheme in use within this connection.
+	 * 
+	 * @return int current headerDigestMethod property value
+	 * @exception Exception
+	 */
+	public HeaderDigestMethod getHeaderDigestMethod() {
 
+		return this.headerDigestMethod;
+	} // getHeaderDigestMethod
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherHeaderDigestMethod.
-     */
-    private String otherHeaderDigestMethod;
-    /**
-     * This method returns the iSCSIConnection.otherHeaderDigestMethod
-     * property value. This property is described as follows:
-     *
-     * A string describing the Header Digest scheme in use when
-     * HeaderDigestMethod is equal to the value 1, "Other".
-     *
-     * @return	String	current otherHeaderDigestMethod property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherHeaderDigestMethod(){
+	/**
+	 * This method sets the iSCSIConnection.headerDigestMethod property value. This property is described as follows:
+	 * 
+	 * This property identifies the iSCSI header digest scheme in use within this connection.
+	 * 
+	 * @param int new headerDigestMethod property value
+	 * @exception Exception
+	 */
+	public void setHeaderDigestMethod(HeaderDigestMethod
+			headerDigestMethod) {
 
-    return this.otherHeaderDigestMethod;
-    } // getOtherHeaderDigestMethod
+		this.headerDigestMethod = headerDigestMethod;
+	} // setHeaderDigestMethod
 
-    /**
-     * This method sets the iSCSIConnection.otherHeaderDigestMethod property
-     * value. This property is described as follows:
-     *
-     * A string describing the Header Digest scheme in use when
-     * HeaderDigestMethod is equal to the value 1, "Other".
-     *
-     * @param	String	new otherHeaderDigestMethod property value
-     * @exception	Exception
-     */
-    public void setOtherHeaderDigestMethod(String otherHeaderDigestMethod) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherHeaderDigestMethod.
+	 */
+	private String	otherHeaderDigestMethod;
 
-    this.otherHeaderDigestMethod = otherHeaderDigestMethod;
-    } // setOtherHeaderDigestMethod
+	/**
+	 * This method returns the iSCSIConnection.otherHeaderDigestMethod property value. This property is described as follows:
+	 * 
+	 * A string describing the Header Digest scheme in use when HeaderDigestMethod is equal to the value 1, "Other".
+	 * 
+	 * @return String current otherHeaderDigestMethod property value
+	 * @exception Exception
+	 */
+	public String getOtherHeaderDigestMethod() {
 
+		return this.otherHeaderDigestMethod;
+	} // getOtherHeaderDigestMethod
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DataDigestMethod.
-     */
+	/**
+	 * This method sets the iSCSIConnection.otherHeaderDigestMethod property value. This property is described as follows:
+	 * 
+	 * A string describing the Header Digest scheme in use when HeaderDigestMethod is equal to the value 1, "Other".
+	 * 
+	 * @param String
+	 *            new otherHeaderDigestMethod property value
+	 * @exception Exception
+	 */
+	public void setOtherHeaderDigestMethod(String otherHeaderDigestMethod) {
 
-    public enum DataDigestMethod{
-    OTHER,
-    NO_DIGEST,
-    CRC32C
-    }
-    private DataDigestMethod dataDigestMethod;
-    /**
-     * This method returns the iSCSIConnection.dataDigestMethod property
-     * value. This property is described as follows:
-     *
-     * This property identifies the iSCSI data digest scheme in use within
-     * this connection.
-     *
-     * @return	int	current dataDigestMethod property value
-     * @exception	Exception
-     */
-    public DataDigestMethod getDataDigestMethod(){
+		this.otherHeaderDigestMethod = otherHeaderDigestMethod;
+	} // setOtherHeaderDigestMethod
 
-    return this.dataDigestMethod;
-    } // getDataDigestMethod
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DataDigestMethod.
+	 */
 
-    /**
-     * This method sets the iSCSIConnection.dataDigestMethod property value.
-     * This property is described as follows:
-     *
-     * This property identifies the iSCSI data digest scheme in use within
-     * this connection.
-     *
-     * @param	int	new dataDigestMethod property value
-     * @exception	Exception
-     */
-    public void setDataDigestMethod(DataDigestMethod dataDigestMethod){
+	public enum DataDigestMethod {
+		OTHER,
+		NO_DIGEST,
+		CRC32C
+	}
 
-    this.dataDigestMethod = dataDigestMethod;
-    } // setDataDigestMethod
+	private DataDigestMethod	dataDigestMethod;
 
+	/**
+	 * This method returns the iSCSIConnection.dataDigestMethod property value. This property is described as follows:
+	 * 
+	 * This property identifies the iSCSI data digest scheme in use within this connection.
+	 * 
+	 * @return int current dataDigestMethod property value
+	 * @exception Exception
+	 */
+	public DataDigestMethod getDataDigestMethod() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherDataDigestMethod.
-     */
-    private String otherDataDigestMethod;
-    /**
-     * This method returns the iSCSIConnection.otherDataDigestMethod property
-     * value. This property is described as follows:
-     *
-     * A string describing the Data Digest scheme in use when DataDigestMethod
-     * is equal to the value 1, "Other".
-     *
-     * @return	String	current otherDataDigestMethod property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherDataDigestMethod(){
+		return this.dataDigestMethod;
+	} // getDataDigestMethod
 
-    return this.otherDataDigestMethod;
-    } // getOtherDataDigestMethod
+	/**
+	 * This method sets the iSCSIConnection.dataDigestMethod property value. This property is described as follows:
+	 * 
+	 * This property identifies the iSCSI data digest scheme in use within this connection.
+	 * 
+	 * @param int new dataDigestMethod property value
+	 * @exception Exception
+	 */
+	public void setDataDigestMethod(DataDigestMethod dataDigestMethod) {
 
-    /**
-     * This method sets the iSCSIConnection.otherDataDigestMethod property
-     * value. This property is described as follows:
-     *
-     * A string describing the Data Digest scheme in use when DataDigestMethod
-     * is equal to the value 1, "Other".
-     *
-     * @param	String	new otherDataDigestMethod property value
-     * @exception	Exception
-     */
-    public void setOtherDataDigestMethod(String otherDataDigestMethod) {
+		this.dataDigestMethod = dataDigestMethod;
+	} // setDataDigestMethod
 
-    this.otherDataDigestMethod = otherDataDigestMethod;
-    } // setOtherDataDigestMethod
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherDataDigestMethod.
+	 */
+	private String	otherDataDigestMethod;
 
+	/**
+	 * This method returns the iSCSIConnection.otherDataDigestMethod property value. This property is described as follows:
+	 * 
+	 * A string describing the Data Digest scheme in use when DataDigestMethod is equal to the value 1, "Other".
+	 * 
+	 * @return String current otherDataDigestMethod property value
+	 * @exception Exception
+	 */
+	public String getOtherDataDigestMethod() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property receivingMarkers.
-     */
-    private boolean receivingMarkers;
-    /**
-     * This method returns the iSCSIConnection.receivingMarkers property
-     * value. This property is described as follows:
-     *
-     * This property indicates whether or not this connection is receiving
-     * markers in in its incoming data stream.
-     *
-     * @return	boolean	current receivingMarkers property value
-     * @exception	Exception
-     */
-    public boolean isReceivingMarkers(){
+		return this.otherDataDigestMethod;
+	} // getOtherDataDigestMethod
 
-    return this.receivingMarkers;
-    } // getReceivingMarkers
+	/**
+	 * This method sets the iSCSIConnection.otherDataDigestMethod property value. This property is described as follows:
+	 * 
+	 * A string describing the Data Digest scheme in use when DataDigestMethod is equal to the value 1, "Other".
+	 * 
+	 * @param String
+	 *            new otherDataDigestMethod property value
+	 * @exception Exception
+	 */
+	public void setOtherDataDigestMethod(String otherDataDigestMethod) {
 
-    /**
-     * This method sets the iSCSIConnection.receivingMarkers property value.
-     * This property is described as follows:
-     *
-     * This property indicates whether or not this connection is receiving
-     * markers in in its incoming data stream.
-     *
-     * @param	boolean	new receivingMarkers property value
-     * @exception	Exception
-     */
-    public void setReceivingMarkers(boolean receivingMarkers) {
+		this.otherDataDigestMethod = otherDataDigestMethod;
+	} // setOtherDataDigestMethod
 
-    this.receivingMarkers = receivingMarkers;
-    } // setReceivingMarkers
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property receivingMarkers.
+	 */
+	private boolean	receivingMarkers;
 
+	/**
+	 * This method returns the iSCSIConnection.receivingMarkers property value. This property is described as follows:
+	 * 
+	 * This property indicates whether or not this connection is receiving markers in in its incoming data stream.
+	 * 
+	 * @return boolean current receivingMarkers property value
+	 * @exception Exception
+	 */
+	public boolean isReceivingMarkers() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sendingMarkers.
-     */
-    private boolean sendingMarkers;
-    /**
-     * This method returns the iSCSIConnection.sendingMarkers property value.
-     * This property is described as follows:
-     *
-     * This property indicates whether or not this connection is inserting
-     * markers in in its outgoing data stream.
-     *
-     * @return	boolean	current sendingMarkers property value
-     * @exception	Exception
-     */
-    public boolean isSendingMarkers(){
+		return this.receivingMarkers;
+	} // getReceivingMarkers
 
-    return this.sendingMarkers;
-    } // getSendingMarkers
+	/**
+	 * This method sets the iSCSIConnection.receivingMarkers property value. This property is described as follows:
+	 * 
+	 * This property indicates whether or not this connection is receiving markers in in its incoming data stream.
+	 * 
+	 * @param boolean new receivingMarkers property value
+	 * @exception Exception
+	 */
+	public void setReceivingMarkers(boolean receivingMarkers) {
 
-    /**
-     * This method sets the iSCSIConnection.sendingMarkers property value.
-     * This property is described as follows:
-     *
-     * This property indicates whether or not this connection is inserting
-     * markers in in its outgoing data stream.
-     *
-     * @param	boolean	new sendingMarkers property value
-     * @exception	Exception
-     */
-    public void setSendingMarkers(boolean sendingMarkers) {
+		this.receivingMarkers = receivingMarkers;
+	} // setReceivingMarkers
 
-    this.sendingMarkers = sendingMarkers;
-    } // setSendingMarkers
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sendingMarkers.
+	 */
+	private boolean	sendingMarkers;
 
+	/**
+	 * This method returns the iSCSIConnection.sendingMarkers property value. This property is described as follows:
+	 * 
+	 * This property indicates whether or not this connection is inserting markers in in its outgoing data stream.
+	 * 
+	 * @return boolean current sendingMarkers property value
+	 * @exception Exception
+	 */
+	public boolean isSendingMarkers() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property activeiSCSIVersion.
-     */
-    private boolean activeiSCSIVersion;
-    /**
-     * This method returns the iSCSIConnection.activeiSCSIVersion property
-     * value. This property is described as follows:
-     *
-     * Active version number of the iSCSI specification negotiated on this
-     * connection.
-     *
-     * @return	boolean	current activeiSCSIVersion property value
-     * @exception	Exception
-     */
-    public boolean isActiveiSCSIVersion(){
+		return this.sendingMarkers;
+	} // getSendingMarkers
 
-    return this.activeiSCSIVersion;
-    } // getActiveiSCSIVersion
+	/**
+	 * This method sets the iSCSIConnection.sendingMarkers property value. This property is described as follows:
+	 * 
+	 * This property indicates whether or not this connection is inserting markers in in its outgoing data stream.
+	 * 
+	 * @param boolean new sendingMarkers property value
+	 * @exception Exception
+	 */
+	public void setSendingMarkers(boolean sendingMarkers) {
 
-    /**
-     * This method sets the iSCSIConnection.activeiSCSIVersion property value.
-     * This property is described as follows:
-     *
-     * Active version number of the iSCSI specification negotiated on this
-     * connection.
-     *
-     * @param	boolean	new activeiSCSIVersion property value
-     * @exception	Exception
-     */
-    public void setActiveiSCSIVersion(boolean activeiSCSIVersion) {
+		this.sendingMarkers = sendingMarkers;
+	} // setSendingMarkers
 
-    this.activeiSCSIVersion = activeiSCSIVersion;
-    } // setActiveiSCSIVersion
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property activeiSCSIVersion.
+	 */
+	private boolean	activeiSCSIVersion;
 
+	/**
+	 * This method returns the iSCSIConnection.activeiSCSIVersion property value. This property is described as follows:
+	 * 
+	 * Active version number of the iSCSI specification negotiated on this connection.
+	 * 
+	 * @return boolean current activeiSCSIVersion property value
+	 * @exception Exception
+	 */
+	public boolean isActiveiSCSIVersion() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AuthenticationMethodUsed.
-     */
+		return this.activeiSCSIVersion;
+	} // getActiveiSCSIVersion
 
-    public enum AuthenticationMethodUsed{
-    NO_AUTHENTICATION,
-    SRP,
-    CHAP,
-    KERBEROS
-    }
-    private AuthenticationMethodUsed authenticationMethodUsed;
-    /**
-     * This method returns the iSCSIConnection.authenticationMethodUsed
-     * property value. This property is described as follows:
-     *
-     * The authentication method being used on this connection, as
-     * communicated during the login phase.
-     *
-     * @return	int	current authenticationMethodUsed property
-     * value
-     * @exception	Exception
-     */
-    public AuthenticationMethodUsed getAuthenticationMethodUsed(){
+	/**
+	 * This method sets the iSCSIConnection.activeiSCSIVersion property value. This property is described as follows:
+	 * 
+	 * Active version number of the iSCSI specification negotiated on this connection.
+	 * 
+	 * @param boolean new activeiSCSIVersion property value
+	 * @exception Exception
+	 */
+	public void setActiveiSCSIVersion(boolean activeiSCSIVersion) {
 
-    return this.authenticationMethodUsed;
-    } // getAuthenticationMethodUsed
+		this.activeiSCSIVersion = activeiSCSIVersion;
+	} // setActiveiSCSIVersion
 
-    /**
-     * This method sets the iSCSIConnection.authenticationMethodUsed property
-     * value. This property is described as follows:
-     *
-     * The authentication method being used on this connection, as
-     * communicated during the login phase.
-     *
-     * @param	int	new authenticationMethodUsed property value
-     * @exception	Exception
-     */
-    public void setAuthenticationMethodUsed(AuthenticationMethodUsed
-	authenticationMethodUsed){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AuthenticationMethodUsed.
+	 */
 
-    this.authenticationMethodUsed = authenticationMethodUsed;
-    } // setAuthenticationMethodUsed
+	public enum AuthenticationMethodUsed {
+		NO_AUTHENTICATION,
+		SRP,
+		CHAP,
+		KERBEROS
+	}
 
+	private AuthenticationMethodUsed	authenticationMethodUsed;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property mutualAuthentication.
-     */
-    private boolean mutualAuthentication;
-    /**
-     * This method returns the iSCSIConnection.mutualAuthentication property
-     * value. This property is described as follows:
-     *
-     * This property when true, indicates that the Target was required to
-     * authenticate itself to the Initiator, in addition to the Initiator
-     * authenticating itself to the Target. When false, and
-     * AuthenticationMethod is other than 'No Authentication', only the
-     * Initatior authenticated itself to the Target. When
-     * AuthenticationMethodUsed is 'No Authentication', this property must be
-     * false.
-     *
-     * @return	boolean	current mutualAuthentication property
-     * value
-     * @exception	Exception
-     */
-    public boolean isMutualAuthentication(){
+	/**
+	 * This method returns the iSCSIConnection.authenticationMethodUsed property value. This property is described as follows:
+	 * 
+	 * The authentication method being used on this connection, as communicated during the login phase.
+	 * 
+	 * @return int current authenticationMethodUsed property value
+	 * @exception Exception
+	 */
+	public AuthenticationMethodUsed getAuthenticationMethodUsed() {
 
-    return this.mutualAuthentication;
-    } // getMutualAuthentication
+		return this.authenticationMethodUsed;
+	} // getAuthenticationMethodUsed
 
-    /**
-     * This method sets the iSCSIConnection.mutualAuthentication property
-     * value. This property is described as follows:
-     *
-     * This property when true, indicates that the Target was required to
-     * authenticate itself to the Initiator, in addition to the Initiator
-     * authenticating itself to the Target. When false, and
-     * AuthenticationMethod is other than 'No Authentication', only the
-     * Initatior authenticated itself to the Target. When
-     * AuthenticationMethodUsed is 'No Authentication', this property must be
-     * false.
-     *
-     * @param	boolean	new mutualAuthentication property value
-     * @exception	Exception
-     */
-    public void setMutualAuthentication(boolean mutualAuthentication) {
+	/**
+	 * This method sets the iSCSIConnection.authenticationMethodUsed property value. This property is described as follows:
+	 * 
+	 * The authentication method being used on this connection, as communicated during the login phase.
+	 * 
+	 * @param int new authenticationMethodUsed property value
+	 * @exception Exception
+	 */
+	public void setAuthenticationMethodUsed(AuthenticationMethodUsed
+			authenticationMethodUsed) {
 
-    this.mutualAuthentication = mutualAuthentication;
-    } // setMutualAuthentication
+		this.authenticationMethodUsed = authenticationMethodUsed;
+	} // setAuthenticationMethodUsed
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property mutualAuthentication.
+	 */
+	private boolean	mutualAuthentication;
 
+	/**
+	 * This method returns the iSCSIConnection.mutualAuthentication property value. This property is described as follows:
+	 * 
+	 * This property when true, indicates that the Target was required to authenticate itself to the Initiator, in addition to the Initiator
+	 * authenticating itself to the Target. When false, and AuthenticationMethod is other than 'No Authentication', only the Initatior authenticated
+	 * itself to the Target. When AuthenticationMethodUsed is 'No Authentication', this property must be false.
+	 * 
+	 * @return boolean current mutualAuthentication property value
+	 * @exception Exception
+	 */
+	public boolean isMutualAuthentication() {
+
+		return this.mutualAuthentication;
+	} // getMutualAuthentication
+
+	/**
+	 * This method sets the iSCSIConnection.mutualAuthentication property value. This property is described as follows:
+	 * 
+	 * This property when true, indicates that the Target was required to authenticate itself to the Initiator, in addition to the Initiator
+	 * authenticating itself to the Target. When false, and AuthenticationMethod is other than 'No Authentication', only the Initatior authenticated
+	 * itself to the Target. When AuthenticationMethodUsed is 'No Authentication', this property must be false.
+	 * 
+	 * @param boolean new mutualAuthentication property value
+	 * @exception Exception
+	 */
+	public void setMutualAuthentication(boolean mutualAuthentication) {
+
+		this.mutualAuthentication = mutualAuthentication;
+	} // setMutualAuthentication
 
 } // Class ISCSIConnection

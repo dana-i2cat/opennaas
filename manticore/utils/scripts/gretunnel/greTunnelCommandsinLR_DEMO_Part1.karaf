@@ -1,0 +1,18 @@
+shell:echo Script to test GRE tunnel commands for a router
+
+#Creating and initializing resource
+resource:create PATH_TO_OPENNAAS_SRC/opennaas/manticore/utils/routerWithGRE.descriptor
+protocols:context router:junos20 netconf URI
+resource:start router:junos20
+
+shell:echo "_______CONFIGURING LOGICAL ROUTER_______"
+#Create logical interface
+chassis:createsubinterface -v 301 router:junos20 fe-0/3/0.1
+queue:execute router:junos20
+
+#Create logical router with interface
+chassis:createlogicalrouter router:junos20 LS1 fe-0/3/0.1
+queue:execute router:junos20
+
+shell:echo "PLEASE ADD ge-0/2/0.32 MANUALLY"
+shell:echo "OPENNAAS CANNOT DO IT FOR YOU DUE TO A BUG"
