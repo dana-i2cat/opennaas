@@ -21,14 +21,16 @@ import net.i2cat.mantychore.model.System;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
 
+	@Ignore
 	@Test
 	public void testStatusParserTest() throws Exception {
-
+		// FIXME http://jira.i2cat.net:8080/browse/OPENNAAS-228
 		System model = createSampleModel();
 		IPInterfaceParser parser = new IPInterfaceParser(model);
 
