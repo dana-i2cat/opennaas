@@ -8,32 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VLANFor as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * VLANForBean Interface. The CIM class VLANFor is described as follows:
- *
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VLANFor as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the VLANForBean Interface. The CIM class VLANFor is described as follows:
+ * 
  * The VLAN for the VLAN Service.
  */
-    @Deprecated
+@Deprecated
 public class VLANFor extends ServiceSAPDependency implements Serializable {
 
-    /**
-     * This constructor creates a VLANForBeanImpl Class which implements the
-     * VLANForBean Interface, and encapsulates the CIM class VLANFor in a
-     * Java Bean. The CIM class VLANFor is described as follows:
-     *
-     * The VLAN for the VLAN Service.
-     */
-    public VLANFor(){};
-    /**
-     * This method create an Association of the type VLANFor between one VLAN
-     * object and VLANService object
-     */
-    @Deprecated
-    public static VLANFor link(VLAN antecedent,VLANService dependent){
+	/**
+	 * This constructor creates a VLANForBeanImpl Class which implements the VLANForBean Interface, and encapsulates the CIM class VLANFor in a Java
+	 * Bean. The CIM class VLANFor is described as follows:
+	 * 
+	 * The VLAN for the VLAN Service.
+	 */
+	public VLANFor() {
+	};
 
-    return (VLANFor) Association.link(VLANFor.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type VLANFor between one VLAN object and VLANService object
+	 */
+	@Deprecated
+	public static VLANFor link(VLAN antecedent, VLANService dependent) {
+
+		return (VLANFor) Association.link(VLANFor.class, antecedent, dependent);
+	}// link
 
 } // Class VLANFor

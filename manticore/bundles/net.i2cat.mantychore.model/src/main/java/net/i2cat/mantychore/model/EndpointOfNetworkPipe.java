@@ -9,86 +9,74 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class EndpointOfNetworkPipe as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * EndpointOfNetworkPipeBean Interface. The CIM class EndpointOfNetworkPipe
- * is described as follows:
- *
- * EndpointOfNetworkPipe describes the endpoints between which a pipe
- * transfers information. Whether an endpoint is a source or sink is
- * indicated by a property of the association, SourceOrSink.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class EndpointOfNetworkPipe as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the EndpointOfNetworkPipeBean Interface. The CIM class EndpointOfNetworkPipe is
+ * described as follows:
+ * 
+ * EndpointOfNetworkPipe describes the endpoints between which a pipe transfers information. Whether an endpoint is a source or sink is indicated by a
+ * property of the association, SourceOrSink.
  */
 public class EndpointOfNetworkPipe extends Dependency implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a EndpointOfNetworkPipeBeanImpl Class which
-     * implements the EndpointOfNetworkPipeBean Interface, and encapsulates
-     * the CIM class EndpointOfNetworkPipe in a Java Bean. The CIM class
-     * EndpointOfNetworkPipe is described as follows:
-     *
-     * EndpointOfNetworkPipe describes the endpoints between which a pipe
-     * transfers information. Whether an endpoint is a source or sink is
-     * indicated by a property of the association, SourceOrSink.
-     */
-    public EndpointOfNetworkPipe(){};
-    /**
-     * This method create an Association of the type EndpointOfNetworkPipe
-     * between one ProtocolEndpoint object and NetworkPipe object
-     */
-    public static EndpointOfNetworkPipe link(ProtocolEndpoint
-	antecedent,NetworkPipe dependent){
+	/**
+	 * This constructor creates a EndpointOfNetworkPipeBeanImpl Class which implements the EndpointOfNetworkPipeBean Interface, and encapsulates the
+	 * CIM class EndpointOfNetworkPipe in a Java Bean. The CIM class EndpointOfNetworkPipe is described as follows:
+	 * 
+	 * EndpointOfNetworkPipe describes the endpoints between which a pipe transfers information. Whether an endpoint is a source or sink is indicated
+	 * by a property of the association, SourceOrSink.
+	 */
+	public EndpointOfNetworkPipe() {
+	};
 
-    return (EndpointOfNetworkPipe)
-	Association.link(EndpointOfNetworkPipe.class,antecedent,dependent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SourceOrSink.
-     */
+	/**
+	 * This method create an Association of the type EndpointOfNetworkPipe between one ProtocolEndpoint object and NetworkPipe object
+	 */
+	public static EndpointOfNetworkPipe link(ProtocolEndpoint
+			antecedent, NetworkPipe dependent) {
 
-    public enum SourceOrSink{
-    UNKNOWN,
-    SOURCE,
-    SINK,
-    NOT_APPLICABLE
-    }
-    private SourceOrSink sourceOrSink;
-    /**
-     * This method returns the EndpointOfNetworkPipe.sourceOrSink property
-     * value. This property is described as follows:
-     *
-     * Indicates whether the endpoint is a source (value = 2), or sink (value
-     * = 3) for the pipe. If this information is not applicable, the property
-     * is set to 4. If the information is not known, the property is set to
-     * 0.
-     *
-     * @return	int	current sourceOrSink property value
-     * @exception	Exception
-     */
-    public SourceOrSink getSourceOrSink(){
+		return (EndpointOfNetworkPipe) Association.link(EndpointOfNetworkPipe.class, antecedent, dependent);
+	}// link
 
-    return this.sourceOrSink;
-    } // getSourceOrSink
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SourceOrSink.
+	 */
 
-    /**
-     * This method sets the EndpointOfNetworkPipe.sourceOrSink property value.
-     * This property is described as follows:
-     *
-     * Indicates whether the endpoint is a source (value = 2), or sink (value
-     * = 3) for the pipe. If this information is not applicable, the property
-     * is set to 4. If the information is not known, the property is set to
-     * 0.
-     *
-     * @param	int	new sourceOrSink property value
-     * @exception	Exception
-     */
-    public void setSourceOrSink(SourceOrSink sourceOrSink){
+	public enum SourceOrSink {
+		UNKNOWN,
+		SOURCE,
+		SINK,
+		NOT_APPLICABLE
+	}
 
-    this.sourceOrSink = sourceOrSink;
-    } // setSourceOrSink
+	private SourceOrSink	sourceOrSink;
 
+	/**
+	 * This method returns the EndpointOfNetworkPipe.sourceOrSink property value. This property is described as follows:
+	 * 
+	 * Indicates whether the endpoint is a source (value = 2), or sink (value = 3) for the pipe. If this information is not applicable, the property
+	 * is set to 4. If the information is not known, the property is set to 0.
+	 * 
+	 * @return int current sourceOrSink property value
+	 * @exception Exception
+	 */
+	public SourceOrSink getSourceOrSink() {
 
+		return this.sourceOrSink;
+	} // getSourceOrSink
+
+	/**
+	 * This method sets the EndpointOfNetworkPipe.sourceOrSink property value. This property is described as follows:
+	 * 
+	 * Indicates whether the endpoint is a source (value = 2), or sink (value = 3) for the pipe. If this information is not applicable, the property
+	 * is set to 4. If the information is not known, the property is set to 0.
+	 * 
+	 * @param int new sourceOrSink property value
+	 * @exception Exception
+	 */
+	public void setSourceOrSink(SourceOrSink sourceOrSink) {
+
+		this.sourceOrSink = sourceOrSink;
+	} // setSourceOrSink
 
 } // Class EndpointOfNetworkPipe

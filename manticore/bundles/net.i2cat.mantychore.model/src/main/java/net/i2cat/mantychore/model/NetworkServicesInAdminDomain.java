@@ -8,51 +8,39 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkServicesInAdminDomain as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the NetworkServicesInAdminDomainBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkServicesInAdminDomain as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the NetworkServicesInAdminDomainBean Interface. The CIM class
  * NetworkServicesInAdminDomain is described as follows:
- *
- * This association establishes the Dependency relationships that exist
- * between an administrative domain and the Network Services that it hosts.
- * It is deprecated since AdminDomains can contain any ManagedSystemElements.
- * There is no special relationship needed for NetworkServices. In addition,
- * the Min (1) cardinality on AdminDomain is not valid - since it may not be
- * possible to define every NetworkService in the context of one or more
+ * 
+ * This association establishes the Dependency relationships that exist between an administrative domain and the Network Services that it hosts. It is
+ * deprecated since AdminDomains can contain any ManagedSystemElements. There is no special relationship needed for NetworkServices. In addition, the
+ * Min (1) cardinality on AdminDomain is not valid - since it may not be possible to define every NetworkService in the context of one or more
  * Domains.
  */
-    @Deprecated
+@Deprecated
 public class NetworkServicesInAdminDomain extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a NetworkServicesInAdminDomainBeanImpl Class
-     * which implements the NetworkServicesInAdminDomainBean Interface, and
-     * encapsulates the CIM class NetworkServicesInAdminDomain in a Java
-     * Bean. The CIM class NetworkServicesInAdminDomain is described as
-     * follows:
-     *
-     * This association establishes the Dependency relationships that exist
-     * between an administrative domain and the Network Services that it
-     * hosts. It is deprecated since AdminDomains can contain any
-     * ManagedSystemElements. There is no special relationship needed for
-     * NetworkServices. In addition, the Min (1) cardinality on AdminDomain
-     * is not valid - since it may not be possible to define every
-     * NetworkService in the context of one or more Domains.
-     */
-    public NetworkServicesInAdminDomain(){};
-    /**
-     * This method create an Association of the type
-     * NetworkServicesInAdminDomain between one AdminDomain object and
-     * NetworkService object
-     */
-    @Deprecated
-    public static NetworkServicesInAdminDomain link(AdminDomain
-	antecedent,NetworkService dependent){
+	/**
+	 * This constructor creates a NetworkServicesInAdminDomainBeanImpl Class which implements the NetworkServicesInAdminDomainBean Interface, and
+	 * encapsulates the CIM class NetworkServicesInAdminDomain in a Java Bean. The CIM class NetworkServicesInAdminDomain is described as follows:
+	 * 
+	 * This association establishes the Dependency relationships that exist between an administrative domain and the Network Services that it hosts.
+	 * It is deprecated since AdminDomains can contain any ManagedSystemElements. There is no special relationship needed for NetworkServices. In
+	 * addition, the Min (1) cardinality on AdminDomain is not valid - since it may not be possible to define every NetworkService in the context of
+	 * one or more Domains.
+	 */
+	public NetworkServicesInAdminDomain() {
+	};
 
-    return (NetworkServicesInAdminDomain)
-	Association.link(NetworkServicesInAdminDomain.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type NetworkServicesInAdminDomain between one AdminDomain object and NetworkService object
+	 */
+	@Deprecated
+	public static NetworkServicesInAdminDomain link(AdminDomain
+			antecedent, NetworkService dependent) {
+
+		return (NetworkServicesInAdminDomain) Association.link(NetworkServicesInAdminDomain.class, antecedent, dependent);
+	}// link
 
 } // Class NetworkServicesInAdminDomain

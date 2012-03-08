@@ -9,88 +9,77 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class LogicalNetworkService as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * LogicalNetworkServiceBean Interface. The CIM class LogicalNetworkService
- * is described as follows:
- *
- * A LogicalNetworkService represents network services that either originate
- * and/or terminate in a LogicalNetwork. This association is deprecated since
- * LogicalNetworks aggregate ProtocolEndpoints, not their backing Services.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class LogicalNetworkService as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the LogicalNetworkServiceBean Interface. The CIM class LogicalNetworkService is
+ * described as follows:
+ * 
+ * A LogicalNetworkService represents network services that either originate and/or terminate in a LogicalNetwork. This association is deprecated
+ * since LogicalNetworks aggregate ProtocolEndpoints, not their backing Services.
  */
-    @Deprecated
+@Deprecated
 public class LogicalNetworkService extends Association implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a LogicalNetworkServiceBeanImpl Class which
-     * implements the LogicalNetworkServiceBean Interface, and encapsulates
-     * the CIM class LogicalNetworkService in a Java Bean. The CIM class
-     * LogicalNetworkService is described as follows:
-     *
-     * A LogicalNetworkService represents network services that either
-     * originate and/or terminate in a LogicalNetwork. This association is
-     * deprecated since LogicalNetworks aggregate ProtocolEndpoints, not
-     * their backing Services.
-     */
-    public LogicalNetworkService(){};
-    /**
-     * This method create an Association of the type LogicalNetworkService
-     * between one LogicalNetwork object and NetworkService object
-     */
-    @Deprecated
-    public static LogicalNetworkService link(LogicalNetwork
-	network,NetworkService networkService){
+	/**
+	 * This constructor creates a LogicalNetworkServiceBeanImpl Class which implements the LogicalNetworkServiceBean Interface, and encapsulates the
+	 * CIM class LogicalNetworkService in a Java Bean. The CIM class LogicalNetworkService is described as follows:
+	 * 
+	 * A LogicalNetworkService represents network services that either originate and/or terminate in a LogicalNetwork. This association is deprecated
+	 * since LogicalNetworks aggregate ProtocolEndpoints, not their backing Services.
+	 */
+	public LogicalNetworkService() {
+	};
 
-    return (LogicalNetworkService)
-	Association.link(LogicalNetworkService.class,network,networkService);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ContainmentType.
-     */
-    @Deprecated
-    public enum ContainmentType{
-    UNKNOWN,
-    ORIGINATES_IN,
-    TERMINATES_IN,
-    RESIDES_IN
-    }
-    @Deprecated
-    private ContainmentType containmentType;
-    /**
-     * This method returns the LogicalNetworkService.containmentType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that explicitly defines this network service as
-     * originating, terminating, or residing in this LogicalNetwork.
-     *
-     * @return	int	current containmentType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public ContainmentType getContainmentType(){
+	/**
+	 * This method create an Association of the type LogicalNetworkService between one LogicalNetwork object and NetworkService object
+	 */
+	@Deprecated
+	public static LogicalNetworkService link(LogicalNetwork
+			network, NetworkService networkService) {
 
-    return this.containmentType;
-    } // getContainmentType
+		return (LogicalNetworkService) Association.link(LogicalNetworkService.class, network, networkService);
+	}// link
 
-    /**
-     * This method sets the LogicalNetworkService.containmentType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that explicitly defines this network service as
-     * originating, terminating, or residing in this LogicalNetwork.
-     *
-     * @param	int	new containmentType property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setContainmentType(ContainmentType containmentType){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ContainmentType.
+	 */
+	@Deprecated
+	public enum ContainmentType {
+		UNKNOWN,
+		ORIGINATES_IN,
+		TERMINATES_IN,
+		RESIDES_IN
+	}
 
-    this.containmentType = containmentType;
-    } // setContainmentType
+	@Deprecated
+	private ContainmentType	containmentType;
 
+	/**
+	 * This method returns the LogicalNetworkService.containmentType property value. This property is described as follows:
+	 * 
+	 * An enumeration that explicitly defines this network service as originating, terminating, or residing in this LogicalNetwork.
+	 * 
+	 * @return int current containmentType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public ContainmentType getContainmentType() {
 
+		return this.containmentType;
+	} // getContainmentType
+
+	/**
+	 * This method sets the LogicalNetworkService.containmentType property value. This property is described as follows:
+	 * 
+	 * An enumeration that explicitly defines this network service as originating, terminating, or residing in this LogicalNetwork.
+	 * 
+	 * @param int new containmentType property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setContainmentType(ContainmentType containmentType) {
+
+		this.containmentType = containmentType;
+	} // setContainmentType
 
 } // Class LogicalNetworkService

@@ -11,6 +11,15 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<!-- include your project here -->
 	<name>Mantychore:: Tests</name>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<modules>
 		<module>integration</module>
 		<module>sprints</module>

@@ -9,159 +9,133 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ConnectivityMembershipSettingData as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the ConnectivityMembershipSettingDataBean Interface. The CIM
- * class ConnectivityMembershipSettingData is described as follows:
- *
- * ConnectivityMembershipSettingData provides the identification criteria for
- * possible members of a ConnectivityCollection.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ConnectivityMembershipSettingData as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ConnectivityMembershipSettingDataBean Interface. The CIM class
+ * ConnectivityMembershipSettingData is described as follows:
+ * 
+ * ConnectivityMembershipSettingData provides the identification criteria for possible members of a ConnectivityCollection.
  */
 public class ConnectivityMembershipSettingData extends SettingData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ConnectivityMembershipSettingDataBeanImpl
-     * Class which implements the ConnectivityMembershipSettingDataBean
-     * Interface, and encapsulates the CIM class
-     * ConnectivityMembershipSettingData in a Java Bean. The CIM class
-     * ConnectivityMembershipSettingData is described as follows:
-     *
-     * ConnectivityMembershipSettingData provides the identification criteria
-     * for possible members of a ConnectivityCollection.
-     */
-    public ConnectivityMembershipSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ConnectivityMemberType.
-     */
+	/**
+	 * This constructor creates a ConnectivityMembershipSettingDataBeanImpl Class which implements the ConnectivityMembershipSettingDataBean
+	 * Interface, and encapsulates the CIM class ConnectivityMembershipSettingData in a Java Bean. The CIM class ConnectivityMembershipSettingData is
+	 * described as follows:
+	 * 
+	 * ConnectivityMembershipSettingData provides the identification criteria for possible members of a ConnectivityCollection.
+	 */
+	public ConnectivityMembershipSettingData() {
+	};
 
-    public enum ConnectivityMemberType{
-    UNKNOWN,
-    OTHER,
-    PERMANENT_ADDRESS,
-    NETWORK_ADDRESS,
-    SWITCH_PORT_ID,
-    LOGICAL_PORT_GROUP,
-    CONNECTIVITY_COLLECTION,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private ConnectivityMemberType connectivityMemberType;
-    /**
-     * This method returns the
-     * ConnectivityMembershipSettingData.connectivityMemberType property
-     * value. This property is described as follows:
-     *
-     * ConnectivityMemberType specifies the type of identification used in the
-     * ConnectivityMemberID field.
-     *
-     * @return	int	current connectivityMemberType property value
-     * @exception	Exception
-     */
-    public ConnectivityMemberType getConnectivityMemberType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ConnectivityMemberType.
+	 */
 
-    return this.connectivityMemberType;
-    } // getConnectivityMemberType
+	public enum ConnectivityMemberType {
+		UNKNOWN,
+		OTHER,
+		PERMANENT_ADDRESS,
+		NETWORK_ADDRESS,
+		SWITCH_PORT_ID,
+		LOGICAL_PORT_GROUP,
+		CONNECTIVITY_COLLECTION,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the
-     * ConnectivityMembershipSettingData.connectivityMemberType property
-     * value. This property is described as follows:
-     *
-     * ConnectivityMemberType specifies the type of identification used in the
-     * ConnectivityMemberID field.
-     *
-     * @param	int	new connectivityMemberType property value
-     * @exception	Exception
-     */
-    public void setConnectivityMemberType(ConnectivityMemberType
-	connectivityMemberType){
+	private ConnectivityMemberType	connectivityMemberType;
 
-    this.connectivityMemberType = connectivityMemberType;
-    } // setConnectivityMemberType
+	/**
+	 * This method returns the ConnectivityMembershipSettingData.connectivityMemberType property value. This property is described as follows:
+	 * 
+	 * ConnectivityMemberType specifies the type of identification used in the ConnectivityMemberID field.
+	 * 
+	 * @return int current connectivityMemberType property value
+	 * @exception Exception
+	 */
+	public ConnectivityMemberType getConnectivityMemberType() {
 
+		return this.connectivityMemberType;
+	} // getConnectivityMemberType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherConnectivityMemberType.
-     */
-    private String otherConnectivityMemberType;
-    /**
-     * This method returns the
-     * ConnectivityMembershipSettingData.otherConnectivityMemberType property
-     * value. This property is described as follows:
-     *
-     * This property specifies the type of identification used in the
-     * ConnectivityMemberID field, when ConnectivityMemberType is 1, "Other".
-     *
-     * @return	String	current otherConnectivityMemberType
-     * property value
-     * @exception	Exception
-     */
-    public String getOtherConnectivityMemberType(){
+	/**
+	 * This method sets the ConnectivityMembershipSettingData.connectivityMemberType property value. This property is described as follows:
+	 * 
+	 * ConnectivityMemberType specifies the type of identification used in the ConnectivityMemberID field.
+	 * 
+	 * @param int new connectivityMemberType property value
+	 * @exception Exception
+	 */
+	public void setConnectivityMemberType(ConnectivityMemberType
+			connectivityMemberType) {
 
-    return this.otherConnectivityMemberType;
-    } // getOtherConnectivityMemberType
+		this.connectivityMemberType = connectivityMemberType;
+	} // setConnectivityMemberType
 
-    /**
-     * This method sets the
-     * ConnectivityMembershipSettingData.otherConnectivityMemberType property
-     * value. This property is described as follows:
-     *
-     * This property specifies the type of identification used in the
-     * ConnectivityMemberID field, when ConnectivityMemberType is 1, "Other".
-     *
-     * @param	String	new otherConnectivityMemberType property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherConnectivityMemberType(String
-	otherConnectivityMemberType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherConnectivityMemberType.
+	 */
+	private String	otherConnectivityMemberType;
 
-    this.otherConnectivityMemberType = otherConnectivityMemberType;
-    } // setOtherConnectivityMemberType
+	/**
+	 * This method returns the ConnectivityMembershipSettingData.otherConnectivityMemberType property value. This property is described as follows:
+	 * 
+	 * This property specifies the type of identification used in the ConnectivityMemberID field, when ConnectivityMemberType is 1, "Other".
+	 * 
+	 * @return String current otherConnectivityMemberType property value
+	 * @exception Exception
+	 */
+	public String getOtherConnectivityMemberType() {
 
+		return this.otherConnectivityMemberType;
+	} // getOtherConnectivityMemberType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property connectivityMemberID.
-     */
-    private String connectivityMemberID;
-    /**
-     * This method returns the
-     * ConnectivityMembershipSettingData.connectivityMemberID property value.
-     * This property is described as follows:
-     *
-     * The identification of the member, based on the type specified by
-     * ConnectivityMemberType.
-     *
-     * @return	String	current connectivityMemberID property
-     * value
-     * @exception	Exception
-     */
-    public String getConnectivityMemberID(){
+	/**
+	 * This method sets the ConnectivityMembershipSettingData.otherConnectivityMemberType property value. This property is described as follows:
+	 * 
+	 * This property specifies the type of identification used in the ConnectivityMemberID field, when ConnectivityMemberType is 1, "Other".
+	 * 
+	 * @param String
+	 *            new otherConnectivityMemberType property value
+	 * @exception Exception
+	 */
+	public void setOtherConnectivityMemberType(String
+			otherConnectivityMemberType) {
 
-    return this.connectivityMemberID;
-    } // getConnectivityMemberID
+		this.otherConnectivityMemberType = otherConnectivityMemberType;
+	} // setOtherConnectivityMemberType
 
-    /**
-     * This method sets the
-     * ConnectivityMembershipSettingData.connectivityMemberID property value.
-     * This property is described as follows:
-     *
-     * The identification of the member, based on the type specified by
-     * ConnectivityMemberType.
-     *
-     * @param	String	new connectivityMemberID property value
-     * @exception	Exception
-     */
-    public void setConnectivityMemberID(String connectivityMemberID) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property connectivityMemberID.
+	 */
+	private String	connectivityMemberID;
 
-    this.connectivityMemberID = connectivityMemberID;
-    } // setConnectivityMemberID
+	/**
+	 * This method returns the ConnectivityMembershipSettingData.connectivityMemberID property value. This property is described as follows:
+	 * 
+	 * The identification of the member, based on the type specified by ConnectivityMemberType.
+	 * 
+	 * @return String current connectivityMemberID property value
+	 * @exception Exception
+	 */
+	public String getConnectivityMemberID() {
 
+		return this.connectivityMemberID;
+	} // getConnectivityMemberID
 
+	/**
+	 * This method sets the ConnectivityMembershipSettingData.connectivityMemberID property value. This property is described as follows:
+	 * 
+	 * The identification of the member, based on the type specified by ConnectivityMemberType.
+	 * 
+	 * @param String
+	 *            new connectivityMemberID property value
+	 * @exception Exception
+	 */
+	public void setConnectivityMemberID(String connectivityMemberID) {
+
+		this.connectivityMemberID = connectivityMemberID;
+	} // setConnectivityMemberID
 
 } // Class ConnectivityMembershipSettingData

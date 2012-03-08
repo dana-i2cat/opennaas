@@ -1,9 +1,15 @@
 package net.i2cat.luminis.ROADM.repository.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.mantychore.model.FCPort;
@@ -14,12 +20,11 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitc
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,33 +45,58 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	static Log			log				= LogFactory
-												.getLog(ROADMRespositoryIntegrationTest.class);
-
-	IResourceRepository	repository;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ROADMRespositoryIntegrationTest
+{
+	private final static Log	log				= LogFactory.getLog(ROADMRespositoryIntegrationTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	@Filter("(type=roadm)")
+	private IResourceRepository	repository;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	private BundleContext		bundleContext;
+
+	@Inject
+	private IResourceManager	resourceManger;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer	repositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	/**
@@ -80,9 +110,7 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 				"protocol.mock", "true");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
-		// ADDED
 		return protocolSessionContext;
-
 	}
 
 	/**
@@ -101,257 +129,208 @@ public class ROADMRespositoryIntegrationTest extends AbstractIntegrationTest {
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextWonesysMock());
 
 	}
 
-	@Before
-	public void initBundles() throws ResourceException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		log.info("Getting services...");
-
-		repository = getOsgiService(IResourceRepository.class, "type=roadm", 50000);
-
-		log.info("INFO: Initialized!");
-
-	}
-
 	@Test
-	public void RemoveAndCreateResource() {
+	public void RemoveAndCreateResource() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
-		try {
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertFalse(repository.listResources().isEmpty());
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			repository.removeResource(resource.getResourceIdentifier().getId());
-			Assert.assertTrue(repository.listResources().isEmpty());
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
-		}
-
+		repository.removeResource(resource.getResourceIdentifier().getId());
+		Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
 	@Test
-	public void StartAndStopResource() {
+	public void StartAndStopResource() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
-		try {
+		/* create resource */
+		IResource resource = repository.createResource(resourceDescriptor);
 
-			/* create resource */
-			IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
 
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			Assert.assertFalse(repository.listResources().isEmpty());
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		/* start resource */
+		repository.startResource(resource.getResourceIdentifier().getId());
+		Assert.assertFalse(resource.getCapabilities().isEmpty());
+		Assert.assertNotNull(resource.getModel());
+		// Assert.assertNotNull(resource.getProfile());
 
-			/* start resource */
-			repository.startResource(resource.getResourceIdentifier().getId());
-			Assert.assertFalse(resource.getCapabilities().isEmpty());
-			Assert.assertNotNull(resource.getModel());
-			// Assert.assertNotNull(resource.getProfile());
+		/* stop resource */
+		repository.stopResource(resource.getResourceIdentifier().getId());
 
-			/* stop resource */
-			repository.stopResource(resource.getResourceIdentifier().getId());
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		// Assert.assertNull(resource.getProfile());
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			// Assert.assertNull(resource.getProfile());
-			Assert.assertFalse(repository.listResources().isEmpty());
+		/* remove resource */
 
-			/* remove resource */
+		repository.removeResource(resource.getResourceIdentifier().getId());
 
-			repository.removeResource(resource.getResourceIdentifier().getId());
-
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
-			// Assert.assertTrue(repository.listResources().isEmpty());
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
-		}
-
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
+		// Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
 	@Test
-	public void repoIsPublishedInResourceManagerTest() {
+	public void repoIsPublishedInResourceManagerTest() throws ResourceException, ProtocolException {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
-		IResourceManager resourceManger = getOsgiService(IResourceManager.class, 50000);
-		Assert.assertNotNull(resourceManger);
-
-		try {
-			IResource resource = resourceManger.createResource(resourceDescriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			resourceManger.startResource(resource.getResourceIdentifier());
-			resourceManger.stopResource(resource.getResourceIdentifier());
-			resourceManger.removeResource(resource.getResourceIdentifier());
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		}
+		IResource resource = resourceManger.createResource(resourceDescriptor);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		resourceManger.startResource(resource.getResourceIdentifier());
+		resourceManger.stopResource(resource.getResourceIdentifier());
+		resourceManger.removeResource(resource.getResourceIdentifier());
 	}
 
 	@Test
-	public void MakeRemoveConnectionsResourceTest() {
-
-		clearRepo();
+	public void MakeRemoveConnectionsResourceTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
-		try {
+		/* create resource */
+		IResource resource = repository.createResource(resourceDescriptor);
 
-			/* create resource */
-			IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
 
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			Assert.assertFalse(repository.listResources().isEmpty());
+		// add protocol for resource
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			// add protocol for resource
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		/* start resource */
+		repository.startResource(resource.getResourceIdentifier().getId());
+		Assert.assertFalse(resource.getCapabilities().isEmpty());
+		Assert.assertNotNull(resource.getModel());
+		// Assert.assertNotNull(resource.getProfile());
 
-			/* start resource */
-			repository.startResource(resource.getResourceIdentifier().getId());
-			Assert.assertFalse(resource.getCapabilities().isEmpty());
-			Assert.assertNotNull(resource.getModel());
-			// Assert.assertNotNull(resource.getProfile());
+		ICapability connections = getCapability(resource.getCapabilities(), "connections");
+		if (connections == null)
+			Assert.fail("Capability not found");
+		ICapability queueCapability = getCapability(resource.getCapabilities(), "queue");
+		if (queueCapability == null)
+			Assert.fail("Capability not found");
 
-			ICapability connections = getCapability(resource.getCapabilities(), "connections");
-			if (connections == null)
-				Assert.fail("Capability not found");
-			ICapability queueCapability = getCapability(resource.getCapabilities(), "queue");
-			if (queueCapability == null)
-				Assert.fail("Capability not found");
+		/* checking model */
+		// TODO CHECK NEW MODEL CONFIG
 
-			/* checking model */
-			// TODO CHECK NEW MODEL CONFIG
+		/* refresh connection */
+		// Response resp = (Response) connections.sendMessage(ActionConstants.REFRESHCONNECTIONS, null);
+		// List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
+		//
+		// Assert.assertTrue(responses.size() == 2);
+		// ActionResponse actionResponse = responses.get(0);
+		// Assert.assertEquals(ActionConstants.REFRESHCONNECTIONS, actionResponse.getActionID());
+		// for (Response response : actionResponse.getResponses()) {
+		// Assert.assertTrue(response.getStatus() == Response.Status.OK);
+		// }
+		//
+		// List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
+		// Assert.assertTrue(queue.size() == 0);
 
-			/* refresh connection */
-			// Response resp = (Response) connections.sendMessage(ActionConstants.REFRESHCONNECTIONS, null);
-			// List<ActionResponse> responses = (List<ActionResponse>) queueCapability.sendMessage(QueueManagerConstants.EXECUTE, null);
-			//
-			// Assert.assertTrue(responses.size() == 2);
-			// ActionResponse actionResponse = responses.get(0);
-			// Assert.assertEquals(ActionConstants.REFRESHCONNECTIONS, actionResponse.getActionID());
-			// for (Response response : actionResponse.getResponses()) {
-			// Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			// }
-			//
-			// List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueManagerConstants.GETQUEUE, null);
-			// Assert.assertTrue(queue.size() == 0);
+		OpticalSwitchFactory opticalSwitchFactory = new OpticalSwitchFactory();
+		resource.setModel(opticalSwitchFactory.newPedrosaProteusOpticalSwitch());
 
-			OpticalSwitchFactory opticalSwitchFactory = new OpticalSwitchFactory();
-			resource.setModel(opticalSwitchFactory.newPedrosaProteusOpticalSwitch());
+		/* make connection */
+		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) resource.getModel());
 
-			/* make connection */
-			FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) resource.getModel());
+		Response resp = (Response) connections.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE,
+																				  null);
 
-			Response resp = (Response) connections.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE,
-					null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			Assert.assertTrue(queueResponse.isOk());
-
-			boolean foundAndOk = false;
-			for (ActionResponse response : queueResponse.getResponses()) {
-				if (response.getActionID().equals(ActionConstants.MAKECONNECTION)) {
-					if (response.getStatus() == STATUS.OK) {
-						foundAndOk = true;
-						for (Response subresponse : response.getResponses()) {
-							Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
-						}
+		boolean foundAndOk = false;
+		for (ActionResponse response : queueResponse.getResponses()) {
+			if (response.getActionID().equals(ActionConstants.MAKECONNECTION)) {
+				if (response.getStatus() == STATUS.OK) {
+					foundAndOk = true;
+					for (Response subresponse : response.getResponses()) {
+						Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
 					}
 				}
 			}
-			Assert.assertTrue(foundAndOk);
+		}
+		Assert.assertTrue(foundAndOk);
 
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
+		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
 
-			/* checking model */
-			Assert.assertNotNull(getFiberConnection(connectionRequest, (ProteusOpticalSwitch) resource.getModel()));
-			// checking for model intern details is in action tests
+		/* checking model */
+		Assert.assertNotNull(getFiberConnection(connectionRequest, (ProteusOpticalSwitch) resource.getModel()));
+		// checking for model intern details is in action tests
 
-			/* remove connection */
-			resp = (Response) connections.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		/* remove connection */
+		resp = (Response) connections.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
+		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(queueResponse.isOk());
+		Assert.assertTrue(queueResponse.isOk());
 
-			foundAndOk = false;
-			for (ActionResponse response : queueResponse.getResponses()) {
-				if (response.getActionID().equals(ActionConstants.REMOVECONNECTION)) {
-					if (response.getStatus() == STATUS.OK) {
-						foundAndOk = true;
-						for (Response subresponse : response.getResponses()) {
-							Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
-						}
+		foundAndOk = false;
+		for (ActionResponse response : queueResponse.getResponses()) {
+			if (response.getActionID().equals(ActionConstants.REMOVECONNECTION)) {
+				if (response.getStatus() == STATUS.OK) {
+					foundAndOk = true;
+					for (Response subresponse : response.getResponses()) {
+						Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
 					}
 				}
 			}
-			Assert.assertTrue(foundAndOk);
-
-			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
-
-			/* checking model */
-			Assert.assertNull(getFiberConnection(connectionRequest, (ProteusOpticalSwitch) resource.getModel()));
-
-			/* stop resource */
-			repository.stopResource(resource.getResourceIdentifier().getId());
-
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			// Assert.assertNull(resource.getProfile());
-			Assert.assertFalse(repository.listResources().isEmpty());
-
-			/* remove resource */
-
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
-
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
-			// Assert.assertTrue(repository.listResources().isEmpty());
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
 		}
+		Assert.assertTrue(foundAndOk);
 
+		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
+
+		/* checking model */
+		Assert.assertNull(getFiberConnection(connectionRequest, (ProteusOpticalSwitch) resource.getModel()));
+
+		/* stop resource */
+		repository.stopResource(resource.getResourceIdentifier().getId());
+
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		// Assert.assertNull(resource.getProfile());
+		Assert.assertFalse(repository.listResources().isEmpty());
+
+		/* remove resource */
+
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		repository.removeResource(resource.getResourceIdentifier().getId());
+
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
+		// Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
+	@After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");

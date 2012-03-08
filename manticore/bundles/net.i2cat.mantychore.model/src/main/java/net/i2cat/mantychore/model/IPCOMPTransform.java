@@ -9,183 +9,158 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPCOMPTransform as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPCOMPTransformBean Interface. The CIM class IPCOMPTransform is described
- * as follows:
- *
- * The IPCOMPTransform specifies the IP compression algorithm to use for
- * payload of the Security Association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPCOMPTransform as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the IPCOMPTransformBean Interface. The CIM class IPCOMPTransform is described as
+ * follows:
+ * 
+ * The IPCOMPTransform specifies the IP compression algorithm to use for payload of the Security Association.
  */
 public class IPCOMPTransform extends SATransform implements Serializable {
 
-    /**
-     * This constructor creates a IPCOMPTransformBeanImpl Class which
-     * implements the IPCOMPTransformBean Interface, and encapsulates the CIM
-     * class IPCOMPTransform in a Java Bean. The CIM class IPCOMPTransform is
-     * described as follows:
-     *
-     * The IPCOMPTransform specifies the IP compression algorithm to use for
-     * payload of the Security Association.
-     */
-    public IPCOMPTransform(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property Algorithm.
-     */
+	/**
+	 * This constructor creates a IPCOMPTransformBeanImpl Class which implements the IPCOMPTransformBean Interface, and encapsulates the CIM class
+	 * IPCOMPTransform in a Java Bean. The CIM class IPCOMPTransform is described as follows:
+	 * 
+	 * The IPCOMPTransform specifies the IP compression algorithm to use for payload of the Security Association.
+	 */
+	public IPCOMPTransform() {
+	};
 
-    public enum Algorithm{
-    OTHER,
-    VENDOR_ALGORITHM_OUI,
-    DEFLATE,
-    LZS
-    }
-    private Algorithm algorithm;
-    /**
-     * This method returns the IPCOMPTransform.algorithm property value. This
-     * property is described as follows:
-     *
-     * The Algorithm is an enumeration that designates the IPCOMP compression
-     * algorithm to use. Its values are generated from RFC2407, Section
-     * 4.4.5. Note that the values are modified from the RFC, since 'Other'
-     * must be taken into account.
-     *
-     * @return	int	current algorithm property value
-     * @exception	Exception
-     */
-    public Algorithm getAlgorithm(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property Algorithm.
+	 */
 
-    return this.algorithm;
-    } // getAlgorithm
+	public enum Algorithm {
+		OTHER,
+		VENDOR_ALGORITHM_OUI,
+		DEFLATE,
+		LZS
+	}
 
-    /**
-     * This method sets the IPCOMPTransform.algorithm property value. This
-     * property is described as follows:
-     *
-     * The Algorithm is an enumeration that designates the IPCOMP compression
-     * algorithm to use. Its values are generated from RFC2407, Section
-     * 4.4.5. Note that the values are modified from the RFC, since 'Other'
-     * must be taken into account.
-     *
-     * @param	int	new algorithm property value
-     * @exception	Exception
-     */
-    public void setAlgorithm(Algorithm algorithm){
+	private Algorithm	algorithm;
 
-    this.algorithm = algorithm;
-    } // setAlgorithm
+	/**
+	 * This method returns the IPCOMPTransform.algorithm property value. This property is described as follows:
+	 * 
+	 * The Algorithm is an enumeration that designates the IPCOMP compression algorithm to use. Its values are generated from RFC2407, Section 4.4.5.
+	 * Note that the values are modified from the RFC, since 'Other' must be taken into account.
+	 * 
+	 * @return int current algorithm property value
+	 * @exception Exception
+	 */
+	public Algorithm getAlgorithm() {
 
+		return this.algorithm;
+	} // getAlgorithm
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherAlgorithm.
-     */
-    private String otherAlgorithm;
-    /**
-     * This method returns the IPCOMPTransform.otherAlgorithm property value.
-     * This property is described as follows:
-     *
-     * Description of the compression algorithm when the value 1 ("Other") is
-     * specified for the property, Algorithm.
-     *
-     * @return	String	current otherAlgorithm property value
-     * @exception	Exception
-     */
-    public String getOtherAlgorithm(){
+	/**
+	 * This method sets the IPCOMPTransform.algorithm property value. This property is described as follows:
+	 * 
+	 * The Algorithm is an enumeration that designates the IPCOMP compression algorithm to use. Its values are generated from RFC2407, Section 4.4.5.
+	 * Note that the values are modified from the RFC, since 'Other' must be taken into account.
+	 * 
+	 * @param int new algorithm property value
+	 * @exception Exception
+	 */
+	public void setAlgorithm(Algorithm algorithm) {
 
-    return this.otherAlgorithm;
-    } // getOtherAlgorithm
+		this.algorithm = algorithm;
+	} // setAlgorithm
 
-    /**
-     * This method sets the IPCOMPTransform.otherAlgorithm property value.
-     * This property is described as follows:
-     *
-     * Description of the compression algorithm when the value 1 ("Other") is
-     * specified for the property, Algorithm.
-     *
-     * @param	String	new otherAlgorithm property value
-     * @exception	Exception
-     */
-    public void setOtherAlgorithm(String otherAlgorithm) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherAlgorithm.
+	 */
+	private String	otherAlgorithm;
 
-    this.otherAlgorithm = otherAlgorithm;
-    } // setOtherAlgorithm
+	/**
+	 * This method returns the IPCOMPTransform.otherAlgorithm property value. This property is described as follows:
+	 * 
+	 * Description of the compression algorithm when the value 1 ("Other") is specified for the property, Algorithm.
+	 * 
+	 * @return String current otherAlgorithm property value
+	 * @exception Exception
+	 */
+	public String getOtherAlgorithm() {
 
+		return this.otherAlgorithm;
+	} // getOtherAlgorithm
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property privateAlgorithm.
-     */
-    private long privateAlgorithm;
-    /**
-     * This method returns the IPCOMPTransform.privateAlgorithm property
-     * value. This property is described as follows:
-     *
-     * A private compression algorithm, used when the Algorithm property is
-     * set to 2, "Vendor Algorithm/OUI".
-     *
-     * @return	long	current privateAlgorithm property value
-     * @exception	Exception
-     */
-    public long getPrivateAlgorithm(){
+	/**
+	 * This method sets the IPCOMPTransform.otherAlgorithm property value. This property is described as follows:
+	 * 
+	 * Description of the compression algorithm when the value 1 ("Other") is specified for the property, Algorithm.
+	 * 
+	 * @param String
+	 *            new otherAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherAlgorithm(String otherAlgorithm) {
 
-    return this.privateAlgorithm;
-    } // getPrivateAlgorithm
+		this.otherAlgorithm = otherAlgorithm;
+	} // setOtherAlgorithm
 
-    /**
-     * This method sets the IPCOMPTransform.privateAlgorithm property value.
-     * This property is described as follows:
-     *
-     * A private compression algorithm, used when the Algorithm property is
-     * set to 2, "Vendor Algorithm/OUI".
-     *
-     * @param	long	new privateAlgorithm property value
-     * @exception	Exception
-     */
-    public void setPrivateAlgorithm(long privateAlgorithm) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property privateAlgorithm.
+	 */
+	private long	privateAlgorithm;
 
-    this.privateAlgorithm = privateAlgorithm;
-    } // setPrivateAlgorithm
+	/**
+	 * This method returns the IPCOMPTransform.privateAlgorithm property value. This property is described as follows:
+	 * 
+	 * A private compression algorithm, used when the Algorithm property is set to 2, "Vendor Algorithm/OUI".
+	 * 
+	 * @return long current privateAlgorithm property value
+	 * @exception Exception
+	 */
+	public long getPrivateAlgorithm() {
 
+		return this.privateAlgorithm;
+	} // getPrivateAlgorithm
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dictionarySize.
-     */
-    private int dictionarySize;
-    /**
-     * This method returns the IPCOMPTransform.dictionarySize property value.
-     * This property is described as follows:
-     *
-     * DictionarySize is an optional field that specifies the log2 maximum
-     * size of the dictionary for the compression algorithm. For dictionaries
-     * that have a fixed size, this value is ignored.
-     *
-     * @return	int	current dictionarySize property value
-     * @exception	Exception
-     */
-    public int getDictionarySize(){
+	/**
+	 * This method sets the IPCOMPTransform.privateAlgorithm property value. This property is described as follows:
+	 * 
+	 * A private compression algorithm, used when the Algorithm property is set to 2, "Vendor Algorithm/OUI".
+	 * 
+	 * @param long new privateAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setPrivateAlgorithm(long privateAlgorithm) {
 
-    return this.dictionarySize;
-    } // getDictionarySize
+		this.privateAlgorithm = privateAlgorithm;
+	} // setPrivateAlgorithm
 
-    /**
-     * This method sets the IPCOMPTransform.dictionarySize property value.
-     * This property is described as follows:
-     *
-     * DictionarySize is an optional field that specifies the log2 maximum
-     * size of the dictionary for the compression algorithm. For dictionaries
-     * that have a fixed size, this value is ignored.
-     *
-     * @param	int	new dictionarySize property value
-     * @exception	Exception
-     */
-    public void setDictionarySize(int dictionarySize) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dictionarySize.
+	 */
+	private int	dictionarySize;
 
-    this.dictionarySize = dictionarySize;
-    } // setDictionarySize
+	/**
+	 * This method returns the IPCOMPTransform.dictionarySize property value. This property is described as follows:
+	 * 
+	 * DictionarySize is an optional field that specifies the log2 maximum size of the dictionary for the compression algorithm. For dictionaries that
+	 * have a fixed size, this value is ignored.
+	 * 
+	 * @return int current dictionarySize property value
+	 * @exception Exception
+	 */
+	public int getDictionarySize() {
 
+		return this.dictionarySize;
+	} // getDictionarySize
 
+	/**
+	 * This method sets the IPCOMPTransform.dictionarySize property value. This property is described as follows:
+	 * 
+	 * DictionarySize is an optional field that specifies the log2 maximum size of the dictionary for the compression algorithm. For dictionaries that
+	 * have a fixed size, this value is ignored.
+	 * 
+	 * @param int new dictionarySize property value
+	 * @exception Exception
+	 */
+	public void setDictionarySize(int dictionarySize) {
+
+		this.dictionarySize = dictionarySize;
+	} // setDictionarySize
 
 } // Class IPCOMPTransform

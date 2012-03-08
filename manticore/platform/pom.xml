@@ -13,7 +13,7 @@
 	<!--  properties to use fuse  -->
 	<properties>
 		<target-platform.path>target/mantychore</target-platform.path>
-		<opennaas.path>opennaas-1.0.0-SNAPSHOT</opennaas.path>
+		<opennaas.path>opennaas-${project.version}</opennaas.path>
 	</properties>
 
 	<repositories>
@@ -167,7 +167,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4</version>
 				<executions>
 					<!-- process the resources to resolve the version variables -->
 					<execution>

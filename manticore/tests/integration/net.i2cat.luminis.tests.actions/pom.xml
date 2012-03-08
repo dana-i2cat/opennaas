@@ -1,49 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
 	<!--  parent parameters  -->
 	<parent>
-		<artifactId>itests-bundle-settings</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
+		<artifactId>mantychore-tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
 	</parent>
+
 	<!--  POM id -->
 	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.luminis.tests.actions</artifactId>
+
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Luminis ROADM action test</name>
 	<description>Luminis ROADM action test</description>
 	<packaging>jar</packaging>
+
+  <dependencyManagement>
+	  <dependencies>
+		  <dependency>
+			  <groupId>org.ops4j.pax.exam</groupId>
+			  <artifactId>pax-exam</artifactId>
+			  <version>${pax.exam2.version}</version>
+		  </dependency>
+	  </dependencies>
+  </dependencyManagement>
+
 	<dependencies>
+
+	  <dependency>
+		  <groupId>junit</groupId>
+		  <artifactId>junit</artifactId>
+		  <scope>test</scope>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.openengsb.labs.paxexam.karaf</groupId>
+		  <artifactId>paxexam-karaf-container</artifactId>
+		  <version>${paxexam-karaf-container.version}</version>
+		  <scope>test</scope>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>org.ops4j.pax.exam</groupId>
+		  <artifactId>pax-exam-junit4</artifactId>
+		  <version>${pax.exam2.version}</version>
+		  <scope>test</scope>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>net.i2cat.mantychore</groupId>
+		  <artifactId>assembly</artifactId>
+		  <version>${project.version}</version>
+		  <type>zip</type>
+		  <classifier>bin</classifier>
+		  <scope>test</scope>
+		  <exclusions>
+			  <exclusion>
+				  <groupId>org.apache.karaf.shell</groupId>
+				  <artifactId>org.apache.karaf.shell.dev</artifactId>
+			  </exclusion>
+		  </exclusions>
+	  </dependency>
+
+	  <dependency>
+		  <groupId>net.i2cat.nexus</groupId>
+		  <artifactId>net.i2cat.nexus.tests.helper</artifactId>
+		  <scope>test</scope>
+		  <exclusions>
+			  <exclusion>
+				  <groupId>org.ops4j.pax.exam</groupId>
+				  <artifactId>pax-exam-container-default</artifactId>
+			  </exclusion>
+			  <exclusion>
+				  <groupId>org.ops4j.pax.exam</groupId>
+				  <artifactId>pax-exam-junit</artifactId>
+			  </exclusion>
+			  <exclusion>
+				  <groupId>org.apache.karaf.tooling</groupId>
+				  <artifactId>org.apache.karaf.tooling.testing</artifactId>
+			  </exclusion>
+		  </exclusions>
+	  </dependency>
+
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
-			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+
 		<!-- Capabilities of Mantychore need to change for capabilities of luminis ROADM -->
 		<dependency>
 			<groupId>net.i2cat.luminis.actionsets</groupId>
 			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+
 	</dependencies>
+
 	<!--  manage dependencies  -->
 	<build>
+
 		<plugins>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4.3</version>
 				<!--
 					By default, the Surefire Plugin will automatically include all test
 					classes with the following wildcard patterns: "**/Test*.java" -
@@ -62,16 +130,7 @@
 					</systemProperties>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.ops4j</groupId>
-				<artifactId>maven-pax-plugin</artifactId>
-				<!--
-					| enable improved OSGi compilation support for the bundle
-					life-cycle. | to switch back to the standard bundle life-cycle,
-					move this setting | down to the maven-bundle-plugin section
-				-->
-				<extensions>true</extensions>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.servicemix.tooling</groupId>
 				<artifactId>depends-maven-plugin</artifactId>
@@ -84,43 +143,9 @@
 					</execution>
 				</executions>
 			</plugin>
+
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>
-											org.apache.servicemix.tooling
-										</groupId>
-										<artifactId>
-											depends-maven-plugin
-										</artifactId>
-										<versionRange>
-											[1.2,)
-										</versionRange>
-										<goals>
-											<goal>
-												generate-depends-file
-											</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore/>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+
 	</build>
+
 </project>

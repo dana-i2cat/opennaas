@@ -9,153 +9,129 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RemotePort as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RemotePortBean Interface. The CIM class RemotePort is described as
- * follows:
- *
- * RemotePort adds port information to the access data (such as IP Address)
- * that is specified in and inherited from RemoteServiceAccessPoint. For
- * example, using the additional properties in this class, you could indicate
- * that UDP Port 123 is accessed at IP Address xyz. The IP Address would be
- * specified in the inherited AccessInfo property, while the UDP Port number
- * would be specified in the PortInfo property of this class.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RemotePort as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RemotePortBean Interface. The CIM class RemotePort is described as follows:
+ * 
+ * RemotePort adds port information to the access data (such as IP Address) that is specified in and inherited from RemoteServiceAccessPoint. For
+ * example, using the additional properties in this class, you could indicate that UDP Port 123 is accessed at IP Address xyz. The IP Address would be
+ * specified in the inherited AccessInfo property, while the UDP Port number would be specified in the PortInfo property of this class.
  */
 public class RemotePort extends RemoteServiceAccessPoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a RemotePortBeanImpl Class which implements
-     * the RemotePortBean Interface, and encapsulates the CIM class
-     * RemotePort in a Java Bean. The CIM class RemotePort is described as
-     * follows:
-     *
-     * RemotePort adds port information to the access data (such as IP
-     * Address) that is specified in and inherited from
-     * RemoteServiceAccessPoint. For example, using the additional properties
-     * in this class, you could indicate that UDP Port 123 is accessed at IP
-     * Address xyz. The IP Address would be specified in the inherited
-     * AccessInfo property, while the UDP Port number would be specified in
-     * the PortInfo property of this class.
-     */
-    public RemotePort(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property portInfo.
-     */
-    private String portInfo;
-    /**
-     * This method returns the RemotePort.portInfo property value. This
-     * property is described as follows:
-     *
-     * Port information that might further specify the remote access
-     * information.
-     *
-     * @return	String	current portInfo property value
-     * @exception	Exception
-     */
-    public String getPortInfo(){
+	/**
+	 * This constructor creates a RemotePortBeanImpl Class which implements the RemotePortBean Interface, and encapsulates the CIM class RemotePort in
+	 * a Java Bean. The CIM class RemotePort is described as follows:
+	 * 
+	 * RemotePort adds port information to the access data (such as IP Address) that is specified in and inherited from RemoteServiceAccessPoint. For
+	 * example, using the additional properties in this class, you could indicate that UDP Port 123 is accessed at IP Address xyz. The IP Address
+	 * would be specified in the inherited AccessInfo property, while the UDP Port number would be specified in the PortInfo property of this class.
+	 */
+	public RemotePort() {
+	};
 
-    return this.portInfo;
-    } // getPortInfo
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property portInfo.
+	 */
+	private String	portInfo;
 
-    /**
-     * This method sets the RemotePort.portInfo property value. This property
-     * is described as follows:
-     *
-     * Port information that might further specify the remote access
-     * information.
-     *
-     * @param	String	new portInfo property value
-     * @exception	Exception
-     */
-    public void setPortInfo(String portInfo) {
+	/**
+	 * This method returns the RemotePort.portInfo property value. This property is described as follows:
+	 * 
+	 * Port information that might further specify the remote access information.
+	 * 
+	 * @return String current portInfo property value
+	 * @exception Exception
+	 */
+	public String getPortInfo() {
 
-    this.portInfo = portInfo;
-    } // setPortInfo
+		return this.portInfo;
+	} // getPortInfo
 
+	/**
+	 * This method sets the RemotePort.portInfo property value. This property is described as follows:
+	 * 
+	 * Port information that might further specify the remote access information.
+	 * 
+	 * @param String
+	 *            new portInfo property value
+	 * @exception Exception
+	 */
+	public void setPortInfo(String portInfo) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property PortProtocol.
-     */
+		this.portInfo = portInfo;
+	} // setPortInfo
 
-    public enum PortProtocol{
-    OTHER,
-    TCP,
-    UDP,
-    VENDOR_SPECIFIC
-    }
-    private PortProtocol portProtocol;
-    /**
-     * This method returns the RemotePort.portProtocol property value. This
-     * property is described as follows:
-     *
-     * An enumerated integer that describes the protocol of the port that is
-     * addressed by PortInformation.
-     *
-     * @return	int	current portProtocol property value
-     * @exception	Exception
-     */
-    public PortProtocol getPortProtocol(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property PortProtocol.
+	 */
 
-    return this.portProtocol;
-    } // getPortProtocol
+	public enum PortProtocol {
+		OTHER,
+		TCP,
+		UDP,
+		VENDOR_SPECIFIC
+	}
 
-    /**
-     * This method sets the RemotePort.portProtocol property value. This
-     * property is described as follows:
-     *
-     * An enumerated integer that describes the protocol of the port that is
-     * addressed by PortInformation.
-     *
-     * @param	int	new portProtocol property value
-     * @exception	Exception
-     */
-    public void setPortProtocol(PortProtocol portProtocol){
+	private PortProtocol	portProtocol;
 
-    this.portProtocol = portProtocol;
-    } // setPortProtocol
+	/**
+	 * This method returns the RemotePort.portProtocol property value. This property is described as follows:
+	 * 
+	 * An enumerated integer that describes the protocol of the port that is addressed by PortInformation.
+	 * 
+	 * @return int current portProtocol property value
+	 * @exception Exception
+	 */
+	public PortProtocol getPortProtocol() {
 
+		return this.portProtocol;
+	} // getPortProtocol
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherProtocolDescription.
-     */
-    private String otherProtocolDescription;
-    /**
-     * This method returns the RemotePort.otherProtocolDescription property
-     * value. This property is described as follows:
-     *
-     * Describes the protocol when the property PortProtocol is set to 1
-     * (Other).
-     *
-     * @return	String	current otherProtocolDescription property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherProtocolDescription(){
+	/**
+	 * This method sets the RemotePort.portProtocol property value. This property is described as follows:
+	 * 
+	 * An enumerated integer that describes the protocol of the port that is addressed by PortInformation.
+	 * 
+	 * @param int new portProtocol property value
+	 * @exception Exception
+	 */
+	public void setPortProtocol(PortProtocol portProtocol) {
 
-    return this.otherProtocolDescription;
-    } // getOtherProtocolDescription
+		this.portProtocol = portProtocol;
+	} // setPortProtocol
 
-    /**
-     * This method sets the RemotePort.otherProtocolDescription property
-     * value. This property is described as follows:
-     *
-     * Describes the protocol when the property PortProtocol is set to 1
-     * (Other).
-     *
-     * @param	String	new otherProtocolDescription property value
-     * @exception	Exception
-     */
-    public void setOtherProtocolDescription(String otherProtocolDescription)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherProtocolDescription.
+	 */
+	private String	otherProtocolDescription;
+
+	/**
+	 * This method returns the RemotePort.otherProtocolDescription property value. This property is described as follows:
+	 * 
+	 * Describes the protocol when the property PortProtocol is set to 1 (Other).
+	 * 
+	 * @return String current otherProtocolDescription property value
+	 * @exception Exception
+	 */
+	public String getOtherProtocolDescription() {
+
+		return this.otherProtocolDescription;
+	} // getOtherProtocolDescription
+
+	/**
+	 * This method sets the RemotePort.otherProtocolDescription property value. This property is described as follows:
+	 * 
+	 * Describes the protocol when the property PortProtocol is set to 1 (Other).
+	 * 
+	 * @param String
+	 *            new otherProtocolDescription property value
+	 * @exception Exception
+	 */
+	public void setOtherProtocolDescription(String otherProtocolDescription)
 	{
 
-    this.otherProtocolDescription = otherProtocolDescription;
-    } // setOtherProtocolDescription
-
-
+		this.otherProtocolDescription = otherProtocolDescription;
+	} // setOtherProtocolDescription
 
 } // Class RemotePort

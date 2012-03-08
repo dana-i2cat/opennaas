@@ -8,49 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductComponent as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProductComponentBean Interface. The CIM class ProductComponent is
- * described as follows:
- *
- * The CIM_ProductComponent association defines a containment and component
- * relationship among Products. For example, a Product may come bundled with
- * other Products. Note that this association duplicates ProductParentChild.
- * The latter association is maintained for legacy reasons. This association,
- * ProductComponent, is added for ease of query and modeling consistency.
- * Using ProductComponent, an application can query for all Component
- * relationships for a Product, versus querying the various Component
- * relationships AND ProductParentChild.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductComponent as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ProductComponentBean Interface. The CIM class ProductComponent is described as
+ * follows:
+ * 
+ * The CIM_ProductComponent association defines a containment and component relationship among Products. For example, a Product may come bundled with
+ * other Products. Note that this association duplicates ProductParentChild. The latter association is maintained for legacy reasons. This
+ * association, ProductComponent, is added for ease of query and modeling consistency. Using ProductComponent, an application can query for all
+ * Component relationships for a Product, versus querying the various Component relationships AND ProductParentChild.
  */
-    @Deprecated
+@Deprecated
 public class ProductComponent extends Component implements Serializable {
 
-    /**
-     * This constructor creates a ProductComponentBeanImpl Class which
-     * implements the ProductComponentBean Interface, and encapsulates the
-     * CIM class ProductComponent in a Java Bean. The CIM class
-     * ProductComponent is described as follows:
-     *
-     * The CIM_ProductComponent association defines a containment and
-     * component relationship among Products. For example, a Product may come
-     * bundled with other Products. Note that this association duplicates
-     * ProductParentChild. The latter association is maintained for legacy
-     * reasons. This association, ProductComponent, is added for ease of
-     * query and modeling consistency. Using ProductComponent, an application
-     * can query for all Component relationships for a Product, versus
-     * querying the various Component relationships AND ProductParentChild.
-     */
-    public ProductComponent(){};
-    /**
-     * This method create an Association of the type ProductComponent between
-     * one Product object and Product object
-     */
-    public static ProductComponent link(Product groupComponent,Product
-	partComponent){
+	/**
+	 * This constructor creates a ProductComponentBeanImpl Class which implements the ProductComponentBean Interface, and encapsulates the CIM class
+	 * ProductComponent in a Java Bean. The CIM class ProductComponent is described as follows:
+	 * 
+	 * The CIM_ProductComponent association defines a containment and component relationship among Products. For example, a Product may come bundled
+	 * with other Products. Note that this association duplicates ProductParentChild. The latter association is maintained for legacy reasons. This
+	 * association, ProductComponent, is added for ease of query and modeling consistency. Using ProductComponent, an application can query for all
+	 * Component relationships for a Product, versus querying the various Component relationships AND ProductParentChild.
+	 */
+	public ProductComponent() {
+	};
 
-    return (ProductComponent)
-	Association.link(ProductComponent.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ProductComponent between one Product object and Product object
+	 */
+	public static ProductComponent link(Product groupComponent, Product
+			partComponent) {
+
+		return (ProductComponent) Association.link(ProductComponent.class, groupComponent, partComponent);
+	}// link
 
 } // Class ProductComponent

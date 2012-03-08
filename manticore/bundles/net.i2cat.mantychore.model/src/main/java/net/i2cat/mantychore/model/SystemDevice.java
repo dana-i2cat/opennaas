@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemDevice as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the SystemDeviceBean Interface. The CIM class SystemDevice is described as follows:
- *
+ * 
  * LogicalDevices can be aggregated by a System. This relationship is made explicit by the SystemDevice association.
  */
 public class SystemDevice extends SystemComponent implements Serializable {
@@ -18,7 +18,7 @@ public class SystemDevice extends SystemComponent implements Serializable {
 	/**
 	 * This constructor creates a SystemDeviceBeanImpl Class which implements the SystemDeviceBean Interface, and encapsulates the CIM class
 	 * SystemDevice in a Java Bean. The CIM class SystemDevice is described as follows:
-	 *
+	 * 
 	 * LogicalDevices can be aggregated by a System. This relationship is made explicit by the SystemDevice association.
 	 */
 	public SystemDevice() {

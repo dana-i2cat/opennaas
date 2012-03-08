@@ -1,21 +1,27 @@
 package luminis;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import javax.inject.Inject;
 
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,58 +42,70 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
-public class MonitoringCapabilityTest extends AbstractIntegrationTest implements EventHandler {
-
-	static Log				log				= LogFactory.getLog(MonitoringCapabilityTest.class);
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class MonitoringCapabilityTest implements EventHandler
+{
+	private final static Log		log				= LogFactory.getLog(MonitoringCapabilityTest.class);
 
 	@Inject
-	BundleContext			bundleContext	= null;
+	private BundleContext			bundleContext;
 
-	IEventManager			eventManager;
-	IResourceManager		resourceManager;
-	IProtocolManager		protocolManager;
-	IProtocolSessionManager	sessionManager;
+	@Inject
+	private IEventManager			eventManager;
 
-	boolean					alarmReceived;
-	final Object			lock			= new Object();
+	@Inject
+	private IResourceManager		resourceManager;
+
+	@Inject
+	private IProtocolManager		protocolManager;
+
+	@Inject
+	@Filter("(capability=monitoring)")
+	private ICapabilityFactory		monitoringFactory;
+
+	@Inject
+	@Filter("(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))")
+	private IActionSet				actionSet;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+    private BlueprintContainer		roadmRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer      wonesysProtocolService;
+
+	private IProtocolSessionManager	sessionManager;
+
+	private boolean					alarmReceived;
+	private final Object			lock			= new Object();
 
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("org.opennaas").artifactId(
-						"opennaas-core-events"),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-
-	private void initBundles() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		eventManager = getOsgiService(IEventManager.class, 5000);
-		resourceManager = getOsgiService(IResourceManager.class, 5000);
-		protocolManager = getOsgiService(IProtocolManager.class, 5000);
-
-		ICapabilityFactory monitoringFactory = getOsgiService(ICapabilityFactory.class, "capability=monitoring", 10000);
-		Assert.assertNotNull(monitoringFactory);
-
-		String filter = "(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))";
-		IActionSet actionSet = getOsgiService(IActionSet.class, filter, 5000);
-		Assert.assertNotNull(actionSet);
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	private IResource initResource() throws ResourceException, ProtocolException {
@@ -122,48 +140,29 @@ public class MonitoringCapabilityTest extends AbstractIntegrationTest implements
 	}
 
 	@Test
-	public void test() {
+	public void test() throws Exception {
 
-		initBundles();
+		IResource mockResource = initResource();
 
-		try {
+		int registrationNum = registerAsResourceAlarmListener(this);
 
-			IResource mockResource = initResource();
+		alarmReceived = false;
 
-			int registrationNum = registerAsResourceAlarmListener(this);
+		// generate WonesysAlarm
+		generateWonesysAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
 
-			alarmReceived = false;
-
-			// generate WonesysAlarm
-			generateWonesysAlarm(sessionManager.obtainSessionByProtocol("wonesys", false));
-
-			// check ResourceAlarm is generated (monitoringCapability generates it)
-			synchronized (lock) {
-				log.debug("Waiting for alarm");
-				lock.wait(10000);
-				log.debug("Finished waiting");
-				Assert.assertTrue(alarmReceived);
-			}
-
-			unregisterAsListener(registrationNum);
-
-			resourceManager.stopResource(mockResource.getResourceIdentifier());
-			resourceManager.removeResource(mockResource.getResourceIdentifier());
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
+		// check ResourceAlarm is generated (monitoringCapability generates it)
+		synchronized (lock) {
+			log.debug("Waiting for alarm");
+			lock.wait(10000);
+			log.debug("Finished waiting");
+			Assert.assertTrue(alarmReceived);
 		}
 
+		unregisterAsListener(registrationNum);
+
+		resourceManager.stopResource(mockResource.getResourceIdentifier());
+		resourceManager.removeResource(mockResource.getResourceIdentifier());
 	}
 
 	/**

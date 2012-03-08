@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ContainedDomain as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ContainedDomainBean Interface. The CIM class ContainedDomain is described
- * as follows:
- *
- * A relationship that aggregates one or more lower-level AdminDomain
- * instances into a higher-level AdminDomain.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ContainedDomain as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ContainedDomainBean Interface. The CIM class ContainedDomain is described as
+ * follows:
+ * 
+ * A relationship that aggregates one or more lower-level AdminDomain instances into a higher-level AdminDomain.
  */
 public class ContainedDomain extends SystemComponent implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ContainedDomainBeanImpl Class which
-     * implements the ContainedDomainBean Interface, and encapsulates the CIM
-     * class ContainedDomain in a Java Bean. The CIM class ContainedDomain is
-     * described as follows:
-     *
-     * A relationship that aggregates one or more lower-level AdminDomain
-     * instances into a higher-level AdminDomain.
-     */
-    public ContainedDomain(){};
-    /**
-     * This method create an Association of the type ContainedDomain between
-     * one AdminDomain object and AdminDomain object
-     */
-    public static ContainedDomain link(AdminDomain groupComponent,AdminDomain
-	partComponent){
+	/**
+	 * This constructor creates a ContainedDomainBeanImpl Class which implements the ContainedDomainBean Interface, and encapsulates the CIM class
+	 * ContainedDomain in a Java Bean. The CIM class ContainedDomain is described as follows:
+	 * 
+	 * A relationship that aggregates one or more lower-level AdminDomain instances into a higher-level AdminDomain.
+	 */
+	public ContainedDomain() {
+	};
 
-    return (ContainedDomain)
-	Association.link(ContainedDomain.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type ContainedDomain between one AdminDomain object and AdminDomain object
+	 */
+	public static ContainedDomain link(AdminDomain groupComponent, AdminDomain
+			partComponent) {
+
+		return (ContainedDomain) Association.link(ContainedDomain.class, groupComponent, partComponent);
+	}// link
 
 } // Class ContainedDomain

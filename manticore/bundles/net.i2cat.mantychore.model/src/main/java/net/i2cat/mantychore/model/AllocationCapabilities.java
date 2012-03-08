@@ -9,391 +9,350 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class AllocationCapabilities as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * AllocationCapabilitiesBean Interface. The CIM class AllocationCapabilities
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class AllocationCapabilities as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the AllocationCapabilitiesBean Interface. The CIM class AllocationCapabilities
  * is described as follows:
- *
- * CIM_AllocationCapabilities extends the CIM_Capabilities class for the
- * purposes of expressing the resource allocation capabilities of the
- * associated managed element for the allocation of a specific Resource Type.
- * This class describes the supported types of allocations allowed, specific
- * or general, the sharing modes supported for the device, dedicated and or
- * shared and the system states where the addition or removal of the Resource
+ * 
+ * CIM_AllocationCapabilities extends the CIM_Capabilities class for the purposes of expressing the resource allocation capabilities of the associated
+ * managed element for the allocation of a specific Resource Type. This class describes the supported types of allocations allowed, specific or
+ * general, the sharing modes supported for the device, dedicated and or shared and the system states where the addition or removal of the Resource
  * Type is allowed.
  */
 public class AllocationCapabilities extends Capabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a AllocationCapabilitiesBeanImpl Class which
-     * implements the AllocationCapabilitiesBean Interface, and encapsulates
-     * the CIM class AllocationCapabilities in a Java Bean. The CIM class
-     * AllocationCapabilities is described as follows:
-     *
-     * CIM_AllocationCapabilities extends the CIM_Capabilities class for the
-     * purposes of expressing the resource allocation capabilities of the
-     * associated managed element for the allocation of a specific Resource
-     * Type. This class describes the supported types of allocations allowed,
-     * specific or general, the sharing modes supported for the device,
-     * dedicated and or shared and the system states where the addition or
-     * removal of the Resource Type is allowed.
-     */
-    public AllocationCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ResourceType.
-     */
+	/**
+	 * This constructor creates a AllocationCapabilitiesBeanImpl Class which implements the AllocationCapabilitiesBean Interface, and encapsulates the
+	 * CIM class AllocationCapabilities in a Java Bean. The CIM class AllocationCapabilities is described as follows:
+	 * 
+	 * CIM_AllocationCapabilities extends the CIM_Capabilities class for the purposes of expressing the resource allocation capabilities of the
+	 * associated managed element for the allocation of a specific Resource Type. This class describes the supported types of allocations allowed,
+	 * specific or general, the sharing modes supported for the device, dedicated and or shared and the system states where the addition or removal of
+	 * the Resource Type is allowed.
+	 */
+	public AllocationCapabilities() {
+	};
 
-    public enum ResourceType{
-    OTHER,
-    COMPUTER_SYSTEM,
-    PROCESSOR,
-    MEMORY,
-    IDE_CONTROLLER,
-    PARALLEL_SCSI_HBA,
-    FC_HBA,
-    ISCSI_HBA,
-    IB_HCA,
-    ETHERNET_ADAPTER,
-    OTHER_NETWORK_ADAPTER,
-    I_O_SLOT,
-    I_O_DEVICE,
-    FLOPPY_DRIVE,
-    CD_DRIVE,
-    DVD_DRIVE,
-    DISK_DRIVE,
-    TAPE_DRIVE,
-    STORAGE_EXTENT,
-    OTHER_STORAGE_DEVICE,
-    SERIAL_PORT,
-    PARALLEL_PORT,
-    USB_CONTROLLER,
-    GRAPHICS_CONTROLLER,
-    IEEE_1394_CONTROLLER,
-    PARTITIONABLE_UNIT,
-    BASE_PARTITIONABLE_UNIT,
-    POWER,
-    COOLING_CAPACITY,
-    ETHERNET_SWITCH_PORT,
-    LOGICAL_DISK,
-    STORAGE_VOLUME,
-    ETHERNET_CONNECTION,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private ResourceType resourceType;
-    /**
-     * This method returns the AllocationCapabilities.resourceType property
-     * value. This property is described as follows:
-     *
-     * The type of resource this allocation setting represents.
-     *
-     * @return	int	current resourceType property value
-     * @exception	Exception
-     */
-    public ResourceType getResourceType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ResourceType.
+	 */
 
-    return this.resourceType;
-    } // getResourceType
+	public enum ResourceType {
+		OTHER,
+		COMPUTER_SYSTEM,
+		PROCESSOR,
+		MEMORY,
+		IDE_CONTROLLER,
+		PARALLEL_SCSI_HBA,
+		FC_HBA,
+		ISCSI_HBA,
+		IB_HCA,
+		ETHERNET_ADAPTER,
+		OTHER_NETWORK_ADAPTER,
+		I_O_SLOT,
+		I_O_DEVICE,
+		FLOPPY_DRIVE,
+		CD_DRIVE,
+		DVD_DRIVE,
+		DISK_DRIVE,
+		TAPE_DRIVE,
+		STORAGE_EXTENT,
+		OTHER_STORAGE_DEVICE,
+		SERIAL_PORT,
+		PARALLEL_PORT,
+		USB_CONTROLLER,
+		GRAPHICS_CONTROLLER,
+		IEEE_1394_CONTROLLER,
+		PARTITIONABLE_UNIT,
+		BASE_PARTITIONABLE_UNIT,
+		POWER,
+		COOLING_CAPACITY,
+		ETHERNET_SWITCH_PORT,
+		LOGICAL_DISK,
+		STORAGE_VOLUME,
+		ETHERNET_CONNECTION,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the AllocationCapabilities.resourceType property
-     * value. This property is described as follows:
-     *
-     * The type of resource this allocation setting represents.
-     *
-     * @param	int	new resourceType property value
-     * @exception	Exception
-     */
-    public void setResourceType(ResourceType resourceType){
+	private ResourceType	resourceType;
 
-    this.resourceType = resourceType;
-    } // setResourceType
+	/**
+	 * This method returns the AllocationCapabilities.resourceType property value. This property is described as follows:
+	 * 
+	 * The type of resource this allocation setting represents.
+	 * 
+	 * @return int current resourceType property value
+	 * @exception Exception
+	 */
+	public ResourceType getResourceType() {
 
+		return this.resourceType;
+	} // getResourceType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherResourceType.
-     */
-    private String otherResourceType;
-    /**
-     * This method returns the AllocationCapabilities.otherResourceType
-     * property value. This property is described as follows:
-     *
-     * A string that describes the resource type when a well defined value is
-     * not available and ResourceType has the value "Other".
-     *
-     * @return	String	current otherResourceType property value
-     * @exception	Exception
-     */
-    public String getOtherResourceType(){
+	/**
+	 * This method sets the AllocationCapabilities.resourceType property value. This property is described as follows:
+	 * 
+	 * The type of resource this allocation setting represents.
+	 * 
+	 * @param int new resourceType property value
+	 * @exception Exception
+	 */
+	public void setResourceType(ResourceType resourceType) {
 
-    return this.otherResourceType;
-    } // getOtherResourceType
+		this.resourceType = resourceType;
+	} // setResourceType
 
-    /**
-     * This method sets the AllocationCapabilities.otherResourceType property
-     * value. This property is described as follows:
-     *
-     * A string that describes the resource type when a well defined value is
-     * not available and ResourceType has the value "Other".
-     *
-     * @param	String	new otherResourceType property value
-     * @exception	Exception
-     */
-    public void setOtherResourceType(String otherResourceType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherResourceType.
+	 */
+	private String	otherResourceType;
 
-    this.otherResourceType = otherResourceType;
-    } // setOtherResourceType
+	/**
+	 * This method returns the AllocationCapabilities.otherResourceType property value. This property is described as follows:
+	 * 
+	 * A string that describes the resource type when a well defined value is not available and ResourceType has the value "Other".
+	 * 
+	 * @return String current otherResourceType property value
+	 * @exception Exception
+	 */
+	public String getOtherResourceType() {
 
+		return this.otherResourceType;
+	} // getOtherResourceType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property resourceSubType.
-     */
-    private String resourceSubType;
-    /**
-     * This method returns the AllocationCapabilities.resourceSubType property
-     * value. This property is described as follows:
-     *
-     * A string describing an implementation specific sub-type for this
-     * resource. For example, this may be used to distinguish different
-     * models of the same resource type.
-     *
-     * @return	String	current resourceSubType property value
-     * @exception	Exception
-     */
-    public String getResourceSubType(){
+	/**
+	 * This method sets the AllocationCapabilities.otherResourceType property value. This property is described as follows:
+	 * 
+	 * A string that describes the resource type when a well defined value is not available and ResourceType has the value "Other".
+	 * 
+	 * @param String
+	 *            new otherResourceType property value
+	 * @exception Exception
+	 */
+	public void setOtherResourceType(String otherResourceType) {
 
-    return this.resourceSubType;
-    } // getResourceSubType
+		this.otherResourceType = otherResourceType;
+	} // setOtherResourceType
 
-    /**
-     * This method sets the AllocationCapabilities.resourceSubType property
-     * value. This property is described as follows:
-     *
-     * A string describing an implementation specific sub-type for this
-     * resource. For example, this may be used to distinguish different
-     * models of the same resource type.
-     *
-     * @param	String	new resourceSubType property value
-     * @exception	Exception
-     */
-    public void setResourceSubType(String resourceSubType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property resourceSubType.
+	 */
+	private String	resourceSubType;
 
-    this.resourceSubType = resourceSubType;
-    } // setResourceSubType
+	/**
+	 * This method returns the AllocationCapabilities.resourceSubType property value. This property is described as follows:
+	 * 
+	 * A string describing an implementation specific sub-type for this resource. For example, this may be used to distinguish different models of the
+	 * same resource type.
+	 * 
+	 * @return String current resourceSubType property value
+	 * @exception Exception
+	 */
+	public String getResourceSubType() {
 
+		return this.resourceSubType;
+	} // getResourceSubType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property RequestTypesSupported.
-     */
+	/**
+	 * This method sets the AllocationCapabilities.resourceSubType property value. This property is described as follows:
+	 * 
+	 * A string describing an implementation specific sub-type for this resource. For example, this may be used to distinguish different models of the
+	 * same resource type.
+	 * 
+	 * @param String
+	 *            new resourceSubType property value
+	 * @exception Exception
+	 */
+	public void setResourceSubType(String resourceSubType) {
 
-    public enum RequestTypesSupported{
-    UNKNOWN,
-    SPECIFIC,
-    GENERAL,
-    BOTH,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private RequestTypesSupported requestTypesSupported;
-    /**
-     * This method returns the AllocationCapabilities.requestTypesSupported
-     * property value. This property is described as follows:
-     *
-     * Indicates whether requesting a specific resource is supported
-     * "Specific" -- request can include a request for specific resource
-     * "General" -- request does not include specific resource "Both" -- both
-     * specific and general requests are supported.
-     *
-     * @return	int	current requestTypesSupported property value
-     * @exception	Exception
-     */
-    public RequestTypesSupported getRequestTypesSupported(){
+		this.resourceSubType = resourceSubType;
+	} // setResourceSubType
 
-    return this.requestTypesSupported;
-    } // getRequestTypesSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RequestTypesSupported.
+	 */
 
-    /**
-     * This method sets the AllocationCapabilities.requestTypesSupported
-     * property value. This property is described as follows:
-     *
-     * Indicates whether requesting a specific resource is supported
-     * "Specific" -- request can include a request for specific resource
-     * "General" -- request does not include specific resource "Both" -- both
-     * specific and general requests are supported.
-     *
-     * @param	int	new requestTypesSupported property value
-     * @exception	Exception
-     */
-    public void setRequestTypesSupported(RequestTypesSupported
-	requestTypesSupported){
+	public enum RequestTypesSupported {
+		UNKNOWN,
+		SPECIFIC,
+		GENERAL,
+		BOTH,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.requestTypesSupported = requestTypesSupported;
-    } // setRequestTypesSupported
+	private RequestTypesSupported	requestTypesSupported;
 
+	/**
+	 * This method returns the AllocationCapabilities.requestTypesSupported property value. This property is described as follows:
+	 * 
+	 * Indicates whether requesting a specific resource is supported "Specific" -- request can include a request for specific resource "General" --
+	 * request does not include specific resource "Both" -- both specific and general requests are supported.
+	 * 
+	 * @return int current requestTypesSupported property value
+	 * @exception Exception
+	 */
+	public RequestTypesSupported getRequestTypesSupported() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SharingMode.
-     */
+		return this.requestTypesSupported;
+	} // getRequestTypesSupported
 
-    public enum SharingMode{
-    UNKNOWN,
-    DEDICATED,
-    SHARED,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SharingMode sharingMode;
-    /**
-     * This method returns the AllocationCapabilities.sharingMode property
-     * value. This property is described as follows:
-     *
-     * Indicates how access to underlying resource is granted: "Dedicated" --
-     * exclusive access to underlying resource "Shared" -- shared use of
-     * underlying resource. Actual quantity is controlled by min, max size,
-     * weights, etc.
-     *
-     * @return	int	current sharingMode property value
-     * @exception	Exception
-     */
-    public SharingMode getSharingMode(){
+	/**
+	 * This method sets the AllocationCapabilities.requestTypesSupported property value. This property is described as follows:
+	 * 
+	 * Indicates whether requesting a specific resource is supported "Specific" -- request can include a request for specific resource "General" --
+	 * request does not include specific resource "Both" -- both specific and general requests are supported.
+	 * 
+	 * @param int new requestTypesSupported property value
+	 * @exception Exception
+	 */
+	public void setRequestTypesSupported(RequestTypesSupported
+			requestTypesSupported) {
 
-    return this.sharingMode;
-    } // getSharingMode
+		this.requestTypesSupported = requestTypesSupported;
+	} // setRequestTypesSupported
 
-    /**
-     * This method sets the AllocationCapabilities.sharingMode property value.
-     * This property is described as follows:
-     *
-     * Indicates how access to underlying resource is granted: "Dedicated" --
-     * exclusive access to underlying resource "Shared" -- shared use of
-     * underlying resource. Actual quantity is controlled by min, max size,
-     * weights, etc.
-     *
-     * @param	int	new sharingMode property value
-     * @exception	Exception
-     */
-    public void setSharingMode(SharingMode sharingMode){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SharingMode.
+	 */
 
-    this.sharingMode = sharingMode;
-    } // setSharingMode
+	public enum SharingMode {
+		UNKNOWN,
+		DEDICATED,
+		SHARED,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
+	private SharingMode	sharingMode;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedAddStates.
-     */
+	/**
+	 * This method returns the AllocationCapabilities.sharingMode property value. This property is described as follows:
+	 * 
+	 * Indicates how access to underlying resource is granted: "Dedicated" -- exclusive access to underlying resource "Shared" -- shared use of
+	 * underlying resource. Actual quantity is controlled by min, max size, weights, etc.
+	 * 
+	 * @return int current sharingMode property value
+	 * @exception Exception
+	 */
+	public SharingMode getSharingMode() {
 
-    public enum SupportedAddStates{
-    UNKNOWN,
-    ENABLED,
-    DISABLED,
-    SHUTTING_DOWN,
-    NOT_APPLICABLE,
-    ENABLED_BUT_OFFLINE,
-    IN_TEST,
-    DEFERRED,
-    QUIESCE,
-    STARTING,
-    PAUSED,
-    SUSPENDED,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SupportedAddStates supportedAddStates;
-    /**
-     * This method returns the AllocationCapabilities.supportedAddStates
-     * property value. This property is described as follows:
-     *
-     * Indicates the states that the System, to which the resource will be
-     * associated via SystemDevice, may be in when a new resource is created.
-     *
-     * @return	int	current supportedAddStates property value
-     * @exception	Exception
-     */
-    public SupportedAddStates getSupportedAddStates(){
+		return this.sharingMode;
+	} // getSharingMode
 
-    return this.supportedAddStates;
-    } // getSupportedAddStates
+	/**
+	 * This method sets the AllocationCapabilities.sharingMode property value. This property is described as follows:
+	 * 
+	 * Indicates how access to underlying resource is granted: "Dedicated" -- exclusive access to underlying resource "Shared" -- shared use of
+	 * underlying resource. Actual quantity is controlled by min, max size, weights, etc.
+	 * 
+	 * @param int new sharingMode property value
+	 * @exception Exception
+	 */
+	public void setSharingMode(SharingMode sharingMode) {
 
-    /**
-     * This method sets the AllocationCapabilities.supportedAddStates property
-     * value. This property is described as follows:
-     *
-     * Indicates the states that the System, to which the resource will be
-     * associated via SystemDevice, may be in when a new resource is created.
-     *
-     * @param	int	new supportedAddStates property value
-     * @exception	Exception
-     */
-    public void setSupportedAddStates(SupportedAddStates
-	supportedAddStates){
+		this.sharingMode = sharingMode;
+	} // setSharingMode
 
-    this.supportedAddStates = supportedAddStates;
-    } // setSupportedAddStates
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedAddStates.
+	 */
 
+	public enum SupportedAddStates {
+		UNKNOWN,
+		ENABLED,
+		DISABLED,
+		SHUTTING_DOWN,
+		NOT_APPLICABLE,
+		ENABLED_BUT_OFFLINE,
+		IN_TEST,
+		DEFERRED,
+		QUIESCE,
+		STARTING,
+		PAUSED,
+		SUSPENDED,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SupportedRemoveStates.
-     */
+	private SupportedAddStates	supportedAddStates;
 
-    public enum SupportedRemoveStates{
-    UNKNOWN,
-    ENABLED,
-    DISABLED,
-    SHUTTING_DOWN,
-    NOT_APPLICABLE,
-    ENABLED_BUT_OFFLINE,
-    IN_TEST,
-    DEFERRED,
-    QUIESCE,
-    STARTING,
-    PAUSED,
-    SUSPENDED,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private SupportedRemoveStates supportedRemoveStates;
-    /**
-     * This method returns the AllocationCapabilities.supportedRemoveStates
-     * property value. This property is described as follows:
-     *
-     * Indicates the states that the System, to which the resource is
-     * associated via SystemDevice, may be in when a the resource is removed
-     * .
-     *
-     * @return	int	current supportedRemoveStates property value
-     * @exception	Exception
-     */
-    public SupportedRemoveStates getSupportedRemoveStates(){
+	/**
+	 * This method returns the AllocationCapabilities.supportedAddStates property value. This property is described as follows:
+	 * 
+	 * Indicates the states that the System, to which the resource will be associated via SystemDevice, may be in when a new resource is created.
+	 * 
+	 * @return int current supportedAddStates property value
+	 * @exception Exception
+	 */
+	public SupportedAddStates getSupportedAddStates() {
 
-    return this.supportedRemoveStates;
-    } // getSupportedRemoveStates
+		return this.supportedAddStates;
+	} // getSupportedAddStates
 
-    /**
-     * This method sets the AllocationCapabilities.supportedRemoveStates
-     * property value. This property is described as follows:
-     *
-     * Indicates the states that the System, to which the resource is
-     * associated via SystemDevice, may be in when a the resource is removed
-     * .
-     *
-     * @param	int	new supportedRemoveStates property value
-     * @exception	Exception
-     */
-    public void setSupportedRemoveStates(SupportedRemoveStates
-	supportedRemoveStates){
+	/**
+	 * This method sets the AllocationCapabilities.supportedAddStates property value. This property is described as follows:
+	 * 
+	 * Indicates the states that the System, to which the resource will be associated via SystemDevice, may be in when a new resource is created.
+	 * 
+	 * @param int new supportedAddStates property value
+	 * @exception Exception
+	 */
+	public void setSupportedAddStates(SupportedAddStates
+			supportedAddStates) {
 
-    this.supportedRemoveStates = supportedRemoveStates;
-    } // setSupportedRemoveStates
+		this.supportedAddStates = supportedAddStates;
+	} // setSupportedAddStates
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SupportedRemoveStates.
+	 */
 
+	public enum SupportedRemoveStates {
+		UNKNOWN,
+		ENABLED,
+		DISABLED,
+		SHUTTING_DOWN,
+		NOT_APPLICABLE,
+		ENABLED_BUT_OFFLINE,
+		IN_TEST,
+		DEFERRED,
+		QUIESCE,
+		STARTING,
+		PAUSED,
+		SUSPENDED,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
+
+	private SupportedRemoveStates	supportedRemoveStates;
+
+	/**
+	 * This method returns the AllocationCapabilities.supportedRemoveStates property value. This property is described as follows:
+	 * 
+	 * Indicates the states that the System, to which the resource is associated via SystemDevice, may be in when a the resource is removed .
+	 * 
+	 * @return int current supportedRemoveStates property value
+	 * @exception Exception
+	 */
+	public SupportedRemoveStates getSupportedRemoveStates() {
+
+		return this.supportedRemoveStates;
+	} // getSupportedRemoveStates
+
+	/**
+	 * This method sets the AllocationCapabilities.supportedRemoveStates property value. This property is described as follows:
+	 * 
+	 * Indicates the states that the System, to which the resource is associated via SystemDevice, may be in when a the resource is removed .
+	 * 
+	 * @param int new supportedRemoveStates property value
+	 * @exception Exception
+	 */
+	public void setSupportedRemoveStates(SupportedRemoveStates
+			supportedRemoveStates) {
+
+		this.supportedRemoveStates = supportedRemoveStates;
+	} // setSupportedRemoveStates
 
 } // Class AllocationCapabilities
