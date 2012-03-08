@@ -9,155 +9,125 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPAssignmentSettingData as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * IPAssignmentSettingDataBean Interface. The CIM class
- * IPAssignmentSettingData is described as follows:
- *
- * This SettingData instance is the aggregation point identifying an IP
- * configuration. Multiple IP configurations could exist for a target. Each
- * configuration is represented with an instance of IPAssignmentSettingData.
- * The details of the IP configuration are defined by instances of
- * sub-classes of this class (i.e. StaticIPAssignmentSettingData,
- * DHCPSettingData, DNSSettingData). These instances are associated with the
- * IPAssignmentSettingData instance using the OrderedComponent or
- * ConcreteComponent associations. For example, a static IP configuration
- * would be represented by an instance of IPAssignmentSettingData and an
- * instance of StaticIPAssignmentSettingData associated via an instance of
- * ConcreteComponent. A static IP configuration including DNS would be
- * modeled using an instance of IPAssignmentSettingData, DNSSettingData, and
- * StaticIPAssignmentSettingData. The DNSSettingData and
- * StaticIPAssignmentSettingData instance would be associated with the
- * IPAssignmentSettingData using instances of ConcreteComponent.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPAssignmentSettingData as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the IPAssignmentSettingDataBean Interface. The CIM class IPAssignmentSettingData
+ * is described as follows:
+ * 
+ * This SettingData instance is the aggregation point identifying an IP configuration. Multiple IP configurations could exist for a target. Each
+ * configuration is represented with an instance of IPAssignmentSettingData. The details of the IP configuration are defined by instances of
+ * sub-classes of this class (i.e. StaticIPAssignmentSettingData, DHCPSettingData, DNSSettingData). These instances are associated with the
+ * IPAssignmentSettingData instance using the OrderedComponent or ConcreteComponent associations. For example, a static IP configuration would be
+ * represented by an instance of IPAssignmentSettingData and an instance of StaticIPAssignmentSettingData associated via an instance of
+ * ConcreteComponent. A static IP configuration including DNS would be modeled using an instance of IPAssignmentSettingData, DNSSettingData, and
+ * StaticIPAssignmentSettingData. The DNSSettingData and StaticIPAssignmentSettingData instance would be associated with the IPAssignmentSettingData
+ * using instances of ConcreteComponent.
  */
 public class IPAssignmentSettingData extends SettingData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a IPAssignmentSettingDataBeanImpl Class which
-     * implements the IPAssignmentSettingDataBean Interface, and encapsulates
-     * the CIM class IPAssignmentSettingData in a Java Bean. The CIM class
-     * IPAssignmentSettingData is described as follows:
-     *
-     * This SettingData instance is the aggregation point identifying an IP
-     * configuration. Multiple IP configurations could exist for a target.
-     * Each configuration is represented with an instance of
-     * IPAssignmentSettingData. The details of the IP configuration are
-     * defined by instances of sub-classes of this class (i.e.
-     * StaticIPAssignmentSettingData, DHCPSettingData, DNSSettingData). These
-     * instances are associated with the IPAssignmentSettingData instance
-     * using the OrderedComponent or ConcreteComponent associations. For
-     * example, a static IP configuration would be represented by an instance
-     * of IPAssignmentSettingData and an instance of
-     * StaticIPAssignmentSettingData associated via an instance of
-     * ConcreteComponent. A static IP configuration including DNS would be
-     * modeled using an instance of IPAssignmentSettingData, DNSSettingData,
-     * and StaticIPAssignmentSettingData. The DNSSettingData and
-     * StaticIPAssignmentSettingData instance would be associated with the
-     * IPAssignmentSettingData using instances of ConcreteComponent.
-     */
-    public IPAssignmentSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AddressOrigin.
-     */
+	/**
+	 * This constructor creates a IPAssignmentSettingDataBeanImpl Class which implements the IPAssignmentSettingDataBean Interface, and encapsulates
+	 * the CIM class IPAssignmentSettingData in a Java Bean. The CIM class IPAssignmentSettingData is described as follows:
+	 * 
+	 * This SettingData instance is the aggregation point identifying an IP configuration. Multiple IP configurations could exist for a target. Each
+	 * configuration is represented with an instance of IPAssignmentSettingData. The details of the IP configuration are defined by instances of
+	 * sub-classes of this class (i.e. StaticIPAssignmentSettingData, DHCPSettingData, DNSSettingData). These instances are associated with the
+	 * IPAssignmentSettingData instance using the OrderedComponent or ConcreteComponent associations. For example, a static IP configuration would be
+	 * represented by an instance of IPAssignmentSettingData and an instance of StaticIPAssignmentSettingData associated via an instance of
+	 * ConcreteComponent. A static IP configuration including DNS would be modeled using an instance of IPAssignmentSettingData, DNSSettingData, and
+	 * StaticIPAssignmentSettingData. The DNSSettingData and StaticIPAssignmentSettingData instance would be associated with the
+	 * IPAssignmentSettingData using instances of ConcreteComponent.
+	 */
+	public IPAssignmentSettingData() {
+	};
 
-    public enum AddressOrigin{
-    UNKNOWN,
-    OTHER,
-    NOT_APPLICABLE,
-    STATIC,
-    DHCP,
-    BOOTP,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private AddressOrigin addressOrigin;
-    /**
-     * This method returns the IPAssignmentSettingData.addressOrigin property
-     * value. This property is described as follows:
-     *
-     * AddressOrigin identifies the method by which the IP Address, Subnet
-     * Mask, and Gateway were assigned to the IPProtocolEndpoint. A value of
-     * 2 indicates that the application of the IPAssignmentSettingData
-     * instance does not affect these properties: A value of 3 indicates that
-     * values for the properties are contained in the IPAssignmentSettingData
-     * instance. A value of 4 indicates that the values will be assigned via
-     * DHCP. A value of 5 indicates that the values will be assigned via
-     * BOOTP.
-     *
-     * @return	int	current addressOrigin property value
-     * @exception	Exception
-     */
-    public AddressOrigin getAddressOrigin(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AddressOrigin.
+	 */
 
-    return this.addressOrigin;
-    } // getAddressOrigin
+	public enum AddressOrigin {
+		UNKNOWN,
+		OTHER,
+		NOT_APPLICABLE,
+		STATIC,
+		DHCP,
+		BOOTP,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the IPAssignmentSettingData.addressOrigin property
-     * value. This property is described as follows:
-     *
-     * AddressOrigin identifies the method by which the IP Address, Subnet
-     * Mask, and Gateway were assigned to the IPProtocolEndpoint. A value of
-     * 2 indicates that the application of the IPAssignmentSettingData
-     * instance does not affect these properties: A value of 3 indicates that
-     * values for the properties are contained in the IPAssignmentSettingData
-     * instance. A value of 4 indicates that the values will be assigned via
-     * DHCP. A value of 5 indicates that the values will be assigned via
-     * BOOTP.
-     *
-     * @param	int	new addressOrigin property value
-     * @exception	Exception
-     */
-    public void setAddressOrigin(AddressOrigin addressOrigin){
+	private AddressOrigin	addressOrigin;
 
-    this.addressOrigin = addressOrigin;
-    } // setAddressOrigin
+	/**
+	 * This method returns the IPAssignmentSettingData.addressOrigin property value. This property is described as follows:
+	 * 
+	 * AddressOrigin identifies the method by which the IP Address, Subnet Mask, and Gateway were assigned to the IPProtocolEndpoint. A value of 2
+	 * indicates that the application of the IPAssignmentSettingData instance does not affect these properties: A value of 3 indicates that values for
+	 * the properties are contained in the IPAssignmentSettingData instance. A value of 4 indicates that the values will be assigned via DHCP. A value
+	 * of 5 indicates that the values will be assigned via BOOTP.
+	 * 
+	 * @return int current addressOrigin property value
+	 * @exception Exception
+	 */
+	public AddressOrigin getAddressOrigin() {
 
+		return this.addressOrigin;
+	} // getAddressOrigin
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ProtocolIFType.
-     */
+	/**
+	 * This method sets the IPAssignmentSettingData.addressOrigin property value. This property is described as follows:
+	 * 
+	 * AddressOrigin identifies the method by which the IP Address, Subnet Mask, and Gateway were assigned to the IPProtocolEndpoint. A value of 2
+	 * indicates that the application of the IPAssignmentSettingData instance does not affect these properties: A value of 3 indicates that values for
+	 * the properties are contained in the IPAssignmentSettingData instance. A value of 4 indicates that the values will be assigned via DHCP. A value
+	 * of 5 indicates that the values will be assigned via BOOTP.
+	 * 
+	 * @param int new addressOrigin property value
+	 * @exception Exception
+	 */
+	public void setAddressOrigin(AddressOrigin addressOrigin) {
 
-    public enum ProtocolIFType{
-    UNKNOWN,
-    DMTF_RESERVED,
-    IPV4,
-    IPV6,
-    VENDOR_RESERVED
-    }
-    private ProtocolIFType protocolIFType;
-    /**
-     * This method returns the IPAssignmentSettingData.protocolIFType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that describes the IP version.
-     *
-     * @return	int	current protocolIFType property value
-     * @exception	Exception
-     */
-    public ProtocolIFType getProtocolIFType(){
+		this.addressOrigin = addressOrigin;
+	} // setAddressOrigin
 
-    return this.protocolIFType;
-    } // getProtocolIFType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ProtocolIFType.
+	 */
 
-    /**
-     * This method sets the IPAssignmentSettingData.protocolIFType property
-     * value. This property is described as follows:
-     *
-     * An enumeration that describes the IP version.
-     *
-     * @param	int	new protocolIFType property value
-     * @exception	Exception
-     */
-    public void setProtocolIFType(ProtocolIFType protocolIFType){
+	public enum ProtocolIFType {
+		UNKNOWN,
+		DMTF_RESERVED,
+		IPV4,
+		IPV6,
+		VENDOR_RESERVED
+	}
 
-    this.protocolIFType = protocolIFType;
-    } // setProtocolIFType
+	private ProtocolIFType	protocolIFType;
 
+	/**
+	 * This method returns the IPAssignmentSettingData.protocolIFType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the IP version.
+	 * 
+	 * @return int current protocolIFType property value
+	 * @exception Exception
+	 */
+	public ProtocolIFType getProtocolIFType() {
 
+		return this.protocolIFType;
+	} // getProtocolIFType
+
+	/**
+	 * This method sets the IPAssignmentSettingData.protocolIFType property value. This property is described as follows:
+	 * 
+	 * An enumeration that describes the IP version.
+	 * 
+	 * @param int new protocolIFType property value
+	 * @exception Exception
+	 */
+	public void setProtocolIFType(ProtocolIFType protocolIFType) {
+
+		this.protocolIFType = protocolIFType;
+	} // setProtocolIFType
 
 } // Class IPAssignmentSettingData

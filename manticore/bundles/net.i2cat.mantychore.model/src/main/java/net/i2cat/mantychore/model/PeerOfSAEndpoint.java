@@ -8,34 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class PeerOfSAEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * PeerOfSAEndpointBean Interface. The CIM class PeerOfSAEndpoint is
- * described as follows:
- *
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class PeerOfSAEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the PeerOfSAEndpointBean Interface. The CIM class PeerOfSAEndpoint is described as
+ * follows:
+ * 
  * PeerOfIPsecSAEndpoint identifies the peer of the IPsecSAEndpoint.
  */
 public class PeerOfSAEndpoint extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a PeerOfSAEndpointBeanImpl Class which
-     * implements the PeerOfSAEndpointBean Interface, and encapsulates the
-     * CIM class PeerOfSAEndpoint in a Java Bean. The CIM class
-     * PeerOfSAEndpoint is described as follows:
-     *
-     * PeerOfIPsecSAEndpoint identifies the peer of the IPsecSAEndpoint.
-     */
-    public PeerOfSAEndpoint(){};
-    /**
-     * This method create an Association of the type PeerOfSAEndpoint between
-     * one RemoteServiceAccessPoint object and IPsecSAEndpoint object
-     */
-    public static PeerOfSAEndpoint link(RemoteServiceAccessPoint
-	antecedent,IPsecSAEndpoint dependent){
+	/**
+	 * This constructor creates a PeerOfSAEndpointBeanImpl Class which implements the PeerOfSAEndpointBean Interface, and encapsulates the CIM class
+	 * PeerOfSAEndpoint in a Java Bean. The CIM class PeerOfSAEndpoint is described as follows:
+	 * 
+	 * PeerOfIPsecSAEndpoint identifies the peer of the IPsecSAEndpoint.
+	 */
+	public PeerOfSAEndpoint() {
+	};
 
-    return (PeerOfSAEndpoint)
-	Association.link(PeerOfSAEndpoint.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type PeerOfSAEndpoint between one RemoteServiceAccessPoint object and IPsecSAEndpoint object
+	 */
+	public static PeerOfSAEndpoint link(RemoteServiceAccessPoint
+			antecedent, IPsecSAEndpoint dependent) {
+
+		return (PeerOfSAEndpoint) Association.link(PeerOfSAEndpoint.class, antecedent, dependent);
+	}// link
 
 } // Class PeerOfSAEndpoint

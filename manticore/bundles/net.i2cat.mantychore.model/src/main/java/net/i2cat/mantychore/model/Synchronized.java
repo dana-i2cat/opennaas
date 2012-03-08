@@ -10,112 +10,96 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class Synchronized as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SynchronizedBean Interface. The CIM class Synchronized is described as
- * follows:
- *
- * Indicates that two ManagedElements were aligned or made to be equivalent at
- * the specified point in time. If the Boolean property SyncMaintained is
- * true, then synchronization of the Elements is preserved. Both like and
- * unlike objects can be synchronized. For example, two WatchDog timers can
- * be aligned, or the contents of a LogicalFile can be synchronized with the
- * contents of a StorageExtent.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class Synchronized as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SynchronizedBean Interface. The CIM class Synchronized is described as follows:
+ * 
+ * Indicates that two ManagedElements were aligned or made to be equivalent at the specified point in time. If the Boolean property SyncMaintained is
+ * true, then synchronization of the Elements is preserved. Both like and unlike objects can be synchronized. For example, two WatchDog timers can be
+ * aligned, or the contents of a LogicalFile can be synchronized with the contents of a StorageExtent.
  */
 public class Synchronized extends Association implements Serializable {
 
-    /**
-     * This constructor creates a SynchronizedBeanImpl Class which implements
-     * the SynchronizedBean Interface, and encapsulates the CIM class
-     * Synchronized in a Java Bean. The CIM class Synchronized is described
-     * as follows:
-     *
-     * Indicates that two ManagedElements were aligned or made to be
-     * equivalent at the specified point in time. If the Boolean property
-     * SyncMaintained is true, then synchronization of the Elements is
-     * preserved. Both like and unlike objects can be synchronized. For
-     * example, two WatchDog timers can be aligned, or the contents of a
-     * LogicalFile can be synchronized with the contents of a StorageExtent.
-     */
-    public Synchronized(){};
-    /**
-     * This method create an Association of the type Synchronized between one
-     * ManagedElement object and ManagedElement object
-     */
-    public static Synchronized link(ManagedElement
-	systemElement,ManagedElement syncedElement){
+	/**
+	 * This constructor creates a SynchronizedBeanImpl Class which implements the SynchronizedBean Interface, and encapsulates the CIM class
+	 * Synchronized in a Java Bean. The CIM class Synchronized is described as follows:
+	 * 
+	 * Indicates that two ManagedElements were aligned or made to be equivalent at the specified point in time. If the Boolean property SyncMaintained
+	 * is true, then synchronization of the Elements is preserved. Both like and unlike objects can be synchronized. For example, two WatchDog timers
+	 * can be aligned, or the contents of a LogicalFile can be synchronized with the contents of a StorageExtent.
+	 */
+	public Synchronized() {
+	};
 
-    return (Synchronized)
-	Association.link(Synchronized.class,systemElement,syncedElement);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property whenSynced.
-     */
-    private Date whenSynced;
-    /**
-     * This method returns the Synchronized.whenSynced property value. This
-     * property is described as follows:
-     *
-     * The point in time that the Elements were synchronized.
-     *
-     * @return	Date	current whenSynced property value
-     * @exception	Exception
-     */
-    public Date getWhenSynced(){
+	/**
+	 * This method create an Association of the type Synchronized between one ManagedElement object and ManagedElement object
+	 */
+	public static Synchronized link(ManagedElement
+			systemElement, ManagedElement syncedElement) {
 
-    return this.whenSynced;
-    } // getWhenSynced
+		return (Synchronized) Association.link(Synchronized.class, systemElement, syncedElement);
+	}// link
 
-    /**
-     * This method sets the Synchronized.whenSynced property value. This
-     * property is described as follows:
-     *
-     * The point in time that the Elements were synchronized.
-     *
-     * @param	Date	new whenSynced property value
-     * @exception	Exception
-     */
-    public void setWhenSynced(Date whenSynced) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property whenSynced.
+	 */
+	private Date	whenSynced;
 
-    this.whenSynced = whenSynced;
-    } // setWhenSynced
+	/**
+	 * This method returns the Synchronized.whenSynced property value. This property is described as follows:
+	 * 
+	 * The point in time that the Elements were synchronized.
+	 * 
+	 * @return Date current whenSynced property value
+	 * @exception Exception
+	 */
+	public Date getWhenSynced() {
 
+		return this.whenSynced;
+	} // getWhenSynced
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property syncMaintained.
-     */
-    private boolean syncMaintained;
-    /**
-     * This method returns the Synchronized.syncMaintained property value.
-     * This property is described as follows:
-     *
-     * Boolean indicating whether synchronization is maintained.
-     *
-     * @return	boolean	current syncMaintained property value
-     * @exception	Exception
-     */
-    public boolean isSyncMaintained(){
+	/**
+	 * This method sets the Synchronized.whenSynced property value. This property is described as follows:
+	 * 
+	 * The point in time that the Elements were synchronized.
+	 * 
+	 * @param Date
+	 *            new whenSynced property value
+	 * @exception Exception
+	 */
+	public void setWhenSynced(Date whenSynced) {
 
-    return this.syncMaintained;
-    } // getSyncMaintained
+		this.whenSynced = whenSynced;
+	} // setWhenSynced
 
-    /**
-     * This method sets the Synchronized.syncMaintained property value. This
-     * property is described as follows:
-     *
-     * Boolean indicating whether synchronization is maintained.
-     *
-     * @param	boolean	new syncMaintained property value
-     * @exception	Exception
-     */
-    public void setSyncMaintained(boolean syncMaintained) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property syncMaintained.
+	 */
+	private boolean	syncMaintained;
 
-    this.syncMaintained = syncMaintained;
-    } // setSyncMaintained
+	/**
+	 * This method returns the Synchronized.syncMaintained property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether synchronization is maintained.
+	 * 
+	 * @return boolean current syncMaintained property value
+	 * @exception Exception
+	 */
+	public boolean isSyncMaintained() {
 
+		return this.syncMaintained;
+	} // getSyncMaintained
 
+	/**
+	 * This method sets the Synchronized.syncMaintained property value. This property is described as follows:
+	 * 
+	 * Boolean indicating whether synchronization is maintained.
+	 * 
+	 * @param boolean new syncMaintained property value
+	 * @exception Exception
+	 */
+	public void setSyncMaintained(boolean syncMaintained) {
+
+		this.syncMaintained = syncMaintained;
+	} // setSyncMaintained
 
 } // Class Synchronized

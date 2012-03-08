@@ -9,150 +9,126 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VirtualEthernetSwitchSettingData as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the VirtualEthernetSwitchSettingDataBean Interface. The CIM
- * class VirtualEthernetSwitchSettingData is described as follows:
- *
- * CIM_VirtualEthernetSwitchSettingData specializes
- * CIM_VirtualSystemSettingDatato add the specific properties required to
- * define a virtual Ethernet switch.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VirtualEthernetSwitchSettingData as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the VirtualEthernetSwitchSettingDataBean Interface. The CIM class
+ * VirtualEthernetSwitchSettingData is described as follows:
+ * 
+ * CIM_VirtualEthernetSwitchSettingData specializes CIM_VirtualSystemSettingDatato add the specific properties required to define a virtual Ethernet
+ * switch.
  */
 public class VirtualEthernetSwitchSettingData extends VirtualSystemSettingData
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a VirtualEthernetSwitchSettingDataBeanImpl
-     * Class which implements the VirtualEthernetSwitchSettingDataBean
-     * Interface, and encapsulates the CIM class
-     * VirtualEthernetSwitchSettingData in a Java Bean. The CIM class
-     * VirtualEthernetSwitchSettingData is described as follows:
-     *
-     * CIM_VirtualEthernetSwitchSettingData specializes
-     * CIM_VirtualSystemSettingDatato add the specific properties required to
-     * define a virtual Ethernet switch.
-     */
-    public VirtualEthernetSwitchSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property vLANConnection.
-     */
-    private String[] vLANConnection;
-    /**
-     * This method returns the VirtualEthernetSwitchSettingData.vLANConnection
-     * property value. This property is described as follows:
-     *
-     * A list of VLANIds that this switch can access
-     *
-     * @return	String[]	current vLANConnection property value
-     * @exception	Exception
-     */
-    public String[] getVLANConnection(){
+	/**
+	 * This constructor creates a VirtualEthernetSwitchSettingDataBeanImpl Class which implements the VirtualEthernetSwitchSettingDataBean Interface,
+	 * and encapsulates the CIM class VirtualEthernetSwitchSettingData in a Java Bean. The CIM class VirtualEthernetSwitchSettingData is described as
+	 * follows:
+	 * 
+	 * CIM_VirtualEthernetSwitchSettingData specializes CIM_VirtualSystemSettingDatato add the specific properties required to define a virtual
+	 * Ethernet switch.
+	 */
+	public VirtualEthernetSwitchSettingData() {
+	};
 
-    return this.vLANConnection;
-    } // getVLANConnection
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property vLANConnection.
+	 */
+	private String[]	vLANConnection;
 
-    /**
-     * This method sets the VirtualEthernetSwitchSettingData.vLANConnection
-     * property value. This property is described as follows:
-     *
-     * A list of VLANIds that this switch can access
-     *
-     * @param	String[]	new vLANConnection property value
-     * @exception	Exception
-     */
-    public void setVLANConnection(String[] vLANConnection) {
+	/**
+	 * This method returns the VirtualEthernetSwitchSettingData.vLANConnection property value. This property is described as follows:
+	 * 
+	 * A list of VLANIds that this switch can access
+	 * 
+	 * @return String[] current vLANConnection property value
+	 * @exception Exception
+	 */
+	public String[] getVLANConnection() {
 
-    this.vLANConnection = vLANConnection;
-    } // setVLANConnection
+		return this.vLANConnection;
+	} // getVLANConnection
 
+	/**
+	 * This method sets the VirtualEthernetSwitchSettingData.vLANConnection property value. This property is described as follows:
+	 * 
+	 * A list of VLANIds that this switch can access
+	 * 
+	 * @param String
+	 *            [] new vLANConnection property value
+	 * @exception Exception
+	 */
+	public void setVLANConnection(String[] vLANConnection) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property associatedResourcePool.
-     */
-    private String[] associatedResourcePool;
-    /**
-     * This method returns the
-     * VirtualEthernetSwitchSettingData.associatedResourcePool property
-     * value. This property is described as follows:
-     *
-     * A list of host resource pools to be associated or that are
-     * currentlyassociated with the Ethernet Switch for the purpose of the
-     * allocation of Ethernet connections between a virtual machine and an
-     * Ethernet switch Each non-Null value of the AssoicatedResourcePool
-     * property shall conformto the production WBEM_URI_UntypedInstancePath
-     * as defined in DSP0207
-     *
-     * @return	String[]	current associatedResourcePool property
-     * value
-     * @exception	Exception
-     */
-    public String[] getAssociatedResourcePool(){
+		this.vLANConnection = vLANConnection;
+	} // setVLANConnection
 
-    return this.associatedResourcePool;
-    } // getAssociatedResourcePool
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property associatedResourcePool.
+	 */
+	private String[]	associatedResourcePool;
 
-    /**
-     * This method sets the
-     * VirtualEthernetSwitchSettingData.associatedResourcePool property
-     * value. This property is described as follows:
-     *
-     * A list of host resource pools to be associated or that are
-     * currentlyassociated with the Ethernet Switch for the purpose of the
-     * allocation of Ethernet connections between a virtual machine and an
-     * Ethernet switch Each non-Null value of the AssoicatedResourcePool
-     * property shall conformto the production WBEM_URI_UntypedInstancePath
-     * as defined in DSP0207
-     *
-     * @param	String[]	new associatedResourcePool property value
-     * @exception	Exception
-     */
-    public void setAssociatedResourcePool(String[] associatedResourcePool) {
+	/**
+	 * This method returns the VirtualEthernetSwitchSettingData.associatedResourcePool property value. This property is described as follows:
+	 * 
+	 * A list of host resource pools to be associated or that are currentlyassociated with the Ethernet Switch for the purpose of the allocation of
+	 * Ethernet connections between a virtual machine and an Ethernet switch Each non-Null value of the AssoicatedResourcePool property shall
+	 * conformto the production WBEM_URI_UntypedInstancePath as defined in DSP0207
+	 * 
+	 * @return String[] current associatedResourcePool property value
+	 * @exception Exception
+	 */
+	public String[] getAssociatedResourcePool() {
 
-    this.associatedResourcePool = associatedResourcePool;
-    } // setAssociatedResourcePool
+		return this.associatedResourcePool;
+	} // getAssociatedResourcePool
 
+	/**
+	 * This method sets the VirtualEthernetSwitchSettingData.associatedResourcePool property value. This property is described as follows:
+	 * 
+	 * A list of host resource pools to be associated or that are currentlyassociated with the Ethernet Switch for the purpose of the allocation of
+	 * Ethernet connections between a virtual machine and an Ethernet switch Each non-Null value of the AssoicatedResourcePool property shall
+	 * conformto the production WBEM_URI_UntypedInstancePath as defined in DSP0207
+	 * 
+	 * @param String
+	 *            [] new associatedResourcePool property value
+	 * @exception Exception
+	 */
+	public void setAssociatedResourcePool(String[] associatedResourcePool) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxNumMACAddress.
-     */
-    private long maxNumMACAddress;
-    /**
-     * This method returns the
-     * VirtualEthernetSwitchSettingData.maxNumMACAddress property value. This
-     * property is described as follows:
-     *
-     * This property specifies the number of unique MAC addresses that can be
-     * learnedby the switch to support MAC Address Learning, as defined in
-     * the IEEE 802.1 standard
-     *
-     * @return	long	current maxNumMACAddress property value
-     * @exception	Exception
-     */
-    public long getMaxNumMACAddress(){
+		this.associatedResourcePool = associatedResourcePool;
+	} // setAssociatedResourcePool
 
-    return this.maxNumMACAddress;
-    } // getMaxNumMACAddress
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxNumMACAddress.
+	 */
+	private long	maxNumMACAddress;
 
-    /**
-     * This method sets the VirtualEthernetSwitchSettingData.maxNumMACAddress
-     * property value. This property is described as follows:
-     *
-     * This property specifies the number of unique MAC addresses that can be
-     * learnedby the switch to support MAC Address Learning, as defined in
-     * the IEEE 802.1 standard
-     *
-     * @param	long	new maxNumMACAddress property value
-     * @exception	Exception
-     */
-    public void setMaxNumMACAddress(long maxNumMACAddress) {
+	/**
+	 * This method returns the VirtualEthernetSwitchSettingData.maxNumMACAddress property value. This property is described as follows:
+	 * 
+	 * This property specifies the number of unique MAC addresses that can be learnedby the switch to support MAC Address Learning, as defined in the
+	 * IEEE 802.1 standard
+	 * 
+	 * @return long current maxNumMACAddress property value
+	 * @exception Exception
+	 */
+	public long getMaxNumMACAddress() {
 
-    this.maxNumMACAddress = maxNumMACAddress;
-    } // setMaxNumMACAddress
+		return this.maxNumMACAddress;
+	} // getMaxNumMACAddress
 
+	/**
+	 * This method sets the VirtualEthernetSwitchSettingData.maxNumMACAddress property value. This property is described as follows:
+	 * 
+	 * This property specifies the number of unique MAC addresses that can be learnedby the switch to support MAC Address Learning, as defined in the
+	 * IEEE 802.1 standard
+	 * 
+	 * @param long new maxNumMACAddress property value
+	 * @exception Exception
+	 */
+	public void setMaxNumMACAddress(long maxNumMACAddress) {
 
+		this.maxNumMACAddress = maxNumMACAddress;
+	} // setMaxNumMACAddress
 
 } // Class VirtualEthernetSwitchSettingData

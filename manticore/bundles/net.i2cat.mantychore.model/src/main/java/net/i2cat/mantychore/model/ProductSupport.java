@@ -8,42 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductSupport as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProductSupportBean Interface. The CIM class ProductSupport is described as
- * follows:
- *
- * CIM_ProductSupport is an association between Product and SupportAccess that
- * conveys how support is obtained for the Product. This is a many-to-many
- * relationship, implying that various types of Support are available for a
- * Product, and that the same Support object can provide assistance for
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductSupport as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ProductSupportBean Interface. The CIM class ProductSupport is described as follows:
+ * 
+ * CIM_ProductSupport is an association between Product and SupportAccess that conveys how support is obtained for the Product. This is a many-to-many
+ * relationship, implying that various types of Support are available for a Product, and that the same Support object can provide assistance for
  * multiple Products.
  */
 public class ProductSupport extends Association implements Serializable {
 
-    /**
-     * This constructor creates a ProductSupportBeanImpl Class which
-     * implements the ProductSupportBean Interface, and encapsulates the CIM
-     * class ProductSupport in a Java Bean. The CIM class ProductSupport is
-     * described as follows:
-     *
-     * CIM_ProductSupport is an association between Product and SupportAccess
-     * that conveys how support is obtained for the Product. This is a
-     * many-to-many relationship, implying that various types of Support are
-     * available for a Product, and that the same Support object can provide
-     * assistance for multiple Products.
-     */
-    public ProductSupport(){};
-    /**
-     * This method create an Association of the type ProductSupport between
-     * one Product object and SupportAccess object
-     */
-    public static ProductSupport link(Product product,SupportAccess
-	support){
+	/**
+	 * This constructor creates a ProductSupportBeanImpl Class which implements the ProductSupportBean Interface, and encapsulates the CIM class
+	 * ProductSupport in a Java Bean. The CIM class ProductSupport is described as follows:
+	 * 
+	 * CIM_ProductSupport is an association between Product and SupportAccess that conveys how support is obtained for the Product. This is a
+	 * many-to-many relationship, implying that various types of Support are available for a Product, and that the same Support object can provide
+	 * assistance for multiple Products.
+	 */
+	public ProductSupport() {
+	};
 
-    return (ProductSupport)
-	Association.link(ProductSupport.class,product,support);
-    }//link
+	/**
+	 * This method create an Association of the type ProductSupport between one Product object and SupportAccess object
+	 */
+	public static ProductSupport link(Product product, SupportAccess
+			support) {
+
+		return (ProductSupport) Association.link(ProductSupport.class, product, support);
+	}// link
 
 } // Class ProductSupport

@@ -82,7 +82,11 @@ public class MonitoringCapabilityTest implements EventHandler
 
     @Inject
     @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
-    private BlueprintContainer roadmRepositoryService;
+    private BlueprintContainer		roadmRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer      wonesysProtocolService;
 
 	private IProtocolSessionManager	sessionManager;
 

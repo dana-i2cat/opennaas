@@ -9,485 +9,389 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ISCSISessionSettings as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ISCSISessionSettingsBean Interface. The CIM class ISCSISessionSettings is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ISCSISessionSettings as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ISCSISessionSettingsBean Interface. The CIM class ISCSISessionSettings is
  * described as follows:
- *
- * The default negotiation settings for an iSCSI Session. These properties are
- * used as the starting position for login negotiations between initiator and
- * target nodes. The properties describing the resulting outcome of the login
- * negotiation are in the iSCSISession class. Depending on a given
- * implementation an instance of iSCSISessionSettings will be associated by
- * ElementSettingData to one or more instances of iSCSIProtocolEndpoint,
+ * 
+ * The default negotiation settings for an iSCSI Session. These properties are used as the starting position for login negotiations between initiator
+ * and target nodes. The properties describing the resulting outcome of the login negotiation are in the iSCSISession class. Depending on a given
+ * implementation an instance of iSCSISessionSettings will be associated by ElementSettingData to one or more instances of iSCSIProtocolEndpoint,
  * SCSIProtocolController, or ComputerSystem.
  */
 public class ISCSISessionSettings extends SettingData implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ISCSISessionSettingsBeanImpl Class which
-     * implements the ISCSISessionSettingsBean Interface, and encapsulates
-     * the CIM class ISCSISessionSettings in a Java Bean. The CIM class
-     * ISCSISessionSettings is described as follows:
-     *
-     * The default negotiation settings for an iSCSI Session. These properties
-     * are used as the starting position for login negotiations between
-     * initiator and target nodes. The properties describing the resulting
-     * outcome of the login negotiation are in the iSCSISession class.
-     * Depending on a given implementation an instance of
-     * iSCSISessionSettings will be associated by ElementSettingData to one
-     * or more instances of iSCSIProtocolEndpoint, SCSIProtocolController, or
-     * ComputerSystem.
-     */
-    public ISCSISessionSettings(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxConnectionsPerSession.
-     */
-    private long maxConnectionsPerSession;
-    /**
-     * This method returns the iSCSISessionSettings.maxConnectionsPerSession
-     * property value. This property is described as follows:
-     *
-     * The maximum number of connections allowed in each session to and/or
-     * from this node.
-     *
-     * @return	long	current maxConnectionsPerSession property
-     * value
-     * @exception	Exception
-     */
-    public long getMaxConnectionsPerSession(){
+	/**
+	 * This constructor creates a ISCSISessionSettingsBeanImpl Class which implements the ISCSISessionSettingsBean Interface, and encapsulates the CIM
+	 * class ISCSISessionSettings in a Java Bean. The CIM class ISCSISessionSettings is described as follows:
+	 * 
+	 * The default negotiation settings for an iSCSI Session. These properties are used as the starting position for login negotiations between
+	 * initiator and target nodes. The properties describing the resulting outcome of the login negotiation are in the iSCSISession class. Depending
+	 * on a given implementation an instance of iSCSISessionSettings will be associated by ElementSettingData to one or more instances of
+	 * iSCSIProtocolEndpoint, SCSIProtocolController, or ComputerSystem.
+	 */
+	public ISCSISessionSettings() {
+	};
 
-    return this.maxConnectionsPerSession;
-    } // getMaxConnectionsPerSession
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxConnectionsPerSession.
+	 */
+	private long	maxConnectionsPerSession;
 
-    /**
-     * This method sets the iSCSISessionSettings.maxConnectionsPerSession
-     * property value. This property is described as follows:
-     *
-     * The maximum number of connections allowed in each session to and/or
-     * from this node.
-     *
-     * @param	long	new maxConnectionsPerSession property value
-     * @exception	Exception
-     */
-    public void setMaxConnectionsPerSession(long maxConnectionsPerSession) {
+	/**
+	 * This method returns the iSCSISessionSettings.maxConnectionsPerSession property value. This property is described as follows:
+	 * 
+	 * The maximum number of connections allowed in each session to and/or from this node.
+	 * 
+	 * @return long current maxConnectionsPerSession property value
+	 * @exception Exception
+	 */
+	public long getMaxConnectionsPerSession() {
 
-    this.maxConnectionsPerSession = maxConnectionsPerSession;
-    } // setMaxConnectionsPerSession
+		return this.maxConnectionsPerSession;
+	} // getMaxConnectionsPerSession
 
+	/**
+	 * This method sets the iSCSISessionSettings.maxConnectionsPerSession property value. This property is described as follows:
+	 * 
+	 * The maximum number of connections allowed in each session to and/or from this node.
+	 * 
+	 * @param long new maxConnectionsPerSession property value
+	 * @exception Exception
+	 */
+	public void setMaxConnectionsPerSession(long maxConnectionsPerSession) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property initialR2TPreference.
-     */
-    private boolean initialR2TPreference;
-    /**
-     * This method returns the iSCSISessionSettings.initialR2TPreference
-     * property value. This property is described as follows:
-     *
-     * This property indicates the InitialR2T preference for this node: true =
-     * YES, false = will try to negotiate NO, will accept YES.
-     *
-     * @return	boolean	current initialR2TPreference property
-     * value
-     * @exception	Exception
-     */
-    public boolean isInitialR2TPreference(){
+		this.maxConnectionsPerSession = maxConnectionsPerSession;
+	} // setMaxConnectionsPerSession
 
-    return this.initialR2TPreference;
-    } // getInitialR2TPreference
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property initialR2TPreference.
+	 */
+	private boolean	initialR2TPreference;
 
-    /**
-     * This method sets the iSCSISessionSettings.initialR2TPreference property
-     * value. This property is described as follows:
-     *
-     * This property indicates the InitialR2T preference for this node: true =
-     * YES, false = will try to negotiate NO, will accept YES.
-     *
-     * @param	boolean	new initialR2TPreference property value
-     * @exception	Exception
-     */
-    public void setInitialR2TPreference(boolean initialR2TPreference) {
+	/**
+	 * This method returns the iSCSISessionSettings.initialR2TPreference property value. This property is described as follows:
+	 * 
+	 * This property indicates the InitialR2T preference for this node: true = YES, false = will try to negotiate NO, will accept YES.
+	 * 
+	 * @return boolean current initialR2TPreference property value
+	 * @exception Exception
+	 */
+	public boolean isInitialR2TPreference() {
 
-    this.initialR2TPreference = initialR2TPreference;
-    } // setInitialR2TPreference
+		return this.initialR2TPreference;
+	} // getInitialR2TPreference
 
+	/**
+	 * This method sets the iSCSISessionSettings.initialR2TPreference property value. This property is described as follows:
+	 * 
+	 * This property indicates the InitialR2T preference for this node: true = YES, false = will try to negotiate NO, will accept YES.
+	 * 
+	 * @param boolean new initialR2TPreference property value
+	 * @exception Exception
+	 */
+	public void setInitialR2TPreference(boolean initialR2TPreference) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property immediateDataPreference.
-     */
-    private boolean immediateDataPreference;
-    /**
-     * This method returns the iSCSISessionSettings.immediateDataPreference
-     * property value. This property is described as follows:
-     *
-     * This property indicates ImmediateData preference for this node True =
-     * YES (but will accept NO), False = NO.
-     *
-     * @return	boolean	current immediateDataPreference property
-     * value
-     * @exception	Exception
-     */
-    public boolean isImmediateDataPreference(){
+		this.initialR2TPreference = initialR2TPreference;
+	} // setInitialR2TPreference
 
-    return this.immediateDataPreference;
-    } // getImmediateDataPreference
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property immediateDataPreference.
+	 */
+	private boolean	immediateDataPreference;
 
-    /**
-     * This method sets the iSCSISessionSettings.immediateDataPreference
-     * property value. This property is described as follows:
-     *
-     * This property indicates ImmediateData preference for this node True =
-     * YES (but will accept NO), False = NO.
-     *
-     * @param	boolean	new immediateDataPreference property value
-     * @exception	Exception
-     */
-    public void setImmediateDataPreference(boolean immediateDataPreference)
+	/**
+	 * This method returns the iSCSISessionSettings.immediateDataPreference property value. This property is described as follows:
+	 * 
+	 * This property indicates ImmediateData preference for this node True = YES (but will accept NO), False = NO.
+	 * 
+	 * @return boolean current immediateDataPreference property value
+	 * @exception Exception
+	 */
+	public boolean isImmediateDataPreference() {
+
+		return this.immediateDataPreference;
+	} // getImmediateDataPreference
+
+	/**
+	 * This method sets the iSCSISessionSettings.immediateDataPreference property value. This property is described as follows:
+	 * 
+	 * This property indicates ImmediateData preference for this node True = YES (but will accept NO), False = NO.
+	 * 
+	 * @param boolean new immediateDataPreference property value
+	 * @exception Exception
+	 */
+	public void setImmediateDataPreference(boolean immediateDataPreference)
 	{
 
-    this.immediateDataPreference = immediateDataPreference;
-    } // setImmediateDataPreference
+		this.immediateDataPreference = immediateDataPreference;
+	} // setImmediateDataPreference
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxOutstandingR2T.
+	 */
+	private long	maxOutstandingR2T;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxOutstandingR2T.
-     */
-    private long maxOutstandingR2T;
-    /**
-     * This method returns the iSCSISessionSettings.maxOutstandingR2T property
-     * value. This property is described as follows:
-     *
-     * Maximum number of outstanding R2Ts allowed per ISCSI task.
-     *
-     * @return	long	current maxOutstandingR2T property value
-     * @exception	Exception
-     */
-    public long getMaxOutstandingR2T(){
+	/**
+	 * This method returns the iSCSISessionSettings.maxOutstandingR2T property value. This property is described as follows:
+	 * 
+	 * Maximum number of outstanding R2Ts allowed per ISCSI task.
+	 * 
+	 * @return long current maxOutstandingR2T property value
+	 * @exception Exception
+	 */
+	public long getMaxOutstandingR2T() {
 
-    return this.maxOutstandingR2T;
-    } // getMaxOutstandingR2T
+		return this.maxOutstandingR2T;
+	} // getMaxOutstandingR2T
 
-    /**
-     * This method sets the iSCSISessionSettings.maxOutstandingR2T property
-     * value. This property is described as follows:
-     *
-     * Maximum number of outstanding R2Ts allowed per ISCSI task.
-     *
-     * @param	long	new maxOutstandingR2T property value
-     * @exception	Exception
-     */
-    public void setMaxOutstandingR2T(long maxOutstandingR2T) {
+	/**
+	 * This method sets the iSCSISessionSettings.maxOutstandingR2T property value. This property is described as follows:
+	 * 
+	 * Maximum number of outstanding R2Ts allowed per ISCSI task.
+	 * 
+	 * @param long new maxOutstandingR2T property value
+	 * @exception Exception
+	 */
+	public void setMaxOutstandingR2T(long maxOutstandingR2T) {
 
-    this.maxOutstandingR2T = maxOutstandingR2T;
-    } // setMaxOutstandingR2T
+		this.maxOutstandingR2T = maxOutstandingR2T;
+	} // setMaxOutstandingR2T
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxUnsolicitedFirstDataBurstLength.
+	 */
+	private long	maxUnsolicitedFirstDataBurstLength;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxUnsolicitedFirstDataBurstLength.
-     */
-    private long maxUnsolicitedFirstDataBurstLength;
-    /**
-     * This method returns the
-     * iSCSISessionSettings.maxUnsolicitedFirstDataBurstLength property
-     * value. This property is described as follows:
-     *
-     * The maximum length (bytes) supported for unsolicited data to/from this
-     * node.
-     *
-     * @return	long	current maxUnsolicitedFirstDataBurstLength
-     * property value
-     * @exception	Exception
-     */
-    public long getMaxUnsolicitedFirstDataBurstLength(){
+	/**
+	 * This method returns the iSCSISessionSettings.maxUnsolicitedFirstDataBurstLength property value. This property is described as follows:
+	 * 
+	 * The maximum length (bytes) supported for unsolicited data to/from this node.
+	 * 
+	 * @return long current maxUnsolicitedFirstDataBurstLength property value
+	 * @exception Exception
+	 */
+	public long getMaxUnsolicitedFirstDataBurstLength() {
 
-    return this.maxUnsolicitedFirstDataBurstLength;
-    } // getMaxUnsolicitedFirstDataBurstLength
+		return this.maxUnsolicitedFirstDataBurstLength;
+	} // getMaxUnsolicitedFirstDataBurstLength
 
-    /**
-     * This method sets the
-     * iSCSISessionSettings.maxUnsolicitedFirstDataBurstLength property
-     * value. This property is described as follows:
-     *
-     * The maximum length (bytes) supported for unsolicited data to/from this
-     * node.
-     *
-     * @param	long	new maxUnsolicitedFirstDataBurstLength
-     * property value
-     * @exception	Exception
-     */
-    public void setMaxUnsolicitedFirstDataBurstLength(long
-	maxUnsolicitedFirstDataBurstLength) {
+	/**
+	 * This method sets the iSCSISessionSettings.maxUnsolicitedFirstDataBurstLength property value. This property is described as follows:
+	 * 
+	 * The maximum length (bytes) supported for unsolicited data to/from this node.
+	 * 
+	 * @param long new maxUnsolicitedFirstDataBurstLength property value
+	 * @exception Exception
+	 */
+	public void setMaxUnsolicitedFirstDataBurstLength(long
+			maxUnsolicitedFirstDataBurstLength) {
 
-    this.maxUnsolicitedFirstDataBurstLength =
-	maxUnsolicitedFirstDataBurstLength;
-    } // setMaxUnsolicitedFirstDataBurstLength
+		this.maxUnsolicitedFirstDataBurstLength =
+				maxUnsolicitedFirstDataBurstLength;
+	} // setMaxUnsolicitedFirstDataBurstLength
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxDataBurstLength.
+	 */
+	private long	maxDataBurstLength;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxDataBurstLength.
-     */
-    private long maxDataBurstLength;
-    /**
-     * This method returns the iSCSISessionSettings.maxDataBurstLength
-     * property value. This property is described as follows:
-     *
-     * The maximum number of bytes which can be sent within a single sequence
-     * of Data-In or Data-Out PDUs.
-     *
-     * @return	long	current maxDataBurstLength property value
-     * @exception	Exception
-     */
-    public long getMaxDataBurstLength(){
+	/**
+	 * This method returns the iSCSISessionSettings.maxDataBurstLength property value. This property is described as follows:
+	 * 
+	 * The maximum number of bytes which can be sent within a single sequence of Data-In or Data-Out PDUs.
+	 * 
+	 * @return long current maxDataBurstLength property value
+	 * @exception Exception
+	 */
+	public long getMaxDataBurstLength() {
 
-    return this.maxDataBurstLength;
-    } // getMaxDataBurstLength
+		return this.maxDataBurstLength;
+	} // getMaxDataBurstLength
 
-    /**
-     * This method sets the iSCSISessionSettings.maxDataBurstLength property
-     * value. This property is described as follows:
-     *
-     * The maximum number of bytes which can be sent within a single sequence
-     * of Data-In or Data-Out PDUs.
-     *
-     * @param	long	new maxDataBurstLength property value
-     * @exception	Exception
-     */
-    public void setMaxDataBurstLength(long maxDataBurstLength) {
+	/**
+	 * This method sets the iSCSISessionSettings.maxDataBurstLength property value. This property is described as follows:
+	 * 
+	 * The maximum number of bytes which can be sent within a single sequence of Data-In or Data-Out PDUs.
+	 * 
+	 * @param long new maxDataBurstLength property value
+	 * @exception Exception
+	 */
+	public void setMaxDataBurstLength(long maxDataBurstLength) {
 
-    this.maxDataBurstLength = maxDataBurstLength;
-    } // setMaxDataBurstLength
+		this.maxDataBurstLength = maxDataBurstLength;
+	} // setMaxDataBurstLength
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dataSequenceInOrderPreference.
+	 */
+	private boolean	dataSequenceInOrderPreference;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dataSequenceInOrderPreference.
-     */
-    private boolean dataSequenceInOrderPreference;
-    /**
-     * This method returns the
-     * iSCSISessionSettings.dataSequenceInOrderPreference property value.
-     * This property is described as follows:
-     *
-     * The DataSequenceInOrder preference of this node. False (=No) indicates
-     * that iSCSI data PDU sequences MAY be transferred in any order. True
-     * (=Yes) indicates that data PDU sequences MUST be transferred using
-     * continuously increasing offsets, except during error recovery.
-     *
-     * @return	boolean	current dataSequenceInOrderPreference
-     * property value
-     * @exception	Exception
-     */
-    public boolean isDataSequenceInOrderPreference(){
+	/**
+	 * This method returns the iSCSISessionSettings.dataSequenceInOrderPreference property value. This property is described as follows:
+	 * 
+	 * The DataSequenceInOrder preference of this node. False (=No) indicates that iSCSI data PDU sequences MAY be transferred in any order. True
+	 * (=Yes) indicates that data PDU sequences MUST be transferred using continuously increasing offsets, except during error recovery.
+	 * 
+	 * @return boolean current dataSequenceInOrderPreference property value
+	 * @exception Exception
+	 */
+	public boolean isDataSequenceInOrderPreference() {
 
-    return this.dataSequenceInOrderPreference;
-    } // getDataSequenceInOrderPreference
+		return this.dataSequenceInOrderPreference;
+	} // getDataSequenceInOrderPreference
 
-    /**
-     * This method sets the iSCSISessionSettings.dataSequenceInOrderPreference
-     * property value. This property is described as follows:
-     *
-     * The DataSequenceInOrder preference of this node. False (=No) indicates
-     * that iSCSI data PDU sequences MAY be transferred in any order. True
-     * (=Yes) indicates that data PDU sequences MUST be transferred using
-     * continuously increasing offsets, except during error recovery.
-     *
-     * @param	boolean	new dataSequenceInOrderPreference property
-     * value
-     * @exception	Exception
-     */
-    public void setDataSequenceInOrderPreference(boolean
-	dataSequenceInOrderPreference) {
+	/**
+	 * This method sets the iSCSISessionSettings.dataSequenceInOrderPreference property value. This property is described as follows:
+	 * 
+	 * The DataSequenceInOrder preference of this node. False (=No) indicates that iSCSI data PDU sequences MAY be transferred in any order. True
+	 * (=Yes) indicates that data PDU sequences MUST be transferred using continuously increasing offsets, except during error recovery.
+	 * 
+	 * @param boolean new dataSequenceInOrderPreference property value
+	 * @exception Exception
+	 */
+	public void setDataSequenceInOrderPreference(boolean
+			dataSequenceInOrderPreference) {
 
-    this.dataSequenceInOrderPreference = dataSequenceInOrderPreference;
-    } // setDataSequenceInOrderPreference
+		this.dataSequenceInOrderPreference = dataSequenceInOrderPreference;
+	} // setDataSequenceInOrderPreference
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dataPDUInOrderPreference.
+	 */
+	private boolean	dataPDUInOrderPreference;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dataPDUInOrderPreference.
-     */
-    private boolean dataPDUInOrderPreference;
-    /**
-     * This method returns the iSCSISessionSettings.dataPDUInOrderPreference
-     * property value. This property is described as follows:
-     *
-     * The DataPDUInOrder preference of this node. False (=No) indicates that
-     * iSCSI data PDUs within sequences MAY be in any order. True (=Yes)
-     * indicates that data PDUs within sequences MUST be at continuously
-     * increasing addresses, with no gaps or overlay between PDUs.
-     *
-     * @return	boolean	current dataPDUInOrderPreference property
-     * value
-     * @exception	Exception
-     */
-    public boolean isDataPDUInOrderPreference(){
+	/**
+	 * This method returns the iSCSISessionSettings.dataPDUInOrderPreference property value. This property is described as follows:
+	 * 
+	 * The DataPDUInOrder preference of this node. False (=No) indicates that iSCSI data PDUs within sequences MAY be in any order. True (=Yes)
+	 * indicates that data PDUs within sequences MUST be at continuously increasing addresses, with no gaps or overlay between PDUs.
+	 * 
+	 * @return boolean current dataPDUInOrderPreference property value
+	 * @exception Exception
+	 */
+	public boolean isDataPDUInOrderPreference() {
 
-    return this.dataPDUInOrderPreference;
-    } // getDataPDUInOrderPreference
+		return this.dataPDUInOrderPreference;
+	} // getDataPDUInOrderPreference
 
-    /**
-     * This method sets the iSCSISessionSettings.dataPDUInOrderPreference
-     * property value. This property is described as follows:
-     *
-     * The DataPDUInOrder preference of this node. False (=No) indicates that
-     * iSCSI data PDUs within sequences MAY be in any order. True (=Yes)
-     * indicates that data PDUs within sequences MUST be at continuously
-     * increasing addresses, with no gaps or overlay between PDUs.
-     *
-     * @param	boolean	new dataPDUInOrderPreference property
-     * value
-     * @exception	Exception
-     */
-    public void setDataPDUInOrderPreference(boolean dataPDUInOrderPreference)
+	/**
+	 * This method sets the iSCSISessionSettings.dataPDUInOrderPreference property value. This property is described as follows:
+	 * 
+	 * The DataPDUInOrder preference of this node. False (=No) indicates that iSCSI data PDUs within sequences MAY be in any order. True (=Yes)
+	 * indicates that data PDUs within sequences MUST be at continuously increasing addresses, with no gaps or overlay between PDUs.
+	 * 
+	 * @param boolean new dataPDUInOrderPreference property value
+	 * @exception Exception
+	 */
+	public void setDataPDUInOrderPreference(boolean dataPDUInOrderPreference)
 	{
 
-    this.dataPDUInOrderPreference = dataPDUInOrderPreference;
-    } // setDataPDUInOrderPreference
+		this.dataPDUInOrderPreference = dataPDUInOrderPreference;
+	} // setDataPDUInOrderPreference
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property defaultTimeToWaitPreference.
+	 */
+	private long	defaultTimeToWaitPreference;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property defaultTimeToWaitPreference.
-     */
-    private long defaultTimeToWaitPreference;
-    /**
-     * This method returns the
-     * iSCSISessionSettings.defaultTimeToWaitPreference property value. This
-     * property is described as follows:
-     *
-     * The DefaultTime2Wait preference of this node. This is the minimum time,
-     * in seconds, to wait before attempting an explicit/implicit logout or
-     * active iSCSI task reassignment after an unexpected connection
-     * termination or a connection reset.
-     *
-     * @return	long	current defaultTimeToWaitPreference property
-     * value
-     * @exception	Exception
-     */
-    public long getDefaultTimeToWaitPreference(){
+	/**
+	 * This method returns the iSCSISessionSettings.defaultTimeToWaitPreference property value. This property is described as follows:
+	 * 
+	 * The DefaultTime2Wait preference of this node. This is the minimum time, in seconds, to wait before attempting an explicit/implicit logout or
+	 * active iSCSI task reassignment after an unexpected connection termination or a connection reset.
+	 * 
+	 * @return long current defaultTimeToWaitPreference property value
+	 * @exception Exception
+	 */
+	public long getDefaultTimeToWaitPreference() {
 
-    return this.defaultTimeToWaitPreference;
-    } // getDefaultTimeToWaitPreference
+		return this.defaultTimeToWaitPreference;
+	} // getDefaultTimeToWaitPreference
 
-    /**
-     * This method sets the iSCSISessionSettings.defaultTimeToWaitPreference
-     * property value. This property is described as follows:
-     *
-     * The DefaultTime2Wait preference of this node. This is the minimum time,
-     * in seconds, to wait before attempting an explicit/implicit logout or
-     * active iSCSI task reassignment after an unexpected connection
-     * termination or a connection reset.
-     *
-     * @param	long	new defaultTimeToWaitPreference property
-     * value
-     * @exception	Exception
-     */
-    public void setDefaultTimeToWaitPreference(long
-	defaultTimeToWaitPreference) {
+	/**
+	 * This method sets the iSCSISessionSettings.defaultTimeToWaitPreference property value. This property is described as follows:
+	 * 
+	 * The DefaultTime2Wait preference of this node. This is the minimum time, in seconds, to wait before attempting an explicit/implicit logout or
+	 * active iSCSI task reassignment after an unexpected connection termination or a connection reset.
+	 * 
+	 * @param long new defaultTimeToWaitPreference property value
+	 * @exception Exception
+	 */
+	public void setDefaultTimeToWaitPreference(long
+			defaultTimeToWaitPreference) {
 
-    this.defaultTimeToWaitPreference = defaultTimeToWaitPreference;
-    } // setDefaultTimeToWaitPreference
+		this.defaultTimeToWaitPreference = defaultTimeToWaitPreference;
+	} // setDefaultTimeToWaitPreference
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property defaultTimeToRetainPreference.
+	 */
+	private long	defaultTimeToRetainPreference;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property defaultTimeToRetainPreference.
-     */
-    private long defaultTimeToRetainPreference;
-    /**
-     * This method returns the
-     * iSCSISessionSettings.defaultTimeToRetainPreference property value.
-     * This property is described as follows:
-     *
-     * The DefaultTime2Retain preference of this node. This is the maximum
-     * time, in seconds after an initial wait (Time2Wait), before which an
-     * active iSCSI task reassignment is still possible after an unexpected
-     * connection termination or a connection reset.
-     *
-     * @return	long	current defaultTimeToRetainPreference
-     * property value
-     * @exception	Exception
-     */
-    public long getDefaultTimeToRetainPreference(){
+	/**
+	 * This method returns the iSCSISessionSettings.defaultTimeToRetainPreference property value. This property is described as follows:
+	 * 
+	 * The DefaultTime2Retain preference of this node. This is the maximum time, in seconds after an initial wait (Time2Wait), before which an active
+	 * iSCSI task reassignment is still possible after an unexpected connection termination or a connection reset.
+	 * 
+	 * @return long current defaultTimeToRetainPreference property value
+	 * @exception Exception
+	 */
+	public long getDefaultTimeToRetainPreference() {
 
-    return this.defaultTimeToRetainPreference;
-    } // getDefaultTimeToRetainPreference
+		return this.defaultTimeToRetainPreference;
+	} // getDefaultTimeToRetainPreference
 
-    /**
-     * This method sets the iSCSISessionSettings.defaultTimeToRetainPreference
-     * property value. This property is described as follows:
-     *
-     * The DefaultTime2Retain preference of this node. This is the maximum
-     * time, in seconds after an initial wait (Time2Wait), before which an
-     * active iSCSI task reassignment is still possible after an unexpected
-     * connection termination or a connection reset.
-     *
-     * @param	long	new defaultTimeToRetainPreference property
-     * value
-     * @exception	Exception
-     */
-    public void setDefaultTimeToRetainPreference(long
-	defaultTimeToRetainPreference) {
+	/**
+	 * This method sets the iSCSISessionSettings.defaultTimeToRetainPreference property value. This property is described as follows:
+	 * 
+	 * The DefaultTime2Retain preference of this node. This is the maximum time, in seconds after an initial wait (Time2Wait), before which an active
+	 * iSCSI task reassignment is still possible after an unexpected connection termination or a connection reset.
+	 * 
+	 * @param long new defaultTimeToRetainPreference property value
+	 * @exception Exception
+	 */
+	public void setDefaultTimeToRetainPreference(long
+			defaultTimeToRetainPreference) {
 
-    this.defaultTimeToRetainPreference = defaultTimeToRetainPreference;
-    } // setDefaultTimeToRetainPreference
+		this.defaultTimeToRetainPreference = defaultTimeToRetainPreference;
+	} // setDefaultTimeToRetainPreference
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property errorRecoveryLevelPreference.
+	 */
+	private long	errorRecoveryLevelPreference;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property errorRecoveryLevelPreference.
-     */
-    private long errorRecoveryLevelPreference;
-    /**
-     * This method returns the
-     * iSCSISessionSettings.errorRecoveryLevelPreference property value. This
-     * property is described as follows:
-     *
-     * The ErrorRecoveryLevel preference of this node. Currently, only 0-2 are
-     * valid. This is designed to accommodate future error recover levels.
-     * Higher error recovery levels imply support in addition to support for
-     * the lower error level functions. In other words, error level 2 implies
-     * support for levels 0-1, since those functions are subsets of error
-     * level 2.
-     *
-     * @return	long	current errorRecoveryLevelPreference
-     * property value
-     * @exception	Exception
-     */
-    public long getErrorRecoveryLevelPreference(){
+	/**
+	 * This method returns the iSCSISessionSettings.errorRecoveryLevelPreference property value. This property is described as follows:
+	 * 
+	 * The ErrorRecoveryLevel preference of this node. Currently, only 0-2 are valid. This is designed to accommodate future error recover levels.
+	 * Higher error recovery levels imply support in addition to support for the lower error level functions. In other words, error level 2 implies
+	 * support for levels 0-1, since those functions are subsets of error level 2.
+	 * 
+	 * @return long current errorRecoveryLevelPreference property value
+	 * @exception Exception
+	 */
+	public long getErrorRecoveryLevelPreference() {
 
-    return this.errorRecoveryLevelPreference;
-    } // getErrorRecoveryLevelPreference
+		return this.errorRecoveryLevelPreference;
+	} // getErrorRecoveryLevelPreference
 
-    /**
-     * This method sets the iSCSISessionSettings.errorRecoveryLevelPreference
-     * property value. This property is described as follows:
-     *
-     * The ErrorRecoveryLevel preference of this node. Currently, only 0-2 are
-     * valid. This is designed to accommodate future error recover levels.
-     * Higher error recovery levels imply support in addition to support for
-     * the lower error level functions. In other words, error level 2 implies
-     * support for levels 0-1, since those functions are subsets of error
-     * level 2.
-     *
-     * @param	long	new errorRecoveryLevelPreference property
-     * value
-     * @exception	Exception
-     */
-    public void setErrorRecoveryLevelPreference(long
-	errorRecoveryLevelPreference) {
+	/**
+	 * This method sets the iSCSISessionSettings.errorRecoveryLevelPreference property value. This property is described as follows:
+	 * 
+	 * The ErrorRecoveryLevel preference of this node. Currently, only 0-2 are valid. This is designed to accommodate future error recover levels.
+	 * Higher error recovery levels imply support in addition to support for the lower error level functions. In other words, error level 2 implies
+	 * support for levels 0-1, since those functions are subsets of error level 2.
+	 * 
+	 * @param long new errorRecoveryLevelPreference property value
+	 * @exception Exception
+	 */
+	public void setErrorRecoveryLevelPreference(long
+			errorRecoveryLevelPreference) {
 
-    this.errorRecoveryLevelPreference = errorRecoveryLevelPreference;
-    } // setErrorRecoveryLevelPreference
-
-
+		this.errorRecoveryLevelPreference = errorRecoveryLevelPreference;
+	} // setErrorRecoveryLevelPreference
 
 } // Class ISCSISessionSettings

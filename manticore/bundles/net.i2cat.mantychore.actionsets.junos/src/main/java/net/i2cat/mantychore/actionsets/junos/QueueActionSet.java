@@ -3,10 +3,11 @@ package net.i2cat.mantychore.actionsets.junos;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.actionsets.junos.actions.ConfirmAction;
-import net.i2cat.mantychore.actionsets.junos.actions.IsAliveAction;
-import net.i2cat.mantychore.actionsets.junos.actions.PrepareAction;
-import net.i2cat.mantychore.actionsets.junos.actions.RestoreAction;
+import net.i2cat.mantychore.actionsets.junos.actions.queue.ConfirmAction;
+import net.i2cat.mantychore.actionsets.junos.actions.queue.IsAliveAction;
+import net.i2cat.mantychore.actionsets.junos.actions.queue.PrepareAction;
+import net.i2cat.mantychore.actionsets.junos.actions.queue.RestoreAction;
+
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.queue.QueueConstants;
 

@@ -9,329 +9,279 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class BGPEndpointStatistics as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * BGPEndpointStatisticsBean Interface. The CIM class BGPEndpointStatistics
- * is described as follows:
- *
- * This class contains statistical information for a connection on a
- * BGPProtocolEndpoint. It is defined as a subclass of StatisticalData and
- * associated with the Endpoint using the relationship,
- * ElementStatisticalData.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class BGPEndpointStatistics as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the BGPEndpointStatisticsBean Interface. The CIM class BGPEndpointStatistics is
+ * described as follows:
+ * 
+ * This class contains statistical information for a connection on a BGPProtocolEndpoint. It is defined as a subclass of StatisticalData and
+ * associated with the Endpoint using the relationship, ElementStatisticalData.
  */
 public class BGPEndpointStatistics extends StatisticalData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a BGPEndpointStatisticsBeanImpl Class which
-     * implements the BGPEndpointStatisticsBean Interface, and encapsulates
-     * the CIM class BGPEndpointStatistics in a Java Bean. The CIM class
-     * BGPEndpointStatistics is described as follows:
-     *
-     * This class contains statistical information for a connection on a
-     * BGPProtocolEndpoint. It is defined as a subclass of StatisticalData
-     * and associated with the Endpoint using the relationship,
-     * ElementStatisticalData.
-     */
-    public BGPEndpointStatistics(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property inUpdates.
-     */
-    private long inUpdates;
-    /**
-     * This method returns the BGPEndpointStatistics.inUpdates property value.
-     * This property is described as follows:
-     *
-     * This is the number of BGP UPDATE messages received on this router's BGP
-     * connection. This is a 32-bit counter.
-     *
-     * @return	long	current inUpdates property value
-     * @exception	Exception
-     */
-    public long getInUpdates(){
+	/**
+	 * This constructor creates a BGPEndpointStatisticsBeanImpl Class which implements the BGPEndpointStatisticsBean Interface, and encapsulates the
+	 * CIM class BGPEndpointStatistics in a Java Bean. The CIM class BGPEndpointStatistics is described as follows:
+	 * 
+	 * This class contains statistical information for a connection on a BGPProtocolEndpoint. It is defined as a subclass of StatisticalData and
+	 * associated with the Endpoint using the relationship, ElementStatisticalData.
+	 */
+	public BGPEndpointStatistics() {
+	};
 
-    return this.inUpdates;
-    } // getInUpdates
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property inUpdates.
+	 */
+	private long	inUpdates;
 
-    /**
-     * This method sets the BGPEndpointStatistics.inUpdates property value.
-     * This property is described as follows:
-     *
-     * This is the number of BGP UPDATE messages received on this router's BGP
-     * connection. This is a 32-bit counter.
-     *
-     * @param	long	new inUpdates property value
-     * @exception	Exception
-     */
-    public void setInUpdates(long inUpdates) {
+	/**
+	 * This method returns the BGPEndpointStatistics.inUpdates property value. This property is described as follows:
+	 * 
+	 * This is the number of BGP UPDATE messages received on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @return long current inUpdates property value
+	 * @exception Exception
+	 */
+	public long getInUpdates() {
 
-    this.inUpdates = inUpdates;
-    } // setInUpdates
+		return this.inUpdates;
+	} // getInUpdates
 
+	/**
+	 * This method sets the BGPEndpointStatistics.inUpdates property value. This property is described as follows:
+	 * 
+	 * This is the number of BGP UPDATE messages received on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @param long new inUpdates property value
+	 * @exception Exception
+	 */
+	public void setInUpdates(long inUpdates) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property outUpdates.
-     */
-    private long outUpdates;
-    /**
-     * This method returns the BGPEndpointStatistics.outUpdates property
-     * value. This property is described as follows:
-     *
-     * This is the number of BGP UPDATE messages transmitted on this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @return	long	current outUpdates property value
-     * @exception	Exception
-     */
-    public long getOutUpdates(){
+		this.inUpdates = inUpdates;
+	} // setInUpdates
 
-    return this.outUpdates;
-    } // getOutUpdates
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property outUpdates.
+	 */
+	private long	outUpdates;
 
-    /**
-     * This method sets the BGPEndpointStatistics.outUpdates property value.
-     * This property is described as follows:
-     *
-     * This is the number of BGP UPDATE messages transmitted on this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @param	long	new outUpdates property value
-     * @exception	Exception
-     */
-    public void setOutUpdates(long outUpdates) {
+	/**
+	 * This method returns the BGPEndpointStatistics.outUpdates property value. This property is described as follows:
+	 * 
+	 * This is the number of BGP UPDATE messages transmitted on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @return long current outUpdates property value
+	 * @exception Exception
+	 */
+	public long getOutUpdates() {
 
-    this.outUpdates = outUpdates;
-    } // setOutUpdates
+		return this.outUpdates;
+	} // getOutUpdates
 
+	/**
+	 * This method sets the BGPEndpointStatistics.outUpdates property value. This property is described as follows:
+	 * 
+	 * This is the number of BGP UPDATE messages transmitted on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @param long new outUpdates property value
+	 * @exception Exception
+	 */
+	public void setOutUpdates(long outUpdates) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property inTotalMessages.
-     */
-    private long inTotalMessages;
-    /**
-     * This method returns the BGPEndpointStatistics.inTotalMessages property
-     * value. This property is described as follows:
-     *
-     * This is the total number of BGP messages received on this router's BGP
-     * connection. This is a 32-bit counter.
-     *
-     * @return	long	current inTotalMessages property value
-     * @exception	Exception
-     */
-    public long getInTotalMessages(){
+		this.outUpdates = outUpdates;
+	} // setOutUpdates
 
-    return this.inTotalMessages;
-    } // getInTotalMessages
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property inTotalMessages.
+	 */
+	private long	inTotalMessages;
 
-    /**
-     * This method sets the BGPEndpointStatistics.inTotalMessages property
-     * value. This property is described as follows:
-     *
-     * This is the total number of BGP messages received on this router's BGP
-     * connection. This is a 32-bit counter.
-     *
-     * @param	long	new inTotalMessages property value
-     * @exception	Exception
-     */
-    public void setInTotalMessages(long inTotalMessages) {
+	/**
+	 * This method returns the BGPEndpointStatistics.inTotalMessages property value. This property is described as follows:
+	 * 
+	 * This is the total number of BGP messages received on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @return long current inTotalMessages property value
+	 * @exception Exception
+	 */
+	public long getInTotalMessages() {
 
-    this.inTotalMessages = inTotalMessages;
-    } // setInTotalMessages
+		return this.inTotalMessages;
+	} // getInTotalMessages
 
+	/**
+	 * This method sets the BGPEndpointStatistics.inTotalMessages property value. This property is described as follows:
+	 * 
+	 * This is the total number of BGP messages received on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @param long new inTotalMessages property value
+	 * @exception Exception
+	 */
+	public void setInTotalMessages(long inTotalMessages) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property outTotalMessages.
-     */
-    private long outTotalMessages;
-    /**
-     * This method returns the BGPEndpointStatistics.outTotalMessages property
-     * value. This property is described as follows:
-     *
-     * This is the total number of BGP messages transmitted on this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @return	long	current outTotalMessages property value
-     * @exception	Exception
-     */
-    public long getOutTotalMessages(){
+		this.inTotalMessages = inTotalMessages;
+	} // setInTotalMessages
 
-    return this.outTotalMessages;
-    } // getOutTotalMessages
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property outTotalMessages.
+	 */
+	private long	outTotalMessages;
 
-    /**
-     * This method sets the BGPEndpointStatistics.outTotalMessages property
-     * value. This property is described as follows:
-     *
-     * This is the total number of BGP messages transmitted on this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @param	long	new outTotalMessages property value
-     * @exception	Exception
-     */
-    public void setOutTotalMessages(long outTotalMessages) {
+	/**
+	 * This method returns the BGPEndpointStatistics.outTotalMessages property value. This property is described as follows:
+	 * 
+	 * This is the total number of BGP messages transmitted on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @return long current outTotalMessages property value
+	 * @exception Exception
+	 */
+	public long getOutTotalMessages() {
 
-    this.outTotalMessages = outTotalMessages;
-    } // setOutTotalMessages
+		return this.outTotalMessages;
+	} // getOutTotalMessages
 
+	/**
+	 * This method sets the BGPEndpointStatistics.outTotalMessages property value. This property is described as follows:
+	 * 
+	 * This is the total number of BGP messages transmitted on this router's BGP connection. This is a 32-bit counter.
+	 * 
+	 * @param long new outTotalMessages property value
+	 * @exception Exception
+	 */
+	public void setOutTotalMessages(long outTotalMessages) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lastError.
-     */
-    private short[] lastError;
-    /**
-     * This method returns the BGPEndpointStatistics.lastError property value.
-     * This property is described as follows:
-     *
-     * This contains the last error code and error subcode for this router's
-     * BGP connection. If no error has occurred, then each integer in the
-     * array is zero.
-     *
-     * @return	short[]	current lastError property value
-     * @exception	Exception
-     */
-    public short[] getLastError(){
+		this.outTotalMessages = outTotalMessages;
+	} // setOutTotalMessages
 
-    return this.lastError;
-    } // getLastError
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lastError.
+	 */
+	private short[]	lastError;
 
-    /**
-     * This method sets the BGPEndpointStatistics.lastError property value.
-     * This property is described as follows:
-     *
-     * This contains the last error code and error subcode for this router's
-     * BGP connection. If no error has occurred, then each integer in the
-     * array is zero.
-     *
-     * @param	short[]	new lastError property value
-     * @exception	Exception
-     */
-    public void setLastError(short[] lastError) {
+	/**
+	 * This method returns the BGPEndpointStatistics.lastError property value. This property is described as follows:
+	 * 
+	 * This contains the last error code and error subcode for this router's BGP connection. If no error has occurred, then each integer in the array
+	 * is zero.
+	 * 
+	 * @return short[] current lastError property value
+	 * @exception Exception
+	 */
+	public short[] getLastError() {
 
-    this.lastError = lastError;
-    } // setLastError
+		return this.lastError;
+	} // getLastError
 
+	/**
+	 * This method sets the BGPEndpointStatistics.lastError property value. This property is described as follows:
+	 * 
+	 * This contains the last error code and error subcode for this router's BGP connection. If no error has occurred, then each integer in the array
+	 * is zero.
+	 * 
+	 * @param short[] new lastError property value
+	 * @exception Exception
+	 */
+	public void setLastError(short[] lastError) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property fsmEstablishedTransitions.
-     */
-    private long fsmEstablishedTransitions;
-    /**
-     * This method returns the BGPEndpointStatistics.fsmEstablishedTransitions
-     * property value. This property is described as follows:
-     *
-     * This contains the total number of times that the BGP Finite State
-     * Machine has transitioned into the established state for this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @return	long	current fsmEstablishedTransitions property
-     * value
-     * @exception	Exception
-     */
-    public long getFsmEstablishedTransitions(){
+		this.lastError = lastError;
+	} // setLastError
 
-    return this.fsmEstablishedTransitions;
-    } // getFsmEstablishedTransitions
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property fsmEstablishedTransitions.
+	 */
+	private long	fsmEstablishedTransitions;
 
-    /**
-     * This method sets the BGPEndpointStatistics.fsmEstablishedTransitions
-     * property value. This property is described as follows:
-     *
-     * This contains the total number of times that the BGP Finite State
-     * Machine has transitioned into the established state for this router's
-     * BGP connection. This is a 32-bit counter.
-     *
-     * @param	long	new fsmEstablishedTransitions property value
-     * @exception	Exception
-     */
-    public void setFsmEstablishedTransitions(long fsmEstablishedTransitions)
+	/**
+	 * This method returns the BGPEndpointStatistics.fsmEstablishedTransitions property value. This property is described as follows:
+	 * 
+	 * This contains the total number of times that the BGP Finite State Machine has transitioned into the established state for this router's BGP
+	 * connection. This is a 32-bit counter.
+	 * 
+	 * @return long current fsmEstablishedTransitions property value
+	 * @exception Exception
+	 */
+	public long getFsmEstablishedTransitions() {
+
+		return this.fsmEstablishedTransitions;
+	} // getFsmEstablishedTransitions
+
+	/**
+	 * This method sets the BGPEndpointStatistics.fsmEstablishedTransitions property value. This property is described as follows:
+	 * 
+	 * This contains the total number of times that the BGP Finite State Machine has transitioned into the established state for this router's BGP
+	 * connection. This is a 32-bit counter.
+	 * 
+	 * @param long new fsmEstablishedTransitions property value
+	 * @exception Exception
+	 */
+	public void setFsmEstablishedTransitions(long fsmEstablishedTransitions)
 	{
 
-    this.fsmEstablishedTransitions = fsmEstablishedTransitions;
-    } // setFsmEstablishedTransitions
+		this.fsmEstablishedTransitions = fsmEstablishedTransitions;
+	} // setFsmEstablishedTransitions
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property fsmEstablishedTime.
+	 */
+	private long	fsmEstablishedTime;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property fsmEstablishedTime.
-     */
-    private long fsmEstablishedTime;
-    /**
-     * This method returns the BGPEndpointStatistics.fsmEstablishedTime
-     * property value. This property is described as follows:
-     *
-     * This indicates how long, in seconds, this peer has been in the
-     * established state, or how long since this peer was last in the
-     * established state. It is set to zero when a new peer is configured or
-     * when the router is booted. This has the semantics of a 32-bit gauge.
-     *
-     * @return	long	current fsmEstablishedTime property value
-     * @exception	Exception
-     */
-    public long getFsmEstablishedTime(){
+	/**
+	 * This method returns the BGPEndpointStatistics.fsmEstablishedTime property value. This property is described as follows:
+	 * 
+	 * This indicates how long, in seconds, this peer has been in the established state, or how long since this peer was last in the established
+	 * state. It is set to zero when a new peer is configured or when the router is booted. This has the semantics of a 32-bit gauge.
+	 * 
+	 * @return long current fsmEstablishedTime property value
+	 * @exception Exception
+	 */
+	public long getFsmEstablishedTime() {
 
-    return this.fsmEstablishedTime;
-    } // getFsmEstablishedTime
+		return this.fsmEstablishedTime;
+	} // getFsmEstablishedTime
 
-    /**
-     * This method sets the BGPEndpointStatistics.fsmEstablishedTime property
-     * value. This property is described as follows:
-     *
-     * This indicates how long, in seconds, this peer has been in the
-     * established state, or how long since this peer was last in the
-     * established state. It is set to zero when a new peer is configured or
-     * when the router is booted. This has the semantics of a 32-bit gauge.
-     *
-     * @param	long	new fsmEstablishedTime property value
-     * @exception	Exception
-     */
-    public void setFsmEstablishedTime(long fsmEstablishedTime) {
+	/**
+	 * This method sets the BGPEndpointStatistics.fsmEstablishedTime property value. This property is described as follows:
+	 * 
+	 * This indicates how long, in seconds, this peer has been in the established state, or how long since this peer was last in the established
+	 * state. It is set to zero when a new peer is configured or when the router is booted. This has the semantics of a 32-bit gauge.
+	 * 
+	 * @param long new fsmEstablishedTime property value
+	 * @exception Exception
+	 */
+	public void setFsmEstablishedTime(long fsmEstablishedTime) {
 
-    this.fsmEstablishedTime = fsmEstablishedTime;
-    } // setFsmEstablishedTime
+		this.fsmEstablishedTime = fsmEstablishedTime;
+	} // setFsmEstablishedTime
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property inUpdateElapsedTime.
+	 */
+	private long	inUpdateElapsedTime;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property inUpdateElapsedTime.
-     */
-    private long inUpdateElapsedTime;
-    /**
-     * This method returns the BGPEndpointStatistics.inUpdateElapsedTime
-     * property value. This property is described as follows:
-     *
-     * This defines the time in seconds since the last BGP UPDATE message was
-     * received from the peer. This has the semantics of a 32-bit gauge.
-     *
-     * @return	long	current inUpdateElapsedTime property value
-     * @exception	Exception
-     */
-    public long getInUpdateElapsedTime(){
+	/**
+	 * This method returns the BGPEndpointStatistics.inUpdateElapsedTime property value. This property is described as follows:
+	 * 
+	 * This defines the time in seconds since the last BGP UPDATE message was received from the peer. This has the semantics of a 32-bit gauge.
+	 * 
+	 * @return long current inUpdateElapsedTime property value
+	 * @exception Exception
+	 */
+	public long getInUpdateElapsedTime() {
 
-    return this.inUpdateElapsedTime;
-    } // getInUpdateElapsedTime
+		return this.inUpdateElapsedTime;
+	} // getInUpdateElapsedTime
 
-    /**
-     * This method sets the BGPEndpointStatistics.inUpdateElapsedTime property
-     * value. This property is described as follows:
-     *
-     * This defines the time in seconds since the last BGP UPDATE message was
-     * received from the peer. This has the semantics of a 32-bit gauge.
-     *
-     * @param	long	new inUpdateElapsedTime property value
-     * @exception	Exception
-     */
-    public void setInUpdateElapsedTime(long inUpdateElapsedTime) {
+	/**
+	 * This method sets the BGPEndpointStatistics.inUpdateElapsedTime property value. This property is described as follows:
+	 * 
+	 * This defines the time in seconds since the last BGP UPDATE message was received from the peer. This has the semantics of a 32-bit gauge.
+	 * 
+	 * @param long new inUpdateElapsedTime property value
+	 * @exception Exception
+	 */
+	public void setInUpdateElapsedTime(long inUpdateElapsedTime) {
 
-    this.inUpdateElapsedTime = inUpdateElapsedTime;
-    } // setInUpdateElapsedTime
-
-
+		this.inUpdateElapsedTime = inUpdateElapsedTime;
+	} // setInUpdateElapsedTime
 
 } // Class BGPEndpointStatistics

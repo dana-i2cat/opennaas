@@ -76,9 +76,13 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 	@Filter("(capability=monitoring)")
 	private ICapabilityFactory	monitoringFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
-    private BlueprintContainer roadmRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	private BlueprintContainer	roadmRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {

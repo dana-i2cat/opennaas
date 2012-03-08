@@ -8,41 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RoutersInBGPCluster as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RoutersInBGPClusterBean Interface. The CIM class RoutersInBGPCluster is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RoutersInBGPCluster as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the RoutersInBGPClusterBean Interface. The CIM class RoutersInBGPCluster is
  * described as follows:
- *
- * This aggregation establishes the routers (ComputerSystems) in a BGPCluster.
- * At least three routers are required to form a cluster - a reflector and
- * two clients. The routers that form a cluster share common configuration
- * information.
+ * 
+ * This aggregation establishes the routers (ComputerSystems) in a BGPCluster. At least three routers are required to form a cluster - a reflector and
+ * two clients. The routers that form a cluster share common configuration information.
  */
 public class RoutersInBGPCluster extends CollectedMSEs implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a RoutersInBGPClusterBeanImpl Class which
-     * implements the RoutersInBGPClusterBean Interface, and encapsulates the
-     * CIM class RoutersInBGPCluster in a Java Bean. The CIM class
-     * RoutersInBGPCluster is described as follows:
-     *
-     * This aggregation establishes the routers (ComputerSystems) in a
-     * BGPCluster. At least three routers are required to form a cluster - a
-     * reflector and two clients. The routers that form a cluster share
-     * common configuration information.
-     */
-    public RoutersInBGPCluster(){};
-    /**
-     * This method create an Association of the type RoutersInBGPCluster
-     * between one BGPCluster object and ComputerSystem object
-     */
-    public static RoutersInBGPCluster link(BGPCluster
-	collection,ComputerSystem member){
+	/**
+	 * This constructor creates a RoutersInBGPClusterBeanImpl Class which implements the RoutersInBGPClusterBean Interface, and encapsulates the CIM
+	 * class RoutersInBGPCluster in a Java Bean. The CIM class RoutersInBGPCluster is described as follows:
+	 * 
+	 * This aggregation establishes the routers (ComputerSystems) in a BGPCluster. At least three routers are required to form a cluster - a reflector
+	 * and two clients. The routers that form a cluster share common configuration information.
+	 */
+	public RoutersInBGPCluster() {
+	};
 
-    return (RoutersInBGPCluster)
-	Association.link(RoutersInBGPCluster.class,collection,member);
-    }//link
+	/**
+	 * This method create an Association of the type RoutersInBGPCluster between one BGPCluster object and ComputerSystem object
+	 */
+	public static RoutersInBGPCluster link(BGPCluster
+			collection, ComputerSystem member) {
+
+		return (RoutersInBGPCluster) Association.link(RoutersInBGPCluster.class, collection, member);
+	}// link
 
 } // Class RoutersInBGPCluster

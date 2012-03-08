@@ -9,80 +9,70 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class EntriesInFilterList as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * EntriesInFilterListBean Interface. The CIM class EntriesInFilterList is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class EntriesInFilterList as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the EntriesInFilterListBean Interface. The CIM class EntriesInFilterList is
  * described as follows:
- *
- * This is a specialization of the CIM_Component aggregation which is used to
- * define a set of filter entries (subclasses of FilterEntryBase) that are
+ * 
+ * This is a specialization of the CIM_Component aggregation which is used to define a set of filter entries (subclasses of FilterEntryBase) that are
  * aggregated by a particular FilterList.
  */
 public class EntriesInFilterList extends Component implements Serializable {
 
-    /**
-     * This constructor creates a EntriesInFilterListBeanImpl Class which
-     * implements the EntriesInFilterListBean Interface, and encapsulates the
-     * CIM class EntriesInFilterList in a Java Bean. The CIM class
-     * EntriesInFilterList is described as follows:
-     *
-     * This is a specialization of the CIM_Component aggregation which is used
-     * to define a set of filter entries (subclasses of FilterEntryBase) that
-     * are aggregated by a particular FilterList.
-     */
-    public EntriesInFilterList(){};
-    /**
-     * This method create an Association of the type EntriesInFilterList
-     * between one FilterList object and FilterEntryBase object
-     */
-    public static EntriesInFilterList link(FilterList
-	groupComponent,FilterEntryBase partComponent){
+	/**
+	 * This constructor creates a EntriesInFilterListBeanImpl Class which implements the EntriesInFilterListBean Interface, and encapsulates the CIM
+	 * class EntriesInFilterList in a Java Bean. The CIM class EntriesInFilterList is described as follows:
+	 * 
+	 * This is a specialization of the CIM_Component aggregation which is used to define a set of filter entries (subclasses of FilterEntryBase) that
+	 * are aggregated by a particular FilterList.
+	 */
+	public EntriesInFilterList() {
+	};
 
-    return (EntriesInFilterList)
-	Association.link(EntriesInFilterList.class,groupComponent,partComponent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EntrySequence.
-     */
+	/**
+	 * This method create an Association of the type EntriesInFilterList between one FilterList object and FilterEntryBase object
+	 */
+	public static EntriesInFilterList link(FilterList
+			groupComponent, FilterEntryBase partComponent) {
 
-    public enum EntrySequence{
-    _0
-    }
-    private EntrySequence entrySequence;
-    /**
-     * This method returns the EntriesInFilterList.entrySequence property
-     * value. This property is described as follows:
-     *
-     * The order of the Entry relative to all others in the FilterList. The
-     * only permissible value is zero - indicating that all the Entries are
-     * ANDed together.
-     *
-     * @return	int	current entrySequence property value
-     * @exception	Exception
-     */
-    public EntrySequence getEntrySequence(){
+		return (EntriesInFilterList) Association.link(EntriesInFilterList.class, groupComponent, partComponent);
+	}// link
 
-    return this.entrySequence;
-    } // getEntrySequence
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EntrySequence.
+	 */
 
-    /**
-     * This method sets the EntriesInFilterList.entrySequence property value.
-     * This property is described as follows:
-     *
-     * The order of the Entry relative to all others in the FilterList. The
-     * only permissible value is zero - indicating that all the Entries are
-     * ANDed together.
-     *
-     * @param	int	new entrySequence property value
-     * @exception	Exception
-     */
-    public void setEntrySequence(EntrySequence entrySequence){
+	public enum EntrySequence {
+		_0
+	}
 
-    this.entrySequence = entrySequence;
-    } // setEntrySequence
+	private EntrySequence	entrySequence;
 
+	/**
+	 * This method returns the EntriesInFilterList.entrySequence property value. This property is described as follows:
+	 * 
+	 * The order of the Entry relative to all others in the FilterList. The only permissible value is zero - indicating that all the Entries are ANDed
+	 * together.
+	 * 
+	 * @return int current entrySequence property value
+	 * @exception Exception
+	 */
+	public EntrySequence getEntrySequence() {
 
+		return this.entrySequence;
+	} // getEntrySequence
+
+	/**
+	 * This method sets the EntriesInFilterList.entrySequence property value. This property is described as follows:
+	 * 
+	 * The order of the Entry relative to all others in the FilterList. The only permissible value is zero - indicating that all the Entries are ANDed
+	 * together.
+	 * 
+	 * @param int new entrySequence property value
+	 * @exception Exception
+	 */
+	public void setEntrySequence(EntrySequence entrySequence) {
+
+		this.entrySequence = entrySequence;
+	} // setEntrySequence
 
 } // Class EntriesInFilterList

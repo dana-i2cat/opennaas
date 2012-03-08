@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedBGPAttributes as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedBGPAttributesBean Interface. The CIM class HostedBGPAttributes is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedBGPAttributes as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the HostedBGPAttributesBean Interface. The CIM class HostedBGPAttributes is
  * described as follows:
- *
- * The class BGPAttributes is weak to the AutonomousSystem that contains it.
- * This association formalizes that relationship.
+ * 
+ * The class BGPAttributes is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
  */
 public class HostedBGPAttributes extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedBGPAttributesBeanImpl Class which
-     * implements the HostedBGPAttributesBean Interface, and encapsulates the
-     * CIM class HostedBGPAttributes in a Java Bean. The CIM class
-     * HostedBGPAttributes is described as follows:
-     *
-     * The class BGPAttributes is weak to the AutonomousSystem that contains
-     * it. This association formalizes that relationship.
-     */
-    public HostedBGPAttributes(){};
-    /**
-     * This method create an Association of the type HostedBGPAttributes
-     * between one AutonomousSystem object and BGPAttributes object
-     */
-    public static HostedBGPAttributes link(AutonomousSystem
-	antecedent,BGPAttributes dependent){
+	/**
+	 * This constructor creates a HostedBGPAttributesBeanImpl Class which implements the HostedBGPAttributesBean Interface, and encapsulates the CIM
+	 * class HostedBGPAttributes in a Java Bean. The CIM class HostedBGPAttributes is described as follows:
+	 * 
+	 * The class BGPAttributes is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
+	 */
+	public HostedBGPAttributes() {
+	};
 
-    return (HostedBGPAttributes)
-	Association.link(HostedBGPAttributes.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedBGPAttributes between one AutonomousSystem object and BGPAttributes object
+	 */
+	public static HostedBGPAttributes link(AutonomousSystem
+			antecedent, BGPAttributes dependent) {
+
+		return (HostedBGPAttributes) Association.link(HostedBGPAttributes.class, antecedent, dependent);
+	}// link
 
 } // Class HostedBGPAttributes

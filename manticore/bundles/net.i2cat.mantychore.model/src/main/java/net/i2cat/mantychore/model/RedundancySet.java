@@ -9,423 +9,348 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RedundancySet as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RedundancySetBean Interface. The CIM class RedundancySet is described as
- * follows:
- *
- * A class derived from SystemSpecificCollection that is a special collection
- * of ManagedElements. This collection indicates that the aggregated elements
- * together provide redundancy, or that redundancy is provided via sparing.
- * All elements collected in a RedundancySet SHOULD be instantiations of the
- * same object class.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RedundancySet as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RedundancySetBean Interface. The CIM class RedundancySet is described as follows:
+ * 
+ * A class derived from SystemSpecificCollection that is a special collection of ManagedElements. This collection indicates that the aggregated
+ * elements together provide redundancy, or that redundancy is provided via sparing. All elements collected in a RedundancySet SHOULD be
+ * instantiations of the same object class.
  */
 public class RedundancySet extends SystemSpecificCollection implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a RedundancySetBeanImpl Class which implements
-     * the RedundancySetBean Interface, and encapsulates the CIM class
-     * RedundancySet in a Java Bean. The CIM class RedundancySet is described
-     * as follows:
-     *
-     * A class derived from SystemSpecificCollection that is a special
-     * collection of ManagedElements. This collection indicates that the
-     * aggregated elements together provide redundancy, or that redundancy is
-     * provided via sparing. All elements collected in a RedundancySet SHOULD
-     * be instantiations of the same object class.
-     */
-    public RedundancySet(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property RedundancyStatus.
-     */
+	/**
+	 * This constructor creates a RedundancySetBeanImpl Class which implements the RedundancySetBean Interface, and encapsulates the CIM class
+	 * RedundancySet in a Java Bean. The CIM class RedundancySet is described as follows:
+	 * 
+	 * A class derived from SystemSpecificCollection that is a special collection of ManagedElements. This collection indicates that the aggregated
+	 * elements together provide redundancy, or that redundancy is provided via sparing. All elements collected in a RedundancySet SHOULD be
+	 * instantiations of the same object class.
+	 */
+	public RedundancySet() {
+	};
 
-    public enum RedundancyStatus{
-    UNKNOWN,
-    DMTF_RESERVED,
-    FULLY_REDUNDANT,
-    DEGRADED_REDUNDANCY,
-    REDUNDANCY_LOST,
-    OVERALL_FAILURE
-    }
-    private RedundancyStatus redundancyStatus;
-    /**
-     * This method returns the RedundancySet.redundancyStatus property value.
-     * This property is described as follows:
-     *
-     * RedundancyStatus provides information on the state of the
-     * RedundancyGroup. 'Fully Redundant' (value=2) means that all of the
-     * configured redundancy is still available; 'Degraded Redundancy' (3)
-     * means that some configured elements are degraded, missing or failed
-     * but that the number of elements in the set is still greater than the
-     * minimum required ('MinNumberNeeded'); 'Redundancy Lost' (4) means that
-     * sufficient configured elements are missing or failed that no
-     * redundancy is available and the next failure experienced will cause
-     * overall failure. 'Overall Failure' (5) means that there has been an
-     * overall failure of the RedundancySet.
-     *
-     * @return	int	current redundancyStatus property value
-     * @exception	Exception
-     */
-    public RedundancyStatus getRedundancyStatus(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property RedundancyStatus.
+	 */
 
-    return this.redundancyStatus;
-    } // getRedundancyStatus
+	public enum RedundancyStatus {
+		UNKNOWN,
+		DMTF_RESERVED,
+		FULLY_REDUNDANT,
+		DEGRADED_REDUNDANCY,
+		REDUNDANCY_LOST,
+		OVERALL_FAILURE
+	}
 
-    /**
-     * This method sets the RedundancySet.redundancyStatus property value.
-     * This property is described as follows:
-     *
-     * RedundancyStatus provides information on the state of the
-     * RedundancyGroup. 'Fully Redundant' (value=2) means that all of the
-     * configured redundancy is still available; 'Degraded Redundancy' (3)
-     * means that some configured elements are degraded, missing or failed
-     * but that the number of elements in the set is still greater than the
-     * minimum required ('MinNumberNeeded'); 'Redundancy Lost' (4) means that
-     * sufficient configured elements are missing or failed that no
-     * redundancy is available and the next failure experienced will cause
-     * overall failure. 'Overall Failure' (5) means that there has been an
-     * overall failure of the RedundancySet.
-     *
-     * @param	int	new redundancyStatus property value
-     * @exception	Exception
-     */
-    public void setRedundancyStatus(RedundancyStatus redundancyStatus){
+	private RedundancyStatus	redundancyStatus;
 
-    this.redundancyStatus = redundancyStatus;
-    } // setRedundancyStatus
+	/**
+	 * This method returns the RedundancySet.redundancyStatus property value. This property is described as follows:
+	 * 
+	 * RedundancyStatus provides information on the state of the RedundancyGroup. 'Fully Redundant' (value=2) means that all of the configured
+	 * redundancy is still available; 'Degraded Redundancy' (3) means that some configured elements are degraded, missing or failed but that the
+	 * number of elements in the set is still greater than the minimum required ('MinNumberNeeded'); 'Redundancy Lost' (4) means that sufficient
+	 * configured elements are missing or failed that no redundancy is available and the next failure experienced will cause overall failure. 'Overall
+	 * Failure' (5) means that there has been an overall failure of the RedundancySet.
+	 * 
+	 * @return int current redundancyStatus property value
+	 * @exception Exception
+	 */
+	public RedundancyStatus getRedundancyStatus() {
 
+		return this.redundancyStatus;
+	} // getRedundancyStatus
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TypeOfSet.
-     */
+	/**
+	 * This method sets the RedundancySet.redundancyStatus property value. This property is described as follows:
+	 * 
+	 * RedundancyStatus provides information on the state of the RedundancyGroup. 'Fully Redundant' (value=2) means that all of the configured
+	 * redundancy is still available; 'Degraded Redundancy' (3) means that some configured elements are degraded, missing or failed but that the
+	 * number of elements in the set is still greater than the minimum required ('MinNumberNeeded'); 'Redundancy Lost' (4) means that sufficient
+	 * configured elements are missing or failed that no redundancy is available and the next failure experienced will cause overall failure. 'Overall
+	 * Failure' (5) means that there has been an overall failure of the RedundancySet.
+	 * 
+	 * @param int new redundancyStatus property value
+	 * @exception Exception
+	 */
+	public void setRedundancyStatus(RedundancyStatus redundancyStatus) {
 
-    public enum TypeOfSet{
-    UNKNOWN,
-    OTHER,
-    NPLUS1PLUS,
-    LOAD_BALANCED,
-    SPARING,
-    LIMITED_SPARING,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private TypeOfSet typeOfSet;
-    /**
-     * This method returns the RedundancySet.typeOfSet property value. This
-     * property is described as follows:
-     *
-     * TypeOfSet provides information on the type of redundancy. N+1 (=2)
-     * indicates all members are active, are unaware and function independent
-     * of one another. However, there exist at least one extra member to
-     * achieve functionality. 'Sparing' is implied (i.e. each member can be a
-     * spare for the other(s). An example of N+1 is a system that has 2 power
-     * supplies, but needs only 1 power supply to functioning properly. N+1
-     * is a special case of N+M redundancy where M=1. A value of N+1 (=2)
-     * shall be used for N+M redundancy. - Load Balanced (=3) indicates all
-     * members are active. However, there functionality is not independent of
-     * each other. Their functioning is determined by some sort of load
-     * balancing algrothim (implemented in hardware and/or software).
-     * 'Sparing' is implied (i.e. each member can be a spare for the
-     * other(s). - Sparing (=4) indicates that all members are active and are
-     * aware of each others. However, their functionality is independent
-     * until failover. Each member can be a spare for the other(s). - Limited
-     * Sparing (=5) indicates that all members are active, and they may or
-     * may not be aware of each and they are not spares for each other.
-     * Instead, their redundancy is indicated by the IsSpare relationship.
-     *
-     * @return	int	current typeOfSet property value
-     * @exception	Exception
-     */
-    public TypeOfSet getTypeOfSet(){
+		this.redundancyStatus = redundancyStatus;
+	} // setRedundancyStatus
 
-    return this.typeOfSet;
-    } // getTypeOfSet
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TypeOfSet.
+	 */
 
-    /**
-     * This method sets the RedundancySet.typeOfSet property value. This
-     * property is described as follows:
-     *
-     * TypeOfSet provides information on the type of redundancy. N+1 (=2)
-     * indicates all members are active, are unaware and function independent
-     * of one another. However, there exist at least one extra member to
-     * achieve functionality. 'Sparing' is implied (i.e. each member can be a
-     * spare for the other(s). An example of N+1 is a system that has 2 power
-     * supplies, but needs only 1 power supply to functioning properly. N+1
-     * is a special case of N+M redundancy where M=1. A value of N+1 (=2)
-     * shall be used for N+M redundancy. - Load Balanced (=3) indicates all
-     * members are active. However, there functionality is not independent of
-     * each other. Their functioning is determined by some sort of load
-     * balancing algrothim (implemented in hardware and/or software).
-     * 'Sparing' is implied (i.e. each member can be a spare for the
-     * other(s). - Sparing (=4) indicates that all members are active and are
-     * aware of each others. However, their functionality is independent
-     * until failover. Each member can be a spare for the other(s). - Limited
-     * Sparing (=5) indicates that all members are active, and they may or
-     * may not be aware of each and they are not spares for each other.
-     * Instead, their redundancy is indicated by the IsSpare relationship.
-     *
-     * @param	int	new typeOfSet property value
-     * @exception	Exception
-     */
-    public void setTypeOfSet(TypeOfSet typeOfSet){
+	public enum TypeOfSet {
+		UNKNOWN,
+		OTHER,
+		NPLUS1PLUS,
+		LOAD_BALANCED,
+		SPARING,
+		LIMITED_SPARING,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    this.typeOfSet = typeOfSet;
-    } // setTypeOfSet
+	private TypeOfSet	typeOfSet;
 
+	/**
+	 * This method returns the RedundancySet.typeOfSet property value. This property is described as follows:
+	 * 
+	 * TypeOfSet provides information on the type of redundancy. N+1 (=2) indicates all members are active, are unaware and function independent of
+	 * one another. However, there exist at least one extra member to achieve functionality. 'Sparing' is implied (i.e. each member can be a spare for
+	 * the other(s). An example of N+1 is a system that has 2 power supplies, but needs only 1 power supply to functioning properly. N+1 is a special
+	 * case of N+M redundancy where M=1. A value of N+1 (=2) shall be used for N+M redundancy. - Load Balanced (=3) indicates all members are active.
+	 * However, there functionality is not independent of each other. Their functioning is determined by some sort of load balancing algrothim
+	 * (implemented in hardware and/or software). 'Sparing' is implied (i.e. each member can be a spare for the other(s). - Sparing (=4) indicates
+	 * that all members are active and are aware of each others. However, their functionality is independent until failover. Each member can be a
+	 * spare for the other(s). - Limited Sparing (=5) indicates that all members are active, and they may or may not be aware of each and they are not
+	 * spares for each other. Instead, their redundancy is indicated by the IsSpare relationship.
+	 * 
+	 * @return int current typeOfSet property value
+	 * @exception Exception
+	 */
+	public TypeOfSet getTypeOfSet() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property minNumberNeeded.
-     */
-    private long minNumberNeeded;
-    /**
-     * This method returns the RedundancySet.minNumberNeeded property value.
-     * This property is described as follows:
-     *
-     * MinNumberNeeded indicates the smallest number of elements that MUST be
-     * operational in order to function. For example, in an N+1 redundancy
-     * relationship, the MinNumberNeeded property is set equal to N. In a
-     * 'LimitedSparing' environment, this property is meaningless and SHOULD
-     * be set to zero.
-     *
-     * @return	long	current minNumberNeeded property value
-     * @exception	Exception
-     */
-    public long getMinNumberNeeded(){
+		return this.typeOfSet;
+	} // getTypeOfSet
 
-    return this.minNumberNeeded;
-    } // getMinNumberNeeded
+	/**
+	 * This method sets the RedundancySet.typeOfSet property value. This property is described as follows:
+	 * 
+	 * TypeOfSet provides information on the type of redundancy. N+1 (=2) indicates all members are active, are unaware and function independent of
+	 * one another. However, there exist at least one extra member to achieve functionality. 'Sparing' is implied (i.e. each member can be a spare for
+	 * the other(s). An example of N+1 is a system that has 2 power supplies, but needs only 1 power supply to functioning properly. N+1 is a special
+	 * case of N+M redundancy where M=1. A value of N+1 (=2) shall be used for N+M redundancy. - Load Balanced (=3) indicates all members are active.
+	 * However, there functionality is not independent of each other. Their functioning is determined by some sort of load balancing algrothim
+	 * (implemented in hardware and/or software). 'Sparing' is implied (i.e. each member can be a spare for the other(s). - Sparing (=4) indicates
+	 * that all members are active and are aware of each others. However, their functionality is independent until failover. Each member can be a
+	 * spare for the other(s). - Limited Sparing (=5) indicates that all members are active, and they may or may not be aware of each and they are not
+	 * spares for each other. Instead, their redundancy is indicated by the IsSpare relationship.
+	 * 
+	 * @param int new typeOfSet property value
+	 * @exception Exception
+	 */
+	public void setTypeOfSet(TypeOfSet typeOfSet) {
 
-    /**
-     * This method sets the RedundancySet.minNumberNeeded property value. This
-     * property is described as follows:
-     *
-     * MinNumberNeeded indicates the smallest number of elements that MUST be
-     * operational in order to function. For example, in an N+1 redundancy
-     * relationship, the MinNumberNeeded property is set equal to N. In a
-     * 'LimitedSparing' environment, this property is meaningless and SHOULD
-     * be set to zero.
-     *
-     * @param	long	new minNumberNeeded property value
-     * @exception	Exception
-     */
-    public void setMinNumberNeeded(long minNumberNeeded) {
+		this.typeOfSet = typeOfSet;
+	} // setTypeOfSet
 
-    this.minNumberNeeded = minNumberNeeded;
-    } // setMinNumberNeeded
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property minNumberNeeded.
+	 */
+	private long	minNumberNeeded;
 
+	/**
+	 * This method returns the RedundancySet.minNumberNeeded property value. This property is described as follows:
+	 * 
+	 * MinNumberNeeded indicates the smallest number of elements that MUST be operational in order to function. For example, in an N+1 redundancy
+	 * relationship, the MinNumberNeeded property is set equal to N. In a 'LimitedSparing' environment, this property is meaningless and SHOULD be set
+	 * to zero.
+	 * 
+	 * @return long current minNumberNeeded property value
+	 * @exception Exception
+	 */
+	public long getMinNumberNeeded() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property maxNumberSupported.
-     */
-    private long maxNumberSupported;
-    /**
-     * This method returns the RedundancySet.maxNumberSupported property
-     * value. This property is described as follows:
-     *
-     * MaxNumberSupported indicates the largest number of elements that can
-     * participate in the RedundancySet. A value of 0 indicates there is no
-     * limit on the number of elements.
-     *
-     * @return	long	current maxNumberSupported property value
-     * @exception	Exception
-     */
-    public long getMaxNumberSupported(){
+		return this.minNumberNeeded;
+	} // getMinNumberNeeded
 
-    return this.maxNumberSupported;
-    } // getMaxNumberSupported
+	/**
+	 * This method sets the RedundancySet.minNumberNeeded property value. This property is described as follows:
+	 * 
+	 * MinNumberNeeded indicates the smallest number of elements that MUST be operational in order to function. For example, in an N+1 redundancy
+	 * relationship, the MinNumberNeeded property is set equal to N. In a 'LimitedSparing' environment, this property is meaningless and SHOULD be set
+	 * to zero.
+	 * 
+	 * @param long new minNumberNeeded property value
+	 * @exception Exception
+	 */
+	public void setMinNumberNeeded(long minNumberNeeded) {
 
-    /**
-     * This method sets the RedundancySet.maxNumberSupported property value.
-     * This property is described as follows:
-     *
-     * MaxNumberSupported indicates the largest number of elements that can
-     * participate in the RedundancySet. A value of 0 indicates there is no
-     * limit on the number of elements.
-     *
-     * @param	long	new maxNumberSupported property value
-     * @exception	Exception
-     */
-    public void setMaxNumberSupported(long maxNumberSupported) {
+		this.minNumberNeeded = minNumberNeeded;
+	} // setMinNumberNeeded
 
-    this.maxNumberSupported = maxNumberSupported;
-    } // setMaxNumberSupported
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property maxNumberSupported.
+	 */
+	private long	maxNumberSupported;
 
+	/**
+	 * This method returns the RedundancySet.maxNumberSupported property value. This property is described as follows:
+	 * 
+	 * MaxNumberSupported indicates the largest number of elements that can participate in the RedundancySet. A value of 0 indicates there is no limit
+	 * on the number of elements.
+	 * 
+	 * @return long current maxNumberSupported property value
+	 * @exception Exception
+	 */
+	public long getMaxNumberSupported() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property vendorIdentifyingInfo.
-     */
-    private String vendorIdentifyingInfo;
-    /**
-     * This method returns the RedundancySet.vendorIdentifyingInfo property
-     * value. This property is described as follows:
-     *
-     * VendorIdentifyingInfo captures the vendor identifying data for the
-     * RedundancySet. One example is the product name for a cluster.
-     *
-     * @return	String	current vendorIdentifyingInfo property
-     * value
-     * @exception	Exception
-     */
-    public String getVendorIdentifyingInfo(){
+		return this.maxNumberSupported;
+	} // getMaxNumberSupported
 
-    return this.vendorIdentifyingInfo;
-    } // getVendorIdentifyingInfo
+	/**
+	 * This method sets the RedundancySet.maxNumberSupported property value. This property is described as follows:
+	 * 
+	 * MaxNumberSupported indicates the largest number of elements that can participate in the RedundancySet. A value of 0 indicates there is no limit
+	 * on the number of elements.
+	 * 
+	 * @param long new maxNumberSupported property value
+	 * @exception Exception
+	 */
+	public void setMaxNumberSupported(long maxNumberSupported) {
 
-    /**
-     * This method sets the RedundancySet.vendorIdentifyingInfo property
-     * value. This property is described as follows:
-     *
-     * VendorIdentifyingInfo captures the vendor identifying data for the
-     * RedundancySet. One example is the product name for a cluster.
-     *
-     * @param	String	new vendorIdentifyingInfo property value
-     * @exception	Exception
-     */
-    public void setVendorIdentifyingInfo(String vendorIdentifyingInfo) {
+		this.maxNumberSupported = maxNumberSupported;
+	} // setMaxNumberSupported
 
-    this.vendorIdentifyingInfo = vendorIdentifyingInfo;
-    } // setVendorIdentifyingInfo
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property vendorIdentifyingInfo.
+	 */
+	private String	vendorIdentifyingInfo;
 
+	/**
+	 * This method returns the RedundancySet.vendorIdentifyingInfo property value. This property is described as follows:
+	 * 
+	 * VendorIdentifyingInfo captures the vendor identifying data for the RedundancySet. One example is the product name for a cluster.
+	 * 
+	 * @return String current vendorIdentifyingInfo property value
+	 * @exception Exception
+	 */
+	public String getVendorIdentifyingInfo() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherTypeOfSet.
-     */
-    private String[] otherTypeOfSet;
-    /**
-     * This method returns the RedundancySet.otherTypeOfSet property value.
-     * This property is described as follows:
-     *
-     * When the corresponding array entry in TypeOfSet[] is 'Other', this
-     * entry provides a string describing the type of set.
-     *
-     * @return	String[]	current otherTypeOfSet property value
-     * @exception	Exception
-     */
-    public String[] getOtherTypeOfSet(){
+		return this.vendorIdentifyingInfo;
+	} // getVendorIdentifyingInfo
 
-    return this.otherTypeOfSet;
-    } // getOtherTypeOfSet
+	/**
+	 * This method sets the RedundancySet.vendorIdentifyingInfo property value. This property is described as follows:
+	 * 
+	 * VendorIdentifyingInfo captures the vendor identifying data for the RedundancySet. One example is the product name for a cluster.
+	 * 
+	 * @param String
+	 *            new vendorIdentifyingInfo property value
+	 * @exception Exception
+	 */
+	public void setVendorIdentifyingInfo(String vendorIdentifyingInfo) {
 
-    /**
-     * This method sets the RedundancySet.otherTypeOfSet property value. This
-     * property is described as follows:
-     *
-     * When the corresponding array entry in TypeOfSet[] is 'Other', this
-     * entry provides a string describing the type of set.
-     *
-     * @param	String[]	new otherTypeOfSet property value
-     * @exception	Exception
-     */
-    public void setOtherTypeOfSet(String[] otherTypeOfSet) {
+		this.vendorIdentifyingInfo = vendorIdentifyingInfo;
+	} // setVendorIdentifyingInfo
 
-    this.otherTypeOfSet = otherTypeOfSet;
-    } // setOtherTypeOfSet
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherTypeOfSet.
+	 */
+	private String[]	otherTypeOfSet;
 
+	/**
+	 * This method returns the RedundancySet.otherTypeOfSet property value. This property is described as follows:
+	 * 
+	 * When the corresponding array entry in TypeOfSet[] is 'Other', this entry provides a string describing the type of set.
+	 * 
+	 * @return String[] current otherTypeOfSet property value
+	 * @exception Exception
+	 */
+	public String[] getOtherTypeOfSet() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property LoadBalanceAlgorithm.
-     */
+		return this.otherTypeOfSet;
+	} // getOtherTypeOfSet
 
-    public enum LoadBalanceAlgorithm{
-    UNKNOWN,
-    OTHER,
-    NO_LOAD_BALANCING,
-    ROUND_ROBIN,
-    LEAST_BLOCKS,
-    LEAST_IO,
-    ADDRESS_REGION,
-    PRODUCT_SPECIFIC
-    }
-    private LoadBalanceAlgorithm loadBalanceAlgorithm;
-    /**
-     * This method returns the RedundancySet.loadBalanceAlgorithm property
-     * value. This property is described as follows:
-     *
-     * The current load balance algorithm. Least Blocks, Least IO, and Address
-     * Region are used in storage device path redundancy drivers to optimize
-     * load balancing by routing requests to a path with the least queued
-     * blocks or IO requests, or based on locality of reference. 'Product
-     * Specific' indicates that the algorithm is optimized for a particular
-     * type of product. Information about that product SHOULD be provided in
-     * an associated CIM_Product instance.
-     *
-     * @return	int	current loadBalanceAlgorithm property value
-     * @exception	Exception
-     */
-    public LoadBalanceAlgorithm getLoadBalanceAlgorithm(){
+	/**
+	 * This method sets the RedundancySet.otherTypeOfSet property value. This property is described as follows:
+	 * 
+	 * When the corresponding array entry in TypeOfSet[] is 'Other', this entry provides a string describing the type of set.
+	 * 
+	 * @param String
+	 *            [] new otherTypeOfSet property value
+	 * @exception Exception
+	 */
+	public void setOtherTypeOfSet(String[] otherTypeOfSet) {
 
-    return this.loadBalanceAlgorithm;
-    } // getLoadBalanceAlgorithm
+		this.otherTypeOfSet = otherTypeOfSet;
+	} // setOtherTypeOfSet
 
-    /**
-     * This method sets the RedundancySet.loadBalanceAlgorithm property value.
-     * This property is described as follows:
-     *
-     * The current load balance algorithm. Least Blocks, Least IO, and Address
-     * Region are used in storage device path redundancy drivers to optimize
-     * load balancing by routing requests to a path with the least queued
-     * blocks or IO requests, or based on locality of reference. 'Product
-     * Specific' indicates that the algorithm is optimized for a particular
-     * type of product. Information about that product SHOULD be provided in
-     * an associated CIM_Product instance.
-     *
-     * @param	int	new loadBalanceAlgorithm property value
-     * @exception	Exception
-     */
-    public void setLoadBalanceAlgorithm(LoadBalanceAlgorithm
-	loadBalanceAlgorithm){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property LoadBalanceAlgorithm.
+	 */
 
-    this.loadBalanceAlgorithm = loadBalanceAlgorithm;
-    } // setLoadBalanceAlgorithm
+	public enum LoadBalanceAlgorithm {
+		UNKNOWN,
+		OTHER,
+		NO_LOAD_BALANCING,
+		ROUND_ROBIN,
+		LEAST_BLOCKS,
+		LEAST_IO,
+		ADDRESS_REGION,
+		PRODUCT_SPECIFIC
+	}
 
+	private LoadBalanceAlgorithm	loadBalanceAlgorithm;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherLoadBalanceAlgorithm.
-     */
-    private String otherLoadBalanceAlgorithm;
-    /**
-     * This method returns the RedundancySet.otherLoadBalanceAlgorithm
-     * property value. This property is described as follows:
-     *
-     * When LoadBalanceAlgorithm is Other, this property describes the
-     * algorithm.
-     *
-     * @return	String	current otherLoadBalanceAlgorithm property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherLoadBalanceAlgorithm(){
+	/**
+	 * This method returns the RedundancySet.loadBalanceAlgorithm property value. This property is described as follows:
+	 * 
+	 * The current load balance algorithm. Least Blocks, Least IO, and Address Region are used in storage device path redundancy drivers to optimize
+	 * load balancing by routing requests to a path with the least queued blocks or IO requests, or based on locality of reference. 'Product Specific'
+	 * indicates that the algorithm is optimized for a particular type of product. Information about that product SHOULD be provided in an associated
+	 * CIM_Product instance.
+	 * 
+	 * @return int current loadBalanceAlgorithm property value
+	 * @exception Exception
+	 */
+	public LoadBalanceAlgorithm getLoadBalanceAlgorithm() {
 
-    return this.otherLoadBalanceAlgorithm;
-    } // getOtherLoadBalanceAlgorithm
+		return this.loadBalanceAlgorithm;
+	} // getLoadBalanceAlgorithm
 
-    /**
-     * This method sets the RedundancySet.otherLoadBalanceAlgorithm property
-     * value. This property is described as follows:
-     *
-     * When LoadBalanceAlgorithm is Other, this property describes the
-     * algorithm.
-     *
-     * @param	String	new otherLoadBalanceAlgorithm property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherLoadBalanceAlgorithm(String otherLoadBalanceAlgorithm)
+	/**
+	 * This method sets the RedundancySet.loadBalanceAlgorithm property value. This property is described as follows:
+	 * 
+	 * The current load balance algorithm. Least Blocks, Least IO, and Address Region are used in storage device path redundancy drivers to optimize
+	 * load balancing by routing requests to a path with the least queued blocks or IO requests, or based on locality of reference. 'Product Specific'
+	 * indicates that the algorithm is optimized for a particular type of product. Information about that product SHOULD be provided in an associated
+	 * CIM_Product instance.
+	 * 
+	 * @param int new loadBalanceAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setLoadBalanceAlgorithm(LoadBalanceAlgorithm
+			loadBalanceAlgorithm) {
+
+		this.loadBalanceAlgorithm = loadBalanceAlgorithm;
+	} // setLoadBalanceAlgorithm
+
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherLoadBalanceAlgorithm.
+	 */
+	private String	otherLoadBalanceAlgorithm;
+
+	/**
+	 * This method returns the RedundancySet.otherLoadBalanceAlgorithm property value. This property is described as follows:
+	 * 
+	 * When LoadBalanceAlgorithm is Other, this property describes the algorithm.
+	 * 
+	 * @return String current otherLoadBalanceAlgorithm property value
+	 * @exception Exception
+	 */
+	public String getOtherLoadBalanceAlgorithm() {
+
+		return this.otherLoadBalanceAlgorithm;
+	} // getOtherLoadBalanceAlgorithm
+
+	/**
+	 * This method sets the RedundancySet.otherLoadBalanceAlgorithm property value. This property is described as follows:
+	 * 
+	 * When LoadBalanceAlgorithm is Other, this property describes the algorithm.
+	 * 
+	 * @param String
+	 *            new otherLoadBalanceAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherLoadBalanceAlgorithm(String otherLoadBalanceAlgorithm)
 	{
 
-    this.otherLoadBalanceAlgorithm = otherLoadBalanceAlgorithm;
-    } // setOtherLoadBalanceAlgorithm
-
-
+		this.otherLoadBalanceAlgorithm = otherLoadBalanceAlgorithm;
+	} // setOtherLoadBalanceAlgorithm
 
 } // Class RedundancySet

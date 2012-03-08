@@ -1,5 +1,8 @@
 package net.i2cat.luminis.protocols.wonesys.listeners;
 
+import java.util.concurrent.CountDownLatch;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+
 import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
 
@@ -12,16 +15,15 @@ import org.osgi.service.event.Event;
  * @author isart
  *
  */
-public class CommandResponseListener extends Thread implements ITransportListener {
+public class CommandResponseListener implements ITransportListener
+{
+	private final static Log 		log =
+		LogFactory.getLog(CommandResponseListener.class);
 
-	Log						log			= LogFactory.getLog(CommandResponseListener.class);
+	private final	CountDownLatch	latch = new CountDownLatch(1);
+	private final	String			commandId;
+	private 		String			response;
 
-	private String			commandId;
-	private String			response	= null;
-
-	private final Object	lock		= new Object();
-
-	boolean					shouldStop	= false;
 
 	public CommandResponseListener(String sentMessage) {
 		commandId = getCommandId(sentMessage);
@@ -66,43 +68,18 @@ public class CommandResponseListener extends Thread implements ITransportListene
 					if (getCommandId(message).equalsIgnoreCase(commandId) || isError(message)) {
 						log.info("Response received: " + message);
 						response = message;
-						synchronized (this) {
-							notifyAll();
-						}
+						latch.countDown();
 					}
 				}
 			}
 		}
 	}
 
-	@Override
-	public void run() {
+	public String getResponse(long timeout)
+		throws InterruptedException
+	{
+		latch.await(timeout, MILLISECONDS);
 
-		while (!shouldStop) {
-			waitForEvents();
-		}
-
+		return (response == null) ? null : response.toString();
 	}
-
-	public void waitForEvents() {
-		try {
-			synchronized (this) {
-				wait();
-			}
-		} catch (InterruptedException e) {
-			// nothing to do, just stop waiting
-		}
-	}
-
-	public void cancel() {
-		shouldStop = true;
-	}
-
-	public String getResponse() {
-		if (response == null)
-			return null;
-
-		return response.toString();
-	}
-
 }

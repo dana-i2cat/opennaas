@@ -8,27 +8,21 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TimeService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * TimeServiceBean Interface. The CIM class TimeService is described as
- * follows:
- *
- * The TimeService manages time (retrieves or sets time) for one or more
- * elements in a system. All elements to which the Service applies are
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TimeService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the TimeServiceBean Interface. The CIM class TimeService is described as follows:
+ * 
+ * The TimeService manages time (retrieves or sets time) for one or more elements in a system. All elements to which the Service applies are
  * associated using ServiceAffectsElement.
  */
 public class TimeService extends Service implements Serializable {
 
-    /**
-     * This constructor creates a TimeServiceBeanImpl Class which implements
-     * the TimeServiceBean Interface, and encapsulates the CIM class
-     * TimeService in a Java Bean. The CIM class TimeService is described as
-     * follows:
-     *
-     * The TimeService manages time (retrieves or sets time) for one or more
-     * elements in a system. All elements to which the Service applies are
-     * associated using ServiceAffectsElement.
-     */
-    public TimeService(){};
+	/**
+	 * This constructor creates a TimeServiceBeanImpl Class which implements the TimeServiceBean Interface, and encapsulates the CIM class TimeService
+	 * in a Java Bean. The CIM class TimeService is described as follows:
+	 * 
+	 * The TimeService manages time (retrieves or sets time) for one or more elements in a system. All elements to which the Service applies are
+	 * associated using ServiceAffectsElement.
+	 */
+	public TimeService() {
+	};
 } // Class TimeService

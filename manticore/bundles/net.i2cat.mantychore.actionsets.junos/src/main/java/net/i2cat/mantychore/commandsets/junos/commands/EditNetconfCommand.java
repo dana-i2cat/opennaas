@@ -5,13 +5,18 @@ import net.i2cat.netconf.rpc.QueryFactory;
 
 public class EditNetconfCommand extends JunosCommand {
 
-	private final String	target				= "candidate";
-	private final String	defaultOperation	= null;
-	private final String	testOption			= null;
-	private final String	errorOption			= null;
+	private String	target				= "candidate";
+	private String	defaultOperation	= null;
+	private String	testOption			= null;
+	private String	errorOption			= null;
 
 	public EditNetconfCommand(String netconfXML) {
 		super(CommandNetconfConstants.EDIT, netconfXML);
+	}
+
+	public EditNetconfCommand(String netconfXML, String defaultOperation) {
+		super(CommandNetconfConstants.EDIT, netconfXML);
+		this.defaultOperation = defaultOperation;
 	}
 
 	@Override

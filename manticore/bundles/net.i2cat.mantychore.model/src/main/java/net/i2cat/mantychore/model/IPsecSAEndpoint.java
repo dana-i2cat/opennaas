@@ -9,224 +9,196 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class IPsecSAEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * IPsecSAEndpointBean Interface. The CIM class IPsecSAEndpoint is described
- * as follows:
- *
- * IPsecSAEndpoints are types of SecurityAssociationEndpoints representing
- * both negotiated and static SAs that correspond to AH, ESP, or IPCOMP
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class IPsecSAEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the IPsecSAEndpointBean Interface. The CIM class IPsecSAEndpoint is described as
+ * follows:
+ * 
+ * IPsecSAEndpoints are types of SecurityAssociationEndpoints representing both negotiated and static SAs that correspond to AH, ESP, or IPCOMP
  * transforms.
  */
 public class IPsecSAEndpoint extends SecurityAssociationEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a IPsecSAEndpointBeanImpl Class which
-     * implements the IPsecSAEndpointBean Interface, and encapsulates the CIM
-     * class IPsecSAEndpoint in a Java Bean. The CIM class IPsecSAEndpoint is
-     * described as follows:
-     *
-     * IPsecSAEndpoints are types of SecurityAssociationEndpoints representing
-     * both negotiated and static SAs that correspond to AH, ESP, or IPCOMP
-     * transforms.
-     */
-    public IPsecSAEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sPI.
-     */
-    private long sPI;
-    /**
-     * This method returns the IPsecSAEndpoint.sPI property value. This
-     * property is described as follows:
-     *
-     * SPI contains the Security Parameter Index of the SA. This value in
-     * string form may also be used in the key field 'Name' inherited from
-     * ServiceAccessPoint.
-     *
-     * @return	long	current sPI property value
-     * @exception	Exception
-     */
-    public long getSPI(){
+	/**
+	 * This constructor creates a IPsecSAEndpointBeanImpl Class which implements the IPsecSAEndpointBean Interface, and encapsulates the CIM class
+	 * IPsecSAEndpoint in a Java Bean. The CIM class IPsecSAEndpoint is described as follows:
+	 * 
+	 * IPsecSAEndpoints are types of SecurityAssociationEndpoints representing both negotiated and static SAs that correspond to AH, ESP, or IPCOMP
+	 * transforms.
+	 */
+	public IPsecSAEndpoint() {
+	};
 
-    return this.sPI;
-    } // getSPI
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sPI.
+	 */
+	private long	sPI;
 
-    /**
-     * This method sets the IPsecSAEndpoint.sPI property value. This property
-     * is described as follows:
-     *
-     * SPI contains the Security Parameter Index of the SA. This value in
-     * string form may also be used in the key field 'Name' inherited from
-     * ServiceAccessPoint.
-     *
-     * @param	long	new sPI property value
-     * @exception	Exception
-     */
-    public void setSPI(long sPI) {
+	/**
+	 * This method returns the IPsecSAEndpoint.sPI property value. This property is described as follows:
+	 * 
+	 * SPI contains the Security Parameter Index of the SA. This value in string form may also be used in the key field 'Name' inherited from
+	 * ServiceAccessPoint.
+	 * 
+	 * @return long current sPI property value
+	 * @exception Exception
+	 */
+	public long getSPI() {
 
-    this.sPI = sPI;
-    } // setSPI
+		return this.sPI;
+	} // getSPI
 
+	/**
+	 * This method sets the IPsecSAEndpoint.sPI property value. This property is described as follows:
+	 * 
+	 * SPI contains the Security Parameter Index of the SA. This value in string form may also be used in the key field 'Name' inherited from
+	 * ServiceAccessPoint.
+	 * 
+	 * @param long new sPI property value
+	 * @exception Exception
+	 */
+	public void setSPI(long sPI) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property inboundDirection.
-     */
-    private boolean inboundDirection;
-    /**
-     * This method returns the IPsecSAEndpoint.inboundDirection property
-     * value. This property is described as follows:
-     *
-     * InboundDirection specifies whether the SA applies to inbound (TRUE) or
-     * outbound (FALSE) traffic.
-     *
-     * @return	boolean	current inboundDirection property value
-     * @exception	Exception
-     */
-    public boolean isInboundDirection(){
+		this.sPI = sPI;
+	} // setSPI
 
-    return this.inboundDirection;
-    } // getInboundDirection
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property inboundDirection.
+	 */
+	private boolean	inboundDirection;
 
-    /**
-     * This method sets the IPsecSAEndpoint.inboundDirection property value.
-     * This property is described as follows:
-     *
-     * InboundDirection specifies whether the SA applies to inbound (TRUE) or
-     * outbound (FALSE) traffic.
-     *
-     * @param	boolean	new inboundDirection property value
-     * @exception	Exception
-     */
-    public void setInboundDirection(boolean inboundDirection) {
+	/**
+	 * This method returns the IPsecSAEndpoint.inboundDirection property value. This property is described as follows:
+	 * 
+	 * InboundDirection specifies whether the SA applies to inbound (TRUE) or outbound (FALSE) traffic.
+	 * 
+	 * @return boolean current inboundDirection property value
+	 * @exception Exception
+	 */
+	public boolean isInboundDirection() {
 
-    this.inboundDirection = inboundDirection;
-    } // setInboundDirection
+		return this.inboundDirection;
+	} // getInboundDirection
 
+	/**
+	 * This method sets the IPsecSAEndpoint.inboundDirection property value. This property is described as follows:
+	 * 
+	 * InboundDirection specifies whether the SA applies to inbound (TRUE) or outbound (FALSE) traffic.
+	 * 
+	 * @param boolean new inboundDirection property value
+	 * @exception Exception
+	 */
+	public void setInboundDirection(boolean inboundDirection) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EncapsulationMode.
-     */
+		this.inboundDirection = inboundDirection;
+	} // setInboundDirection
 
-    public enum EncapsulationMode{
-    UNKNOWN,
-    TUNNEL,
-    TRANSPORT
-    }
-    private EncapsulationMode encapsulationMode;
-    /**
-     * This method returns the IPsecSAEndpoint.encapsulationMode property
-     * value. This property is described as follows:
-     *
-     * EncapsulationMode indicates whether the IPsecSAEndpoint uses transport
-     * or tunnel encapsulation.
-     *
-     * @return	int	current encapsulationMode property value
-     * @exception	Exception
-     */
-    public EncapsulationMode getEncapsulationMode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EncapsulationMode.
+	 */
 
-    return this.encapsulationMode;
-    } // getEncapsulationMode
+	public enum EncapsulationMode {
+		UNKNOWN,
+		TUNNEL,
+		TRANSPORT
+	}
 
-    /**
-     * This method sets the IPsecSAEndpoint.encapsulationMode property value.
-     * This property is described as follows:
-     *
-     * EncapsulationMode indicates whether the IPsecSAEndpoint uses transport
-     * or tunnel encapsulation.
-     *
-     * @param	int	new encapsulationMode property value
-     * @exception	Exception
-     */
-    public void setEncapsulationMode(EncapsulationMode encapsulationMode){
+	private EncapsulationMode	encapsulationMode;
 
-    this.encapsulationMode = encapsulationMode;
-    } // setEncapsulationMode
+	/**
+	 * This method returns the IPsecSAEndpoint.encapsulationMode property value. This property is described as follows:
+	 * 
+	 * EncapsulationMode indicates whether the IPsecSAEndpoint uses transport or tunnel encapsulation.
+	 * 
+	 * @return int current encapsulationMode property value
+	 * @exception Exception
+	 */
+	public EncapsulationMode getEncapsulationMode() {
 
+		return this.encapsulationMode;
+	} // getEncapsulationMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DFHandling.
-     */
+	/**
+	 * This method sets the IPsecSAEndpoint.encapsulationMode property value. This property is described as follows:
+	 * 
+	 * EncapsulationMode indicates whether the IPsecSAEndpoint uses transport or tunnel encapsulation.
+	 * 
+	 * @param int new encapsulationMode property value
+	 * @exception Exception
+	 */
+	public void setEncapsulationMode(EncapsulationMode encapsulationMode) {
 
-    public enum DFHandling{
-    UNKNOWN,
-    COPY_FROM_INTERNAL_TO_EXTERNAL_IP_HEADER,
-    SET_DF_BIT_IN_EXTERNAL_HEADER_TO_1,
-    SET_DF_BIT_IN_EXTERNAL_HEADER_TO_0
-    }
-    private DFHandling dFHandling;
-    /**
-     * This method returns the IPsecSAEndpoint.dFHandling property value. This
-     * property is described as follows:
-     *
-     * DFHandling controls how the 'Don't Fragment' bit is managed by the
-     * IPsecSAEndpoint.
-     *
-     * @return	int	current dFHandling property value
-     * @exception	Exception
-     */
-    public DFHandling getDFHandling(){
+		this.encapsulationMode = encapsulationMode;
+	} // setEncapsulationMode
 
-    return this.dFHandling;
-    } // getDFHandling
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DFHandling.
+	 */
 
-    /**
-     * This method sets the IPsecSAEndpoint.dFHandling property value. This
-     * property is described as follows:
-     *
-     * DFHandling controls how the 'Don't Fragment' bit is managed by the
-     * IPsecSAEndpoint.
-     *
-     * @param	int	new dFHandling property value
-     * @exception	Exception
-     */
-    public void setDFHandling(DFHandling dFHandling){
+	public enum DFHandling {
+		UNKNOWN,
+		COPY_FROM_INTERNAL_TO_EXTERNAL_IP_HEADER,
+		SET_DF_BIT_IN_EXTERNAL_HEADER_TO_1,
+		SET_DF_BIT_IN_EXTERNAL_HEADER_TO_0
+	}
 
-    this.dFHandling = dFHandling;
-    } // setDFHandling
+	private DFHandling	dFHandling;
 
+	/**
+	 * This method returns the IPsecSAEndpoint.dFHandling property value. This property is described as follows:
+	 * 
+	 * DFHandling controls how the 'Don't Fragment' bit is managed by the IPsecSAEndpoint.
+	 * 
+	 * @return int current dFHandling property value
+	 * @exception Exception
+	 */
+	public DFHandling getDFHandling() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pFSInUse.
-     */
-    private boolean pFSInUse;
-    /**
-     * This method returns the IPsecSAEndpoint.pFSInUse property value. This
-     * property is described as follows:
-     *
-     * PFSInUse indicates whether perfect forward secrecy is required when
-     * refreshing keys.
-     *
-     * @return	boolean	current pFSInUse property value
-     * @exception	Exception
-     */
-    public boolean isPFSInUse(){
+		return this.dFHandling;
+	} // getDFHandling
 
-    return this.pFSInUse;
-    } // getPFSInUse
+	/**
+	 * This method sets the IPsecSAEndpoint.dFHandling property value. This property is described as follows:
+	 * 
+	 * DFHandling controls how the 'Don't Fragment' bit is managed by the IPsecSAEndpoint.
+	 * 
+	 * @param int new dFHandling property value
+	 * @exception Exception
+	 */
+	public void setDFHandling(DFHandling dFHandling) {
 
-    /**
-     * This method sets the IPsecSAEndpoint.pFSInUse property value. This
-     * property is described as follows:
-     *
-     * PFSInUse indicates whether perfect forward secrecy is required when
-     * refreshing keys.
-     *
-     * @param	boolean	new pFSInUse property value
-     * @exception	Exception
-     */
-    public void setPFSInUse(boolean pFSInUse) {
+		this.dFHandling = dFHandling;
+	} // setDFHandling
 
-    this.pFSInUse = pFSInUse;
-    } // setPFSInUse
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pFSInUse.
+	 */
+	private boolean	pFSInUse;
 
+	/**
+	 * This method returns the IPsecSAEndpoint.pFSInUse property value. This property is described as follows:
+	 * 
+	 * PFSInUse indicates whether perfect forward secrecy is required when refreshing keys.
+	 * 
+	 * @return boolean current pFSInUse property value
+	 * @exception Exception
+	 */
+	public boolean isPFSInUse() {
 
+		return this.pFSInUse;
+	} // getPFSInUse
+
+	/**
+	 * This method sets the IPsecSAEndpoint.pFSInUse property value. This property is described as follows:
+	 * 
+	 * PFSInUse indicates whether perfect forward secrecy is required when refreshing keys.
+	 * 
+	 * @param boolean new pFSInUse property value
+	 * @exception Exception
+	 */
+	public void setPFSInUse(boolean pFSInUse) {
+
+		this.pFSInUse = pFSInUse;
+	} // setPFSInUse
 
 } // Class IPsecSAEndpoint
