@@ -2,6 +2,8 @@ package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
@@ -15,7 +17,6 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.OSPFAreaConfiguration;
 import net.i2cat.mantychore.model.OSPFProtocolEndpointBase;
 import net.i2cat.mantychore.model.OSPFService;
@@ -191,30 +192,25 @@ public class GetOSPFConfigAction extends JunosAction {
 	}
 
 	public void prepareMessage() throws ActionException {
+
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		checkParams(params);
+
+		if (!checkParams(params)) {
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		}
+
+		String elementName = "";
+		if (((ComputerSystem) modelToUpdate).getElementName() != null) {
+			// is logicalRouter, add LRName param
+			elementName = ((ComputerSystem) modelToUpdate).getElementName();
+		}
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", elementName);
+
 		try {
-			Object velocityParams = params;
-			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
-				// is logicalRouter, add LRName param
-				if (velocityParams == null)
-					velocityParams = new ComputerSystem();
-				((ManagedElement) velocityParams).setElementName(((ComputerSystem) modelToUpdate).getElementName());
-
-				// TODO If we don't have a ManagedElement initialized
-
-				// check params
-			} else if (params != null
-					&& params instanceof ManagedElement
-					&& ((ManagedElement) params).getElementName() == null) {
-
-				((ManagedElement) velocityParams).setElementName("");
-
-			} else if (params == null) {
-				velocityParams = "null";
-			}
-			setVelocityMessage(prepareVelocityCommand(velocityParams, template));
+			setVelocityMessage(prepareVelocityCommand("", template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

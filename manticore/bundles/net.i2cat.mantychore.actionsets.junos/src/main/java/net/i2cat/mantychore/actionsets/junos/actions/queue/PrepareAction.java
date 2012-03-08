@@ -22,7 +22,6 @@ public class PrepareAction extends JunosAction {
 
 	protected void initialize() {
 		this.setActionID(QueueConstants.PREPARE);
-		// setTemplate("/VM_files/getconfiguration.vm");
 		this.protocolName = "netconf";
 
 	}
@@ -30,9 +29,6 @@ public class PrepareAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 		try {
-			/* lock commnad */
-
-
 
 			/* discard changes */
 			DiscardNetconfCommand discardCommand = new DiscardNetconfCommand();
@@ -40,12 +36,12 @@ public class PrepareAction extends JunosAction {
 			Response responsePrepare = sendCommandToProtocol(discardCommand, protocol);
 			actionResponse.addResponse(responsePrepare);
 
+			/* lock command */
 			LockNetconfCommand lockCommand = new LockNetconfCommand("candidate");
 			lockCommand.initialize();
 			Response responseLock = sendCommandToProtocol(lockCommand, protocol);
 			actionResponse.addResponse(responseLock);
 
-			/* it can't be executed this workflow */
 		} catch (Exception e) {
 			throw new ActionException(this.actionID, e);
 		}

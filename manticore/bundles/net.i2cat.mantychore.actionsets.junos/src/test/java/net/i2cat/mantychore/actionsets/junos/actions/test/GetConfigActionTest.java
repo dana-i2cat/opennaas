@@ -51,7 +51,7 @@ public class GetConfigActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
+		Assert.assertEquals("Template is not correct", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
 
 	private void printTest(net.i2cat.mantychore.model.System routerModel) {

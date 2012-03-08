@@ -1,11 +1,13 @@
 package net.i2cat.mantychore.actionsets.junos.actions.ospf;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
 import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.ManagedElement;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -64,16 +66,17 @@ public class ClearOSPFAction extends JunosAction {
 		}
 
 		// tell velocity if element is a logical router or a physical one
+		String elementName = "";
 		if (((ComputerSystem) modelToUpdate).getElementName() != null) {
 			// is logicalRouter, add LRName param
-			((ManagedElement) params).setElementName(((ComputerSystem) modelToUpdate).getElementName());
-		} else if (((ManagedElement) params).getElementName() == null) {
-			// avoid accessing null value when processing velocity template.
-			((ManagedElement) params).setElementName("");
+			elementName = ((ComputerSystem) modelToUpdate).getElementName();
 		}
 
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", elementName);
+
 		try {
-			setVelocityMessage(prepareVelocityCommand(params, template));
+			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
