@@ -10,104 +10,89 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SAEndpointConnectionStatistics as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the SAEndpointConnectionStatisticsBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SAEndpointConnectionStatistics as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SAEndpointConnectionStatisticsBean Interface. The CIM class
  * SAEndpointConnectionStatistics is described as follows:
- *
- * This class captures statistical and time-related information about the use
- * of the IPsec or IKE Security Associations, through their IPsecSAEndpoint
- * or IKESAEndpoint. The relevant SAEndpoint is determined by traversing the
- * ElementStatisticalData association.
+ * 
+ * This class captures statistical and time-related information about the use of the IPsec or IKE Security Associations, through their IPsecSAEndpoint
+ * or IKESAEndpoint. The relevant SAEndpoint is determined by traversing the ElementStatisticalData association.
  */
 public class SAEndpointConnectionStatistics extends StatisticalData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SAEndpointConnectionStatisticsBeanImpl Class
-     * which implements the SAEndpointConnectionStatisticsBean Interface, and
-     * encapsulates the CIM class SAEndpointConnectionStatistics in a Java
-     * Bean. The CIM class SAEndpointConnectionStatistics is described as
-     * follows:
-     *
-     * This class captures statistical and time-related information about the
-     * use of the IPsec or IKE Security Associations, through their
-     * IPsecSAEndpoint or IKESAEndpoint. The relevant SAEndpoint is
-     * determined by traversing the ElementStatisticalData association.
-     */
-    public SAEndpointConnectionStatistics(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property byteCount.
-     */
-    private long byteCount;
-    /**
-     * This method returns the SAEndpointConnectionStatistics.byteCount
-     * property value. This property is described as follows:
-     *
-     * Number of bytes that have been protected by the associated SAEndpoint.
-     *
-     * @return	long	current byteCount property value
-     * @exception	Exception
-     */
-    public long getByteCount(){
+	/**
+	 * This constructor creates a SAEndpointConnectionStatisticsBeanImpl Class which implements the SAEndpointConnectionStatisticsBean Interface, and
+	 * encapsulates the CIM class SAEndpointConnectionStatistics in a Java Bean. The CIM class SAEndpointConnectionStatistics is described as follows:
+	 * 
+	 * This class captures statistical and time-related information about the use of the IPsec or IKE Security Associations, through their
+	 * IPsecSAEndpoint or IKESAEndpoint. The relevant SAEndpoint is determined by traversing the ElementStatisticalData association.
+	 */
+	public SAEndpointConnectionStatistics() {
+	};
 
-    return this.byteCount;
-    } // getByteCount
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property byteCount.
+	 */
+	private long	byteCount;
 
-    /**
-     * This method sets the SAEndpointConnectionStatistics.byteCount property
-     * value. This property is described as follows:
-     *
-     * Number of bytes that have been protected by the associated SAEndpoint.
-     *
-     * @param	long	new byteCount property value
-     * @exception	Exception
-     */
-    public void setByteCount(long byteCount) {
+	/**
+	 * This method returns the SAEndpointConnectionStatistics.byteCount property value. This property is described as follows:
+	 * 
+	 * Number of bytes that have been protected by the associated SAEndpoint.
+	 * 
+	 * @return long current byteCount property value
+	 * @exception Exception
+	 */
+	public long getByteCount() {
 
-    this.byteCount = byteCount;
-    } // setByteCount
+		return this.byteCount;
+	} // getByteCount
 
+	/**
+	 * This method sets the SAEndpointConnectionStatistics.byteCount property value. This property is described as follows:
+	 * 
+	 * Number of bytes that have been protected by the associated SAEndpoint.
+	 * 
+	 * @param long new byteCount property value
+	 * @exception Exception
+	 */
+	public void setByteCount(long byteCount) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lastAccessed.
-     */
-    private Date lastAccessed;
-    /**
-     * This method returns the SAEndpointConnectionStatistics.lastAccessed
-     * property value. This property is described as follows:
-     *
-     * LastAccessed indicates when the SAEndpoint was last used. This property
-     * is helpful in determining if the SA (and its endpoint) will be deleted
-     * due to sitting idle.
-     *
-     * @return	Date	current lastAccessed property value
-     * @exception	Exception
-     */
-    public Date getLastAccessed(){
+		this.byteCount = byteCount;
+	} // setByteCount
 
-    return this.lastAccessed;
-    } // getLastAccessed
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lastAccessed.
+	 */
+	private Date	lastAccessed;
 
-    /**
-     * This method sets the SAEndpointConnectionStatistics.lastAccessed
-     * property value. This property is described as follows:
-     *
-     * LastAccessed indicates when the SAEndpoint was last used. This property
-     * is helpful in determining if the SA (and its endpoint) will be deleted
-     * due to sitting idle.
-     *
-     * @param	Date	new lastAccessed property value
-     * @exception	Exception
-     */
-    public void setLastAccessed(Date lastAccessed) {
+	/**
+	 * This method returns the SAEndpointConnectionStatistics.lastAccessed property value. This property is described as follows:
+	 * 
+	 * LastAccessed indicates when the SAEndpoint was last used. This property is helpful in determining if the SA (and its endpoint) will be deleted
+	 * due to sitting idle.
+	 * 
+	 * @return Date current lastAccessed property value
+	 * @exception Exception
+	 */
+	public Date getLastAccessed() {
 
-    this.lastAccessed = lastAccessed;
-    } // setLastAccessed
+		return this.lastAccessed;
+	} // getLastAccessed
 
+	/**
+	 * This method sets the SAEndpointConnectionStatistics.lastAccessed property value. This property is described as follows:
+	 * 
+	 * LastAccessed indicates when the SAEndpoint was last used. This property is helpful in determining if the SA (and its endpoint) will be deleted
+	 * due to sitting idle.
+	 * 
+	 * @param Date
+	 *            new lastAccessed property value
+	 * @exception Exception
+	 */
+	public void setLastAccessed(Date lastAccessed) {
 
+		this.lastAccessed = lastAccessed;
+	} // setLastAccessed
 
 } // Class SAEndpointConnectionStatistics

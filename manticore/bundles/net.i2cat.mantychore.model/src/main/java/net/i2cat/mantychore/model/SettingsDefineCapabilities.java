@@ -9,300 +9,214 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SettingsDefineCapabilities as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SettingsDefineCapabilitiesBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SettingsDefineCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SettingsDefineCapabilitiesBean Interface. The CIM class
  * SettingsDefineCapabilities is described as follows:
- *
- * This association indicates that the non-null, non-key set of properties of
- * the component SettingData instance specifies some capabilities of the
- * associated Capabilities instance. The interpretation of the set of
- * properties in the associated SettingData is governed by the properties:
- * PropertyPolicy and ValueRole. For a particular Capabilities instance, the
- * complete set of Component SettingData instances, together with properties
- * of the Capabilities instance itself, defines the overall range of
- * supported capabilities. PropertyPolicy determines whether the properties
- * of the set are interpreted independently or as a whole (i.e. correlated.)
- * ValueRole further qualifies the members of the set. This association
- * eliminates the need to define and maintain corresponding property
- * definitions and values in both a Capabilities subclass and a SettingData
- * subclass. Typically these setting instances will be published along with
- * the associated Capabilities instance and will not be modifiable by the
- * client.
+ * 
+ * This association indicates that the non-null, non-key set of properties of the component SettingData instance specifies some capabilities of the
+ * associated Capabilities instance. The interpretation of the set of properties in the associated SettingData is governed by the properties:
+ * PropertyPolicy and ValueRole. For a particular Capabilities instance, the complete set of Component SettingData instances, together with properties
+ * of the Capabilities instance itself, defines the overall range of supported capabilities. PropertyPolicy determines whether the properties of the
+ * set are interpreted independently or as a whole (i.e. correlated.) ValueRole further qualifies the members of the set. This association eliminates
+ * the need to define and maintain corresponding property definitions and values in both a Capabilities subclass and a SettingData subclass. Typically
+ * these setting instances will be published along with the associated Capabilities instance and will not be modifiable by the client.
  */
 public class SettingsDefineCapabilities extends Component implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SettingsDefineCapabilitiesBeanImpl Class
-     * which implements the SettingsDefineCapabilitiesBean Interface, and
-     * encapsulates the CIM class SettingsDefineCapabilities in a Java Bean.
-     * The CIM class SettingsDefineCapabilities is described as follows:
-     *
-     * This association indicates that the non-null, non-key set of properties
-     * of the component SettingData instance specifies some capabilities of
-     * the associated Capabilities instance. The interpretation of the set of
-     * properties in the associated SettingData is governed by the
-     * properties: PropertyPolicy and ValueRole. For a particular
-     * Capabilities instance, the complete set of Component SettingData
-     * instances, together with properties of the Capabilities instance
-     * itself, defines the overall range of supported capabilities.
-     * PropertyPolicy determines whether the properties of the set are
-     * interpreted independently or as a whole (i.e. correlated.) ValueRole
-     * further qualifies the members of the set. This association eliminates
-     * the need to define and maintain corresponding property definitions and
-     * values in both a Capabilities subclass and a SettingData subclass.
-     * Typically these setting instances will be published along with the
-     * associated Capabilities instance and will not be modifiable by the
-     * client.
-     */
-    public SettingsDefineCapabilities(){};
-    /**
-     * This method create an Association of the type
-     * SettingsDefineCapabilities between one Capabilities object and
-     * SettingData object
-     */
-    public static SettingsDefineCapabilities link(Capabilities
-	groupComponent,SettingData partComponent){
+	/**
+	 * This constructor creates a SettingsDefineCapabilitiesBeanImpl Class which implements the SettingsDefineCapabilitiesBean Interface, and
+	 * encapsulates the CIM class SettingsDefineCapabilities in a Java Bean. The CIM class SettingsDefineCapabilities is described as follows:
+	 * 
+	 * This association indicates that the non-null, non-key set of properties of the component SettingData instance specifies some capabilities of
+	 * the associated Capabilities instance. The interpretation of the set of properties in the associated SettingData is governed by the properties:
+	 * PropertyPolicy and ValueRole. For a particular Capabilities instance, the complete set of Component SettingData instances, together with
+	 * properties of the Capabilities instance itself, defines the overall range of supported capabilities. PropertyPolicy determines whether the
+	 * properties of the set are interpreted independently or as a whole (i.e. correlated.) ValueRole further qualifies the members of the set. This
+	 * association eliminates the need to define and maintain corresponding property definitions and values in both a Capabilities subclass and a
+	 * SettingData subclass. Typically these setting instances will be published along with the associated Capabilities instance and will not be
+	 * modifiable by the client.
+	 */
+	public SettingsDefineCapabilities() {
+	};
 
-    return (SettingsDefineCapabilities) Association.link(SettingsDefineCapabilities.class,groupComponent,partComponent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property PropertyPolicy.
-     */
+	/**
+	 * This method create an Association of the type SettingsDefineCapabilities between one Capabilities object and SettingData object
+	 */
+	public static SettingsDefineCapabilities link(Capabilities
+			groupComponent, SettingData partComponent) {
 
-    public enum PropertyPolicy{
-    INDEPENDENT,
-    CORRELATED,
-    DMTF_RESERVED
-    }
-    private PropertyPolicy propertyPolicy;
-    /**
-     * This method returns the SettingsDefineCapabilities.propertyPolicy
-     * property value. This property is described as follows:
-     *
-     * PropertyPolicy defines whether or not the non-null, non-key properties
-     * of the associated SettingData instance are treated independently or as
-     * a correlated set. For instance, an independent set of maximum
-     * properties might be defined, when there is no relationship between
-     * each property. On the other hand, several correlated sets of maximum
-     * properties might need to be defined when the maximum values of each
-     * are dependent on some of the others.
-     *
-     * @return	int	current propertyPolicy property value
-     * @exception	Exception
-     */
-    public PropertyPolicy getPropertyPolicy(){
+		return (SettingsDefineCapabilities) Association.link(SettingsDefineCapabilities.class, groupComponent, partComponent);
+	}// link
 
-    return this.propertyPolicy;
-    } // getPropertyPolicy
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property PropertyPolicy.
+	 */
 
-    /**
-     * This method sets the SettingsDefineCapabilities.propertyPolicy property
-     * value. This property is described as follows:
-     *
-     * PropertyPolicy defines whether or not the non-null, non-key properties
-     * of the associated SettingData instance are treated independently or as
-     * a correlated set. For instance, an independent set of maximum
-     * properties might be defined, when there is no relationship between
-     * each property. On the other hand, several correlated sets of maximum
-     * properties might need to be defined when the maximum values of each
-     * are dependent on some of the others.
-     *
-     * @param	int	new propertyPolicy property value
-     * @exception	Exception
-     */
-    public void setPropertyPolicy(PropertyPolicy propertyPolicy){
+	public enum PropertyPolicy {
+		INDEPENDENT,
+		CORRELATED,
+		DMTF_RESERVED
+	}
 
-    this.propertyPolicy = propertyPolicy;
-    } // setPropertyPolicy
+	private PropertyPolicy	propertyPolicy;
 
+	/**
+	 * This method returns the SettingsDefineCapabilities.propertyPolicy property value. This property is described as follows:
+	 * 
+	 * PropertyPolicy defines whether or not the non-null, non-key properties of the associated SettingData instance are treated independently or as a
+	 * correlated set. For instance, an independent set of maximum properties might be defined, when there is no relationship between each property.
+	 * On the other hand, several correlated sets of maximum properties might need to be defined when the maximum values of each are dependent on some
+	 * of the others.
+	 * 
+	 * @return int current propertyPolicy property value
+	 * @exception Exception
+	 */
+	public PropertyPolicy getPropertyPolicy() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ValueRole.
-     */
+		return this.propertyPolicy;
+	} // getPropertyPolicy
 
-    public enum ValueRole{
-    DEFAULT,
-    OPTIMAL,
-    MEAN,
-    SUPPORTED,
-    DMTF_RESERVED
-    }
-    private ValueRole valueRole;
-    /**
-     * This method returns the SettingsDefineCapabilities.valueRole property
-     * value. This property is described as follows:
-     *
-     * The ValueRole property indicates further semantics on the
-     * interpretation of the non-null, non-key properties of the Component
-     * SettingData. "Default" indicates that property values of the component
-     * SettingData instance will be used as default values, when a new
-     * SettingData instance is created for elements whose capabilities are
-     * defined by the associated Capabilities instance. Across instances of
-     * settingdata, for particular properties having the same semantic
-     * purpose, at most one such settingdata instance shall be specified as a
-     * default. "Optimal" indicates that the SettingData instance represents
-     * optimal setting values for elements associated with the associated
-     * capabilities instance. Multiple component SettingData instances may be
-     * declared as optimal."Mean" indicates that the non-null, non-key,
-     * non-enumerated, non-boolean, numeric properties of the associated
-     * SettingData instance represents an average point along some dimension.
-     * For different combinations of SettingData properties, multiple
-     * component SettingData instances may be declared as "Mean". "Supported"
-     * indicates that the non-null, non-key properties of the Component
-     * SettingData instance represents a set of supported property values
-     * that are not otherwise qualified.
-     *
-     * @return	int	current valueRole property value
-     * @exception	Exception
-     */
-    public ValueRole getValueRole(){
+	/**
+	 * This method sets the SettingsDefineCapabilities.propertyPolicy property value. This property is described as follows:
+	 * 
+	 * PropertyPolicy defines whether or not the non-null, non-key properties of the associated SettingData instance are treated independently or as a
+	 * correlated set. For instance, an independent set of maximum properties might be defined, when there is no relationship between each property.
+	 * On the other hand, several correlated sets of maximum properties might need to be defined when the maximum values of each are dependent on some
+	 * of the others.
+	 * 
+	 * @param int new propertyPolicy property value
+	 * @exception Exception
+	 */
+	public void setPropertyPolicy(PropertyPolicy propertyPolicy) {
 
-    return this.valueRole;
-    } // getValueRole
+		this.propertyPolicy = propertyPolicy;
+	} // setPropertyPolicy
 
-    /**
-     * This method sets the SettingsDefineCapabilities.valueRole property
-     * value. This property is described as follows:
-     *
-     * The ValueRole property indicates further semantics on the
-     * interpretation of the non-null, non-key properties of the Component
-     * SettingData. "Default" indicates that property values of the component
-     * SettingData instance will be used as default values, when a new
-     * SettingData instance is created for elements whose capabilities are
-     * defined by the associated Capabilities instance. Across instances of
-     * settingdata, for particular properties having the same semantic
-     * purpose, at most one such settingdata instance shall be specified as a
-     * default. "Optimal" indicates that the SettingData instance represents
-     * optimal setting values for elements associated with the associated
-     * capabilities instance. Multiple component SettingData instances may be
-     * declared as optimal."Mean" indicates that the non-null, non-key,
-     * non-enumerated, non-boolean, numeric properties of the associated
-     * SettingData instance represents an average point along some dimension.
-     * For different combinations of SettingData properties, multiple
-     * component SettingData instances may be declared as "Mean". "Supported"
-     * indicates that the non-null, non-key properties of the Component
-     * SettingData instance represents a set of supported property values
-     * that are not otherwise qualified.
-     *
-     * @param	int	new valueRole property value
-     * @exception	Exception
-     */
-    public void setValueRole(ValueRole valueRole){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ValueRole.
+	 */
 
-    this.valueRole = valueRole;
-    } // setValueRole
+	public enum ValueRole {
+		DEFAULT,
+		OPTIMAL,
+		MEAN,
+		SUPPORTED,
+		DMTF_RESERVED
+	}
 
+	private ValueRole	valueRole;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ValueRange.
-     */
+	/**
+	 * This method returns the SettingsDefineCapabilities.valueRole property value. This property is described as follows:
+	 * 
+	 * The ValueRole property indicates further semantics on the interpretation of the non-null, non-key properties of the Component SettingData.
+	 * "Default" indicates that property values of the component SettingData instance will be used as default values, when a new SettingData instance
+	 * is created for elements whose capabilities are defined by the associated Capabilities instance. Across instances of settingdata, for particular
+	 * properties having the same semantic purpose, at most one such settingdata instance shall be specified as a default. "Optimal" indicates that
+	 * the SettingData instance represents optimal setting values for elements associated with the associated capabilities instance. Multiple
+	 * component SettingData instances may be declared as optimal."Mean" indicates that the non-null, non-key, non-enumerated, non-boolean, numeric
+	 * properties of the associated SettingData instance represents an average point along some dimension. For different combinations of SettingData
+	 * properties, multiple component SettingData instances may be declared as "Mean". "Supported" indicates that the non-null, non-key properties of
+	 * the Component SettingData instance represents a set of supported property values that are not otherwise qualified.
+	 * 
+	 * @return int current valueRole property value
+	 * @exception Exception
+	 */
+	public ValueRole getValueRole() {
 
-    public enum ValueRange{
-    POINT,
-    MINIMUMS,
-    MAXIMUMS,
-    INCREMENTS,
-    DMTF_RESERVED
-    }
-    private ValueRange valueRange;
-    /**
-     * This method returns the SettingsDefineCapabilities.valueRange property
-     * value. This property is described as follows:
-     *
-     * The ValueRange property indicates further semantics on the
-     * interpretation of all non-null, non-key properties of the Component
-     * SettingData. "Point" indicates that this SettingData instance provides
-     * a single set of values. "Minimums", "Maximums", and "Increments", are
-     * only evaluated against non-null, non-key, non-enumerated, non-boolean,
-     * numeric properties of the SettingData instance. Each property of that
-     * set shall be mathematically comparable to other instances of that
-     * property. "Minimums" indicates that this SettingData instance provides
-     * minimum values for evaluated properties. When used with PropertyPolicy
-     * = "Independent", only one such setting per particular SettingData
-     * instance shall be specified for any Capabilities. Unless restricted by
-     * a Maximums on the same set of properties, all values that compare
-     * higher than the specified values are also considered to be supported
-     * by the associated capabilities instance. "Maximums" indicates that
-     * this SettingData instance provides maximum values for evaluated
-     * properties. When used with PropertyPolicy = "Independent", only one
-     * such setting per particular SettingData instance shall be specified
-     * for any Capabilities. Unless restricted by a Minimums on the same set
-     * of properties, all values that compare lower than the specified values
-     * are also considered to be supported by the associated capabilities
-     * instance. "Increments" indicates that this SettingData instance
-     * provides increment values for evaluated properties. For the associated
-     * Capabilities, if an evaluated property currently has no corresponding
-     * minimums or maximums, then the property has no affect. Otherwise, for
-     * each evaluated property: its value x shall be between the minimum and
-     * maximum, inclusively, and shall have the property that both the result
-     * of maximum minus x and the result of x minus minimum are each an
-     * integer multiple of the increment. If either minimum or maximum is not
-     * specified and the other is, then the missing value shall be
-     * respectively assumed to be the lowest or highest supported value for
-     * the property's data-type. Additionally, if both a minimum and a
-     * maximum are specified for an evaluated property, then the result of
-     * maximum minus minimum shall be an integer multiple of the increment.
-     *
-     * @return	int	current valueRange property value
-     * @exception	Exception
-     */
-    public ValueRange getValueRange(){
+		return this.valueRole;
+	} // getValueRole
 
-    return this.valueRange;
-    } // getValueRange
+	/**
+	 * This method sets the SettingsDefineCapabilities.valueRole property value. This property is described as follows:
+	 * 
+	 * The ValueRole property indicates further semantics on the interpretation of the non-null, non-key properties of the Component SettingData.
+	 * "Default" indicates that property values of the component SettingData instance will be used as default values, when a new SettingData instance
+	 * is created for elements whose capabilities are defined by the associated Capabilities instance. Across instances of settingdata, for particular
+	 * properties having the same semantic purpose, at most one such settingdata instance shall be specified as a default. "Optimal" indicates that
+	 * the SettingData instance represents optimal setting values for elements associated with the associated capabilities instance. Multiple
+	 * component SettingData instances may be declared as optimal."Mean" indicates that the non-null, non-key, non-enumerated, non-boolean, numeric
+	 * properties of the associated SettingData instance represents an average point along some dimension. For different combinations of SettingData
+	 * properties, multiple component SettingData instances may be declared as "Mean". "Supported" indicates that the non-null, non-key properties of
+	 * the Component SettingData instance represents a set of supported property values that are not otherwise qualified.
+	 * 
+	 * @param int new valueRole property value
+	 * @exception Exception
+	 */
+	public void setValueRole(ValueRole valueRole) {
 
-    /**
-     * This method sets the SettingsDefineCapabilities.valueRange property
-     * value. This property is described as follows:
-     *
-     * The ValueRange property indicates further semantics on the
-     * interpretation of all non-null, non-key properties of the Component
-     * SettingData. "Point" indicates that this SettingData instance provides
-     * a single set of values. "Minimums", "Maximums", and "Increments", are
-     * only evaluated against non-null, non-key, non-enumerated, non-boolean,
-     * numeric properties of the SettingData instance. Each property of that
-     * set shall be mathematically comparable to other instances of that
-     * property. "Minimums" indicates that this SettingData instance provides
-     * minimum values for evaluated properties. When used with PropertyPolicy
-     * = "Independent", only one such setting per particular SettingData
-     * instance shall be specified for any Capabilities. Unless restricted by
-     * a Maximums on the same set of properties, all values that compare
-     * higher than the specified values are also considered to be supported
-     * by the associated capabilities instance. "Maximums" indicates that
-     * this SettingData instance provides maximum values for evaluated
-     * properties. When used with PropertyPolicy = "Independent", only one
-     * such setting per particular SettingData instance shall be specified
-     * for any Capabilities. Unless restricted by a Minimums on the same set
-     * of properties, all values that compare lower than the specified values
-     * are also considered to be supported by the associated capabilities
-     * instance. "Increments" indicates that this SettingData instance
-     * provides increment values for evaluated properties. For the associated
-     * Capabilities, if an evaluated property currently has no corresponding
-     * minimums or maximums, then the property has no affect. Otherwise, for
-     * each evaluated property: its value x shall be between the minimum and
-     * maximum, inclusively, and shall have the property that both the result
-     * of maximum minus x and the result of x minus minimum are each an
-     * integer multiple of the increment. If either minimum or maximum is not
-     * specified and the other is, then the missing value shall be
-     * respectively assumed to be the lowest or highest supported value for
-     * the property's data-type. Additionally, if both a minimum and a
-     * maximum are specified for an evaluated property, then the result of
-     * maximum minus minimum shall be an integer multiple of the increment.
-     *
-     * @param	int	new valueRange property value
-     * @exception	Exception
-     */
-    public void setValueRange(ValueRange valueRange){
+		this.valueRole = valueRole;
+	} // setValueRole
 
-    this.valueRange = valueRange;
-    } // setValueRange
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ValueRange.
+	 */
 
+	public enum ValueRange {
+		POINT,
+		MINIMUMS,
+		MAXIMUMS,
+		INCREMENTS,
+		DMTF_RESERVED
+	}
 
+	private ValueRange	valueRange;
+
+	/**
+	 * This method returns the SettingsDefineCapabilities.valueRange property value. This property is described as follows:
+	 * 
+	 * The ValueRange property indicates further semantics on the interpretation of all non-null, non-key properties of the Component SettingData.
+	 * "Point" indicates that this SettingData instance provides a single set of values. "Minimums", "Maximums", and "Increments", are only evaluated
+	 * against non-null, non-key, non-enumerated, non-boolean, numeric properties of the SettingData instance. Each property of that set shall be
+	 * mathematically comparable to other instances of that property. "Minimums" indicates that this SettingData instance provides minimum values for
+	 * evaluated properties. When used with PropertyPolicy = "Independent", only one such setting per particular SettingData instance shall be
+	 * specified for any Capabilities. Unless restricted by a Maximums on the same set of properties, all values that compare higher than the
+	 * specified values are also considered to be supported by the associated capabilities instance. "Maximums" indicates that this SettingData
+	 * instance provides maximum values for evaluated properties. When used with PropertyPolicy = "Independent", only one such setting per particular
+	 * SettingData instance shall be specified for any Capabilities. Unless restricted by a Minimums on the same set of properties, all values that
+	 * compare lower than the specified values are also considered to be supported by the associated capabilities instance. "Increments" indicates
+	 * that this SettingData instance provides increment values for evaluated properties. For the associated Capabilities, if an evaluated property
+	 * currently has no corresponding minimums or maximums, then the property has no affect. Otherwise, for each evaluated property: its value x shall
+	 * be between the minimum and maximum, inclusively, and shall have the property that both the result of maximum minus x and the result of x minus
+	 * minimum are each an integer multiple of the increment. If either minimum or maximum is not specified and the other is, then the missing value
+	 * shall be respectively assumed to be the lowest or highest supported value for the property's data-type. Additionally, if both a minimum and a
+	 * maximum are specified for an evaluated property, then the result of maximum minus minimum shall be an integer multiple of the increment.
+	 * 
+	 * @return int current valueRange property value
+	 * @exception Exception
+	 */
+	public ValueRange getValueRange() {
+
+		return this.valueRange;
+	} // getValueRange
+
+	/**
+	 * This method sets the SettingsDefineCapabilities.valueRange property value. This property is described as follows:
+	 * 
+	 * The ValueRange property indicates further semantics on the interpretation of all non-null, non-key properties of the Component SettingData.
+	 * "Point" indicates that this SettingData instance provides a single set of values. "Minimums", "Maximums", and "Increments", are only evaluated
+	 * against non-null, non-key, non-enumerated, non-boolean, numeric properties of the SettingData instance. Each property of that set shall be
+	 * mathematically comparable to other instances of that property. "Minimums" indicates that this SettingData instance provides minimum values for
+	 * evaluated properties. When used with PropertyPolicy = "Independent", only one such setting per particular SettingData instance shall be
+	 * specified for any Capabilities. Unless restricted by a Maximums on the same set of properties, all values that compare higher than the
+	 * specified values are also considered to be supported by the associated capabilities instance. "Maximums" indicates that this SettingData
+	 * instance provides maximum values for evaluated properties. When used with PropertyPolicy = "Independent", only one such setting per particular
+	 * SettingData instance shall be specified for any Capabilities. Unless restricted by a Minimums on the same set of properties, all values that
+	 * compare lower than the specified values are also considered to be supported by the associated capabilities instance. "Increments" indicates
+	 * that this SettingData instance provides increment values for evaluated properties. For the associated Capabilities, if an evaluated property
+	 * currently has no corresponding minimums or maximums, then the property has no affect. Otherwise, for each evaluated property: its value x shall
+	 * be between the minimum and maximum, inclusively, and shall have the property that both the result of maximum minus x and the result of x minus
+	 * minimum are each an integer multiple of the increment. If either minimum or maximum is not specified and the other is, then the missing value
+	 * shall be respectively assumed to be the lowest or highest supported value for the property's data-type. Additionally, if both a minimum and a
+	 * maximum are specified for an evaluated property, then the result of maximum minus minimum shall be an integer multiple of the increment.
+	 * 
+	 * @param int new valueRange property value
+	 * @exception Exception
+	 */
+	public void setValueRange(ValueRange valueRange) {
+
+		this.valueRange = valueRange;
+	} // setValueRange
 
 } // Class SettingsDefineCapabilities

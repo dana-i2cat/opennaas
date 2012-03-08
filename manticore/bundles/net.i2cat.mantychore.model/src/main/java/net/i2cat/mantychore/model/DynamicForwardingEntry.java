@@ -9,293 +9,263 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DynamicForwardingEntry as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * DynamicForwardingEntryBean Interface. The CIM class DynamicForwardingEntry
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DynamicForwardingEntry as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the DynamicForwardingEntryBean Interface. The CIM class DynamicForwardingEntry
  * is described as follows:
- *
- * A DynamicForwardingEntry represents an entry in the forwarding (filtering)
- * database associated with the TransparentBridgingService. The entry is Weak
- * to the Service as specified by TransparentBridgingDynamicForwarding.
+ * 
+ * A DynamicForwardingEntry represents an entry in the forwarding (filtering) database associated with the TransparentBridgingService. The entry is
+ * Weak to the Service as specified by TransparentBridgingDynamicForwarding.
  */
 public class DynamicForwardingEntry extends LogicalElement implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DynamicForwardingEntryBeanImpl Class which
-     * implements the DynamicForwardingEntryBean Interface, and encapsulates
-     * the CIM class DynamicForwardingEntry in a Java Bean. The CIM class
-     * DynamicForwardingEntry is described as follows:
-     *
-     * A DynamicForwardingEntry represents an entry in the forwarding
-     * (filtering) database associated with the TransparentBridgingService.
-     * The entry is Weak to the Service as specified by
-     * TransparentBridgingDynamicForwarding.
-     */
-    public DynamicForwardingEntry(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemCreationClassName.
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the DynamicForwardingEntry.systemCreationClassName
-     * property value. This property is described as follows:
-     *
-     * The scoping System's CreationClassName.
-     *
-     * @return	String	current systemCreationClassName property
-     * value
-     * @exception	Exception
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a DynamicForwardingEntryBeanImpl Class which implements the DynamicForwardingEntryBean Interface, and encapsulates the
+	 * CIM class DynamicForwardingEntry in a Java Bean. The CIM class DynamicForwardingEntry is described as follows:
+	 * 
+	 * A DynamicForwardingEntry represents an entry in the forwarding (filtering) database associated with the TransparentBridgingService. The entry
+	 * is Weak to the Service as specified by TransparentBridgingDynamicForwarding.
+	 */
+	public DynamicForwardingEntry() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the DynamicForwardingEntry.systemCreationClassName
-     * property value. This property is described as follows:
-     *
-     * The scoping System's CreationClassName.
-     *
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the DynamicForwardingEntry.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the DynamicForwardingEntry.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping System's CreationClassName.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemName.
-     */
-    private String systemName;
-    /**
-     * This method returns the DynamicForwardingEntry.systemName property
-     * value. This property is described as follows:
-     *
-     * The scoping System's Name.
-     *
-     * @return	String	current systemName property value
-     * @exception	Exception
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the DynamicForwardingEntry.systemName property value.
-     * This property is described as follows:
-     *
-     * The scoping System's Name.
-     *
-     * @param	String	new systemName property value
-     * @exception	Exception
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the DynamicForwardingEntry.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the DynamicForwardingEntry.systemName property value. This property is described as follows:
+	 * 
+	 * The scoping System's Name.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property serviceCreationClassName.
-     */
-    private String serviceCreationClassName;
-    /**
-     * This method returns the DynamicForwardingEntry.serviceCreationClassName
-     * property value. This property is described as follows:
-     *
-     * The scoping Service's CreationClassName.
-     *
-     * @return	String	current serviceCreationClassName property
-     * value
-     * @exception	Exception
-     */
-    public String getServiceCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.serviceCreationClassName;
-    } // getServiceCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property serviceCreationClassName.
+	 */
+	private String	serviceCreationClassName;
 
-    /**
-     * This method sets the DynamicForwardingEntry.serviceCreationClassName
-     * property value. This property is described as follows:
-     *
-     * The scoping Service's CreationClassName.
-     *
-     * @param	String	new serviceCreationClassName property value
-     * @exception	Exception
-     */
-    public void setServiceCreationClassName(String serviceCreationClassName)
+	/**
+	 * This method returns the DynamicForwardingEntry.serviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's CreationClassName.
+	 * 
+	 * @return String current serviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getServiceCreationClassName() {
+
+		return this.serviceCreationClassName;
+	} // getServiceCreationClassName
+
+	/**
+	 * This method sets the DynamicForwardingEntry.serviceCreationClassName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's CreationClassName.
+	 * 
+	 * @param String
+	 *            new serviceCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setServiceCreationClassName(String serviceCreationClassName)
 	{
 
-    this.serviceCreationClassName = serviceCreationClassName;
-    } // setServiceCreationClassName
+		this.serviceCreationClassName = serviceCreationClassName;
+	} // setServiceCreationClassName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property serviceName.
+	 */
+	private String	serviceName;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property serviceName.
-     */
-    private String serviceName;
-    /**
-     * This method returns the DynamicForwardingEntry.serviceName property
-     * value. This property is described as follows:
-     *
-     * The scoping Service's Name.
-     *
-     * @return	String	current serviceName property value
-     * @exception	Exception
-     */
-    public String getServiceName(){
+	/**
+	 * This method returns the DynamicForwardingEntry.serviceName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's Name.
+	 * 
+	 * @return String current serviceName property value
+	 * @exception Exception
+	 */
+	public String getServiceName() {
 
-    return this.serviceName;
-    } // getServiceName
+		return this.serviceName;
+	} // getServiceName
 
-    /**
-     * This method sets the DynamicForwardingEntry.serviceName property value.
-     * This property is described as follows:
-     *
-     * The scoping Service's Name.
-     *
-     * @param	String	new serviceName property value
-     * @exception	Exception
-     */
-    public void setServiceName(String serviceName) {
+	/**
+	 * This method sets the DynamicForwardingEntry.serviceName property value. This property is described as follows:
+	 * 
+	 * The scoping Service's Name.
+	 * 
+	 * @param String
+	 *            new serviceName property value
+	 * @exception Exception
+	 */
+	public void setServiceName(String serviceName) {
 
-    this.serviceName = serviceName;
-    } // setServiceName
+		this.serviceName = serviceName;
+	} // setServiceName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property creationClassName.
-     */
-    private String creationClassName;
-    /**
-     * This method returns the DynamicForwardingEntry.creationClassName
-     * property value. This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @return	String	current creationClassName property value
-     * @exception	Exception
-     */
-    public String getCreationClassName(){
+	/**
+	 * This method returns the DynamicForwardingEntry.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    return this.creationClassName;
-    } // getCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
-    /**
-     * This method sets the DynamicForwardingEntry.creationClassName property
-     * value. This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @param	String	new creationClassName property value
-     * @exception	Exception
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method sets the DynamicForwardingEntry.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property mACAddress.
+	 */
+	private String	mACAddress;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property mACAddress.
-     */
-    private String mACAddress;
-    /**
-     * This method returns the DynamicForwardingEntry.mACAddress property
-     * value. This property is described as follows:
-     *
-     * Unicast MAC address for which the TransparentBridging Service has
-     * forwarding and/or filtering information. Note that the MAC address is
-     * formatted as twelve hexadecimal digits (e.g., "010203040506"), with
-     * each pair representing one of the six octets of the MAC address in
-     * "canonical" bit order according to RFC 2469.
-     *
-     * @return	String	current mACAddress property value
-     * @exception	Exception
-     */
-    public String getMACAddress(){
+	/**
+	 * This method returns the DynamicForwardingEntry.mACAddress property value. This property is described as follows:
+	 * 
+	 * Unicast MAC address for which the TransparentBridging Service has forwarding and/or filtering information. Note that the MAC address is
+	 * formatted as twelve hexadecimal digits (e.g., "010203040506"), with each pair representing one of the six octets of the MAC address in
+	 * "canonical" bit order according to RFC 2469.
+	 * 
+	 * @return String current mACAddress property value
+	 * @exception Exception
+	 */
+	public String getMACAddress() {
 
-    return this.mACAddress;
-    } // getMACAddress
+		return this.mACAddress;
+	} // getMACAddress
 
-    /**
-     * This method sets the DynamicForwardingEntry.mACAddress property value.
-     * This property is described as follows:
-     *
-     * Unicast MAC address for which the TransparentBridging Service has
-     * forwarding and/or filtering information. Note that the MAC address is
-     * formatted as twelve hexadecimal digits (e.g., "010203040506"), with
-     * each pair representing one of the six octets of the MAC address in
-     * "canonical" bit order according to RFC 2469.
-     *
-     * @param	String	new mACAddress property value
-     * @exception	Exception
-     */
-    public void setMACAddress(String mACAddress) {
+	/**
+	 * This method sets the DynamicForwardingEntry.mACAddress property value. This property is described as follows:
+	 * 
+	 * Unicast MAC address for which the TransparentBridging Service has forwarding and/or filtering information. Note that the MAC address is
+	 * formatted as twelve hexadecimal digits (e.g., "010203040506"), with each pair representing one of the six octets of the MAC address in
+	 * "canonical" bit order according to RFC 2469.
+	 * 
+	 * @param String
+	 *            new mACAddress property value
+	 * @exception Exception
+	 */
+	public void setMACAddress(String mACAddress) {
 
-    this.mACAddress = mACAddress;
-    } // setMACAddress
+		this.mACAddress = mACAddress;
+	} // setMACAddress
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DynamicStatus.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DynamicStatus.
-     */
+	public enum DynamicStatus {
+		OTHER,
+		INVALID,
+		LEARNED,
+		SELF,
+		MGMT
+	}
 
-    public enum DynamicStatus{
-    OTHER,
-    INVALID,
-    LEARNED,
-    SELF,
-    MGMT
-    }
-    private DynamicStatus dynamicStatus;
-    /**
-     * This method returns the DynamicForwardingEntry.dynamicStatus property
-     * value. This property is described as follows:
-     *
-     * The status of the entry.
-     *
-     * @return	int	current dynamicStatus property value
-     * @exception	Exception
-     */
-    public DynamicStatus getDynamicStatus(){
+	private DynamicStatus	dynamicStatus;
 
-    return this.dynamicStatus;
-    } // getDynamicStatus
+	/**
+	 * This method returns the DynamicForwardingEntry.dynamicStatus property value. This property is described as follows:
+	 * 
+	 * The status of the entry.
+	 * 
+	 * @return int current dynamicStatus property value
+	 * @exception Exception
+	 */
+	public DynamicStatus getDynamicStatus() {
 
-    /**
-     * This method sets the DynamicForwardingEntry.dynamicStatus property
-     * value. This property is described as follows:
-     *
-     * The status of the entry.
-     *
-     * @param	int	new dynamicStatus property value
-     * @exception	Exception
-     */
-    public void setDynamicStatus(DynamicStatus dynamicStatus){
+		return this.dynamicStatus;
+	} // getDynamicStatus
 
-    this.dynamicStatus = dynamicStatus;
-    } // setDynamicStatus
+	/**
+	 * This method sets the DynamicForwardingEntry.dynamicStatus property value. This property is described as follows:
+	 * 
+	 * The status of the entry.
+	 * 
+	 * @param int new dynamicStatus property value
+	 * @exception Exception
+	 */
+	public void setDynamicStatus(DynamicStatus dynamicStatus) {
 
-
+		this.dynamicStatus = dynamicStatus;
+	} // setDynamicStatus
 
 } // Class DynamicForwardingEntry

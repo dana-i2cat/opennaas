@@ -16,7 +16,7 @@ import org.opennaas.core.resources.IModel;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ManagedElement as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ManagedElementBean Interface. The CIM class ManagedElement is described as follows:
- *
+ * 
  * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the CIM
  * Schema.
  */
@@ -29,7 +29,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the list of Associations where I am the "from" element
-	 *
+	 * 
 	 * @return vector of toAssociations
 	 */
 	public List<Association> getToAssociations() {
@@ -38,7 +38,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the associations where I am the "from" element, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return list of Association of toAssociation that match
@@ -57,7 +57,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts association where I am the "from" element, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return firsts association of toAssociation that match
@@ -75,7 +75,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the list of ManagedElement that represents the "to" of the toAssociations, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return list of ManagedElement that represents the "to" of the toAssociations
@@ -94,7 +94,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts ManagedElement that represents the "to" of the toAssociations that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return ManagedElement that represents the "to" of the toAssociations
@@ -112,7 +112,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts Association from toAssociations that have the ManagedElement element as "to" element
-	 *
+	 * 
 	 * @param element
 	 *            that represents the "to"
 	 * @return Association that have I as a "from" and the element as "to"
@@ -127,7 +127,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts Association from toAssociations that matches with association type and have the ManagedElement element as "to" element
-	 *
+	 * 
 	 * @param clazz
 	 *            specific Association.class
 	 * @param element
@@ -144,21 +144,40 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
-	 *
+	 * Returns the firsts ManagedElement that represents the "to" of the toAssociations that match with association type
+	 * 
+	 * @param specific
+	 *            Association.class
+	 * @return ManagedElement that represents the "to" of the toAssociations
+	 */
+	public ManagedElement getFirstToAssociatedElementByType(Class<? extends Association> clazz) {
+		ManagedElement element = null;
+
+		for (Association assoc : toAssociations) {
+			if (clazz.isInstance(assoc))
+				return assoc.getTo();
+		}
+
+		return element;
+
+	}
+
+	/**
+	 * 
 	 * Add a new association to the vector toAssociation
-	 *
+	 * 
 	 * @param the
 	 *            association to add
-	 *
+	 * 
 	 * */
 	public void addToAssociation(Association assoc) {
 		toAssociations.add(assoc);
 	}
 
 	/**
-	 *
+	 * 
 	 * remove the specific association from the vector toAssociation
-	 *
+	 * 
 	 * @param the
 	 *            association to remove
 	 * @return true if association is removed from the vector, false otherwise
@@ -168,14 +187,14 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
-	 *
+	 * 
 	 * remove the specific association from the vector toAssociation that
-	 *
+	 * 
 	 * have the ManagedElement element as a "to"
-	 *
+	 * 
 	 * @param the
 	 *            ManagedElement that represents the "to" into the Association
-	 *
+	 * 
 	 * @return true if association is removed from the vector, false otherwise
 	 * */
 	public boolean removeToAssociationByElement(ManagedElement element) {
@@ -187,14 +206,14 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
-	 *
+	 * 
 	 * remove the specific association from the vector toAssociation that
-	 *
+	 * 
 	 * have the ManagedElement element as a "to"
-	 *
+	 * 
 	 * @param the
 	 *            ManagedElement that represents the "to" into the Association
-	 *
+	 * 
 	 * @return true if association is removed from the vector, false otherwise
 	 * */
 	public boolean removeToAssociationByTypeAndElement(Class<? extends Association> clazz, ManagedElement element) {
@@ -211,7 +230,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the list of Associations where I am the "to" element
-	 *
+	 * 
 	 * @return vector of fromAssociations
 	 */
 	public List<Association> getFromAssociations() {
@@ -220,7 +239,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the associations where I am the "to" element, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return list of Association of fromAssociation that match
@@ -238,7 +257,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts association where I am the "to" element, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return firsts association of fromAssociation that match
@@ -255,7 +274,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the list of ManagedElement that represents the "from" of the fromAssociations, that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return list of ManagedElement that represents the "from" of the fromAssociations
@@ -273,12 +292,13 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts ManagedElement that represents the "from" of the fromAssociations that match with association type
-	 *
+	 * 
 	 * @param specific
 	 *            Association.class
 	 * @return ManagedElement that represents the "from" of the fromAssociations
 	 */
 	public ManagedElement getFirstFromAssociatedElementByType(Class<? extends Association> clazz) {
+
 		ManagedElement element = null;
 
 		for (Association assoc : fromAssociations) {
@@ -291,7 +311,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts Association from fromAssociations that have the ManagedElement element as "from" element
-	 *
+	 * 
 	 * @param element
 	 *            that represents the "from"
 	 * @return Association that have I as a "to" and the element as "from"
@@ -307,7 +327,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * Returns the firsts Association from fromAssociations that matches with association type and have the ManagedElement element as "from" element
-	 *
+	 * 
 	 * @param clazz
 	 *            specific Association.class
 	 * @param element
@@ -324,21 +344,21 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
-	 *
+	 * 
 	 * Add a new association to the vector fromAssociation
-	 *
+	 * 
 	 * @param the
 	 *            association to add
-	 *
+	 * 
 	 * */
 	public void addFromAssociation(Association assoc) {
 		fromAssociations.add(assoc);
 	}
 
 	/**
-	 *
+	 * 
 	 * remove the specific association from the vector toAssociation
-	 *
+	 * 
 	 * @param the
 	 *            association to remove
 	 * @return true if association is removed from the vector, false otherwise
@@ -348,14 +368,14 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
-	 *
+	 * 
 	 * remove the specific association from the vector fromAssociation that
-	 *
+	 * 
 	 * have the ManagedElement element as a "from"
-	 *
+	 * 
 	 * @param the
 	 *            ManagedElement that represents the "from" into the Association
-	 *
+	 * 
 	 * @return true if association is removed from the vector, false otherwise
 	 * */
 	public boolean removeFromAssociationByElement(ManagedElement element) {
@@ -369,7 +389,7 @@ public class ManagedElement implements IModel, Serializable {
 	/**
 	 * This constructor creates a ManagedElementBeanImpl Class which implements the ManagedElementBean Interface, and encapsulates the CIM class
 	 * ManagedElement in a Java Bean. The CIM class ManagedElement is described as follows:
-	 *
+	 * 
 	 * ManagedElement is an abstract class that provides a common superclass (or top of the inheritance tree) for the non-association classes in the
 	 * CIM Schema.
 	 */
@@ -383,7 +403,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method returns the ManagedElement.instanceID property value. This property is described as follows:
-	 *
+	 * 
 	 * InstanceID is an optional property that may be used to opaquely and uniquely identify an instance of this class within the scope of the
 	 * instantiating Namespace. Various subclasses of this class may override this property to make it required, or a key. Such subclasses may also
 	 * modify the preferred algorithms for ensuring uniqueness that are defined below. To ensure uniqueness within the NameSpace, the value of
@@ -396,7 +416,7 @@ public class ManagedElement implements IModel, Serializable {
 	 * "preferred" algorithm is not used, the defining entity must assure that the resulting InstanceID is not reused across any InstanceIDs produced
 	 * by this or other providers for the NameSpace of this instance. If not set to null for DMTF-defined instances, the "preferred" algorithm must be
 	 * used with the <OrgID> set to CIM.
-	 *
+	 * 
 	 * @return String current instanceID property value
 	 * @exception Exception
 	 */
@@ -407,7 +427,7 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method sets the ManagedElement.instanceID property value. This property is described as follows:
-	 *
+	 * 
 	 * InstanceID is an optional property that may be used to opaquely and uniquely identify an instance of this class within the scope of the
 	 * instantiating Namespace. Various subclasses of this class may override this property to make it required, or a key. Such subclasses may also
 	 * modify the preferred algorithms for ensuring uniqueness that are defined below. To ensure uniqueness within the NameSpace, the value of
@@ -420,7 +440,7 @@ public class ManagedElement implements IModel, Serializable {
 	 * "preferred" algorithm is not used, the defining entity must assure that the resulting InstanceID is not reused across any InstanceIDs produced
 	 * by this or other providers for the NameSpace of this instance. If not set to null for DMTF-defined instances, the "preferred" algorithm must be
 	 * used with the <OrgID> set to CIM.
-	 *
+	 * 
 	 * @param String
 	 *            new instanceID property value
 	 * @exception Exception
@@ -437,9 +457,9 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method returns the ManagedElement.caption property value. This property is described as follows:
-	 *
+	 * 
 	 * The Caption property is a short textual description (one- line string) of the object.
-	 *
+	 * 
 	 * @return String current caption property value
 	 * @exception Exception
 	 */
@@ -450,9 +470,9 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method sets the ManagedElement.caption property value. This property is described as follows:
-	 *
+	 * 
 	 * The Caption property is a short textual description (one- line string) of the object.
-	 *
+	 * 
 	 * @param String
 	 *            new caption property value
 	 * @exception Exception
@@ -469,9 +489,9 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method returns the ManagedElement.description property value. This property is described as follows:
-	 *
+	 * 
 	 * The Description property provides a textual description of the object.
-	 *
+	 * 
 	 * @return String current description property value
 	 * @exception Exception
 	 */
@@ -482,9 +502,9 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method sets the ManagedElement.description property value. This property is described as follows:
-	 *
+	 * 
 	 * The Description property provides a textual description of the object.
-	 *
+	 * 
 	 * @param String
 	 *            new description property value
 	 * @exception Exception
@@ -501,14 +521,14 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method returns the ManagedElement.elementName property value. This property is described as follows:
-	 *
+	 * 
 	 * A user-friendly name for the object. This property allows each instance to define a user-friendly name in addition to its key properties,
 	 * identity data, and description information. Note that the Name property of ManagedSystemElement is also defined as a user-friendly name. But,
 	 * it is often subclassed to be a Key. It is not reasonable that the same property can convey both identity and a user-friendly name, without
 	 * inconsistencies. Where Name exists and is not a Key (such as for instances of LogicalDevice), the same information can be present in both the
 	 * Name and ElementName properties. Note that if there is an associated instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
 	 * properties may exist as defined in ElementNameMask and MaxElementNameLen properties defined in that class.
-	 *
+	 * 
 	 * @return String current elementName property value
 	 * @exception Exception
 	 */
@@ -519,14 +539,14 @@ public class ManagedElement implements IModel, Serializable {
 
 	/**
 	 * This method sets the ManagedElement.elementName property value. This property is described as follows:
-	 *
+	 * 
 	 * A user-friendly name for the object. This property allows each instance to define a user-friendly name in addition to its key properties,
 	 * identity data, and description information. Note that the Name property of ManagedSystemElement is also defined as a user-friendly name. But,
 	 * it is often subclassed to be a Key. It is not reasonable that the same property can convey both identity and a user-friendly name, without
 	 * inconsistencies. Where Name exists and is not a Key (such as for instances of LogicalDevice), the same information can be present in both the
 	 * Name and ElementName properties. Note that if there is an associated instance of CIM_EnabledLogicalElementCapabilities, restrictions on this
 	 * properties may exist as defined in ElementNameMask and MaxElementNameLen properties defined in that class.
-	 *
+	 * 
 	 * @param String
 	 *            new elementName property value
 	 * @exception Exception

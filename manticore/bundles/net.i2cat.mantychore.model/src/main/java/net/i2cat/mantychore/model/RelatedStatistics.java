@@ -8,36 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RelatedStatistics as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RelatedStatisticsBean Interface. The CIM class RelatedStatistics is
- * described as follows:
- *
- * CIM_RelatedStatistics is an association that defines hierarchies and/or
- * dependencies of related CIM_Statistical Information classes.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RelatedStatistics as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RelatedStatisticsBean Interface. The CIM class RelatedStatistics is described as
+ * follows:
+ * 
+ * CIM_RelatedStatistics is an association that defines hierarchies and/or dependencies of related CIM_Statistical Information classes.
  */
 public class RelatedStatistics extends Association implements Serializable {
 
-    /**
-     * This constructor creates a RelatedStatisticsBeanImpl Class which
-     * implements the RelatedStatisticsBean Interface, and encapsulates the
-     * CIM class RelatedStatistics in a Java Bean. The CIM class
-     * RelatedStatistics is described as follows:
-     *
-     * CIM_RelatedStatistics is an association that defines hierarchies and/or
-     * dependencies of related CIM_Statistical Information classes.
-     */
-    public RelatedStatistics(){};
-    /**
-     * This method create an Association of the type RelatedStatistics between
-     * one StatisticalInformation object and StatisticalInformation object
-     */
-    public static RelatedStatistics link(StatisticalInformation
-	stats,StatisticalInformation relatedStats){
+	/**
+	 * This constructor creates a RelatedStatisticsBeanImpl Class which implements the RelatedStatisticsBean Interface, and encapsulates the CIM class
+	 * RelatedStatistics in a Java Bean. The CIM class RelatedStatistics is described as follows:
+	 * 
+	 * CIM_RelatedStatistics is an association that defines hierarchies and/or dependencies of related CIM_Statistical Information classes.
+	 */
+	public RelatedStatistics() {
+	};
 
-    return (RelatedStatistics)
-	Association.link(RelatedStatistics.class,stats,relatedStats);
-    }//link
+	/**
+	 * This method create an Association of the type RelatedStatistics between one StatisticalInformation object and StatisticalInformation object
+	 */
+	public static RelatedStatistics link(StatisticalInformation
+			stats, StatisticalInformation relatedStats) {
+
+		return (RelatedStatistics) Association.link(RelatedStatistics.class, stats, relatedStats);
+	}// link
 
 } // Class RelatedStatistics

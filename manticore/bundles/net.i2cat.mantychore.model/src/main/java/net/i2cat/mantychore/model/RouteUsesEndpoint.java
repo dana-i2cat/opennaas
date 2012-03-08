@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RouteUsesEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RouteUsesEndpointBean Interface. The CIM class RouteUsesEndpoint is
- * described as follows:
- *
- * RouteUsesEndpoint depicts the relationship between a next hop route and the
- * local Endpoint that is used to transmit the traffic to the 'next hop'.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RouteUsesEndpoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RouteUsesEndpointBean Interface. The CIM class RouteUsesEndpoint is described as
+ * follows:
+ * 
+ * RouteUsesEndpoint depicts the relationship between a next hop route and the local Endpoint that is used to transmit the traffic to the 'next hop'.
  */
 public class RouteUsesEndpoint extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a RouteUsesEndpointBeanImpl Class which
-     * implements the RouteUsesEndpointBean Interface, and encapsulates the
-     * CIM class RouteUsesEndpoint in a Java Bean. The CIM class
-     * RouteUsesEndpoint is described as follows:
-     *
-     * RouteUsesEndpoint depicts the relationship between a next hop route and
-     * the local Endpoint that is used to transmit the traffic to the 'next
-     * hop'.
-     */
-    public RouteUsesEndpoint(){};
-    /**
-     * This method create an Association of the type RouteUsesEndpoint between
-     * one ProtocolEndpoint object and NextHopRoute object
-     */
-    public static RouteUsesEndpoint link(ProtocolEndpoint
-	antecedent,NextHopRoute dependent){
+	/**
+	 * This constructor creates a RouteUsesEndpointBeanImpl Class which implements the RouteUsesEndpointBean Interface, and encapsulates the CIM class
+	 * RouteUsesEndpoint in a Java Bean. The CIM class RouteUsesEndpoint is described as follows:
+	 * 
+	 * RouteUsesEndpoint depicts the relationship between a next hop route and the local Endpoint that is used to transmit the traffic to the 'next
+	 * hop'.
+	 */
+	public RouteUsesEndpoint() {
+	};
 
-    return (RouteUsesEndpoint)
-	Association.link(RouteUsesEndpoint.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type RouteUsesEndpoint between one ProtocolEndpoint object and NextHopRoute object
+	 */
+	public static RouteUsesEndpoint link(ProtocolEndpoint
+			antecedent, NextHopRoute dependent) {
+
+		return (RouteUsesEndpoint) Association.link(RouteUsesEndpoint.class, antecedent, dependent);
+	}// link
 
 } // Class RouteUsesEndpoint

@@ -8,33 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class Realizes as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * RealizesBean Interface. The CIM class Realizes is described as follows:
- *
- * CIM_Realizes is the association that defines the mapping between
- * LogicalDevices and the PhysicalElements that implement them.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class Realizes as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the RealizesBean Interface. The CIM class Realizes is described as follows:
+ * 
+ * CIM_Realizes is the association that defines the mapping between LogicalDevices and the PhysicalElements that implement them.
  */
 public class Realizes extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a RealizesBeanImpl Class which implements the
-     * RealizesBean Interface, and encapsulates the CIM class Realizes in a
-     * Java Bean. The CIM class Realizes is described as follows:
-     *
-     * CIM_Realizes is the association that defines the mapping between
-     * LogicalDevices and the PhysicalElements that implement them.
-     */
-    public Realizes(){};
-    /**
-     * This method create an Association of the type Realizes between one
-     * PhysicalElement object and LogicalDevice object
-     */
-    public static Realizes link(PhysicalElement antecedent,LogicalDevice
-	dependent){
+	/**
+	 * This constructor creates a RealizesBeanImpl Class which implements the RealizesBean Interface, and encapsulates the CIM class Realizes in a
+	 * Java Bean. The CIM class Realizes is described as follows:
+	 * 
+	 * CIM_Realizes is the association that defines the mapping between LogicalDevices and the PhysicalElements that implement them.
+	 */
+	public Realizes() {
+	};
 
-    return (Realizes) Association.link(Realizes.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type Realizes between one PhysicalElement object and LogicalDevice object
+	 */
+	public static Realizes link(PhysicalElement antecedent, LogicalDevice
+			dependent) {
+
+		return (Realizes) Association.link(Realizes.class, antecedent, dependent);
+	}// link
 
 } // Class Realizes

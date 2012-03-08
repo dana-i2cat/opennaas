@@ -8,66 +8,39 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class QoSService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * QoSServiceBean Interface. The CIM class QoSService is described as
- * follows:
- *
- * This is a concrete class that represents the ability to conceptualize a QoS
- * service as a set of coordinated sub-services. This enables the network
- * administrator to map business rules to the network, and the network
- * designer to engineer the network such that it can provide different
- * functions for different traffic streams. This class has two main purposes.
- * First, it serves as a common base class for defining various sub-services
- * that are needed to build higher-level QoS services. Second, it serves as a
- * way to consolidate relationships between different types of QoS services
- * and different types of ConditioningServices. For example, Gold Service may
- * be defined as a QoSService which aggregates two other QoSServices
- * together. Each of these 'other' QoSServices could be DiffServServices -
- * one representing the servicing of very high demand packets (instantiated
- * as a DiffServService directly), and one representing the service given to
- * most of the packets (instantiated as an AFService). The high demand
- * DiffServService instance would use QoSConditioning SubService to aggregate
- * together the necessary classifiers to indicate which traffic it applies
- * to, the appropriate meters for contract limits, the marker to mark the EF
- * PHB in the packets, and the queuing-related services. The AFService
- * instance would similarly use QoSConditioning SubService to aggregate its
- * classifiers, meters, the several markers used to mark the different AF
- * PHBs in the packets, and the queuing-related services needed to deliver
- * the packet treatment.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class QoSService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the QoSServiceBean Interface. The CIM class QoSService is described as follows:
+ * 
+ * This is a concrete class that represents the ability to conceptualize a QoS service as a set of coordinated sub-services. This enables the network
+ * administrator to map business rules to the network, and the network designer to engineer the network such that it can provide different functions
+ * for different traffic streams. This class has two main purposes. First, it serves as a common base class for defining various sub-services that are
+ * needed to build higher-level QoS services. Second, it serves as a way to consolidate relationships between different types of QoS services and
+ * different types of ConditioningServices. For example, Gold Service may be defined as a QoSService which aggregates two other QoSServices together.
+ * Each of these 'other' QoSServices could be DiffServServices - one representing the servicing of very high demand packets (instantiated as a
+ * DiffServService directly), and one representing the service given to most of the packets (instantiated as an AFService). The high demand
+ * DiffServService instance would use QoSConditioning SubService to aggregate together the necessary classifiers to indicate which traffic it applies
+ * to, the appropriate meters for contract limits, the marker to mark the EF PHB in the packets, and the queuing-related services. The AFService
+ * instance would similarly use QoSConditioning SubService to aggregate its classifiers, meters, the several markers used to mark the different AF
+ * PHBs in the packets, and the queuing-related services needed to deliver the packet treatment.
  */
 public class QoSService extends Service implements Serializable {
 
-    /**
-     * This constructor creates a QoSServiceBeanImpl Class which implements
-     * the QoSServiceBean Interface, and encapsulates the CIM class
-     * QoSService in a Java Bean. The CIM class QoSService is described as
-     * follows:
-     *
-     * This is a concrete class that represents the ability to conceptualize a
-     * QoS service as a set of coordinated sub-services. This enables the
-     * network administrator to map business rules to the network, and the
-     * network designer to engineer the network such that it can provide
-     * different functions for different traffic streams. This class has two
-     * main purposes. First, it serves as a common base class for defining
-     * various sub-services that are needed to build higher-level QoS
-     * services. Second, it serves as a way to consolidate relationships
-     * between different types of QoS services and different types of
-     * ConditioningServices. For example, Gold Service may be defined as a
-     * QoSService which aggregates two other QoSServices together. Each of
-     * these 'other' QoSServices could be DiffServServices - one representing
-     * the servicing of very high demand packets (instantiated as a
-     * DiffServService directly), and one representing the service given to
-     * most of the packets (instantiated as an AFService). The high demand
-     * DiffServService instance would use QoSConditioning SubService to
-     * aggregate together the necessary classifiers to indicate which traffic
-     * it applies to, the appropriate meters for contract limits, the marker
-     * to mark the EF PHB in the packets, and the queuing-related services.
-     * The AFService instance would similarly use QoSConditioning SubService
-     * to aggregate its classifiers, meters, the several markers used to mark
-     * the different AF PHBs in the packets, and the queuing-related services
-     * needed to deliver the packet treatment.
-     */
-    public QoSService(){};
+	/**
+	 * This constructor creates a QoSServiceBeanImpl Class which implements the QoSServiceBean Interface, and encapsulates the CIM class QoSService in
+	 * a Java Bean. The CIM class QoSService is described as follows:
+	 * 
+	 * This is a concrete class that represents the ability to conceptualize a QoS service as a set of coordinated sub-services. This enables the
+	 * network administrator to map business rules to the network, and the network designer to engineer the network such that it can provide different
+	 * functions for different traffic streams. This class has two main purposes. First, it serves as a common base class for defining various
+	 * sub-services that are needed to build higher-level QoS services. Second, it serves as a way to consolidate relationships between different
+	 * types of QoS services and different types of ConditioningServices. For example, Gold Service may be defined as a QoSService which aggregates
+	 * two other QoSServices together. Each of these 'other' QoSServices could be DiffServServices - one representing the servicing of very high
+	 * demand packets (instantiated as a DiffServService directly), and one representing the service given to most of the packets (instantiated as an
+	 * AFService). The high demand DiffServService instance would use QoSConditioning SubService to aggregate together the necessary classifiers to
+	 * indicate which traffic it applies to, the appropriate meters for contract limits, the marker to mark the EF PHB in the packets, and the
+	 * queuing-related services. The AFService instance would similarly use QoSConditioning SubService to aggregate its classifiers, meters, the
+	 * several markers used to mark the different AF PHBs in the packets, and the queuing-related services needed to deliver the packet treatment.
+	 */
+	public QoSService() {
+	};
 } // Class QoSService

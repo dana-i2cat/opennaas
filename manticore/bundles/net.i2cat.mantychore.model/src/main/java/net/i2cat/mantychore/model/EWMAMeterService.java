@@ -9,158 +9,126 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class EWMAMeterService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * EWMAMeterServiceBean Interface. The CIM class EWMAMeterService is
- * described as follows:
- *
- * This is a concrete subclass of the MeterService class that represents an
- * exponentially weighted moving average meter. This meter is a simple
- * low-pass filter that measures the rate of incoming packets over a small,
- * fixed sampling interval. Any admitted packet that pushes the average rate
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class EWMAMeterService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the EWMAMeterServiceBean Interface. The CIM class EWMAMeterService is described as
+ * follows:
+ * 
+ * This is a concrete subclass of the MeterService class that represents an exponentially weighted moving average meter. This meter is a simple
+ * low-pass filter that measures the rate of incoming packets over a small, fixed sampling interval. Any admitted packet that pushes the average rate
  * over a pre-defined limit is defined to be non-conforming.
  */
 public class EWMAMeterService extends MeterService implements Serializable {
 
-    /**
-     * This constructor creates a EWMAMeterServiceBeanImpl Class which
-     * implements the EWMAMeterServiceBean Interface, and encapsulates the
-     * CIM class EWMAMeterService in a Java Bean. The CIM class
-     * EWMAMeterService is described as follows:
-     *
-     * This is a concrete subclass of the MeterService class that represents
-     * an exponentially weighted moving average meter. This meter is a simple
-     * low-pass filter that measures the rate of incoming packets over a
-     * small, fixed sampling interval. Any admitted packet that pushes the
-     * average rate over a pre-defined limit is defined to be non-conforming.
-     */
-    public EWMAMeterService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property averageRate.
-     */
-    private long averageRate;
-    /**
-     * This method returns the EWMAMeterService.averageRate property value.
-     * This property is described as follows:
-     *
-     * This property is a 32-bit unsigned integer that defines the average
-     * rate against which the sampled arrival rate of packets should be
-     * measured. Any packet that causes the sampled rate to exceed this rate
-     * is deemed non-conforming. The value is specified in kilobits per
-     * second.
-     *
-     * @return	long	current averageRate property value
-     * @exception	Exception
-     */
-    public long getAverageRate(){
+	/**
+	 * This constructor creates a EWMAMeterServiceBeanImpl Class which implements the EWMAMeterServiceBean Interface, and encapsulates the CIM class
+	 * EWMAMeterService in a Java Bean. The CIM class EWMAMeterService is described as follows:
+	 * 
+	 * This is a concrete subclass of the MeterService class that represents an exponentially weighted moving average meter. This meter is a simple
+	 * low-pass filter that measures the rate of incoming packets over a small, fixed sampling interval. Any admitted packet that pushes the average
+	 * rate over a pre-defined limit is defined to be non-conforming.
+	 */
+	public EWMAMeterService() {
+	};
 
-    return this.averageRate;
-    } // getAverageRate
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property averageRate.
+	 */
+	private long	averageRate;
 
-    /**
-     * This method sets the EWMAMeterService.averageRate property value. This
-     * property is described as follows:
-     *
-     * This property is a 32-bit unsigned integer that defines the average
-     * rate against which the sampled arrival rate of packets should be
-     * measured. Any packet that causes the sampled rate to exceed this rate
-     * is deemed non-conforming. The value is specified in kilobits per
-     * second.
-     *
-     * @param	long	new averageRate property value
-     * @exception	Exception
-     */
-    public void setAverageRate(long averageRate) {
+	/**
+	 * This method returns the EWMAMeterService.averageRate property value. This property is described as follows:
+	 * 
+	 * This property is a 32-bit unsigned integer that defines the average rate against which the sampled arrival rate of packets should be measured.
+	 * Any packet that causes the sampled rate to exceed this rate is deemed non-conforming. The value is specified in kilobits per second.
+	 * 
+	 * @return long current averageRate property value
+	 * @exception Exception
+	 */
+	public long getAverageRate() {
 
-    this.averageRate = averageRate;
-    } // setAverageRate
+		return this.averageRate;
+	} // getAverageRate
 
+	/**
+	 * This method sets the EWMAMeterService.averageRate property value. This property is described as follows:
+	 * 
+	 * This property is a 32-bit unsigned integer that defines the average rate against which the sampled arrival rate of packets should be measured.
+	 * Any packet that causes the sampled rate to exceed this rate is deemed non-conforming. The value is specified in kilobits per second.
+	 * 
+	 * @param long new averageRate property value
+	 * @exception Exception
+	 */
+	public void setAverageRate(long averageRate) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property deltaInterval.
-     */
-    private long deltaInterval;
-    /**
-     * This method returns the EWMAMeterService.deltaInterval property value.
-     * This property is described as follows:
-     *
-     * This property is a 64-bit unsigned integer that defines the sampling
-     * interval used to measure the arrival rate. The calculated rate is
-     * averaged over this interval and checked against the AverageRate
-     * property. All packets whose computed average arrival rate is less than
-     * the AverageRate are deemed conforming. The value is specified in
-     * microseconds.
-     *
-     * @return	long	current deltaInterval property value
-     * @exception	Exception
-     */
-    public long getDeltaInterval(){
+		this.averageRate = averageRate;
+	} // setAverageRate
 
-    return this.deltaInterval;
-    } // getDeltaInterval
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property deltaInterval.
+	 */
+	private long	deltaInterval;
 
-    /**
-     * This method sets the EWMAMeterService.deltaInterval property value.
-     * This property is described as follows:
-     *
-     * This property is a 64-bit unsigned integer that defines the sampling
-     * interval used to measure the arrival rate. The calculated rate is
-     * averaged over this interval and checked against the AverageRate
-     * property. All packets whose computed average arrival rate is less than
-     * the AverageRate are deemed conforming. The value is specified in
-     * microseconds.
-     *
-     * @param	long	new deltaInterval property value
-     * @exception	Exception
-     */
-    public void setDeltaInterval(long deltaInterval) {
+	/**
+	 * This method returns the EWMAMeterService.deltaInterval property value. This property is described as follows:
+	 * 
+	 * This property is a 64-bit unsigned integer that defines the sampling interval used to measure the arrival rate. The calculated rate is averaged
+	 * over this interval and checked against the AverageRate property. All packets whose computed average arrival rate is less than the AverageRate
+	 * are deemed conforming. The value is specified in microseconds.
+	 * 
+	 * @return long current deltaInterval property value
+	 * @exception Exception
+	 */
+	public long getDeltaInterval() {
 
-    this.deltaInterval = deltaInterval;
-    } // setDeltaInterval
+		return this.deltaInterval;
+	} // getDeltaInterval
 
+	/**
+	 * This method sets the EWMAMeterService.deltaInterval property value. This property is described as follows:
+	 * 
+	 * This property is a 64-bit unsigned integer that defines the sampling interval used to measure the arrival rate. The calculated rate is averaged
+	 * over this interval and checked against the AverageRate property. All packets whose computed average arrival rate is less than the AverageRate
+	 * are deemed conforming. The value is specified in microseconds.
+	 * 
+	 * @param long new deltaInterval property value
+	 * @exception Exception
+	 */
+	public void setDeltaInterval(long deltaInterval) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property gain.
-     */
-    private long gain;
-    /**
-     * This method returns the EWMAMeterService.gain property value. This
-     * property is described as follows:
-     *
-     * This property is a 32-bit unsigned integer representing the reciprocal
-     * of the time constant (e.g., frequency response) of what is essentially
-     * a simple low-pass filter. For example, the value 64 for this property
-     * represents a time constant value of 1/64.
-     *
-     * @return	long	current gain property value
-     * @exception	Exception
-     */
-    public long getGain(){
+		this.deltaInterval = deltaInterval;
+	} // setDeltaInterval
 
-    return this.gain;
-    } // getGain
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property gain.
+	 */
+	private long	gain;
 
-    /**
-     * This method sets the EWMAMeterService.gain property value. This
-     * property is described as follows:
-     *
-     * This property is a 32-bit unsigned integer representing the reciprocal
-     * of the time constant (e.g., frequency response) of what is essentially
-     * a simple low-pass filter. For example, the value 64 for this property
-     * represents a time constant value of 1/64.
-     *
-     * @param	long	new gain property value
-     * @exception	Exception
-     */
-    public void setGain(long gain) {
+	/**
+	 * This method returns the EWMAMeterService.gain property value. This property is described as follows:
+	 * 
+	 * This property is a 32-bit unsigned integer representing the reciprocal of the time constant (e.g., frequency response) of what is essentially a
+	 * simple low-pass filter. For example, the value 64 for this property represents a time constant value of 1/64.
+	 * 
+	 * @return long current gain property value
+	 * @exception Exception
+	 */
+	public long getGain() {
 
-    this.gain = gain;
-    } // setGain
+		return this.gain;
+	} // getGain
 
+	/**
+	 * This method sets the EWMAMeterService.gain property value. This property is described as follows:
+	 * 
+	 * This property is a 32-bit unsigned integer representing the reciprocal of the time constant (e.g., frequency response) of what is essentially a
+	 * simple low-pass filter. For example, the value 64 for this property represents a time constant value of 1/64.
+	 * 
+	 * @param long new gain property value
+	 * @exception Exception
+	 */
+	public void setGain(long gain) {
 
+		this.gain = gain;
+	} // setGain
 
 } // Class EWMAMeterService

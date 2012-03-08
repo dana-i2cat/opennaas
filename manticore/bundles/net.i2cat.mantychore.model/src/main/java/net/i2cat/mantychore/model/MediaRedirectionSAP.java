@@ -10,219 +10,180 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class MediaRedirectionSAP as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * MediaRedirectionSAPBean Interface. The CIM class MediaRedirectionSAP is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class MediaRedirectionSAP as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the MediaRedirectionSAPBean Interface. The CIM class MediaRedirectionSAP is
  * described as follows:
- *
- * MediaRedirectionSAP is a logical representation of a Media redirection
- * session. One access point represents access to a single Media redirection
+ * 
+ * MediaRedirectionSAP is a logical representation of a Media redirection session. One access point represents access to a single Media redirection
  * session.
  */
 public class MediaRedirectionSAP extends ServiceAccessPoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a MediaRedirectionSAPBeanImpl Class which
-     * implements the MediaRedirectionSAPBean Interface, and encapsulates the
-     * CIM class MediaRedirectionSAP in a Java Bean. The CIM class
-     * MediaRedirectionSAP is described as follows:
-     *
-     * MediaRedirectionSAP is a logical representation of a Media redirection
-     * session. One access point represents access to a single Media
-     * redirection session.
-     */
-    public MediaRedirectionSAP(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ConnectionMode.
-     */
+	/**
+	 * This constructor creates a MediaRedirectionSAPBeanImpl Class which implements the MediaRedirectionSAPBean Interface, and encapsulates the CIM
+	 * class MediaRedirectionSAP in a Java Bean. The CIM class MediaRedirectionSAP is described as follows:
+	 * 
+	 * MediaRedirectionSAP is a logical representation of a Media redirection session. One access point represents access to a single Media
+	 * redirection session.
+	 */
+	public MediaRedirectionSAP() {
+	};
 
-    public enum ConnectionMode{
-    UNKNOWN,
-    LISTEN,
-    CONNECT,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIED
-    }
-    private ConnectionMode connectionMode;
-    /**
-     * This method returns the MediaRedirectionSAP.connectionMode property
-     * value. This property is described as follows:
-     *
-     * An enumeration specifying the type of connection mode supported by the
-     * session. A value set to 2 = "Listen" shall indicate that the SAP will
-     * listen for a connection request from the remote Media redirection
-     * server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be
-     * used to represent where the SAP is listening for the connection
-     * request. A value set to 3 = "Connect" shall indicate that the the SAP
-     * shall initiate the connection to the remote Media redirection server.
-     * A CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote Media redirection server.
-     *
-     * @return	int	current connectionMode property value
-     * @exception	Exception
-     */
-    public ConnectionMode getConnectionMode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ConnectionMode.
+	 */
 
-    return this.connectionMode;
-    } // getConnectionMode
+	public enum ConnectionMode {
+		UNKNOWN,
+		LISTEN,
+		CONNECT,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIED
+	}
 
-    /**
-     * This method sets the MediaRedirectionSAP.connectionMode property value.
-     * This property is described as follows:
-     *
-     * An enumeration specifying the type of connection mode supported by the
-     * session. A value set to 2 = "Listen" shall indicate that the SAP will
-     * listen for a connection request from the remote Media redirection
-     * server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be
-     * used to represent where the SAP is listening for the connection
-     * request. A value set to 3 = "Connect" shall indicate that the the SAP
-     * shall initiate the connection to the remote Media redirection server.
-     * A CIM_RemoteAccessAvailableToElement association to a
-     * CIM_RemoteServiceAccessPoint may be used to represent where the SAP
-     * shall connect to the remote Media redirection server.
-     *
-     * @param	int	new connectionMode property value
-     * @exception	Exception
-     */
-    public void setConnectionMode(ConnectionMode connectionMode){
+	private ConnectionMode	connectionMode;
 
-    this.connectionMode = connectionMode;
-    } // setConnectionMode
+	/**
+	 * This method returns the MediaRedirectionSAP.connectionMode property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of connection mode supported by the session. A value set to 2 = "Listen" shall indicate that the SAP will
+	 * listen for a connection request from the remote Media redirection server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be used to
+	 * represent where the SAP is listening for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate
+	 * the connection to the remote Media redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may
+	 * be used to represent where the SAP shall connect to the remote Media redirection server.
+	 * 
+	 * @return int current connectionMode property value
+	 * @exception Exception
+	 */
+	public ConnectionMode getConnectionMode() {
 
+		return this.connectionMode;
+	} // getConnectionMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property commandTimeout.
-     */
-    private Date commandTimeout;
-    /**
-     * This method returns the MediaRedirectionSAP.commandTimeout property
-     * value. This property is described as follows:
-     *
-     * CommandTimeout is configurable by management applications supporting
-     * Media Redirections. When the Redirection Service redirects a Media
-     * device command to a remote device, and the remote device does not
-     * respond before CommandTimeout times out, the Redirection Service will
-     * emulate a media eject event and re-try the command and/or try to
-     * re-establish the connection to the remote device. Commandtimeout shall
-     * be expressed using the interval format of the datetime type.
-     *
-     * @return	Date	current commandTimeout property value
-     * @exception	Exception
-     */
-    public Date getCommandTimeout(){
+	/**
+	 * This method sets the MediaRedirectionSAP.connectionMode property value. This property is described as follows:
+	 * 
+	 * An enumeration specifying the type of connection mode supported by the session. A value set to 2 = "Listen" shall indicate that the SAP will
+	 * listen for a connection request from the remote Media redirection server. A CIM_BindsTo association to a CIM_ProtocolEndpoint may be used to
+	 * represent where the SAP is listening for the connection request. A value set to 3 = "Connect" shall indicate that the the SAP shall initiate
+	 * the connection to the remote Media redirection server. A CIM_RemoteAccessAvailableToElement association to a CIM_RemoteServiceAccessPoint may
+	 * be used to represent where the SAP shall connect to the remote Media redirection server.
+	 * 
+	 * @param int new connectionMode property value
+	 * @exception Exception
+	 */
+	public void setConnectionMode(ConnectionMode connectionMode) {
 
-    return this.commandTimeout;
-    } // getCommandTimeout
+		this.connectionMode = connectionMode;
+	} // setConnectionMode
 
-    /**
-     * This method sets the MediaRedirectionSAP.commandTimeout property value.
-     * This property is described as follows:
-     *
-     * CommandTimeout is configurable by management applications supporting
-     * Media Redirections. When the Redirection Service redirects a Media
-     * device command to a remote device, and the remote device does not
-     * respond before CommandTimeout times out, the Redirection Service will
-     * emulate a media eject event and re-try the command and/or try to
-     * re-establish the connection to the remote device. Commandtimeout shall
-     * be expressed using the interval format of the datetime type.
-     *
-     * @param	Date	new commandTimeout property value
-     * @exception	Exception
-     */
-    public void setCommandTimeout(Date commandTimeout) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property commandTimeout.
+	 */
+	private Date	commandTimeout;
 
-    this.commandTimeout = commandTimeout;
-    } // setCommandTimeout
+	/**
+	 * This method returns the MediaRedirectionSAP.commandTimeout property value. This property is described as follows:
+	 * 
+	 * CommandTimeout is configurable by management applications supporting Media Redirections. When the Redirection Service redirects a Media device
+	 * command to a remote device, and the remote device does not respond before CommandTimeout times out, the Redirection Service will emulate a
+	 * media eject event and re-try the command and/or try to re-establish the connection to the remote device. Commandtimeout shall be expressed
+	 * using the interval format of the datetime type.
+	 * 
+	 * @return Date current commandTimeout property value
+	 * @exception Exception
+	 */
+	public Date getCommandTimeout() {
 
+		return this.commandTimeout;
+	} // getCommandTimeout
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property resetTimeout.
-     */
-    private Date resetTimeout;
-    /**
-     * This method returns the MediaRedirectionSAP.resetTimeout property
-     * value. This property is described as follows:
-     *
-     * The amount of time the session shall wait after sending a Reset to the
-     * Remote System before concluding that the Remote System is not
-     * responding in a timely fashion, it may be hung or busy. When the Reset
-     * Timeout is exceeded the managed system tries to establish a new
-     * connection with the Remote System. ResetTimeout shall be expressed
-     * using the interval format of the datetime type.
-     *
-     * @return	Date	current resetTimeout property value
-     * @exception	Exception
-     */
-    public Date getResetTimeout(){
+	/**
+	 * This method sets the MediaRedirectionSAP.commandTimeout property value. This property is described as follows:
+	 * 
+	 * CommandTimeout is configurable by management applications supporting Media Redirections. When the Redirection Service redirects a Media device
+	 * command to a remote device, and the remote device does not respond before CommandTimeout times out, the Redirection Service will emulate a
+	 * media eject event and re-try the command and/or try to re-establish the connection to the remote device. Commandtimeout shall be expressed
+	 * using the interval format of the datetime type.
+	 * 
+	 * @param Date
+	 *            new commandTimeout property value
+	 * @exception Exception
+	 */
+	public void setCommandTimeout(Date commandTimeout) {
 
-    return this.resetTimeout;
-    } // getResetTimeout
+		this.commandTimeout = commandTimeout;
+	} // setCommandTimeout
 
-    /**
-     * This method sets the MediaRedirectionSAP.resetTimeout property value.
-     * This property is described as follows:
-     *
-     * The amount of time the session shall wait after sending a Reset to the
-     * Remote System before concluding that the Remote System is not
-     * responding in a timely fashion, it may be hung or busy. When the Reset
-     * Timeout is exceeded the managed system tries to establish a new
-     * connection with the Remote System. ResetTimeout shall be expressed
-     * using the interval format of the datetime type.
-     *
-     * @param	Date	new resetTimeout property value
-     * @exception	Exception
-     */
-    public void setResetTimeout(Date resetTimeout) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property resetTimeout.
+	 */
+	private Date	resetTimeout;
 
-    this.resetTimeout = resetTimeout;
-    } // setResetTimeout
+	/**
+	 * This method returns the MediaRedirectionSAP.resetTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session shall wait after sending a Reset to the Remote System before concluding that the Remote System is not responding
+	 * in a timely fashion, it may be hung or busy. When the Reset Timeout is exceeded the managed system tries to establish a new connection with the
+	 * Remote System. ResetTimeout shall be expressed using the interval format of the datetime type.
+	 * 
+	 * @return Date current resetTimeout property value
+	 * @exception Exception
+	 */
+	public Date getResetTimeout() {
 
+		return this.resetTimeout;
+	} // getResetTimeout
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sessionTimeout.
-     */
-    private Date sessionTimeout;
-    /**
-     * This method returns the MediaRedirectionSAP.sessionTimeout property
-     * value. This property is described as follows:
-     *
-     * The amount of time the session will wait for a Remote System to
-     * establish a new connection before the Media Device is detached.
-     * SessionTimeout shall be expressed using the interval format of the
-     * datetime type.
-     *
-     * @return	Date	current sessionTimeout property value
-     * @exception	Exception
-     */
-    public Date getSessionTimeout(){
+	/**
+	 * This method sets the MediaRedirectionSAP.resetTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session shall wait after sending a Reset to the Remote System before concluding that the Remote System is not responding
+	 * in a timely fashion, it may be hung or busy. When the Reset Timeout is exceeded the managed system tries to establish a new connection with the
+	 * Remote System. ResetTimeout shall be expressed using the interval format of the datetime type.
+	 * 
+	 * @param Date
+	 *            new resetTimeout property value
+	 * @exception Exception
+	 */
+	public void setResetTimeout(Date resetTimeout) {
 
-    return this.sessionTimeout;
-    } // getSessionTimeout
+		this.resetTimeout = resetTimeout;
+	} // setResetTimeout
 
-    /**
-     * This method sets the MediaRedirectionSAP.sessionTimeout property value.
-     * This property is described as follows:
-     *
-     * The amount of time the session will wait for a Remote System to
-     * establish a new connection before the Media Device is detached.
-     * SessionTimeout shall be expressed using the interval format of the
-     * datetime type.
-     *
-     * @param	Date	new sessionTimeout property value
-     * @exception	Exception
-     */
-    public void setSessionTimeout(Date sessionTimeout) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sessionTimeout.
+	 */
+	private Date	sessionTimeout;
 
-    this.sessionTimeout = sessionTimeout;
-    } // setSessionTimeout
+	/**
+	 * This method returns the MediaRedirectionSAP.sessionTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session will wait for a Remote System to establish a new connection before the Media Device is detached. SessionTimeout
+	 * shall be expressed using the interval format of the datetime type.
+	 * 
+	 * @return Date current sessionTimeout property value
+	 * @exception Exception
+	 */
+	public Date getSessionTimeout() {
 
+		return this.sessionTimeout;
+	} // getSessionTimeout
 
+	/**
+	 * This method sets the MediaRedirectionSAP.sessionTimeout property value. This property is described as follows:
+	 * 
+	 * The amount of time the session will wait for a Remote System to establish a new connection before the Media Device is detached. SessionTimeout
+	 * shall be expressed using the interval format of the datetime type.
+	 * 
+	 * @param Date
+	 *            new sessionTimeout property value
+	 * @exception Exception
+	 */
+	public void setSessionTimeout(Date sessionTimeout) {
+
+		this.sessionTimeout = sessionTimeout;
+	} // setSessionTimeout
 
 } // Class MediaRedirectionSAP
