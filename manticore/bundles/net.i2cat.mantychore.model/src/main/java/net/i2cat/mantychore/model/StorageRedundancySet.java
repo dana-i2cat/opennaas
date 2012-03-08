@@ -9,125 +9,106 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class StorageRedundancySet as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * StorageRedundancySetBean Interface. The CIM class StorageRedundancySet is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class StorageRedundancySet as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the StorageRedundancySetBean Interface. The CIM class StorageRedundancySet is
  * described as follows:
- *
- * A class derived from RedundancySet describing storage-related redundancy
- * information. StorageRedundancySets are used to protect user data. They
- * aggregate one or more underlying StorageExtents, associated via
- * MemberOfCollection, and produce one or more higher-level Extents. The
- * Extents are related to each other via a BasedOn association. And, the
- * higher level Extent is related to the StorageRedundancy Set via the
- * LogicalIdentity association. Note that StorageRedundancySets may overlap
- * in their aggregation of members. If this occurs, the overlapping Extents
- * SHOULD NOT contain any check data.
+ * 
+ * A class derived from RedundancySet describing storage-related redundancy information. StorageRedundancySets are used to protect user data. They
+ * aggregate one or more underlying StorageExtents, associated via MemberOfCollection, and produce one or more higher-level Extents. The Extents are
+ * related to each other via a BasedOn association. And, the higher level Extent is related to the StorageRedundancy Set via the LogicalIdentity
+ * association. Note that StorageRedundancySets may overlap in their aggregation of members. If this occurs, the overlapping Extents SHOULD NOT
+ * contain any check data.
  */
 public class StorageRedundancySet extends RedundancySet implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a StorageRedundancySetBeanImpl Class which
-     * implements the StorageRedundancySetBean Interface, and encapsulates
-     * the CIM class StorageRedundancySet in a Java Bean. The CIM class
-     * StorageRedundancySet is described as follows:
-     *
-     * A class derived from RedundancySet describing storage-related
-     * redundancy information. StorageRedundancySets are used to protect user
-     * data. They aggregate one or more underlying StorageExtents, associated
-     * via MemberOfCollection, and produce one or more higher-level Extents.
-     * The Extents are related to each other via a BasedOn association. And,
-     * the higher level Extent is related to the StorageRedundancy Set via
-     * the LogicalIdentity association. Note that StorageRedundancySets may
-     * overlap in their aggregation of members. If this occurs, the
-     * overlapping Extents SHOULD NOT contain any check data.
-     */
-    public StorageRedundancySet(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TypeOfAlgorithm.
-     */
+	/**
+	 * This constructor creates a StorageRedundancySetBeanImpl Class which implements the StorageRedundancySetBean Interface, and encapsulates the CIM
+	 * class StorageRedundancySet in a Java Bean. The CIM class StorageRedundancySet is described as follows:
+	 * 
+	 * A class derived from RedundancySet describing storage-related redundancy information. StorageRedundancySets are used to protect user data. They
+	 * aggregate one or more underlying StorageExtents, associated via MemberOfCollection, and produce one or more higher-level Extents. The Extents
+	 * are related to each other via a BasedOn association. And, the higher level Extent is related to the StorageRedundancy Set via the
+	 * LogicalIdentity association. Note that StorageRedundancySets may overlap in their aggregation of members. If this occurs, the overlapping
+	 * Extents SHOULD NOT contain any check data.
+	 */
+	public StorageRedundancySet() {
+	};
 
-    public enum TypeOfAlgorithm{
-    UNKNOWN,
-    OTHER,
-    COPY,
-    XOR,
-    PPLUSQPLUS,
-    S,
-    PPLUSSPLUS
-    }
-    private TypeOfAlgorithm typeOfAlgorithm;
-    /**
-     * This method returns the StorageRedundancySet.typeOfAlgorithm property
-     * value. This property is described as follows:
-     *
-     * TypeOfAlgorithm specifies the algorithm used for storage data
-     * redundancy and reconstruction. For example, 'P+Q' (=5) or 'P+S' (=7)
-     * may be specified.
-     *
-     * @return	int	current typeOfAlgorithm property value
-     * @exception	Exception
-     */
-    public TypeOfAlgorithm getTypeOfAlgorithm(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TypeOfAlgorithm.
+	 */
 
-    return this.typeOfAlgorithm;
-    } // getTypeOfAlgorithm
+	public enum TypeOfAlgorithm {
+		UNKNOWN,
+		OTHER,
+		COPY,
+		XOR,
+		PPLUSQPLUS,
+		S,
+		PPLUSSPLUS
+	}
 
-    /**
-     * This method sets the StorageRedundancySet.typeOfAlgorithm property
-     * value. This property is described as follows:
-     *
-     * TypeOfAlgorithm specifies the algorithm used for storage data
-     * redundancy and reconstruction. For example, 'P+Q' (=5) or 'P+S' (=7)
-     * may be specified.
-     *
-     * @param	int	new typeOfAlgorithm property value
-     * @exception	Exception
-     */
-    public void setTypeOfAlgorithm(TypeOfAlgorithm typeOfAlgorithm){
+	private TypeOfAlgorithm	typeOfAlgorithm;
 
-    this.typeOfAlgorithm = typeOfAlgorithm;
-    } // setTypeOfAlgorithm
+	/**
+	 * This method returns the StorageRedundancySet.typeOfAlgorithm property value. This property is described as follows:
+	 * 
+	 * TypeOfAlgorithm specifies the algorithm used for storage data redundancy and reconstruction. For example, 'P+Q' (=5) or 'P+S' (=7) may be
+	 * specified.
+	 * 
+	 * @return int current typeOfAlgorithm property value
+	 * @exception Exception
+	 */
+	public TypeOfAlgorithm getTypeOfAlgorithm() {
 
+		return this.typeOfAlgorithm;
+	} // getTypeOfAlgorithm
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherAlgorithm.
-     */
-    private String otherAlgorithm;
-    /**
-     * This method returns the StorageRedundancySet.otherAlgorithm property
-     * value. This property is described as follows:
-     *
-     * A string describing the redundancy algorithm when the TypeOfAlgorithm
-     * is set to 1 'Other'.
-     *
-     * @return	String	current otherAlgorithm property value
-     * @exception	Exception
-     */
-    public String getOtherAlgorithm(){
+	/**
+	 * This method sets the StorageRedundancySet.typeOfAlgorithm property value. This property is described as follows:
+	 * 
+	 * TypeOfAlgorithm specifies the algorithm used for storage data redundancy and reconstruction. For example, 'P+Q' (=5) or 'P+S' (=7) may be
+	 * specified.
+	 * 
+	 * @param int new typeOfAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setTypeOfAlgorithm(TypeOfAlgorithm typeOfAlgorithm) {
 
-    return this.otherAlgorithm;
-    } // getOtherAlgorithm
+		this.typeOfAlgorithm = typeOfAlgorithm;
+	} // setTypeOfAlgorithm
 
-    /**
-     * This method sets the StorageRedundancySet.otherAlgorithm property
-     * value. This property is described as follows:
-     *
-     * A string describing the redundancy algorithm when the TypeOfAlgorithm
-     * is set to 1 'Other'.
-     *
-     * @param	String	new otherAlgorithm property value
-     * @exception	Exception
-     */
-    public void setOtherAlgorithm(String otherAlgorithm) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherAlgorithm.
+	 */
+	private String	otherAlgorithm;
 
-    this.otherAlgorithm = otherAlgorithm;
-    } // setOtherAlgorithm
+	/**
+	 * This method returns the StorageRedundancySet.otherAlgorithm property value. This property is described as follows:
+	 * 
+	 * A string describing the redundancy algorithm when the TypeOfAlgorithm is set to 1 'Other'.
+	 * 
+	 * @return String current otherAlgorithm property value
+	 * @exception Exception
+	 */
+	public String getOtherAlgorithm() {
 
+		return this.otherAlgorithm;
+	} // getOtherAlgorithm
 
+	/**
+	 * This method sets the StorageRedundancySet.otherAlgorithm property value. This property is described as follows:
+	 * 
+	 * A string describing the redundancy algorithm when the TypeOfAlgorithm is set to 1 'Other'.
+	 * 
+	 * @param String
+	 *            new otherAlgorithm property value
+	 * @exception Exception
+	 */
+	public void setOtherAlgorithm(String otherAlgorithm) {
+
+		this.otherAlgorithm = otherAlgorithm;
+	} // setOtherAlgorithm
 
 } // Class StorageRedundancySet

@@ -1,16 +1,21 @@
 package org.opennaas.bod.tests.repository;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
+import java.io.File;
 import java.util.List;
+import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,188 +26,126 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
+import org.osgi.service.event.EventHandler;
 
 @RunWith(JUnit4TestRunner.class)
-public class BODRepositoryIntegrationTest extends AbstractIntegrationTest {
+public class BODRepositoryIntegrationTest
+{
+	private static final Log	log		= LogFactory.getLog(BODRepositoryIntegrationTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private BundleContext		bundleContext;
 
-	IResourceRepository	repository		= null;
+	@Inject
+	@Filter("(type=bod)")
+	private IResourceRepository	repository;
 
-	private static Log	log				= LogFactory
-												.getLog(BODRepositoryIntegrationTest.class);
+	@Inject
+	private IResourceManager	resourceManager;
 
-	/* import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption; */
-
-	/**
-	 * Initialize the configuration
-	 *
-	 * @return
-	 */
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
-	}
-
-	@Before
-	/**
-	 * Test to check if repository is accessible from OSGi.
-	 */
-	public void isRepositoryAccessibleFromContainer() {
-
-		try {
-
-			IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-			repository =
-					getOsgiService(IResourceRepository.class, "type=bod", 50000);
-
-			Assert.assertNotNull(repository);
-
-		} catch (IllegalArgumentException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (RuntimeException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		}
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	@Test
 	/**
 	 * Test to create and remove the resource.
 	 */
-	public void createAndRemoveResourceTest() {
+	public void createAndRemoveResourceTest() throws Exception {
 
-		try {
+		// BoD Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
 
-			// BoD Resource Descriptor
-			ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
+		// Create resource
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			// Create resource
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertFalse(repository.listResources().isEmpty());
-
-			// Remove resource
-			repository.removeResource(resource.getResourceIdentifier().getId());
-			Assert.assertTrue(repository.listResources().isEmpty());
-
-		} catch (ResourceException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepository();
-		}
+		// Remove resource
+		repository.removeResource(resource.getResourceIdentifier().getId());
+		Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
 	/**
 	 * Test to start and stop the resource.
 	 */
 	@Test
-	public void StartAndStopResourceTest() {
+	public void StartAndStopResourceTest() throws Exception {
 
-		try {
+		// BoD Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
 
-			// BoD Resource Descriptor
-			ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
+		// Create resource
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertFalse(repository.listResources().isEmpty());
 
-			// Create resource
-			IResource resource = repository.createResource(resourceDescriptor);
-			Assert.assertFalse(repository.listResources().isEmpty());
+		// Start resource
+		resource.start();
+		Assert.assertTrue(resource.getState().equals(State.ACTIVE));
 
-			// Start resource
-			resource.start();
-			Assert.assertTrue(resource.getState().equals(State.ACTIVE));
+		// Stop resource
+		resource.stop();
+		Assert.assertTrue(resource.getState().equals(State.INITIALIZED));
 
-			// Stop resource
-			resource.stop();
-			Assert.assertTrue(resource.getState().equals(State.INITIALIZED));
-
-			// Remove resource
-			repository.removeResource(resource.getResourceIdentifier().getId());
-			Assert.assertTrue(repository.listResources().isEmpty());
-
-		} catch (ResourceException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepository();
-		}
-
+		// Remove resource
+		repository.removeResource(resource.getResourceIdentifier().getId());
+		Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
 	@Test
 	/**
 	 * Test to check if repostitory is accessible from Resource Manager
 	 */
-	public void isResourceAccessibleFromRM() {
+	public void isResourceAccessibleFromRM() throws Exception {
 
-		try {
+		/* init services */
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
 
-			/* init services */
-			IResourceManager resourceManager = getOsgiService(IResourceManager.class, 50000);
+		IResource resource = resourceManager.createResource(resourceDescriptor);
 
-			ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
-
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-
-			Assert.assertTrue(repository.listResources().contains(resource));
-
-		} catch (ResourceException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getLocalizedMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getLocalizedMessage());
-		} finally {
-			clearRepository();
-		}
+		Assert.assertTrue(repository.listResources().contains(resource));
 	}
 
 	/**
 	 * At the end of the tests, we empty the repository
 	 */
-	private void clearRepository() {
+	@After
+	public void clearRepository() throws ResourceException {
 
 		log.info("Clearing resource repo");
 
 		List<IResource> toRemove = repository.listResources();
 
 		for (IResource resource : toRemove) {
-			try {
-				if (resource.getState().equals(State.ACTIVE)) {
-					repository.stopResource(resource.getResourceIdentifier().getId());
-				}
-				repository.removeResource(resource.getResourceIdentifier().getId());
-			} catch (ResourceException e) {
-				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
-				Assert.fail(e.getLocalizedMessage());
+			if (resource.getState().equals(State.ACTIVE)) {
+				repository.stopResource(resource.getResourceIdentifier().getId());
 			}
+			repository.removeResource(resource.getResourceIdentifier().getId());
 		}
 
 		log.info("Resource repo cleared!");
 	}
-
 }

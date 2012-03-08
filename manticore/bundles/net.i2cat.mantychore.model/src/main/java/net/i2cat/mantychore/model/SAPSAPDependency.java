@@ -8,43 +8,34 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SAPSAPDependency as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SAPSAPDependencyBean Interface. The CIM class SAPSAPDependency is
- * described as follows:
- *
- * CIM_SAPSAPDependency is an association between one ServiceAccessPoint and
- * another ServiceAccessPoint that indicates that the latter is required for
- * the former to utilize or connect with its Service. For example, to print
- * to a network printer, local Print Access Points must utilize underlying
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SAPSAPDependency as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SAPSAPDependencyBean Interface. The CIM class SAPSAPDependency is described as
+ * follows:
+ * 
+ * CIM_SAPSAPDependency is an association between one ServiceAccessPoint and another ServiceAccessPoint that indicates that the latter is required for
+ * the former to utilize or connect with its Service. For example, to print to a network printer, local Print Access Points must utilize underlying
  * network-related SAPs, or ProtocolEndpoints, to send the print request.
  */
 public class SAPSAPDependency extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a SAPSAPDependencyBeanImpl Class which
-     * implements the SAPSAPDependencyBean Interface, and encapsulates the
-     * CIM class SAPSAPDependency in a Java Bean. The CIM class
-     * SAPSAPDependency is described as follows:
-     *
-     * CIM_SAPSAPDependency is an association between one ServiceAccessPoint
-     * and another ServiceAccessPoint that indicates that the latter is
-     * required for the former to utilize or connect with its Service. For
-     * example, to print to a network printer, local Print Access Points must
-     * utilize underlying network-related SAPs, or ProtocolEndpoints, to send
-     * the print request.
-     */
-    public SAPSAPDependency(){};
-    /**
-     * This method create an Association of the type SAPSAPDependency between
-     * one ServiceAccessPoint object and ServiceAccessPoint object
-     */
-    public static SAPSAPDependency link(ServiceAccessPoint
-	antecedent,ServiceAccessPoint dependent){
+	/**
+	 * This constructor creates a SAPSAPDependencyBeanImpl Class which implements the SAPSAPDependencyBean Interface, and encapsulates the CIM class
+	 * SAPSAPDependency in a Java Bean. The CIM class SAPSAPDependency is described as follows:
+	 * 
+	 * CIM_SAPSAPDependency is an association between one ServiceAccessPoint and another ServiceAccessPoint that indicates that the latter is required
+	 * for the former to utilize or connect with its Service. For example, to print to a network printer, local Print Access Points must utilize
+	 * underlying network-related SAPs, or ProtocolEndpoints, to send the print request.
+	 */
+	public SAPSAPDependency() {
+	};
 
-    return (SAPSAPDependency)
-	Association.link(SAPSAPDependency.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type SAPSAPDependency between one ServiceAccessPoint object and ServiceAccessPoint object
+	 */
+	public static SAPSAPDependency link(ServiceAccessPoint
+			antecedent, ServiceAccessPoint dependent) {
+
+		return (SAPSAPDependency) Association.link(SAPSAPDependency.class, antecedent, dependent);
+	}// link
 
 } // Class SAPSAPDependency

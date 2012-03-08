@@ -8,15 +8,14 @@ import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
 
 public class XmlHelperTest {
-	private static String	formattedTest	= "<!-- Document comment -->" + '\n'
-													+ "<aaa>" + '\n'
-													+ "  <bbb/>" + '\n'
-													+ "  <ccc/>" + '\n'
-													+ "</aaa>" + '\n';
+	private final static String	FORMATTED_TEST	= "<!-- Document comment -->" + '\n'
+														+ "<aaa>" + '\n'
+														+ "  <bbb/>" + '\n'
+														+ "  <ccc/>" + '\n'
+														+ "</aaa>" + '\n';
 
 	@Test
 	public void formatXMLTest() {
-
 		List<String> toFormat = new ArrayList<String>();
 
 		toFormat.add("<!-- Document comment --><aaa><bbb/><ccc/></aaa>");
@@ -24,7 +23,7 @@ public class XmlHelperTest {
 
 		for (String unformatted : toFormat) {
 			String formatted = formatString(unformatted);
-			Assert.assertEquals(formattedTest, formatted);
+			Assert.assertEquals(getFormattedTestBySystem(), formatted);
 		}
 
 	}
@@ -40,4 +39,12 @@ public class XmlHelperTest {
 		return formatted;
 	}
 
+	private String getFormattedTestBySystem() {
+		String formattedTest = FORMATTED_TEST;
+		if (System.getProperty("os.name").contains("Windows")) {
+			return formattedTest.replace("\n", "\r\n");
+		} else {
+			return formattedTest;
+		}
+	}
 }

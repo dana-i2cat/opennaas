@@ -7,6 +7,7 @@ import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
@@ -21,8 +22,10 @@ import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.Assert;
 import org.junit.Test;
+
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;

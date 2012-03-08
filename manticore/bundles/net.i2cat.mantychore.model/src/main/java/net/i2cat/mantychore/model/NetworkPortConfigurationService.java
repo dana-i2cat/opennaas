@@ -8,27 +8,22 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class NetworkPortConfigurationService as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the NetworkPortConfigurationServiceBean Interface. The CIM
- * class NetworkPortConfigurationService is described as follows:
- *
- * CIM_NetworkPortConfigurationService provides management of the network
- * interfaces associated with a network port.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPortConfigurationService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the NetworkPortConfigurationServiceBean Interface. The CIM class
+ * NetworkPortConfigurationService is described as follows:
+ * 
+ * CIM_NetworkPortConfigurationService provides management of the network interfaces associated with a network port.
  */
 public class NetworkPortConfigurationService extends Service implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a NetworkPortConfigurationServiceBeanImpl
-     * Class which implements the NetworkPortConfigurationServiceBean
-     * Interface, and encapsulates the CIM class
-     * NetworkPortConfigurationService in a Java Bean. The CIM class
-     * NetworkPortConfigurationService is described as follows:
-     *
-     * CIM_NetworkPortConfigurationService provides management of the network
-     * interfaces associated with a network port.
-     */
-    public NetworkPortConfigurationService(){};
+	/**
+	 * This constructor creates a NetworkPortConfigurationServiceBeanImpl Class which implements the NetworkPortConfigurationServiceBean Interface,
+	 * and encapsulates the CIM class NetworkPortConfigurationService in a Java Bean. The CIM class NetworkPortConfigurationService is described as
+	 * follows:
+	 * 
+	 * CIM_NetworkPortConfigurationService provides management of the network interfaces associated with a network port.
+	 */
+	public NetworkPortConfigurationService() {
+	};
 } // Class NetworkPortConfigurationService

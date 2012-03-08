@@ -9,340 +9,291 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DNSProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DNSProtocolEndpointBean Interface. The CIM class DNSProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DNSProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the DNSProtocolEndpointBean Interface. The CIM class DNSProtocolEndpoint is
  * described as follows:
- *
- * A class derived from CIM_ProtocolEndpoint which represents the DNS client
- * and DNS configuration for a single IP endpoint. The DNS server addresses
- * can be determined by querying the AccessInfo property of associated
- * CIM_RemoteServiceAccessPoint instances which have an AccessContext of
- * "DNS Server". The order in which the DNS servers will be queried can be
- * determined by the relative values of the OrderOfAccess property on each
- * CIM_RemoteAccessAvailableToElement association which associated the
- * CIM_RemoteServiceAccessPoint with the CIM_DNSProtocolEndpoint.
+ * 
+ * A class derived from CIM_ProtocolEndpoint which represents the DNS client and DNS configuration for a single IP endpoint. The DNS server addresses
+ * can be determined by querying the AccessInfo property of associated CIM_RemoteServiceAccessPoint instances which have an AccessContext of
+ * "DNS Server". The order in which the DNS servers will be queried can be determined by the relative values of the OrderOfAccess property on each
+ * CIM_RemoteAccessAvailableToElement association which associated the CIM_RemoteServiceAccessPoint with the CIM_DNSProtocolEndpoint.
  */
 public class DNSProtocolEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DNSProtocolEndpointBeanImpl Class which
-     * implements the DNSProtocolEndpointBean Interface, and encapsulates the
-     * CIM class DNSProtocolEndpoint in a Java Bean. The CIM class
-     * DNSProtocolEndpoint is described as follows:
-     *
-     * A class derived from CIM_ProtocolEndpoint which represents the DNS
-     * client and DNS configuration for a single IP endpoint. The DNS server
-     * addresses can be determined by querying the AccessInfo property of
-     * associated CIM_RemoteServiceAccessPoint instances which have an
-     * AccessContext of "DNS Server". The order in which the DNS servers will
-     * be queried can be determined by the relative values of the
-     * OrderOfAccess property on each CIM_RemoteAccessAvailableToElement
-     * association which associated the CIM_RemoteServiceAccessPoint with the
-     * CIM_DNSProtocolEndpoint.
-     */
-    public DNSProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property hostname.
-     */
-    private String hostname;
-    /**
-     * This method returns the DNSProtocolEndpoint.hostname property value.
-     * This property is described as follows:
-     *
-     * The Hostname actually in use for this client connection.
-     *
-     * @return	String	current hostname property value
-     * @exception	Exception
-     */
-    public String getHostname(){
+	/**
+	 * This constructor creates a DNSProtocolEndpointBeanImpl Class which implements the DNSProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class DNSProtocolEndpoint in a Java Bean. The CIM class DNSProtocolEndpoint is described as follows:
+	 * 
+	 * A class derived from CIM_ProtocolEndpoint which represents the DNS client and DNS configuration for a single IP endpoint. The DNS server
+	 * addresses can be determined by querying the AccessInfo property of associated CIM_RemoteServiceAccessPoint instances which have an
+	 * AccessContext of "DNS Server". The order in which the DNS servers will be queried can be determined by the relative values of the OrderOfAccess
+	 * property on each CIM_RemoteAccessAvailableToElement association which associated the CIM_RemoteServiceAccessPoint with the
+	 * CIM_DNSProtocolEndpoint.
+	 */
+	public DNSProtocolEndpoint() {
+	};
 
-    return this.hostname;
-    } // getHostname
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property hostname.
+	 */
+	private String	hostname;
 
-    /**
-     * This method sets the DNSProtocolEndpoint.hostname property value. This
-     * property is described as follows:
-     *
-     * The Hostname actually in use for this client connection.
-     *
-     * @param	String	new hostname property value
-     * @exception	Exception
-     */
-    public void setHostname(String hostname) {
+	/**
+	 * This method returns the DNSProtocolEndpoint.hostname property value. This property is described as follows:
+	 * 
+	 * The Hostname actually in use for this client connection.
+	 * 
+	 * @return String current hostname property value
+	 * @exception Exception
+	 */
+	public String getHostname() {
 
-    this.hostname = hostname;
-    } // setHostname
+		return this.hostname;
+	} // getHostname
 
+	/**
+	 * This method sets the DNSProtocolEndpoint.hostname property value. This property is described as follows:
+	 * 
+	 * The Hostname actually in use for this client connection.
+	 * 
+	 * @param String
+	 *            new hostname property value
+	 * @exception Exception
+	 */
+	public void setHostname(String hostname) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DHCPOptionsToUse.
-     */
+		this.hostname = hostname;
+	} // setHostname
 
-    public enum DHCPOptionsToUse{
-    DOMAIN_NAME_SERVER,
-    HOST_NAME,
-    DOMAIN_NAME,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private DHCPOptionsToUse dHCPOptionsToUse;
-    /**
-     * This method returns the DNSProtocolEndpoint.dHCPOptionsToUse property
-     * value. This property is described as follows:
-     *
-     * One or more DHCP options that the DNS client is utilizing if they were
-     * returned during a DHCP bind operation.
-     *
-     * @return	int	current dHCPOptionsToUse property value
-     * @exception	Exception
-     */
-    public DHCPOptionsToUse getDHCPOptionsToUse(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DHCPOptionsToUse.
+	 */
 
-    return this.dHCPOptionsToUse;
-    } // getDHCPOptionsToUse
+	public enum DHCPOptionsToUse {
+		DOMAIN_NAME_SERVER,
+		HOST_NAME,
+		DOMAIN_NAME,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the DNSProtocolEndpoint.dHCPOptionsToUse property
-     * value. This property is described as follows:
-     *
-     * One or more DHCP options that the DNS client is utilizing if they were
-     * returned during a DHCP bind operation.
-     *
-     * @param	int	new dHCPOptionsToUse property value
-     * @exception	Exception
-     */
-    public void setDHCPOptionsToUse(DHCPOptionsToUse dHCPOptionsToUse){
+	private DHCPOptionsToUse	dHCPOptionsToUse;
 
-    this.dHCPOptionsToUse = dHCPOptionsToUse;
-    } // setDHCPOptionsToUse
+	/**
+	 * This method returns the DNSProtocolEndpoint.dHCPOptionsToUse property value. This property is described as follows:
+	 * 
+	 * One or more DHCP options that the DNS client is utilizing if they were returned during a DHCP bind operation.
+	 * 
+	 * @return int current dHCPOptionsToUse property value
+	 * @exception Exception
+	 */
+	public DHCPOptionsToUse getDHCPOptionsToUse() {
 
+		return this.dHCPOptionsToUse;
+	} // getDHCPOptionsToUse
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property appendParentSuffixes.
-     */
-    private boolean appendParentSuffixes;
-    /**
-     * This method returns the DNSProtocolEndpoint.appendParentSuffixes
-     * property value. This property is described as follows:
-     *
-     * Whether or not the client appends the parent domain suffix to target
-     * names prior to attempting to resolve.
-     *
-     * @return	boolean	current appendParentSuffixes property
-     * value
-     * @exception	Exception
-     */
-    public boolean isAppendParentSuffixes(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.dHCPOptionsToUse property value. This property is described as follows:
+	 * 
+	 * One or more DHCP options that the DNS client is utilizing if they were returned during a DHCP bind operation.
+	 * 
+	 * @param int new dHCPOptionsToUse property value
+	 * @exception Exception
+	 */
+	public void setDHCPOptionsToUse(DHCPOptionsToUse dHCPOptionsToUse) {
 
-    return this.appendParentSuffixes;
-    } // getAppendParentSuffixes
+		this.dHCPOptionsToUse = dHCPOptionsToUse;
+	} // setDHCPOptionsToUse
 
-    /**
-     * This method sets the DNSProtocolEndpoint.appendParentSuffixes property
-     * value. This property is described as follows:
-     *
-     * Whether or not the client appends the parent domain suffix to target
-     * names prior to attempting to resolve.
-     *
-     * @param	boolean	new appendParentSuffixes property value
-     * @exception	Exception
-     */
-    public void setAppendParentSuffixes(boolean appendParentSuffixes) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property appendParentSuffixes.
+	 */
+	private boolean	appendParentSuffixes;
 
-    this.appendParentSuffixes = appendParentSuffixes;
-    } // setAppendParentSuffixes
+	/**
+	 * This method returns the DNSProtocolEndpoint.appendParentSuffixes property value. This property is described as follows:
+	 * 
+	 * Whether or not the client appends the parent domain suffix to target names prior to attempting to resolve.
+	 * 
+	 * @return boolean current appendParentSuffixes property value
+	 * @exception Exception
+	 */
+	public boolean isAppendParentSuffixes() {
 
+		return this.appendParentSuffixes;
+	} // getAppendParentSuffixes
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property appendPrimarySuffixes.
-     */
-    private boolean appendPrimarySuffixes;
-    /**
-     * This method returns the DNSProtocolEndpoint.appendPrimarySuffixes
-     * property value. This property is described as follows:
-     *
-     * Whether or not the client appends the primary domain suffix to target
-     * names prior to attempting to resolve.
-     *
-     * @return	boolean	current appendPrimarySuffixes property
-     * value
-     * @exception	Exception
-     */
-    public boolean isAppendPrimarySuffixes(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.appendParentSuffixes property value. This property is described as follows:
+	 * 
+	 * Whether or not the client appends the parent domain suffix to target names prior to attempting to resolve.
+	 * 
+	 * @param boolean new appendParentSuffixes property value
+	 * @exception Exception
+	 */
+	public void setAppendParentSuffixes(boolean appendParentSuffixes) {
 
-    return this.appendPrimarySuffixes;
-    } // getAppendPrimarySuffixes
+		this.appendParentSuffixes = appendParentSuffixes;
+	} // setAppendParentSuffixes
 
-    /**
-     * This method sets the DNSProtocolEndpoint.appendPrimarySuffixes property
-     * value. This property is described as follows:
-     *
-     * Whether or not the client appends the primary domain suffix to target
-     * names prior to attempting to resolve.
-     *
-     * @param	boolean	new appendPrimarySuffixes property value
-     * @exception	Exception
-     */
-    public void setAppendPrimarySuffixes(boolean appendPrimarySuffixes) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property appendPrimarySuffixes.
+	 */
+	private boolean	appendPrimarySuffixes;
 
-    this.appendPrimarySuffixes = appendPrimarySuffixes;
-    } // setAppendPrimarySuffixes
+	/**
+	 * This method returns the DNSProtocolEndpoint.appendPrimarySuffixes property value. This property is described as follows:
+	 * 
+	 * Whether or not the client appends the primary domain suffix to target names prior to attempting to resolve.
+	 * 
+	 * @return boolean current appendPrimarySuffixes property value
+	 * @exception Exception
+	 */
+	public boolean isAppendPrimarySuffixes() {
 
+		return this.appendPrimarySuffixes;
+	} // getAppendPrimarySuffixes
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property dNSSuffixesToAppend.
-     */
-    private String[] dNSSuffixesToAppend;
-    /**
-     * This method returns the DNSProtocolEndpoint.dNSSuffixesToAppend
-     * property value. This property is described as follows:
-     *
-     * The DNS suffixes to append when attempting to resolve a hostname.
-     *
-     * @return	String[]	current dNSSuffixesToAppend property
-     * value
-     * @exception	Exception
-     */
-    public String[] getDNSSuffixesToAppend(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.appendPrimarySuffixes property value. This property is described as follows:
+	 * 
+	 * Whether or not the client appends the primary domain suffix to target names prior to attempting to resolve.
+	 * 
+	 * @param boolean new appendPrimarySuffixes property value
+	 * @exception Exception
+	 */
+	public void setAppendPrimarySuffixes(boolean appendPrimarySuffixes) {
 
-    return this.dNSSuffixesToAppend;
-    } // getDNSSuffixesToAppend
+		this.appendPrimarySuffixes = appendPrimarySuffixes;
+	} // setAppendPrimarySuffixes
 
-    /**
-     * This method sets the DNSProtocolEndpoint.dNSSuffixesToAppend property
-     * value. This property is described as follows:
-     *
-     * The DNS suffixes to append when attempting to resolve a hostname.
-     *
-     * @param	String[]	new dNSSuffixesToAppend property value
-     * @exception	Exception
-     */
-    public void setDNSSuffixesToAppend(String[] dNSSuffixesToAppend) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property dNSSuffixesToAppend.
+	 */
+	private String[]	dNSSuffixesToAppend;
 
-    this.dNSSuffixesToAppend = dNSSuffixesToAppend;
-    } // setDNSSuffixesToAppend
+	/**
+	 * This method returns the DNSProtocolEndpoint.dNSSuffixesToAppend property value. This property is described as follows:
+	 * 
+	 * The DNS suffixes to append when attempting to resolve a hostname.
+	 * 
+	 * @return String[] current dNSSuffixesToAppend property value
+	 * @exception Exception
+	 */
+	public String[] getDNSSuffixesToAppend() {
 
+		return this.dNSSuffixesToAppend;
+	} // getDNSSuffixesToAppend
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property domainName.
-     */
-    private String domainName;
-    /**
-     * This method returns the DNSProtocolEndpoint.domainName property value.
-     * This property is described as follows:
-     *
-     * The domain to use for this client connection.
-     *
-     * @return	String	current domainName property value
-     * @exception	Exception
-     */
-    public String getDomainName(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.dNSSuffixesToAppend property value. This property is described as follows:
+	 * 
+	 * The DNS suffixes to append when attempting to resolve a hostname.
+	 * 
+	 * @param String
+	 *            [] new dNSSuffixesToAppend property value
+	 * @exception Exception
+	 */
+	public void setDNSSuffixesToAppend(String[] dNSSuffixesToAppend) {
 
-    return this.domainName;
-    } // getDomainName
+		this.dNSSuffixesToAppend = dNSSuffixesToAppend;
+	} // setDNSSuffixesToAppend
 
-    /**
-     * This method sets the DNSProtocolEndpoint.domainName property value.
-     * This property is described as follows:
-     *
-     * The domain to use for this client connection.
-     *
-     * @param	String	new domainName property value
-     * @exception	Exception
-     */
-    public void setDomainName(String domainName) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property domainName.
+	 */
+	private String	domainName;
 
-    this.domainName = domainName;
-    } // setDomainName
+	/**
+	 * This method returns the DNSProtocolEndpoint.domainName property value. This property is described as follows:
+	 * 
+	 * The domain to use for this client connection.
+	 * 
+	 * @return String current domainName property value
+	 * @exception Exception
+	 */
+	public String getDomainName() {
 
+		return this.domainName;
+	} // getDomainName
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property registerThisConnectionsAddress.
-     */
-    private boolean registerThisConnectionsAddress;
-    /**
-     * This method returns the
-     * DNSProtocolEndpoint.registerThisConnectionsAddress property value.
-     * This property is described as follows:
-     *
-     * Whether or not the client attempted to register this connection's
-     * address in DNS.
-     *
-     * @return	boolean	current registerThisConnectionsAddress
-     * property value
-     * @exception	Exception
-     */
-    public boolean isRegisterThisConnectionsAddress(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.domainName property value. This property is described as follows:
+	 * 
+	 * The domain to use for this client connection.
+	 * 
+	 * @param String
+	 *            new domainName property value
+	 * @exception Exception
+	 */
+	public void setDomainName(String domainName) {
 
-    return this.registerThisConnectionsAddress;
-    } // getRegisterThisConnectionsAddress
+		this.domainName = domainName;
+	} // setDomainName
 
-    /**
-     * This method sets the DNSProtocolEndpoint.registerThisConnectionsAddress
-     * property value. This property is described as follows:
-     *
-     * Whether or not the client attempted to register this connection's
-     * address in DNS.
-     *
-     * @param	boolean	new registerThisConnectionsAddress
-     * property value
-     * @exception	Exception
-     */
-    public void setRegisterThisConnectionsAddress(boolean
-	registerThisConnectionsAddress) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property registerThisConnectionsAddress.
+	 */
+	private boolean	registerThisConnectionsAddress;
 
-    this.registerThisConnectionsAddress = registerThisConnectionsAddress;
-    } // setRegisterThisConnectionsAddress
+	/**
+	 * This method returns the DNSProtocolEndpoint.registerThisConnectionsAddress property value. This property is described as follows:
+	 * 
+	 * Whether or not the client attempted to register this connection's address in DNS.
+	 * 
+	 * @return boolean current registerThisConnectionsAddress property value
+	 * @exception Exception
+	 */
+	public boolean isRegisterThisConnectionsAddress() {
 
+		return this.registerThisConnectionsAddress;
+	} // getRegisterThisConnectionsAddress
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property useSuffixWhenRegistering.
-     */
-    private boolean useSuffixWhenRegistering;
-    /**
-     * This method returns the DNSProtocolEndpoint.useSuffixWhenRegistering
-     * property value. This property is described as follows:
-     *
-     * Whether or not the suffix is appended before registering the client
-     * name with the DNS server.
-     *
-     * @return	boolean	current useSuffixWhenRegistering property
-     * value
-     * @exception	Exception
-     */
-    public boolean isUseSuffixWhenRegistering(){
+	/**
+	 * This method sets the DNSProtocolEndpoint.registerThisConnectionsAddress property value. This property is described as follows:
+	 * 
+	 * Whether or not the client attempted to register this connection's address in DNS.
+	 * 
+	 * @param boolean new registerThisConnectionsAddress property value
+	 * @exception Exception
+	 */
+	public void setRegisterThisConnectionsAddress(boolean
+			registerThisConnectionsAddress) {
 
-    return this.useSuffixWhenRegistering;
-    } // getUseSuffixWhenRegistering
+		this.registerThisConnectionsAddress = registerThisConnectionsAddress;
+	} // setRegisterThisConnectionsAddress
 
-    /**
-     * This method sets the DNSProtocolEndpoint.useSuffixWhenRegistering
-     * property value. This property is described as follows:
-     *
-     * Whether or not the suffix is appended before registering the client
-     * name with the DNS server.
-     *
-     * @param	boolean	new useSuffixWhenRegistering property
-     * value
-     * @exception	Exception
-     */
-    public void setUseSuffixWhenRegistering(boolean useSuffixWhenRegistering)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property useSuffixWhenRegistering.
+	 */
+	private boolean	useSuffixWhenRegistering;
+
+	/**
+	 * This method returns the DNSProtocolEndpoint.useSuffixWhenRegistering property value. This property is described as follows:
+	 * 
+	 * Whether or not the suffix is appended before registering the client name with the DNS server.
+	 * 
+	 * @return boolean current useSuffixWhenRegistering property value
+	 * @exception Exception
+	 */
+	public boolean isUseSuffixWhenRegistering() {
+
+		return this.useSuffixWhenRegistering;
+	} // getUseSuffixWhenRegistering
+
+	/**
+	 * This method sets the DNSProtocolEndpoint.useSuffixWhenRegistering property value. This property is described as follows:
+	 * 
+	 * Whether or not the suffix is appended before registering the client name with the DNS server.
+	 * 
+	 * @param boolean new useSuffixWhenRegistering property value
+	 * @exception Exception
+	 */
+	public void setUseSuffixWhenRegistering(boolean useSuffixWhenRegistering)
 	{
 
-    this.useSuffixWhenRegistering = useSuffixWhenRegistering;
-    } // setUseSuffixWhenRegistering
-
-
+		this.useSuffixWhenRegistering = useSuffixWhenRegistering;
+	} // setUseSuffixWhenRegistering
 
 } // Class DNSProtocolEndpoint

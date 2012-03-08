@@ -8,40 +8,32 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProductFRU as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProductFRUBean Interface. The CIM class ProductFRU is described as
- * follows:
- *
- * CIM_ProductFRU is an association between Product and FRU that provides
- * information regarding what Product components have been or are being
- * replaced. The association is one to many, conveying that a Product can
- * have many FRUs, and that a particular instance of a FRU is only applied to
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProductFRU as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ProductFRUBean Interface. The CIM class ProductFRU is described as follows:
+ * 
+ * CIM_ProductFRU is an association between Product and FRU that provides information regarding what Product components have been or are being
+ * replaced. The association is one to many, conveying that a Product can have many FRUs, and that a particular instance of a FRU is only applied to
  * one (instance of a) Product.
  */
 public class ProductFRU extends Association implements Serializable {
 
-    /**
-     * This constructor creates a ProductFRUBeanImpl Class which implements
-     * the ProductFRUBean Interface, and encapsulates the CIM class
-     * ProductFRU in a Java Bean. The CIM class ProductFRU is described as
-     * follows:
-     *
-     * CIM_ProductFRU is an association between Product and FRU that provides
-     * information regarding what Product components have been or are being
-     * replaced. The association is one to many, conveying that a Product can
-     * have many FRUs, and that a particular instance of a FRU is only
-     * applied to one (instance of a) Product.
-     */
-    public ProductFRU(){};
-    /**
-     * This method create an Association of the type ProductFRU between one
-     * Product object and FRU object
-     */
-    public static ProductFRU link(Product product,FRU fRU){
+	/**
+	 * This constructor creates a ProductFRUBeanImpl Class which implements the ProductFRUBean Interface, and encapsulates the CIM class ProductFRU in
+	 * a Java Bean. The CIM class ProductFRU is described as follows:
+	 * 
+	 * CIM_ProductFRU is an association between Product and FRU that provides information regarding what Product components have been or are being
+	 * replaced. The association is one to many, conveying that a Product can have many FRUs, and that a particular instance of a FRU is only applied
+	 * to one (instance of a) Product.
+	 */
+	public ProductFRU() {
+	};
 
-    return (ProductFRU) Association.link(ProductFRU.class,product,fRU);
-    }//link
+	/**
+	 * This method create an Association of the type ProductFRU between one Product object and FRU object
+	 */
+	public static ProductFRU link(Product product, FRU fRU) {
+
+		return (ProductFRU) Association.link(ProductFRU.class, product, fRU);
+	}// link
 
 } // Class ProductFRU

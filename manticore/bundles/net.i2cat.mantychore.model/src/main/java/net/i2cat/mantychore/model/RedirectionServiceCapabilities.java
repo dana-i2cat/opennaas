@@ -9,74 +9,62 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RedirectionServiceCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the RedirectionServiceCapabilitiesBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RedirectionServiceCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the RedirectionServiceCapabilitiesBean Interface. The CIM class
  * RedirectionServiceCapabilities is described as follows:
- *
- * RedirectionServiceCapabilities describes the capabilities of the associated
- * RedirectionService.
+ * 
+ * RedirectionServiceCapabilities describes the capabilities of the associated RedirectionService.
  */
 public class RedirectionServiceCapabilities extends
-    EnabledLogicalElementCapabilities implements Serializable {
+		EnabledLogicalElementCapabilities implements Serializable {
 
-    /**
-     * This constructor creates a RedirectionServiceCapabilitiesBeanImpl Class
-     * which implements the RedirectionServiceCapabilitiesBean Interface, and
-     * encapsulates the CIM class RedirectionServiceCapabilities in a Java
-     * Bean. The CIM class RedirectionServiceCapabilities is described as
-     * follows:
-     *
-     * RedirectionServiceCapabilities describes the capabilities of the
-     * associated RedirectionService.
-     */
-    public RedirectionServiceCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SharingModeSupported.
-     */
+	/**
+	 * This constructor creates a RedirectionServiceCapabilitiesBeanImpl Class which implements the RedirectionServiceCapabilitiesBean Interface, and
+	 * encapsulates the CIM class RedirectionServiceCapabilities in a Java Bean. The CIM class RedirectionServiceCapabilities is described as follows:
+	 * 
+	 * RedirectionServiceCapabilities describes the capabilities of the associated RedirectionService.
+	 */
+	public RedirectionServiceCapabilities() {
+	};
 
-    public enum SharingModeSupported{
-    UNKNOWN,
-    EXCLUSIVE,
-    SHARED,
-    DMTF_RESERVED
-    }
-    private SharingModeSupported sharingModeSupported;
-    /**
-     * This method returns the
-     * RedirectionServiceCapabilities.sharingModeSupported property value.
-     * This property is described as follows:
-     *
-     * SharingModeSupported indicates the possible values to which the
-     * SharingMode of the associated RedirectionService can be set.
-     *
-     * @return	int	current sharingModeSupported property value
-     * @exception	Exception
-     */
-    public SharingModeSupported getSharingModeSupported(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SharingModeSupported.
+	 */
 
-    return this.sharingModeSupported;
-    } // getSharingModeSupported
+	public enum SharingModeSupported {
+		UNKNOWN,
+		EXCLUSIVE,
+		SHARED,
+		DMTF_RESERVED
+	}
 
-    /**
-     * This method sets the
-     * RedirectionServiceCapabilities.sharingModeSupported property value.
-     * This property is described as follows:
-     *
-     * SharingModeSupported indicates the possible values to which the
-     * SharingMode of the associated RedirectionService can be set.
-     *
-     * @param	int	new sharingModeSupported property value
-     * @exception	Exception
-     */
-    public void setSharingModeSupported(SharingModeSupported
-	sharingModeSupported){
+	private SharingModeSupported	sharingModeSupported;
 
-    this.sharingModeSupported = sharingModeSupported;
-    } // setSharingModeSupported
+	/**
+	 * This method returns the RedirectionServiceCapabilities.sharingModeSupported property value. This property is described as follows:
+	 * 
+	 * SharingModeSupported indicates the possible values to which the SharingMode of the associated RedirectionService can be set.
+	 * 
+	 * @return int current sharingModeSupported property value
+	 * @exception Exception
+	 */
+	public SharingModeSupported getSharingModeSupported() {
 
+		return this.sharingModeSupported;
+	} // getSharingModeSupported
 
+	/**
+	 * This method sets the RedirectionServiceCapabilities.sharingModeSupported property value. This property is described as follows:
+	 * 
+	 * SharingModeSupported indicates the possible values to which the SharingMode of the associated RedirectionService can be set.
+	 * 
+	 * @param int new sharingModeSupported property value
+	 * @exception Exception
+	 */
+	public void setSharingModeSupported(SharingModeSupported
+			sharingModeSupported) {
+
+		this.sharingModeSupported = sharingModeSupported;
+	} // setSharingModeSupported
 
 } // Class RedirectionServiceCapabilities

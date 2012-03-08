@@ -8,46 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SAPAvailableForElement as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * SAPAvailableForElementBean Interface. The CIM class SAPAvailableForElement
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SAPAvailableForElement as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the SAPAvailableForElementBean Interface. The CIM class SAPAvailableForElement
  * is described as follows:
- *
- * CIM_SAPAvailableForElement conveys the semantics of a Service Access Point
- * that is available for a ManagedElement. When CIM_SAPAvailableForElement is
- * not instantiated, then the SAP is assumed to be generally available. If
- * instantiated, the SAP is available only for the associated
- * ManagedElements. For example, a device might provide management access
- * through a URL. This association allows the URL to be advertised for the
+ * 
+ * CIM_SAPAvailableForElement conveys the semantics of a Service Access Point that is available for a ManagedElement. When CIM_SAPAvailableForElement
+ * is not instantiated, then the SAP is assumed to be generally available. If instantiated, the SAP is available only for the associated
+ * ManagedElements. For example, a device might provide management access through a URL. This association allows the URL to be advertised for the
  * device.
  */
 public class SAPAvailableForElement extends Association implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SAPAvailableForElementBeanImpl Class which
-     * implements the SAPAvailableForElementBean Interface, and encapsulates
-     * the CIM class SAPAvailableForElement in a Java Bean. The CIM class
-     * SAPAvailableForElement is described as follows:
-     *
-     * CIM_SAPAvailableForElement conveys the semantics of a Service Access
-     * Point that is available for a ManagedElement. When
-     * CIM_SAPAvailableForElement is not instantiated, then the SAP is
-     * assumed to be generally available. If instantiated, the SAP is
-     * available only for the associated ManagedElements. For example, a
-     * device might provide management access through a URL. This association
-     * allows the URL to be advertised for the device.
-     */
-    public SAPAvailableForElement(){};
-    /**
-     * This method create an Association of the type SAPAvailableForElement
-     * between one ServiceAccessPoint object and ManagedElement object
-     */
-    public static SAPAvailableForElement link(ServiceAccessPoint
-	availableSAP,ManagedElement managedElement){
+	/**
+	 * This constructor creates a SAPAvailableForElementBeanImpl Class which implements the SAPAvailableForElementBean Interface, and encapsulates the
+	 * CIM class SAPAvailableForElement in a Java Bean. The CIM class SAPAvailableForElement is described as follows:
+	 * 
+	 * CIM_SAPAvailableForElement conveys the semantics of a Service Access Point that is available for a ManagedElement. When
+	 * CIM_SAPAvailableForElement is not instantiated, then the SAP is assumed to be generally available. If instantiated, the SAP is available only
+	 * for the associated ManagedElements. For example, a device might provide management access through a URL. This association allows the URL to be
+	 * advertised for the device.
+	 */
+	public SAPAvailableForElement() {
+	};
 
-    return (SAPAvailableForElement) Association.link(SAPAvailableForElement.class,availableSAP,managedElement);
-    }//link
+	/**
+	 * This method create an Association of the type SAPAvailableForElement between one ServiceAccessPoint object and ManagedElement object
+	 */
+	public static SAPAvailableForElement link(ServiceAccessPoint
+			availableSAP, ManagedElement managedElement) {
+
+		return (SAPAvailableForElement) Association.link(SAPAvailableForElement.class, availableSAP, managedElement);
+	}// link
 
 } // Class SAPAvailableForElement

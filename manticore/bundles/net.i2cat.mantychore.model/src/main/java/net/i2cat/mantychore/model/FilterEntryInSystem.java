@@ -8,51 +8,39 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class FilterEntryInSystem as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * FilterEntryInSystemBean Interface. The CIM class FilterEntryInSystem is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FilterEntryInSystem as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the FilterEntryInSystemBean Interface. The CIM class FilterEntryInSystem is
  * described as follows:
- *
- * All filter entries (FilterEntryBase and its subclasses) are defined in the
- * context of a ComputerSystem/network device, where they are used to
- * identify and act on network traffic. Note that this class is deprecated
- * since its subclassing is not correct. It subclasses from System Component,
- * but a FilterEntryBase is NOT a Component of a System. Instead, it is
- * hosted/scoped by the System. In versions up to CIM 2.6,
- * FilterEntryInSystem was a mandatory, Weak relationship. This is no longer
- * true, beginning with CIM V2.7.
+ * 
+ * All filter entries (FilterEntryBase and its subclasses) are defined in the context of a ComputerSystem/network device, where they are used to
+ * identify and act on network traffic. Note that this class is deprecated since its subclassing is not correct. It subclasses from System Component,
+ * but a FilterEntryBase is NOT a Component of a System. Instead, it is hosted/scoped by the System. In versions up to CIM 2.6, FilterEntryInSystem
+ * was a mandatory, Weak relationship. This is no longer true, beginning with CIM V2.7.
  */
-    @Deprecated
+@Deprecated
 public class FilterEntryInSystem extends SystemComponent implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a FilterEntryInSystemBeanImpl Class which
-     * implements the FilterEntryInSystemBean Interface, and encapsulates the
-     * CIM class FilterEntryInSystem in a Java Bean. The CIM class
-     * FilterEntryInSystem is described as follows:
-     *
-     * All filter entries (FilterEntryBase and its subclasses) are defined in
-     * the context of a ComputerSystem/network device, where they are used to
-     * identify and act on network traffic. Note that this class is
-     * deprecated since its subclassing is not correct. It subclasses from
-     * System Component, but a FilterEntryBase is NOT a Component of a
-     * System. Instead, it is hosted/scoped by the System. In versions up to
-     * CIM 2.6, FilterEntryInSystem was a mandatory, Weak relationship. This
-     * is no longer true, beginning with CIM V2.7.
-     */
-    public FilterEntryInSystem(){};
-    /**
-     * This method create an Association of the type FilterEntryInSystem
-     * between one ComputerSystem object and FilterEntryBase object
-     */
-    @Deprecated
-    public static FilterEntryInSystem link(ComputerSystem
-	groupComponent,FilterEntryBase partComponent){
+	/**
+	 * This constructor creates a FilterEntryInSystemBeanImpl Class which implements the FilterEntryInSystemBean Interface, and encapsulates the CIM
+	 * class FilterEntryInSystem in a Java Bean. The CIM class FilterEntryInSystem is described as follows:
+	 * 
+	 * All filter entries (FilterEntryBase and its subclasses) are defined in the context of a ComputerSystem/network device, where they are used to
+	 * identify and act on network traffic. Note that this class is deprecated since its subclassing is not correct. It subclasses from System
+	 * Component, but a FilterEntryBase is NOT a Component of a System. Instead, it is hosted/scoped by the System. In versions up to CIM 2.6,
+	 * FilterEntryInSystem was a mandatory, Weak relationship. This is no longer true, beginning with CIM V2.7.
+	 */
+	public FilterEntryInSystem() {
+	};
 
-    return (FilterEntryInSystem)
-	Association.link(FilterEntryInSystem.class,groupComponent,partComponent);
-    }//link
+	/**
+	 * This method create an Association of the type FilterEntryInSystem between one ComputerSystem object and FilterEntryBase object
+	 */
+	@Deprecated
+	public static FilterEntryInSystem link(ComputerSystem
+			groupComponent, FilterEntryBase partComponent) {
+
+		return (FilterEntryInSystem) Association.link(FilterEntryInSystem.class, groupComponent, partComponent);
+	}// link
 
 } // Class FilterEntryInSystem
