@@ -9,230 +9,191 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VLANEndpointSettingData as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * VLANEndpointSettingDataBean Interface. The CIM class
- * VLANEndpointSettingData is described as follows:
- *
- * The VLAN configuration data for an endpoint. Note that certain properties
- * only apply based on the value in the VLANEndpoint. OperationalEndpointMode
- * property. If it is set to trunking mode then NativeVLAN,
- * PruneEligibleVLANList, DefaultVLAN and TrunkedVLANList are applicable. If
- * it is set to in access mode, then AccessVLAN is applicable. An instance of
- * this class is associated to the endpoint to which it applies using
- * ElementSettingData.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VLANEndpointSettingData as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the VLANEndpointSettingDataBean Interface. The CIM class VLANEndpointSettingData
+ * is described as follows:
+ * 
+ * The VLAN configuration data for an endpoint. Note that certain properties only apply based on the value in the VLANEndpoint.
+ * OperationalEndpointMode property. If it is set to trunking mode then NativeVLAN, PruneEligibleVLANList, DefaultVLAN and TrunkedVLANList are
+ * applicable. If it is set to in access mode, then AccessVLAN is applicable. An instance of this class is associated to the endpoint to which it
+ * applies using ElementSettingData.
  */
 public class VLANEndpointSettingData extends SettingData implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a VLANEndpointSettingDataBeanImpl Class which
-     * implements the VLANEndpointSettingDataBean Interface, and encapsulates
-     * the CIM class VLANEndpointSettingData in a Java Bean. The CIM class
-     * VLANEndpointSettingData is described as follows:
-     *
-     * The VLAN configuration data for an endpoint. Note that certain
-     * properties only apply based on the value in the VLANEndpoint.
-     * OperationalEndpointMode property. If it is set to trunking mode then
-     * NativeVLAN, PruneEligibleVLANList, DefaultVLAN and TrunkedVLANList are
-     * applicable. If it is set to in access mode, then AccessVLAN is
-     * applicable. An instance of this class is associated to the endpoint to
-     * which it applies using ElementSettingData.
-     */
-    public VLANEndpointSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pruneEligibleVLANList.
-     */
-    private int[] pruneEligibleVLANList;
-    /**
-     * This method returns the VLANEndpointSettingData.pruneEligibleVLANList
-     * property value. This property is described as follows:
-     *
-     * If a VLAN Id is part of this array, then the system MAY prune that VLAN
-     * on the related trunk endpoint/port. This property is applicable only
-     * when the endpoint is operating in trunking mode (determined by
-     * examining the OperationalEndpointMode property).
-     *
-     * @return	int[]	current pruneEligibleVLANList property
-     * value
-     * @exception	Exception
-     */
-    public int[] getPruneEligibleVLANList(){
+	/**
+	 * This constructor creates a VLANEndpointSettingDataBeanImpl Class which implements the VLANEndpointSettingDataBean Interface, and encapsulates
+	 * the CIM class VLANEndpointSettingData in a Java Bean. The CIM class VLANEndpointSettingData is described as follows:
+	 * 
+	 * The VLAN configuration data for an endpoint. Note that certain properties only apply based on the value in the VLANEndpoint.
+	 * OperationalEndpointMode property. If it is set to trunking mode then NativeVLAN, PruneEligibleVLANList, DefaultVLAN and TrunkedVLANList are
+	 * applicable. If it is set to in access mode, then AccessVLAN is applicable. An instance of this class is associated to the endpoint to which it
+	 * applies using ElementSettingData.
+	 */
+	public VLANEndpointSettingData() {
+	};
 
-    return this.pruneEligibleVLANList;
-    } // getPruneEligibleVLANList
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pruneEligibleVLANList.
+	 */
+	private int[]	pruneEligibleVLANList;
 
-    /**
-     * This method sets the VLANEndpointSettingData.pruneEligibleVLANList
-     * property value. This property is described as follows:
-     *
-     * If a VLAN Id is part of this array, then the system MAY prune that VLAN
-     * on the related trunk endpoint/port. This property is applicable only
-     * when the endpoint is operating in trunking mode (determined by
-     * examining the OperationalEndpointMode property).
-     *
-     * @param	int[]	new pruneEligibleVLANList property value
-     * @exception	Exception
-     */
-    public void setPruneEligibleVLANList(int[] pruneEligibleVLANList) {
+	/**
+	 * This method returns the VLANEndpointSettingData.pruneEligibleVLANList property value. This property is described as follows:
+	 * 
+	 * If a VLAN Id is part of this array, then the system MAY prune that VLAN on the related trunk endpoint/port. This property is applicable only
+	 * when the endpoint is operating in trunking mode (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @return int[] current pruneEligibleVLANList property value
+	 * @exception Exception
+	 */
+	public int[] getPruneEligibleVLANList() {
 
-    this.pruneEligibleVLANList = pruneEligibleVLANList;
-    } // setPruneEligibleVLANList
+		return this.pruneEligibleVLANList;
+	} // getPruneEligibleVLANList
 
+	/**
+	 * This method sets the VLANEndpointSettingData.pruneEligibleVLANList property value. This property is described as follows:
+	 * 
+	 * If a VLAN Id is part of this array, then the system MAY prune that VLAN on the related trunk endpoint/port. This property is applicable only
+	 * when the endpoint is operating in trunking mode (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @param int[] new pruneEligibleVLANList property value
+	 * @exception Exception
+	 */
+	public void setPruneEligibleVLANList(int[] pruneEligibleVLANList) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property nativeVLAN.
-     */
-    private int nativeVLAN;
-    /**
-     * This method returns the VLANEndpointSettingData.nativeVLAN property
-     * value. This property is described as follows:
-     *
-     * VLAN Id that is used to tag untagged traffic received on this trunk
-     * endpoint/port. This property is applicable only when the endpoint is
-     * operating in trunking mode (determined by examining the
-     * SwitchEndpointMode property).
-     *
-     * @return	int	current nativeVLAN property value
-     * @exception	Exception
-     */
-    public int getNativeVLAN(){
+		this.pruneEligibleVLANList = pruneEligibleVLANList;
+	} // setPruneEligibleVLANList
 
-    return this.nativeVLAN;
-    } // getNativeVLAN
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property nativeVLAN.
+	 */
+	private int	nativeVLAN;
 
-    /**
-     * This method sets the VLANEndpointSettingData.nativeVLAN property value.
-     * This property is described as follows:
-     *
-     * VLAN Id that is used to tag untagged traffic received on this trunk
-     * endpoint/port. This property is applicable only when the endpoint is
-     * operating in trunking mode (determined by examining the
-     * SwitchEndpointMode property).
-     *
-     * @param	int	new nativeVLAN property value
-     * @exception	Exception
-     */
-    public void setNativeVLAN(int nativeVLAN) {
+	/**
+	 * This method returns the VLANEndpointSettingData.nativeVLAN property value. This property is described as follows:
+	 * 
+	 * VLAN Id that is used to tag untagged traffic received on this trunk endpoint/port. This property is applicable only when the endpoint is
+	 * operating in trunking mode (determined by examining the SwitchEndpointMode property).
+	 * 
+	 * @return int current nativeVLAN property value
+	 * @exception Exception
+	 */
+	public int getNativeVLAN() {
 
-    this.nativeVLAN = nativeVLAN;
-    } // setNativeVLAN
+		return this.nativeVLAN;
+	} // getNativeVLAN
 
+	/**
+	 * This method sets the VLANEndpointSettingData.nativeVLAN property value. This property is described as follows:
+	 * 
+	 * VLAN Id that is used to tag untagged traffic received on this trunk endpoint/port. This property is applicable only when the endpoint is
+	 * operating in trunking mode (determined by examining the SwitchEndpointMode property).
+	 * 
+	 * @param int new nativeVLAN property value
+	 * @exception Exception
+	 */
+	public void setNativeVLAN(int nativeVLAN) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property defaultVLAN.
-     */
-    private int defaultVLAN;
-    /**
-     * This method returns the VLANEndpointSettingData.defaultVLAN property
-     * value. This property is described as follows:
-     *
-     * Default value for the native VLAN on this trunk endpoint/port. This
-     * property is applicable only when the endpoint is operating in trunking
-     * mode (determined by examining the OperationalEndpointMode property).
-     *
-     * @return	int	current defaultVLAN property value
-     * @exception	Exception
-     */
-    public int getDefaultVLAN(){
+		this.nativeVLAN = nativeVLAN;
+	} // setNativeVLAN
 
-    return this.defaultVLAN;
-    } // getDefaultVLAN
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property defaultVLAN.
+	 */
+	private int	defaultVLAN;
 
-    /**
-     * This method sets the VLANEndpointSettingData.defaultVLAN property
-     * value. This property is described as follows:
-     *
-     * Default value for the native VLAN on this trunk endpoint/port. This
-     * property is applicable only when the endpoint is operating in trunking
-     * mode (determined by examining the OperationalEndpointMode property).
-     *
-     * @param	int	new defaultVLAN property value
-     * @exception	Exception
-     */
-    public void setDefaultVLAN(int defaultVLAN) {
+	/**
+	 * This method returns the VLANEndpointSettingData.defaultVLAN property value. This property is described as follows:
+	 * 
+	 * Default value for the native VLAN on this trunk endpoint/port. This property is applicable only when the endpoint is operating in trunking mode
+	 * (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @return int current defaultVLAN property value
+	 * @exception Exception
+	 */
+	public int getDefaultVLAN() {
 
-    this.defaultVLAN = defaultVLAN;
-    } // setDefaultVLAN
+		return this.defaultVLAN;
+	} // getDefaultVLAN
 
+	/**
+	 * This method sets the VLANEndpointSettingData.defaultVLAN property value. This property is described as follows:
+	 * 
+	 * Default value for the native VLAN on this trunk endpoint/port. This property is applicable only when the endpoint is operating in trunking mode
+	 * (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @param int new defaultVLAN property value
+	 * @exception Exception
+	 */
+	public void setDefaultVLAN(int defaultVLAN) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property trunkedVLANList.
-     */
-    private int[] trunkedVLANList;
-    /**
-     * This method returns the VLANEndpointSettingData.trunkedVLANList
-     * property value. This property is described as follows:
-     *
-     * If a VLAN Id is part of this array, then the system MAY trunk the
-     * traffic on the related endpoint/port. This property is applicable only
-     * when the endpoint is operating in trunking mode (determined by
-     * examining the OperationalEndpointMode property).
-     *
-     * @return	int[]	current trunkedVLANList property value
-     * @exception	Exception
-     */
-    public int[] getTrunkedVLANList(){
+		this.defaultVLAN = defaultVLAN;
+	} // setDefaultVLAN
 
-    return this.trunkedVLANList;
-    } // getTrunkedVLANList
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property trunkedVLANList.
+	 */
+	private int[]	trunkedVLANList;
 
-    /**
-     * This method sets the VLANEndpointSettingData.trunkedVLANList property
-     * value. This property is described as follows:
-     *
-     * If a VLAN Id is part of this array, then the system MAY trunk the
-     * traffic on the related endpoint/port. This property is applicable only
-     * when the endpoint is operating in trunking mode (determined by
-     * examining the OperationalEndpointMode property).
-     *
-     * @param	int[]	new trunkedVLANList property value
-     * @exception	Exception
-     */
-    public void setTrunkedVLANList(int[] trunkedVLANList) {
+	/**
+	 * This method returns the VLANEndpointSettingData.trunkedVLANList property value. This property is described as follows:
+	 * 
+	 * If a VLAN Id is part of this array, then the system MAY trunk the traffic on the related endpoint/port. This property is applicable only when
+	 * the endpoint is operating in trunking mode (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @return int[] current trunkedVLANList property value
+	 * @exception Exception
+	 */
+	public int[] getTrunkedVLANList() {
 
-    this.trunkedVLANList = trunkedVLANList;
-    } // setTrunkedVLANList
+		return this.trunkedVLANList;
+	} // getTrunkedVLANList
 
+	/**
+	 * This method sets the VLANEndpointSettingData.trunkedVLANList property value. This property is described as follows:
+	 * 
+	 * If a VLAN Id is part of this array, then the system MAY trunk the traffic on the related endpoint/port. This property is applicable only when
+	 * the endpoint is operating in trunking mode (determined by examining the OperationalEndpointMode property).
+	 * 
+	 * @param int[] new trunkedVLANList property value
+	 * @exception Exception
+	 */
+	public void setTrunkedVLANList(int[] trunkedVLANList) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property accessVLAN.
-     */
-    private int accessVLAN;
-    /**
-     * This method returns the VLANEndpointSettingData.accessVLAN property
-     * value. This property is described as follows:
-     *
-     * The access VLAN for the referenced VLANEndpoint.
-     *
-     * @return	int	current accessVLAN property value
-     * @exception	Exception
-     */
-    public int getAccessVLAN(){
+		this.trunkedVLANList = trunkedVLANList;
+	} // setTrunkedVLANList
 
-    return this.accessVLAN;
-    } // getAccessVLAN
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property accessVLAN.
+	 */
+	private int	accessVLAN;
 
-    /**
-     * This method sets the VLANEndpointSettingData.accessVLAN property value.
-     * This property is described as follows:
-     *
-     * The access VLAN for the referenced VLANEndpoint.
-     *
-     * @param	int	new accessVLAN property value
-     * @exception	Exception
-     */
-    public void setAccessVLAN(int accessVLAN) {
+	/**
+	 * This method returns the VLANEndpointSettingData.accessVLAN property value. This property is described as follows:
+	 * 
+	 * The access VLAN for the referenced VLANEndpoint.
+	 * 
+	 * @return int current accessVLAN property value
+	 * @exception Exception
+	 */
+	public int getAccessVLAN() {
 
-    this.accessVLAN = accessVLAN;
-    } // setAccessVLAN
+		return this.accessVLAN;
+	} // getAccessVLAN
 
+	/**
+	 * This method sets the VLANEndpointSettingData.accessVLAN property value. This property is described as follows:
+	 * 
+	 * The access VLAN for the referenced VLANEndpoint.
+	 * 
+	 * @param int new accessVLAN property value
+	 * @exception Exception
+	 */
+	public void setAccessVLAN(int accessVLAN) {
 
+		this.accessVLAN = accessVLAN;
+	} // setAccessVLAN
 
 } // Class VLANEndpointSettingData

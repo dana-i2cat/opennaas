@@ -1,22 +1,26 @@
 package net.i2cat.mantychore.repository.tests;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.System;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,35 +45,54 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-	static Log			log				= LogFactory
-													.getLog(MantychoreRepositoryIntegrationTest.class);
-
-	IResourceManager	resourceManager;
-	IResourceRepository resourceRepository;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class MantychoreRepositoryIntegrationTest
+{
+	private final static Log	log			= LogFactory.getLog(MantychoreRepositoryIntegrationTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private IResourceManager	resourceManager;
+
+	@Inject
+	@Filter("(type=router)")
+	private IResourceRepository resourceRepository;
+
+	@Inject
+	private BundleContext		bundleContext;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    private BlueprintContainer	chassisService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
 	/**
@@ -92,28 +115,12 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 
 	}
 
-	@Before
-	public void initBundles() throws ResourceException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		/* init services */
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-		resourceRepository = getOsgiService(IResourceRepository.class, "type=router", 50000);
-
-		clearRepo();
-
-		log.info("INFO: Initialized!");
-
-	}
-
 	@After
-	public void clearRepo() {
+	public void clearRepo() throws ResourceException {
 
 		log.info("Clearing resource repo");
 
@@ -121,24 +128,17 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 		toRemove = resourceManager.listResources().toArray(toRemove);
 
 		for (IResource resource : toRemove) {
-			try {
-				if (resource.getState().equals(State.ACTIVE)) {
-					resourceManager.stopResource(resource.getResourceIdentifier());
-				}
-				resourceManager.removeResource(resource.getResourceIdentifier());
-			} catch (ResourceException e) {
-				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
-				Assert.fail(e.getLocalizedMessage());
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
 			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
 
 		log.info("Resource repo cleared!");
 	}
 
 	@Test
-	public void createAndRemoveResourceTest() {
-
-		clearRepo();
+	public void createAndRemoveResourceTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
@@ -148,28 +148,15 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		try {
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-			Assert.assertFalse(resourceManager.listResources().isEmpty());
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		Assert.assertFalse(resourceManager.listResources().isEmpty());
 
-			// createProtocolForResource(resource.getResourceIdentifier().getId());
-
-			resourceManager.removeResource(resource.getResourceIdentifier());
-			Assert.assertTrue(resourceManager.listResources().isEmpty());
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
-		}
-
+		resourceManager.removeResource(resource.getResourceIdentifier());
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
 
 	@Test
-	public void StartAndStopResourceTest() {
-
-		clearRepo();
+	public void StartAndStopResourceTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -178,66 +165,54 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
+		/* create resource */
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
+
+		Assert.assertFalse(resourceManager.listResources().isEmpty());
+
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+
+		/* start resource */
+		resourceManager.startResource(resource.getResourceIdentifier());
+		Assert.assertFalse(resource.getCapabilities().isEmpty());
+		Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
+		// Assert.assertNotNull(resource.getProfile());
+
+		/* stop resource */
+		resourceManager.stopResource(resource.getResourceIdentifier());
+
+		Assert.assertNotNull(resource.getResourceIdentifier());
+		Assert.assertNotNull(resource.getResourceDescriptor());
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		// Assert.assertNull(resource.getProfile());
+
+		// Assert.assertFalse(resourceManager.listResources().isEmpty());
+
+		/* remove resource */
+		IResourceIdentifier resourceIdentifier = resource.getResourceIdentifier();
+		resourceManager.removeResource(resource.getResourceIdentifier());
+
+		Assert.assertTrue(resource.getCapabilities().isEmpty());
+		Assert.assertNull(resource.getModel());
+		Assert.assertNull(resource.getProfile());
+		boolean exist = true;
 		try {
-
-			/* create resource */
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
-
-			Assert.assertFalse(resourceManager.listResources().isEmpty());
-
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-
-			/* start resource */
-			resourceManager.startResource(resource.getResourceIdentifier());
-			Assert.assertFalse(resource.getCapabilities().isEmpty());
-			Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
-			// Assert.assertNotNull(resource.getProfile());
-
-			/* stop resource */
-			resourceManager.stopResource(resource.getResourceIdentifier());
-
-			Assert.assertNotNull(resource.getResourceIdentifier());
-			Assert.assertNotNull(resource.getResourceDescriptor());
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			// Assert.assertNull(resource.getProfile());
-
-			// Assert.assertFalse(resourceManager.listResources().isEmpty());
-
-			/* remove resource */
-			IResourceIdentifier resourceIdentifier = resource.getResourceIdentifier();
-			resourceManager.removeResource(resource.getResourceIdentifier());
-
-			Assert.assertTrue(resource.getCapabilities().isEmpty());
-			Assert.assertNull(resource.getModel());
-			Assert.assertNull(resource.getProfile());
-			boolean exist = true;
-			try {
-				resourceManager.getResource(resourceIdentifier);
-			} catch (ResourceException e) {
-				exist = false;
-			}
-			Assert.assertFalse(exist);
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
+			resourceManager.getResource(resourceIdentifier);
+		} catch (ResourceException e) {
+			exist = false;
 		}
-
+		Assert.assertFalse(exist);
 	}
 
 	@Test
-	public void startedResourceModelHasNameTest() {
-
-		clearRepo();
+	public void startedResourceModelHasNameTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -246,35 +221,23 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		try {
+		/* create resource */
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		Assert.assertFalse(resourceManager.listResources().isEmpty());
 
-			/* create resource */
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-			Assert.assertFalse(resourceManager.listResources().isEmpty());
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		/* start resource */
+		resourceManager.startResource(resource.getResourceIdentifier());
+		Assert.assertFalse(resource.getCapabilities().isEmpty());
+		Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
 
-			/* start resource */
-			resourceManager.startResource(resource.getResourceIdentifier());
-			Assert.assertFalse(resource.getCapabilities().isEmpty());
-			Assert.assertNotNull(resource.getModel()); // this proves bootstrapper has been executed
-
-			Assert.assertTrue(resource.getModel() instanceof ComputerSystem);
-			Assert.assertNotNull(((ComputerSystem) resource.getModel()).getName());
-
-		} catch (Exception e) {
-			log.error("Exception!! ", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
-		}
-
+		Assert.assertTrue(resource.getModel() instanceof ComputerSystem);
+		Assert.assertNotNull(((ComputerSystem) resource.getModel()).getName());
 	}
 
 	@Test
-	public void operationWithResourceTest() {
-
-		clearRepo();
+	public void operationWithResourceTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
@@ -284,47 +247,38 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		try {
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-			resource.setModel(new ComputerSystem());
-			createProtocolForResource(resource.getResourceIdentifier().getId());
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resource.setModel(new ComputerSystem());
+		createProtocolForResource(resource.getResourceIdentifier().getId());
 
-			resourceManager.startResource(resource.getResourceIdentifier());
+		resourceManager.startResource(resource.getResourceIdentifier());
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), "chassis");
-			if (chassisCapability == null)
-				Assert.fail("Capability not found");
-			ICapability queueCapability = getCapability(resource.getCapabilities(), "queue");
-			if (queueCapability == null)
-				Assert.fail("Capability not found");
+		ICapability chassisCapability = getCapability(resource.getCapabilities(), "chassis");
+		if (chassisCapability == null)
+			Assert.fail("Capability not found");
+		ICapability queueCapability = getCapability(resource.getCapabilities(), "queue");
+		if (queueCapability == null)
+			Assert.fail("Capability not found");
 
-			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-			Assert.assertTrue(queueResponse.getResponses().size() == 1);
-			Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
-			Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
-			Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+		Assert.assertTrue(queueResponse.getResponses().size() == 1);
+		Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
+		Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
+		Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
 
-			ActionResponse actionResponse = queueResponse.getResponses().get(0);
-			Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
-			for (Response response : actionResponse.getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
-			}
-
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
-
-			resourceManager.stopResource(resource.getResourceIdentifier());
-			resourceManager.removeResource(resource.getResourceIdentifier());
-
-		} catch (Exception e) {
-			log.error("Exception!!", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
+		ActionResponse actionResponse = queueResponse.getResponses().get(0);
+		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
+		for (Response response : actionResponse.getResponses()) {
+			Assert.assertTrue(response.getStatus() == Response.Status.OK);
 		}
 
+		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
+
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		resourceManager.removeResource(resource.getResourceIdentifier());
 	}
 
 	/**
@@ -333,9 +287,7 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 	 */
 
 	@Test
-	public void discoveryRouterTest() {
-
-		clearRepo();
+	public void discoveryRouterTest() throws Exception {
 
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("router");
 
@@ -345,48 +297,29 @@ public class MantychoreRepositoryIntegrationTest extends AbstractIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		try {
-			IResource resource = resourceManager.createResource(resourceDescriptor);
-			resource.setModel(new ComputerSystem());
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resource.setModel(new ComputerSystem());
 
-			/* first test, check that the resource has created all the logical resources and they have an initialized model */
-			existLogicalResourcesTest(resourceManager, resource, bundleContext);
+		/* first test, check that the resource has created all the logical resources and they have an initialized model */
+		existLogicalResourcesTest(resourceManager, resource, bundleContext);
 
-			// FIXME TO TEST
-			if (!isMock())
-				checkUpdatedExistLogicalResourcesTest(resourceManager, resource, bundleContext);
-
-		} catch (Exception e) {
-			log.error("Exception!!", e);
-			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
-		}
-
+		// FIXME TO TEST
+		if (!isMock())
+			checkUpdatedExistLogicalResourcesTest(resourceManager, resource, bundleContext);
 	}
 
 	@Test
-	public void testPersistedIdentifierIdDoesNotChange() {
-		try {
+	public void testPersistedIdentifierIdDoesNotChange() throws ResourceException {
 
-			ResourceDescriptor descriptor = ResourceHelper.newResourceDescriptor("router");
-			IResource res1 = resourceRepository.createResource(descriptor);
+		ResourceDescriptor descriptor = ResourceHelper.newResourceDescriptor("router");
+		IResource res1 = resourceRepository.createResource(descriptor);
 
-			if (resourceRepository instanceof ResourceRepository){
-				//reset repository and load persisted resources
-				((ResourceRepository) resourceRepository).init();
+		if (resourceRepository instanceof ResourceRepository){
+			//reset repository and load persisted resources
+			((ResourceRepository) resourceRepository).init();
 
-				try {
-					IResource res2 = resourceRepository.getResource(res1.getResourceIdentifier().getId());
-					assertEquals(res1.getResourceDescriptor().getId(), res2.getResourceDescriptor().getId());
-				} catch (ResourceException e){
-					fail("Resource with given ID is not present");
-				}
-				//already checked that id is the same
-			}
-
-		} catch (ResourceException e) {
-			fail(e.getLocalizedMessage());
+			IResource res2 = resourceRepository.getResource(res1.getResourceIdentifier().getId());
+			assertEquals(res1.getResourceDescriptor().getId(), res2.getResourceDescriptor().getId());
 		}
 	}
 

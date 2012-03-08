@@ -9,445 +9,390 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TelnetSettingData as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * TelnetSettingDataBean Interface. The CIM class TelnetSettingData is
- * described as follows:
- *
- * A representation of the settings of a Telnet server connection. The
- * relationship between the SettingData and the TelnetProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TelnetSettingData as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the TelnetSettingDataBean Interface. The CIM class TelnetSettingData is described as
+ * follows:
+ * 
+ * A representation of the settings of a Telnet server connection. The relationship between the SettingData and the TelnetProtocolEndpoint is
  * described by instantiating the ElementSettingData association.
  */
 public class TelnetSettingData extends SettingData implements Serializable {
 
-    /**
-     * This constructor creates a TelnetSettingDataBeanImpl Class which
-     * implements the TelnetSettingDataBean Interface, and encapsulates the
-     * CIM class TelnetSettingData in a Java Bean. The CIM class
-     * TelnetSettingData is described as follows:
-     *
-     * A representation of the settings of a Telnet server connection. The
-     * relationship between the SettingData and the TelnetProtocolEndpoint is
-     * described by instantiating the ElementSettingData association.
-     */
-    public TelnetSettingData(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EnabledTerminalModes.
-     */
+	/**
+	 * This constructor creates a TelnetSettingDataBeanImpl Class which implements the TelnetSettingDataBean Interface, and encapsulates the CIM class
+	 * TelnetSettingData in a Java Bean. The CIM class TelnetSettingData is described as follows:
+	 * 
+	 * A representation of the settings of a Telnet server connection. The relationship between the SettingData and the TelnetProtocolEndpoint is
+	 * described by instantiating the ElementSettingData association.
+	 */
+	public TelnetSettingData() {
+	};
 
-    public enum EnabledTerminalModes{
-    OTHER,
-    VT100,
-    ANSI,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private EnabledTerminalModes enabledTerminalModes;
-    /**
-     * This method returns the TelnetSettingData.enabledTerminalModes property
-     * value. This property is described as follows:
-     *
-     * An array of integers indicating the terminal modes that will be
-     * enabled.
-     *
-     * @return	int	current enabledTerminalModes property value
-     * @exception	Exception
-     */
-    public EnabledTerminalModes getEnabledTerminalModes(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EnabledTerminalModes.
+	 */
 
-    return this.enabledTerminalModes;
-    } // getEnabledTerminalModes
+	public enum EnabledTerminalModes {
+		OTHER,
+		VT100,
+		ANSI,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the TelnetSettingData.enabledTerminalModes property
-     * value. This property is described as follows:
-     *
-     * An array of integers indicating the terminal modes that will be
-     * enabled.
-     *
-     * @param	int	new enabledTerminalModes property value
-     * @exception	Exception
-     */
-    public void setEnabledTerminalModes(EnabledTerminalModes
-	enabledTerminalModes){
+	private EnabledTerminalModes	enabledTerminalModes;
 
-    this.enabledTerminalModes = enabledTerminalModes;
-    } // setEnabledTerminalModes
+	/**
+	 * This method returns the TelnetSettingData.enabledTerminalModes property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the terminal modes that will be enabled.
+	 * 
+	 * @return int current enabledTerminalModes property value
+	 * @exception Exception
+	 */
+	public EnabledTerminalModes getEnabledTerminalModes() {
 
+		return this.enabledTerminalModes;
+	} // getEnabledTerminalModes
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherEnabledTerminalMode.
-     */
-    private String[] otherEnabledTerminalMode;
-    /**
-     * This method returns the TelnetSettingData.otherEnabledTerminalMode
-     * property value. This property is described as follows:
-     *
-     * When the EnabledTerminalModes property contains a value of 1, "Other"
-     * then free form string providing more information about the enabled
-     * terminal mode. If it does not contain 1, this string has no meaning.
-     *
-     * @return	String[]	current otherEnabledTerminalMode
-     * property value
-     * @exception	Exception
-     */
-    public String[] getOtherEnabledTerminalMode(){
+	/**
+	 * This method sets the TelnetSettingData.enabledTerminalModes property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the terminal modes that will be enabled.
+	 * 
+	 * @param int new enabledTerminalModes property value
+	 * @exception Exception
+	 */
+	public void setEnabledTerminalModes(EnabledTerminalModes
+			enabledTerminalModes) {
 
-    return this.otherEnabledTerminalMode;
-    } // getOtherEnabledTerminalMode
+		this.enabledTerminalModes = enabledTerminalModes;
+	} // setEnabledTerminalModes
 
-    /**
-     * This method sets the TelnetSettingData.otherEnabledTerminalMode
-     * property value. This property is described as follows:
-     *
-     * When the EnabledTerminalModes property contains a value of 1, "Other"
-     * then free form string providing more information about the enabled
-     * terminal mode. If it does not contain 1, this string has no meaning.
-     *
-     * @param	String[]	new otherEnabledTerminalMode property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherEnabledTerminalMode(String[] otherEnabledTerminalMode)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherEnabledTerminalMode.
+	 */
+	private String[]	otherEnabledTerminalMode;
+
+	/**
+	 * This method returns the TelnetSettingData.otherEnabledTerminalMode property value. This property is described as follows:
+	 * 
+	 * When the EnabledTerminalModes property contains a value of 1, "Other" then free form string providing more information about the enabled
+	 * terminal mode. If it does not contain 1, this string has no meaning.
+	 * 
+	 * @return String[] current otherEnabledTerminalMode property value
+	 * @exception Exception
+	 */
+	public String[] getOtherEnabledTerminalMode() {
+
+		return this.otherEnabledTerminalMode;
+	} // getOtherEnabledTerminalMode
+
+	/**
+	 * This method sets the TelnetSettingData.otherEnabledTerminalMode property value. This property is described as follows:
+	 * 
+	 * When the EnabledTerminalModes property contains a value of 1, "Other" then free form string providing more information about the enabled
+	 * terminal mode. If it does not contain 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            [] new otherEnabledTerminalMode property value
+	 * @exception Exception
+	 */
+	public void setOtherEnabledTerminalMode(String[] otherEnabledTerminalMode)
 	{
 
-    this.otherEnabledTerminalMode = otherEnabledTerminalMode;
-    } // setOtherEnabledTerminalMode
+		this.otherEnabledTerminalMode = otherEnabledTerminalMode;
+	} // setOtherEnabledTerminalMode
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property TerminalMode.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property TerminalMode.
-     */
+	public enum TerminalMode {
+		OTHER,
+		VT100,
+		ANSI,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    public enum TerminalMode{
-    OTHER,
-    VT100,
-    ANSI,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private TerminalMode terminalMode;
-    /**
-     * This method returns the TelnetSettingData.terminalMode property value.
-     * This property is described as follows:
-     *
-     * The terminal mode that will be in use if this SettingData is applied.
-     *
-     * @return	int	current terminalMode property value
-     * @exception	Exception
-     */
-    public TerminalMode getTerminalMode(){
+	private TerminalMode	terminalMode;
 
-    return this.terminalMode;
-    } // getTerminalMode
+	/**
+	 * This method returns the TelnetSettingData.terminalMode property value. This property is described as follows:
+	 * 
+	 * The terminal mode that will be in use if this SettingData is applied.
+	 * 
+	 * @return int current terminalMode property value
+	 * @exception Exception
+	 */
+	public TerminalMode getTerminalMode() {
 
-    /**
-     * This method sets the TelnetSettingData.terminalMode property value.
-     * This property is described as follows:
-     *
-     * The terminal mode that will be in use if this SettingData is applied.
-     *
-     * @param	int	new terminalMode property value
-     * @exception	Exception
-     */
-    public void setTerminalMode(TerminalMode terminalMode){
+		return this.terminalMode;
+	} // getTerminalMode
 
-    this.terminalMode = terminalMode;
-    } // setTerminalMode
+	/**
+	 * This method sets the TelnetSettingData.terminalMode property value. This property is described as follows:
+	 * 
+	 * The terminal mode that will be in use if this SettingData is applied.
+	 * 
+	 * @param int new terminalMode property value
+	 * @exception Exception
+	 */
+	public void setTerminalMode(TerminalMode terminalMode) {
 
+		this.terminalMode = terminalMode;
+	} // setTerminalMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherTerminalMode.
-     */
-    private String otherTerminalMode;
-    /**
-     * This method returns the TelnetSettingData.otherTerminalMode property
-     * value. This property is described as follows:
-     *
-     * If the TerminalMode property is set to 1, "Other" then this is a free
-     * form string providing more information about the current terminal
-     * mode. If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherTerminalMode property value
-     * @exception	Exception
-     */
-    public String getOtherTerminalMode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherTerminalMode.
+	 */
+	private String	otherTerminalMode;
 
-    return this.otherTerminalMode;
-    } // getOtherTerminalMode
+	/**
+	 * This method returns the TelnetSettingData.otherTerminalMode property value. This property is described as follows:
+	 * 
+	 * If the TerminalMode property is set to 1, "Other" then this is a free form string providing more information about the current terminal mode.
+	 * If not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherTerminalMode property value
+	 * @exception Exception
+	 */
+	public String getOtherTerminalMode() {
 
-    /**
-     * This method sets the TelnetSettingData.otherTerminalMode property
-     * value. This property is described as follows:
-     *
-     * If the TerminalMode property is set to 1, "Other" then this is a free
-     * form string providing more information about the current terminal
-     * mode. If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherTerminalMode property value
-     * @exception	Exception
-     */
-    public void setOtherTerminalMode(String otherTerminalMode) {
+		return this.otherTerminalMode;
+	} // getOtherTerminalMode
 
-    this.otherTerminalMode = otherTerminalMode;
-    } // setOtherTerminalMode
+	/**
+	 * This method sets the TelnetSettingData.otherTerminalMode property value. This property is described as follows:
+	 * 
+	 * If the TerminalMode property is set to 1, "Other" then this is a free form string providing more information about the current terminal mode.
+	 * If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherTerminalMode property value
+	 * @exception Exception
+	 */
+	public void setOtherTerminalMode(String otherTerminalMode) {
 
+		this.otherTerminalMode = otherTerminalMode;
+	} // setOtherTerminalMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property EnabledCharacterDisplayModes.
-     */
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property EnabledCharacterDisplayModes.
+	 */
 
-    public enum EnabledCharacterDisplayModes{
-    OTHER,
-    CONSOLE,
-    STREAM,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private EnabledCharacterDisplayModes enabledCharacterDisplayModes;
-    /**
-     * This method returns the TelnetSettingData.enabledCharacterDisplayModes
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the Character display modes enabled for
-     * the endpoint.
-     *
-     * @return	int	current enabledCharacterDisplayModes property
-     * value
-     * @exception	Exception
-     */
-    public EnabledCharacterDisplayModes getEnabledCharacterDisplayModes(){
+	public enum EnabledCharacterDisplayModes {
+		OTHER,
+		CONSOLE,
+		STREAM,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    return this.enabledCharacterDisplayModes;
-    } // getEnabledCharacterDisplayModes
+	private EnabledCharacterDisplayModes	enabledCharacterDisplayModes;
 
-    /**
-     * This method sets the TelnetSettingData.enabledCharacterDisplayModes
-     * property value. This property is described as follows:
-     *
-     * An array of integers indicating the Character display modes enabled for
-     * the endpoint.
-     *
-     * @param	int	new enabledCharacterDisplayModes property
-     * value
-     * @exception	Exception
-     */
-    public void setEnabledCharacterDisplayModes(EnabledCharacterDisplayModes
-	enabledCharacterDisplayModes){
+	/**
+	 * This method returns the TelnetSettingData.enabledCharacterDisplayModes property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the Character display modes enabled for the endpoint.
+	 * 
+	 * @return int current enabledCharacterDisplayModes property value
+	 * @exception Exception
+	 */
+	public EnabledCharacterDisplayModes getEnabledCharacterDisplayModes() {
 
-    this.enabledCharacterDisplayModes = enabledCharacterDisplayModes;
-    } // setEnabledCharacterDisplayModes
+		return this.enabledCharacterDisplayModes;
+	} // getEnabledCharacterDisplayModes
 
+	/**
+	 * This method sets the TelnetSettingData.enabledCharacterDisplayModes property value. This property is described as follows:
+	 * 
+	 * An array of integers indicating the Character display modes enabled for the endpoint.
+	 * 
+	 * @param int new enabledCharacterDisplayModes property value
+	 * @exception Exception
+	 */
+	public void setEnabledCharacterDisplayModes(EnabledCharacterDisplayModes
+			enabledCharacterDisplayModes) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherEnabledCharacterDisplayMode.
-     */
-    private String[] otherEnabledCharacterDisplayMode;
-    /**
-     * This method returns the
-     * TelnetSettingData.otherEnabledCharacterDisplayMode property value.
-     * This property is described as follows:
-     *
-     * When the EnabledCharacterDisplayModes property contains a value of 1,
-     * "Other" then this is a free form string providing more information
-     * about the enabled modes. If it does not contain 1, this string has no
-     * meaning.
-     *
-     * @return	String[]	current otherEnabledCharacterDisplayMode
-     * property value
-     * @exception	Exception
-     */
-    public String[] getOtherEnabledCharacterDisplayMode(){
+		this.enabledCharacterDisplayModes = enabledCharacterDisplayModes;
+	} // setEnabledCharacterDisplayModes
 
-    return this.otherEnabledCharacterDisplayMode;
-    } // getOtherEnabledCharacterDisplayMode
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherEnabledCharacterDisplayMode.
+	 */
+	private String[]	otherEnabledCharacterDisplayMode;
 
-    /**
-     * This method sets the TelnetSettingData.otherEnabledCharacterDisplayMode
-     * property value. This property is described as follows:
-     *
-     * When the EnabledCharacterDisplayModes property contains a value of 1,
-     * "Other" then this is a free form string providing more information
-     * about the enabled modes. If it does not contain 1, this string has no
-     * meaning.
-     *
-     * @param	String[]	new otherEnabledCharacterDisplayMode
-     * property value
-     * @exception	Exception
-     */
-    public void setOtherEnabledCharacterDisplayMode(String[]
-	otherEnabledCharacterDisplayMode) {
+	/**
+	 * This method returns the TelnetSettingData.otherEnabledCharacterDisplayMode property value. This property is described as follows:
+	 * 
+	 * When the EnabledCharacterDisplayModes property contains a value of 1, "Other" then this is a free form string providing more information about
+	 * the enabled modes. If it does not contain 1, this string has no meaning.
+	 * 
+	 * @return String[] current otherEnabledCharacterDisplayMode property value
+	 * @exception Exception
+	 */
+	public String[] getOtherEnabledCharacterDisplayMode() {
 
-    this.otherEnabledCharacterDisplayMode = otherEnabledCharacterDisplayMode;
-    } // setOtherEnabledCharacterDisplayMode
+		return this.otherEnabledCharacterDisplayMode;
+	} // getOtherEnabledCharacterDisplayMode
 
+	/**
+	 * This method sets the TelnetSettingData.otherEnabledCharacterDisplayMode property value. This property is described as follows:
+	 * 
+	 * When the EnabledCharacterDisplayModes property contains a value of 1, "Other" then this is a free form string providing more information about
+	 * the enabled modes. If it does not contain 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            [] new otherEnabledCharacterDisplayMode property value
+	 * @exception Exception
+	 */
+	public void setOtherEnabledCharacterDisplayMode(String[]
+			otherEnabledCharacterDisplayMode) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property CharacterDisplayMode.
-     */
+		this.otherEnabledCharacterDisplayMode = otherEnabledCharacterDisplayMode;
+	} // setOtherEnabledCharacterDisplayMode
 
-    public enum CharacterDisplayMode{
-    OTHER,
-    CONSOLE,
-    STREAM,
-    DMTF_RESERVED,
-    VENDOR_RESERVED
-    }
-    private CharacterDisplayMode characterDisplayMode;
-    /**
-     * This method returns the TelnetSettingData.characterDisplayMode property
-     * value. This property is described as follows:
-     *
-     * The character display mode that will be active if this SettingData is
-     * applied.
-     *
-     * @return	int	current characterDisplayMode property value
-     * @exception	Exception
-     */
-    public CharacterDisplayMode getCharacterDisplayMode(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property CharacterDisplayMode.
+	 */
 
-    return this.characterDisplayMode;
-    } // getCharacterDisplayMode
+	public enum CharacterDisplayMode {
+		OTHER,
+		CONSOLE,
+		STREAM,
+		DMTF_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the TelnetSettingData.characterDisplayMode property
-     * value. This property is described as follows:
-     *
-     * The character display mode that will be active if this SettingData is
-     * applied.
-     *
-     * @param	int	new characterDisplayMode property value
-     * @exception	Exception
-     */
-    public void setCharacterDisplayMode(CharacterDisplayMode
-	characterDisplayMode){
+	private CharacterDisplayMode	characterDisplayMode;
 
-    this.characterDisplayMode = characterDisplayMode;
-    } // setCharacterDisplayMode
+	/**
+	 * This method returns the TelnetSettingData.characterDisplayMode property value. This property is described as follows:
+	 * 
+	 * The character display mode that will be active if this SettingData is applied.
+	 * 
+	 * @return int current characterDisplayMode property value
+	 * @exception Exception
+	 */
+	public CharacterDisplayMode getCharacterDisplayMode() {
 
+		return this.characterDisplayMode;
+	} // getCharacterDisplayMode
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherCharacterDisplayMode.
-     */
-    private String otherCharacterDisplayMode;
-    /**
-     * This method returns the TelnetSettingData.otherCharacterDisplayMode
-     * property value. This property is described as follows:
-     *
-     * When the CharacterDisplayMode property is set to 1, "Other" then this
-     * is a free form string providing more information about the character
-     * display mode. If not set to 1, this string has no meaning.
-     *
-     * @return	String	current otherCharacterDisplayMode property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherCharacterDisplayMode(){
+	/**
+	 * This method sets the TelnetSettingData.characterDisplayMode property value. This property is described as follows:
+	 * 
+	 * The character display mode that will be active if this SettingData is applied.
+	 * 
+	 * @param int new characterDisplayMode property value
+	 * @exception Exception
+	 */
+	public void setCharacterDisplayMode(CharacterDisplayMode
+			characterDisplayMode) {
 
-    return this.otherCharacterDisplayMode;
-    } // getOtherCharacterDisplayMode
+		this.characterDisplayMode = characterDisplayMode;
+	} // setCharacterDisplayMode
 
-    /**
-     * This method sets the TelnetSettingData.otherCharacterDisplayMode
-     * property value. This property is described as follows:
-     *
-     * When the CharacterDisplayMode property is set to 1, "Other" then this
-     * is a free form string providing more information about the character
-     * display mode. If not set to 1, this string has no meaning.
-     *
-     * @param	String	new otherCharacterDisplayMode property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherCharacterDisplayMode(String otherCharacterDisplayMode)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherCharacterDisplayMode.
+	 */
+	private String	otherCharacterDisplayMode;
+
+	/**
+	 * This method returns the TelnetSettingData.otherCharacterDisplayMode property value. This property is described as follows:
+	 * 
+	 * When the CharacterDisplayMode property is set to 1, "Other" then this is a free form string providing more information about the character
+	 * display mode. If not set to 1, this string has no meaning.
+	 * 
+	 * @return String current otherCharacterDisplayMode property value
+	 * @exception Exception
+	 */
+	public String getOtherCharacterDisplayMode() {
+
+		return this.otherCharacterDisplayMode;
+	} // getOtherCharacterDisplayMode
+
+	/**
+	 * This method sets the TelnetSettingData.otherCharacterDisplayMode property value. This property is described as follows:
+	 * 
+	 * When the CharacterDisplayMode property is set to 1, "Other" then this is a free form string providing more information about the character
+	 * display mode. If not set to 1, this string has no meaning.
+	 * 
+	 * @param String
+	 *            new otherCharacterDisplayMode property value
+	 * @exception Exception
+	 */
+	public void setOtherCharacterDisplayMode(String otherCharacterDisplayMode)
 	{
 
-    this.otherCharacterDisplayMode = otherCharacterDisplayMode;
-    } // setOtherCharacterDisplayMode
+		this.otherCharacterDisplayMode = otherCharacterDisplayMode;
+	} // setOtherCharacterDisplayMode
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property escapeCharacter.
+	 */
+	private String	escapeCharacter;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property escapeCharacter.
-     */
-    private String escapeCharacter;
-    /**
-     * This method returns the TelnetSettingData.escapeCharacter property
-     * value. This property is described as follows:
-     *
-     * String indicating the Escape Character that will be in effect if this
-     * SettingData is applied.
-     *
-     * @return	String	current escapeCharacter property value
-     * @exception	Exception
-     */
-    public String getEscapeCharacter(){
+	/**
+	 * This method returns the TelnetSettingData.escapeCharacter property value. This property is described as follows:
+	 * 
+	 * String indicating the Escape Character that will be in effect if this SettingData is applied.
+	 * 
+	 * @return String current escapeCharacter property value
+	 * @exception Exception
+	 */
+	public String getEscapeCharacter() {
 
-    return this.escapeCharacter;
-    } // getEscapeCharacter
+		return this.escapeCharacter;
+	} // getEscapeCharacter
 
-    /**
-     * This method sets the TelnetSettingData.escapeCharacter property value.
-     * This property is described as follows:
-     *
-     * String indicating the Escape Character that will be in effect if this
-     * SettingData is applied.
-     *
-     * @param	String	new escapeCharacter property value
-     * @exception	Exception
-     */
-    public void setEscapeCharacter(String escapeCharacter) {
+	/**
+	 * This method sets the TelnetSettingData.escapeCharacter property value. This property is described as follows:
+	 * 
+	 * String indicating the Escape Character that will be in effect if this SettingData is applied.
+	 * 
+	 * @param String
+	 *            new escapeCharacter property value
+	 * @exception Exception
+	 */
+	public void setEscapeCharacter(String escapeCharacter) {
 
-    this.escapeCharacter = escapeCharacter;
-    } // setEscapeCharacter
+		this.escapeCharacter = escapeCharacter;
+	} // setEscapeCharacter
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property idleTimeout.
+	 */
+	private long	idleTimeout;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property idleTimeout.
-     */
-    private long idleTimeout;
-    /**
-     * This method returns the TelnetSettingData.idleTimeout property value.
-     * This property is described as follows:
-     *
-     * IdleTimeout specifies how long the connection can be idle before it is
-     * closed. The default value, 0, indicates that there is no idle timeout
-     * period.
-     *
-     * @return	long	current idleTimeout property value
-     * @exception	Exception
-     */
-    public long getIdleTimeout(){
+	/**
+	 * This method returns the TelnetSettingData.idleTimeout property value. This property is described as follows:
+	 * 
+	 * IdleTimeout specifies how long the connection can be idle before it is closed. The default value, 0, indicates that there is no idle timeout
+	 * period.
+	 * 
+	 * @return long current idleTimeout property value
+	 * @exception Exception
+	 */
+	public long getIdleTimeout() {
 
-    return this.idleTimeout;
-    } // getIdleTimeout
+		return this.idleTimeout;
+	} // getIdleTimeout
 
-    /**
-     * This method sets the TelnetSettingData.idleTimeout property value. This
-     * property is described as follows:
-     *
-     * IdleTimeout specifies how long the connection can be idle before it is
-     * closed. The default value, 0, indicates that there is no idle timeout
-     * period.
-     *
-     * @param	long	new idleTimeout property value
-     * @exception	Exception
-     */
-    public void setIdleTimeout(long idleTimeout) {
+	/**
+	 * This method sets the TelnetSettingData.idleTimeout property value. This property is described as follows:
+	 * 
+	 * IdleTimeout specifies how long the connection can be idle before it is closed. The default value, 0, indicates that there is no idle timeout
+	 * period.
+	 * 
+	 * @param long new idleTimeout property value
+	 * @exception Exception
+	 */
+	public void setIdleTimeout(long idleTimeout) {
 
-    this.idleTimeout = idleTimeout;
-    } // setIdleTimeout
-
-
+		this.idleTimeout = idleTimeout;
+	} // setIdleTimeout
 
 } // Class TelnetSettingData

@@ -6,15 +6,14 @@ import org.opennaas.core.resources.IModel;
 
 public abstract class Action implements IAction {
 
-	Log							log				= LogFactory
-														.getLog(Action.class);
+	protected Log		log				= LogFactory.getLog(Action.class);
 
 	// FIXME what model is the entire model or the one for change from the command
 	protected IModel	modelToUpdate;
-	protected Object			params			= null;
-	protected String			actionID		= null;
+	protected Object	params			= null;
+	protected String	actionID		= null;
 
-	protected Object			behaviorParams	= null;
+	protected Object	behaviorParams	= null;
 
 	public IModel getModelToUpdate() {
 		return modelToUpdate;
@@ -46,7 +45,7 @@ public abstract class Action implements IAction {
 
 	/**
 	 * Set params an action may use to specify its behavior (i.e. path to a template file to be loaded)
-	 *
+	 * 
 	 * @param params
 	 */
 	public void setBehaviorParams(Object params) {

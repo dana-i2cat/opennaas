@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ReflectorNonClientService as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * ReflectorNonClientServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ReflectorNonClientService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ReflectorNonClientServiceBean Interface. The CIM class
  * ReflectorNonClientService is described as follows:
- *
- * This association will serve as the base class for handling BGP routing
- * information for the non-clients of the reflector of this Cluster.
+ * 
+ * This association will serve as the base class for handling BGP routing information for the non-clients of the reflector of this Cluster.
  */
 public class ReflectorNonClientService extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ReflectorNonClientServiceBeanImpl Class
-     * which implements the ReflectorNonClientServiceBean Interface, and
-     * encapsulates the CIM class ReflectorNonClientService in a Java Bean.
-     * The CIM class ReflectorNonClientService is described as follows:
-     *
-     * This association will serve as the base class for handling BGP routing
-     * information for the non-clients of the reflector of this Cluster.
-     */
-    public ReflectorNonClientService(){};
-    /**
-     * This method create an Association of the type ReflectorNonClientService
-     * between one BGPCluster object and BGPService object
-     */
-    public static ReflectorNonClientService link(BGPCluster
-	antecedent,BGPService dependent){
+	/**
+	 * This constructor creates a ReflectorNonClientServiceBeanImpl Class which implements the ReflectorNonClientServiceBean Interface, and
+	 * encapsulates the CIM class ReflectorNonClientService in a Java Bean. The CIM class ReflectorNonClientService is described as follows:
+	 * 
+	 * This association will serve as the base class for handling BGP routing information for the non-clients of the reflector of this Cluster.
+	 */
+	public ReflectorNonClientService() {
+	};
 
-    return (ReflectorNonClientService)
-	Association.link(ReflectorNonClientService.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ReflectorNonClientService between one BGPCluster object and BGPService object
+	 */
+	public static ReflectorNonClientService link(BGPCluster
+			antecedent, BGPService dependent) {
+
+		return (ReflectorNonClientService) Association.link(ReflectorNonClientService.class, antecedent, dependent);
+	}// link
 
 } // Class ReflectorNonClientService

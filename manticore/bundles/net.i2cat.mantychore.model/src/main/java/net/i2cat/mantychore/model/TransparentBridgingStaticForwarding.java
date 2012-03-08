@@ -8,39 +8,34 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TransparentBridgingStaticForwarding as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the TransparentBridgingStaticForwardingBean Interface. The CIM
- * class TransparentBridgingStaticForwarding is described as follows:
- *
- * This association links an instance of the Transparent BridgingService to
- * the entries of its static (destination-address filtering) database.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TransparentBridgingStaticForwarding as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the TransparentBridgingStaticForwardingBean Interface. The CIM class
+ * TransparentBridgingStaticForwarding is described as follows:
+ * 
+ * This association links an instance of the Transparent BridgingService to the entries of its static (destination-address filtering) database.
  */
 public class TransparentBridgingStaticForwarding extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a TransparentBridgingStaticForwardingBeanImpl
-     * Class which implements the TransparentBridgingStaticForwardingBean
-     * Interface, and encapsulates the CIM class
-     * TransparentBridgingStaticForwarding in a Java Bean. The CIM class
-     * TransparentBridgingStaticForwarding is described as follows:
-     *
-     * This association links an instance of the Transparent BridgingService
-     * to the entries of its static (destination-address filtering) database.
-     */
-    public TransparentBridgingStaticForwarding(){};
-    /**
-     * This method create an Association of the type
-     * TransparentBridgingStaticForwarding between one
-     * TransparentBridgingService object and StaticForwardingEntry object
-     */
-    public static TransparentBridgingStaticForwarding
-	link(TransparentBridgingService antecedent,StaticForwardingEntry
-	dependent){
+	/**
+	 * This constructor creates a TransparentBridgingStaticForwardingBeanImpl Class which implements the TransparentBridgingStaticForwardingBean
+	 * Interface, and encapsulates the CIM class TransparentBridgingStaticForwarding in a Java Bean. The CIM class TransparentBridgingStaticForwarding
+	 * is described as follows:
+	 * 
+	 * This association links an instance of the Transparent BridgingService to the entries of its static (destination-address filtering) database.
+	 */
+	public TransparentBridgingStaticForwarding() {
+	};
 
-    return (TransparentBridgingStaticForwarding) Association.link(TransparentBridgingStaticForwarding.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type TransparentBridgingStaticForwarding between one TransparentBridgingService object and
+	 * StaticForwardingEntry object
+	 */
+	public static TransparentBridgingStaticForwarding
+			link(TransparentBridgingService antecedent, StaticForwardingEntry
+					dependent) {
+
+		return (TransparentBridgingStaticForwarding) Association.link(TransparentBridgingStaticForwarding.class, antecedent, dependent);
+	}// link
 
 } // Class TransparentBridgingStaticForwarding

@@ -1,0 +1,51 @@
+shell:echo Script to test ospf commands for a router
+
+#Creating and initializing resource
+resource:create PATH_TO_OPENNAAS_SRC/opennaas/manticore/utils/routerWithOSPF.descriptor
+protocols:context router:junos20 netconf URI
+resource:start router:junos20
+
+ospf:show router:junos20
+
+shell:echo "ospf:configure router:junos20"
+ospf:configure router:junos20
+
+shell:echo "ospf:configureArea router:junos20 0.0.0.0"
+ospf:configureArea router:junos20 0.0.0.0
+
+shell:echo "ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.0 fe-0/3/1.0"
+ospf:configureInterfaceInArea router:junos20 0.0.0.0 fe-0/3/0.0 fe-0/3/1.0 
+
+# REFRESH MODEL IS REQUIRED (following operations need OSPFArea to be in model)
+queue:execute router:junos20
+
+shell:echo "ospf:enableInterface router:junos20 fe-0/3/0.0"
+ospf:enableInterface router:junos20 fe-0/3/0.0
+
+shell:echo "ospf:disableInterface router:junos20 fe-0/3/0.0"
+ospf:disableInterface router:junos20 fe-0/3/1.0
+
+shell:echo "ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/1.0"
+ospf:configureInterfaceInArea --delete router:junos20 0.0.0.0 fe-0/3/1.0
+
+shell:echo "ospf:activate router:junos20"
+ospf:activate router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+shell:echo "ospf:deativate router:junos20"
+ospf:deactivate router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+shell:echo "ospf:configure --delete router:junos20"
+ospf:configure --delete router:junos20
+
+queue:execute router:junos20
+ospf:show router:junos20
+
+#Cleanup
+resource:stop router:junos20
+resource:remove router:junos20

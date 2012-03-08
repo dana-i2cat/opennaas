@@ -29,7 +29,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Transforms given model to a NDL representation and adds it to networkModel.
-	 *
+	 * 
 	 * @param model
 	 * @param networkModel
 	 * @param name
@@ -45,7 +45,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Transforms given managedElement to a NDL representation and adds it to networkModel.
-	 *
+	 * 
 	 * @param managedElement
 	 * @param networkModel
 	 * @param name
@@ -75,7 +75,7 @@ public class Cim2NdlMapper {
 	/**
 	 * Creates a Device representing given ManagedElement and adds it to networkModel. Notice that a single Device is not a complete representation of
 	 * a ManagedElement.
-	 *
+	 * 
 	 * @param managedElement
 	 * @param networkModel
 	 * @param name
@@ -100,21 +100,21 @@ public class Cim2NdlMapper {
 		return device.getName() + ":" + name;
 	}
 
-//	/**
-//	 * FIXME change the interface place
-//	 */
-//	private static boolean existInterface(List<Interface> interfaces, String name) {
-//
-//		for (Interface interf : interfaces) {
-//			if (interf.getName().equals(name))
-//				return true;
-//		}
-//		return false;
-//	}
+	// /**
+	// * FIXME change the interface place
+	// */
+	// private static boolean existInterface(List<Interface> interfaces, String name) {
+	//
+	// for (Interface interf : interfaces) {
+	// if (interf.getName().equals(name))
+	// return true;
+	// }
+	// return false;
+	// }
 
 	/**
 	 * Creates interfaces representing given managedElement endpoints, and adds them to networkModel.
-	 *
+	 * 
 	 * @param managedElement
 	 * @param dev
 	 * @param networkModel
@@ -128,8 +128,8 @@ public class Cim2NdlMapper {
 			for (NetworkPort port : ModelHelper.getInterfaces(managedElement)) {
 				Interface topIface = generateInterfaceBasedOnPortType(port, dev, networkModel);
 
-//				if (!existInterface(interfaces, topIface.getName()))
-					interfaces.add(topIface);
+				// if (!existInterface(interfaces, topIface.getName()))
+				interfaces.add(topIface);
 
 				if (port.getProtocolEndpoint() != null) {
 
@@ -208,7 +208,7 @@ public class Cim2NdlMapper {
 
 			iface = new Interface();
 			iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
-//			iface.setName(addResourceName(dev, port.getName()));
+			// iface.setName(addResourceName(dev, port.getName()));
 
 			Layer ethLayer = obtainEthernetLayer(networkModel);
 			iface.setLayer(ethLayer);
@@ -226,7 +226,7 @@ public class Cim2NdlMapper {
 
 	/**
 	 * Creates links representing LT connections in managedElement, and adds them to networkModel.
-	 *
+	 * 
 	 * @param managedElement
 	 * @param interfaces
 	 * @param networkModel

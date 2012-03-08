@@ -9,123 +9,101 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class VirtualSystemSnapshotCapabilities as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the VirtualSystemSnapshotCapabilitiesBean Interface. The CIM
- * class VirtualSystemSnapshotCapabilities is described as follows:
- *
- * The CIM_VirtualSystemSnapshotCapabilities class defines the properties that
- * describe the capabilities of a virtual system with respect to snapshots,
- * like for example the set of snapshot operations that it enabled for a
- * virtual system.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class VirtualSystemSnapshotCapabilities as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the VirtualSystemSnapshotCapabilitiesBean Interface. The CIM class
+ * VirtualSystemSnapshotCapabilities is described as follows:
+ * 
+ * The CIM_VirtualSystemSnapshotCapabilities class defines the properties that describe the capabilities of a virtual system with respect to
+ * snapshots, like for example the set of snapshot operations that it enabled for a virtual system.
  */
 public class VirtualSystemSnapshotCapabilities extends Capabilities implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a VirtualSystemSnapshotCapabilitiesBeanImpl
-     * Class which implements the VirtualSystemSnapshotCapabilitiesBean
-     * Interface, and encapsulates the CIM class
-     * VirtualSystemSnapshotCapabilities in a Java Bean. The CIM class
-     * VirtualSystemSnapshotCapabilities is described as follows:
-     *
-     * The CIM_VirtualSystemSnapshotCapabilities class defines the properties
-     * that describe the capabilities of a virtual system with respect to
-     * snapshots, like for example the set of snapshot operations that it
-     * enabled for a virtual system.
-     */
-    public VirtualSystemSnapshotCapabilities(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property SnapshotTypesEnabled.
-     */
+	/**
+	 * This constructor creates a VirtualSystemSnapshotCapabilitiesBeanImpl Class which implements the VirtualSystemSnapshotCapabilitiesBean
+	 * Interface, and encapsulates the CIM class VirtualSystemSnapshotCapabilities in a Java Bean. The CIM class VirtualSystemSnapshotCapabilities is
+	 * described as follows:
+	 * 
+	 * The CIM_VirtualSystemSnapshotCapabilities class defines the properties that describe the capabilities of a virtual system with respect to
+	 * snapshots, like for example the set of snapshot operations that it enabled for a virtual system.
+	 */
+	public VirtualSystemSnapshotCapabilities() {
+	};
 
-    public enum SnapshotTypesEnabled{
-    FULL_SNAPSHOT,
-    DISK_SNAPSHOT,
-    DMTF_RESERVED,
-    VENDOR_SPECIFIC
-    }
-    private SnapshotTypesEnabled snapshotTypesEnabled;
-    /**
-     * This method returns the
-     * VirtualSystemSnapshotCapabilities.snapshotTypesEnabled property value.
-     * This property is described as follows:
-     *
-     * Enumeration of snapshot type identifiers each designating a snapshot
-     * type that is presently enabled for the virtual system that is
-     * referenced via the CIM_ElementCapabilities association.
-     *
-     * @return	int	current snapshotTypesEnabled property value
-     * @exception	Exception
-     */
-    public SnapshotTypesEnabled getSnapshotTypesEnabled(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property SnapshotTypesEnabled.
+	 */
 
-    return this.snapshotTypesEnabled;
-    } // getSnapshotTypesEnabled
+	public enum SnapshotTypesEnabled {
+		FULL_SNAPSHOT,
+		DISK_SNAPSHOT,
+		DMTF_RESERVED,
+		VENDOR_SPECIFIC
+	}
 
-    /**
-     * This method sets the
-     * VirtualSystemSnapshotCapabilities.snapshotTypesEnabled property value.
-     * This property is described as follows:
-     *
-     * Enumeration of snapshot type identifiers each designating a snapshot
-     * type that is presently enabled for the virtual system that is
-     * referenced via the CIM_ElementCapabilities association.
-     *
-     * @param	int	new snapshotTypesEnabled property value
-     * @exception	Exception
-     */
-    public void setSnapshotTypesEnabled(SnapshotTypesEnabled
-	snapshotTypesEnabled){
+	private SnapshotTypesEnabled	snapshotTypesEnabled;
 
-    this.snapshotTypesEnabled = snapshotTypesEnabled;
-    } // setSnapshotTypesEnabled
+	/**
+	 * This method returns the VirtualSystemSnapshotCapabilities.snapshotTypesEnabled property value. This property is described as follows:
+	 * 
+	 * Enumeration of snapshot type identifiers each designating a snapshot type that is presently enabled for the virtual system that is referenced
+	 * via the CIM_ElementCapabilities association.
+	 * 
+	 * @return int current snapshotTypesEnabled property value
+	 * @exception Exception
+	 */
+	public SnapshotTypesEnabled getSnapshotTypesEnabled() {
 
+		return this.snapshotTypesEnabled;
+	} // getSnapshotTypesEnabled
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property guestOSNotificationEnabled.
-     */
-    private boolean guestOSNotificationEnabled;
-    /**
-     * This method returns the
-     * VirtualSystemSnapshotCapabilities.guestOSNotificationEnabled property
-     * value. This property is described as follows:
-     *
-     * Boolean flag indicating the capability of the snapshot service to
-     * notify the guest operation system that runs within the virtual system
-     * about the imminent snapshot operation.
-     *
-     * @return	boolean	current guestOSNotificationEnabled
-     * property value
-     * @exception	Exception
-     */
-    public boolean isGuestOSNotificationEnabled(){
+	/**
+	 * This method sets the VirtualSystemSnapshotCapabilities.snapshotTypesEnabled property value. This property is described as follows:
+	 * 
+	 * Enumeration of snapshot type identifiers each designating a snapshot type that is presently enabled for the virtual system that is referenced
+	 * via the CIM_ElementCapabilities association.
+	 * 
+	 * @param int new snapshotTypesEnabled property value
+	 * @exception Exception
+	 */
+	public void setSnapshotTypesEnabled(SnapshotTypesEnabled
+			snapshotTypesEnabled) {
 
-    return this.guestOSNotificationEnabled;
-    } // getGuestOSNotificationEnabled
+		this.snapshotTypesEnabled = snapshotTypesEnabled;
+	} // setSnapshotTypesEnabled
 
-    /**
-     * This method sets the
-     * VirtualSystemSnapshotCapabilities.guestOSNotificationEnabled property
-     * value. This property is described as follows:
-     *
-     * Boolean flag indicating the capability of the snapshot service to
-     * notify the guest operation system that runs within the virtual system
-     * about the imminent snapshot operation.
-     *
-     * @param	boolean	new guestOSNotificationEnabled property
-     * value
-     * @exception	Exception
-     */
-    public void setGuestOSNotificationEnabled(boolean
-	guestOSNotificationEnabled) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property guestOSNotificationEnabled.
+	 */
+	private boolean	guestOSNotificationEnabled;
 
-    this.guestOSNotificationEnabled = guestOSNotificationEnabled;
-    } // setGuestOSNotificationEnabled
+	/**
+	 * This method returns the VirtualSystemSnapshotCapabilities.guestOSNotificationEnabled property value. This property is described as follows:
+	 * 
+	 * Boolean flag indicating the capability of the snapshot service to notify the guest operation system that runs within the virtual system about
+	 * the imminent snapshot operation.
+	 * 
+	 * @return boolean current guestOSNotificationEnabled property value
+	 * @exception Exception
+	 */
+	public boolean isGuestOSNotificationEnabled() {
 
+		return this.guestOSNotificationEnabled;
+	} // getGuestOSNotificationEnabled
 
+	/**
+	 * This method sets the VirtualSystemSnapshotCapabilities.guestOSNotificationEnabled property value. This property is described as follows:
+	 * 
+	 * Boolean flag indicating the capability of the snapshot service to notify the guest operation system that runs within the virtual system about
+	 * the imminent snapshot operation.
+	 * 
+	 * @param boolean new guestOSNotificationEnabled property value
+	 * @exception Exception
+	 */
+	public void setGuestOSNotificationEnabled(boolean
+			guestOSNotificationEnabled) {
+
+		this.guestOSNotificationEnabled = guestOSNotificationEnabled;
+	} // setGuestOSNotificationEnabled
 
 } // Class VirtualSystemSnapshotCapabilities

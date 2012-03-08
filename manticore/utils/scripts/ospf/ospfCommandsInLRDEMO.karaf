@@ -1,0 +1,110 @@
+shell:echo Script to test ospf commands for a router
+
+#This script reproduces the scenario described in https://www.juniper.net/techpubs/en_US/junos11.1/topics/example/logical-systems-ospf.html
+
+#Creating and initializing resource
+resource:create PATH_TO_OPENNAAS_SRC/opennaas/manticore/utils/routerWithOSPF.descriptor
+protocols:context router:junos20 netconf URI
+resource:start router:junos20
+
+shell:echo "________CONFIGURING LOGICAL ROUTERS________"
+#Creating sub-interfaces (description will be removed)
+chassis:createsubinterface --peerunit 5 -d "LS1->LS3" router:junos20 lt-1/2/0.0
+chassis:createsubinterface --peerunit 1 -d "LS1->LS2" router:junos20 lt-1/2/0.2
+chassis:createsubinterface --peerunit 2 -d "LS2->LS1" router:junos20 lt-1/2/0.1
+chassis:createsubinterface --peerunit 3 -d "LS2->LS3" router:junos20 lt-1/2/0.4
+chassis:createsubinterface --peerunit 4 -d "LS3->LS2" router:junos20 lt-1/2/0.3
+chassis:createsubinterface --peerunit 0 -d "LS3->LS1" router:junos20 lt-1/2/0.5
+queue:execute router:junos20
+
+#Configuring ip addresses (ips will be removed when added to LRs)
+#ipv4:setip router:junos20 lt-1/2/0.0 10.0.1.2 255.255.255.252
+#ipv4:setip router:junos20 lt-1/2/0.2 10.0.0.1 255.255.255.252
+#ipv4:setip router:junos20 lt-1/2/0.1 10.0.0.2 255.255.255.252
+#ipv4:setip router:junos20 lt-1/2/0.4 10.0.2.2 255.255.255.252
+#ipv4:setip router:junos20 lt-1/2/0.3 10.0.2.1 255.255.255.252
+#ipv4:setip router:junos20 lt-1/2/0.5 10.0.1.1 255.255.255.252
+#queue:execute router:junos20
+
+#Creating logical routers with interfaces (removes description and ip addresses from moved interfaces)
+chassis:createlogicalrouter router:junos20 LS1 lt-1/2/0.0 lt-1/2/0.2
+chassis:createlogicalrouter router:junos20 LS2 lt-1/2/0.1 lt-1/2/0.4
+chassis:createlogicalrouter router:junos20 LS3 lt-1/2/0.3 lt-1/2/0.5
+queue:execute router:junos20
+
+protocols:context router:LS1 netconf URI
+protocols:context router:LS2 netconf URI
+protocols:context router:LS3 netconf URI
+resource:start router:LS1
+resource:start router:LS2
+resource:start router:LS3
+
+#Configuring ip addresses and interface descriptions
+ipv4:setip router:LS1 lt-1/2/0.0 10.0.1.2 255.255.255.252
+ipv4:setip router:LS1 lt-1/2/0.2 10.0.0.1 255.255.255.252
+ipv4:setip router:LS2 lt-1/2/0.1 10.0.0.2 255.255.255.252
+ipv4:setip router:LS2 lt-1/2/0.4 10.0.2.2 255.255.255.252
+ipv4:setip router:LS3 lt-1/2/0.3 10.0.2.1 255.255.255.252
+ipv4:setip router:LS3 lt-1/2/0.5 10.0.1.1 255.255.255.252
+
+ipv4:setinterfacedescription router:LS1 lt-1/2/0.0 "LS1->LS3"
+ipv4:setinterfacedescription router:LS1 lt-1/2/0.2 "LS1->LS2"
+ipv4:setinterfacedescription router:LS2 lt-1/2/0.1 "LS2->LS1"
+ipv4:setinterfacedescription router:LS2 lt-1/2/0.4 "LS2->LS3"
+ipv4:setinterfacedescription router:LS3 lt-1/2/0.3 "LS3->LS3"
+ipv4:setinterfacedescription router:LS3 lt-1/2/0.5 "LS3->LS1"
+
+queue:execute router:LS1
+queue:execute router:LS2
+queue:execute router:LS3
+
+
+shell:echo "________CONFIGURING OSPF________"
+
+shell:echo "ospf:show in logical routers" 
+ospf:show router:LS1
+ospf:show router:LS2
+ospf:show router:LS3
+
+
+#Configure ospf in LS1
+shell:echo "Configure OSPF in LS1"
+ospf:configure router:LS1
+ospf:configureArea router:LS1 0.0.0.0
+ospf:configureInterfaceInArea router:LS1 0.0.0.0 lt-1/2/0.0 lt-1/2/0.2
+queue:execute router:LS1
+
+#Configure ospf in LS2
+shell:echo "Configure OSPF in LS2"
+ospf:configure router:LS2
+ospf:configureArea router:LS2 0.0.0.0
+ospf:configureInterfaceInArea router:LS2 0.0.0.0 lt-1/2/0.1 lt-1/2/0.4
+queue:execute router:LS2
+
+#Configure ospf in LS3
+shell:echo "Configure OSPF in LS3"
+ospf:configure router:LS3
+ospf:configureArea router:LS3 0.0.0.0
+ospf:configureInterfaceInArea router:LS3 0.0.0.0 lt-1/2/0.3 lt-1/2/0.5
+queue:execute router:LS3
+
+#OPTIONAL enable/disable OSPF in interfaces
+
+#Activate ospf on the three routers
+shell:echo "Activate OSPF in the three routers"
+ospf:activate router:LS1
+queue:execute router:LS1
+ospf:activate router:LS2
+queue:execute router:LS2
+ospf:activate router:LS3
+queue:execute router:LS3
+
+ospf:show router:LS1
+ospf:show router:LS2
+ospf:show router:LS3
+
+# to check everything is ok log into the physical router and run
+#>show ospf neighbor logical-system LS1
+#>show route logical-system LS1
+# expected outputs can be found in https://www.juniper.net/techpubs/en_US/junos11.1/topics/example/logical-systems-ospf.html
+

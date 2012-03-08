@@ -8,36 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class Dependency as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DependencyBean Interface. The CIM class Dependency is described as
- * follows:
- *
- * CIM_Dependency is a generic association used to establish dependency
- * relationships between ManagedElements.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class Dependency as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the DependencyBean Interface. The CIM class Dependency is described as follows:
+ * 
+ * CIM_Dependency is a generic association used to establish dependency relationships between ManagedElements.
  */
 public class Dependency extends Association implements Serializable {
 
-    /**
-     * This constructor creates a DependencyBeanImpl Class which implements
-     * the DependencyBean Interface, and encapsulates the CIM class
-     * Dependency in a Java Bean. The CIM class Dependency is described as
-     * follows:
-     *
-     * CIM_Dependency is a generic association used to establish dependency
-     * relationships between ManagedElements.
-     */
-    protected Dependency(){};
-    /**
-     * This method create an Association of the type Dependency between one
-     * ManagedElement object and ManagedElement object
-     */
-    public static Dependency link(ManagedElement antecedent,ManagedElement
-	dependent){
+	/**
+	 * This constructor creates a DependencyBeanImpl Class which implements the DependencyBean Interface, and encapsulates the CIM class Dependency in
+	 * a Java Bean. The CIM class Dependency is described as follows:
+	 * 
+	 * CIM_Dependency is a generic association used to establish dependency relationships between ManagedElements.
+	 */
+	protected Dependency() {
+	};
 
-    return (Dependency)
-	Association.link(Dependency.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type Dependency between one ManagedElement object and ManagedElement object
+	 */
+	public static Dependency link(ManagedElement antecedent, ManagedElement
+			dependent) {
+
+		return (Dependency) Association.link(Dependency.class, antecedent, dependent);
+	}// link
 
 } // Class Dependency

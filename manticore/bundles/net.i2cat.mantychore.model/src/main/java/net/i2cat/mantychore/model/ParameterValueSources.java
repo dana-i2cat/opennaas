@@ -8,40 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ParameterValueSources as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ParameterValueSourcesBean Interface. The CIM class ParameterValueSources
- * is described as follows:
- *
- * ParameterValueSources represents the association between a MethodParameters
- * instance and the ManagedElement instances, which contain properties to be
- * used to create values for the MethodParameters properties.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ParameterValueSources as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ParameterValueSourcesBean Interface. The CIM class ParameterValueSources is
+ * described as follows:
+ * 
+ * ParameterValueSources represents the association between a MethodParameters instance and the ManagedElement instances, which contain properties to
+ * be used to create values for the MethodParameters properties.
  */
 public class ParameterValueSources extends Association implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a ParameterValueSourcesBeanImpl Class which
-     * implements the ParameterValueSourcesBean Interface, and encapsulates
-     * the CIM class ParameterValueSources in a Java Bean. The CIM class
-     * ParameterValueSources is described as follows:
-     *
-     * ParameterValueSources represents the association between a
-     * MethodParameters instance and the ManagedElement instances, which
-     * contain properties to be used to create values for the
-     * MethodParameters properties.
-     */
-    public ParameterValueSources(){};
-    /**
-     * This method create an Association of the type ParameterValueSources
-     * between one MethodParameters object and ManagedElement object
-     */
-    public static ParameterValueSources link(MethodParameters
-	parameters,ManagedElement valueSource){
+	/**
+	 * This constructor creates a ParameterValueSourcesBeanImpl Class which implements the ParameterValueSourcesBean Interface, and encapsulates the
+	 * CIM class ParameterValueSources in a Java Bean. The CIM class ParameterValueSources is described as follows:
+	 * 
+	 * ParameterValueSources represents the association between a MethodParameters instance and the ManagedElement instances, which contain properties
+	 * to be used to create values for the MethodParameters properties.
+	 */
+	public ParameterValueSources() {
+	};
 
-    return (ParameterValueSources)
-	Association.link(ParameterValueSources.class,parameters,valueSource);
-    }//link
+	/**
+	 * This method create an Association of the type ParameterValueSources between one MethodParameters object and ManagedElement object
+	 */
+	public static ParameterValueSources link(MethodParameters
+			parameters, ManagedElement valueSource) {
+
+		return (ParameterValueSources) Association.link(ParameterValueSources.class, parameters, valueSource);
+	}// link
 
 } // Class ParameterValueSources

@@ -9,376 +9,315 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ESPTransform as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ESPTransformBean Interface. The CIM class ESPTransform is described as
- * follows:
- *
- * ESPTransform defines the parameters used for a phase 2 ESP (Encapsulating
- * Security Protocol) Security Association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ESPTransform as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ESPTransformBean Interface. The CIM class ESPTransform is described as follows:
+ * 
+ * ESPTransform defines the parameters used for a phase 2 ESP (Encapsulating Security Protocol) Security Association.
  */
 public class ESPTransform extends SATransform implements Serializable {
 
-    /**
-     * This constructor creates a ESPTransformBeanImpl Class which implements
-     * the ESPTransformBean Interface, and encapsulates the CIM class
-     * ESPTransform in a Java Bean. The CIM class ESPTransform is described
-     * as follows:
-     *
-     * ESPTransform defines the parameters used for a phase 2 ESP
-     * (Encapsulating Security Protocol) Security Association.
-     */
-    public ESPTransform(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property IntegrityTransformId.
-     */
+	/**
+	 * This constructor creates a ESPTransformBeanImpl Class which implements the ESPTransformBean Interface, and encapsulates the CIM class
+	 * ESPTransform in a Java Bean. The CIM class ESPTransform is described as follows:
+	 * 
+	 * ESPTransform defines the parameters used for a phase 2 ESP (Encapsulating Security Protocol) Security Association.
+	 */
+	public ESPTransform() {
+	};
 
-    public enum IntegrityTransformId{
-    OTHER,
-    NONE,
-    MD5,
-    SHA_1,
-    DES,
-    KPDK,
-    DMTF_IANA_RESERVED,
-    VENDOR_RESERVED
-    }
-    private IntegrityTransformId integrityTransformId;
-    /**
-     * This method returns the ESPTransform.integrityTransformId property
-     * value. This property is described as follows:
-     *
-     * IntegrityTransformId is an enumeration that specifies the ESP integrity
-     * algorithm to be used. The list of values is generated from the
-     * enumeration defined in RFC2407, Section 4.5. Note that the enumeration
-     * is different than the RFC list, since the values of Other and None are
-     * taken into account. Also, note that 2 ("None") is used when ESP is
-     * negotiated without authentication.
-     *
-     * @return	int	current integrityTransformId property value
-     * @exception	Exception
-     */
-    public IntegrityTransformId getIntegrityTransformId(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property IntegrityTransformId.
+	 */
 
-    return this.integrityTransformId;
-    } // getIntegrityTransformId
+	public enum IntegrityTransformId {
+		OTHER,
+		NONE,
+		MD5,
+		SHA_1,
+		DES,
+		KPDK,
+		DMTF_IANA_RESERVED,
+		VENDOR_RESERVED
+	}
 
-    /**
-     * This method sets the ESPTransform.integrityTransformId property value.
-     * This property is described as follows:
-     *
-     * IntegrityTransformId is an enumeration that specifies the ESP integrity
-     * algorithm to be used. The list of values is generated from the
-     * enumeration defined in RFC2407, Section 4.5. Note that the enumeration
-     * is different than the RFC list, since the values of Other and None are
-     * taken into account. Also, note that 2 ("None") is used when ESP is
-     * negotiated without authentication.
-     *
-     * @param	int	new integrityTransformId property value
-     * @exception	Exception
-     */
-    public void setIntegrityTransformId(IntegrityTransformId
-	integrityTransformId){
+	private IntegrityTransformId	integrityTransformId;
 
-    this.integrityTransformId = integrityTransformId;
-    } // setIntegrityTransformId
+	/**
+	 * This method returns the ESPTransform.integrityTransformId property value. This property is described as follows:
+	 * 
+	 * IntegrityTransformId is an enumeration that specifies the ESP integrity algorithm to be used. The list of values is generated from the
+	 * enumeration defined in RFC2407, Section 4.5. Note that the enumeration is different than the RFC list, since the values of Other and None are
+	 * taken into account. Also, note that 2 ("None") is used when ESP is negotiated without authentication.
+	 * 
+	 * @return int current integrityTransformId property value
+	 * @exception Exception
+	 */
+	public IntegrityTransformId getIntegrityTransformId() {
 
+		return this.integrityTransformId;
+	} // getIntegrityTransformId
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherIntegrityTransformId.
-     */
-    private String otherIntegrityTransformId;
-    /**
-     * This method returns the ESPTransform.otherIntegrityTransformId property
-     * value. This property is described as follows:
-     *
-     * Description of the integrity algorithm when the value 1 ("Other") is
-     * specified for the property, IntegrityTransformId.
-     *
-     * @return	String	current otherIntegrityTransformId property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherIntegrityTransformId(){
+	/**
+	 * This method sets the ESPTransform.integrityTransformId property value. This property is described as follows:
+	 * 
+	 * IntegrityTransformId is an enumeration that specifies the ESP integrity algorithm to be used. The list of values is generated from the
+	 * enumeration defined in RFC2407, Section 4.5. Note that the enumeration is different than the RFC list, since the values of Other and None are
+	 * taken into account. Also, note that 2 ("None") is used when ESP is negotiated without authentication.
+	 * 
+	 * @param int new integrityTransformId property value
+	 * @exception Exception
+	 */
+	public void setIntegrityTransformId(IntegrityTransformId
+			integrityTransformId) {
 
-    return this.otherIntegrityTransformId;
-    } // getOtherIntegrityTransformId
+		this.integrityTransformId = integrityTransformId;
+	} // setIntegrityTransformId
 
-    /**
-     * This method sets the ESPTransform.otherIntegrityTransformId property
-     * value. This property is described as follows:
-     *
-     * Description of the integrity algorithm when the value 1 ("Other") is
-     * specified for the property, IntegrityTransformId.
-     *
-     * @param	String	new otherIntegrityTransformId property
-     * value
-     * @exception	Exception
-     */
-    public void setOtherIntegrityTransformId(String otherIntegrityTransformId)
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherIntegrityTransformId.
+	 */
+	private String	otherIntegrityTransformId;
+
+	/**
+	 * This method returns the ESPTransform.otherIntegrityTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the integrity algorithm when the value 1 ("Other") is specified for the property, IntegrityTransformId.
+	 * 
+	 * @return String current otherIntegrityTransformId property value
+	 * @exception Exception
+	 */
+	public String getOtherIntegrityTransformId() {
+
+		return this.otherIntegrityTransformId;
+	} // getOtherIntegrityTransformId
+
+	/**
+	 * This method sets the ESPTransform.otherIntegrityTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the integrity algorithm when the value 1 ("Other") is specified for the property, IntegrityTransformId.
+	 * 
+	 * @param String
+	 *            new otherIntegrityTransformId property value
+	 * @exception Exception
+	 */
+	public void setOtherIntegrityTransformId(String otherIntegrityTransformId)
 	{
 
-    this.otherIntegrityTransformId = otherIntegrityTransformId;
-    } // setOtherIntegrityTransformId
+		this.otherIntegrityTransformId = otherIntegrityTransformId;
+	} // setOtherIntegrityTransformId
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property CipherTransformId.
+	 */
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property CipherTransformId.
-     */
+	public enum CipherTransformId {
+		OTHER,
+		NONE,
+		DES_IV64,
+		DES,
+		_3DES,
+		RC5,
+		IDEA,
+		CAST,
+		BLOWFISH,
+		_3_IDEA,
+		DES_IV32,
+		RC4
+	}
 
-    public enum CipherTransformId{
-    OTHER,
-    NONE,
-    DES_IV64,
-    DES,
-    _3DES,
-    RC5,
-    IDEA,
-    CAST,
-    BLOWFISH,
-    _3_IDEA,
-    DES_IV32,
-    RC4
-    }
-    private CipherTransformId cipherTransformId;
-    /**
-     * This method returns the ESPTransform.cipherTransformId property value.
-     * This property is described as follows:
-     *
-     * CipherTransformId is an enumeration that specifies the ESP encrypion
-     * algorithm to be used. The list of values is defined in RFC2407,
-     * Section 4.4.4, where the RFC's NULL value maps to 2-"None". Note that
-     * the enumeration is different than the RFC list, since 'Other' is added
-     * to the enumeration.
-     *
-     * @return	int	current cipherTransformId property value
-     * @exception	Exception
-     */
-    public CipherTransformId getCipherTransformId(){
+	private CipherTransformId	cipherTransformId;
 
-    return this.cipherTransformId;
-    } // getCipherTransformId
+	/**
+	 * This method returns the ESPTransform.cipherTransformId property value. This property is described as follows:
+	 * 
+	 * CipherTransformId is an enumeration that specifies the ESP encrypion algorithm to be used. The list of values is defined in RFC2407, Section
+	 * 4.4.4, where the RFC's NULL value maps to 2-"None". Note that the enumeration is different than the RFC list, since 'Other' is added to the
+	 * enumeration.
+	 * 
+	 * @return int current cipherTransformId property value
+	 * @exception Exception
+	 */
+	public CipherTransformId getCipherTransformId() {
 
-    /**
-     * This method sets the ESPTransform.cipherTransformId property value.
-     * This property is described as follows:
-     *
-     * CipherTransformId is an enumeration that specifies the ESP encrypion
-     * algorithm to be used. The list of values is defined in RFC2407,
-     * Section 4.4.4, where the RFC's NULL value maps to 2-"None". Note that
-     * the enumeration is different than the RFC list, since 'Other' is added
-     * to the enumeration.
-     *
-     * @param	int	new cipherTransformId property value
-     * @exception	Exception
-     */
-    public void setCipherTransformId(CipherTransformId cipherTransformId){
+		return this.cipherTransformId;
+	} // getCipherTransformId
 
-    this.cipherTransformId = cipherTransformId;
-    } // setCipherTransformId
+	/**
+	 * This method sets the ESPTransform.cipherTransformId property value. This property is described as follows:
+	 * 
+	 * CipherTransformId is an enumeration that specifies the ESP encrypion algorithm to be used. The list of values is defined in RFC2407, Section
+	 * 4.4.4, where the RFC's NULL value maps to 2-"None". Note that the enumeration is different than the RFC list, since 'Other' is added to the
+	 * enumeration.
+	 * 
+	 * @param int new cipherTransformId property value
+	 * @exception Exception
+	 */
+	public void setCipherTransformId(CipherTransformId cipherTransformId) {
 
+		this.cipherTransformId = cipherTransformId;
+	} // setCipherTransformId
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherCipherTransformId.
-     */
-    private String otherCipherTransformId;
-    /**
-     * This method returns the ESPTransform.otherCipherTransformId property
-     * value. This property is described as follows:
-     *
-     * Description of the encryption algorithm when the value 1 ("Other") is
-     * specified for the property, CipherTransformId.
-     *
-     * @return	String	current otherCipherTransformId property
-     * value
-     * @exception	Exception
-     */
-    public String getOtherCipherTransformId(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherCipherTransformId.
+	 */
+	private String	otherCipherTransformId;
 
-    return this.otherCipherTransformId;
-    } // getOtherCipherTransformId
+	/**
+	 * This method returns the ESPTransform.otherCipherTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the encryption algorithm when the value 1 ("Other") is specified for the property, CipherTransformId.
+	 * 
+	 * @return String current otherCipherTransformId property value
+	 * @exception Exception
+	 */
+	public String getOtherCipherTransformId() {
 
-    /**
-     * This method sets the ESPTransform.otherCipherTransformId property
-     * value. This property is described as follows:
-     *
-     * Description of the encryption algorithm when the value 1 ("Other") is
-     * specified for the property, CipherTransformId.
-     *
-     * @param	String	new otherCipherTransformId property value
-     * @exception	Exception
-     */
-    public void setOtherCipherTransformId(String otherCipherTransformId) {
+		return this.otherCipherTransformId;
+	} // getOtherCipherTransformId
 
-    this.otherCipherTransformId = otherCipherTransformId;
-    } // setOtherCipherTransformId
+	/**
+	 * This method sets the ESPTransform.otherCipherTransformId property value. This property is described as follows:
+	 * 
+	 * Description of the encryption algorithm when the value 1 ("Other") is specified for the property, CipherTransformId.
+	 * 
+	 * @param String
+	 *            new otherCipherTransformId property value
+	 * @exception Exception
+	 */
+	public void setOtherCipherTransformId(String otherCipherTransformId) {
 
+		this.otherCipherTransformId = otherCipherTransformId;
+	} // setOtherCipherTransformId
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property cipherKeyLength.
-     */
-    private int cipherKeyLength;
-    /**
-     * This method returns the ESPTransform.cipherKeyLength property value.
-     * This property is described as follows:
-     *
-     * CipherKeyLength specifies, in bits, the key length for the encryption
-     * algorithm. For algorithms with fixed key lengths, this value is
-     * ignored.
-     *
-     * @return	int	current cipherKeyLength property value
-     * @exception	Exception
-     */
-    public int getCipherKeyLength(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property cipherKeyLength.
+	 */
+	private int	cipherKeyLength;
 
-    return this.cipherKeyLength;
-    } // getCipherKeyLength
+	/**
+	 * This method returns the ESPTransform.cipherKeyLength property value. This property is described as follows:
+	 * 
+	 * CipherKeyLength specifies, in bits, the key length for the encryption algorithm. For algorithms with fixed key lengths, this value is ignored.
+	 * 
+	 * @return int current cipherKeyLength property value
+	 * @exception Exception
+	 */
+	public int getCipherKeyLength() {
 
-    /**
-     * This method sets the ESPTransform.cipherKeyLength property value. This
-     * property is described as follows:
-     *
-     * CipherKeyLength specifies, in bits, the key length for the encryption
-     * algorithm. For algorithms with fixed key lengths, this value is
-     * ignored.
-     *
-     * @param	int	new cipherKeyLength property value
-     * @exception	Exception
-     */
-    public void setCipherKeyLength(int cipherKeyLength) {
+		return this.cipherKeyLength;
+	} // getCipherKeyLength
 
-    this.cipherKeyLength = cipherKeyLength;
-    } // setCipherKeyLength
+	/**
+	 * This method sets the ESPTransform.cipherKeyLength property value. This property is described as follows:
+	 * 
+	 * CipherKeyLength specifies, in bits, the key length for the encryption algorithm. For algorithms with fixed key lengths, this value is ignored.
+	 * 
+	 * @param int new cipherKeyLength property value
+	 * @exception Exception
+	 */
+	public void setCipherKeyLength(int cipherKeyLength) {
 
+		this.cipherKeyLength = cipherKeyLength;
+	} // setCipherKeyLength
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property cipherKeyRounds.
-     */
-    private int cipherKeyRounds;
-    /**
-     * This method returns the ESPTransform.cipherKeyRounds property value.
-     * This property is described as follows:
-     *
-     * CipherKeyRounds specifies the key rounds for the encryption algorithm.
-     * For algorithms with a fixed number of key rounds, this value is
-     * ignored. Currently, key rounds are NOT defined for any ESP encryption
-     * algorithms.
-     *
-     * @return	int	current cipherKeyRounds property value
-     * @exception	Exception
-     */
-    public int getCipherKeyRounds(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property cipherKeyRounds.
+	 */
+	private int	cipherKeyRounds;
 
-    return this.cipherKeyRounds;
-    } // getCipherKeyRounds
+	/**
+	 * This method returns the ESPTransform.cipherKeyRounds property value. This property is described as follows:
+	 * 
+	 * CipherKeyRounds specifies the key rounds for the encryption algorithm. For algorithms with a fixed number of key rounds, this value is ignored.
+	 * Currently, key rounds are NOT defined for any ESP encryption algorithms.
+	 * 
+	 * @return int current cipherKeyRounds property value
+	 * @exception Exception
+	 */
+	public int getCipherKeyRounds() {
 
-    /**
-     * This method sets the ESPTransform.cipherKeyRounds property value. This
-     * property is described as follows:
-     *
-     * CipherKeyRounds specifies the key rounds for the encryption algorithm.
-     * For algorithms with a fixed number of key rounds, this value is
-     * ignored. Currently, key rounds are NOT defined for any ESP encryption
-     * algorithms.
-     *
-     * @param	int	new cipherKeyRounds property value
-     * @exception	Exception
-     */
-    public void setCipherKeyRounds(int cipherKeyRounds) {
+		return this.cipherKeyRounds;
+	} // getCipherKeyRounds
 
-    this.cipherKeyRounds = cipherKeyRounds;
-    } // setCipherKeyRounds
+	/**
+	 * This method sets the ESPTransform.cipherKeyRounds property value. This property is described as follows:
+	 * 
+	 * CipherKeyRounds specifies the key rounds for the encryption algorithm. For algorithms with a fixed number of key rounds, this value is ignored.
+	 * Currently, key rounds are NOT defined for any ESP encryption algorithms.
+	 * 
+	 * @param int new cipherKeyRounds property value
+	 * @exception Exception
+	 */
+	public void setCipherKeyRounds(int cipherKeyRounds) {
 
+		this.cipherKeyRounds = cipherKeyRounds;
+	} // setCipherKeyRounds
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property useReplayPrevention.
-     */
-    private boolean useReplayPrevention;
-    /**
-     * This method returns the ESPTransform.useReplayPrevention property
-     * value. This property is described as follows:
-     *
-     * UseReplayPrevention causes the local peer to enable replay prevention
-     * detection. This can be accomplished by using a sequence number when
-     * sending a packet or checking the sequence number upon receipt of a
-     * packet.
-     *
-     * @return	boolean	current useReplayPrevention property
-     * value
-     * @exception	Exception
-     */
-    public boolean isUseReplayPrevention(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property useReplayPrevention.
+	 */
+	private boolean	useReplayPrevention;
 
-    return this.useReplayPrevention;
-    } // getUseReplayPrevention
+	/**
+	 * This method returns the ESPTransform.useReplayPrevention property value. This property is described as follows:
+	 * 
+	 * UseReplayPrevention causes the local peer to enable replay prevention detection. This can be accomplished by using a sequence number when
+	 * sending a packet or checking the sequence number upon receipt of a packet.
+	 * 
+	 * @return boolean current useReplayPrevention property value
+	 * @exception Exception
+	 */
+	public boolean isUseReplayPrevention() {
 
-    /**
-     * This method sets the ESPTransform.useReplayPrevention property value.
-     * This property is described as follows:
-     *
-     * UseReplayPrevention causes the local peer to enable replay prevention
-     * detection. This can be accomplished by using a sequence number when
-     * sending a packet or checking the sequence number upon receipt of a
-     * packet.
-     *
-     * @param	boolean	new useReplayPrevention property value
-     * @exception	Exception
-     */
-    public void setUseReplayPrevention(boolean useReplayPrevention) {
+		return this.useReplayPrevention;
+	} // getUseReplayPrevention
 
-    this.useReplayPrevention = useReplayPrevention;
-    } // setUseReplayPrevention
+	/**
+	 * This method sets the ESPTransform.useReplayPrevention property value. This property is described as follows:
+	 * 
+	 * UseReplayPrevention causes the local peer to enable replay prevention detection. This can be accomplished by using a sequence number when
+	 * sending a packet or checking the sequence number upon receipt of a packet.
+	 * 
+	 * @param boolean new useReplayPrevention property value
+	 * @exception Exception
+	 */
+	public void setUseReplayPrevention(boolean useReplayPrevention) {
 
+		this.useReplayPrevention = useReplayPrevention;
+	} // setUseReplayPrevention
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property replayPreventionWindowSize.
-     */
-    private long replayPreventionWindowSize;
-    /**
-     * This method returns the ESPTransform.replayPreventionWindowSize
-     * property value. This property is described as follows:
-     *
-     * ReplayPreventionWindowsSize specifies, in bits, the length of the
-     * sliding window used by the replay prevention mechanism. The value of
-     * this property is meaningless if UseReplayPrevention is false. The
-     * window size MUST be a power of 2.
-     *
-     * @return	long	current replayPreventionWindowSize property
-     * value
-     * @exception	Exception
-     */
-    public long getReplayPreventionWindowSize(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property replayPreventionWindowSize.
+	 */
+	private long	replayPreventionWindowSize;
 
-    return this.replayPreventionWindowSize;
-    } // getReplayPreventionWindowSize
+	/**
+	 * This method returns the ESPTransform.replayPreventionWindowSize property value. This property is described as follows:
+	 * 
+	 * ReplayPreventionWindowsSize specifies, in bits, the length of the sliding window used by the replay prevention mechanism. The value of this
+	 * property is meaningless if UseReplayPrevention is false. The window size MUST be a power of 2.
+	 * 
+	 * @return long current replayPreventionWindowSize property value
+	 * @exception Exception
+	 */
+	public long getReplayPreventionWindowSize() {
 
-    /**
-     * This method sets the ESPTransform.replayPreventionWindowSize property
-     * value. This property is described as follows:
-     *
-     * ReplayPreventionWindowsSize specifies, in bits, the length of the
-     * sliding window used by the replay prevention mechanism. The value of
-     * this property is meaningless if UseReplayPrevention is false. The
-     * window size MUST be a power of 2.
-     *
-     * @param	long	new replayPreventionWindowSize property value
-     * @exception	Exception
-     */
-    public void setReplayPreventionWindowSize(long replayPreventionWindowSize)
+		return this.replayPreventionWindowSize;
+	} // getReplayPreventionWindowSize
+
+	/**
+	 * This method sets the ESPTransform.replayPreventionWindowSize property value. This property is described as follows:
+	 * 
+	 * ReplayPreventionWindowsSize specifies, in bits, the length of the sliding window used by the replay prevention mechanism. The value of this
+	 * property is meaningless if UseReplayPrevention is false. The window size MUST be a power of 2.
+	 * 
+	 * @param long new replayPreventionWindowSize property value
+	 * @exception Exception
+	 */
+	public void setReplayPreventionWindowSize(long replayPreventionWindowSize)
 	{
 
-    this.replayPreventionWindowSize = replayPreventionWindowSize;
-    } // setReplayPreventionWindowSize
-
-
+		this.replayPreventionWindowSize = replayPreventionWindowSize;
+	} // setReplayPreventionWindowSize
 
 } // Class ESPTransform

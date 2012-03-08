@@ -8,35 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class FRUPhysicalElements as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * FRUPhysicalElementsBean Interface. The CIM class FRUPhysicalElements is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class FRUPhysicalElements as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the FRUPhysicalElementsBean Interface. The CIM class FRUPhysicalElements is
  * described as follows:
- *
+ * 
  * Indicates the PhysicalElements that make up a FRU.
  */
 public class FRUPhysicalElements extends Association implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a FRUPhysicalElementsBeanImpl Class which
-     * implements the FRUPhysicalElementsBean Interface, and encapsulates the
-     * CIM class FRUPhysicalElements in a Java Bean. The CIM class
-     * FRUPhysicalElements is described as follows:
-     *
-     * Indicates the PhysicalElements that make up a FRU.
-     */
-    public FRUPhysicalElements(){};
-    /**
-     * This method create an Association of the type FRUPhysicalElements
-     * between one FRU object and PhysicalElement object
-     */
-    public static FRUPhysicalElements link(FRU fRU,PhysicalElement
-	component){
+	/**
+	 * This constructor creates a FRUPhysicalElementsBeanImpl Class which implements the FRUPhysicalElementsBean Interface, and encapsulates the CIM
+	 * class FRUPhysicalElements in a Java Bean. The CIM class FRUPhysicalElements is described as follows:
+	 * 
+	 * Indicates the PhysicalElements that make up a FRU.
+	 */
+	public FRUPhysicalElements() {
+	};
 
-    return (FRUPhysicalElements)
-	Association.link(FRUPhysicalElements.class,fRU,component);
-    }//link
+	/**
+	 * This method create an Association of the type FRUPhysicalElements between one FRU object and PhysicalElement object
+	 */
+	public static FRUPhysicalElements link(FRU fRU, PhysicalElement
+			component) {
+
+		return (FRUPhysicalElements) Association.link(FRUPhysicalElements.class, fRU, component);
+	}// link
 
 } // Class FRUPhysicalElements

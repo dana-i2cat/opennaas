@@ -8,38 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OwningCollectionElement as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * OwningCollectionElementBean Interface. The CIM class
- * OwningCollectionElement is described as follows:
- *
- * OwningCollectionElement represents an association between a Collection and
- * the ManagedElement responsible for the control or ownership of the
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OwningCollectionElement as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the OwningCollectionElementBean Interface. The CIM class OwningCollectionElement
+ * is described as follows:
+ * 
+ * OwningCollectionElement represents an association between a Collection and the ManagedElement responsible for the control or ownership of the
  * Collection.
  */
 public class OwningCollectionElement extends Association implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a OwningCollectionElementBeanImpl Class which
-     * implements the OwningCollectionElementBean Interface, and encapsulates
-     * the CIM class OwningCollectionElement in a Java Bean. The CIM class
-     * OwningCollectionElement is described as follows:
-     *
-     * OwningCollectionElement represents an association between a Collection
-     * and the ManagedElement responsible for the control or ownership of the
-     * Collection.
-     */
-    public OwningCollectionElement(){};
-    /**
-     * This method create an Association of the type OwningCollectionElement
-     * between one ManagedElement object and Collection object
-     */
-    public static OwningCollectionElement link(ManagedElement
-	owningElement,Collection ownedElement){
+	/**
+	 * This constructor creates a OwningCollectionElementBeanImpl Class which implements the OwningCollectionElementBean Interface, and encapsulates
+	 * the CIM class OwningCollectionElement in a Java Bean. The CIM class OwningCollectionElement is described as follows:
+	 * 
+	 * OwningCollectionElement represents an association between a Collection and the ManagedElement responsible for the control or ownership of the
+	 * Collection.
+	 */
+	public OwningCollectionElement() {
+	};
 
-    return (OwningCollectionElement) Association.link(OwningCollectionElement.class,owningElement,ownedElement);
-    }//link
+	/**
+	 * This method create an Association of the type OwningCollectionElement between one ManagedElement object and Collection object
+	 */
+	public static OwningCollectionElement link(ManagedElement
+			owningElement, Collection ownedElement) {
+
+		return (OwningCollectionElement) Association.link(OwningCollectionElement.class, owningElement, ownedElement);
+	}// link
 
 } // Class OwningCollectionElement

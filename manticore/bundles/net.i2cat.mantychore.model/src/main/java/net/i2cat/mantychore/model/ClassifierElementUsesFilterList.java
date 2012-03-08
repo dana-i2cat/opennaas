@@ -8,49 +8,38 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ClassifierElementUsesFilterList as well as methods
- * comparable to the invokeMethods defined for this class. This Class
- * implements the ClassifierElementUsesFilterListBean Interface. The CIM
- * class ClassifierElementUsesFilterList is described as follows:
- *
- * This association relates one or more ClassifierElements with a FilterList
- * that defines the criteria to select packets for the classifier to process.
- * Note that a classifier is always modeled as a ClassifierService that
- * aggregates a set of ClassifierElements. Each of these ClassifierElements
- * is EITHER associated with a single FilterList OR associated to another
- * ClassifierService (via NextServiceAfterClassifier Element to describe
- * hierarchical classification).
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ClassifierElementUsesFilterList as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the ClassifierElementUsesFilterListBean Interface. The CIM class
+ * ClassifierElementUsesFilterList is described as follows:
+ * 
+ * This association relates one or more ClassifierElements with a FilterList that defines the criteria to select packets for the classifier to
+ * process. Note that a classifier is always modeled as a ClassifierService that aggregates a set of ClassifierElements. Each of these
+ * ClassifierElements is EITHER associated with a single FilterList OR associated to another ClassifierService (via NextServiceAfterClassifier Element
+ * to describe hierarchical classification).
  */
 public class ClassifierElementUsesFilterList extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ClassifierElementUsesFilterListBeanImpl
-     * Class which implements the ClassifierElementUsesFilterListBean
-     * Interface, and encapsulates the CIM class
-     * ClassifierElementUsesFilterList in a Java Bean. The CIM class
-     * ClassifierElementUsesFilterList is described as follows:
-     *
-     * This association relates one or more ClassifierElements with a
-     * FilterList that defines the criteria to select packets for the
-     * classifier to process. Note that a classifier is always modeled as a
-     * ClassifierService that aggregates a set of ClassifierElements. Each of
-     * these ClassifierElements is EITHER associated with a single FilterList
-     * OR associated to another ClassifierService (via
-     * NextServiceAfterClassifier Element to describe hierarchical
-     * classification).
-     */
-    public ClassifierElementUsesFilterList(){};
-    /**
-     * This method create an Association of the type
-     * ClassifierElementUsesFilterList between one FilterList object and
-     * ClassifierElement object
-     */
-    public static ClassifierElementUsesFilterList link(FilterList
-	antecedent,ClassifierElement dependent){
+	/**
+	 * This constructor creates a ClassifierElementUsesFilterListBeanImpl Class which implements the ClassifierElementUsesFilterListBean Interface,
+	 * and encapsulates the CIM class ClassifierElementUsesFilterList in a Java Bean. The CIM class ClassifierElementUsesFilterList is described as
+	 * follows:
+	 * 
+	 * This association relates one or more ClassifierElements with a FilterList that defines the criteria to select packets for the classifier to
+	 * process. Note that a classifier is always modeled as a ClassifierService that aggregates a set of ClassifierElements. Each of these
+	 * ClassifierElements is EITHER associated with a single FilterList OR associated to another ClassifierService (via NextServiceAfterClassifier
+	 * Element to describe hierarchical classification).
+	 */
+	public ClassifierElementUsesFilterList() {
+	};
 
-    return (ClassifierElementUsesFilterList) Association.link(ClassifierElementUsesFilterList.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ClassifierElementUsesFilterList between one FilterList object and ClassifierElement object
+	 */
+	public static ClassifierElementUsesFilterList link(FilterList
+			antecedent, ClassifierElement dependent) {
+
+		return (ClassifierElementUsesFilterList) Association.link(ClassifierElementUsesFilterList.class, antecedent, dependent);
+	}// link
 
 } // Class ClassifierElementUsesFilterList
