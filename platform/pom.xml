@@ -106,7 +106,7 @@
 				<executions>
 					<execution>
 						<id>add-features-to-repo</id>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>add-features-to-repo</goal>
 						</goals>
