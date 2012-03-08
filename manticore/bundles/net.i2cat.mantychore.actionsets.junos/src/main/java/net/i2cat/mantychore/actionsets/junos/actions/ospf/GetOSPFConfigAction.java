@@ -185,6 +185,8 @@ public class GetOSPFConfigAction extends JunosAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 		// For this Action params are not allowed
+		if (params != null)
+			log.warn("Ingoring parameters in action " + getActionID());
 		return true;
 	}
 

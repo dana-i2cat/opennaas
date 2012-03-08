@@ -52,12 +52,8 @@ public class ConfigureOSPFAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params == null)
-			return false;
-		if (!(params instanceof OSPFService))
-			return false;
-
-		return true;
+		// instanceof evaluates to false when the left-hand-side value is null)
+		return (params instanceof OSPFService);
 	}
 
 	@Override

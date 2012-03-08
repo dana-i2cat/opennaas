@@ -105,14 +105,7 @@ public class RemoveOSPFAreaAction extends JunosAction {
 	 */
 	@Override
 	public boolean checkParams(Object params) {
-
-		boolean paramsOK = true;
-		// First we check the params object
-		if (params == null || !(params instanceof OSPFAreaConfiguration)) {
-			paramsOK = false;
-		}
-
-		return paramsOK;
+		return (params instanceof OSPFAreaConfiguration);
 	}
 
 	/**
