@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.opennaas.router.tests.capability.ospf.methods;
 
@@ -32,32 +32,20 @@ public class RemoveInterfacesInOSPFAreaTest extends OSPFIntegrationTest {
 	 * Test to check removeInterfacesInOSPFArea method
 	 */
 	@Test
-	public void removeInterfacesInOSPFAreaTest() {
-		try {
-			startResource();
+	public void removeInterfacesInOSPFAreaTest()
+		throws ResourceException, ProtocolException, IOException, Exception
+	{
+		startResource();
 
-			OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
-			ospfCapability.removeInterfacesInOSPFArea(getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
-					getOSPFArea("0.0.0.0"));
+		OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
+		ospfCapability.removeInterfacesInOSPFArea(getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
+												  getOSPFArea("0.0.0.0"));
 
-			ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
+		ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		stopResource();
 	}
 
 	/**
@@ -86,7 +74,7 @@ public class RemoveInterfacesInOSPFAreaTest extends OSPFIntegrationTest {
 
 	/**
 	 * Create an interface
-	 * 
+	 *
 	 * @param interfaceName
 	 * @return NetworkPort
 	 * @throws Exception
@@ -109,7 +97,7 @@ public class RemoveInterfacesInOSPFAreaTest extends OSPFIntegrationTest {
 
 	/**
 	 * Split interfaces
-	 * 
+	 *
 	 * @param complexInterface
 	 * @return String[]
 	 * @throws Exception
