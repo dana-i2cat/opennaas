@@ -9,7 +9,6 @@ import net.i2cat.mantychore.model.utils.ModelHelper;
  * It is used to parse different messages
  * 
  * @author Carlos Baez Ruiz
- * 
  */
 public class IPUtilsHelper {
 

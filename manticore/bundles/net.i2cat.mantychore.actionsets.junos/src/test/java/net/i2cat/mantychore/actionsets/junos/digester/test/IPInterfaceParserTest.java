@@ -4,21 +4,37 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.util.List;
 
+import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.Service;
+import net.i2cat.mantychore.model.System;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.io.Files;
 
 public class IPInterfaceParserTest {
-	private Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
+	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
 
+	@Ignore
 	@Test
 	public void testStatusParserTest() throws Exception {
-		IPInterfaceParser parser = new IPInterfaceParser();
+		// FIXME http://jira.i2cat.net:8080/browse/OPENNAAS-228
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
 
 		String configFilePath = "/parsers/getconfig.xml";
 		URI configFileURI = getClass().getResource(configFilePath).toURI();
@@ -26,7 +42,136 @@ public class IPInterfaceParserTest {
 
 		parser.init();
 		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
 
-		log.info(parser.toPrint());
+		model = parser.getModel();
+
+		str += printGRETunnels(model);
+
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof EthernetPort) {
+				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperatingStatus());
+
+				str += "- EthernetPort: " + '\n';
+				str += port.getName() + '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+								protocolEndpoint;
+						str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
+						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+					}
+				}
+
+			}
+			else {
+				str += "not searched device";
+			}
+
+		}
+
+		log.info(str);
+	}
+
+	@Test
+	public void testGREIsNotCreatedIfNoUnitConfigurated() throws Exception {
+
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String configFilePath = "/parsers/getconfigWithoutGREUnit.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		model = parser.getModel();
+
+		List<GRETunnelService> greServices = model.getAllHostedServicesByType(new GRETunnelService());
+		Assert.assertTrue("There should be no GREService if no gre unit is configured", greServices.isEmpty());
+
+		log.info(str);
+	}
+
+	@Test
+	public void testGREIsNotCreatedIfNoGRE() throws Exception {
+
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String configFilePath = "/parsers/getconfigWithoutGRE.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
+
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		model = parser.getModel();
+
+		List<GRETunnelService> greServices = model.getAllHostedServicesByType(new GRETunnelService());
+		Assert.assertTrue("There should be no GREService if no gre is configured", greServices.isEmpty());
+
+		log.info(str);
+	}
+
+	private String printGRETunnels(System model) {
+		String str = "";
+		int greCount = 0;
+		for (Service service : model.getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				greCount++;
+				String name = ((GRETunnelService) service).getName();
+				GRETunnelConfiguration gretunnelConfiguration = ((GRETunnelService) service).getGRETunnelConfiguration();
+				str += " - GRE Tunnel Configuration : " + "\n";
+
+				String source = gretunnelConfiguration.getSourceAddress();
+				String destination = gretunnelConfiguration.getDestinationAddress();
+				int key = gretunnelConfiguration.getKey();
+				str += name + "\n";
+				str += "key : " + String.valueOf(key) + "\n";
+				str += "source : " + source + "\n";
+				str += "destination : " + destination + "\n";
+
+				int protocolEpCount = 0;
+				for (ProtocolEndpoint pE : service.getProtocolEndpoint()) {
+					if (pE instanceof GRETunnelEndpoint) {
+						protocolEpCount++;
+						GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+						String ip = gE.getIPv4Address();
+						if (ip == null) {
+							ip = gE.getIPv6Address();
+							str += "ipv6 :" + ip + "\n";
+						} else {
+							str += "ipv4 : " + ip + "\n";
+						}
+
+					}
+				}
+				Assert.assertTrue(protocolEpCount > 0);
+			}
+			Assert.assertTrue("There is only one gre service (we know in config there's only one)", greCount == 1);
+		}
+		return str;
+	}
+
+	private System createSampleModel() {
+		System model = new ComputerSystem();
+
+		// create interfaces to check OSPFEnpoint is created on them
+		EthernetPort interface1 = new EthernetPort();
+		interface1.setName("fe-0/1/3");
+		interface1.setPortNumber(0);
+		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		ipProtocolEndpoint.setIPv4Address("192.168.1.3");
+		ipProtocolEndpoint.setSubnetMask("255.255.255.0");
+		interface1.addProtocolEndpoint(ipProtocolEndpoint);
+
+		model.addLogicalDevice(interface1);
+
+		return model;
 	}
 }

@@ -186,11 +186,11 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 	}
 
 	protected IProtocolManager getProtocolManager() throws Exception {
-		return (IProtocolManager) getAllServices(IProtocolManager.class, null).get(0);
+		return getAllServices(IProtocolManager.class, null).get(0);
 	}
 
 	protected IAlarmsRepository getAlarmsRepository() throws Exception {
-		return (IAlarmsRepository) getAllServices(IAlarmsRepository.class, null).get(0);
+		return getAllServices(IAlarmsRepository.class, null).get(0);
 	}
 
 	/**

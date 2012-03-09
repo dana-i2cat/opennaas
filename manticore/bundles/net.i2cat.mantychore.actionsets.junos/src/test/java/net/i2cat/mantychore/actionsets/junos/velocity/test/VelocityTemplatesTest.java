@@ -7,6 +7,9 @@ import java.util.Map;
 import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.commandsets.junos.velocity.VelocityEngine;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -54,6 +57,67 @@ public class VelocityTemplatesTest {
 		Assert.assertEquals(ip1, ip1gen);
 		Assert.assertEquals(ip2, ip2gen);
 		Assert.assertEquals(ip3, ip3gen);
+	}
+
+	@Test
+	public void testCreateGRETunnelTemplate() {
+		template = "/VM_files/createTunnel.vm";
+		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
+
+		Assert.assertNotNull(message);
+		log.info(message);
+	}
+
+	@Test
+	public void testDeleteGRETunnelTemplate() {
+		template = "/VM_files/deleteTunnel.vm";
+		String message = callGRETunnelVelocity(template, newParamsGRETunnelService());
+
+		Assert.assertNotNull(message);
+		log.info(message);
+	}
+
+	private GRETunnelService newParamsGRETunnelService() {
+
+		GRETunnelService greService = new GRETunnelService();
+		greService.setElementName("");
+		greService.setName("gre.3");
+
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress("147.56.89.62");
+		greConfig.setDestinationAddress("193.45.23.1");
+
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+		gE.setIPv4Address("192.168.32.1");
+		gE.setSubnetMask("255.255.255.0");
+
+		greService.setGRETunnelConfiguration(greConfig);
+		greService.addProtocolEndpoint(gE);
+
+		return greService;
+
+	}
+
+	public String callGRETunnelVelocity(String template, Object params) {
+		String velocitycommand = null;
+
+		velocityEngine.setParam(params);
+		velocityEngine.addExtraParam("portNumber", 0);
+		velocityEngine.addExtraParam("ipUtilsHelper", new IPUtilsHelper());
+		velocityEngine.setTemplate(template);
+		try {
+			velocitycommand = velocityEngine.mergeTemplate();
+		} catch (ResourceNotFoundException e) {
+			log.error(e.getLocalizedMessage());
+			Assert.fail();
+		} catch (ParseErrorException e) {
+			log.error(e.getLocalizedMessage());
+			Assert.fail();
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage());
+			Assert.fail();
+		}
+		return velocitycommand;
 	}
 
 	protected String callVelocity(String template, Object params, Map<String, Object> extraParams) {

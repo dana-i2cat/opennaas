@@ -3,8 +3,14 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 import java.util.HashMap;
 
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.NextHopIPRoute;
+import net.i2cat.mantychore.model.NextHopRoute;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.RouteCalculationService;
 import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.model.System;
@@ -34,9 +40,11 @@ public class RoutingOptionsParser extends DigesterEngine {
 			addMyRule("*/routing-options/router-id", "setRouterIdInServices", 0);
 			addObjectCreate("*/routing-options/static/route", NextHopIPRoute.class);
 			addMyRule("*/routing-options/static/route/name", "setDestinationAddress", 0);
-			addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
+			// addMyRule("*/routing-options/static/route/next-hop", "setNextHop", 0);
 			/* Add NextHopIPRoute to mapElements */
+			/* AddRouteUsesEndpoint */
 			addMyRule("*/routing-options/static/route/next-hop", "addInterface", 0);
+
 			/* Add NextHopIpRoute to the parent */
 			addSetNext("*/routing-options/static/route/", "addNextHopRoute");
 		}
@@ -60,16 +68,14 @@ public class RoutingOptionsParser extends DigesterEngine {
 		mapElements = new HashMap<String, Object>();
 	}
 
-	public void addInterface(String nextHop) {
-		NextHopIPRoute ipRoute = (NextHopIPRoute) peek(0);
-
-		String location = ipRoute.getDestinationAddress();
-		// TODO implements the case where is needed merge the classes, if it is.
-		// also, add merge method into the class
-		mapElements.put(location, ipRoute);
-
-	}
-
+	/*
+	 * public void addInterface(String nextHop) { NextHopIPRoute ipRoute = (NextHopIPRoute) peek(0);
+	 * 
+	 * String location = ipRoute.getDestinationAddress(); // TODO implements the case where is needed merge the classes, if it is. // also, add merge
+	 * method into the class mapElements.put(location, ipRoute);
+	 * 
+	 * }
+	 */
 	/* Parser methods */
 
 	public void setDestinationAddress(String ipv4) {
@@ -126,6 +132,70 @@ public class RoutingOptionsParser extends DigesterEngine {
 		}
 	}
 
+	public void addInterface(String nextHop) {
+		NextHopIPRoute nextHopIPRoute = (NextHopIPRoute) peek(0);
+
+		boolean isGRE = false;
+		for (Service service : model.getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				GRETunnelService greService = (GRETunnelService) service;
+				String name = service.getName() + ".0";
+				if (name.equals(nextHop)) {
+					for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+						if (pE instanceof GRETunnelEndpoint) {
+							GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+							nextHopIPRoute.setProtocolEndpoint(pE);
+							isGRE = true;
+
+						}
+
+					}
+				}
+			}
+		}
+		if (!isGRE) {
+			for (LogicalDevice device : model.getLogicalDevices()) {
+				if (device instanceof NetworkPort) {
+
+					NetworkPort port = (NetworkPort) device;
+					String ifacename = port.getName() + "." + String.valueOf(port.getPortNumber());
+
+					if (ifacename.equals(nextHop)) {
+						for (ProtocolEndpoint pE : port.getProtocolEndpoint()) {
+							if (pE instanceof IPProtocolEndpoint) {
+								IPProtocolEndpoint iE = (IPProtocolEndpoint) pE;
+								nextHopIPRoute.setProtocolEndpoint(iE);
+							}
+						}
+
+					}
+				}
+			}
+		}
+
+	}
+
+	public String toPrint(System model) {
+		String str = "";
+		str += model.getNextHopRoute().size();
+		for (NextHopRoute nextHop : model.getNextHopRoute()) {
+			NextHopIPRoute port = (NextHopIPRoute) nextHop;
+			str += "- Routing options " + '\n';
+
+			str += "IP adress " + port.getDestinationAddress() + '\n';
+			str += "Mask " + port.getDestinationMask() + '\n';
+			str += "is Static " + String.valueOf(port.isIsStatic()) + '\n';
+			if (port.getProtocolEndpoint() instanceof GRETunnelEndpoint)
+				str += "Next hop " + (((GRETunnelEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
+			else if (port.getProtocolEndpoint() instanceof IPProtocolEndpoint)
+				str += "Next hop " + (((IPProtocolEndpoint) port.getProtocolEndpoint()).getIPv4Address()) + '\n';
+		}
+
+		return str;
+
+	}
+
+	@Deprecated
 	public String toPrint() {
 
 		String str = "" + '\n';

@@ -8,13 +8,12 @@ import java.util.Map;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
 import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
-import net.i2cat.mantychore.commandsets.junos.digester.DigesterEngine;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.LogicalDevice;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.OSPFAreaConfiguration;
@@ -120,18 +119,18 @@ public class GetOSPFConfigAction extends JunosAction {
 	private System parseInterfaces(System routerModel, String message)
 			throws IOException, SAXException {
 
-		DigesterEngine logicalInterfParser = new IPInterfaceParser();
-		logicalInterfParser.init();
-		logicalInterfParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
-
-		// /TODO implements a better method to merge the elements in model
-		// now are deleted all the existing elements of the class EthernetPort
+		// TODO implements a better method to merge the elements in model
+		// now are deleted all the existing elements the parser creates
+		// before adding new ones (calling the parser)
 		routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
 		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
-		for (String keyInterf : logicalInterfParser.getMapElements().keySet()) {
-			routerModel.addLogicalDevice((LogicalDevice) logicalInterfParser.getMapElements().get(keyInterf));
-		}
+		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 
+		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
+		ipInterfaceParser.init();
+		ipInterfaceParser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+
+		routerModel = ipInterfaceParser.getModel();
 		return routerModel;
 	}
 

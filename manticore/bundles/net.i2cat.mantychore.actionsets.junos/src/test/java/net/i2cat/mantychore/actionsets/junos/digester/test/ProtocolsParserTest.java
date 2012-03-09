@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.net.URI;
 import java.nio.charset.Charset;
+import java.util.List;
 
 import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.ProtocolsParser;
@@ -39,7 +40,11 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals("There is only one OSPFService", 1, ospfServices.size());
+
+		OSPFService ospfService = ospfServices.get(0);
 		Assert.assertFalse("Service state must have been set", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
 
 		Assert.assertFalse("Service must have (at least) an area configuration", ospfService.getOSPFAreaConfiguration().isEmpty());
@@ -52,7 +57,7 @@ public class ProtocolsParserTest {
 		int disabledInterfaceCount = 0;
 		for (OSPFProtocolEndpointBase ospfEndPointBase : ospfAreaConfig.getOSPFArea().getEndpointsInArea()) {
 			Assert.assertFalse("OSPFEndpoint state must have been set", EnabledState.UNKNOWN.equals(ospfEndPointBase.getEnabledState()));
-			Assert.assertFalse("OSPFEndpoint must be implemented by an existing interface", ospfEndPointBase.getLogicalPorts().isEmpty());
+			Assert.assertFalse("OSPFEndpoint must be implemented by an existing interface ", ospfEndPointBase.getLogicalPorts().isEmpty());
 
 			if (ospfEndPointBase.getEnabledState().equals(EnabledState.DISABLED))
 				disabledInterfaceCount++;
@@ -83,7 +88,10 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals(1, ospfServices.size());
+
+		OSPFService ospfService = ospfServices.get(0);
 		Assert.assertFalse("Service state must have been set", EnabledState.UNKNOWN.equals(ospfService.getEnabledState()));
 	}
 
@@ -101,7 +109,10 @@ public class ProtocolsParserTest {
 		System updatedModel = parser.getModel();
 
 		Assert.assertFalse(updatedModel.getHostedService().isEmpty());
-		OSPFService ospfService = (OSPFService) updatedModel.getHostedService().get(0);
+		List<OSPFService> ospfServices = updatedModel.getAllHostedServicesByType(new OSPFService());
+		Assert.assertEquals(1, ospfServices.size());
+
+		OSPFService ospfService = (OSPFService) ospfServices.get(0);
 		Assert.assertTrue("Service state must have been set to DISABLED", EnabledState.DISABLED.equals(ospfService.getEnabledState()));
 	}
 

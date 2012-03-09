@@ -7,11 +7,16 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
+import net.i2cat.mantychore.model.NextHopRoute;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
 import org.apache.commons.logging.Log;
@@ -93,6 +98,28 @@ public class GetConfigActionTest {
 				ComputerSystem logicalrouter = (ComputerSystem) systemElement;
 				// check that the element is a Logical Router
 				log.info(logicalrouter.getName());
+			}
+		}
+
+		for (Service service : routerModel.getHostedService()) {
+			if (service instanceof GRETunnelService) {
+				log.info(" - GRE Tunnel");
+				GRETunnelService greService = (GRETunnelService) service;
+				log.info("Interface :" + greService.getName());
+				GRETunnelConfiguration greConf = greService.getGRETunnelConfiguration();
+				log.info("Source : " + greConf.getSourceAddress());
+				log.info("Destination : " + greConf.getDestinationAddress());
+				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+					GRETunnelEndpoint gE = (GRETunnelEndpoint) pE;
+					if (gE.getIPv4Address() == null)
+						log.info("ipv6 : " + gE.getIPv6Address());
+					else
+						log.info("ipv4 : " + gE.getIPv4Address());
+
+					for (NextHopRoute nextHop : gE.getNextHopRoutes()) {
+						log.info("next-hop route for: " + nextHop.getDestinationAddress());
+					}
+				}
 			}
 		}
 

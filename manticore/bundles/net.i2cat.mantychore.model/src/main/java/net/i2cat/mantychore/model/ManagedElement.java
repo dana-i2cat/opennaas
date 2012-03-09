@@ -144,6 +144,25 @@ public class ManagedElement implements IModel, Serializable {
 	}
 
 	/**
+	 * Returns the firsts ManagedElement that represents the "to" of the toAssociations that match with association type
+	 * 
+	 * @param specific
+	 *            Association.class
+	 * @return ManagedElement that represents the "to" of the toAssociations
+	 */
+	public ManagedElement getFirstToAssociatedElementByType(Class<? extends Association> clazz) {
+		ManagedElement element = null;
+
+		for (Association assoc : toAssociations) {
+			if (clazz.isInstance(assoc))
+				return assoc.getTo();
+		}
+
+		return element;
+
+	}
+
+	/**
 	 * 
 	 * Add a new association to the vector toAssociation
 	 * 
@@ -279,6 +298,7 @@ public class ManagedElement implements IModel, Serializable {
 	 * @return ManagedElement that represents the "from" of the fromAssociations
 	 */
 	public ManagedElement getFirstFromAssociatedElementByType(Class<? extends Association> clazz) {
+
 		ManagedElement element = null;
 
 		for (Association assoc : fromAssociations) {
