@@ -1,7 +1,7 @@
 package org.opennaas.router.tests.capability.ospf.methods;
 
 /**
- * 
+ *
  */
 import java.util.ArrayList;
 import java.util.List;
@@ -27,26 +27,19 @@ public class EnableOSPFInterfacesStatusTest extends OSPFIntegrationTest {
 	 * Test to check enableOSPFInterfaceStatus method
 	 */
 	@Test
-	public void enableOSPFInterfaceStatusTest() {
-		try {
-			startResource();
+	public void enableOSPFInterfaceStatusTest()
+		throws ResourceException, ProtocolException
+	{
+		startResource();
 
-			OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
-			ospfCapability.enableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
+		OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
+		ospfCapability.enableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
 
-			ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
+		ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
-
+		stopResource();
 	}
 
 	/**

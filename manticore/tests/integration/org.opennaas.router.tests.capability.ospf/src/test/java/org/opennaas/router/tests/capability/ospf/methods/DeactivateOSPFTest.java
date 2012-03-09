@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.opennaas.router.tests.capability.ospf.methods;
 
@@ -22,24 +22,18 @@ public class DeactivateOSPFTest extends OSPFIntegrationTest {
 	 * Test to check deactivateOSPF method
 	 */
 	@Test
-	public void deactivateOSPFTest() {
-		try {
-			startResource();
+	public void deactivateOSPFTest()
+		throws ResourceException, ProtocolException
+	{
+		startResource();
 
-			OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
-			ospfCapability.deactivateOSPF();
+		OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
+		ospfCapability.deactivateOSPF();
 
-			ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
+		ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		stopResource();
 	}
 }
