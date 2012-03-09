@@ -118,6 +118,16 @@
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

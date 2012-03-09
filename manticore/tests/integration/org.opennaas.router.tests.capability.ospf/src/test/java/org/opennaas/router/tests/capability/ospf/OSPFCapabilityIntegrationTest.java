@@ -4,12 +4,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 /**
  * Test to verify that OSPF Capability is available from the container
- * 
+ *
  * @author Jordi Puig
  */
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 
 	private static Log	log	= LogFactory
@@ -19,24 +24,13 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 	/**
 	 * Test to check if capability is available from OSGi.
 	 */
-	public void isCapabilityAccessibleFromResource() {
+	public void isCapabilityAccessibleFromResource()
+		throws ResourceException, ProtocolException
+	{
+		startResource();
+		Assert.assertTrue(routerResource.getCapabilities().size() > 0);
 
-		try {
-			startResource();
-			Assert.assertTrue(routerResource.getCapabilities().size() > 0);
-
-			stopResource();
-			Assert.assertTrue(resourceManager.listResources().isEmpty());
-		} catch (IllegalArgumentException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (RuntimeException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		}
+		stopResource();
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
-
 }
