@@ -9,7 +9,6 @@ import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.OSPFService;
 
 import org.opennaas.core.resources.action.ActionException;
@@ -80,35 +79,27 @@ public class ConfigureOSPFStatusAction extends JunosAction {
 
 	@Override
 	public void prepareMessage() throws ActionException {
+
 		if (template == null || template.equals(""))
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		checkParams(params);
+
+		if (!checkParams(params)) {
+			throw new ActionException("Invalid parameters for action " + getActionID());
+		}
+
+		String elementName = "";
+		if (((ComputerSystem) modelToUpdate).getElementName() != null) {
+			// is logicalRouter, add LRName param
+			elementName = ((ComputerSystem) modelToUpdate).getElementName();
+		}
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("disabledState", EnabledState.DISABLED.toString());
+		extraParams.put("enabledState", EnabledState.ENABLED.toString());
+		extraParams.put("elementName", elementName);
+
 		try {
-			Object velocityParams = params;
-			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
-				// is logicalRouter, add LRName param
-				if (velocityParams == null)
-					velocityParams = new ComputerSystem();
-				((ManagedElement) velocityParams).setElementName(((ComputerSystem) modelToUpdate).getElementName());
-
-				// TODO If we don't have a ManagedElement initialized
-
-				// check params
-			} else if (params != null
-					&& params instanceof ManagedElement
-					&& ((ManagedElement) params).getElementName() == null) {
-
-				((ManagedElement) velocityParams).setElementName("");
-
-			} else if (params == null) {
-				velocityParams = "null";
-			}
-
-			Map<String, Object> extraParams = new HashMap<String, Object>();
-			extraParams.put("disabledState", EnabledState.DISABLED.toString());
-			extraParams.put("enabledState", EnabledState.ENABLED.toString());
-
-			setVelocityMessage(prepareVelocityCommand(velocityParams, template, extraParams));
+			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

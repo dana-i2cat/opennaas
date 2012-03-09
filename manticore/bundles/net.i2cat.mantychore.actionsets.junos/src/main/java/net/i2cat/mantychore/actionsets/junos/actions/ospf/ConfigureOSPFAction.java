@@ -9,7 +9,6 @@ import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.ManagedElement;
 import net.i2cat.mantychore.model.OSPFService;
 
 import org.opennaas.core.resources.action.ActionException;
@@ -52,12 +51,8 @@ public class ConfigureOSPFAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		if (params == null)
-			return false;
-		if (!(params instanceof OSPFService))
-			return false;
-
-		return true;
+		// instanceof evaluates to false when the left-hand-side value is null)
+		return (params instanceof OSPFService);
 	}
 
 	@Override
@@ -70,12 +65,10 @@ public class ConfigureOSPFAction extends JunosAction {
 		}
 
 		// tell velocity if element is a logical router or a physical one
+		String elementName = "";
 		if (((ComputerSystem) modelToUpdate).getElementName() != null) {
 			// is logicalRouter, add LRName param
-			((ManagedElement) params).setElementName(((ComputerSystem) modelToUpdate).getElementName());
-		} else if (((ManagedElement) params).getElementName() == null) {
-			// avoid accessing null value when processing velocity template.
-			((ManagedElement) params).setElementName("");
+			elementName = ((ComputerSystem) modelToUpdate).getElementName();
 		}
 
 		IPUtilsHelper ipUtilsHelper = new IPUtilsHelper();
@@ -83,6 +76,7 @@ public class ConfigureOSPFAction extends JunosAction {
 		extraParams.put("disabledState", EnabledState.DISABLED.toString());
 		extraParams.put("enabledState", EnabledState.ENABLED.toString());
 		extraParams.put("ipUtilsHelper", ipUtilsHelper);
+		extraParams.put("elementName", elementName);
 
 		try {
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));

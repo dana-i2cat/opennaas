@@ -1,6 +1,7 @@
 package net.i2cat.mantychore.actionsets.junos.velocity.test;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -33,7 +34,11 @@ public class VelocityTemplatesTest {
 	@Test
 	public void testGetConfigurationTemplate() {
 		template = "/VM_files/getconfiguration.vm";
-		String message = callVelocity(template, null);
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", "");
+
+		String message = callVelocity(template, null, extraParams);
 		Assert.assertNotNull(message);
 		// TODO implements a method to check the message is well form
 		log.info(message);
@@ -135,25 +140,4 @@ public class VelocityTemplatesTest {
 		}
 		return velocitycommand;
 	}
-
-	private String callVelocity(String template, Object params) {
-
-		String velocitycommand = null;
-		velocityEngine.setParam(params);
-		velocityEngine.setTemplate(template);
-		try {
-			velocitycommand = velocityEngine.mergeTemplate();
-		} catch (ResourceNotFoundException e) {
-			log.error(e.getLocalizedMessage());
-			Assert.fail();
-		} catch (ParseErrorException e) {
-			log.error(e.getLocalizedMessage());
-			Assert.fail();
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage());
-			Assert.fail();
-		}
-		return velocitycommand;
-	}
-
 }

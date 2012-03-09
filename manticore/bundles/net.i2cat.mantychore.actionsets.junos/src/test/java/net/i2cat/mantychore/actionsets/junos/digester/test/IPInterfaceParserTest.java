@@ -1,9 +1,9 @@
 package net.i2cat.mantychore.actionsets.junos.digester.test;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -24,6 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.io.Files;
+
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
 
@@ -34,7 +36,9 @@ public class IPInterfaceParserTest {
 		System model = createSampleModel();
 		IPInterfaceParser parser = new IPInterfaceParser(model);
 
-		String message = readStringFromFile("/parsers/getconfig.xml");
+		String configFilePath = "/parsers/getconfig.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		parser.init();
 		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
@@ -76,7 +80,9 @@ public class IPInterfaceParserTest {
 		System model = createSampleModel();
 		IPInterfaceParser parser = new IPInterfaceParser(model);
 
-		String message = readStringFromFile("/parsers/getconfigWithoutGREUnit.xml");
+		String configFilePath = "/parsers/getconfigWithoutGREUnit.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		parser.init();
 		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
@@ -96,7 +102,9 @@ public class IPInterfaceParserTest {
 		System model = createSampleModel();
 		IPInterfaceParser parser = new IPInterfaceParser(model);
 
-		String message = readStringFromFile("/parsers/getconfigWithoutGRE.xml");
+		String configFilePath = "/parsers/getconfigWithoutGRE.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		parser.init();
 		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
@@ -166,30 +174,4 @@ public class IPInterfaceParserTest {
 
 		return model;
 	}
-
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 * 
-	 * @param stream
-	 * @return
-	 */
-	private String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
-	}
-
 }

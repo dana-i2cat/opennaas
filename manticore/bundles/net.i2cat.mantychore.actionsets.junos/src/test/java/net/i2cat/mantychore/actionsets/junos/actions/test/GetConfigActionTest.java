@@ -1,8 +1,5 @@
 package net.i2cat.mantychore.actionsets.junos.actions.test;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -59,7 +56,7 @@ public class GetConfigActionTest {
 	@Test
 	public void templateTest() {
 		// this action always have this template as a default
-		Assert.assertEquals("Not accepted param", "/VM_files/getconfiguration.vm", action.getTemplate());
+		Assert.assertEquals("Template is not correct", "/VM_files/getconfiguration.vm", action.getTemplate());
 	}
 
 	private void printTest(net.i2cat.mantychore.model.System routerModel) {
@@ -155,32 +152,5 @@ public class GetConfigActionTest {
 	// Assert.assertNotNull(routerModel);
 	// printTest(routerModel);
 	// }
-
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 * 
-	 * @param stream
-	 * @return
-	 */
-	public String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		// InputStream inputFile =
-		// ClassLoader.getSystemResourceAsStream(pathFile);
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
-	}
 
 }

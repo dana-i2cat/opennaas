@@ -81,6 +81,7 @@ public class NetconfCommandTest {
 	public void getNetconfCommandTest() {
 		velocityEngine.setTemplate(TEMPLATE_REFRESH);
 		velocityEngine.setParam(newParamsInterfaceEthernet());
+		velocityEngine.addExtraParam("elementName", "");
 
 		try {
 			String template = velocityEngine.mergeTemplate();

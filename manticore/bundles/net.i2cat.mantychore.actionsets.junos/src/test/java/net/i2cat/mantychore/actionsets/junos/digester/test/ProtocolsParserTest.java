@@ -1,9 +1,9 @@
 package net.i2cat.mantychore.actionsets.junos.digester.test;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -20,13 +20,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
+import com.google.common.io.Files;
+
 public class ProtocolsParserTest {
 
 	private Log	log	= LogFactory.getLog(ProtocolsParserTest.class);
 
 	@Test
 	public void testParseOSPFProtocol() throws Exception {
-		String message = readStringFromFile("/parsers/getConfigWithOSPF.xml");
+		String configFilePath = "/parsers/getConfigWithOSPF.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		System model = createSampleModel();
 		ProtocolsParser parser = new ProtocolsParser(model);
@@ -72,7 +76,9 @@ public class ProtocolsParserTest {
 
 	@Test
 	public void testParseEmptyOSPF() throws Exception {
-		String message = readStringFromFile("/parsers/getConfigWithEmptyOSPF.xml");
+		String configFilePath = "/parsers/getConfigWithEmptyOSPF.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		System model = createSampleModel();
 		ProtocolsParser parser = new ProtocolsParser(model);
@@ -91,7 +97,9 @@ public class ProtocolsParserTest {
 
 	@Test
 	public void testParseDisabledEmptyOSPF() throws Exception {
-		String message = readStringFromFile("/parsers/getConfigWithDisabledEmptyOSPF.xml");
+		String configFilePath = "/parsers/getConfigWithDisabledEmptyOSPF.xml";
+		URI configFileURI = getClass().getResource(configFilePath).toURI();
+		String message = Files.toString(new File(configFileURI), Charset.forName("UTF-8"));
 
 		System model = createSampleModel();
 		ProtocolsParser parser = new ProtocolsParser(model);
@@ -106,31 +114,6 @@ public class ProtocolsParserTest {
 
 		OSPFService ospfService = (OSPFService) ospfServices.get(0);
 		Assert.assertTrue("Service state must have been set to DISABLED", EnabledState.DISABLED.equals(ospfService.getEnabledState()));
-	}
-
-	/**
-	 * Simple parser. It was used for proves with xml files
-	 * 
-	 * @param stream
-	 * @return
-	 */
-	private String readStringFromFile(String pathFile) throws Exception {
-		String answer = null;
-		InputStream inputFile = getClass().getResourceAsStream(pathFile);
-		InputStreamReader streamReader = new InputStreamReader(inputFile);
-		StringBuffer fileData = new StringBuffer(1000);
-		BufferedReader reader = new BufferedReader(streamReader);
-		char[] buf = new char[1024];
-		int numRead = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			String readData = String.valueOf(buf, 0, numRead);
-			fileData.append(readData);
-			buf = new char[1024];
-		}
-		reader.close();
-		answer = fileData.toString();
-
-		return answer;
 	}
 
 	private System createSampleModel() {
