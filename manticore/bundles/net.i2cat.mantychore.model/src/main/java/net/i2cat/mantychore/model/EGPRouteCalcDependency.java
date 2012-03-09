@@ -9,88 +9,76 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class EGPRouteCalcDependency as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * EGPRouteCalcDependencyBean Interface. The CIM class EGPRouteCalcDependency
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class EGPRouteCalcDependency as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the EGPRouteCalcDependencyBean Interface. The CIM class EGPRouteCalcDependency
  * is described as follows:
- *
- * This is a specialization of ServiceServiceDependency, and captures the
- * dependency that external gateway protocols (such as BGP) have on interior
+ * 
+ * This is a specialization of ServiceServiceDependency, and captures the dependency that external gateway protocols (such as BGP) have on interior
  * gateway protocols (such as OSPF).
  */
 public class EGPRouteCalcDependency extends ServiceServiceDependency
-    implements Serializable {
+		implements Serializable {
 
-    /**
-     * This constructor creates a EGPRouteCalcDependencyBeanImpl Class which
-     * implements the EGPRouteCalcDependencyBean Interface, and encapsulates
-     * the CIM class EGPRouteCalcDependency in a Java Bean. The CIM class
-     * EGPRouteCalcDependency is described as follows:
-     *
-     * This is a specialization of ServiceServiceDependency, and captures the
-     * dependency that external gateway protocols (such as BGP) have on
-     * interior gateway protocols (such as OSPF).
-     */
-    public EGPRouteCalcDependency(){};
-    /**
-     * This method create an Association of the type EGPRouteCalcDependency
-     * between one RouteCalculationService object and RouteCalculationService
-     * object
-     */
-    public static EGPRouteCalcDependency link(RouteCalculationService
-	antecedent,RouteCalculationService dependent){
+	/**
+	 * This constructor creates a EGPRouteCalcDependencyBeanImpl Class which implements the EGPRouteCalcDependencyBean Interface, and encapsulates the
+	 * CIM class EGPRouteCalcDependency in a Java Bean. The CIM class EGPRouteCalcDependency is described as follows:
+	 * 
+	 * This is a specialization of ServiceServiceDependency, and captures the dependency that external gateway protocols (such as BGP) have on
+	 * interior gateway protocols (such as OSPF).
+	 */
+	public EGPRouteCalcDependency() {
+	};
 
-    return (EGPRouteCalcDependency)
-	Association.link(EGPRouteCalcDependency.class,antecedent,dependent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property IGPInjection.
-     */
+	/**
+	 * This method create an Association of the type EGPRouteCalcDependency between one RouteCalculationService object and RouteCalculationService
+	 * object
+	 */
+	public static EGPRouteCalcDependency link(RouteCalculationService
+			antecedent, RouteCalculationService dependent) {
 
-    public enum IGPInjection{
-    NONE,
-    PARTIAL,
-    FULL
-    }
-    private IGPInjection iGPInjection;
-    /**
-     * This method returns the EGPRouteCalcDependency.iGPInjection property
-     * value. This property is described as follows:
-     *
-     * Sometimes it is necessary to inject EGP information, such as that from
-     * BGP, into IGPs. This attribute defines whether this should be done for
-     * the two routing protocols that are defined by this association. The
-     * values below mean that no, partial, and full EGP information is
-     * injected into the IGP, respectively.
-     *
-     * @return	int	current iGPInjection property value
-     * @exception	Exception
-     */
-    public IGPInjection getIGPInjection(){
+		return (EGPRouteCalcDependency) Association.link(EGPRouteCalcDependency.class, antecedent, dependent);
+	}// link
 
-    return this.iGPInjection;
-    } // getIGPInjection
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property IGPInjection.
+	 */
 
-    /**
-     * This method sets the EGPRouteCalcDependency.iGPInjection property
-     * value. This property is described as follows:
-     *
-     * Sometimes it is necessary to inject EGP information, such as that from
-     * BGP, into IGPs. This attribute defines whether this should be done for
-     * the two routing protocols that are defined by this association. The
-     * values below mean that no, partial, and full EGP information is
-     * injected into the IGP, respectively.
-     *
-     * @param	int	new iGPInjection property value
-     * @exception	Exception
-     */
-    public void setIGPInjection(IGPInjection iGPInjection){
+	public enum IGPInjection {
+		NONE,
+		PARTIAL,
+		FULL
+	}
 
-    this.iGPInjection = iGPInjection;
-    } // setIGPInjection
+	private IGPInjection	iGPInjection;
 
+	/**
+	 * This method returns the EGPRouteCalcDependency.iGPInjection property value. This property is described as follows:
+	 * 
+	 * Sometimes it is necessary to inject EGP information, such as that from BGP, into IGPs. This attribute defines whether this should be done for
+	 * the two routing protocols that are defined by this association. The values below mean that no, partial, and full EGP information is injected
+	 * into the IGP, respectively.
+	 * 
+	 * @return int current iGPInjection property value
+	 * @exception Exception
+	 */
+	public IGPInjection getIGPInjection() {
 
+		return this.iGPInjection;
+	} // getIGPInjection
+
+	/**
+	 * This method sets the EGPRouteCalcDependency.iGPInjection property value. This property is described as follows:
+	 * 
+	 * Sometimes it is necessary to inject EGP information, such as that from BGP, into IGPs. This attribute defines whether this should be done for
+	 * the two routing protocols that are defined by this association. The values below mean that no, partial, and full EGP information is injected
+	 * into the IGP, respectively.
+	 * 
+	 * @param int new iGPInjection property value
+	 * @exception Exception
+	 */
+	public void setIGPInjection(IGPInjection iGPInjection) {
+
+		this.iGPInjection = iGPInjection;
+	} // setIGPInjection
 
 } // Class EGPRouteCalcDependency

@@ -9,171 +9,152 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SystemSetting as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * SystemSettingBean Interface. The CIM class SystemSetting is described as
- * follows:
- *
- * CIM_SystemSetting represents the general concept of a CIM_Setting that is
- * scoped by a System.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SystemSetting as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the SystemSettingBean Interface. The CIM class SystemSetting is described as follows:
+ * 
+ * CIM_SystemSetting represents the general concept of a CIM_Setting that is scoped by a System.
  */
 public class SystemSetting extends Setting implements Serializable {
 
-    /**
-     * This constructor creates a SystemSettingBeanImpl Class which implements
-     * the SystemSettingBean Interface, and encapsulates the CIM class
-     * SystemSetting in a Java Bean. The CIM class SystemSetting is described
-     * as follows:
-     *
-     * CIM_SystemSetting represents the general concept of a CIM_Setting that
-     * is scoped by a System.
-     */
-    protected SystemSetting(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemCreationClassName.
-     */
-    private String systemCreationClassName;
-    /**
-     * This method returns the SystemSetting.systemCreationClassName property
-     * value. This property is described as follows:
-     *
-     * The CreationClassName of the scoping system.
-     *
-     * @return	String	current systemCreationClassName property
-     * value
-     * @exception	Exception
-     */
-    public String getSystemCreationClassName(){
+	/**
+	 * This constructor creates a SystemSettingBeanImpl Class which implements the SystemSettingBean Interface, and encapsulates the CIM class
+	 * SystemSetting in a Java Bean. The CIM class SystemSetting is described as follows:
+	 * 
+	 * CIM_SystemSetting represents the general concept of a CIM_Setting that is scoped by a System.
+	 */
+	protected SystemSetting() {
+	};
 
-    return this.systemCreationClassName;
-    } // getSystemCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemCreationClassName.
+	 */
+	private String	systemCreationClassName;
 
-    /**
-     * This method sets the SystemSetting.systemCreationClassName property
-     * value. This property is described as follows:
-     *
-     * The CreationClassName of the scoping system.
-     *
-     * @param	String	new systemCreationClassName property value
-     * @exception	Exception
-     */
-    public void setSystemCreationClassName(String systemCreationClassName) {
+	/**
+	 * This method returns the SystemSetting.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The CreationClassName of the scoping system.
+	 * 
+	 * @return String current systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public String getSystemCreationClassName() {
 
-    this.systemCreationClassName = systemCreationClassName;
-    } // setSystemCreationClassName
+		return this.systemCreationClassName;
+	} // getSystemCreationClassName
 
+	/**
+	 * This method sets the SystemSetting.systemCreationClassName property value. This property is described as follows:
+	 * 
+	 * The CreationClassName of the scoping system.
+	 * 
+	 * @param String
+	 *            new systemCreationClassName property value
+	 * @exception Exception
+	 */
+	public void setSystemCreationClassName(String systemCreationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property systemName.
-     */
-    private String systemName;
-    /**
-     * This method returns the SystemSetting.systemName property value. This
-     * property is described as follows:
-     *
-     * The Name of the scoping system.
-     *
-     * @return	String	current systemName property value
-     * @exception	Exception
-     */
-    public String getSystemName(){
+		this.systemCreationClassName = systemCreationClassName;
+	} // setSystemCreationClassName
 
-    return this.systemName;
-    } // getSystemName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property systemName.
+	 */
+	private String	systemName;
 
-    /**
-     * This method sets the SystemSetting.systemName property value. This
-     * property is described as follows:
-     *
-     * The Name of the scoping system.
-     *
-     * @param	String	new systemName property value
-     * @exception	Exception
-     */
-    public void setSystemName(String systemName) {
+	/**
+	 * This method returns the SystemSetting.systemName property value. This property is described as follows:
+	 * 
+	 * The Name of the scoping system.
+	 * 
+	 * @return String current systemName property value
+	 * @exception Exception
+	 */
+	public String getSystemName() {
 
-    this.systemName = systemName;
-    } // setSystemName
+		return this.systemName;
+	} // getSystemName
 
+	/**
+	 * This method sets the SystemSetting.systemName property value. This property is described as follows:
+	 * 
+	 * The Name of the scoping system.
+	 * 
+	 * @param String
+	 *            new systemName property value
+	 * @exception Exception
+	 */
+	public void setSystemName(String systemName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property creationClassName.
-     */
-    private String creationClassName;
-    /**
-     * This method returns the SystemSetting.creationClassName property value.
-     * This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @return	String	current creationClassName property value
-     * @exception	Exception
-     */
-    public String getCreationClassName(){
+		this.systemName = systemName;
+	} // setSystemName
 
-    return this.creationClassName;
-    } // getCreationClassName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property creationClassName.
+	 */
+	private String	creationClassName;
 
-    /**
-     * This method sets the SystemSetting.creationClassName property value.
-     * This property is described as follows:
-     *
-     * CreationClassName indicates the name of the class or the subclass used
-     * in the creation of an instance. When used with the other key
-     * properties of this class, this property allows all instances of this
-     * class and its subclasses to be uniquely identified.
-     *
-     * @param	String	new creationClassName property value
-     * @exception	Exception
-     */
-    public void setCreationClassName(String creationClassName) {
+	/**
+	 * This method returns the SystemSetting.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @return String current creationClassName property value
+	 * @exception Exception
+	 */
+	public String getCreationClassName() {
 
-    this.creationClassName = creationClassName;
-    } // setCreationClassName
+		return this.creationClassName;
+	} // getCreationClassName
 
+	/**
+	 * This method sets the SystemSetting.creationClassName property value. This property is described as follows:
+	 * 
+	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
+	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
+	 * 
+	 * @param String
+	 *            new creationClassName property value
+	 * @exception Exception
+	 */
+	public void setCreationClassName(String creationClassName) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property settingID.
-     */
-    private String settingID;
-    /**
-     * This method returns the SystemSetting.settingID property value. This
-     * property is described as follows:
-     *
-     * The identifier by which the Setting object is known.
-     *
-     * @return	String	current settingID property value
-     * @exception	Exception
-     */
-    @Override
-	public String getSettingID(){
+		this.creationClassName = creationClassName;
+	} // setCreationClassName
 
-    return this.settingID;
-    } // getSettingID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property settingID.
+	 */
+	private String	settingID;
 
-    /**
-     * This method sets the SystemSetting.settingID property value. This
-     * property is described as follows:
-     *
-     * The identifier by which the Setting object is known.
-     *
-     * @param	String	new settingID property value
-     * @exception	Exception
-     */
-    @Override
+	/**
+	 * This method returns the SystemSetting.settingID property value. This property is described as follows:
+	 * 
+	 * The identifier by which the Setting object is known.
+	 * 
+	 * @return String current settingID property value
+	 * @exception Exception
+	 */
+	@Override
+	public String getSettingID() {
+
+		return this.settingID;
+	} // getSettingID
+
+	/**
+	 * This method sets the SystemSetting.settingID property value. This property is described as follows:
+	 * 
+	 * The identifier by which the Setting object is known.
+	 * 
+	 * @param String
+	 *            new settingID property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setSettingID(String settingID) {
 
-    this.settingID = settingID;
-    } // setSettingID
-
-
+		this.settingID = settingID;
+	} // setSettingID
 
 } // Class SystemSetting

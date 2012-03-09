@@ -3,13 +3,13 @@ package net.i2cat.mantychore.actionsets.junos;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.actionsets.junos.actions.ConfigureEncapsulationAction;
-import net.i2cat.mantychore.actionsets.junos.actions.ConfigureStatusAction;
-import net.i2cat.mantychore.actionsets.junos.actions.ConfigureSubInterfaceAction;
-import net.i2cat.mantychore.actionsets.junos.actions.CreateLogicalRouterAction;
-import net.i2cat.mantychore.actionsets.junos.actions.DeleteLogicalRouterAction;
-import net.i2cat.mantychore.actionsets.junos.actions.DeleteSubInterfaceAction;
 import net.i2cat.mantychore.actionsets.junos.actions.GetConfigurationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.chassis.ConfigureEncapsulationAction;
+import net.i2cat.mantychore.actionsets.junos.actions.chassis.ConfigureStatusAction;
+import net.i2cat.mantychore.actionsets.junos.actions.chassis.ConfigureSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.chassis.DeleteSubInterfaceAction;
+import net.i2cat.mantychore.actionsets.junos.actions.logicalrouters.CreateLogicalRouterAction;
+import net.i2cat.mantychore.actionsets.junos.actions.logicalrouters.DeleteLogicalRouterAction;
 
 import org.opennaas.core.resources.action.ActionSet;
 

@@ -9,77 +9,61 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HeadTailDropper as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HeadTailDropperBean Interface. The CIM class HeadTailDropper is described
- * as follows:
- *
- * HeadTailDropper describes the threshold information of a head or tail
- * dropper. The inherited property DropFrom indicates whether a particular
- * instance of this class is a head dropper or a tail dropper. A head dropper
- * always examines the same queue from which it drops packets, and this queue
- * is always related to the dropper as the following service in the
- * NextService association.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HeadTailDropper as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the HeadTailDropperBean Interface. The CIM class HeadTailDropper is described as
+ * follows:
+ * 
+ * HeadTailDropper describes the threshold information of a head or tail dropper. The inherited property DropFrom indicates whether a particular
+ * instance of this class is a head dropper or a tail dropper. A head dropper always examines the same queue from which it drops packets, and this
+ * queue is always related to the dropper as the following service in the NextService association.
  */
 public class HeadTailDropper extends DropperService implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a HeadTailDropperBeanImpl Class which
-     * implements the HeadTailDropperBean Interface, and encapsulates the CIM
-     * class HeadTailDropper in a Java Bean. The CIM class HeadTailDropper is
-     * described as follows:
-     *
-     * HeadTailDropper describes the threshold information of a head or tail
-     * dropper. The inherited property DropFrom indicates whether a
-     * particular instance of this class is a head dropper or a tail dropper.
-     * A head dropper always examines the same queue from which it drops
-     * packets, and this queue is always related to the dropper as the
-     * following service in the NextService association.
-     */
-    public HeadTailDropper(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property queueThreshold.
-     */
-    private long queueThreshold;
-    /**
-     * This method returns the HeadTailDropper.queueThreshold property value.
-     * This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that indicates the queue depth (in
-     * bytes) at which traffic is dropped. For a tail dropper, all newly
-     * arriving traffic is dropped. For a head dropper, packets at the front
-     * of the queue are dropped to make room for new packets, which are added
-     * at the end.
-     *
-     * @return	long	current queueThreshold property value
-     * @exception	Exception
-     */
-    public long getQueueThreshold(){
+	/**
+	 * This constructor creates a HeadTailDropperBeanImpl Class which implements the HeadTailDropperBean Interface, and encapsulates the CIM class
+	 * HeadTailDropper in a Java Bean. The CIM class HeadTailDropper is described as follows:
+	 * 
+	 * HeadTailDropper describes the threshold information of a head or tail dropper. The inherited property DropFrom indicates whether a particular
+	 * instance of this class is a head dropper or a tail dropper. A head dropper always examines the same queue from which it drops packets, and this
+	 * queue is always related to the dropper as the following service in the NextService association.
+	 */
+	public HeadTailDropper() {
+	};
 
-    return this.queueThreshold;
-    } // getQueueThreshold
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property queueThreshold.
+	 */
+	private long	queueThreshold;
 
-    /**
-     * This method sets the HeadTailDropper.queueThreshold property value.
-     * This property is described as follows:
-     *
-     * This is an unsigned 32-bit integer that indicates the queue depth (in
-     * bytes) at which traffic is dropped. For a tail dropper, all newly
-     * arriving traffic is dropped. For a head dropper, packets at the front
-     * of the queue are dropped to make room for new packets, which are added
-     * at the end.
-     *
-     * @param	long	new queueThreshold property value
-     * @exception	Exception
-     */
-    public void setQueueThreshold(long queueThreshold) {
+	/**
+	 * This method returns the HeadTailDropper.queueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that indicates the queue depth (in bytes) at which traffic is dropped. For a tail dropper, all newly
+	 * arriving traffic is dropped. For a head dropper, packets at the front of the queue are dropped to make room for new packets, which are added at
+	 * the end.
+	 * 
+	 * @return long current queueThreshold property value
+	 * @exception Exception
+	 */
+	public long getQueueThreshold() {
 
-    this.queueThreshold = queueThreshold;
-    } // setQueueThreshold
+		return this.queueThreshold;
+	} // getQueueThreshold
 
+	/**
+	 * This method sets the HeadTailDropper.queueThreshold property value. This property is described as follows:
+	 * 
+	 * This is an unsigned 32-bit integer that indicates the queue depth (in bytes) at which traffic is dropped. For a tail dropper, all newly
+	 * arriving traffic is dropped. For a head dropper, packets at the front of the queue are dropped to make room for new packets, which are added at
+	 * the end.
+	 * 
+	 * @param long new queueThreshold property value
+	 * @exception Exception
+	 */
+	public void setQueueThreshold(long queueThreshold) {
 
+		this.queueThreshold = queueThreshold;
+	} // setQueueThreshold
 
 } // Class HeadTailDropper

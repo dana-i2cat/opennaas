@@ -8,36 +8,30 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedDependency as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedDependencyBean Interface. The CIM class HostedDependency is
- * described as follows:
- *
- * HostedDependency defines a ManagedElement in the context of another
- * ManagedElement in which it resides.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedDependency as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the HostedDependencyBean Interface. The CIM class HostedDependency is described as
+ * follows:
+ * 
+ * HostedDependency defines a ManagedElement in the context of another ManagedElement in which it resides.
  */
 public class HostedDependency extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a HostedDependencyBeanImpl Class which
-     * implements the HostedDependencyBean Interface, and encapsulates the
-     * CIM class HostedDependency in a Java Bean. The CIM class
-     * HostedDependency is described as follows:
-     *
-     * HostedDependency defines a ManagedElement in the context of another
-     * ManagedElement in which it resides.
-     */
-    public HostedDependency(){};
-    /**
-     * This method create an Association of the type HostedDependency between
-     * one ManagedElement object and ManagedElement object
-     */
-    public static HostedDependency link(ManagedElement
-	antecedent,ManagedElement dependent){
+	/**
+	 * This constructor creates a HostedDependencyBeanImpl Class which implements the HostedDependencyBean Interface, and encapsulates the CIM class
+	 * HostedDependency in a Java Bean. The CIM class HostedDependency is described as follows:
+	 * 
+	 * HostedDependency defines a ManagedElement in the context of another ManagedElement in which it resides.
+	 */
+	public HostedDependency() {
+	};
 
-    return (HostedDependency)
-	Association.link(HostedDependency.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedDependency between one ManagedElement object and ManagedElement object
+	 */
+	public static HostedDependency link(ManagedElement
+			antecedent, ManagedElement dependent) {
+
+		return (HostedDependency) Association.link(HostedDependency.class, antecedent, dependent);
+	}// link
 
 } // Class HostedDependency

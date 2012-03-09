@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Vector;
 
-import net.i2cat.mantychore.model.ComputerSystem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -39,10 +37,10 @@ import org.opennaas.core.resources.queue.QueueResponse;
 public class QueueManager extends AbstractCapability implements
 		IQueueManagerService {
 
-	public final static String QUEUE = "queue";
+	public final static String	QUEUE		= "queue";
 
-	Log log = LogFactory.getLog(QueueManager.class);
-	String resourceId = "";
+	Log							log			= LogFactory.getLog(QueueManager.class);
+	String						resourceId	= "";
 
 	public QueueManager(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -55,7 +53,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Constructor to test the component
-	 *
+	 * 
 	 * @param queueDescriptor
 	 */
 	public QueueManager(CapabilityDescriptor queueDescriptor) {
@@ -71,7 +69,7 @@ public class QueueManager extends AbstractCapability implements
 
 	}
 
-	private final Vector<IAction> queue = new Vector<IAction>();
+	private final Vector<IAction>	queue	= new Vector<IAction>();
 
 	@Override
 	public void empty() {
@@ -121,41 +119,54 @@ public class QueueManager extends AbstractCapability implements
 		// note that restore should not be executed if there's been an error in
 		// prepare
 		if (!errorInPrepare) {
-
-			/* execute queued actions */
-			try {
-				queueResponse = executeQueuedActions(queueResponse,
-						protocolSessionManager);
-			} catch (ActionException e) {
-				throw new CapabilityException(e);
-			}
-
-			/* Look for errors */
 			boolean errorHappened = false;
-			for (ActionResponse actionResponse : queueResponse.getResponses()) {
-				if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR) {
-					errorHappened = true;
-					break;
-				}
-			}
-
-			if (!errorHappened) {
+			try {
+				/* execute queued actions */
 				try {
-					/* commit action */
-					log.debug("Confirming actions");
-					ActionResponse confirmResponse = confirm(protocolSessionManager);
-					queueResponse.setConfirmResponse(confirmResponse);
-					log.debug("Confirmed!");
-
-					if (confirmResponse.getStatus() == ActionResponse.STATUS.ERROR)
-						errorHappened = true;
-
+					queueResponse = executeQueuedActions(queueResponse,
+							protocolSessionManager);
 				} catch (ActionException e) {
 					throw new CapabilityException(e);
 				}
 
+				/* Look for errors */
+				for (ActionResponse actionResponse : queueResponse.getResponses()) {
+					if (actionResponse.getStatus() == ActionResponse.STATUS.ERROR) {
+						errorHappened = true;
+						break;
+					}
+				}
 
+				if (!errorHappened) {
+					try {
+						/* commit action */
+						log.debug("Confirming actions");
+						ActionResponse confirmResponse = confirm(protocolSessionManager);
+						queueResponse.setConfirmResponse(confirmResponse);
+						log.debug("Confirmed!");
+
+						if (confirmResponse.getStatus() == ActionResponse.STATUS.ERROR)
+							errorHappened = true;
+
+					} catch (ActionException e) {
+						throw new CapabilityException(e);
+					}
+
+				}
+			} catch (Exception e) {
+				// restore action
+				assert protocolSessionManager != null;
+				try {
+					log.debug("Restoring queue");
+					ActionResponse restoreResponse = restore(protocolSessionManager);
+					queueResponse.setRestoreResponse(restoreResponse);
+					log.debug("Restored!");
+					errorHappened = false;
+				} catch (ActionException ex) {
+					throw new CapabilityException(ex);
+				}
 			}
+
 			if (errorHappened) {
 				// restore action
 				assert protocolSessionManager != null;
@@ -174,10 +185,9 @@ public class QueueManager extends AbstractCapability implements
 		/* empty queue */
 		empty();
 
-
 		/* refresh operation */
-		try  {
-			//FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
+		try {
+			// FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
 			if (resource.getBootstrapper() == null)
 				throw new ResourceException("Null Bootstrapper found. Could not reset model");
 
@@ -188,7 +198,6 @@ public class QueueManager extends AbstractCapability implements
 			log.warn("The resource couldn't reset its model...", resourceExcept);
 		}
 
-
 		try {
 			ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
 			queueResponse.setRefreshResponse(refreshResponse);
@@ -196,15 +205,12 @@ public class QueueManager extends AbstractCapability implements
 			throw new CapabilityException(e);
 		}
 
-
-
 		if (resource.getProfile() != null) {
 			log.debug("Executing initModel from profile...");
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-
-		initVirtualResources ();
+		initVirtualResources();
 
 		/* stop time */
 		stopTime = java.lang.System.currentTimeMillis();
@@ -214,8 +220,7 @@ public class QueueManager extends AbstractCapability implements
 		return queueResponse;
 	}
 
-
-	private void sendRefresh () throws CapabilityException  {
+	private void sendRefresh() throws CapabilityException {
 		for (ICapability capab : resource.getCapabilities()) {
 			// abstract capabilities have to be initialized
 			if (capab instanceof AbstractCapability) {
@@ -229,7 +234,7 @@ public class QueueManager extends AbstractCapability implements
 		}
 	}
 
-	private void initVirtualResources () throws CapabilityException {
+	private void initVirtualResources() throws CapabilityException {
 		String typeResource = resource.getResourceIdentifier().getType();
 		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
@@ -249,7 +254,7 @@ public class QueueManager extends AbstractCapability implements
 					manager.getIdentifierFromResourceName(typeResource,
 							nameResource);
 				} catch (ResourceNotFoundException e) {
-					//TODO WHO IS IT THE RESPONSIBLE TO CREATE A CHILD VIRTUAL RESOURCE
+					// TODO WHO IS IT THE RESPONSIBLE TO CREATE A CHILD VIRTUAL RESOURCE
 					log.error(e.getMessage());
 					log.info("Since this resource didn't exist, it has to be created.");
 					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(
@@ -265,8 +270,7 @@ public class QueueManager extends AbstractCapability implements
 
 	}
 
-
-	//FIXME this parameters shouldn't be in the queue because it is an opennaas module
+	// FIXME this parameters shouldn't be in the queue because it is an opennaas module
 	// Aux stuff from former Refresh as Karaf Command in OpenNaaS's Resources.
 	private ResourceDescriptor newResourceDescriptor(
 			ResourceDescriptor resourceDescriptor, String nameResource)
@@ -337,7 +341,7 @@ public class QueueManager extends AbstractCapability implements
 		return queueResponse;
 	}
 
-	private ActionResponse executeRefreshActions (IProtocolSessionManager protocolSessionManager) throws ActionException {
+	private ActionResponse executeRefreshActions(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		ActionResponse refreshResponse = ActionResponse.okResponse(QueueConstants.REFRESH);
 		for (IAction action : queue) {
 			/* use pool for get protocol session */
@@ -430,8 +434,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/**
-	 * Implementation for the execution of a single action. Clean the queue, add
-	 * an action and send the message
+	 * Implementation for the execution of a single action. Clean the queue, add an action and send the message
 	 */
 	private QueueResponse dummyExecute(Object action)
 			throws CapabilityException {

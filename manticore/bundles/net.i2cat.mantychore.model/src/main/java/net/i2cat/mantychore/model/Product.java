@@ -10,299 +10,259 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class Product as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ProductBean Interface. The CIM class Product is described as follows:
- *
- * CIM_Product is a concrete class that aggregates PhysicalElements, software
- * (SoftwareIdentity and SoftwareFeatures), Services and/or other Products,
- * and is acquired as a unit. Acquisition implies an agreement between
- * supplier and consumer which may have implications to Product licensing,
- * support and warranty. Non-commercial (e.g., in-house developed Products)
- * should also be identified as an instance of CIM_Product. Note that
- * software is handled a bit differently in the list of aggregated entities,
- * above. This is because software can be viewed as a tangible asset (similar
- * to PhysicalElements) AND/ OR as a set of features that make up a Product
- * and are deployed. These are two different concepts, usually managed by
- * different units in a business' organization. When software 'features' are
- * described, the CIM_SoftwareFeature class from the Application Model is
- * instantiated (where Features are Weak to/scoped by a Product). When a
- * specific piece of software is acquired and perhaps warrantied as part of a
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class Product as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ProductBean Interface. The CIM class Product is described as follows:
+ * 
+ * CIM_Product is a concrete class that aggregates PhysicalElements, software (SoftwareIdentity and SoftwareFeatures), Services and/or other Products,
+ * and is acquired as a unit. Acquisition implies an agreement between supplier and consumer which may have implications to Product licensing, support
+ * and warranty. Non-commercial (e.g., in-house developed Products) should also be identified as an instance of CIM_Product. Note that software is
+ * handled a bit differently in the list of aggregated entities, above. This is because software can be viewed as a tangible asset (similar to
+ * PhysicalElements) AND/ OR as a set of features that make up a Product and are deployed. These are two different concepts, usually managed by
+ * different units in a business' organization. When software 'features' are described, the CIM_SoftwareFeature class from the Application Model is
+ * instantiated (where Features are Weak to/scoped by a Product). When a specific piece of software is acquired and perhaps warrantied as part of a
  * Product, this is addressed by the class, SoftwareIdentity.
  */
 public class Product extends ManagedElement implements Serializable {
 
-    /**
-     * This constructor creates a ProductBeanImpl Class which implements the
-     * ProductBean Interface, and encapsulates the CIM class Product in a
-     * Java Bean. The CIM class Product is described as follows:
-     *
-     * CIM_Product is a concrete class that aggregates PhysicalElements,
-     * software (SoftwareIdentity and SoftwareFeatures), Services and/or
-     * other Products, and is acquired as a unit. Acquisition implies an
-     * agreement between supplier and consumer which may have implications to
-     * Product licensing, support and warranty. Non-commercial (e.g.,
-     * in-house developed Products) should also be identified as an instance
-     * of CIM_Product. Note that software is handled a bit differently in the
-     * list of aggregated entities, above. This is because software can be
-     * viewed as a tangible asset (similar to PhysicalElements) AND/ OR as a
-     * set of features that make up a Product and are deployed. These are two
-     * different concepts, usually managed by different units in a business'
-     * organization. When software 'features' are described, the
-     * CIM_SoftwareFeature class from the Application Model is instantiated
-     * (where Features are Weak to/scoped by a Product). When a specific
-     * piece of software is acquired and perhaps warrantied as part of a
-     * Product, this is addressed by the class, SoftwareIdentity.
-     */
-    public Product(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property name.
-     */
-    private String name;
-    /**
-     * This method returns the Product.name property value. This property is
-     * described as follows:
-     *
-     * Commonly used Product name.
-     *
-     * @return	String	current name property value
-     * @exception	Exception
-     */
-    public String getName(){
+	/**
+	 * This constructor creates a ProductBeanImpl Class which implements the ProductBean Interface, and encapsulates the CIM class Product in a Java
+	 * Bean. The CIM class Product is described as follows:
+	 * 
+	 * CIM_Product is a concrete class that aggregates PhysicalElements, software (SoftwareIdentity and SoftwareFeatures), Services and/or other
+	 * Products, and is acquired as a unit. Acquisition implies an agreement between supplier and consumer which may have implications to Product
+	 * licensing, support and warranty. Non-commercial (e.g., in-house developed Products) should also be identified as an instance of CIM_Product.
+	 * Note that software is handled a bit differently in the list of aggregated entities, above. This is because software can be viewed as a tangible
+	 * asset (similar to PhysicalElements) AND/ OR as a set of features that make up a Product and are deployed. These are two different concepts,
+	 * usually managed by different units in a business' organization. When software 'features' are described, the CIM_SoftwareFeature class from the
+	 * Application Model is instantiated (where Features are Weak to/scoped by a Product). When a specific piece of software is acquired and perhaps
+	 * warrantied as part of a Product, this is addressed by the class, SoftwareIdentity.
+	 */
+	public Product() {
+	};
 
-    return this.name;
-    } // getName
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property name.
+	 */
+	private String	name;
 
-    /**
-     * This method sets the Product.name property value. This property is
-     * described as follows:
-     *
-     * Commonly used Product name.
-     *
-     * @param	String	new name property value
-     * @exception	Exception
-     */
-    public void setName(String name) {
+	/**
+	 * This method returns the Product.name property value. This property is described as follows:
+	 * 
+	 * Commonly used Product name.
+	 * 
+	 * @return String current name property value
+	 * @exception Exception
+	 */
+	public String getName() {
 
-    this.name = name;
-    } // setName
+		return this.name;
+	} // getName
 
+	/**
+	 * This method sets the Product.name property value. This property is described as follows:
+	 * 
+	 * Commonly used Product name.
+	 * 
+	 * @param String
+	 *            new name property value
+	 * @exception Exception
+	 */
+	public void setName(String name) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property identifyingNumber.
-     */
-    private String identifyingNumber;
-    /**
-     * This method returns the Product.identifyingNumber property value. This
-     * property is described as follows:
-     *
-     * Product identification such as a serial number on software, a die
-     * number on a hardware chip, or (for non-commercial Products) a project
-     * number.
-     *
-     * @return	String	current identifyingNumber property value
-     * @exception	Exception
-     */
-    public String getIdentifyingNumber(){
+		this.name = name;
+	} // setName
 
-    return this.identifyingNumber;
-    } // getIdentifyingNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property identifyingNumber.
+	 */
+	private String	identifyingNumber;
 
-    /**
-     * This method sets the Product.identifyingNumber property value. This
-     * property is described as follows:
-     *
-     * Product identification such as a serial number on software, a die
-     * number on a hardware chip, or (for non-commercial Products) a project
-     * number.
-     *
-     * @param	String	new identifyingNumber property value
-     * @exception	Exception
-     */
-    public void setIdentifyingNumber(String identifyingNumber) {
+	/**
+	 * This method returns the Product.identifyingNumber property value. This property is described as follows:
+	 * 
+	 * Product identification such as a serial number on software, a die number on a hardware chip, or (for non-commercial Products) a project number.
+	 * 
+	 * @return String current identifyingNumber property value
+	 * @exception Exception
+	 */
+	public String getIdentifyingNumber() {
 
-    this.identifyingNumber = identifyingNumber;
-    } // setIdentifyingNumber
+		return this.identifyingNumber;
+	} // getIdentifyingNumber
 
+	/**
+	 * This method sets the Product.identifyingNumber property value. This property is described as follows:
+	 * 
+	 * Product identification such as a serial number on software, a die number on a hardware chip, or (for non-commercial Products) a project number.
+	 * 
+	 * @param String
+	 *            new identifyingNumber property value
+	 * @exception Exception
+	 */
+	public void setIdentifyingNumber(String identifyingNumber) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property vendor.
-     */
-    private String vendor;
-    /**
-     * This method returns the Product.vendor property value. This property is
-     * described as follows:
-     *
-     * The name of the Product's supplier, or entity selling the Product (the
-     * manufacturer, reseller, OEM, etc.). Corresponds to the Vendor property
-     * in the Product object in the DMTF Solution Exchange Standard.
-     *
-     * @return	String	current vendor property value
-     * @exception	Exception
-     */
-    public String getVendor(){
+		this.identifyingNumber = identifyingNumber;
+	} // setIdentifyingNumber
 
-    return this.vendor;
-    } // getVendor
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property vendor.
+	 */
+	private String	vendor;
 
-    /**
-     * This method sets the Product.vendor property value. This property is
-     * described as follows:
-     *
-     * The name of the Product's supplier, or entity selling the Product (the
-     * manufacturer, reseller, OEM, etc.). Corresponds to the Vendor property
-     * in the Product object in the DMTF Solution Exchange Standard.
-     *
-     * @param	String	new vendor property value
-     * @exception	Exception
-     */
-    public void setVendor(String vendor) {
+	/**
+	 * This method returns the Product.vendor property value. This property is described as follows:
+	 * 
+	 * The name of the Product's supplier, or entity selling the Product (the manufacturer, reseller, OEM, etc.). Corresponds to the Vendor property
+	 * in the Product object in the DMTF Solution Exchange Standard.
+	 * 
+	 * @return String current vendor property value
+	 * @exception Exception
+	 */
+	public String getVendor() {
 
-    this.vendor = vendor;
-    } // setVendor
+		return this.vendor;
+	} // getVendor
 
+	/**
+	 * This method sets the Product.vendor property value. This property is described as follows:
+	 * 
+	 * The name of the Product's supplier, or entity selling the Product (the manufacturer, reseller, OEM, etc.). Corresponds to the Vendor property
+	 * in the Product object in the DMTF Solution Exchange Standard.
+	 * 
+	 * @param String
+	 *            new vendor property value
+	 * @exception Exception
+	 */
+	public void setVendor(String vendor) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property version.
-     */
-    private String version;
-    /**
-     * This method returns the Product.version property value. This property
-     * is described as follows:
-     *
-     * Product version information.
-     *
-     * @return	String	current version property value
-     * @exception	Exception
-     */
-    public String getVersion(){
+		this.vendor = vendor;
+	} // setVendor
 
-    return this.version;
-    } // getVersion
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property version.
+	 */
+	private String	version;
 
-    /**
-     * This method sets the Product.version property value. This property is
-     * described as follows:
-     *
-     * Product version information.
-     *
-     * @param	String	new version property value
-     * @exception	Exception
-     */
-    public void setVersion(String version) {
+	/**
+	 * This method returns the Product.version property value. This property is described as follows:
+	 * 
+	 * Product version information.
+	 * 
+	 * @return String current version property value
+	 * @exception Exception
+	 */
+	public String getVersion() {
 
-    this.version = version;
-    } // setVersion
+		return this.version;
+	} // getVersion
 
+	/**
+	 * This method sets the Product.version property value. This property is described as follows:
+	 * 
+	 * Product version information.
+	 * 
+	 * @param String
+	 *            new version property value
+	 * @exception Exception
+	 */
+	public void setVersion(String version) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property sKUNumber.
-     */
-    private String sKUNumber;
-    /**
-     * This method returns the Product.sKUNumber property value. This property
-     * is described as follows:
-     *
-     * Product SKU (stock keeping unit) information.
-     *
-     * @return	String	current sKUNumber property value
-     * @exception	Exception
-     */
-    public String getSKUNumber(){
+		this.version = version;
+	} // setVersion
 
-    return this.sKUNumber;
-    } // getSKUNumber
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property sKUNumber.
+	 */
+	private String	sKUNumber;
 
-    /**
-     * This method sets the Product.sKUNumber property value. This property is
-     * described as follows:
-     *
-     * Product SKU (stock keeping unit) information.
-     *
-     * @param	String	new sKUNumber property value
-     * @exception	Exception
-     */
-    public void setSKUNumber(String sKUNumber) {
+	/**
+	 * This method returns the Product.sKUNumber property value. This property is described as follows:
+	 * 
+	 * Product SKU (stock keeping unit) information.
+	 * 
+	 * @return String current sKUNumber property value
+	 * @exception Exception
+	 */
+	public String getSKUNumber() {
 
-    this.sKUNumber = sKUNumber;
-    } // setSKUNumber
+		return this.sKUNumber;
+	} // getSKUNumber
 
+	/**
+	 * This method sets the Product.sKUNumber property value. This property is described as follows:
+	 * 
+	 * Product SKU (stock keeping unit) information.
+	 * 
+	 * @param String
+	 *            new sKUNumber property value
+	 * @exception Exception
+	 */
+	public void setSKUNumber(String sKUNumber) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property warrantyStartDate.
-     */
-    private Date warrantyStartDate;
-    /**
-     * This method returns the Product.warrantyStartDate property value. This
-     * property is described as follows:
-     *
-     * If this Product is under warranty, the start date of the warranty.
-     *
-     * @return	Date	current warrantyStartDate property value
-     * @exception	Exception
-     */
-    public Date getWarrantyStartDate(){
+		this.sKUNumber = sKUNumber;
+	} // setSKUNumber
 
-    return this.warrantyStartDate;
-    } // getWarrantyStartDate
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property warrantyStartDate.
+	 */
+	private Date	warrantyStartDate;
 
-    /**
-     * This method sets the Product.warrantyStartDate property value. This
-     * property is described as follows:
-     *
-     * If this Product is under warranty, the start date of the warranty.
-     *
-     * @param	Date	new warrantyStartDate property value
-     * @exception	Exception
-     */
-    public void setWarrantyStartDate(Date warrantyStartDate) {
+	/**
+	 * This method returns the Product.warrantyStartDate property value. This property is described as follows:
+	 * 
+	 * If this Product is under warranty, the start date of the warranty.
+	 * 
+	 * @return Date current warrantyStartDate property value
+	 * @exception Exception
+	 */
+	public Date getWarrantyStartDate() {
 
-    this.warrantyStartDate = warrantyStartDate;
-    } // setWarrantyStartDate
+		return this.warrantyStartDate;
+	} // getWarrantyStartDate
 
+	/**
+	 * This method sets the Product.warrantyStartDate property value. This property is described as follows:
+	 * 
+	 * If this Product is under warranty, the start date of the warranty.
+	 * 
+	 * @param Date
+	 *            new warrantyStartDate property value
+	 * @exception Exception
+	 */
+	public void setWarrantyStartDate(Date warrantyStartDate) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property warrantyDuration.
-     */
-    private long warrantyDuration;
-    /**
-     * This method returns the Product.warrantyDuration property value. This
-     * property is described as follows:
-     *
-     * If this Product is under warranty, the duration of the warranty in
-     * days.
-     *
-     * @return	long	current warrantyDuration property value
-     * @exception	Exception
-     */
-    public long getWarrantyDuration(){
+		this.warrantyStartDate = warrantyStartDate;
+	} // setWarrantyStartDate
 
-    return this.warrantyDuration;
-    } // getWarrantyDuration
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property warrantyDuration.
+	 */
+	private long	warrantyDuration;
 
-    /**
-     * This method sets the Product.warrantyDuration property value. This
-     * property is described as follows:
-     *
-     * If this Product is under warranty, the duration of the warranty in
-     * days.
-     *
-     * @param	long	new warrantyDuration property value
-     * @exception	Exception
-     */
-    public void setWarrantyDuration(long warrantyDuration) {
+	/**
+	 * This method returns the Product.warrantyDuration property value. This property is described as follows:
+	 * 
+	 * If this Product is under warranty, the duration of the warranty in days.
+	 * 
+	 * @return long current warrantyDuration property value
+	 * @exception Exception
+	 */
+	public long getWarrantyDuration() {
 
-    this.warrantyDuration = warrantyDuration;
-    } // setWarrantyDuration
+		return this.warrantyDuration;
+	} // getWarrantyDuration
 
+	/**
+	 * This method sets the Product.warrantyDuration property value. This property is described as follows:
+	 * 
+	 * If this Product is under warranty, the duration of the warranty in days.
+	 * 
+	 * @param long new warrantyDuration property value
+	 * @exception Exception
+	 */
+	public void setWarrantyDuration(long warrantyDuration) {
 
+		this.warrantyDuration = warrantyDuration;
+	} // setWarrantyDuration
 
 } // Class Product

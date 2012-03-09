@@ -5,11 +5,11 @@ import java.util.List;
 
 /**
  * MANUALLY ADDED TO CIM (14/04/2011)<br>
- *
+ * 
  * Stores data about a Fiber Channel Plan. A Fiber Channel Plan determines how to distribute Fiber Channels into a Fiber.
- *
+ * 
  * @author isart
- *
+ * 
  */
 public class FiberChannelPlan {
 

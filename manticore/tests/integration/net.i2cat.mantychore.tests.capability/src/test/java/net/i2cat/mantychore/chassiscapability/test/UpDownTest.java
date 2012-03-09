@@ -1,18 +1,15 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-
 import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
-
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -27,9 +24,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -45,29 +42,26 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class UpDownTest
 {
-	private final static Log	log				= LogFactory.getLog(UpDownTest.class);
-	private final String		deviceID		= "junos";
-	private final String		queueID			= "queue";
+	private final static Log	log			= LogFactory.getLog(UpDownTest.class);
+	private final String		deviceID	= "junos";
+	private final String		queueID		= "queue";
 
 	private MockResource		mockResource;
 	private ICapability			chassisCapability;
 	private ICapability			queueCapability;
-	private boolean				isMock			= false;
+	private boolean				isMock		= false;
 
 	@Inject
 	private BundleContext		bundleContext;
@@ -83,30 +77,30 @@ public class UpDownTest
 	@Filter("(capability=chassis)")
 	private ICapabilityFactory	chassisFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-    private BlueprintContainer	routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer	routerService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   keepRuntimeFolder());
+				.frameworkUrl(maven()
+						.groupId("net.i2cat.mantychore")
+						.artifactId("assembly")
+						.type("zip")
+						.classifier("bin")
+						.versionAsInProject())
+				.karafVersion("2.2.2")
+				.name("mantychore")
+				.unpackDirectory(new File("target/paxexam")),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() {
 
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
@@ -193,9 +187,10 @@ public class UpDownTest
 
 	}
 
+	@Ignore
 	@Test
 	public void UpDownActionTest() throws CapabilityException {
-
+		// FIXME http://jira.i2cat.net:8080/browse/OPENNAAS-228
 		Response resp;
 		QueueResponse queueResponse;
 
@@ -222,7 +217,7 @@ public class UpDownTest
 
 		/* send to change status */
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-														newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
+				newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
 		Assert.assertTrue(resp.getStatus() == Status.OK);
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
@@ -237,7 +232,7 @@ public class UpDownTest
 
 		/* send to change status */
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-														newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
+				newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
 		Assert.assertTrue(resp.getStatus() == Status.OK);
 		Assert.assertTrue(resp.getErrors().size() == 0);
 

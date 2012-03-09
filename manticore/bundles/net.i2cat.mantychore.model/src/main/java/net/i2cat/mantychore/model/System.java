@@ -6,12 +6,13 @@
 package net.i2cat.mantychore.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class System as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the SystemBean Interface. The CIM class System is described as follows:
- *
+ * 
  * CIM_System represents an entity made up of component parts (defined by the SystemComponent relationship), that operates as a 'functional whole'.
  * Systems are top-level objects in the CIM hierarchy, requiring no scoping or weak relationships in order to exist and have context. It should be
  * reasonable to uniquely name and manage a System at an enterprise level. For example, a ComputerSystem is a kind of System that can be uniquely
@@ -23,9 +24,75 @@ import java.util.List;
  */
 public class System extends EnabledLogicalElement implements Serializable {
 
+	/* HOSTED SERVICES */
+	/**
+	 * 
+	 * @return List of Services associated to this System through HostedService dependency.
+	 */
+	public List<Service> getHostedService() {
+		return (List<Service>) this.getToAssociatedElementsByType(HostedService.class);
+	}
+
+	/**
+	 * Associates hostedService to this System through HostedService dependency.
+	 * 
+	 * @param hostedService
+	 * @return
+	 */
+	public boolean addHostedService(Service hostedService) {
+		if (hostedService == null)
+			return false;
+		return (HostedService.link(this, hostedService) != null);
+	}
+
+	/**
+	 * Removes HostedService dependency between hostedService and this System.
+	 * 
+	 * @param hostedService
+	 * @return true if association has been removed. False otherwise (including the association was not present)
+	 */
+	public boolean removeHostedService(Service hostedService) {
+		if (hostedService == null)
+			return false;
+
+		Association a = this.getFirstToAssociationByTypeAndElement(HostedService.class, hostedService);
+		if (a == null)
+			return false;
+
+		a.unlink();
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends Service> List<T> getAllHostedServicesByType(T instance) {
+		List<Service> list = getHostedService();
+
+		ArrayList<T> desiredServices = new ArrayList<T>();
+		for (Service service : list) {
+			if (instance.getClass().isInstance(service)) {
+				desiredServices.add((T) service);
+			}
+		}
+		return desiredServices;
+	}
+
+	public boolean removeAllHostedServicesByType(Class<? extends Service> clazz) {
+		List<Service> list = getHostedService();
+
+		boolean somethingIsRemoved = false;
+		for (Service service : list) {
+			if (clazz.isInstance(service)) {
+				removeHostedService(service);
+				somethingIsRemoved = true;
+			}
+		}
+		return somethingIsRemoved;
+	}
+
+	/* NEXT HOP ROUTES */
 	/**
 	 * Add a new HostedRoute association between NexthopRoute and this element
-	 *
+	 * 
 	 * @param NextHopRoute
 	 * @return
 	 */
@@ -37,7 +104,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * Remove the HostedRoute association (will be deleted) between the NextHopRoute and this element
-	 *
+	 * 
 	 * @param protocolEndpoint
 	 * @return
 	 */
@@ -58,6 +125,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 		return (List<NextHopRoute>) this.getToAssociatedElementsByType(HostedRoute.class);
 	}
 
+	/* LOGICAL DEVICES */
 	public boolean addLogicalDevice(LogicalDevice logicalDevice) {
 		if (logicalDevice == null)
 			return false;
@@ -97,7 +165,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * Add a new SystemComponent association between managedSystemElement and this element
-	 *
+	 * 
 	 * @param managedSystemElement
 	 * @return
 	 */
@@ -109,7 +177,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * Remove the SystemComponent association (will be deleted) between the managedSystemElement and this element
-	 *
+	 * 
 	 * @param managedSystemElement
 	 * @return
 	 */
@@ -143,7 +211,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	/**
 	 * This method returns the list of ManagedSystemElement from the toAssociation vector that match with the type SystemComponent the association
 	 * wouldn't be deleted
-	 *
+	 * 
 	 * @return List<ManagedSystemElement>
 	 */
 	@SuppressWarnings("unchecked")
@@ -154,7 +222,7 @@ public class System extends EnabledLogicalElement implements Serializable {
 	/**
 	 * This constructor creates a SystemBeanImpl Class which implements the SystemBean Interface, and encapsulates the CIM class System in a Java
 	 * Bean. The CIM class System is described as follows:
-	 *
+	 * 
 	 * CIM_System represents an entity made up of component parts (defined by the SystemComponent relationship), that operates as a 'functional
 	 * whole'. Systems are top-level objects in the CIM hierarchy, requiring no scoping or weak relationships in order to exist and have context. It
 	 * should be reasonable to uniquely name and manage a System at an enterprise level. For example, a ComputerSystem is a kind of System that can be
@@ -174,10 +242,10 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @return String current creationClassName property value
 	 * @exception Exception
 	 */
@@ -188,10 +256,10 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * CreationClassName indicates the name of the class or the subclass used in the creation of an instance. When used with the other key properties
 	 * of this class, this property allows all instances of this class and its subclasses to be uniquely identified.
-	 *
+	 * 
 	 * @param String
 	 *            new creationClassName property value
 	 * @exception Exception
@@ -208,9 +276,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The inherited Name serves as the key of a System instance in an enterprise environment.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -221,9 +289,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.name property value. This property is described as follows:
-	 *
+	 * 
 	 * The inherited Name serves as the key of a System instance in an enterprise environment.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -283,9 +351,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.primaryOwnerName property value. This property is described as follows:
-	 *
+	 * 
 	 * The name of the primary system owner. The system owner is the primary user of the system.
-	 *
+	 * 
 	 * @return String current primaryOwnerName property value
 	 * @exception Exception
 	 */
@@ -296,9 +364,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.primaryOwnerName property value. This property is described as follows:
-	 *
+	 * 
 	 * The name of the primary system owner. The system owner is the primary user of the system.
-	 *
+	 * 
 	 * @param String
 	 *            new primaryOwnerName property value
 	 * @exception Exception
@@ -315,9 +383,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.primaryOwnerContact property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that provides information on how the primary system owner can be reached (for example, phone number, e-mail address, and so on).
-	 *
+	 * 
 	 * @return String current primaryOwnerContact property value
 	 * @exception Exception
 	 */
@@ -328,9 +396,9 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.primaryOwnerContact property value. This property is described as follows:
-	 *
+	 * 
 	 * A string that provides information on how the primary system owner can be reached (for example, phone number, e-mail address, and so on).
-	 *
+	 * 
 	 * @param String
 	 *            new primaryOwnerContact property value
 	 * @exception Exception
@@ -347,12 +415,12 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.roles property value. This property is described as follows:
-	 *
+	 * 
 	 * An array (bag) of strings that specifies the administrator -defined roles this System plays in the managed environment. Examples might be
 	 * 'Building 8 print server' or 'Boise user directories'. A single system may perform multiple roles. Note that the instrumentation view of the
 	 * 'roles' of a System is defined by instantiating a specific subclass of System, or by properties in a subclass, or both. For example, the
 	 * purpose of a ComputerSystem is defined using the Dedicated and OtherDedicatedDescription properties.
-	 *
+	 * 
 	 * @return String[] current roles property value
 	 * @exception Exception
 	 */
@@ -363,12 +431,12 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.roles property value. This property is described as follows:
-	 *
+	 * 
 	 * An array (bag) of strings that specifies the administrator -defined roles this System plays in the managed environment. Examples might be
 	 * 'Building 8 print server' or 'Boise user directories'. A single system may perform multiple roles. Note that the instrumentation view of the
 	 * 'roles' of a System is defined by instantiating a specific subclass of System, or by properties in a subclass, or both. For example, the
 	 * purpose of a ComputerSystem is defined using the Dedicated and OtherDedicatedDescription properties.
-	 *
+	 * 
 	 * @param String
 	 *            [] new roles property value
 	 * @exception Exception
@@ -385,11 +453,11 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.otherIdentifyingInfo property value. This property is described as follows:
-	 *
+	 * 
 	 * OtherIdentifyingInfo captures additional data, beyond System Name information, that could be used to identify a ComputerSystem. One example
 	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note that if only the Fibre Channel name is available and is unique (able
 	 * to be used as the System key), then this property would be NULL and the WWN would become the System key, its data placed in the Name property.
-	 *
+	 * 
 	 * @return String[] current otherIdentifyingInfo property value
 	 * @exception Exception
 	 */
@@ -400,11 +468,11 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.otherIdentifyingInfo property value. This property is described as follows:
-	 *
+	 * 
 	 * OtherIdentifyingInfo captures additional data, beyond System Name information, that could be used to identify a ComputerSystem. One example
 	 * would be to hold the Fibre Channel World-Wide Name (WWN) of a node. Note that if only the Fibre Channel name is available and is unique (able
 	 * to be used as the System key), then this property would be NULL and the WWN would become the System key, its data placed in the Name property.
-	 *
+	 * 
 	 * @param String
 	 *            [] new otherIdentifyingInfo property value
 	 * @exception Exception
@@ -421,10 +489,10 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method returns the System.identifyingDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings providing explanations and details behind the entries in the OtherIdentifying Info array. Note, each entry of
 	 * this array is related to the entry in OtherIdentifyingInfo that is located at the same index.
-	 *
+	 * 
 	 * @return String[] current identifyingDescriptions property value
 	 * @exception Exception
 	 */
@@ -435,10 +503,10 @@ public class System extends EnabledLogicalElement implements Serializable {
 
 	/**
 	 * This method sets the System.identifyingDescriptions property value. This property is described as follows:
-	 *
+	 * 
 	 * An array of free-form strings providing explanations and details behind the entries in the OtherIdentifying Info array. Note, each entry of
 	 * this array is related to the entry in OtherIdentifyingInfo that is located at the same index.
-	 *
+	 * 
 	 * @param String
 	 *            [] new identifyingDescriptions property value
 	 * @exception Exception

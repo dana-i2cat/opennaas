@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class FilterList as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the FilterListBean Interface. The CIM class FilterList is described as follows:
- *
+ * 
  * A FilterList is used by network devices to identify routes by aggregating a set of FilterEntries into a unit, called a FilterList. FilterLists can
  * also be used to accept or deny routing updates. A FilterList is weak to the network device (i.e., the ComputerSystem) that contains it. Hence, the
  * ComputerSystem keys are propagated to this class.
@@ -20,7 +20,7 @@ public class FilterList extends LogicalElement implements Serializable {
 	/**
 	 * This constructor creates a FilterListBeanImpl Class which implements the FilterListBean Interface, and encapsulates the CIM class FilterList in
 	 * a Java Bean. The CIM class FilterList is described as follows:
-	 *
+	 * 
 	 * A FilterList is used by network devices to identify routes by aggregating a set of FilterEntries into a unit, called a FilterList. FilterLists
 	 * can also be used to accept or deny routing updates. A FilterList is weak to the network device (i.e., the ComputerSystem) that contains it.
 	 * Hence, the ComputerSystem keys are propagated to this class.
@@ -35,9 +35,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method returns the FilterList.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping ComputerSystem's CreationClassName.
-	 *
+	 * 
 	 * @return String current systemCreationClassName property value
 	 * @exception Exception
 	 */
@@ -48,9 +48,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method sets the FilterList.systemCreationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping ComputerSystem's CreationClassName.
-	 *
+	 * 
 	 * @param String
 	 *            new systemCreationClassName property value
 	 * @exception Exception
@@ -67,9 +67,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method returns the FilterList.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping ComputerSystem's Name.
-	 *
+	 * 
 	 * @return String current systemName property value
 	 * @exception Exception
 	 */
@@ -80,9 +80,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method sets the FilterList.systemName property value. This property is described as follows:
-	 *
+	 * 
 	 * The scoping ComputerSystem's Name.
-	 *
+	 * 
 	 * @param String
 	 *            new systemName property value
 	 * @exception Exception
@@ -99,9 +99,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method returns the FilterList.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The type of class that this instance is.
-	 *
+	 * 
 	 * @return String current creationClassName property value
 	 * @exception Exception
 	 */
@@ -112,9 +112,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method sets the FilterList.creationClassName property value. This property is described as follows:
-	 *
+	 * 
 	 * The type of class that this instance is.
-	 *
+	 * 
 	 * @param String
 	 *            new creationClassName property value
 	 * @exception Exception
@@ -131,9 +131,9 @@ public class FilterList extends LogicalElement implements Serializable {
 	// private String name;
 	/**
 	 * This method returns the FilterList.name property value. This property is described as follows:
-	 *
+	 * 
 	 * This is the name of the FilterList.
-	 *
+	 * 
 	 * @return String current name property value
 	 * @exception Exception
 	 */
@@ -144,9 +144,9 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method sets the FilterList.name property value. This property is described as follows:
-	 *
+	 * 
 	 * This is the name of the FilterList.
-	 *
+	 * 
 	 * @param String
 	 *            new name property value
 	 * @exception Exception
@@ -172,7 +172,7 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method returns the FilterList.direction property value. This property is described as follows:
-	 *
+	 * 
 	 * This defines whether the FilterList is used for input, output, or both input and output filtering. All values are used with respect to the
 	 * interface for which the FilterList applies. "Not Applicable" (0) is used when there is no direction applicable to the FilterList. "Input" (1)
 	 * is used when the FilterList applies to packets that are inbound on the related interface. "Output" (2) is used when the FilterList applies to
@@ -184,7 +184,7 @@ public class FilterList extends LogicalElement implements Serializable {
 	 * reversing the source and destination criteria. So, for example, consider a FilterList with 3 FilterEntries indicating destination port = 80,
 	 * and source and destination addresses of a and b, respectively. Then, for the outbound direction, the filter entries match as specified and the
 	 * 'mirror' (for the inbound direction) matches on source port = 80 and source and destination addresses of b and a, respectively.
-	 *
+	 * 
 	 * @return int current direction property value
 	 * @exception Exception
 	 */
@@ -195,7 +195,7 @@ public class FilterList extends LogicalElement implements Serializable {
 
 	/**
 	 * This method sets the FilterList.direction property value. This property is described as follows:
-	 *
+	 * 
 	 * This defines whether the FilterList is used for input, output, or both input and output filtering. All values are used with respect to the
 	 * interface for which the FilterList applies. "Not Applicable" (0) is used when there is no direction applicable to the FilterList. "Input" (1)
 	 * is used when the FilterList applies to packets that are inbound on the related interface. "Output" (2) is used when the FilterList applies to
@@ -207,7 +207,7 @@ public class FilterList extends LogicalElement implements Serializable {
 	 * reversing the source and destination criteria. So, for example, consider a FilterList with 3 FilterEntries indicating destination port = 80,
 	 * and source and destination addresses of a and b, respectively. Then, for the outbound direction, the filter entries match as specified and the
 	 * 'mirror' (for the inbound direction) matches on source port = 80 and source and destination addresses of b and a, respectively.
-	 *
+	 * 
 	 * @param int new direction property value
 	 * @exception Exception
 	 */

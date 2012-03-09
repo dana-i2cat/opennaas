@@ -8,47 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedRoutingServices as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * HostedRoutingServicesBean Interface. The CIM class HostedRoutingServices
- * is described as follows:
- *
- * This is a specialization of CIM_HostedService, which is an association
- * between a Service and the System on which the functionality resides. The
- * class, HostedRoutingServices, is deprecated since it provides no
- * additional semantics over HostedService, and unecessarily restricts the
- * Service to a single ComputerSystem, when the Service could reside in a
- * Network or other higher level System.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedRoutingServices as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the HostedRoutingServicesBean Interface. The CIM class HostedRoutingServices is
+ * described as follows:
+ * 
+ * This is a specialization of CIM_HostedService, which is an association between a Service and the System on which the functionality resides. The
+ * class, HostedRoutingServices, is deprecated since it provides no additional semantics over HostedService, and unecessarily restricts the Service to
+ * a single ComputerSystem, when the Service could reside in a Network or other higher level System.
  */
-    @Deprecated
+@Deprecated
 public class HostedRoutingServices extends HostedService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedRoutingServicesBeanImpl Class which
-     * implements the HostedRoutingServicesBean Interface, and encapsulates
-     * the CIM class HostedRoutingServices in a Java Bean. The CIM class
-     * HostedRoutingServices is described as follows:
-     *
-     * This is a specialization of CIM_HostedService, which is an association
-     * between a Service and the System on which the functionality resides.
-     * The class, HostedRoutingServices, is deprecated since it provides no
-     * additional semantics over HostedService, and unecessarily restricts
-     * the Service to a single ComputerSystem, when the Service could reside
-     * in a Network or other higher level System.
-     */
-    public HostedRoutingServices(){};
-    /**
-     * This method create an Association of the type HostedRoutingServices
-     * between one ComputerSystem object and RouteCalculationService object
-     */
-    @Deprecated
-    public static HostedRoutingServices link(ComputerSystem
-	antecedent,RouteCalculationService dependent){
+	/**
+	 * This constructor creates a HostedRoutingServicesBeanImpl Class which implements the HostedRoutingServicesBean Interface, and encapsulates the
+	 * CIM class HostedRoutingServices in a Java Bean. The CIM class HostedRoutingServices is described as follows:
+	 * 
+	 * This is a specialization of CIM_HostedService, which is an association between a Service and the System on which the functionality resides. The
+	 * class, HostedRoutingServices, is deprecated since it provides no additional semantics over HostedService, and unecessarily restricts the
+	 * Service to a single ComputerSystem, when the Service could reside in a Network or other higher level System.
+	 */
+	public HostedRoutingServices() {
+	};
 
-    return (HostedRoutingServices)
-	Association.link(HostedRoutingServices.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedRoutingServices between one ComputerSystem object and RouteCalculationService object
+	 */
+	@Deprecated
+	public static HostedRoutingServices link(ComputerSystem
+			antecedent, RouteCalculationService dependent) {
+
+		return (HostedRoutingServices) Association.link(HostedRoutingServices.class, antecedent, dependent);
+	}// link
 
 } // Class HostedRoutingServices

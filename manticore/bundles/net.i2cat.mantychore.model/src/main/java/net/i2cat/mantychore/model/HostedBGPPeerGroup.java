@@ -8,37 +8,31 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedBGPPeerGroup as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedBGPPeerGroupBean Interface. The CIM class HostedBGPPeerGroup is
- * described as follows:
- *
- * A BGPPeerGroup is weak to the AutonomousSystem that contains it. This
- * association formalizes that relationship.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedBGPPeerGroup as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the HostedBGPPeerGroupBean Interface. The CIM class HostedBGPPeerGroup is described
+ * as follows:
+ * 
+ * A BGPPeerGroup is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
  */
 public class HostedBGPPeerGroup extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedBGPPeerGroupBeanImpl Class which
-     * implements the HostedBGPPeerGroupBean Interface, and encapsulates the
-     * CIM class HostedBGPPeerGroup in a Java Bean. The CIM class
-     * HostedBGPPeerGroup is described as follows:
-     *
-     * A BGPPeerGroup is weak to the AutonomousSystem that contains it. This
-     * association formalizes that relationship.
-     */
-    public HostedBGPPeerGroup(){};
-    /**
-     * This method create an Association of the type HostedBGPPeerGroup
-     * between one AutonomousSystem object and BGPPeerGroup object
-     */
-    public static HostedBGPPeerGroup link(AutonomousSystem
-	antecedent,BGPPeerGroup dependent){
+	/**
+	 * This constructor creates a HostedBGPPeerGroupBeanImpl Class which implements the HostedBGPPeerGroupBean Interface, and encapsulates the CIM
+	 * class HostedBGPPeerGroup in a Java Bean. The CIM class HostedBGPPeerGroup is described as follows:
+	 * 
+	 * A BGPPeerGroup is weak to the AutonomousSystem that contains it. This association formalizes that relationship.
+	 */
+	public HostedBGPPeerGroup() {
+	};
 
-    return (HostedBGPPeerGroup)
-	Association.link(HostedBGPPeerGroup.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedBGPPeerGroup between one AutonomousSystem object and BGPPeerGroup object
+	 */
+	public static HostedBGPPeerGroup link(AutonomousSystem
+			antecedent, BGPPeerGroup dependent) {
+
+		return (HostedBGPPeerGroup) Association.link(HostedBGPPeerGroup.class, antecedent, dependent);
+	}// link
 
 } // Class HostedBGPPeerGroup
