@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.opennaas.router.tests.capability.ospf.methods;
 
@@ -29,28 +29,19 @@ public class ConfigureOSPFAreaTest extends OSPFIntegrationTest {
 	 * Test to check configureOSPFArea method
 	 */
 	@Test
-	public void configureOSPFAreaTest() {
-		try {
-			startResource();
+	public void configureOSPFAreaTest()
+		throws IOException, ProtocolException, ResourceException
+	{
+		startResource();
 
-			OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
-			ospfCapability.configureOSPFArea(getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
+		OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
+		ospfCapability.configureOSPFArea(getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
 
-			ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
+		ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		stopResource();
 	}
 
 	/**

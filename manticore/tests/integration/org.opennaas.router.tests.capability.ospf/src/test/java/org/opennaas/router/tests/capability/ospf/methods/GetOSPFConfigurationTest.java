@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.opennaas.router.tests.capability.ospf.methods;
 
@@ -22,24 +22,18 @@ public class GetOSPFConfigurationTest extends OSPFIntegrationTest {
 	 * Test to check getOSPFConfiguration method
 	 */
 	@Test
-	public void getOSPFConfigurationTest() {
-		try {
-			startResource();
+	public void getOSPFConfigurationTest()
+		throws ResourceException, ProtocolException
+	{
+		startResource();
 
-			OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
-			ospfCapability.getOSPFConfiguration();
+		OSPFCapability ospfCapability = (OSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
+		ospfCapability.getOSPFConfiguration();
 
-			ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
+		ICapability queueCapability = routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+		stopResource();
 	}
 }
