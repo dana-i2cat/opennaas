@@ -807,6 +807,18 @@
           -->
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.2</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<pushChanges>false</pushChanges>
+					<localCheckout>true</localCheckout>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
@@ -907,17 +919,45 @@
 
 	<distributionManagement>
 		<repository>
-            <uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
+			<id>i2cat</id>
+			<name>i2cat maven repository</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
 			<id>i2cat-snapshot</id>
 			<name>libs-snapshot-local</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
-		</repository>
+		</snapshotRepository>
 		<site>
-            <id>github</id>
-            <name>opennaas</name>
-            <url>http://github.com/dana-i2cat/opennaas/</url>
+			<id>github</id>
+			<name>opennaas</name>
+			<url>http://github.com/dana-i2cat/opennaas/</url>
 		</site>
 	</distributionManagement>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.i2cat.net/browse/OPENNAAS</url>
+	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>opennaas-dev</name>
+			<subscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/dev</subscribe>
+			<unsubscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/dev</unsubscribe>
+			<post>dev@lists.opennaas.org</post>
+			<archive>http://lists.opennaas.org/pipermail/dev/</archive>
+		</mailingList>
+		<mailingList>
+			<name>opennaas-user</name>
+			<subscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/users</subscribe>
+			<unsubscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/users</unsubscribe>
+			<post>users@lists.opennaas.org</post>
+			<archive>http://lists.opennaas.org/pipermail/users/</archive>
+		</mailingList>
+	</mailingLists>
 
 	<reporting>
 		<plugins>
