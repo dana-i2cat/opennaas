@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;
@@ -100,7 +98,7 @@ public class SendCommandTest {
 
 		assertNotNull(bundleContext);
 
-		// Wait for the activation of all the bundles 
+		// Wait for the activation of all the bundles
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);

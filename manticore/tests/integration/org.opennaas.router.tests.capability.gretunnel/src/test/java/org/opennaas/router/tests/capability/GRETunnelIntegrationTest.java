@@ -20,7 +20,6 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

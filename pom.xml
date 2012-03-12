@@ -56,7 +56,6 @@
 		<nmr.version>1.5.1-fuse-01-20</nmr.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
 		<paxexam-karaf-container.version>0.5.0</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.2</pax.logging.version>
@@ -526,48 +525,24 @@
 				<version>${easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-				<artifactId>paxexam-karaf-container</artifactId>
-				<version>0.4.0</version>
-				<scope>test</scope>
-			</dependency>
 
 			<!-- Integration tests -->
 			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam</artifactId>
-				<version>${pax.exam.version}</version>
+				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+				<artifactId>paxexam-karaf-container</artifactId>
+				<version>${paxexam-karaf-container.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit</artifactId>
-				<version>${pax.exam.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-container-default</artifactId>
-				<version>${pax.exam.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit-extender-impl</artifactId>
-				<version>${pax.exam.version}</version>
+				<artifactId>pax-exam-junit4</artifactId>
+				<version>${pax.exam2.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.swissbox</groupId>
 				<artifactId>pax-swissbox-framework</artifactId>
 				<version>1.5.0</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.karaf.tooling</groupId>
-				<artifactId>org.apache.karaf.tooling.testing</artifactId>
-				<version>${karaf.version}</version>
 				<scope>test</scope>
 			</dependency>
 

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!--  parent parameters  -->
 	<parent>
-		<artifactId>itests-bundle-settings</artifactId>
+		<artifactId>mantychore-bundles</artifactId>
 		<groupId>net.i2cat.mantychore</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<!--  POM id -->
+
 	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus :: Integration Test Helper</name>
 	<description>Nexus Integration test helper</description>
 	<packaging>bundle</packaging>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -27,33 +26,10 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.gogo.runtime</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-container-default</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-junit</artifactId>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.karaf.tooling</groupId>
-			<artifactId>org.apache.karaf.tooling.testing</artifactId>
-			<scope>compile</scope>
-		</dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.ops4j</groupId>
-				<artifactId>maven-pax-plugin</artifactId>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -62,15 +38,8 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
-						<!-- Optional imports is because not all helpers
-						     rely on these. Making them optional allows
-							 those helpers to be used with pax exam 2
-							 tests. Can be removed once pax exam 1
-							 is no longer used. -->
 						<Import-Package>
 							org.slf4j,
-							org.ops4j.pax.exam.*;resolution:=optional,
-							org.apache.karaf.testing;resolution:=optional,
 							org.osgi.framework,
 							*
 						</Import-Package>
