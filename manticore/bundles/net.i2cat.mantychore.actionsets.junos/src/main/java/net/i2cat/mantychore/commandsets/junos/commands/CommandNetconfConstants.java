@@ -15,4 +15,19 @@ public class CommandNetconfConstants {
 	public static final String	MERGE_OPERATION		= "merge";
 	public static final String	DELETE_OPERATION	= "delete";
 
+	public static enum TargetConfiguration {
+		RUNNING {
+			@Override
+			public String toString() {
+				return "running";
+			}
+		},
+		CANDIDATE {
+			@Override
+			public String toString() {
+				return "candidate";
+			}
+		}
+	}
+
 }

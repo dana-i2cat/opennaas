@@ -40,6 +40,13 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="chassis/addInterfaceToLR">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.AddInterfaceToLRCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 		<command name="chassis/removeInterface">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveInterfaceCommand"/>
 			<completers>

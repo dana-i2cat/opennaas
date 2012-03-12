@@ -1,19 +1,19 @@
 <configuration>
-	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
-		#set( $logicalRouter = "true" )
-	#end
-	#if($logicalRouter.equals("true"))
-		<logical-systems>
-			<name>$param.ElementName</name>
-	#end
+#set( $logicalRouter = "false" )
+#if(!$param.ElementName.equals("") )		
+	#set( $logicalRouter = "true" )
+#end
+#if($logicalRouter.equals("true"))
+	<logical-systems>
+		<name>$param.ElementName</name>
+#end
 <interfaces>
 	<interface>
 		<name>$param.Name</name>
 		<description operation="replace">$param.description</description>
 	</interface>
 </interfaces>
-	#if($logicalRouter.equals("true"))
-		</logical-systems>
-	#end
+#if($logicalRouter.equals("true"))
+	</logical-systems>
+#end
 </configuration>

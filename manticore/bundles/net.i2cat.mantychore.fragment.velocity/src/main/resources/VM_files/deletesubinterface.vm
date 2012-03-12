@@ -1,23 +1,21 @@
-
 ###############################################################################
-###########             DELETE IP IN AN INTERFACE                ###########
+###########                 DELETE AN INTERFACE UNIT                ###########
 ###############################################################################
 
 <configuration>
 	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )		
+	#if(!$elementName.equals("") )		
 		#set( $logicalRouter = "true" )
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
-			<name>$param.ElementName</name>
+			<name>$elementName</name>
 	#end
 	<interfaces>	
 		<interface>
-		##param must be an "Ethernetport" object
-		<name>$param.Name</name>
+		<name>$param.getName()</name>
 			<unit operation="delete">
-				<name>$param.PortNumber</name>
+				<name>$param.getPortNumber()</name>
 			</unit>
 		</interface>
 	</interfaces>

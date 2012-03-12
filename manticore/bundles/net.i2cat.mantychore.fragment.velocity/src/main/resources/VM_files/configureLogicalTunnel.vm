@@ -48,7 +48,7 @@
 				<unit operation="replace">
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 					<name>$param.PortNumber</name>
-					## PEER UNIT GETTED FROM MODEL
+					## PEER UNIT GET FROM MODEL
 					<peer-unit>$param.Peer_unit</peer-unit>
 					#set( $ethernet = "true" )
 					#isEthernet( $param $ethernet)
