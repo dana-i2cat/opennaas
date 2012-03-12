@@ -1,7 +1,7 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
@@ -9,11 +9,11 @@ import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
-import net.i2cat.mantychore.model.Service;
 import net.i2cat.mantychore.model.System;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
@@ -29,19 +29,19 @@ import org.apache.commons.digester.RuleSetBase;
  */
 public class IPInterfaceParser extends DigesterEngine {
 
-	private System							model;
+	private System				model;
 
-	String									location				= "";
+	String						location				= "";
 
-	VLANEndpoint							vlanEndpoint			= null;
-	boolean									flagLT					= false;
+	VLANEndpoint				vlanEndpoint			= null;
+	boolean						flagLT					= false;
 
-	GRETunnelConfiguration					gretunnelConfiguration	= null;
-	boolean									flagGT					= false;
+	GRETunnelConfiguration		gretunnelConfiguration	= null;
+	boolean						flagGT					= false;
 
-	long									peerUnit				= 0;
+	long						peerUnit				= 0;
 
-	public Map<String, OperationalStatus>	mapStatus				= new HashMap<String, OperationalStatus>();
+	public ArrayList<String>	disableInterface		= new ArrayList<String>();
 
 	/** vlan info **/
 
@@ -59,6 +59,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		@Override
 		public void addRuleInstances(Digester arg0) {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
+			addMyRule("*/interfaces/interface/", "setOperationalStatus", 0);
 			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
 			/* IP Configuration */
@@ -98,6 +99,17 @@ public class IPInterfaceParser extends DigesterEngine {
 		ruleSet = new ParserRuleSet();
 	}
 
+	public void setOperationalStatus(String s) {
+		System routerModel = this.model;
+		for (LogicalDevice port : routerModel.getLogicalDevices()) {
+			if (disableInterface.contains(port.getName())) {
+				port.setOperationalStatus(OperationalStatus.STOPPED);
+			} else {
+				port.setOperationalStatus(OperationalStatus.OK);
+			}
+		}
+	}
+
 	public System getModel() {
 		return model;
 	}
@@ -106,8 +118,8 @@ public class IPInterfaceParser extends DigesterEngine {
 		this.model = model;
 	}
 
-	public void setStatus(String stat) {
-		mapStatus.put(location, OperationalStatus.STOPPED);
+	public void setStatus(String e) {
+		disableInterface.add(location);
 	}
 
 	public IPInterfaceParser(String prefix) {
@@ -175,7 +187,6 @@ public class IPInterfaceParser extends DigesterEngine {
 			GRETunnelService gretunnelService = new GRETunnelService();
 			gretunnelService.setName(ethernetPort.getName() + '.' + ethernetPort.getPortNumber());
 			gretunnelService.setGRETunnelConfiguration(gretunnelConfiguration);
-
 			for (ProtocolEndpoint pE : ethernetPort.getProtocolEndpoint()) {
 
 				if (pE instanceof IPProtocolEndpoint) {
@@ -275,34 +286,6 @@ public class IPInterfaceParser extends DigesterEngine {
 	public void addVLAN(String vlanID) {
 		vlanEndpoint = new VLANEndpoint();
 		vlanEndpoint.setVlanID(Integer.parseInt(vlanID));
-
-	}
-
-	public HashMap<String, Object> getMapElements() {
-		HashMap<String, Object> mapElements = super.getMapElements();
-
-		/* method to check */
-		checkStatus(mapElements);
-
-		return mapElements;
-	}
-
-	public void checkStatus(HashMap<String, Object> mapElements) {
-		for (String key : mapElements.keySet()) {
-			Object element = mapElements.get(key);
-
-			if (element instanceof NetworkPort) {
-				NetworkPort networkPort = (NetworkPort) element;
-				String name = networkPort.getName(); // always it have one element
-
-				OperationalStatus status = OperationalStatus.OK;
-				if (mapStatus.containsKey(name))
-					status = mapStatus.get(name);
-
-				networkPort.setOperationalStatus(status);
-
-			}
-		}
 
 	}
 

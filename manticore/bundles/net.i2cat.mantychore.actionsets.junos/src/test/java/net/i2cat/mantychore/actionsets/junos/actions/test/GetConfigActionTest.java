@@ -70,11 +70,13 @@ public class GetConfigActionTest {
 
 		for (LogicalDevice device : ld) {
 			LogicalPort lp = (LogicalPort) device;
+
 			if (device instanceof LogicalTunnelPort) {
 				LogicalTunnelPort lt = (LogicalTunnelPort) device;
 				log.info("LogicalTunnelPort: " + lt.getName());
 				log.info("Peer unit " + lt.getPeer_unit());
 				log.info("Unit " + lt.getPortNumber());
+				log.info("Status " + lt.getOperationalStatus());
 			} else if (device instanceof EthernetPort) {
 				EthernetPort ep = (EthernetPort) device;
 				log.info("EthernetPort: " + ep.getName());
@@ -82,6 +84,7 @@ public class GetConfigActionTest {
 			} else {
 				log.info("No such class considered ");
 			}
+			log.info("Status " + device.getOperationalStatus());
 			for (ProtocolEndpoint p : lp.getProtocolEndpoint()) {
 				if (p instanceof IPProtocolEndpoint) {
 					IPProtocolEndpoint ip = (IPProtocolEndpoint) p;
