@@ -122,7 +122,7 @@
 							<features>
 								<feature>opennaas-persistence</feature>
 								<feature>opennaas-core</feature>
-								<feature>opennaas-platform</feature>
+								<feature>opennaas-platformmanager</feature>
 							</features>
 							<repository>${target-platform.path}/${servicemix.path}/system</repository>
 						</configuration>

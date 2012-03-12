@@ -17,6 +17,13 @@
 		<bundle>mvn:org.opennaas/opennaas-core-persistence/${project.version}</bundle>
 	</feature>
 
+	<feature name="opennaas-platformmanager" version="${project.version}">
+		<feature>jetty</feature>
+		<feature>cxf</feature>
+
+		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/${project.version}</bundle>
+	</feature>
+
 	<feature name="opennaas-core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
@@ -27,12 +34,5 @@
 		<bundle>mvn:org.opennaas/opennaas-core-events/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-resources/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-protocols-sessionmanager/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-platform" version="${project.version}">
-		<feature>jetty</feature>
-		<feature>cxf</feature>
-
-		<bundle>mvn:org.opennaas/opennaas-core-platformmanager/${project.version}</bundle>
 	</feature>
 </features>

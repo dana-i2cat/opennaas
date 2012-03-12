@@ -101,15 +101,7 @@
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature>opennaas-alarms</feature>
-								<feature>mantychore-base</feature>
-								<feature>mantychore-netconf</feature>
-								<feature>mantychore-junos</feature>
-								<feature>mantychore-router</feature>
-								<feature>mantychore-network</feature>
-								<feature>mantychore-bod</feature>
-								<feature>mantychore</feature>
-								<feature>luminis</feature>
+								<feature>opennaas</feature>
 								<feature>nexus-tests-helper</feature>
 								<feature>nexus-testprofile</feature>
 							</features>
