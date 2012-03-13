@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import mock.MockEventManager;
 import net.i2cat.mantychore.actionsets.junos.actions.logicalrouters.AddInterfaceToLogicalRouterAction;
+import net.i2cat.mantychore.actionsets.junos.actions.logicalrouters.RemoveInterfaceFromLogicalRouterAction;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSessionFactory;
@@ -23,16 +24,20 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class AddInterfaceToLRTest {
 
-	private static ProtocolManager						protocolManager;
-	private static ProtocolSessionManager				protocolSessionManager;
-	private static ProtocolSessionContext				netconfContext;
-	private static String								resourceId	= "testResource";
-	private static AddInterfaceToLogicalRouterAction	action;
+	private static ProtocolManager							protocolManager;
+	private static ProtocolSessionManager					protocolSessionManager;
+	private static ProtocolSessionContext					netconfContext;
+	private static String									resourceId	= "testResource";
+	private static AddInterfaceToLogicalRouterAction		addAction;
+	private static RemoveInterfaceFromLogicalRouterAction	removeAction;
 
 	@BeforeClass
 	public static void init() throws ProtocolException {
-		action = new AddInterfaceToLogicalRouterAction();
-		action.setModelToUpdate(new ComputerSystem());
+		addAction = new AddInterfaceToLogicalRouterAction();
+		addAction.setModelToUpdate(new ComputerSystem());
+
+		removeAction = new RemoveInterfaceFromLogicalRouterAction();
+		removeAction.setModelToUpdate(new ComputerSystem());
 
 		protocolManager = new ProtocolManager();
 		protocolSessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceId);
@@ -47,19 +52,27 @@ public class AddInterfaceToLRTest {
 	}
 
 	@Test
-	public void testExecute() throws ActionException {
-		action.setParams(createLRModelWithAnInterface());
-		ActionResponse response = action.execute(protocolSessionManager);
+	public void testExecuteAdd() throws ActionException {
+		addAction.setParams(createLRModelWithAnInterface());
+		ActionResponse response = addAction.execute(protocolSessionManager);
+		assertNotNull(response);
+		assertEquals(STATUS.OK, response.getStatus());
+	}
+
+	@Test
+	public void testExecuteRemove() throws ActionException {
+		removeAction.setParams(createLRModelWithAnInterface());
+		ActionResponse response = removeAction.execute(protocolSessionManager);
 		assertNotNull(response);
 		assertEquals(STATUS.OK, response.getStatus());
 	}
 
 	private ComputerSystem createLRModelWithAnInterface() {
 		ComputerSystem model = new ComputerSystem();
-		model.setElementName("LS1");
+		model.setElementName("cpe2");
 
 		EthernetPort port = new EthernetPort();
-		port.setName("fe-0/3/0");
+		port.setName("fe-0/0/3");
 		port.setPortNumber(0);
 		model.addLogicalDevice(port);
 
