@@ -1,20 +1,13 @@
 package net.i2cat.luminis.commandsKaraf.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.options;
 
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 import org.junit.Assert;
@@ -35,9 +28,10 @@ import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
+import net.i2cat.nexus.tests.AbstractKarafCommandTest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.felix.service.command.CommandProcessor;
 import org.apache.felix.service.command.CommandSession;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
@@ -48,6 +42,10 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+
 /**
  * Spring week 26 <br/>
  * http://jira.i2cat.net:8080/browse/MANTYCHORE-156
@@ -56,7 +54,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class ConnectionsKarafCommandsTest
+public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 {
 	static Log log =
 		LogFactory.getLog(ConnectionsKarafCommandsTest.class);
@@ -74,9 +72,6 @@ public class ConnectionsKarafCommandsTest
 	private IProtocolManager    protocolManager;
 
 	@Inject
-	private CommandProcessor    commandProcessor;
-
-	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.connections)")
 	private BlueprintContainer connectionService;
 
@@ -91,6 +86,15 @@ public class ConnectionsKarafCommandsTest
 	String				srcPortNum		= "0";
 	String				dstPortNum		= "129";
 	int					channelNum		= 32;
+
+	@Configuration
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
+	}
 
 	@Test
 	public void getInventoryCommandBasicTest() throws Exception
@@ -112,8 +116,8 @@ public class ConnectionsKarafCommandsTest
 			String responseStr;
 
 			// // FIXME refresh should skip the queue
-			// log.debug("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-			// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+			// log.debug("executeCommandWithResponse(connections:getInventory -r " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommandWithResponse("connections:getInventory -r " + resourceFriendlyID);
 			// log.debug(responseStr);
 			// // Assert.assertNotNull(response);
 			// if (responseStr != null)
@@ -133,8 +137,8 @@ public class ConnectionsKarafCommandsTest
 			Assert.assertNotNull(dstCard);
 			Assert.assertNotNull(dstCard.getChannelPlan());
 
-			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug("executeCommandWithResponse(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommandWithResponse("connections:getInventory " + resourceFriendlyID);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
@@ -183,8 +187,8 @@ public class ConnectionsKarafCommandsTest
 
 			// // TODO should refresh manually????
 			// // FIXME refresh should skip the queue
-			// log.info("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-			// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			// log.info("executeCommandWithResponse(connections:getInventory " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommandWithResponse("connections:getInventory " + resourceFriendlyID);
 			// log.debug(responseStr);
 			// // Assert.assertNotNull(response);
 			// if (responseStr != null)
@@ -198,15 +202,15 @@ public class ConnectionsKarafCommandsTest
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 
-			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.info("executeCommandWithResponse(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommandWithResponse("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
 				Assert.fail("Error in the makeConnection command");
 
-			log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
-			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.info("executeCommandWithResponse(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommandWithResponse("queue:execute " + resourceFriendlyID);
 			log.debug(response);
 			// Assert.assertNotNull(response);
 			if (response != null)
@@ -228,8 +232,8 @@ public class ConnectionsKarafCommandsTest
 			}
 			Assert.assertTrue(found);
 
-			log.info("executeCommand(connections:list " + resourceFriendlyID);
-			responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
+			log.info("executeCommandWithResponse(connections:list " + resourceFriendlyID);
+			responseStr = (String) executeCommandWithResponse("connections:list " + resourceFriendlyID);
 			if (responseStr != null)
 				Assert.fail("Error in the listConnections command");
 
@@ -261,8 +265,8 @@ public class ConnectionsKarafCommandsTest
 			String responseStr;
 			// // TODO should refresh manually????
 			// // FIXME refresh should skip the queue
-			// log.info("executeCommand(connections:getInventory -r " + resourceFriendlyID + ")");
-			// responseStr = (String) executeCommand("connections:getInventory -r " + resourceFriendlyID);
+			// log.info("executeCommandWithResponse(connections:getInventory -r " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommandWithResponse("connections:getInventory -r " + resourceFriendlyID);
 			// log.debug(responseStr);
 			// // Assert.assertNotNull(response);
 			// if (responseStr != null)
@@ -276,28 +280,28 @@ public class ConnectionsKarafCommandsTest
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 
-			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.info("executeCommandWithResponse(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommandWithResponse("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
 				Assert.fail("Error in the makeConnection command");
 
 			// should print out of date information
-			log.info("executeCommand(connections:list " + resourceFriendlyID);
-			responseStr = (String) executeCommand("connections:list " + resourceFriendlyID);
+			log.info("executeCommandWithResponse(connections:list " + resourceFriendlyID);
+			responseStr = (String) executeCommandWithResponse("connections:list " + resourceFriendlyID);
 			if (responseStr != null)
 				Assert.fail("Error in the listConnections command");
 
-			log.info("executeCommand(connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-			responseStr = (String) executeCommand("connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.info("executeCommandWithResponse(connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommandWithResponse("connections:removeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
 				Assert.fail("Error in the removeConnection command");
 
-			log.info("executeCommand(queue:execute " + resourceFriendlyID + ")");
-			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.info("executeCommandWithResponse(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommandWithResponse("queue:execute " + resourceFriendlyID);
 			log.debug(response);
 			// Assert.assertNotNull(response);
 			if (response != null)
@@ -349,8 +353,8 @@ public class ConnectionsKarafCommandsTest
 			String responseStr;
 
 			// // FIXME refresh should skip the queue
-			// log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-			// responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			// log.debug("executeCommandWithResponse(connections:getInventory " + resourceFriendlyID + ")");
+			// responseStr = (String) executeCommandWithResponse("connections:getInventory " + resourceFriendlyID);
 			// log.debug(responseStr);
 			// // Assert.assertNotNull(response);
 			// if (responseStr != null)
@@ -370,8 +374,8 @@ public class ConnectionsKarafCommandsTest
 			Assert.assertNotNull(dstCard);
 			Assert.assertNotNull(dstCard.getChannelPlan());
 
-			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug("executeCommandWithResponse(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommandWithResponse("connections:getInventory " + resourceFriendlyID);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
@@ -398,22 +402,22 @@ public class ConnectionsKarafCommandsTest
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 
-			log.info("executeCommand(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
-			responseStr = (String) executeCommand("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
+			log.info("executeCommandWithResponse(connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda + ")");
+			responseStr = (String) executeCommandWithResponse("connections:makeConnection " + resourceFriendlyID + " " + srcPortId + " " + lambda + " " + dstPortId + " " + lambda);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
 				Assert.fail("Error in the makeConnection command");
 
-			log.debug("executeCommand(queue:execute " + resourceFriendlyID + ")");
-			Integer response = (Integer) executeCommand("queue:execute " + resourceFriendlyID);
+			log.debug("executeCommandWithResponse(queue:execute " + resourceFriendlyID + ")");
+			Integer response = (Integer) executeCommandWithResponse("queue:execute " + resourceFriendlyID);
 			log.debug(response);
 			// Assert.assertNotNull(response);
 			if (response != null)
 				Assert.fail("Error in the execute queue command");
 
-			log.debug("executeCommand(connections:getInventory " + resourceFriendlyID + ")");
-			responseStr = (String) executeCommand("connections:getInventory " + resourceFriendlyID);
+			log.debug("executeCommandWithResponse(connections:getInventory " + resourceFriendlyID + ")");
+			responseStr = (String) executeCommandWithResponse("connections:getInventory " + resourceFriendlyID);
 			log.debug(responseStr);
 			// Assert.assertNotNull(response);
 			if (responseStr != null)
@@ -438,33 +442,6 @@ public class ConnectionsKarafCommandsTest
 		}
 	}
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
-
-	@Configuration
-	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-luminis"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
-					   keepRuntimeFolder());
-	}
-
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newWonesysSessionContext());
 
@@ -486,7 +463,7 @@ public class ConnectionsKarafCommandsTest
 		return protocolSessionContext;
 	}
 
-	public Object executeCommand(String command) throws Exception {
+	public Object executeCommandWithResponse(String command) throws Exception {
 		// Run some commands to make sure they are installed properly
 		ByteArrayOutputStream outputError = new ByteArrayOutputStream();
 		PrintStream psE = new PrintStream(outputError);
@@ -502,9 +479,9 @@ public class ConnectionsKarafCommandsTest
 		} catch (NoSuchMethodException a) {
 			log.error("Method for command not found: " + a.getLocalizedMessage());
 			Assert.fail("Method for command not found.");
+		} finally {
+			cs.close();
 		}
-
-		cs.close();
 		return commandOutput;
 	}
 }

@@ -1,7 +1,5 @@
 package net.i2cat.luminis.actions.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.LockNodeCommand;
 import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
@@ -30,9 +28,9 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class LockUnlockCommandsTest {
@@ -46,22 +44,9 @@ public class LockUnlockCommandsTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-luminis"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 

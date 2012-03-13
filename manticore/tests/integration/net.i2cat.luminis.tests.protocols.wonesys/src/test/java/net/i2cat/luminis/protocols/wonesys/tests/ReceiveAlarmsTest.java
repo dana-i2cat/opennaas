@@ -1,21 +1,9 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -38,11 +26,9 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 
@@ -63,9 +49,15 @@ import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
 import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
 
-@RunWith(JUnit4TestRunner.class)
-public class ReceiveAlarmsTest implements EventHandler {
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.junit.Assert.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
+@RunWith(JUnit4TestRunner.class)
+public class ReceiveAlarmsTest implements EventHandler
+{
 	private static Log log = LogFactory.getLog(ReceiveAlarmsTest.class);
 
 	@Inject
@@ -95,22 +87,9 @@ public class ReceiveAlarmsTest implements EventHandler {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-luminis"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 
