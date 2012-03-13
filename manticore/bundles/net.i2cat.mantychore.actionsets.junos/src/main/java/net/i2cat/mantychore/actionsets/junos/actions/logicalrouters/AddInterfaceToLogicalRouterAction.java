@@ -19,6 +19,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
@@ -39,7 +43,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -195,24 +198,16 @@ public class AddInterfaceToLogicalRouterAction extends JunosAction {
 	 * @param doc
 	 *            containing configuration
 	 * @return configuration/interfaces Element or null if it does not exist.
+	 * @throws XPathExpressionException
 	 */
-	private Element getInterfacesElement(Document doc) {
+	private Element getInterfacesElement(Document doc) throws XPathExpressionException {
 		Element configElement = doc.getDocumentElement();
 		assert (configElement.getNodeName().equals("configuration"));
 
-		NodeList configDirectChilds = configElement.getChildNodes();
-		if (configDirectChilds.getLength() == 0) {
-			return null;
-		}
-
-		for (int i = 0; i < configDirectChilds.getLength(); i++) {
-			if (configDirectChilds.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				if (((Element) configDirectChilds.item(i)).getNodeName().equals("interfaces")) {
-					return (Element) configDirectChilds.item(i);
-				}
-			}
-		}
-		return null;
+		XPath xpath = XPathFactory.newInstance().newXPath();
+		String xpathExpression = "/configuration/interfaces";
+		Element interfaces = (Element) xpath.evaluate(xpathExpression, configElement, XPathConstants.NODE);
+		return interfaces;
 	}
 
 	private String domToString(Document doc) throws TransformerException, IOException {

@@ -19,8 +19,6 @@ import java.util.concurrent.CountDownLatch;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
-
 import org.junit.Test;
 import org.junit.After;
 import org.junit.Assert;

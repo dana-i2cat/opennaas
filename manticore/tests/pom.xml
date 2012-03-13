@@ -14,9 +14,21 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>net.i2cat.nexus</groupId>
-				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<groupId>net.i2cat.mantychore</groupId>
+				<artifactId>assembly</artifactId>
 				<version>${project.version}</version>
+				<type>zip</type>
+				<classifier>bin</classifier>
+				<scope>test</scope>
+				<exclusions>
+					<!-- This exclusion is recommended by the Karaf
+					     test container manual to ensure compatibility
+					     with Eclipse. -->
+					<exclusion>
+						<groupId>org.apache.karaf.shell</groupId>
+						<artifactId>org.apache.karaf.shell.dev</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
