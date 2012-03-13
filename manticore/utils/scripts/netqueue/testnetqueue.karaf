@@ -1,0 +1,14 @@
+shell:echo Script to test create logical router
+
+#Creating and initializing resource
+resource:create C:/Users/Jordi/git/opennaas/manticore/utils/queueNetwork.descriptor
+resource:start network:network1
+
+resource:list
+
+netqueue:execute network:network1
+
+#Restoring configuration
+resource:stop network:network1
+resource:remove network:network1
+

@@ -1,7 +1,7 @@
 package org.opennaas.network.capability.queue;
 
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.core.resources.command.Response;
 
 /**
  * @author Jordi Puig
@@ -14,6 +14,6 @@ public interface IQueueService {
 	 * @return the queue response
 	 * @throws CapabilityException
 	 */
-	public QueueResponse execute() throws CapabilityException;
+	public Response execute() throws CapabilityException;
 
 }

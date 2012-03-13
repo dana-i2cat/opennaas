@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -29,7 +30,6 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.network.capability.queue.QueueCapability;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -83,8 +83,8 @@ public class QueueIntegrationTest {
 		try {
 			startResource();
 			QueueCapability queueCapability = (QueueCapability) networkResource.getCapability(getOSPFInformation(CAPABILIY_TYPE));
-			QueueResponse response = queueCapability.execute();
-			Assert.assertTrue(response.isOk());
+			Response response = queueCapability.execute();
+			Assert.assertTrue(response.getStatus().equals(Response.Status.OK));
 			stopResource();
 		} catch (ResourceException e) {
 			e.printStackTrace();

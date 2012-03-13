@@ -39,6 +39,7 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			log.debug("Found a capability in the resource.");
 			/* abstract capabilities have to be initialized */
 			if (capab instanceof AbstractCapability
+					// FIXME We can access to the capability but not to his implementation. Required to change this implementation
 					&& capab.getCapabilityInformation() != null
 					&& !capab.getCapabilityInformation().getType().equals("netqueue")) {
 				log.debug("Executing capabilities startup...");

@@ -6,14 +6,12 @@ import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.queue.QueueResponse;
 
 /**
  * @author Jordi Puig
@@ -52,7 +50,6 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 			action.setParams(params);
 			action.setModelToUpdate(resource.getModel());
 			queueManager.queueAction(action);
-
 		} catch (Exception e) {
 			Vector<String> errorMsgs = new Vector<String>();
 			errorMsgs
@@ -79,12 +76,11 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 * @see org.opennaas.network.capability.queue.IQueueService#execute()
 	 */
 	@Override
-	public QueueResponse execute() throws CapabilityException {
-		// TODO Dummy method. Need to implement the functionality
-		QueueResponse queueResponse = new QueueResponse();
-		queueResponse.getConfirmResponse().setStatus(STATUS.OK);
-		queueResponse.getRefreshResponse().setStatus(STATUS.OK);
-		return queueResponse;
+	public Response execute() throws CapabilityException {
+		// TODO Dummy method. Is necessary to implement the functionality
+		Response response = new Response();
+		response.setStatus(Response.Status.OK);
+		return response;
 	}
 
 	/*
@@ -94,7 +90,6 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 */
 	@Override
 	protected void activateCapability() throws CapabilityException {
-		throw new UnsupportedOperationException();
 	}
 
 	/*
@@ -104,7 +99,6 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 */
 	@Override
 	protected void deactivateCapability() throws CapabilityException {
-		throw new UnsupportedOperationException();
 	}
 
 	/*
@@ -114,7 +108,6 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 */
 	@Override
 	protected void initializeCapability() throws CapabilityException {
-		throw new UnsupportedOperationException();
 	}
 
 	/*
@@ -124,7 +117,6 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 */
 	@Override
 	protected void shutdownCapability() throws CapabilityException {
-		throw new UnsupportedOperationException();
 	}
 
 }
