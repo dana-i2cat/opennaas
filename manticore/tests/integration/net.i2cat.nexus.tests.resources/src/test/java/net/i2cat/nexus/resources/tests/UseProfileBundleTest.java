@@ -1,8 +1,5 @@
 package net.i2cat.nexus.resources.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -40,6 +37,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -67,6 +65,10 @@ public class UseProfileBundleTest {
     @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
     private BlueprintContainer chasisService;
 
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=opennaas-core-tests-mockprofile)")
+    private BlueprintContainer mockProfileService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
@@ -79,6 +81,8 @@ public class UseProfileBundleTest {
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFileExtend("etc/org.apache.karaf.features.cfg",
+												   "featuresBoot", ",nexus-testprofile"),
 					   keepRuntimeFolder());
 	}
 
