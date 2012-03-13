@@ -59,7 +59,6 @@
 						-->
 						<Import-Package>!${project.artifactId}.*,
   							org.slf4j,
-  							org.apache.activemq,
 							org.apache.felix.service.command,
 							*
 							</Import-Package>
