@@ -1,50 +1,60 @@
 /**
- * 
+ *
  */
 package org.opennaas.router.tests.capability;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 
+import static org.ops4j.pax.exam.CoreOptions.maven;
+import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.router.capability.gretunnel.IGRETunnelService;
 import org.opennaas.router.tests.capability.mock.MockBootstrapper;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * @author Jordi
  */
 @RunWith(JUnit4TestRunner.class)
-public class GRETunnelIntegrationTest extends AbstractIntegrationTest {
-
+public abstract class GRETunnelIntegrationTest
+{
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
 	protected static final String	TUNNEL_NAME		= "gre.1";
 	protected static final String	IPV4_ADDRESS	= "192.168.32.1";
@@ -54,35 +64,55 @@ public class GRETunnelIntegrationTest extends AbstractIntegrationTest {
 	private final Log				log				= LogFactory
 															.getLog(GRETunnelIntegrationTest.class);
 	private static MockResource		mockResource;
-	protected IGRETunnelService		iGRETunnelService;
 	protected ICapability			queueCapability;
 	protected ICapability			greTunnelCapability;
 
 	@Inject
-	BundleContext					bundleContext	= null;
+	private BundleContext			bundleContext;
 
-	/**
-	 * @return
-	 */
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory		queueManagerFactory;
+
+	@Inject
+	private IProtocolManager		protocolManager;
+
+	@Inject
+	@Filter("(capability=gretunnel)")
+	private ICapabilityFactory		gretunnelFactory;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer		routerRepositoryService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer		queueService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=opennaas.extension.router.capability.gretunnel)")
+    private BlueprintContainer		gretunnelService;
+
 	@Configuration
-	public static Option[] configure() {
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(karafDistributionConfiguration()
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   keepRuntimeFolder());
 	}
 
-	/**
-	 * 
-	 */
 	@Before
-	public void initBundles() {
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
+	public void initBundles()
+		throws CapabilityException, IncorrectLifecycleStateException,
+			   ResourceException, CorruptStateException, ProtocolException
+	{
 		initResource();
 		initCapability();
 	}
@@ -112,36 +142,22 @@ public class GRETunnelIntegrationTest extends AbstractIntegrationTest {
 	/**
 	 * Initialize the Queue and GRETunnel capabilies
 	 */
-	public void initCapability() {
-		try {
-			log.info("INFO: Before Test, getting queue...");
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
-			Assert.assertNotNull(queueManagerFactory);
+	public void initCapability()
+		throws CapabilityException, IncorrectLifecycleStateException,
+			   ResourceException, CorruptStateException, ProtocolException
+	{
+		log.info("INFO: Before Test, getting queue...");
+		queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability.initialize();
 
-			queueCapability = queueManagerFactory.create(mockResource);
-			queueCapability.initialize();
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
+		log.info("Creating gretunnel capability");
+		greTunnelCapability = gretunnelFactory.create(mockResource);
+		greTunnelCapability.initialize();
 
-			ICapabilityFactory gretunnelFactory = getOsgiService(ICapabilityFactory.class, "capability=gretunnel", 10000);
-			// Test elements not null
-			log.info("Checking gretunnel factory");
-			Assert.assertNotNull(gretunnelFactory);
-			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("gretunnel"));
-			log.info("Creating gretunnel capability");
-			greTunnelCapability = gretunnelFactory.create(mockResource);
-			Assert.assertNotNull(greTunnelCapability);
-			greTunnelCapability.initialize();
-
-			mockResource.addCapability(queueCapability);
-			mockResource.addCapability(greTunnelCapability);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			Assert.fail(e.getMessage());
-		}
+		mockResource.addCapability(queueCapability);
+		mockResource.addCapability(greTunnelCapability);
 	}
 
 	/**
@@ -164,7 +180,7 @@ public class GRETunnelIntegrationTest extends AbstractIntegrationTest {
 
 	/**
 	 * Get the GRETunnelService
-	 * 
+	 *
 	 * @return GRETunnelService
 	 * @throws IOException
 	 */
