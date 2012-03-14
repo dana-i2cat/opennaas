@@ -10,10 +10,12 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.After;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -26,23 +28,26 @@ import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.options;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class UseProfileBundleTest {
-
+public class UseProfileBundleTest
+{
 	static Log log = LogFactory.getLog(UseProfileBundleTest.class);
 
 	@Inject
@@ -71,22 +76,10 @@ public class UseProfileBundleTest {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router,nexus-testprofile"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeTestMockProfile(),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 

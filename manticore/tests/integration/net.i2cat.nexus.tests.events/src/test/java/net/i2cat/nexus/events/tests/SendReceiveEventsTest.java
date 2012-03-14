@@ -1,12 +1,5 @@
 package net.i2cat.nexus.events.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.Dictionary;
@@ -19,24 +12,30 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
-import org.ops4j.pax.exam.Customizer;
+
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class SendReceiveEventsTest
@@ -59,30 +58,11 @@ public class SendReceiveEventsTest
 	@Inject
 	private IEventManager	eventManager;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
-
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-core"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-core"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 
