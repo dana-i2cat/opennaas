@@ -2,13 +2,14 @@ package net.i2cat.mantychore.chassiscapability.test;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
+
 import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -24,8 +25,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
@@ -44,15 +45,12 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
@@ -61,8 +59,8 @@ public class ChassisCapabilityIntegrationTest
 {
 	private final static Log	log			= LogFactory.getLog(ChassisCapabilityIntegrationTest.class);
 
-	private final String		deviceID		= "junos";
-	private final String		queueID			= "queue";
+	private final String		deviceID	= "junos";
+	private final String		queueID		= "queue";
 
 	private MockResource		mockResource;
 	private ICapability			chassisCapability;
@@ -82,9 +80,9 @@ public class ChassisCapabilityIntegrationTest
 	@Filter("(capability=chassis)")
 	private ICapabilityFactory	chassisFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-    private BlueprintContainer	routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer	routerService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -174,6 +172,7 @@ public class ChassisCapabilityIntegrationTest
 
 	@Test
 	@Ignore
+	// FIXME this tests fails because of a vlan-tagging limitation describes at OPENNAAS-95 issue.
 	public void TestChassisAction() throws CapabilityException {
 		log.info("TEST CHASSIS ACTION");
 
