@@ -9,6 +9,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "chassis", name = "addInterfaceToLR", description = "Transfere an exitent subinterface from a physical router to a logical one.")
@@ -51,7 +52,8 @@ public class AddInterfaceToLRCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			chassisCapability.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, logicalRouterModel);
+			Response response = (Response) chassisCapability.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, logicalRouterModel);
+			printResponseStatus(response);
 
 		} catch (Exception e) {
 			printError(e);

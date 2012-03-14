@@ -9,6 +9,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "chassis", name = "removeInterfaceFromLR", description = "Transfere an exitent subinterface from a logical router to the physical one.")
@@ -51,7 +52,8 @@ public class RemoveInterfaceFromLRCommand extends GenericKarafCommand {
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			chassisCapability.sendMessage(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER, logicalRouterModel);
+			Response response = (Response) chassisCapability.sendMessage(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER, logicalRouterModel);
+			printResponseStatus(response);
 
 		} catch (Exception e) {
 			printError(e);
