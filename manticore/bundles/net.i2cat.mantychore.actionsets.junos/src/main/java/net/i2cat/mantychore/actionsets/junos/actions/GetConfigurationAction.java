@@ -214,10 +214,7 @@ public class GetConfigurationAction extends JunosAction {
 		if (!checkTemplate(template)) {
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		}
-
-		if (!checkParams(params)) {
-			throw new ActionException("Invalid parameters for action " + getActionID());
-		}
+		checkParams(params);
 	}
 
 	private boolean checkTemplate(String template) {
@@ -233,7 +230,7 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	public boolean checkParams(Object params) {
-		return (params == null);
+		log.warn("Ignoring parametrs in action " + actionID);
+		return true;
 	}
-
 }

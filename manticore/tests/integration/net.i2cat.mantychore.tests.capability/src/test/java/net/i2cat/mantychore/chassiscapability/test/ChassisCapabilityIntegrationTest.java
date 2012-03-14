@@ -1,7 +1,8 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+
+
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -86,16 +87,22 @@ public class ChassisCapabilityIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
-				.frameworkUrl(maven()
-						.groupId("net.i2cat.mantychore")
-						.artifactId("assembly")
-						.type("zip")
-						.classifier("bin")
-						.versionAsInProject())
-				.karafVersion("2.2.2")
-				.name("mantychore")
-				.unpackDirectory(new File("target/paxexam")),
-				keepRuntimeFolder());
+					   .frameworkUrl(maven()
+									 .groupId("net.i2cat.mantychore")
+									 .artifactId("assembly")
+									 .type("zip")
+									 .classifier("bin")
+									 .versionAsInProject())
+					   .karafVersion("2.2.2")
+					   .name("mantychore")
+					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-router"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
+					   keepRuntimeFolder());
 	}
 
 	public void initResource() {

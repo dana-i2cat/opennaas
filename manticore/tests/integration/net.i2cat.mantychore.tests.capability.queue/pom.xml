@@ -23,8 +23,8 @@
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.capability</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
