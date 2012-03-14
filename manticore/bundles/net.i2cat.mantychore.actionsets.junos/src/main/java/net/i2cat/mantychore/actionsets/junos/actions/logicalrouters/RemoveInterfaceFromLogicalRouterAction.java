@@ -53,7 +53,7 @@ public class RemoveInterfaceFromLogicalRouterAction extends JunosAction {
 	private String	deleteSubInterfaceTemplate	= "/VM_files/deletesubinterface.vm";
 
 	public RemoveInterfaceFromLogicalRouterAction() {
-		this.setActionID(ActionConstants.ADDINTERFACETOLOGICALROUTER);
+		this.setActionID(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER);
 		this.protocolName = "netconf";
 	}
 
