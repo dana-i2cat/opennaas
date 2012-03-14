@@ -1,5 +1,5 @@
 <resourceDescriptor>
-    <!--  Netqueue capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <!--  Netqueue capability information. -->
     <capabilityDescriptors>
         <capabilityProperty value="network" name="actionset.name"/>
         <capabilityProperty value="1.0" name="actionset.version" />
@@ -10,5 +10,6 @@
         <type>network</type>
         <name>network1</name>
     </information>
-    <properties/> 
+    <properties/>
+    <fileTopology>/C:/Users/Jordi/git/opennaas/manticore/utils/networktopologies/network_diffs_layer.xml</fileTopology> 
 </resourceDescriptor>
