@@ -72,8 +72,6 @@
 							org.hsqldb,
 							javax.persistence,
 							javassist.util.proxy,
-							javax.jms,
-							org.apache.activemq,
 							*</Import-Package>
 						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
 					</instructions>
