@@ -1,17 +1,17 @@
 package net.i2cat.mantychore.commandskaraf;
 
-
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.configureConsole;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import javax.inject.Inject;
 import java.io.File;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
@@ -31,8 +31,6 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -64,8 +62,7 @@ public class L2BoDCommandsKarafTest
 
 	private static final String	RESOURCE_INFO_NAME		= "L2BoD_Test";
 
-	private static Log			log						=
-		LogFactory.getLog(L2BoDCommandsKarafTest.class);
+	private static Log			log						= LogFactory.getLog(L2BoDCommandsKarafTest.class);
 
 	@Inject
 	@Filter("(type=bod)")
@@ -77,39 +74,39 @@ public class L2BoDCommandsKarafTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.capability.l2bod)")
-    private BlueprintContainer	bodCapabilityService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.capability.l2bod)")
+	private BlueprintContainer	bodCapabilityService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.repository)")
-    private BlueprintContainer	bodRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.repository)")
+	private BlueprintContainer	bodRepositoryService;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
+	@ProbeBuilder
+	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+		probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+		return probe;
+	}
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-bod,opennaas-netconf,nexus-tests-helper"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
-					   keepRuntimeFolder());
+				.frameworkUrl(maven()
+						.groupId("net.i2cat.mantychore")
+						.artifactId("assembly")
+						.type("zip")
+						.classifier("bin")
+						.versionAsInProject())
+				.karafVersion("2.2.2")
+				.name("mantychore")
+				.unpackDirectory(new File("target/paxexam")),
+				editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+						"featuresBoot",
+						"opennaas-bod,nexus-tests-helper"),
+				configureConsole()
+						.ignoreLocalConsole()
+						.ignoreRemoteShell(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -137,12 +134,12 @@ public class L2BoDCommandsKarafTest
 		repository.startResource(resource.getResourceDescriptor().getId());
 
 		ArrayList<String> response =
-			KarafCommandHelper.executeCommand("l2bod:requestConnection  " + resourceFriendlyID + " int1 int2 ", commandprocessor);
+				KarafCommandHelper.executeCommand("l2bod:requestConnection  " + resourceFriendlyID + " int1 int2 ", commandprocessor);
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		response = KarafCommandHelper.executeCommand("l2bod:shutdownConnection  " + resourceFriendlyID + " int1 int2 ",
-					commandprocessor);
+				commandprocessor);
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
@@ -151,32 +148,15 @@ public class L2BoDCommandsKarafTest
 	}
 
 	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		return protocolSessionContext;
-	}
-
-	/**
 	 * Create the protocol to connect
-	 *
+	 * 
 	 * @param resourceId
 	 * @throws ProtocolException
 	 */
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
+		// A protocol will be required in the future for bod actionset being able to connect to the existing BoD system.
+		// Dummy actionset (being used in this test) does not require a protocol.
+		// This method is called only to reproduce typical workflow, but no action is required (while using dummy actionset).
 	}
 
 	/**
