@@ -1,7 +1,6 @@
 package net.i2cat.luminis.actions.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +26,6 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -73,6 +70,12 @@ public class ConnectionActionsIntegrationTest {
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-luminis"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 					   keepRuntimeFolder());
 	}
 

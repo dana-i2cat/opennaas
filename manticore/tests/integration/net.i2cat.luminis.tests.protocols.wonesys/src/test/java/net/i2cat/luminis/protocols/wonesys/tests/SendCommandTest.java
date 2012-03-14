@@ -1,7 +1,6 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -18,8 +17,6 @@ import java.util.Properties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.junit.Test;
 import org.junit.After;
@@ -92,6 +89,12 @@ public class SendCommandTest {
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-luminis"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 					   keepRuntimeFolder());
 	}
 
@@ -100,7 +103,7 @@ public class SendCommandTest {
 
 		assertNotNull(bundleContext);
 
-		// Wait for the activation of all the bundles 
+		// Wait for the activation of all the bundles
 		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
 
 		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);

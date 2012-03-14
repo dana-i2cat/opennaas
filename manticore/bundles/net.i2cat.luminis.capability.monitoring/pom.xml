@@ -70,7 +70,6 @@
 							classes are under ".internal"
 						-->
 						<Import-Package>!${project.artifactId}.*,
-  							org.apache.activemq,
 							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
 							*
 							</Import-Package>

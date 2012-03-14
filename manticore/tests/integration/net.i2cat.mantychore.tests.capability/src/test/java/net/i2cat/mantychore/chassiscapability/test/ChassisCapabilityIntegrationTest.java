@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
@@ -99,6 +98,12 @@ public class ChassisCapabilityIntegrationTest
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-router"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 					   keepRuntimeFolder());
 	}
 

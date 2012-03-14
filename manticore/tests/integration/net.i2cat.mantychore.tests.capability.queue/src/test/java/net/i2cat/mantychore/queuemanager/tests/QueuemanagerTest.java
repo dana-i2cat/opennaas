@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.queuemanager.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,6 +85,12 @@ public class QueuemanagerTest
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-router"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 					   mavenBundle()
 					   .groupId("org.ops4j.base")
 					   .artifactId("ops4j-base-spi")
