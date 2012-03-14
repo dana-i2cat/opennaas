@@ -27,10 +27,6 @@
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>net.i2cat.mantychore.actionsets</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

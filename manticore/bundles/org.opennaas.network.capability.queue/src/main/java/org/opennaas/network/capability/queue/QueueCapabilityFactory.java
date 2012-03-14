@@ -20,7 +20,7 @@ public class QueueCapabilityFactory extends AbstractCapabilityFactory {
 	 */
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(QueueCapability.CAPABILITY_NAME),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(QueueCapability.NETQUEUE_CAPABILITY_NAME),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;

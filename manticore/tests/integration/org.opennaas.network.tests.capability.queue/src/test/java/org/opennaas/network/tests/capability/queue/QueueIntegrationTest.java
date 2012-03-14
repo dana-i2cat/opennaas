@@ -22,7 +22,6 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -83,8 +82,7 @@ public class QueueIntegrationTest {
 		try {
 			startResource();
 			QueueCapability queueCapability = (QueueCapability) networkResource.getCapability(getOSPFInformation(CAPABILIY_TYPE));
-			Response response = queueCapability.execute();
-			Assert.assertTrue(response.getStatus().equals(Response.Status.OK));
+			queueCapability.execute();
 			stopResource();
 		} catch (ResourceException e) {
 			e.printStackTrace();

@@ -19,9 +19,8 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 public class NetworkMapperDescriptorToModel {
 
 	/**
-	 * Loads information from the descriptor to a NetworkModel.
-	 * Loaded information includes topology and resource references
-	 *
+	 * Loads information from the descriptor to a NetworkModel. Loaded information includes topology and resource references
+	 * 
 	 * @param descriptor
 	 * @return
 	 * @throws ResourceException
@@ -30,21 +29,23 @@ public class NetworkMapperDescriptorToModel {
 
 		NetworkModel model = new NetworkModel();
 		if (descriptor.getNetworkTopology() != null) {
-			//load topology
+			// load topology
 			model = descriptorToModel(descriptor.getNetworkTopology());
 		}
 
-		//load references
-		ResourcesReferences references = new ResourcesReferences();
-		references.putAll(descriptor.getResourceReferences());
-		model.setResourceReferences(references);
+		// load references
+		if (descriptor.getResourceReferences() != null) {
+			ResourcesReferences references = new ResourcesReferences();
+			references.putAll(descriptor.getResourceReferences());
+			model.setResourceReferences(references);
+		}
 
 		return model;
 	}
 
 	/**
 	 * Loads a NetworkTopology into a NetworkModel
-	 *
+	 * 
 	 * @param networkTopology
 	 * @return
 	 * @throws ResourceException
