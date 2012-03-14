@@ -81,8 +81,12 @@ public class UseProfileBundleTest {
 					   .karafVersion("2.2.2")
 					   .name("mantychore")
 					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFileExtend("etc/org.apache.karaf.features.cfg",
-												   "featuresBoot", ",nexus-testprofile"),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-router,nexus-testprofile"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 					   keepRuntimeFolder());
 	}
 
