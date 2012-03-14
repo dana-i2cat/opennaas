@@ -10,10 +10,10 @@ import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
+import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.System;
 import net.i2cat.netconf.rpc.Reply;
 
@@ -143,7 +143,9 @@ public class GetConfigurationAction extends JunosAction {
 		// TODO implements a better method to merge the elements in model
 		// now are deleted all the existing elements the parser creates
 		// before adding new ones (calling the parser)
-		routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
+		// routerModel.removeAllLogicalDeviceByType(EthernetPort.class);
+
+		routerModel.removeAllLogicalDeviceByType(NetworkPort.class);
 		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
 
@@ -178,16 +180,10 @@ public class GetConfigurationAction extends JunosAction {
 	}
 
 	@Override
-	public boolean checkParams(Object params) throws ActionException {
-		// For this Action params are not allowed
-		return true;
-	}
-
-	@Override
 	public void prepareMessage() throws ActionException {
-		if (template == null || template.equals(""))
-			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
-		checkParams(params);
+
+		validate();
+
 		try {
 			Object velocityParams = params;
 			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
@@ -214,4 +210,27 @@ public class GetConfigurationAction extends JunosAction {
 		}
 	}
 
+	private void validate() throws ActionException {
+		if (!checkTemplate(template)) {
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
+		}
+		checkParams(params);
+	}
+
+	private boolean checkTemplate(String template) {
+
+		boolean templateOK = true;
+		// The template can not be null or empty
+		if (template == null || template.equals("")) {
+			templateOK = false;
+		}
+
+		return templateOK;
+
+	}
+
+	public boolean checkParams(Object params) {
+		log.warn("Ignoring parametrs in action " + actionID);
+		return true;
+	}
 }
