@@ -100,9 +100,13 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 			for (NetworkElement networkElement : model.getNetworkElements()) {
 				// Only Device and NetworkDomain instances
 				if (networkElement instanceof Device || networkElement instanceof NetworkDomain) {
-					QueueResponse queueResponse = executeQueue(networkElement.getName());
-					if (queueResponse != null) {
-						response.put(networkElement.getName(), queueResponse);
+					try {
+						QueueResponse queueResponse = executeQueue(networkElement.getName());
+						if (queueResponse != null) {
+							response.put(networkElement.getName(), queueResponse);
+						}
+					} catch (CapabilityException e) {
+						response.put(networkElement.getName(), new QueueResponse());
 					}
 				}
 			}
