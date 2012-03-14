@@ -33,7 +33,6 @@ import org.opennaas.network.capability.queue.QueueCapability;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.options.extra.VMOption;
 
 /**
  * @author Jordi
@@ -71,7 +70,8 @@ public class QueueIntegrationTest {
 				.name("mantychore")
 				.unpackDirectory(new File("target/paxexam")),
 				keepRuntimeFolder()
-				, new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"));
+		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
+		);
 	}
 
 	/**
