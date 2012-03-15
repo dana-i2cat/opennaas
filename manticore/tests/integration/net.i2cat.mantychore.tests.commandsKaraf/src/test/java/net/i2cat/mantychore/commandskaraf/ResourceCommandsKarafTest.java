@@ -1,12 +1,5 @@
 package net.i2cat.mantychore.commandskaraf;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,16 +8,17 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.KarafCommandHelper;
+import net.i2cat.nexus.tests.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.felix.service.command.CommandProcessor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -34,29 +28,27 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
+
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class ResourceCommandsKarafTest
+public class ResourceCommandsKarafTest extends AbstractKarafCommandTest
 {
 	static Log log = LogFactory.getLog(ResourceCommandsKarafTest.class);
 
 	@Inject
 	private IResourceManager	resourceManager;
-
-	@Inject
-	private CommandProcessor	commandprocessor;
 
 	@Inject
 	private IProtocolManager	protocolManager;
@@ -73,16 +65,13 @@ public class ResourceCommandsKarafTest
     @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
     private BlueprintContainer queueService;
 
-	public String capture() throws IOException {
-		StringWriter sw = new StringWriter();
-		BufferedReader rdr = new BufferedReader(
-				new InputStreamReader(System.in));
-		String s = rdr.readLine();
-		while (s != null) {
-			sw.write(s);
-			s = rdr.readLine();
-		}
-		return sw.toString();
+	@Configuration
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	/**
@@ -111,33 +100,6 @@ public class ResourceCommandsKarafTest
 
 	}
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
-
-	@Configuration
-	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router,nexus-tests-helper"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
-					   keepRuntimeFolder());
-	}
-
 	@Test
 	public void InfoCommandTest() throws Exception {
 		List<String> capabilities = new ArrayList<String>();
@@ -159,9 +121,7 @@ public class ResourceCommandsKarafTest
 		resourceManager.startResource(resource.getResourceIdentifier());
 
 		List<String> response =
-			KarafCommandHelper.executeCommand("resource:info " +
-											  resourceFriendlyID,
-											  commandprocessor);
+			executeCommand("resource:info " + resourceFriendlyID);
 
 		if (!response.get(1).isEmpty()) {
 			Assert.fail(response.get(1));

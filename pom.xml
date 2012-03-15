@@ -67,7 +67,7 @@
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
-		<paxexam-karaf-container.version>0.5.0</paxexam-karaf-container.version>
+		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.2</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>

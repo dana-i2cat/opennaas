@@ -1,12 +1,11 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -86,30 +84,17 @@ public class ChassisCapabilityIntegrationTest
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
-					   keepRuntimeFolder());
+		return options(opennaasDistributionConfiguration(),
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() {
 
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
