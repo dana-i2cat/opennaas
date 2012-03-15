@@ -1,7 +1,6 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -15,16 +14,18 @@ import javax.inject.Inject;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ResourceIdentifier;
@@ -93,6 +94,12 @@ public class UpDownTest
 				.karafVersion("2.2.2")
 				.name("mantychore")
 				.unpackDirectory(new File("target/paxexam")),
+					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
+												"featuresBoot",
+												"opennaas-router"),
+					   configureConsole()
+					   .ignoreLocalConsole()
+					   .ignoreRemoteShell(),
 				keepRuntimeFolder());
 	}
 
@@ -187,10 +194,8 @@ public class UpDownTest
 
 	}
 
-	@Ignore
 	@Test
 	public void UpDownActionTest() throws CapabilityException {
-		// FIXME http://jira.i2cat.net:8080/browse/OPENNAAS-228
 		Response resp;
 		QueueResponse queueResponse;
 
@@ -200,6 +205,36 @@ public class UpDownTest
 
 		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(queueResponse.isOk());
+
+		String str = "";
+		ComputerSystem model = (ComputerSystem) mockResource.getModel();
+		Assert.assertNotNull(model);
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof EthernetPort) {
+				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperationalStatus());
+
+				str += "- EthernetPort: " + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				str += port.getOperationalStatus();
+				str += '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+								protocolEndpoint;
+						str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
+						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+					}
+				}
+
+			}
+			else {
+				str += "not searched device";
+			}
+
+		}
+
+		log.info(str);
 
 		String interfaceName = "fe-0/1/3";
 

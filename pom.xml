@@ -21,7 +21,7 @@
     <licenses>
         <license>
             <name>GNU Lesser General Public License 3</name>
-            <url>LICENSE</url>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -29,13 +29,20 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+		<ant.version>1.7.0_4</ant.version>
 		<activemq.version>5.5.1-fuse-01-20</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
+		<beanutils.version>1.8.0</beanutils.version>
 		<camel.version>2.8.0-fuse-01-20</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
-		<commons.configuration.version>1.2</commons.configuration.version>
+		<commons.codec.version>1.4</commons.codec.version>
+		<commons.collections.version>3.2.1_1</commons.collections.version>
+		<commons.configuration.version>1.6</commons.configuration.version>
 		<commons.dbcp.version>1.2.2_7</commons.dbcp.version>
 		<commons.digester.version>2.1</commons.digester.version>
+		<commons.io.version>1.4</commons.io.version>
+		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
+		<commons.lang.version>2.4_4</commons.lang.version>
 		<cxf.version>2.4.3-fuse-00-20</cxf.version>
 		<dynamicjava.version>1.0.0</dynamicjava.version>
 		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
@@ -45,9 +52,11 @@
 		<geronimo.jpa.version>1.1</geronimo.jpa.version>
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
+		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
+		<javamail.version>1.4.4</javamail.version>
 		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
 		<junit.version>4.10</junit.version>
 		<karaf.version>2.2.2-fuse-02-20</karaf.version>
@@ -55,8 +64,8 @@
 		<netconf4j.version>0.0.2</netconf4j.version>
 		<nmr.version>1.5.1-fuse-01-20</nmr.version>
 		<opennaas.version>${project.version}</opennaas.version>
+		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
-		<pax.exam.version>1.2.4</pax.exam.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
 		<paxexam-karaf-container.version>0.5.0</paxexam-karaf-container.version>
 		<pax.logging.version>1.6.2</pax.logging.version>
@@ -526,48 +535,24 @@
 				<version>${easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
-			<dependency>
-				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-				<artifactId>paxexam-karaf-container</artifactId>
-				<version>0.4.0</version>
-				<scope>test</scope>
-			</dependency>
 
 			<!-- Integration tests -->
 			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam</artifactId>
-				<version>${pax.exam.version}</version>
+				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+				<artifactId>paxexam-karaf-container</artifactId>
+				<version>${paxexam-karaf-container.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit</artifactId>
-				<version>${pax.exam.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-container-default</artifactId>
-				<version>${pax.exam.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam-junit-extender-impl</artifactId>
-				<version>${pax.exam.version}</version>
+				<artifactId>pax-exam-junit4</artifactId>
+				<version>${pax.exam2.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.ops4j.pax.swissbox</groupId>
 				<artifactId>pax-swissbox-framework</artifactId>
 				<version>1.5.0</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.karaf.tooling</groupId>
-				<artifactId>org.apache.karaf.tooling.testing</artifactId>
-				<version>${karaf.version}</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -613,6 +598,11 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.0</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
@@ -807,6 +797,18 @@
           -->
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.2.2</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>v@{project.version}</tagNameFormat>
+					<pushChanges>false</pushChanges>
+					<localCheckout>true</localCheckout>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
@@ -907,39 +909,122 @@
 
 	<distributionManagement>
 		<repository>
-            <uniqueVersion>true</uniqueVersion>
+			<uniqueVersion>false</uniqueVersion>
+			<id>i2cat</id>
+			<name>i2cat maven repository</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
 			<id>i2cat-snapshot</id>
 			<name>libs-snapshot-local</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
-		</repository>
+		</snapshotRepository>
 		<site>
-            <id>github</id>
-            <name>opennaas</name>
-            <url>http://github.com/dana-i2cat/opennaas/</url>
+			<id>github</id>
+			<name>opennaas</name>
+			<url>http://github.com/dana-i2cat/opennaas/</url>
 		</site>
 	</distributionManagement>
+
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.i2cat.net/browse/OPENNAAS</url>
+	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>opennaas-dev</name>
+			<subscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/dev</subscribe>
+			<unsubscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/dev</unsubscribe>
+			<post>dev@lists.opennaas.org</post>
+			<archive>http://lists.opennaas.org/pipermail/dev/</archive>
+		</mailingList>
+		<mailingList>
+			<name>opennaas-user</name>
+			<subscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/users</subscribe>
+			<unsubscribe>http://lists.opennaas.org/cgi-bin/mailman/listinfo/users</unsubscribe>
+			<post>users@lists.opennaas.org</post>
+			<archive>http://lists.opennaas.org/pipermail/users/</archive>
+		</mailingList>
+	</mailingLists>
 
 	<reporting>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>index</report>
+							<report>scm</report>
+							<report>license</report>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-management</report>
+							<report>mailing-list</report>
+							<report>modules</report>
+							<report>summary</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+				<configuration>
+					<!-- Adding location information is very slow, so
+					     we disable it. -->
+					<dependencyLocationsEnabled>false</dependencyLocationsEnabled>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.5</version>
+				<version>2.8.1</version>
+				<!-- Only generating an aggregated report for the
+				     top-level project is considerably faster and we
+				     don't need individual JavaDoc reports anyway. -->
+				<inherited>false</inherited>
+				<reportSets>
+					<reportSet>
+						<id>aggregate</id>
+						<reports>
+							<report>aggregate</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jxr-plugin</artifactId>
-				<version>2.2</version>
+				<version>2.3</version>
+				<!-- Similar to the JavaDoc report, the value of a
+				     single top-level report is bigger than individual
+				     reports. -->
+				<inherited>false</inherited>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.5</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>2.12</version>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.4.0</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>1.6</targetJdk>
+					<aggregate>true</aggregate>
+				</configuration>
 			</plugin>
 		</plugins>
 	</reporting>

@@ -21,16 +21,13 @@ import net.i2cat.mantychore.model.System;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
 
-	@Ignore
 	@Test
 	public void testStatusParserTest() throws Exception {
-		// FIXME http://jira.i2cat.net:8080/browse/OPENNAAS-228
 		System model = createSampleModel();
 		IPInterfaceParser parser = new IPInterfaceParser(model);
 
@@ -47,10 +44,12 @@ public class IPInterfaceParserTest {
 		for (LogicalDevice device : model.getLogicalDevices()) {
 			if (device instanceof EthernetPort) {
 				EthernetPort port = (EthernetPort) device;
-				Assert.assertNotNull("OperationalStatus must be set", port.getOperatingStatus());
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperationalStatus());
 
 				str += "- EthernetPort: " + '\n';
-				str += port.getName() + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				str += port.getOperationalStatus();
+				str += '\n';
 				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
 					if (protocolEndpoint instanceof IPProtocolEndpoint) {
 						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
