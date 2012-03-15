@@ -18,11 +18,10 @@ import org.junit.Test;
 public class MantychoreRepositoryTest {
 	MantychoreRepository	mantychoreRepository;
 	String					resourceType	= "router";
-	String					persistenceUnit	= "ResourceCore";
 
 	@Test
 	public void testCapabilityFactories() {
-		mantychoreRepository = new MantychoreRepository("mantychorerepository", persistenceUnit);
+		mantychoreRepository = new MantychoreRepository("mantychorerepository");
 		mantychoreRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		mantychoreRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -36,7 +35,7 @@ public class MantychoreRepositoryTest {
 
 	@Test
 	public void testCreateRemoveResources() {
-		mantychoreRepository = new MantychoreRepository("router", persistenceUnit);
+		mantychoreRepository = new MantychoreRepository("router");
 		mantychoreRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		mantychoreRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -71,7 +70,7 @@ public class MantychoreRepositoryTest {
 	@Test
 	public void testModifyResources() {
 
-		mantychoreRepository = new MantychoreRepository("router", persistenceUnit);
+		mantychoreRepository = new MantychoreRepository("router");
 		mantychoreRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		mantychoreRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
