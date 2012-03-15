@@ -80,32 +80,31 @@ public class AddInterfaceToLogicalRouterAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
+		NetworkPort ifaceToAdd = (NetworkPort) getOnlyElement(((ComputerSystem) params).getLogicalDevices(), null);
+		String ifaceToAddName = ifaceToAdd.getName() + "." + ifaceToAdd.getPortNumber();
+		String logicalRouterName = nullToEmpty(((ComputerSystem) params).getElementName());
+
 		try {
 
-			// get interface
-			JunosCommand getCommand = new GetNetconfCommand(prepareGetInterfaceMessage((ComputerSystem) params), TargetConfiguration.CANDIDATE);
-			getCommand.initialize();
-			Response getInterfaceResponse = sendCommandToProtocol(getCommand, protocol);
+			// TODO Check LR is in opennaas resource manager and it is not active
+
+			Response getInterfaceResponse = getInterfaceFromCandidate(ifaceToAdd, protocol);
 			actionResponse.addResponse(getInterfaceResponse);
 
 			if (getInterfaceResponse.getStatus().equals(Response.Status.OK)) {
 
-				// copy it to LR
-				String interfaceConfiguration = filterInterfaceConfiguration(getInterfaceResponse);
+				checkInterfaceExists(ifaceToAddName, getInterfaceResponse);
 
-				JunosCommand editCommand = new EditNetconfCommand(prepareCopyInterfaceToLRMessage((ComputerSystem) params, interfaceConfiguration));
-				editCommand.initialize();
-				Response copyInterfaceResponse = sendCommandToProtocol(editCommand, protocol);
-				actionResponse.addResponse(copyInterfaceResponse);
+				Response copyInterfaceToLRResponse = copyInterfaceToLR(ifaceToAdd, getInterfaceResponse, logicalRouterName, protocol);
+				actionResponse.addResponse(copyInterfaceToLRResponse);
 
-				if (copyInterfaceResponse.getStatus().equals(Response.Status.OK)) {
+				if (copyInterfaceToLRResponse.getStatus().equals(Response.Status.OK)) {
 
 					// remove it from parent
-					JunosCommand deleteCommand = new EditNetconfCommand(prepareDeleteInterfaceMessage((ComputerSystem) params),
-							CommandNetconfConstants.NONE_OPERATION);
-					deleteCommand.initialize();
-					actionResponse.addResponse(sendCommandToProtocol(deleteCommand, protocol));
+					Response deleteInterfaceResponse = deleteInterface(ifaceToAdd, protocol);
+					actionResponse.addResponse(deleteInterfaceResponse);
 				}
+
 			}
 
 			validateAction(actionResponse);
@@ -126,26 +125,60 @@ public class AddInterfaceToLogicalRouterAction extends JunosAction {
 		// Messages are prepared in executeListCommand
 	}
 
-	private String prepareGetInterfaceMessage(ComputerSystem model) throws ActionException {
+	private void checkInterfaceExists(String ifaceName, Response getInterfaceResponse) throws ActionException {
 
-		NetworkPort iface = (NetworkPort) getOnlyElement(((ComputerSystem) params).getLogicalDevices(), null);
+		if (getInterfaceResponse.getInformation().equals("<configuration></configuration>")) {
+			// an empty configuration means filter has failed
+			throw new ActionException("Interface " + ifaceName + " not found in this router");
+		}
+	}
+
+	private Response getInterfaceFromCandidate(NetworkPort iface, IProtocolSession protocol) throws ActionException, ProtocolException {
+
+		String getInterfaceFilter = prepareGetInterfaceMessage(iface);
+
+		JunosCommand getCommand = new GetNetconfCommand(getInterfaceFilter, TargetConfiguration.CANDIDATE);
+		getCommand.initialize();
+		return sendCommandToProtocol(getCommand, protocol);
+	}
+
+	private Response copyInterfaceToLR(NetworkPort ifaceToAdd, Response getInterfaceResponse, String logicalRouterName, IProtocolSession protocol)
+			throws ActionException, ProtocolException {
+
+		String interfacesConfiguration = filterInterfaceConfiguration(getInterfaceResponse);
+
+		JunosCommand editCommand = new EditNetconfCommand(
+				prepareCopyInterfaceToLRMessage(interfacesConfiguration, logicalRouterName));
+		editCommand.initialize();
+		return sendCommandToProtocol(editCommand, protocol);
+	}
+
+	private Response deleteInterface(NetworkPort ifaceToAdd, IProtocolSession protocol) throws ActionException, ProtocolException {
+
+		JunosCommand deleteCommand = new EditNetconfCommand(prepareDeleteInterfaceMessage(ifaceToAdd),
+				CommandNetconfConstants.NONE_OPERATION);
+		deleteCommand.initialize();
+		return sendCommandToProtocol(deleteCommand, protocol);
+	}
+
+	private String prepareGetInterfaceMessage(NetworkPort ifaceToAdd) throws ActionException {
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
 		extraParams.put("elementName", nullToEmpty(((ComputerSystem) getModelToUpdate()).getElementName()));
 
 		try {
-			return prepareVelocityCommand(iface, getSubInterfaceTemplate, extraParams);
+			return prepareVelocityCommand(ifaceToAdd, getSubInterfaceTemplate, extraParams);
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}
 	}
 
-	private String prepareCopyInterfaceToLRMessage(ComputerSystem model, String interfaceConfiguration) throws ActionException {
+	private String prepareCopyInterfaceToLRMessage(String interfaceConfiguration, String logicalRouterName) throws ActionException {
 
 		NetworkPort iface = (NetworkPort) getOnlyElement(((ComputerSystem) params).getLogicalDevices(), null);
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
-		extraParams.put("elementName", nullToEmpty(model.getElementName()));
+		extraParams.put("elementName", logicalRouterName);
 		extraParams.put("xmlToMerge", interfaceConfiguration);
 
 		try {
@@ -155,15 +188,13 @@ public class AddInterfaceToLogicalRouterAction extends JunosAction {
 		}
 	}
 
-	private String prepareDeleteInterfaceMessage(ComputerSystem model) throws ActionException {
-
-		NetworkPort iface = (NetworkPort) getOnlyElement(((ComputerSystem) params).getLogicalDevices(), null);
+	private String prepareDeleteInterfaceMessage(NetworkPort ifaceToDelete) throws ActionException {
 
 		Map<String, Object> extraParams = new HashMap<String, Object>();
 		extraParams.put("elementName", nullToEmpty(((ComputerSystem) getModelToUpdate()).getElementName()));
 
 		try {
-			return prepareVelocityCommand(iface, deleteSubInterfaceTemplate, extraParams);
+			return prepareVelocityCommand(ifaceToDelete, deleteSubInterfaceTemplate, extraParams);
 		} catch (Exception e) {
 			throw new ActionException(e);
 		}

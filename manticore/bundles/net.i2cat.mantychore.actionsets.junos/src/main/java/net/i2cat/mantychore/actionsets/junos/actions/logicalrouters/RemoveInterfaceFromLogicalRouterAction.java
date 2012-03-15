@@ -80,14 +80,23 @@ public class RemoveInterfaceFromLogicalRouterAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
+		NetworkPort ifaceToAdd = (NetworkPort) getOnlyElement(((ComputerSystem) params).getLogicalDevices(), null);
+		String ifaceToAddName = ifaceToAdd.getName() + "." + ifaceToAdd.getPortNumber();
+		String logicalRouterName = nullToEmpty(((ComputerSystem) params).getElementName());
+
 		try {
-			// get interface
+
+			// TODO Check LR is in opennaas resource manager and it is not active
+
+			// get interface from candidate
 			JunosCommand getCommand = new GetNetconfCommand(prepareGetInterfaceMessage((ComputerSystem) params), TargetConfiguration.CANDIDATE);
 			getCommand.initialize();
 			Response getInterfaceResponse = sendCommandToProtocol(getCommand, protocol);
 			actionResponse.addResponse(getInterfaceResponse);
 
 			if (getInterfaceResponse.getStatus().equals(Response.Status.OK)) {
+
+				checkInterfaceExists(ifaceToAddName, logicalRouterName, getInterfaceResponse);
 
 				// copy it to physical router
 				String interfaceConfiguration = filterInterfaceConfiguration(getInterfaceResponse, ((ComputerSystem) params).getElementName());
@@ -124,6 +133,13 @@ public class RemoveInterfaceFromLogicalRouterAction extends JunosAction {
 	public void prepareMessage() throws ActionException {
 		// Nothing to prepare
 		// Messages are prepared in executeListCommand
+	}
+
+	private void checkInterfaceExists(String ifaceName, String logicalRouterName, Response getInterfaceResponse) throws ActionException {
+		if (getInterfaceResponse.getInformation().equals("<configuration></configuration>")) {
+			// an empty configuration means filter has failed
+			throw new ActionException("Interface " + ifaceName + " not found in router " + logicalRouterName);
+		}
 	}
 
 	private String prepareGetInterfaceMessage(ComputerSystem model) throws ActionException {
