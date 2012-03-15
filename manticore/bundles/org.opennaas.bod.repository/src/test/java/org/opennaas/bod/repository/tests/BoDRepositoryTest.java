@@ -18,12 +18,11 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 public class BoDRepositoryTest {
 	BoDRepository	bodRepository;
 	String			resourceType	= "bod";
-	String			persistenceUnit	= "ResourceCore";
 
 	@Test
 	public void testCapabilityFactories() {
 
-		bodRepository = new BoDRepository("bodrerepository", persistenceUnit);
+		bodRepository = new BoDRepository("bodrerepository");
 		bodRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		bodRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -37,7 +36,7 @@ public class BoDRepositoryTest {
 	@Test
 	public void testCreateRemoveResources() {
 
-		bodRepository = new BoDRepository("bod", persistenceUnit);
+		bodRepository = new BoDRepository("bod");
 		bodRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		bodRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -71,7 +70,7 @@ public class BoDRepositoryTest {
 	@Test
 	public void testModifyResources() {
 
-		bodRepository = new BoDRepository("bod", persistenceUnit);
+		bodRepository = new BoDRepository("bod");
 		bodRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		bodRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));

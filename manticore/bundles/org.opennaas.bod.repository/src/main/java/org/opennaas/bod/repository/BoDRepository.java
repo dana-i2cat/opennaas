@@ -14,10 +14,9 @@ public class BoDRepository extends ResourceRepository {
 
 	/**
 	 * @param resourceType
-	 * @param persistenceUnit
 	 */
-	public BoDRepository(String resourceType, String persistenceUnit) {
-		super(resourceType, persistenceUnit);
+	public BoDRepository(String resourceType) {
+		super(resourceType);
 	}
 
 	/**
