@@ -34,21 +34,7 @@ public class AddInterfaceToLRCommand extends GenericKarafCommand {
 
 			/* create call parameters */
 
-			// That's a hack for not requiring logicalRouter to be already added in the resource manager when this command is executed.
-			// Instead of getting the resource using resource manager, we take logicalRouter name from the friendly id.
-			ComputerSystem logicalRouterModel = new ComputerSystem();
-			String[] targetResourceName = splitResourceName(logicalResourceId);
-			logicalRouterModel.setName(targetResourceName[1]);
-			logicalRouterModel.setElementName(targetResourceName[1]);
-
-			// That's a hack for not requiring interface to be already created in opennaas model when this command is executed.
-			// Instead of getting it from physical router model, we use only the interface identifier.
-			// Action will fail (in execute) if this interface is not created
-			String[] paramsInterface = splitInterfaces(interfaceName);
-			NetworkPort iface = new NetworkPort();
-			iface.setName(paramsInterface[0]);
-			iface.setPortNumber(Integer.parseInt(paramsInterface[1]));
-			logicalRouterModel.addLogicalDevice(iface);
+			ComputerSystem logicalRouterModel = createLRModelWithInterface(logicalResourceId, interfaceName);
 
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
@@ -64,4 +50,26 @@ public class AddInterfaceToLRCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
+
+	public ComputerSystem createLRModelWithInterface(String logicalRouterFriendlyId, String interfaceNameWithPort) throws Exception {
+
+		// That's a hack for not requiring logicalRouter to be already added in the resource manager when this command is executed.
+		// Instead of getting the resource using resource manager, we take logicalRouter name from the friendly id.
+		ComputerSystem logicalRouterModel = new ComputerSystem();
+		String[] targetResourceName = splitResourceName(logicalRouterFriendlyId);
+		logicalRouterModel.setName(targetResourceName[1]);
+		logicalRouterModel.setElementName(targetResourceName[1]);
+
+		// That's a hack for not requiring interface to be already created in opennaas model when this command is executed.
+		// Instead of getting it from physical router model, we use only the interface identifier.
+		// Action will fail (in execute) if this interface is not created
+		String[] paramsInterface = splitInterfaces(interfaceNameWithPort);
+		NetworkPort iface = new NetworkPort();
+		iface.setName(paramsInterface[0]);
+		iface.setPortNumber(Integer.parseInt(paramsInterface[1]));
+		logicalRouterModel.addLogicalDevice(iface);
+
+		return logicalRouterModel;
+	}
+
 }
