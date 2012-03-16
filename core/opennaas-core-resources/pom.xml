@@ -74,6 +74,7 @@
 							javassist.util.proxy,
 							*</Import-Package>
 						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
+						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
 					</instructions>
 				</configuration>
 			</plugin>

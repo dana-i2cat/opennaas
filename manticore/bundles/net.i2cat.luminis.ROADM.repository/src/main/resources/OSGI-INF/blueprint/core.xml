@@ -13,11 +13,14 @@
 	<reference id="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=queue)(capability.model=junos))"/>
 	<reference id="connectionsCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=connections)(capability.model=proteus))"/>
 	<reference id="monitoringCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory" filter="(&amp;(capability=monitoring)(capability.model=proteus))"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
 	<bean id="ROADMRepository" class="net.i2cat.luminis.ROADM.repository.ROADMRepository" init-method="init">
 		<argument value="roadm"/>
 		<!-- resourceType -->
-		<argument value="ResourceCore"/>
-		<!-- persistenceUnit -->
 		<property name="capabilityFactories">
 			<map>
 				<entry key="queue" value-ref="queueCapabilityFactory"/>
@@ -26,6 +29,7 @@
 			</map>
 		</property>
 		<property name="resourceBootstrapperFactory" ref="roadmBootstrapperFactory"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 	</bean>
 	<service ref="ROADMRepository" interface="org.opennaas.core.resources.IResourceRepository">
 		<service-properties>

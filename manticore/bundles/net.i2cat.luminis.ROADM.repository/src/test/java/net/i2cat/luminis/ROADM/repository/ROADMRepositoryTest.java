@@ -18,11 +18,10 @@ import org.junit.Test;
 public class ROADMRepositoryTest {
 	ROADMRepository	roadmRepository;
 	String			resourceType	= "roadm";
-	String			persistenceUnit	= "ResourceCore";
 
 	@Test
 	public void testCapabilityFactories() {
-		roadmRepository = new ROADMRepository("ROADMrepository", persistenceUnit);
+		roadmRepository = new ROADMRepository("ROADMrepository");
 		roadmRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		roadmRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -36,7 +35,7 @@ public class ROADMRepositoryTest {
 
 	@Test
 	public void testCreateRemoveResources() {
-		roadmRepository = new ROADMRepository(resourceType, persistenceUnit);
+		roadmRepository = new ROADMRepository(resourceType);
 		roadmRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		roadmRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -71,7 +70,7 @@ public class ROADMRepositoryTest {
 	@Test
 	public void testModifyResources() {
 
-		roadmRepository = new ROADMRepository(resourceType, persistenceUnit);
+		roadmRepository = new ROADMRepository(resourceType);
 		roadmRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		roadmRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
