@@ -9,7 +9,6 @@ import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.OSPFArea;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -21,7 +20,7 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class CreateStaticRouteAction extends JunosAction {
 
-	private static final String	VELOCITY_TEMPLATE	= "/VM_files/ospfAddInterfaceInArea.vm";
+	private static final String	VELOCITY_TEMPLATE	= "/VM_files/createStaticRoute.vm";
 
 	private static final String	PROTOCOL_NAME		= "netconf";
 
@@ -29,7 +28,7 @@ public class CreateStaticRouteAction extends JunosAction {
 	 * 
 	 */
 	public CreateStaticRouteAction() {
-		setActionID(ActionConstants.OSPF_ADD_INTERFACE_IN_AREA);
+		setActionID(ActionConstants.STATIC_ROUTE_CREATE);
 		setTemplate(VELOCITY_TEMPLATE);
 		this.protocolName = PROTOCOL_NAME;
 	}
@@ -43,7 +42,6 @@ public class CreateStaticRouteAction extends JunosAction {
 	 */
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
-
 		try {
 			EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 			command.initialize();
@@ -62,10 +60,7 @@ public class CreateStaticRouteAction extends JunosAction {
 	 */
 	@Override
 	public void prepareMessage() throws ActionException {
-
-		// validate input parameters
 		validate();
-
 		try {
 			String elementName = "";
 			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
@@ -98,21 +93,24 @@ public class CreateStaticRouteAction extends JunosAction {
 	}
 
 	/**
-	 * Params must be a OSPFArea
+	 * Params must be a String[]
 	 * 
 	 * @param params
-	 *            it should be a OSPFArea
-	 * @return false if params is null or is not a OSPFArea
+	 *            it should be a String[]
+	 * @return false if params is null or is not a String[] or lenght != 3
 	 */
 	@Override
 	public boolean checkParams(Object params) {
-
 		boolean paramsOK = true;
 		// First we check the params object
-		if (params == null || !(params instanceof OSPFArea)) {
+		if (params == null || !(params instanceof String[])) {
 			paramsOK = false;
+		} else {
+			String[] aParams = (String[]) params;
+			if (aParams.length != 3) {
+				paramsOK = false;
+			}
 		}
-
 		return paramsOK;
 	}
 
@@ -122,13 +120,11 @@ public class CreateStaticRouteAction extends JunosAction {
 	 *             if template is null or empty
 	 */
 	private boolean checkTemplate(String template) throws ActionException {
-
 		boolean templateOK = true;
 		// The template can not be null or empty
 		if (template == null || template.equals("")) {
 			templateOK = false;
 		}
-
 		return templateOK;
 	}
 
@@ -136,11 +132,9 @@ public class CreateStaticRouteAction extends JunosAction {
 	 * @throws ActionException
 	 */
 	private void validate() throws ActionException {
-
 		if (!checkTemplate(template)) {
 			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null");
 		}
-
 		// Check the params
 		if (!checkParams(params)) {
 			throw new ActionException("Invalid parameters for action " + getActionID());

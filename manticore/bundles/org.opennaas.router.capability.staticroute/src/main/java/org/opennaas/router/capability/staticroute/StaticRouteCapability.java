@@ -2,6 +2,7 @@ package org.opennaas.router.capability.staticroute;
 
 import java.util.Vector;
 
+import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
@@ -82,8 +83,11 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 	@Override
 	public Response create(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
-		// TODO To implement
-		return new Response();
+		String[] aParams = new String[3];
+		aParams[0] = netIdIpAdress;
+		aParams[1] = maskIpAdress;
+		aParams[2] = nextHopIpAddress;
+		return (Response) sendMessage(ActionConstants.STATIC_ROUTE_CREATE, aParams);
 	}
 
 	/*

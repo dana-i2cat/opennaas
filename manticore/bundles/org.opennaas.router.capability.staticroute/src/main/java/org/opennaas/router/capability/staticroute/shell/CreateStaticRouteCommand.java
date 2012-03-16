@@ -45,7 +45,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error activating OSPF");
+			printError("Error creating the static route");
 			printError(e);
 			printEndCommand();
 			return -1;

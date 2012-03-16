@@ -32,7 +32,7 @@
 	</service>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="ospf/configure">
+		<command name="staticroute/create">
 			<action class="org.opennaas.router.capability.staticroute.shell.CreateStaticRouteCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
