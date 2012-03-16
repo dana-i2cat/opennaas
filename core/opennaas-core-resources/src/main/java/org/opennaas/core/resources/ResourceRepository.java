@@ -191,21 +191,11 @@ public class ResourceRepository implements IResourceRepository {
 	}
 
 	public void removeResource(String identifier) throws ResourceException {
-		// logger.debug("Removing resource runtime object for ID #"
-		// + identifier);
-		// stopResource(identifier);
-		// logger.debug("Removing resource configuration for ID #"
-		// + identifier);
-
 		logger.info("Removing resource with ID #" + identifier);
 
 		IResource resource = getResource(identifier);
-		unpersistResourceDescriptor(resource.getResourceDescriptor());
-
-		logger.info("Resource shutdown");
 		shutdownResource(identifier);
-
-		logger.info("Unpersisted and removed resource");
+		unpersistResourceDescriptor(resource.getResourceDescriptor());
 	}
 
 	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
