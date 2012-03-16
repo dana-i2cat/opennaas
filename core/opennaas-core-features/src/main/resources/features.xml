@@ -6,11 +6,19 @@
 
 	<feature name="opennaas-persistence" version="${project.version}">
 		<feature>spring</feature>
+		<feature>jndi</feature>
 		<feature>jpa</feature>
 
+		<bundle dependency="true">mvn:org.apache.geronimo.specs/geronimo-servlet_2.5_spec/${geronimo.servlet.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.cglib/${servicemix.cglib.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.serp/${servicemix.serp.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-dbcp/${commons.dbcp.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-lang/${commons.lang.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-collections/${commons.collections.version}</bundle>
+		<bundle dependency="true">mvn:commons-pool/commons-pool/${commons.pool.version}</bundle>
 		<bundle dependency="true">mvn:org.hsqldb/com.springsource.org.hsqldb/${hsqldb.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.openjpa/openjpa/${openjpa.version}</bundle>
 
-		<bundle>mvn:org.opennaas/opennaas-core-hibernate/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-hsqldb/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas-core-persistence/${project.version}</bundle>
 	</feature>
