@@ -110,4 +110,5 @@
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<bundle>mvn:org.opennaas/opennaas-core-tests-mockprofile/${project.version}</bundle>
 	</feature>
+
 </features>

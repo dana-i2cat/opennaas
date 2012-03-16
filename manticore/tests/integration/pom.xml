@@ -37,14 +37,6 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-			<artifactId>paxexam-karaf-container</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-junit4</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>net.i2cat.mantychore</groupId>
 			<artifactId>assembly</artifactId>
 			<type>zip</type>
@@ -58,6 +50,22 @@
 			<groupId>org.ops4j.pax.swissbox</groupId>
 			<artifactId>pax-swissbox-framework</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.i2cat.mantychore</groupId>
+			<artifactId>assembly</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<classifier>bin</classifier>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.karaf.shell</groupId>
+					<artifactId>org.apache.karaf.shell.dev</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+				
 	</dependencies>
 
 	<build>

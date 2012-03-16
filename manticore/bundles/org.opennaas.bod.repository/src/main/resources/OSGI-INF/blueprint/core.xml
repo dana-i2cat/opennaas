@@ -2,9 +2,14 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Build the bootstrapper -->
 	<bean id="bodBootstrapperFactory" class="org.opennaas.bod.repository.BoDBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
 	<bean id="bodRepository" class="org.opennaas.bod.repository.BoDRepository" init-method="init">
 		<argument value="bod"/>
-		<argument value="ResourceCore"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="bodBootstrapperFactory"/>
 	</bean>
 	<!-- Get capability factories from the OSGi registry -->

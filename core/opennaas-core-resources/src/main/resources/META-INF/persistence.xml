@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="ResourceCore" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+		<non-jta-data-source>osgi:service/javax.sql.DataSource/(osgi.jndi.service.name=jdbc/opennaas-resources)</non-jta-data-source>
+
 		<class>org.opennaas.core.resources.descriptor.Information</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
@@ -12,44 +14,38 @@
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
-		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>		
-		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>		
-				
+		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
+
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:hsqldb:file:databases/iaas/resources;hsqldb.default_table_type=cached"/>
-			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-			<property name="hibernate.bytecode.use_reflection_optimizer" value="false"/>
-			<property name="hibernate.jdbc.batch_size" value="0"/>
-			<property name="hibernate.hbm2ddl.auto" value="update"/>
-			<property name="hibernate.connection.username" value="sa"/>
-			<property name="hibernate.connection.password" value=""/>
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true,Indexes=true)"/>
+			<property name="openjpa.Log" value="commons"/>
 		</properties>
 	</persistence-unit>
 	<persistence-unit name="ResourceCore-test" transaction-type="RESOURCE_LOCAL">
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<class>org.opennaas.core.resources.descriptor.Information</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityProperty</class>
 		<class>org.opennaas.core.resources.descriptor.CapabilityDescriptor</class>
 		<class>org.opennaas.core.resources.descriptor.ResourceDescriptor</class>
-		<class>org.opennaas.core.resources.descriptor.ResourceId</class>		
+		<class>org.opennaas.core.resources.descriptor.ResourceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.InterfaceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.Link</class>
 		<class>org.opennaas.core.resources.descriptor.network.Interface</class>
 		<class>org.opennaas.core.resources.descriptor.network.Device</class>
-		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>		
-		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>	
-		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>				
+		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
+		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
-			<property name="hibernate.connection.url" value="jdbc:hsqldb:mem:unit-testing-jpa"/>
-			<property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
-			<property name="hibernate.bytecode.use_reflection_optimizer" value="false"/>
-			<property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-			<property name="hibernate.connection.username" value="sa"/>
-			<property name="hibernate.connection.password" value=""/>
+			<property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:unit-testing-jpa"/>
+			<property name="openjpa.ConnectionDriverName" value="org.hsqldb.jdbcDriver"/>
+			<property name="openjpa.ConnectionUserName" value="sa"/>
+			<property name="openjpa.ConnectionPassword" value=""/>
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema()"/>
+			<property name="openjpa.Log" value="commons"/>
 		</properties>
 	</persistence-unit>
 </persistence>
