@@ -29,7 +29,6 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.network.capability.queue.Activator;
 import org.opennaas.router.capability.ospf.IOSPFService;
 
 public class NetOSPFCapability extends AbstractCapability implements INetOSPFService {

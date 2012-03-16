@@ -105,10 +105,11 @@ public class NetOSPFIntegrationTest {
 				CAPABILITY_URI);
 		lCapabilityDescriptors.add(ospfCapabilityDescriptor);
 
-		// Add Queue Capability Descriptor
-		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, CAPABILIY_VERSION, QUEUE_CAPABILIY_TYPE,
-				CAPABILITY_URI);
-		lCapabilityDescriptors.add(queueCapabilityDescriptor);
+		// // Add Queue Capability Descriptor
+		// CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, CAPABILIY_VERSION,
+		// QUEUE_CAPABILIY_TYPE,
+		// CAPABILITY_URI);
+		// lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
 		// Network Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
@@ -131,7 +132,7 @@ public class NetOSPFIntegrationTest {
 	{
 		clearRepository();
 		startResource();
-		assertEquals(3, networkResource.getCapabilities().size());
+		assertEquals(2, networkResource.getCapabilities().size());
 
 		stopResource();
 	}
