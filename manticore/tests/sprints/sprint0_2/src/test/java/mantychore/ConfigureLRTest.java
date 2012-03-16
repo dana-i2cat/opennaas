@@ -1,13 +1,12 @@
 package mantychore;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.configureConsole;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,22 +94,10 @@ public class ConfigureLRTest
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-				.frameworkUrl(maven()
-						.groupId("net.i2cat.mantychore")
-						.artifactId("assembly")
-						.type("zip")
-						.classifier("bin")
-						.versionAsInProject())
-				.karafVersion("2.2.2")
-				.name("mantychore")
-				.unpackDirectory(new File("target/paxexam")),
-				editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-						"featuresBoot",
-						"opennaas-router,nexus-tests-helper"),
-				configureConsole()
-						.ignoreLocalConsole()
-						.ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
 				keepRuntimeFolder());
 	}
 

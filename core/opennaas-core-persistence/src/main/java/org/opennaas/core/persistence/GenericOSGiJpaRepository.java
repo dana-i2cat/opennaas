@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.logging.Log;
@@ -56,6 +57,15 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 		setEntityManager(entityManagerFactory.createEntityManager());
 	}
 
+    public void close() {
+        EntityManager entityManager = getEntityManager();
+        if (entityManager != null) {
+			logger.debug("Closing entity manager: " + entityManager);
+            entityManager.close();
+            setEntityManager(null);
+        }
+    }
+
 	private EntityManagerFactory getEntityManagerFactoryFromOSGiRegistry(String persistenceUnit) {
 		EntityManagerFactory entityManagerFactory = null;
 		Filter filter = null;
@@ -103,8 +113,8 @@ public class GenericOSGiJpaRepository<T, ID extends Serializable> extends Generi
 
 	private Properties createFilterProperties(String persistenceUnit) {
 		Properties properties = new Properties();
-		properties.setProperty("persistenceUnit", persistenceUnit);
-		properties.setProperty("isDynamicFactory", "true");
+		properties.setProperty("osgi.unit.name", persistenceUnit);
+		properties.setProperty("org.apache.aries.jpa.container.managed", "true");
 		return properties;
 	}
 

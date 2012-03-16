@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 public class NetworkRepository extends ResourceRepository {
 	Log	log	= LogFactory.getLog(NetworkRepository.class);
 
-	public NetworkRepository(String resourceType, String persistenceUnit) {
-		super(resourceType, persistenceUnit);
+	public NetworkRepository(String resourceType) {
+		super(resourceType);
 	}
 
 	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {
