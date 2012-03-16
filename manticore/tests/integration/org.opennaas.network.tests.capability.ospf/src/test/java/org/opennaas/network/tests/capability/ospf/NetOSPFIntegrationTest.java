@@ -30,7 +30,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.options.extra.VMOption;
 
 @RunWith(JUnit4TestRunner.class)
 public class NetOSPFIntegrationTest {
@@ -59,8 +58,8 @@ public class NetOSPFIntegrationTest {
 				includeFeatures("opennaas-network, "),
 				includeTestHelper(),
 				noConsole(),
-				keepRuntimeFolder()
-				, new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"));
+				keepRuntimeFolder());
+		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"));
 	}
 
 	private void clearRepository() throws ResourceException {

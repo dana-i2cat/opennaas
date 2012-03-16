@@ -24,4 +24,21 @@
 			<entry key="capability" value="netospf"/>
 		</service-properties>
 	</service>
+	
+	<bean id="resourceNameCompleter" class="org.opennaas.network.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="netospf"/>
+		</service-properties>
+	</service>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="netospf/activate">
+			<action class="org.opennaas.network.capability.ospf.shell.ActivateCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>		
+	</command-bundle>
 </blueprint>
