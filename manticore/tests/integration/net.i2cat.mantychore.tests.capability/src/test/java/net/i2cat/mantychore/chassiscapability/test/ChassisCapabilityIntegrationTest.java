@@ -1,9 +1,10 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-
 import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -165,38 +166,38 @@ public class ChassisCapabilityIntegrationTest
 	@Ignore
 	// FIXME this tests fails because of a vlan-tagging limitation describes at OPENNAAS-95 issue.
 	public void testSetEncapsulationAction() throws CapabilityException {
-		
+
 		int actionCount = 0;
 
 		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertTrue(resp.getStatus() == Status.OK);
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		Assert.assertTrue(resp.getStatus() == Status.OK);
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertTrue(queue.size() == 4);
+		assertEquals(actionCount, queue.size());
 
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		Assert.assertTrue(queueResponse.getResponses().size() == actionCount);
+		assertEquals(actionCount, queueResponse.getResponses().size());
 
 		for (int i = 0; i < queueResponse.getResponses().size(); i++) {
-			Assert.assertTrue(queueResponse.getResponses().get(i).getStatus() == ActionResponse.STATUS.OK);
+			assertEquals(ActionResponse.STATUS.OK, queueResponse.getResponses().get(i).getStatus());
 			for (Response response : queueResponse.getResponses().get(i).getResponses()) {
-				Assert.assertTrue(response.getStatus() == Response.Status.OK);
+				assertEquals(Response.Status.OK, response.getStatus());
 			}
 		}
 
-		Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
-		Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
-		Assert.assertTrue(queueResponse.getRefreshResponse().getStatus() == ActionResponse.STATUS.OK);
-		Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getPrepareResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getConfirmResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getRefreshResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.PENDING, queueResponse.getRestoreResponse().getStatus());
 
-		Assert.assertTrue(queueResponse.isOk());
+		assertTrue("Response should be ok", queueResponse.isOk());
 	}
 
 	@Test
@@ -206,18 +207,18 @@ public class ChassisCapabilityIntegrationTest
 		int actionCount = 0;
 
 		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertEquals(Status.OK, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().isEmpty());
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		Assert.assertEquals(Status.OK, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().isEmpty());
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		Assert.assertEquals(Status.OK, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().isEmpty());
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		// // FIXME disabled as it fails (it is tested in testSetEncapsulationAction, now ignored)
@@ -238,38 +239,38 @@ public class ChassisCapabilityIntegrationTest
 
 		resp = (Response) chassisCapability
 				.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, newParamsLRWithInterface("cpe1", "fe-0/1/0", 13));
-		Assert.assertEquals(Status.OK, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().isEmpty());
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER,
 				newParamsLRWithInterface("cpe2", "fe-0/0/3", 13));
-		Assert.assertEquals(Status.OK, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().isEmpty());
+		assertEquals(Status.OK, resp.getStatus());
+		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertEquals(actionCount, queue.size());
+		assertEquals(actionCount, queue.size());
 
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		Assert.assertEquals(actionCount, queueResponse.getResponses().size());
+		assertEquals(actionCount, queueResponse.getResponses().size());
 
 		for (int i = 0; i < queueResponse.getResponses().size(); i++) {
-			Assert.assertEquals(ActionResponse.STATUS.OK, queueResponse.getResponses().get(i).getStatus());
+			assertEquals(ActionResponse.STATUS.OK, queueResponse.getResponses().get(i).getStatus());
 			for (Response response : queueResponse.getResponses().get(i).getResponses()) {
-				Assert.assertEquals(Response.Status.OK, response.getStatus());
+				assertEquals(Response.Status.OK, response.getStatus());
 			}
 		}
 
-		Assert.assertEquals(ActionResponse.STATUS.OK, queueResponse.getPrepareResponse().getStatus());
-		Assert.assertEquals(ActionResponse.STATUS.OK, queueResponse.getConfirmResponse().getStatus());
-		Assert.assertEquals(ActionResponse.STATUS.OK, queueResponse.getRefreshResponse().getStatus());
-		Assert.assertEquals(ActionResponse.STATUS.PENDING, queueResponse.getRestoreResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getPrepareResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getConfirmResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.OK, queueResponse.getRefreshResponse().getStatus());
+		assertEquals(ActionResponse.STATUS.PENDING, queueResponse.getRestoreResponse().getStatus());
 
-		Assert.assertTrue(queueResponse.isOk());
+		assertTrue("Response should be ok", queueResponse.isOk());
 
 		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertTrue(queue.isEmpty());
+		assertTrue("Queue should be empty", queue.isEmpty());
 	}
 
 	private Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
