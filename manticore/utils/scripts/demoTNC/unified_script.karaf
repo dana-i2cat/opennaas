@@ -110,38 +110,85 @@ queue:execute router:logicalheanet1
 queue:execute router:logicalunic1
 queue:execute router:logicalgsn1
 
-
-shell:echo "ACTIVATE OSPF"
+shell:echo "CONFIGURE OSPF"
 ## Enable ospf in all devices of the network (supporting it)
 #ospf:enable network:networkdemo --all
 #queue:execute network:networkdemo
 
-## Enable ospf in each router
-#ospf:enable router:logicalheanet1 --allInterfaces
-#ospf:enable router:logicalunic1 --allInterfaces
-#ospf:enable router:logicalgsn1 --allInterfaces
-#queue:execute router:logicalheanet1
-#queue:execute router:logicalunic1
-#queue:execute router:logicalgsn1
+## Enable ospf in each router // without ospf capability for network resource
+ospf:configure router:logicalheanet1
+ospf:configureArea router:logicalheanet1 0.0.0.0
+ospf:configureInterfaceInArea router:logicalheanet1 0.0.0.0 lt-1/2/0.1 lt-1/2/0.4
+queue:execute router:logicalheanet1
+
+ospf:configure router:logicalunic1
+ospf:configureArea router:logicalunic1 0.0.0.0
+ospf:configureInterfaceInArea router:logicalunic1 0.0.0.0 lt-1/2/0.1 lt-1/2/0.4
+queue:execute router:logicalunic1
+
+ospf:configure router:logicalgsn1
+ospf:configureArea router:logicalgsn1 0.0.0.0
+ospf:configureInterfaceInArea router:logicalgsn1 0.0.0.0 lt-1/2/0.1 lt-1/2/0.4
+queue:execute router:logicalgsn1
+
+shell:echo "ENABLE OSPF"
+## Activate ospf in each router // without ospf capability for network resource
+ospf:activate router:logicalheanet1
+queue:execute router:logicalheanet1
+ospf:activate router:logicalunic1
+queue:execute router:logicalunic1
+ospf:activate router:logicalgsn1
+queue:execute router:logicalgsn1
 
 
-shell:echo "ENABLE VPN ACCESS"
-##configure vpn access using given interface through network
-#vpn:configure network:networkdemo router:logicalheanet1 fe-0/1/2.3 --address 192.168.1.101 255.255.255.0
-#vpn:configure network:networkdemo router:logicalgsn1 fe-0/2/2.3 --address 192.168.1.102 255.255.255.0 
-
-##configure vpn access using given interface through each router
-#vpn:configure router:logicalheanet1 fe-0/1/2.3 --address 192.168.1.101 255.255.255.0
-#vpn:configure router:logicalgsn1 fe-0/2/2.3 --address 192.168.1.102 255.255.255.0 
+shell:echo "CONFIGURE GRE TUNNELS"
+##configure vpn access using given interface through each router, CHANGE THE LAST IP OF EACH LINE AND SET THE IP OF THE CORRESPONDING VM!!!!
+gretunnel:create router:logicalheanet1 gre.1 192.168.0.10 255.255.255.0 193.1.190.250 147.83.206.87
+gretunnel:create router:logicalunic1 gre.3 192.168.0.11 255.255.255.0 193.1.190.246 147.83.206.88
+queue:execute router:logicalheanet1
+queue:execute router:logicalgsn1
 
 
-shell:echo "REVERT CHANGES IN DEVICE CONFIG"
+## REVERT CHANGES IN DEVICE CONFIG - OSPF WITH OSPF NETWORK CAPABILITY
+#shell:echo "REVERT CHANGES IN DEVICE CONFIG"  
 #ospf:disable router:logicalheanet1 --allInterfaces
 #ospf:disable router:logicalunic1 --allInterfaces
 #ospf:disable router:logicalgsn1 --allInterfaces
+#queue:execute router:logicalheanet1
+#queue:execute router:logicalunic1
+#queue:execute router:logicalgsn1 
+
+
+## REVERT CHANGES IN DEVICE CONFIG - OSPF WITHOUT OSPF NETWORK CAPABILITY
+
+ospf:disableinterface router:logicalheanet1 fe-0/1/1.1 fe-0/1/2.1 fe-0/1/2.3
+ospf:disableinterface router:logicalgsn1 fe-0/2/1.2 fe-0/2/2.1 fe-0/2/2.3
+ospf:disableinterface router:logicalunic1 fe-0/3/2.2 fe-0/3/1.2
 queue:execute router:logicalheanet1
-queue:execute router:logicalunic1
 queue:execute router:logicalgsn1
+queue:execute router:logicalunic1
+
+ospf:deactivate router:logicalheanet1
+queue:execute router:logicalheanet1
+ospf:deactivate router:logicalgsn1
+queue:execute router:logicalgsn1
+ospf:deactivate router:logicalunic1
+queue:execute router:logicalunic1
+
+ospf:configure --delete router:logicalheanet1
+ospf:configure --delete router:logicalgsn1
+ospf:configure --delete router:logicalunic1
+queue:execute router:logicalheanet1
+queue:execute router:logicalgsn1
+queue:execute router:logicalunic1
+
+
+## REVERT CHANGES IN DEVICE CONFIG - GRE TUNNEL
+gretunnel:delete router:logicalheanet1 gre.1
+gretunnel:delete router:logicalgsn1 gre.3
+queue:execute router:logicalheanet1
+queue:execute router:logicalgsn1
+
 
 #l2bod:shutdownConnection bod:bluenet bod:bluenet:PortIdXXX bod:bluenet:PortIdYYY --vlanid 2
 #queue:execute bod:bluenet

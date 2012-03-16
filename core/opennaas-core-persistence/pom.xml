@@ -12,9 +12,8 @@
 	<description>Dynamic JPA Persistence tools for Nexus</description>
 	<dependencies>
 		<dependency>
-			<!-- This dep has to be here on the top or all shit breaks loose -->
-			<groupId>org.hibernate.java-persistence</groupId>
-			<artifactId>jpa-api</artifactId>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
@@ -24,19 +23,6 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 		</dependency>-->
-		<dependency>
-			<groupId>org.dynamicjava.osgi</groupId>
-			<artifactId>classloading-utils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.dynamicjava.osgi</groupId>
-			<artifactId>service-binding-utils</artifactId>
-		</dependency>
-		<!-- This deprecated garbage enforces persistence-api 1.0.2, which breaks persistence. <dependency><groupId>org.dynamicjava.osgi</groupId><artifactId>dynamic-jpa</artifactId></dependency>-->
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hibernate</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hsqldb</artifactId>
@@ -48,11 +34,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-beans</artifactId>
-		</dependency>
-		<!-- most important dep ever -->
-		<dependency>
-			<groupId>org.dynamicjava.osgi</groupId>
-			<artifactId>dynamic-jpa</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -71,8 +52,7 @@
 						</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-Activator>org.opennaas.core.persistence.Activator</Bundle-Activator>
-						<Import-Package>org.osgi.framework, javax.persistence, org.dynamicjava.osgi.service_binding_utils, org.dynamicjava.osgi.class
-loading_utils, org.w3c.dom, javax.xml.parsers, org.slf4j, *</Import-Package>
+						<Import-Package>org.osgi.framework, javax.persistence, org.w3c.dom, javax.xml.parsers, org.slf4j, *</Import-Package>
 						<Export-Package>org.opennaas.core.persistence.*;version="${project.version}"</Export-Package>
 					</instructions>
 				</configuration>

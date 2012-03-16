@@ -1,13 +1,5 @@
 package net.i2cat.luminis.transports.wonesys.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -15,8 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 import javax.inject.Inject;
-
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.ITransportListener;
@@ -45,9 +35,13 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 
-@RunWith(JUnit4TestRunner.class)
-public class WonesysTransportTest implements ITransportListener {
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
+@RunWith(JUnit4TestRunner.class)
+public class WonesysTransportTest implements ITransportListener
+{
 	Log	log	= LogFactory.getLog(WonesysTransportTest.class);
 
 	@Inject
@@ -64,16 +58,9 @@ public class WonesysTransportTest implements ITransportListener {
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 

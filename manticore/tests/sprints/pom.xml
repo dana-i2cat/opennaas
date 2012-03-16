@@ -19,68 +19,28 @@
 		<module>sprint0_4</module>
 	</modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.ops4j.pax.exam</groupId>
-				<artifactId>pax-exam</artifactId>
-				<version>${pax.exam2.version}</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
 			<artifactId>paxexam-karaf-container</artifactId>
-			<version>${paxexam-karaf-container.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.ops4j.pax.exam</groupId>
 			<artifactId>pax-exam-junit4</artifactId>
-			<version>${pax.exam2.version}</version>
-			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>net.i2cat.mantychore</groupId>
 			<artifactId>assembly</artifactId>
-			<version>${project.version}</version>
 			<type>zip</type>
 			<classifier>bin</classifier>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.apache.karaf.shell</groupId>
-					<artifactId>org.apache.karaf.shell.dev</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.ops4j.pax.exam</groupId>
-					<artifactId>pax-exam-container-default</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.ops4j.pax.exam</groupId>
-					<artifactId>pax-exam-junit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.apache.karaf.tooling</groupId>
-					<artifactId>org.apache.karaf.tooling.testing</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 	</dependencies>
 

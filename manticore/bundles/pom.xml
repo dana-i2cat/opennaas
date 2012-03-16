@@ -39,6 +39,7 @@
 		<module>net.i2cat.luminis.capability.connections</module>
 		<module>net.i2cat.luminis.capability.monitoring</module>
 		<module>net.i2cat.nexus.alarms.repository</module>
+		<module>net.i2cat.nexus.tests.helper</module>
 		<module>net.i2cat.mantychore.network.model</module>
 		<module>net.i2cat.mantychore.network.repository</module>
 		<module>net.i2cat.mantychore.network.capability.basic</module>
@@ -47,5 +48,7 @@
 		<module>org.opennaas.bod.actionsets.dummy</module>
 		<module>org.opennaas.router.capability.gretunnel</module>
 		<module>org.opennaas.router.capability.ospf</module>
+		<module>org.opennaas.network.capability.queue</module>
+		<module>org.opennaas.network.capability.ospf</module>
 	</modules>
 </project>

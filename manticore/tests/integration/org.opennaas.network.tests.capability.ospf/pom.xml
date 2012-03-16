@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>itests-bundle-settings</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	
+  	<!--  POM id -->
+	<groupId>org.opennaas.network.itests-bundle-settings</groupId>
+	<artifactId>org.opennaas.network.tests.capability.ospf</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>NetOSPF capability test</name>
+	<description>NetOSPF capability test</description>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.network</groupId>
+			<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+		</dependency>
+ 	</dependencies>
+</project>

@@ -73,7 +73,6 @@
 						-->
 						<Import-Package>
   							org.slf4j,
-  							org.apache.activemq,
 							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
 							*
 							</Import-Package>
