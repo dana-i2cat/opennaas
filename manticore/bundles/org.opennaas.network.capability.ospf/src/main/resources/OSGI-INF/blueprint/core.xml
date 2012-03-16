@@ -21,10 +21,24 @@
 	</bean>
 	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
-			<!--  TODO it is necessary to use two parameters to get capability -->
 			<entry key="capability" value="netospf"/>
-			<entry key="capability.model" value="junos"/>
-			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
+	
+	<bean id="resourceNameCompleter" class="org.opennaas.network.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
+		<service-properties>
+			<entry key="capability" value="netospf"/>
+		</service-properties>
+	</service>
+	<!-- Provide commands to the Karaf shell -->
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="netospf/activate">
+			<action class="org.opennaas.network.capability.ospf.shell.ActivateCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>		
+	</command-bundle>
 </blueprint>
