@@ -28,6 +28,7 @@
    		<module>org.opennaas.bod.tests</module>
    		<module>org.opennaas.router.tests.capability.gretunnel</module>
 		<module>org.opennaas.router.tests.capability.ospf</module>
+		<module>org.opennaas.network.tests.capability.queue</module>
 	</modules>
 
 	<dependencies>
