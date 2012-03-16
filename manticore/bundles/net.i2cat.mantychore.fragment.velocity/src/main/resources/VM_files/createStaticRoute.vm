@@ -1,17 +1,17 @@
 <configuration>
-	#set( $logicalRouter = "false" )
-	#if(!$param.ElementName.equals("") )
-		#set( $logicalRouter = "true" )
+	#set($logicalRouter = "false")
+	#if(!$elementName.equals(""))
+		#set($logicalRouter = "true")
 	#end
 	#if($logicalRouter.equals("true"))
 		<logical-systems>
-			<name>$param.ElementName</name>
+			<name>$elementName</name>
 	#end
 	<routing-options>
 		<static>
 			<route>
 				<name>$param[0]/$ipUtilsHelper.parseLongToShortIpv4NetMask($param[1])</name>
-				<next-hop>$param[1]</next-hop>
+				<next-hop>$param[2]</next-hop>
 			</route>
 		</static>
 	</routing-options>

@@ -97,7 +97,7 @@ public class CreateStaticRouteAction extends JunosAction {
 	 * 
 	 * @param params
 	 *            it should be a String[]
-	 * @return false if params is null or is not a String[] or lenght != 3
+	 * @return false if params is null, is not a String[], lenght != 3 or not have the pattern [0..255].[0..255].[0..255].[0..255]
 	 */
 	@Override
 	public boolean checkParams(Object params) {
@@ -108,6 +108,13 @@ public class CreateStaticRouteAction extends JunosAction {
 		} else {
 			String[] aParams = (String[]) params;
 			if (aParams.length != 3) {
+				paramsOK = false;
+			} else if (!IPUtilsHelper
+					.validateIpAddressPattern(aParams[0]) ||
+					!IPUtilsHelper
+							.validateIpAddressPattern(aParams[1]) ||
+					!IPUtilsHelper
+							.validateIpAddressPattern(aParams[2])) {
 				paramsOK = false;
 			}
 		}
