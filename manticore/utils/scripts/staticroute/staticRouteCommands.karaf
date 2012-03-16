@@ -11,7 +11,7 @@ queue:execute router:junos20
 chassis:createlogicalrouter router:junos20 lrtest fe-0/1/0.12
 queue:execute router:junos20
 
-protocols:context router:lrtest netconf ssh://i2cat:6wemEiSl@lola.hea.net:22/netconf
+protocols:context router:lrtest netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:lrtest
 
 ipv4:setip router:lrtest fe-0/1/0.12 192.168.1.1 255.255.255.0

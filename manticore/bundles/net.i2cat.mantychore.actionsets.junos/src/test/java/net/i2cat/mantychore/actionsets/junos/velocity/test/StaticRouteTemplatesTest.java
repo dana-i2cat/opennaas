@@ -44,7 +44,7 @@ public class StaticRouteTemplatesTest extends VelocityTemplatesTest {
 		Assert.assertTrue(message.contains("<static>"));
 		Assert.assertTrue(message.contains("<route>"));
 		Assert.assertTrue(message.contains("<name>0.0.0.0/0</name>"));
-		Assert.assertTrue(message.contains("<next-hop>0.0.0.0</next-hop>"));
+		Assert.assertTrue(message.contains("<next-hop>192.168.1.1</next-hop>"));
 		Assert.assertTrue(message.contains("</route>"));
 		Assert.assertTrue(message.contains("</static>"));
 		Assert.assertTrue(message.contains("</routing-options>"));

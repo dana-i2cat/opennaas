@@ -7,8 +7,6 @@ import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.staticroute.CreateStaticRouteAction;
 import net.i2cat.mantychore.actionsets.junos.actions.test.ActionTestHelper;
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,22 +80,5 @@ public class CreateStaticRouteActionTest {
 		params[1] = "0.0.0.0";
 		params[2] = "192.168.1.1";
 		return params;
-	}
-
-	/**
-	 * Create a OSPFProtocolEndpoint from the params
-	 * 
-	 * @param areaId
-	 * @param portName
-	 * @return OSPFProtocolEndpoint
-	 * @throws IOException
-	 */
-	private OSPFProtocolEndpoint getOSPFProtocolEndpoint(String logicalPortName, String logicalPortNumber) throws IOException {
-
-		OSPFProtocolEndpoint ospfProtocolEndpoint = new OSPFProtocolEndpoint();
-		ospfProtocolEndpoint.setName(logicalPortName + "." + logicalPortNumber);
-		ospfProtocolEndpoint.setEnabledState(EnabledState.ENABLED);
-
-		return ospfProtocolEndpoint;
 	}
 }
