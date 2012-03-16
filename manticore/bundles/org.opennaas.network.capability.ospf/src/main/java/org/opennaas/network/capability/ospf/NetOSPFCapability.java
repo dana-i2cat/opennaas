@@ -1,8 +1,5 @@
 package org.opennaas.network.capability.ospf;
 
-import net.i2cat.mantychore.model.EnabledLogicalElement.EnabledState;
-import net.i2cat.mantychore.model.OSPFService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.IActionSet;
@@ -43,10 +40,6 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 
 	@Override
 	public Response activateOSPF() throws CapabilityException {
-
-		OSPFService service = new OSPFService();
-		service.setEnabledState(EnabledState.ENABLED);
-		// return (Response) sendMessage(ActionConstants.NET_OSPF_ACTIVATE, service);
 		return null;
 	}
 
