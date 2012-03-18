@@ -12,6 +12,12 @@ import net.i2cat.mantychore.model.utils.ModelHelper;
  */
 public class IPUtilsHelper {
 
+	private static final String	IP_ADDRESS_PATTERN	=
+															"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
 	public static long ipv4StringToLong(String ip) throws IOException {
 		return ModelHelper.ipv4StringToLong(ip);
 	}
@@ -94,6 +100,16 @@ public class IPUtilsHelper {
 		}
 		String resultMask = String.valueOf(MAX_MASK - cont);
 		return resultMask;
+	}
+
+	/**
+	 * Check for a pattern [0..255].[0..255].[0..255].[0..255]
+	 * 
+	 * @param ipAddress
+	 * @return false if don't find the pattern
+	 */
+	public static boolean validateIpAddressPattern(String ipAddress) {
+		return ipAddress.matches(IP_ADDRESS_PATTERN);
 	}
 
 	public static boolean validateAnIpAddressWithRegularExpression(String iPaddress) {
