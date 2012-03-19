@@ -70,6 +70,7 @@
 
 		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.repository/${project.version}</bundle>
 		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.capability.basic/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/opennaas.extension.network.capability.queue/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-bod" version="${project.version}">
