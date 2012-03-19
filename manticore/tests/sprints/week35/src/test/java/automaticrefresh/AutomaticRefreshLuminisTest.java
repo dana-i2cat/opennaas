@@ -1,90 +1,82 @@
 package automaticrefresh;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
+import java.io.File;
 import java.util.List;
+import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class AutomaticRefreshLuminisTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	static Log					log				= LogFactory
-														.getLog(AutomaticRefreshLuminisTest.class);
-	@Inject
-	BundleContext				bundleContext	= null;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class AutomaticRefreshLuminisTest
+{
+	private final static Log	log				= LogFactory.getLog(AutomaticRefreshLuminisTest.class);
 
 	private List<String>		startupActionNames;
 	private AbstractCapability	connectionsCapability;
-	IResource					mockResource	= new MockResource();
+	private IResource			mockResource	= new MockResource();
+
+	@Inject
+	@Filter("(capability=connections)")
+	private ICapabilityFactory	connectionFactory;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+    private BlueprintContainer routerService;
 
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-
-	public void initBundles() {
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	/**
 	 * tests ConnectionsCapability.getActionSet().getStartupRefreshAction() != null
 	 */
 	@Test
-	public void getStartUpRefreshActionTest() {
+	public void getStartUpRefreshActionTest() throws Exception {
 
-		try {
-			// TODO this initbundles guarantee that all the bundles are initialized. It is possible to work the test without this initbundles
-			initBundles();
-			mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
+		mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
 
-			ICapabilityFactory connectionFactory = getOsgiService(ICapabilityFactory.class, "capability=connections", 10000);
-			// Test elements not null
-			log.info("Checking connections factory");
-			Assert.assertNotNull(connectionFactory);
-			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
-			log.info("Creating connection capability");
-			connectionsCapability = (AbstractCapability) connectionFactory.create(mockResource);
-			Assert.assertNotNull(connectionsCapability);
-			connectionsCapability.initialize();
+		// Test elements not null
+		log.info("Checking connections factory");
+		Assert.assertNotNull(connectionFactory);
+		log.info("Checking capability descriptor");
+		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
+		log.info("Creating connection capability");
+		connectionsCapability = (AbstractCapability) connectionFactory.create(mockResource);
+		Assert.assertNotNull(connectionsCapability);
+		connectionsCapability.initialize();
 
-			Assert.assertFalse(connectionsCapability.getActionSet().getRefreshActionName().isEmpty());
-			startupActionNames = connectionsCapability.getActionSet().getRefreshActionName();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-			log.error(e.getLocalizedMessage());
-			// if (org.apache.commons.lang3.exception.ExceptionUtils.getRootCause(e) != null)
-			// log.error(ExceptionUtils.getRootCause(e).getMessage());
-			Assert.fail();
-		}
+		Assert.assertFalse(connectionsCapability.getActionSet().getRefreshActionName().isEmpty());
+		startupActionNames = connectionsCapability.getActionSet().getRefreshActionName();
 	}
 
 	// TODO test startupActionName action is executed during resourceRespository.startResource() (during bootstrap)

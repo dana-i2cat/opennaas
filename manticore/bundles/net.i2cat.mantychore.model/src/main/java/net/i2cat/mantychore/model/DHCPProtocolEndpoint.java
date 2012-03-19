@@ -10,421 +10,373 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DHCPProtocolEndpoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DHCPProtocolEndpointBean Interface. The CIM class DHCPProtocolEndpoint is
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DHCPProtocolEndpoint as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the DHCPProtocolEndpointBean Interface. The CIM class DHCPProtocolEndpoint is
  * described as follows:
- *
- * A class derived from ProtocolEndpoint representing the configuration of a
- * DHCP client. The configuration information contained by this
- * ProtocolEndpoint is the current configuration obtained/received from a
- * DHCP server. An instance of CIM_RemoteAccessAvailableToElement is used to
- * relate the DHCPProtocolEndpoint to the RemoteServiceAccessPoint which
- * represents the DHCP server. An EndpointIdentity association from the
+ * 
+ * A class derived from ProtocolEndpoint representing the configuration of a DHCP client. The configuration information contained by this
+ * ProtocolEndpoint is the current configuration obtained/received from a DHCP server. An instance of CIM_RemoteAccessAvailableToElement is used to
+ * relate the DHCPProtocolEndpoint to the RemoteServiceAccessPoint which represents the DHCP server. An EndpointIdentity association from the
  * DHCPProtocolEndpoint to an IPProtocolEndpoint is established.
  */
 public class DHCPProtocolEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DHCPProtocolEndpointBeanImpl Class which
-     * implements the DHCPProtocolEndpointBean Interface, and encapsulates
-     * the CIM class DHCPProtocolEndpoint in a Java Bean. The CIM class
-     * DHCPProtocolEndpoint is described as follows:
-     *
-     * A class derived from ProtocolEndpoint representing the configuration of
-     * a DHCP client. The configuration information contained by this
-     * ProtocolEndpoint is the current configuration obtained/received from a
-     * DHCP server. An instance of CIM_RemoteAccessAvailableToElement is used
-     * to relate the DHCPProtocolEndpoint to the RemoteServiceAccessPoint
-     * which represents the DHCP server. An EndpointIdentity association from
-     * the DHCPProtocolEndpoint to an IPProtocolEndpoint is established.
-     */
-    public DHCPProtocolEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property ClientState.
-     */
+	/**
+	 * This constructor creates a DHCPProtocolEndpointBeanImpl Class which implements the DHCPProtocolEndpointBean Interface, and encapsulates the CIM
+	 * class DHCPProtocolEndpoint in a Java Bean. The CIM class DHCPProtocolEndpoint is described as follows:
+	 * 
+	 * A class derived from ProtocolEndpoint representing the configuration of a DHCP client. The configuration information contained by this
+	 * ProtocolEndpoint is the current configuration obtained/received from a DHCP server. An instance of CIM_RemoteAccessAvailableToElement is used
+	 * to relate the DHCPProtocolEndpoint to the RemoteServiceAccessPoint which represents the DHCP server. An EndpointIdentity association from the
+	 * DHCPProtocolEndpoint to an IPProtocolEndpoint is established.
+	 */
+	public DHCPProtocolEndpoint() {
+	};
 
-    public enum ClientState{
-    UNKNOWN,
-    DMTF_RESERVED,
-    INIT,
-    SELECTING,
-    REQUESTING,
-    REBINDING,
-    INIT_REBOOT,
-    REBOOTING,
-    BOUND,
-    DMTF_RESERVED1,
-    VENDOR_SPECIFIED
-    }
-    private ClientState clientState;
-    /**
-     * This method returns the DHCPProtocolEndpoint.clientState property
-     * value. This property is described as follows:
-     *
-     * ClientState represents the current state of the DHCP client. See
-     * RFC1541 for more information on the meaning of each state.
-     *
-     * @return	int	current clientState property value
-     * @exception	Exception
-     */
-    public ClientState getClientState(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property ClientState.
+	 */
 
-    return this.clientState;
-    } // getClientState
+	public enum ClientState {
+		UNKNOWN,
+		DMTF_RESERVED,
+		INIT,
+		SELECTING,
+		REQUESTING,
+		REBINDING,
+		INIT_REBOOT,
+		REBOOTING,
+		BOUND,
+		DMTF_RESERVED1,
+		VENDOR_SPECIFIED
+	}
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.clientState property value.
-     * This property is described as follows:
-     *
-     * ClientState represents the current state of the DHCP client. See
-     * RFC1541 for more information on the meaning of each state.
-     *
-     * @param	int	new clientState property value
-     * @exception	Exception
-     */
-    public void setClientState(ClientState clientState){
+	private ClientState	clientState;
 
-    this.clientState = clientState;
-    } // setClientState
+	/**
+	 * This method returns the DHCPProtocolEndpoint.clientState property value. This property is described as follows:
+	 * 
+	 * ClientState represents the current state of the DHCP client. See RFC1541 for more information on the meaning of each state.
+	 * 
+	 * @return int current clientState property value
+	 * @exception Exception
+	 */
+	public ClientState getClientState() {
 
+		return this.clientState;
+	} // getClientState
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property renewalTime.
-     */
-    private long renewalTime;
-    /**
-     * This method returns the DHCPProtocolEndpoint.renewalTime property
-     * value. This property is described as follows:
-     *
-     * This option specifies the time interval from address assignment until
-     * the client transitions to the RENEWING state. This value corresponds
-     * to the value for code 58 as defined in RFC2132.
-     *
-     * @return	long	current renewalTime property value
-     * @exception	Exception
-     */
-    public long getRenewalTime(){
+	/**
+	 * This method sets the DHCPProtocolEndpoint.clientState property value. This property is described as follows:
+	 * 
+	 * ClientState represents the current state of the DHCP client. See RFC1541 for more information on the meaning of each state.
+	 * 
+	 * @param int new clientState property value
+	 * @exception Exception
+	 */
+	public void setClientState(ClientState clientState) {
 
-    return this.renewalTime;
-    } // getRenewalTime
+		this.clientState = clientState;
+	} // setClientState
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.renewalTime property value.
-     * This property is described as follows:
-     *
-     * This option specifies the time interval from address assignment until
-     * the client transitions to the RENEWING state. This value corresponds
-     * to the value for code 58 as defined in RFC2132.
-     *
-     * @param	long	new renewalTime property value
-     * @exception	Exception
-     */
-    public void setRenewalTime(long renewalTime) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property renewalTime.
+	 */
+	private long	renewalTime;
 
-    this.renewalTime = renewalTime;
-    } // setRenewalTime
+	/**
+	 * This method returns the DHCPProtocolEndpoint.renewalTime property value. This property is described as follows:
+	 * 
+	 * This option specifies the time interval from address assignment until the client transitions to the RENEWING state. This value corresponds to
+	 * the value for code 58 as defined in RFC2132.
+	 * 
+	 * @return long current renewalTime property value
+	 * @exception Exception
+	 */
+	public long getRenewalTime() {
 
+		return this.renewalTime;
+	} // getRenewalTime
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property rebindingTime.
-     */
-    private long rebindingTime;
-    /**
-     * This method returns the DHCPProtocolEndpoint.rebindingTime property
-     * value. This property is described as follows:
-     *
-     * This property specifies the time interval from address assignment until
-     * the client transitions to the REBINDING state. This value corresponds
-     * to the value for code 59 as defined in RFC2132.
-     *
-     * @return	long	current rebindingTime property value
-     * @exception	Exception
-     */
-    public long getRebindingTime(){
+	/**
+	 * This method sets the DHCPProtocolEndpoint.renewalTime property value. This property is described as follows:
+	 * 
+	 * This option specifies the time interval from address assignment until the client transitions to the RENEWING state. This value corresponds to
+	 * the value for code 58 as defined in RFC2132.
+	 * 
+	 * @param long new renewalTime property value
+	 * @exception Exception
+	 */
+	public void setRenewalTime(long renewalTime) {
 
-    return this.rebindingTime;
-    } // getRebindingTime
+		this.renewalTime = renewalTime;
+	} // setRenewalTime
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.rebindingTime property value.
-     * This property is described as follows:
-     *
-     * This property specifies the time interval from address assignment until
-     * the client transitions to the REBINDING state. This value corresponds
-     * to the value for code 59 as defined in RFC2132.
-     *
-     * @param	long	new rebindingTime property value
-     * @exception	Exception
-     */
-    public void setRebindingTime(long rebindingTime) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property rebindingTime.
+	 */
+	private long	rebindingTime;
 
-    this.rebindingTime = rebindingTime;
-    } // setRebindingTime
+	/**
+	 * This method returns the DHCPProtocolEndpoint.rebindingTime property value. This property is described as follows:
+	 * 
+	 * This property specifies the time interval from address assignment until the client transitions to the REBINDING state. This value corresponds
+	 * to the value for code 59 as defined in RFC2132.
+	 * 
+	 * @return long current rebindingTime property value
+	 * @exception Exception
+	 */
+	public long getRebindingTime() {
 
+		return this.rebindingTime;
+	} // getRebindingTime
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property leaseTime.
-     */
-    private long leaseTime;
-    /**
-     * This method returns the DHCPProtocolEndpoint.leaseTime property value.
-     * This property is described as follows:
-     *
-     * This property is used in a client request (DHCPDISCOVER or DHCPREQUEST)
-     * to allow the client to request a lease time for the IP address. In a
-     * server reply (DHCPOFFER), a DHCP server uses this option to specify
-     * the lease time it is willing to offer. This value corresponds to the
-     * value for code 51 as defined in RFC2132.or as specified in RFC3315,
-     * Section 9
-     *
-     * @return	long	current leaseTime property value
-     * @exception	Exception
-     */
-    public long getLeaseTime(){
+	/**
+	 * This method sets the DHCPProtocolEndpoint.rebindingTime property value. This property is described as follows:
+	 * 
+	 * This property specifies the time interval from address assignment until the client transitions to the REBINDING state. This value corresponds
+	 * to the value for code 59 as defined in RFC2132.
+	 * 
+	 * @param long new rebindingTime property value
+	 * @exception Exception
+	 */
+	public void setRebindingTime(long rebindingTime) {
 
-    return this.leaseTime;
-    } // getLeaseTime
+		this.rebindingTime = rebindingTime;
+	} // setRebindingTime
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.leaseTime property value.
-     * This property is described as follows:
-     *
-     * This property is used in a client request (DHCPDISCOVER or DHCPREQUEST)
-     * to allow the client to request a lease time for the IP address. In a
-     * server reply (DHCPOFFER), a DHCP server uses this option to specify
-     * the lease time it is willing to offer. This value corresponds to the
-     * value for code 51 as defined in RFC2132.or as specified in RFC3315,
-     * Section 9
-     *
-     * @param	long	new leaseTime property value
-     * @exception	Exception
-     */
-    public void setLeaseTime(long leaseTime) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property leaseTime.
+	 */
+	private long	leaseTime;
 
-    this.leaseTime = leaseTime;
-    } // setLeaseTime
+	/**
+	 * This method returns the DHCPProtocolEndpoint.leaseTime property value. This property is described as follows:
+	 * 
+	 * This property is used in a client request (DHCPDISCOVER or DHCPREQUEST) to allow the client to request a lease time for the IP address. In a
+	 * server reply (DHCPOFFER), a DHCP server uses this option to specify the lease time it is willing to offer. This value corresponds to the value
+	 * for code 51 as defined in RFC2132.or as specified in RFC3315, Section 9
+	 * 
+	 * @return long current leaseTime property value
+	 * @exception Exception
+	 */
+	public long getLeaseTime() {
 
+		return this.leaseTime;
+	} // getLeaseTime
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property leaseObtained.
-     */
-    private Date leaseObtained;
-    /**
-     * This method returns the DHCPProtocolEndpoint.leaseObtained property
-     * value. This property is described as follows:
-     *
-     * This property indicates the time a DHCP lease was obtained by the
-     * client. There is no correlating value defined in RFC2132. This value
-     * is persisted by the client when it obtains a DHCP lease from a DHCP
-     * server.
-     *
-     * @return	Date	current leaseObtained property value
-     * @exception	Exception
-     */
-    public Date getLeaseObtained(){
+	/**
+	 * This method sets the DHCPProtocolEndpoint.leaseTime property value. This property is described as follows:
+	 * 
+	 * This property is used in a client request (DHCPDISCOVER or DHCPREQUEST) to allow the client to request a lease time for the IP address. In a
+	 * server reply (DHCPOFFER), a DHCP server uses this option to specify the lease time it is willing to offer. This value corresponds to the value
+	 * for code 51 as defined in RFC2132.or as specified in RFC3315, Section 9
+	 * 
+	 * @param long new leaseTime property value
+	 * @exception Exception
+	 */
+	public void setLeaseTime(long leaseTime) {
 
-    return this.leaseObtained;
-    } // getLeaseObtained
+		this.leaseTime = leaseTime;
+	} // setLeaseTime
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.leaseObtained property value.
-     * This property is described as follows:
-     *
-     * This property indicates the time a DHCP lease was obtained by the
-     * client. There is no correlating value defined in RFC2132. This value
-     * is persisted by the client when it obtains a DHCP lease from a DHCP
-     * server.
-     *
-     * @param	Date	new leaseObtained property value
-     * @exception	Exception
-     */
-    public void setLeaseObtained(Date leaseObtained) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property leaseObtained.
+	 */
+	private Date	leaseObtained;
 
-    this.leaseObtained = leaseObtained;
-    } // setLeaseObtained
+	/**
+	 * This method returns the DHCPProtocolEndpoint.leaseObtained property value. This property is described as follows:
+	 * 
+	 * This property indicates the time a DHCP lease was obtained by the client. There is no correlating value defined in RFC2132. This value is
+	 * persisted by the client when it obtains a DHCP lease from a DHCP server.
+	 * 
+	 * @return Date current leaseObtained property value
+	 * @exception Exception
+	 */
+	public Date getLeaseObtained() {
 
+		return this.leaseObtained;
+	} // getLeaseObtained
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property leaseExpires.
-     */
-    private Date leaseExpires;
-    /**
-     * This method returns the DHCPProtocolEndpoint.leaseExpires property
-     * value. This property is described as follows:
-     *
-     * This property indicates the time a DHCP lease will expire. There is no
-     * correlating value defined in RFC2132. This value is calculated by the
-     * client by adding the interval specified in LeaseTime to the value of
-     * LeaseObtained.
-     *
-     * @return	Date	current leaseExpires property value
-     * @exception	Exception
-     */
-    public Date getLeaseExpires(){
+	/**
+	 * This method sets the DHCPProtocolEndpoint.leaseObtained property value. This property is described as follows:
+	 * 
+	 * This property indicates the time a DHCP lease was obtained by the client. There is no correlating value defined in RFC2132. This value is
+	 * persisted by the client when it obtains a DHCP lease from a DHCP server.
+	 * 
+	 * @param Date
+	 *            new leaseObtained property value
+	 * @exception Exception
+	 */
+	public void setLeaseObtained(Date leaseObtained) {
 
-    return this.leaseExpires;
-    } // getLeaseExpires
+		this.leaseObtained = leaseObtained;
+	} // setLeaseObtained
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.leaseExpires property value.
-     * This property is described as follows:
-     *
-     * This property indicates the time a DHCP lease will expire. There is no
-     * correlating value defined in RFC2132. This value is calculated by the
-     * client by adding the interval specified in LeaseTime to the value of
-     * LeaseObtained.
-     *
-     * @param	Date	new leaseExpires property value
-     * @exception	Exception
-     */
-    public void setLeaseExpires(Date leaseExpires) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property leaseExpires.
+	 */
+	private Date	leaseExpires;
 
-    this.leaseExpires = leaseExpires;
-    } // setLeaseExpires
+	/**
+	 * This method returns the DHCPProtocolEndpoint.leaseExpires property value. This property is described as follows:
+	 * 
+	 * This property indicates the time a DHCP lease will expire. There is no correlating value defined in RFC2132. This value is calculated by the
+	 * client by adding the interval specified in LeaseTime to the value of LeaseObtained.
+	 * 
+	 * @return Date current leaseExpires property value
+	 * @exception Exception
+	 */
+	public Date getLeaseExpires() {
 
+		return this.leaseExpires;
+	} // getLeaseExpires
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property OptionsReceived.
-     */
+	/**
+	 * This method sets the DHCPProtocolEndpoint.leaseExpires property value. This property is described as follows:
+	 * 
+	 * This property indicates the time a DHCP lease will expire. There is no correlating value defined in RFC2132. This value is calculated by the
+	 * client by adding the interval specified in LeaseTime to the value of LeaseObtained.
+	 * 
+	 * @param Date
+	 *            new leaseExpires property value
+	 * @exception Exception
+	 */
+	public void setLeaseExpires(Date leaseExpires) {
 
-    public enum OptionsReceived{
-    UNKNOWN,
-    OTHER,
-    PAD,
-    SUBNET_MASK,
-    TIME_OFFSET,
-    ROUTER_OPTION,
-    TIME_SERVER,
-    NAME_SERVER,
-    DOMAIN_NAME_SERVER,
-    LOG_SERVER,
-    COOKIE_SERVER,
-    LPR_SERVER,
-    IMPRESS_SERVER,
-    RESOURCE_LOCATION_SERVER,
-    HOST_NAME,
-    BOOT_FILE_SIZE,
-    MERIT_DUMP_FILE,
-    DOMAIN_NAME,
-    SWAP_SERVER,
-    ROOT_PATH,
-    EXTENSIONS_PATH,
-    IP_FORWARDING_ENABLE_DISABLE,
-    NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
-    POLICY_FILTER,
-    MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
-    DEFAULT_IP_TIME_TO_LIVE,
-    PATH_MTU_AGING_TIMEOUT,
-    PATH_MTU_PLATEAU_TABLE,
-    INTERFACE_MTU,
-    ALL_SUBNETS_ARE_LOCAL,
-    BROADCAST_ADDRESS,
-    PERFORM_SUBNET_MASK_DISCOVERY,
-    MASK_SUPPLIER,
-    PERFORM_ROUTER_DISCOVERY,
-    ROUTER_SOLICITATION_ADDRESS,
-    STATIC_ROUTE,
-    TRAILER_ENCAPSULATION,
-    ARP_CACHE_TIMEOUT,
-    ETHERNET_ENCAPSULATION,
-    TCP_DEFAULT_TTL,
-    TCP_KEEPALIVE_INTERVAL,
-    TCP_KEEPALIVE_GARBAGE,
-    NETWORK_INFORMATION_SERVICE_DOMAIN,
-    NETWORK_INFORMATION_SERVERS,
-    NETWORK_TIME_PROTOCOL_SERVERS,
-    VENDOR_SPECIFIC_INFORMATION,
-    NETBIOS_OVER_TCP_IP_NAME_SERVER,
-    NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
-    NETBIOS_OVER_TCP_IP_NODE_TYPE,
-    NETBIOS_OVER_TCP_IP_SCOPE,
-    X_WINDOW_SYSTEM_FONT_SERVER,
-    X_WINDOW_SYSTEM_DISPLAY_MANAGER,
-    REQUESTED_IP_ADDRESS,
-    LEASE_TIME,
-    OPTION_OVERLOAD,
-    MESSAGE_TYPE,
-    SERVER_IDENTIFIER,
-    PARAMETER_REQUEST_LIST,
-    ERROR_MESSAGE,
-    MAXIMUM_MESSAGE_SIZE,
-    RENEWAL_T1_TIME,
-    REBINDING_T2_TIME,
-    VENDOR_CLASS_IDENTIFIER,
-    CLIENT_IDENTIFIER,
-    DMTF_RESERVED,
-    DMTF_RESERVED1,
-    NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
-    NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
-    TFTP_SERVER_NAME,
-    BOOTFILE_NAME,
-    MOBILE_IP_HOME_AGENT,
-    SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
-    POST_OFFICE_PROTOCOL_POP3_SERVER,
-    NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
-    DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
-    DEFAULT_FINGER_SERVER,
-    DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
-    STREETTALK_SERVER,
-    STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
-    USER_CLASS,
-    SLP_DIRECTORY_AGENT,
-    SLP_SERVICE_SCOPE,
-    DMTF_RESERVED2,
-    RELAY_AGENT_INFORMATION,
-    DMTF_RESERVED3,
-    NAME_SERVICE_SEARCH,
-    SUBNET_SELECTION,
-    DMTF_RESERVED4,
-    CLASSLESS_ROUTE,
-    DMTF_RESERVED5,
-    END,
-    DMTF_RESERVED6,
-    VENDOR_RESERVED
-    }
-    private OptionsReceived optionsReceived;
-    /**
-     * This method returns the DHCPProtocolEndpoint.optionsReceived property
-     * value. This property is described as follows:
-     *
-     * One or more DHCP options received by the DHCP client. These may
-     * include: Subnet Mask, Default Router, DNS Server, etc. See the RFCs
-     * for a description of each option.
-     *
-     * @return	int	current optionsReceived property value
-     * @exception	Exception
-     */
-    public OptionsReceived getOptionsReceived(){
+		this.leaseExpires = leaseExpires;
+	} // setLeaseExpires
 
-    return this.optionsReceived;
-    } // getOptionsReceived
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property OptionsReceived.
+	 */
 
-    /**
-     * This method sets the DHCPProtocolEndpoint.optionsReceived property
-     * value. This property is described as follows:
-     *
-     * One or more DHCP options received by the DHCP client. These may
-     * include: Subnet Mask, Default Router, DNS Server, etc. See the RFCs
-     * for a description of each option.
-     *
-     * @param	int	new optionsReceived property value
-     * @exception	Exception
-     */
-    public void setOptionsReceived(OptionsReceived optionsReceived){
+	public enum OptionsReceived {
+		UNKNOWN,
+		OTHER,
+		PAD,
+		SUBNET_MASK,
+		TIME_OFFSET,
+		ROUTER_OPTION,
+		TIME_SERVER,
+		NAME_SERVER,
+		DOMAIN_NAME_SERVER,
+		LOG_SERVER,
+		COOKIE_SERVER,
+		LPR_SERVER,
+		IMPRESS_SERVER,
+		RESOURCE_LOCATION_SERVER,
+		HOST_NAME,
+		BOOT_FILE_SIZE,
+		MERIT_DUMP_FILE,
+		DOMAIN_NAME,
+		SWAP_SERVER,
+		ROOT_PATH,
+		EXTENSIONS_PATH,
+		IP_FORWARDING_ENABLE_DISABLE,
+		NON_LOCAL_SOURCE_ROUTING_ENABLE_DISABLE,
+		POLICY_FILTER,
+		MAXIMUM_DATAGRAM_REASSEMBLY_SIZE,
+		DEFAULT_IP_TIME_TO_LIVE,
+		PATH_MTU_AGING_TIMEOUT,
+		PATH_MTU_PLATEAU_TABLE,
+		INTERFACE_MTU,
+		ALL_SUBNETS_ARE_LOCAL,
+		BROADCAST_ADDRESS,
+		PERFORM_SUBNET_MASK_DISCOVERY,
+		MASK_SUPPLIER,
+		PERFORM_ROUTER_DISCOVERY,
+		ROUTER_SOLICITATION_ADDRESS,
+		STATIC_ROUTE,
+		TRAILER_ENCAPSULATION,
+		ARP_CACHE_TIMEOUT,
+		ETHERNET_ENCAPSULATION,
+		TCP_DEFAULT_TTL,
+		TCP_KEEPALIVE_INTERVAL,
+		TCP_KEEPALIVE_GARBAGE,
+		NETWORK_INFORMATION_SERVICE_DOMAIN,
+		NETWORK_INFORMATION_SERVERS,
+		NETWORK_TIME_PROTOCOL_SERVERS,
+		VENDOR_SPECIFIC_INFORMATION,
+		NETBIOS_OVER_TCP_IP_NAME_SERVER,
+		NETBIOS_OVER_TCP_IP_DATAGRAM_DISTRIBUTION_SERVER,
+		NETBIOS_OVER_TCP_IP_NODE_TYPE,
+		NETBIOS_OVER_TCP_IP_SCOPE,
+		X_WINDOW_SYSTEM_FONT_SERVER,
+		X_WINDOW_SYSTEM_DISPLAY_MANAGER,
+		REQUESTED_IP_ADDRESS,
+		LEASE_TIME,
+		OPTION_OVERLOAD,
+		MESSAGE_TYPE,
+		SERVER_IDENTIFIER,
+		PARAMETER_REQUEST_LIST,
+		ERROR_MESSAGE,
+		MAXIMUM_MESSAGE_SIZE,
+		RENEWAL_T1_TIME,
+		REBINDING_T2_TIME,
+		VENDOR_CLASS_IDENTIFIER,
+		CLIENT_IDENTIFIER,
+		DMTF_RESERVED,
+		DMTF_RESERVED1,
+		NETWORK_INFORMATION_SERVICEPLUS_DOMAINPLUS,
+		NETWORK_INFORMATION_SERVICEPLUS_SERVERSPLUS,
+		TFTP_SERVER_NAME,
+		BOOTFILE_NAME,
+		MOBILE_IP_HOME_AGENT,
+		SIMPLE_MAIL_TRANSPORT_PROTOCOL_SMTP_SERVER,
+		POST_OFFICE_PROTOCOL_POP3_SERVER,
+		NETWORK_NEWS_TRANSPORT_PROTOCOL_NNTP_SERVER,
+		DEFAULT_WORLD_WIDE_WEB_WWW_SERVER,
+		DEFAULT_FINGER_SERVER,
+		DEFAULT_INTERNET_RELAY_CHAT_IRC_SERVER,
+		STREETTALK_SERVER,
+		STREETTALK_DIRECTORY_ASSISTANCE_STDA_SERVER,
+		USER_CLASS,
+		SLP_DIRECTORY_AGENT,
+		SLP_SERVICE_SCOPE,
+		DMTF_RESERVED2,
+		RELAY_AGENT_INFORMATION,
+		DMTF_RESERVED3,
+		NAME_SERVICE_SEARCH,
+		SUBNET_SELECTION,
+		DMTF_RESERVED4,
+		CLASSLESS_ROUTE,
+		DMTF_RESERVED5,
+		END,
+		DMTF_RESERVED6,
+		VENDOR_RESERVED
+	}
 
-    this.optionsReceived = optionsReceived;
-    } // setOptionsReceived
+	private OptionsReceived	optionsReceived;
 
+	/**
+	 * This method returns the DHCPProtocolEndpoint.optionsReceived property value. This property is described as follows:
+	 * 
+	 * One or more DHCP options received by the DHCP client. These may include: Subnet Mask, Default Router, DNS Server, etc. See the RFCs for a
+	 * description of each option.
+	 * 
+	 * @return int current optionsReceived property value
+	 * @exception Exception
+	 */
+	public OptionsReceived getOptionsReceived() {
 
+		return this.optionsReceived;
+	} // getOptionsReceived
+
+	/**
+	 * This method sets the DHCPProtocolEndpoint.optionsReceived property value. This property is described as follows:
+	 * 
+	 * One or more DHCP options received by the DHCP client. These may include: Subnet Mask, Default Router, DNS Server, etc. See the RFCs for a
+	 * description of each option.
+	 * 
+	 * @param int new optionsReceived property value
+	 * @exception Exception
+	 */
+	public void setOptionsReceived(OptionsReceived optionsReceived) {
+
+		this.optionsReceived = optionsReceived;
+	} // setOptionsReceived
 
 } // Class DHCPProtocolEndpoint

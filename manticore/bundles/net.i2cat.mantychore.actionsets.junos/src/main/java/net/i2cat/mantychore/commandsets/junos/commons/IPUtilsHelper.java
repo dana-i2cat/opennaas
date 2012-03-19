@@ -1,14 +1,30 @@
 package net.i2cat.mantychore.commandsets.junos.commons;
 
+import java.io.IOException;
 import java.util.regex.Pattern;
+
+import net.i2cat.mantychore.model.utils.ModelHelper;
 
 /**
  * It is used to parse different messages
- *
- * @author Carlos BAez Ruiz
- *
+ * 
+ * @author Carlos Baez Ruiz
  */
 public class IPUtilsHelper {
+
+	private static final String	IP_ADDRESS_PATTERN	=
+															"^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+																	"([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
+
+	public static long ipv4StringToLong(String ip) throws IOException {
+		return ModelHelper.ipv4StringToLong(ip);
+	}
+
+	public static String ipv4LongToString(long ip) throws IOException {
+		return ModelHelper.ipv4LongToString(ip);
+	}
 
 	public static short[] parseStrIPToBytesIP(String IP) {
 		short[] newIP = new short[4];
@@ -20,7 +36,6 @@ public class IPUtilsHelper {
 		newIP[3] = Short.parseShort(splittedIP[3]);
 
 		return newIP;
-
 	}
 
 	public static int parseAddressToInt(String address) {
@@ -87,10 +102,20 @@ public class IPUtilsHelper {
 		return resultMask;
 	}
 
+	/**
+	 * Check for a pattern [0..255].[0..255].[0..255].[0..255]
+	 * 
+	 * @param ipAddress
+	 * @return false if don't find the pattern
+	 */
+	public static boolean validateIpAddressPattern(String ipAddress) {
+		return ipAddress.matches(IP_ADDRESS_PATTERN);
+	}
+
 	public static boolean validateAnIpAddressWithRegularExpression(String iPaddress) {
 		final Pattern IP_PATTERN =
-					Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
-										+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
+				Pattern.compile("b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).)"
+						+ "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)b");
 		return IP_PATTERN.matcher(iPaddress).matches();
 	}
 

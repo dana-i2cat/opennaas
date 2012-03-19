@@ -5,222 +5,209 @@
 
 package net.i2cat.mantychore.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class OSPFProtocolEndpointBase as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * OSPFProtocolEndpointBaseBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFProtocolEndpointBase as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the OSPFProtocolEndpointBaseBean Interface. The CIM class
  * OSPFProtocolEndpointBase is described as follows:
- *
- * Base class for OSPF protocol endpoints, defining several general
- * properties.
+ * 
+ * Base class for OSPF protocol endpoints, defining several general properties.
  */
 public class OSPFProtocolEndpointBase extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a OSPFProtocolEndpointBaseBeanImpl Class which
-     * implements the OSPFProtocolEndpointBaseBean Interface, and
-     * encapsulates the CIM class OSPFProtocolEndpointBase in a Java Bean.
-     * The CIM class OSPFProtocolEndpointBase is described as follows:
-     *
-     * Base class for OSPF protocol endpoints, defining several general
-     * properties.
-     */
-    public OSPFProtocolEndpointBase(){};
+	/* EndpointInArea */
+	/**
+	 * 
+	 * @return OSPFArea associated to this OSPFProtocolEndpointBase through EndpointInArea aggregation.
+	 */
+	public OSPFArea getOSPFArea() {
+		return (OSPFArea) this.getFirstFromAssociatedElementByType(EndpointInArea.class);
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property transitDelay.
-     */
-    private int transitDelay;
-    /**
-     * This method returns the OSPFProtocolEndpointBase.transitDelay property
-     * value. This property is described as follows:
-     *
-     * Estimated delay, in seconds that it takes to transmit a Link State
-     * Update Packet over this interface, see C.3 in RFC 2328.
-     *
-     * @return	int	current transitDelay property value
-     * @exception	Exception
-     */
-    public int getTransitDelay(){
+	/**
+	 * Associates this OSPFProtocolEndpointBase with ospfArea through EndpointInArea aggregation
+	 */
+	public void setOSPFArea(OSPFArea ospfArea) {
+		if (ospfArea != null)
+			EndpointInArea.link(ospfArea, this);
+	}
 
-    return this.transitDelay;
-    } // getTransitDelay
+	/**
+	 * This constructor creates a OSPFProtocolEndpointBaseBeanImpl Class which implements the OSPFProtocolEndpointBaseBean Interface, and encapsulates
+	 * the CIM class OSPFProtocolEndpointBase in a Java Bean. The CIM class OSPFProtocolEndpointBase is described as follows:
+	 * 
+	 * Base class for OSPF protocol endpoints, defining several general properties.
+	 */
+	public OSPFProtocolEndpointBase() {
+	};
 
-    /**
-     * This method sets the OSPFProtocolEndpointBase.transitDelay property
-     * value. This property is described as follows:
-     *
-     * Estimated delay, in seconds that it takes to transmit a Link State
-     * Update Packet over this interface, see C.3 in RFC 2328.
-     *
-     * @param	int	new transitDelay property value
-     * @exception	Exception
-     */
-    public void setTransitDelay(int transitDelay) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property transitDelay.
+	 */
+	private int	transitDelay;
 
-    this.transitDelay = transitDelay;
-    } // setTransitDelay
+	/**
+	 * This method returns the OSPFProtocolEndpointBase.transitDelay property value. This property is described as follows:
+	 * 
+	 * Estimated delay, in seconds that it takes to transmit a Link State Update Packet over this interface, see C.3 in RFC 2328.
+	 * 
+	 * @return int current transitDelay property value
+	 * @exception Exception
+	 */
+	public int getTransitDelay() {
 
+		return this.transitDelay;
+	} // getTransitDelay
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property retransmitInterval.
-     */
-    private int retransmitInterval;
-    /**
-     * This method returns the OSPFProtocolEndpointBase.retransmitInterval
-     * property value. This property is described as follows:
-     *
-     * The number of seconds between LSA (Link State Advertisement)
-     * retransmissions, see C.3 in RFC 2328.
-     *
-     * @return	int	current retransmitInterval property value
-     * @exception	Exception
-     */
-    public int getRetransmitInterval(){
+	/**
+	 * This method sets the OSPFProtocolEndpointBase.transitDelay property value. This property is described as follows:
+	 * 
+	 * Estimated delay, in seconds that it takes to transmit a Link State Update Packet over this interface, see C.3 in RFC 2328.
+	 * 
+	 * @param int new transitDelay property value
+	 * @exception Exception
+	 */
+	public void setTransitDelay(int transitDelay) {
 
-    return this.retransmitInterval;
-    } // getRetransmitInterval
+		this.transitDelay = transitDelay;
+	} // setTransitDelay
 
-    /**
-     * This method sets the OSPFProtocolEndpointBase.retransmitInterval
-     * property value. This property is described as follows:
-     *
-     * The number of seconds between LSA (Link State Advertisement)
-     * retransmissions, see C.3 in RFC 2328.
-     *
-     * @param	int	new retransmitInterval property value
-     * @exception	Exception
-     */
-    public void setRetransmitInterval(int retransmitInterval) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property retransmitInterval.
+	 */
+	private int	retransmitInterval;
 
-    this.retransmitInterval = retransmitInterval;
-    } // setRetransmitInterval
+	/**
+	 * This method returns the OSPFProtocolEndpointBase.retransmitInterval property value. This property is described as follows:
+	 * 
+	 * The number of seconds between LSA (Link State Advertisement) retransmissions, see C.3 in RFC 2328.
+	 * 
+	 * @return int current retransmitInterval property value
+	 * @exception Exception
+	 */
+	public int getRetransmitInterval() {
 
+		return this.retransmitInterval;
+	} // getRetransmitInterval
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AuthType.
-     */
+	/**
+	 * This method sets the OSPFProtocolEndpointBase.retransmitInterval property value. This property is described as follows:
+	 * 
+	 * The number of seconds between LSA (Link State Advertisement) retransmissions, see C.3 in RFC 2328.
+	 * 
+	 * @param int new retransmitInterval property value
+	 * @exception Exception
+	 */
+	public void setRetransmitInterval(int retransmitInterval) {
 
-    public enum AuthType{
-    OTHER,
-    NULL_AUTHENTICATION,
-    SIMPLE_PASSWORD,
-    CRYPTOGRAPHIC_AUTHENTICATION
-    }
-    private AuthType authType;
-    /**
-     * This method returns the OSPFProtocolEndpointBase.authType property
-     * value. This property is described as follows:
-     *
-     * Identifies the authentication procedure to be used on the attached
-     * network, see C.3 in RFC 2328.
-     *
-     * @return	int	current authType property value
-     * @exception	Exception
-     */
-    public AuthType getAuthType(){
+		this.retransmitInterval = retransmitInterval;
+	} // setRetransmitInterval
 
-    return this.authType;
-    } // getAuthType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AuthType.
+	 */
 
-    /**
-     * This method sets the OSPFProtocolEndpointBase.authType property value.
-     * This property is described as follows:
-     *
-     * Identifies the authentication procedure to be used on the attached
-     * network, see C.3 in RFC 2328.
-     *
-     * @param	int	new authType property value
-     * @exception	Exception
-     */
-    public void setAuthType(AuthType authType){
+	public enum AuthType {
+		OTHER,
+		NULL_AUTHENTICATION,
+		SIMPLE_PASSWORD,
+		CRYPTOGRAPHIC_AUTHENTICATION
+	}
 
-    this.authType = authType;
-    } // setAuthType
+	private AuthType	authType;
 
+	/**
+	 * This method returns the OSPFProtocolEndpointBase.authType property value. This property is described as follows:
+	 * 
+	 * Identifies the authentication procedure to be used on the attached network, see C.3 in RFC 2328.
+	 * 
+	 * @return int current authType property value
+	 * @exception Exception
+	 */
+	public AuthType getAuthType() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherAuthType.
-     */
-    private String otherAuthType;
-    /**
-     * This method returns the OSPFProtocolEndpointBase.otherAuthType property
-     * value. This property is described as follows:
-     *
-     * Specifies the authentication procedure if the value, "Other" (1) is set
-     * for AuthType.
-     *
-     * @return	String	current otherAuthType property value
-     * @exception	Exception
-     */
-    public String getOtherAuthType(){
+		return this.authType;
+	} // getAuthType
 
-    return this.otherAuthType;
-    } // getOtherAuthType
+	/**
+	 * This method sets the OSPFProtocolEndpointBase.authType property value. This property is described as follows:
+	 * 
+	 * Identifies the authentication procedure to be used on the attached network, see C.3 in RFC 2328.
+	 * 
+	 * @param int new authType property value
+	 * @exception Exception
+	 */
+	public void setAuthType(AuthType authType) {
 
-    /**
-     * This method sets the OSPFProtocolEndpointBase.otherAuthType property
-     * value. This property is described as follows:
-     *
-     * Specifies the authentication procedure if the value, "Other" (1) is set
-     * for AuthType.
-     *
-     * @param	String	new otherAuthType property value
-     * @exception	Exception
-     */
-    public void setOtherAuthType(String otherAuthType) {
+		this.authType = authType;
+	} // setAuthType
 
-    this.otherAuthType = otherAuthType;
-    } // setOtherAuthType
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherAuthType.
+	 */
+	private String	otherAuthType;
 
+	/**
+	 * This method returns the OSPFProtocolEndpointBase.otherAuthType property value. This property is described as follows:
+	 * 
+	 * Specifies the authentication procedure if the value, "Other" (1) is set for AuthType.
+	 * 
+	 * @return String current otherAuthType property value
+	 * @exception Exception
+	 */
+	public String getOtherAuthType() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property authKey.
-     */
-    private String authKey;
-    /**
-     * This method returns the OSPFProtocolEndpointBase.authKey property
-     * value. This property is described as follows:
-     *
-     * This key is used during the authentication procedure to verify OSPF
-     * protocol packets, see C.3 RFC 2328. It is used in the
-     * "Simple password" and in the "Cryptographic authentication" case too.
-     *
-     * @return	String	current authKey property value
-     * @exception	Exception
-     */
-    public String getAuthKey(){
+		return this.otherAuthType;
+	} // getOtherAuthType
 
-    return this.authKey;
-    } // getAuthKey
+	/**
+	 * This method sets the OSPFProtocolEndpointBase.otherAuthType property value. This property is described as follows:
+	 * 
+	 * Specifies the authentication procedure if the value, "Other" (1) is set for AuthType.
+	 * 
+	 * @param String
+	 *            new otherAuthType property value
+	 * @exception Exception
+	 */
+	public void setOtherAuthType(String otherAuthType) {
 
-    /**
-     * This method sets the OSPFProtocolEndpointBase.authKey property value.
-     * This property is described as follows:
-     *
-     * This key is used during the authentication procedure to verify OSPF
-     * protocol packets, see C.3 RFC 2328. It is used in the
-     * "Simple password" and in the "Cryptographic authentication" case too.
-     *
-     * @param	String	new authKey property value
-     * @exception	Exception
-     */
-    public void setAuthKey(String authKey) {
+		this.otherAuthType = otherAuthType;
+	} // setOtherAuthType
 
-    this.authKey = authKey;
-    } // setAuthKey
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property authKey.
+	 */
+	private String	authKey;
 
+	/**
+	 * This method returns the OSPFProtocolEndpointBase.authKey property value. This property is described as follows:
+	 * 
+	 * This key is used during the authentication procedure to verify OSPF protocol packets, see C.3 RFC 2328. It is used in the "Simple password" and
+	 * in the "Cryptographic authentication" case too.
+	 * 
+	 * @return String current authKey property value
+	 * @exception Exception
+	 */
+	public String getAuthKey() {
 
+		return this.authKey;
+	} // getAuthKey
 
+	/**
+	 * This method sets the OSPFProtocolEndpointBase.authKey property value. This property is described as follows:
+	 * 
+	 * This key is used during the authentication procedure to verify OSPF protocol packets, see C.3 RFC 2328. It is used in the "Simple password" and
+	 * in the "Cryptographic authentication" case too.
+	 * 
+	 * @param String
+	 *            new authKey property value
+	 * @exception Exception
+	 */
+	public void setAuthKey(String authKey) {
+
+		this.authKey = authKey;
+	} // setAuthKey
 
 } // Class OSPFProtocolEndpointBase

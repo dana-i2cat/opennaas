@@ -14,9 +14,6 @@
 	<packaging>bundle</packaging>
 	<name>Mantychore Chassis Capability</name>
 	<description>Mantychore Chassis Capability Implementation</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>
@@ -27,12 +24,10 @@
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.actionsets</groupId>
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!--  auxiliar methods  -->
 		<dependency>
@@ -41,14 +36,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
@@ -57,7 +44,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.5</version>
 				<extensions>true</extensions>
 				<!--
 					| the following instructions build a simple set of public/private
@@ -74,7 +60,6 @@
 						-->
 						<Import-Package>!${project.artifactId}.*,
   							org.slf4j,
-  							org.apache.activemq,
 							org.apache.felix.service.command,
 							*
 							</Import-Package>

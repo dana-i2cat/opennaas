@@ -13,22 +13,13 @@
 	<name>OpenNaaS :: Core :: Mock Profile for testing</name>
 	<description>Nexus profile just for testing</description>
 	<packaging>bundle</packaging>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>

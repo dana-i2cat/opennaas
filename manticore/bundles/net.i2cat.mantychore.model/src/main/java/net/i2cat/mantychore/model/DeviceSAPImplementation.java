@@ -8,54 +8,39 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DeviceSAPImplementation as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * DeviceSAPImplementationBean Interface. The CIM class
- * DeviceSAPImplementation is described as follows:
- *
- * An association between a ServiceAccessPoint (SAP) and how it is
- * implemented. The cardinality of this association is many-to-many. A SAP
- * can be provided by more than one LogicalDevice, operating in conjunction.
- * And, any Device can provide more than one ServiceAccessPoint. When many
- * LogicalDevices are associated with a single SAP, it is assumed that these
- * elements operate in conjunction to provide the AccessPoint. If different
- * implementations of a SAP exist, each of these implementations would result
- * in individual instantiations of the ServiceAccessPoint object. These
- * individual instantiations would then have associations to the unique
- * implementations.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DeviceSAPImplementation as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the DeviceSAPImplementationBean Interface. The CIM class DeviceSAPImplementation
+ * is described as follows:
+ * 
+ * An association between a ServiceAccessPoint (SAP) and how it is implemented. The cardinality of this association is many-to-many. A SAP can be
+ * provided by more than one LogicalDevice, operating in conjunction. And, any Device can provide more than one ServiceAccessPoint. When many
+ * LogicalDevices are associated with a single SAP, it is assumed that these elements operate in conjunction to provide the AccessPoint. If different
+ * implementations of a SAP exist, each of these implementations would result in individual instantiations of the ServiceAccessPoint object. These
+ * individual instantiations would then have associations to the unique implementations.
  */
 public class DeviceSAPImplementation extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DeviceSAPImplementationBeanImpl Class which
-     * implements the DeviceSAPImplementationBean Interface, and encapsulates
-     * the CIM class DeviceSAPImplementation in a Java Bean. The CIM class
-     * DeviceSAPImplementation is described as follows:
-     *
-     * An association between a ServiceAccessPoint (SAP) and how it is
-     * implemented. The cardinality of this association is many-to-many. A
-     * SAP can be provided by more than one LogicalDevice, operating in
-     * conjunction. And, any Device can provide more than one
-     * ServiceAccessPoint. When many LogicalDevices are associated with a
-     * single SAP, it is assumed that these elements operate in conjunction
-     * to provide the AccessPoint. If different implementations of a SAP
-     * exist, each of these implementations would result in individual
-     * instantiations of the ServiceAccessPoint object. These individual
-     * instantiations would then have associations to the unique
-     * implementations.
-     */
-    public DeviceSAPImplementation(){};
-    /**
-     * This method create an Association of the type DeviceSAPImplementation
-     * between one LogicalDevice object and ServiceAccessPoint object
-     */
-    public static DeviceSAPImplementation link(LogicalDevice
-	antecedent,ServiceAccessPoint dependent){
+	/**
+	 * This constructor creates a DeviceSAPImplementationBeanImpl Class which implements the DeviceSAPImplementationBean Interface, and encapsulates
+	 * the CIM class DeviceSAPImplementation in a Java Bean. The CIM class DeviceSAPImplementation is described as follows:
+	 * 
+	 * An association between a ServiceAccessPoint (SAP) and how it is implemented. The cardinality of this association is many-to-many. A SAP can be
+	 * provided by more than one LogicalDevice, operating in conjunction. And, any Device can provide more than one ServiceAccessPoint. When many
+	 * LogicalDevices are associated with a single SAP, it is assumed that these elements operate in conjunction to provide the AccessPoint. If
+	 * different implementations of a SAP exist, each of these implementations would result in individual instantiations of the ServiceAccessPoint
+	 * object. These individual instantiations would then have associations to the unique implementations.
+	 */
+	public DeviceSAPImplementation() {
+	};
 
-    return (DeviceSAPImplementation)
-	Association.link(DeviceSAPImplementation.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type DeviceSAPImplementation between one LogicalDevice object and ServiceAccessPoint object
+	 */
+	public static DeviceSAPImplementation link(LogicalDevice
+			antecedent, ServiceAccessPoint dependent) {
+
+		return (DeviceSAPImplementation) Association.link(DeviceSAPImplementation.class, antecedent, dependent);
+	}// link
 
 } // Class DeviceSAPImplementation

@@ -8,41 +8,33 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedCollection as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedCollectionBean Interface. The CIM class HostedCollection is
- * described as follows:
- *
- * HostedCollection defines a SystemSpecificCollection in the context of a
- * scoping System. It represents a Collection that has meaning only in the
- * context of a System, a Collection whose elements are restricted by the
- * definition of the System, or both of these types of Collections.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedCollection as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the HostedCollectionBean Interface. The CIM class HostedCollection is described as
+ * follows:
+ * 
+ * HostedCollection defines a SystemSpecificCollection in the context of a scoping System. It represents a Collection that has meaning only in the
+ * context of a System, a Collection whose elements are restricted by the definition of the System, or both of these types of Collections.
  */
 public class HostedCollection extends HostedDependency implements Serializable
-    {
+{
 
-    /**
-     * This constructor creates a HostedCollectionBeanImpl Class which
-     * implements the HostedCollectionBean Interface, and encapsulates the
-     * CIM class HostedCollection in a Java Bean. The CIM class
-     * HostedCollection is described as follows:
-     *
-     * HostedCollection defines a SystemSpecificCollection in the context of a
-     * scoping System. It represents a Collection that has meaning only in
-     * the context of a System, a Collection whose elements are restricted by
-     * the definition of the System, or both of these types of Collections.
-     */
-    public HostedCollection(){};
-    /**
-     * This method create an Association of the type HostedCollection between
-     * one System object and SystemSpecificCollection object
-     */
-    public static HostedCollection link(System
-	antecedent,SystemSpecificCollection dependent){
+	/**
+	 * This constructor creates a HostedCollectionBeanImpl Class which implements the HostedCollectionBean Interface, and encapsulates the CIM class
+	 * HostedCollection in a Java Bean. The CIM class HostedCollection is described as follows:
+	 * 
+	 * HostedCollection defines a SystemSpecificCollection in the context of a scoping System. It represents a Collection that has meaning only in the
+	 * context of a System, a Collection whose elements are restricted by the definition of the System, or both of these types of Collections.
+	 */
+	public HostedCollection() {
+	};
 
-    return (HostedCollection)
-	Association.link(HostedCollection.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedCollection between one System object and SystemSpecificCollection object
+	 */
+	public static HostedCollection link(System
+			antecedent, SystemSpecificCollection dependent) {
+
+		return (HostedCollection) Association.link(HostedCollection.class, antecedent, dependent);
+	}// link
 
 } // Class HostedCollection

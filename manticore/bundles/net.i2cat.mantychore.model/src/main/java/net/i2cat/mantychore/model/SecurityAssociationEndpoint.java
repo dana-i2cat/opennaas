@@ -10,319 +10,261 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class SecurityAssociationEndpoint as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * SecurityAssociationEndpointBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class SecurityAssociationEndpoint as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the SecurityAssociationEndpointBean Interface. The CIM class
  * SecurityAssociationEndpoint is described as follows:
- *
- * SecurityAssociationEndpoint (SAEndpoint) represents the endpoint of a
- * secure connection. This is typically an IP connection, although the model
- * allows more flexibility than just IP. The SecurityAssociationEndpoint is
- * tied to an IPProtocolEndpoint (or possibly other endpoint) using the
- * LogicalIdentity association. Note that an endpoint is defined at both ends
- * of the connection.
+ * 
+ * SecurityAssociationEndpoint (SAEndpoint) represents the endpoint of a secure connection. This is typically an IP connection, although the model
+ * allows more flexibility than just IP. The SecurityAssociationEndpoint is tied to an IPProtocolEndpoint (or possibly other endpoint) using the
+ * LogicalIdentity association. Note that an endpoint is defined at both ends of the connection.
  */
 public class SecurityAssociationEndpoint extends ProtocolEndpoint implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a SecurityAssociationEndpointBeanImpl Class
-     * which implements the SecurityAssociationEndpointBean Interface, and
-     * encapsulates the CIM class SecurityAssociationEndpoint in a Java Bean.
-     * The CIM class SecurityAssociationEndpoint is described as follows:
-     *
-     * SecurityAssociationEndpoint (SAEndpoint) represents the endpoint of a
-     * secure connection. This is typically an IP connection, although the
-     * model allows more flexibility than just IP. The
-     * SecurityAssociationEndpoint is tied to an IPProtocolEndpoint (or
-     * possibly other endpoint) using the LogicalIdentity association. Note
-     * that an endpoint is defined at both ends of the connection.
-     */
-    public SecurityAssociationEndpoint(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property installDate.
-     */
-    private Date installDate;
-    /**
-     * This method returns the SecurityAssociationEndpoint.installDate
-     * property value. This property is described as follows:
-     *
-     * InstallDate records when the SA (and its endpoint) was created.
-     *
-     * @return	Date	current installDate property value
-     * @exception	Exception
-     */
-    @Override
-	public Date getInstallDate(){
+	/**
+	 * This constructor creates a SecurityAssociationEndpointBeanImpl Class which implements the SecurityAssociationEndpointBean Interface, and
+	 * encapsulates the CIM class SecurityAssociationEndpoint in a Java Bean. The CIM class SecurityAssociationEndpoint is described as follows:
+	 * 
+	 * SecurityAssociationEndpoint (SAEndpoint) represents the endpoint of a secure connection. This is typically an IP connection, although the model
+	 * allows more flexibility than just IP. The SecurityAssociationEndpoint is tied to an IPProtocolEndpoint (or possibly other endpoint) using the
+	 * LogicalIdentity association. Note that an endpoint is defined at both ends of the connection.
+	 */
+	public SecurityAssociationEndpoint() {
+	};
 
-    return this.installDate;
-    } // getInstallDate
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property installDate.
+	 */
+	private Date	installDate;
 
-    /**
-     * This method sets the SecurityAssociationEndpoint.installDate property
-     * value. This property is described as follows:
-     *
-     * InstallDate records when the SA (and its endpoint) was created.
-     *
-     * @param	Date	new installDate property value
-     * @exception	Exception
-     */
-    @Override
+	/**
+	 * This method returns the SecurityAssociationEndpoint.installDate property value. This property is described as follows:
+	 * 
+	 * InstallDate records when the SA (and its endpoint) was created.
+	 * 
+	 * @return Date current installDate property value
+	 * @exception Exception
+	 */
+	@Override
+	public Date getInstallDate() {
+
+		return this.installDate;
+	} // getInstallDate
+
+	/**
+	 * This method sets the SecurityAssociationEndpoint.installDate property value. This property is described as follows:
+	 * 
+	 * InstallDate records when the SA (and its endpoint) was created.
+	 * 
+	 * @param Date
+	 *            new installDate property value
+	 * @exception Exception
+	 */
+	@Override
 	public void setInstallDate(Date installDate) {
 
-    this.installDate = installDate;
-    } // setInstallDate
+		this.installDate = installDate;
+	} // setInstallDate
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lifetimeSeconds.
+	 */
+	private long	lifetimeSeconds;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lifetimeSeconds.
-     */
-    private long lifetimeSeconds;
-    /**
-     * This method returns the SecurityAssociationEndpoint.lifetimeSeconds
-     * property value. This property is described as follows:
-     *
-     * LifetimeSeconds specifies the maximum time that the SA will be
-     * considered valid after it has been created. A value of zero indicates
-     * that the default of 8 hours be used. A non-zero value indicates the
-     * seconds lifetime.
-     *
-     * @return	long	current lifetimeSeconds property value
-     * @exception	Exception
-     */
-    public long getLifetimeSeconds(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.lifetimeSeconds property value. This property is described as follows:
+	 * 
+	 * LifetimeSeconds specifies the maximum time that the SA will be considered valid after it has been created. A value of zero indicates that the
+	 * default of 8 hours be used. A non-zero value indicates the seconds lifetime.
+	 * 
+	 * @return long current lifetimeSeconds property value
+	 * @exception Exception
+	 */
+	public long getLifetimeSeconds() {
 
-    return this.lifetimeSeconds;
-    } // getLifetimeSeconds
+		return this.lifetimeSeconds;
+	} // getLifetimeSeconds
 
-    /**
-     * This method sets the SecurityAssociationEndpoint.lifetimeSeconds
-     * property value. This property is described as follows:
-     *
-     * LifetimeSeconds specifies the maximum time that the SA will be
-     * considered valid after it has been created. A value of zero indicates
-     * that the default of 8 hours be used. A non-zero value indicates the
-     * seconds lifetime.
-     *
-     * @param	long	new lifetimeSeconds property value
-     * @exception	Exception
-     */
-    public void setLifetimeSeconds(long lifetimeSeconds) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.lifetimeSeconds property value. This property is described as follows:
+	 * 
+	 * LifetimeSeconds specifies the maximum time that the SA will be considered valid after it has been created. A value of zero indicates that the
+	 * default of 8 hours be used. A non-zero value indicates the seconds lifetime.
+	 * 
+	 * @param long new lifetimeSeconds property value
+	 * @exception Exception
+	 */
+	public void setLifetimeSeconds(long lifetimeSeconds) {
 
-    this.lifetimeSeconds = lifetimeSeconds;
-    } // setLifetimeSeconds
+		this.lifetimeSeconds = lifetimeSeconds;
+	} // setLifetimeSeconds
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property refreshThresholdSecondsPercentage.
+	 */
+	private short	refreshThresholdSecondsPercentage;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property refreshThresholdSecondsPercentage.
-     */
-    private short refreshThresholdSecondsPercentage;
-    /**
-     * This method returns the
-     * SecurityAssociationEndpoint.refreshThresholdSecondsPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdSecondsPercentage is the lifetime percentage after
-     * which a new SA should be acquired, before the existing SA expires. A
-     * random period may be added to a calculated threshold to reduce network
-     * thrashing.
-     *
-     * @return	short	current refreshThresholdSecondsPercentage
-     * property value
-     * @exception	Exception
-     */
-    public short getRefreshThresholdSecondsPercentage(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.refreshThresholdSecondsPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdSecondsPercentage is the lifetime percentage after which a new SA should be acquired, before the existing SA expires. A random
+	 * period may be added to a calculated threshold to reduce network thrashing.
+	 * 
+	 * @return short current refreshThresholdSecondsPercentage property value
+	 * @exception Exception
+	 */
+	public short getRefreshThresholdSecondsPercentage() {
 
-    return this.refreshThresholdSecondsPercentage;
-    } // getRefreshThresholdSecondsPercentage
+		return this.refreshThresholdSecondsPercentage;
+	} // getRefreshThresholdSecondsPercentage
 
-    /**
-     * This method sets the
-     * SecurityAssociationEndpoint.refreshThresholdSecondsPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdSecondsPercentage is the lifetime percentage after
-     * which a new SA should be acquired, before the existing SA expires. A
-     * random period may be added to a calculated threshold to reduce network
-     * thrashing.
-     *
-     * @param	short	new refreshThresholdSecondsPercentage
-     * property value
-     * @exception	Exception
-     */
-    public void setRefreshThresholdSecondsPercentage(short
-	refreshThresholdSecondsPercentage) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.refreshThresholdSecondsPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdSecondsPercentage is the lifetime percentage after which a new SA should be acquired, before the existing SA expires. A random
+	 * period may be added to a calculated threshold to reduce network thrashing.
+	 * 
+	 * @param short new refreshThresholdSecondsPercentage property value
+	 * @exception Exception
+	 */
+	public void setRefreshThresholdSecondsPercentage(short
+			refreshThresholdSecondsPercentage) {
 
-    this.refreshThresholdSecondsPercentage =
-	refreshThresholdSecondsPercentage;
-    } // setRefreshThresholdSecondsPercentage
+		this.refreshThresholdSecondsPercentage =
+				refreshThresholdSecondsPercentage;
+	} // setRefreshThresholdSecondsPercentage
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property idleDurationSeconds.
+	 */
+	private long	idleDurationSeconds;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property idleDurationSeconds.
-     */
-    private long idleDurationSeconds;
-    /**
-     * This method returns the SecurityAssociationEndpoint.idleDurationSeconds
-     * property value. This property is described as follows:
-     *
-     * IdleDurationSeconds specifies how long the SA can be idle before it is
-     * deleted. The default value, 0, indicates that there is no idle timeout
-     * period.
-     *
-     * @return	long	current idleDurationSeconds property value
-     * @exception	Exception
-     */
-    public long getIdleDurationSeconds(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.idleDurationSeconds property value. This property is described as follows:
+	 * 
+	 * IdleDurationSeconds specifies how long the SA can be idle before it is deleted. The default value, 0, indicates that there is no idle timeout
+	 * period.
+	 * 
+	 * @return long current idleDurationSeconds property value
+	 * @exception Exception
+	 */
+	public long getIdleDurationSeconds() {
 
-    return this.idleDurationSeconds;
-    } // getIdleDurationSeconds
+		return this.idleDurationSeconds;
+	} // getIdleDurationSeconds
 
-    /**
-     * This method sets the SecurityAssociationEndpoint.idleDurationSeconds
-     * property value. This property is described as follows:
-     *
-     * IdleDurationSeconds specifies how long the SA can be idle before it is
-     * deleted. The default value, 0, indicates that there is no idle timeout
-     * period.
-     *
-     * @param	long	new idleDurationSeconds property value
-     * @exception	Exception
-     */
-    public void setIdleDurationSeconds(long idleDurationSeconds) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.idleDurationSeconds property value. This property is described as follows:
+	 * 
+	 * IdleDurationSeconds specifies how long the SA can be idle before it is deleted. The default value, 0, indicates that there is no idle timeout
+	 * period.
+	 * 
+	 * @param long new idleDurationSeconds property value
+	 * @exception Exception
+	 */
+	public void setIdleDurationSeconds(long idleDurationSeconds) {
 
-    this.idleDurationSeconds = idleDurationSeconds;
-    } // setIdleDurationSeconds
+		this.idleDurationSeconds = idleDurationSeconds;
+	} // setIdleDurationSeconds
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property lifetimeKilobytes.
+	 */
+	private long	lifetimeKilobytes;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property lifetimeKilobytes.
-     */
-    private long lifetimeKilobytes;
-    /**
-     * This method returns the SecurityAssociationEndpoint.lifetimeKilobytes
-     * property value. This property is described as follows:
-     *
-     * LifetimeKilobytes specifies the maximum number of kilobytes of data
-     * traffic to be protected by the SA. A value of zero (the default)
-     * indicates that there should be no maximum kilobyte lifetime. A
-     * non-zero value specifies the desired kilobyte lifetime. The SA is
-     * deleted when the LifetimeKilobyte value is exceeded.
-     *
-     * @return	long	current lifetimeKilobytes property value
-     * @exception	Exception
-     */
-    public long getLifetimeKilobytes(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.lifetimeKilobytes property value. This property is described as follows:
+	 * 
+	 * LifetimeKilobytes specifies the maximum number of kilobytes of data traffic to be protected by the SA. A value of zero (the default) indicates
+	 * that there should be no maximum kilobyte lifetime. A non-zero value specifies the desired kilobyte lifetime. The SA is deleted when the
+	 * LifetimeKilobyte value is exceeded.
+	 * 
+	 * @return long current lifetimeKilobytes property value
+	 * @exception Exception
+	 */
+	public long getLifetimeKilobytes() {
 
-    return this.lifetimeKilobytes;
-    } // getLifetimeKilobytes
+		return this.lifetimeKilobytes;
+	} // getLifetimeKilobytes
 
-    /**
-     * This method sets the SecurityAssociationEndpoint.lifetimeKilobytes
-     * property value. This property is described as follows:
-     *
-     * LifetimeKilobytes specifies the maximum number of kilobytes of data
-     * traffic to be protected by the SA. A value of zero (the default)
-     * indicates that there should be no maximum kilobyte lifetime. A
-     * non-zero value specifies the desired kilobyte lifetime. The SA is
-     * deleted when the LifetimeKilobyte value is exceeded.
-     *
-     * @param	long	new lifetimeKilobytes property value
-     * @exception	Exception
-     */
-    public void setLifetimeKilobytes(long lifetimeKilobytes) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.lifetimeKilobytes property value. This property is described as follows:
+	 * 
+	 * LifetimeKilobytes specifies the maximum number of kilobytes of data traffic to be protected by the SA. A value of zero (the default) indicates
+	 * that there should be no maximum kilobyte lifetime. A non-zero value specifies the desired kilobyte lifetime. The SA is deleted when the
+	 * LifetimeKilobyte value is exceeded.
+	 * 
+	 * @param long new lifetimeKilobytes property value
+	 * @exception Exception
+	 */
+	public void setLifetimeKilobytes(long lifetimeKilobytes) {
 
-    this.lifetimeKilobytes = lifetimeKilobytes;
-    } // setLifetimeKilobytes
+		this.lifetimeKilobytes = lifetimeKilobytes;
+	} // setLifetimeKilobytes
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property refreshThresholdKbytesPercentage.
+	 */
+	private short	refreshThresholdKbytesPercentage;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property refreshThresholdKbytesPercentage.
-     */
-    private short refreshThresholdKbytesPercentage;
-    /**
-     * This method returns the
-     * SecurityAssociationEndpoint.refreshThresholdKbytesPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdKbytesPercentage is the lifetime percentage of
-     * kilobytes processed, at which a new SA should be acquired. A random
-     * value may be added to the calculated threshold to reduce network
-     * thrashing.
-     *
-     * @return	short	current refreshThresholdKbytesPercentage
-     * property value
-     * @exception	Exception
-     */
-    public short getRefreshThresholdKbytesPercentage(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.refreshThresholdKbytesPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdKbytesPercentage is the lifetime percentage of kilobytes processed, at which a new SA should be acquired. A random value may be
+	 * added to the calculated threshold to reduce network thrashing.
+	 * 
+	 * @return short current refreshThresholdKbytesPercentage property value
+	 * @exception Exception
+	 */
+	public short getRefreshThresholdKbytesPercentage() {
 
-    return this.refreshThresholdKbytesPercentage;
-    } // getRefreshThresholdKbytesPercentage
+		return this.refreshThresholdKbytesPercentage;
+	} // getRefreshThresholdKbytesPercentage
 
-    /**
-     * This method sets the
-     * SecurityAssociationEndpoint.refreshThresholdKbytesPercentage property
-     * value. This property is described as follows:
-     *
-     * RefreshThresholdKbytesPercentage is the lifetime percentage of
-     * kilobytes processed, at which a new SA should be acquired. A random
-     * value may be added to the calculated threshold to reduce network
-     * thrashing.
-     *
-     * @param	short	new refreshThresholdKbytesPercentage
-     * property value
-     * @exception	Exception
-     */
-    public void setRefreshThresholdKbytesPercentage(short
-	refreshThresholdKbytesPercentage) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.refreshThresholdKbytesPercentage property value. This property is described as follows:
+	 * 
+	 * RefreshThresholdKbytesPercentage is the lifetime percentage of kilobytes processed, at which a new SA should be acquired. A random value may be
+	 * added to the calculated threshold to reduce network thrashing.
+	 * 
+	 * @param short new refreshThresholdKbytesPercentage property value
+	 * @exception Exception
+	 */
+	public void setRefreshThresholdKbytesPercentage(short
+			refreshThresholdKbytesPercentage) {
 
-    this.refreshThresholdKbytesPercentage = refreshThresholdKbytesPercentage;
-    } // setRefreshThresholdKbytesPercentage
+		this.refreshThresholdKbytesPercentage = refreshThresholdKbytesPercentage;
+	} // setRefreshThresholdKbytesPercentage
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property packetLoggingActive.
+	 */
+	private boolean	packetLoggingActive;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property packetLoggingActive.
-     */
-    private boolean packetLoggingActive;
-    /**
-     * This method returns the SecurityAssociationEndpoint.packetLoggingActive
-     * property value. This property is described as follows:
-     *
-     * PacketLoggingActive causes a log to be kept of traffic processed by the
-     * SAEndpoint.
-     *
-     * @return	boolean	current packetLoggingActive property
-     * value
-     * @exception	Exception
-     */
-    public boolean isPacketLoggingActive(){
+	/**
+	 * This method returns the SecurityAssociationEndpoint.packetLoggingActive property value. This property is described as follows:
+	 * 
+	 * PacketLoggingActive causes a log to be kept of traffic processed by the SAEndpoint.
+	 * 
+	 * @return boolean current packetLoggingActive property value
+	 * @exception Exception
+	 */
+	public boolean isPacketLoggingActive() {
 
-    return this.packetLoggingActive;
-    } // getPacketLoggingActive
+		return this.packetLoggingActive;
+	} // getPacketLoggingActive
 
-    /**
-     * This method sets the SecurityAssociationEndpoint.packetLoggingActive
-     * property value. This property is described as follows:
-     *
-     * PacketLoggingActive causes a log to be kept of traffic processed by the
-     * SAEndpoint.
-     *
-     * @param	boolean	new packetLoggingActive property value
-     * @exception	Exception
-     */
-    public void setPacketLoggingActive(boolean packetLoggingActive) {
+	/**
+	 * This method sets the SecurityAssociationEndpoint.packetLoggingActive property value. This property is described as follows:
+	 * 
+	 * PacketLoggingActive causes a log to be kept of traffic processed by the SAEndpoint.
+	 * 
+	 * @param boolean new packetLoggingActive property value
+	 * @exception Exception
+	 */
+	public void setPacketLoggingActive(boolean packetLoggingActive) {
 
-    this.packetLoggingActive = packetLoggingActive;
-    } // setPacketLoggingActive
-
-
+		this.packetLoggingActive = packetLoggingActive;
+	} // setPacketLoggingActive
 
 } // Class SecurityAssociationEndpoint

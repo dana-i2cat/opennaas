@@ -8,36 +8,29 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ElementSetting as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ElementSettingBean Interface. The CIM class ElementSetting is described as
- * follows:
- *
- * ElementSetting represents the association between ManagedSystemElements and
- * the Setting classes defined for them.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ElementSetting as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the ElementSettingBean Interface. The CIM class ElementSetting is described as follows:
+ * 
+ * ElementSetting represents the association between ManagedSystemElements and the Setting classes defined for them.
  */
 public class ElementSetting extends Association implements Serializable {
 
-    /**
-     * This constructor creates a ElementSettingBeanImpl Class which
-     * implements the ElementSettingBean Interface, and encapsulates the CIM
-     * class ElementSetting in a Java Bean. The CIM class ElementSetting is
-     * described as follows:
-     *
-     * ElementSetting represents the association between ManagedSystemElements
-     * and the Setting classes defined for them.
-     */
-    public ElementSetting(){};
-    /**
-     * This method create an Association of the type ElementSetting between
-     * one ManagedSystemElement object and Setting object
-     */
-    public static ElementSetting link(ManagedSystemElement element,Setting
-	setting){
+	/**
+	 * This constructor creates a ElementSettingBeanImpl Class which implements the ElementSettingBean Interface, and encapsulates the CIM class
+	 * ElementSetting in a Java Bean. The CIM class ElementSetting is described as follows:
+	 * 
+	 * ElementSetting represents the association between ManagedSystemElements and the Setting classes defined for them.
+	 */
+	public ElementSetting() {
+	};
 
-    return (ElementSetting)
-	Association.link(ElementSetting.class,element,setting);
-    }//link
+	/**
+	 * This method create an Association of the type ElementSetting between one ManagedSystemElement object and Setting object
+	 */
+	public static ElementSetting link(ManagedSystemElement element, Setting
+			setting) {
+
+		return (ElementSetting) Association.link(ElementSetting.class, element, setting);
+	}// link
 
 } // Class ElementSetting

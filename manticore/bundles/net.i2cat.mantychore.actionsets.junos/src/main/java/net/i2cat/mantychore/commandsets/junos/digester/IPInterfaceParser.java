@@ -1,35 +1,47 @@
 package net.i2cat.mantychore.commandsets.junos.digester;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GRETunnelConfiguration;
+import net.i2cat.mantychore.model.GRETunnelEndpoint;
+import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
+import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
+import net.i2cat.mantychore.model.System;
 import net.i2cat.mantychore.model.VLANEndpoint;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;
 
 /**
- *
+ * 
  * Parser of the interfaces. Takes the name and unit of the interface. Set IP values, VLAN and peer-unit when exists
- *
+ * 
  * @author Evelyn Torras
- *
+ * 
  */
 public class IPInterfaceParser extends DigesterEngine {
-	String									location		= "";
 
-	VLANEndpoint							vlanEndpoint	= null;
-	boolean									flagLT			= false;
-	long									peerUnit		= 0;
+	private System				model;
 
-	public Map<String, OperationalStatus>	mapStatus		= new HashMap<String, OperationalStatus>();
+	String						location				= "";
+
+	VLANEndpoint				vlanEndpoint			= null;
+	boolean						flagLT					= false;
+
+	GRETunnelConfiguration		gretunnelConfiguration	= null;
+	boolean						flagGT					= false;
+
+	long						peerUnit				= 0;
+
+	public ArrayList<String>	disableInterface		= new ArrayList<String>();
 
 	/** vlan info **/
 
@@ -47,6 +59,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		@Override
 		public void addRuleInstances(Digester arg0) {
 			// FIXME IT HAVE TO GET ONLY PHYSICAL INTERFACES
+			addMyRule("*/interfaces/interface/", "setOperationalStatus", 0);
 			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
 			/* IP Configuration */
@@ -62,8 +75,13 @@ public class IPInterfaceParser extends DigesterEngine {
 			addObjectCreate("*/interfaces/interface/unit/family", IPProtocolEndpoint.class);
 			addMyRule("*/interfaces/interface/unit/family/inet/address/name", "setIPv4Address", 0);
 			addMyRule("*/interfaces/interface/unit/family/inet6/address/name", "setIPv6Address", 0);
-
 			addSetNext("*/interfaces/interface/unit/family", "addProtocolEndpoint");
+
+			/* GRETunnel Configuration */
+			addMyRule("*/interfaces/interface/unit/tunnel", "setGRETunnel", 0);
+			addMyRule("*/interfaces/interface/unit/tunnel/source", "setSourceAddress", 0);
+			addMyRule("*/interfaces/interface/unit/tunnel/destination", "setDestinationAddress", 0);
+			addMyRule("*/interfaces/interface/unit/tunnel/key", "setGRETunnelKey", 0);
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
 
@@ -72,12 +90,36 @@ public class IPInterfaceParser extends DigesterEngine {
 		}
 	}
 
-	public void setStatus(String stat) {
-		mapStatus.put(location, OperationalStatus.STOPPED);
+	public IPInterfaceParser(System routerModel) {
+		ruleSet = new ParserRuleSet();
+		setModel(routerModel);
 	}
 
 	public IPInterfaceParser() {
 		ruleSet = new ParserRuleSet();
+	}
+
+	public void setOperationalStatus(String s) {
+		System routerModel = this.model;
+		for (LogicalDevice port : routerModel.getLogicalDevices()) {
+			if (disableInterface.contains(port.getName())) {
+				port.setOperationalStatus(OperationalStatus.STOPPED);
+			} else {
+				port.setOperationalStatus(OperationalStatus.OK);
+			}
+		}
+	}
+
+	public System getModel() {
+		return model;
+	}
+
+	public void setModel(System model) {
+		this.model = model;
+	}
+
+	public void setStatus(String e) {
+		disableInterface.add(location);
 	}
 
 	public IPInterfaceParser(String prefix) {
@@ -89,10 +131,19 @@ public class IPInterfaceParser extends DigesterEngine {
 		this.peerUnit = Long.parseLong(peerunit);
 	}
 
+	public void setGRETunnel(Object object) {
+		this.flagGT = true;
+	}
+
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getName() + Integer.toString(ethernetPort.getPortNumber());
 
-		if (flagLT) {
+		if (flagGT) {
+			addGreTunnel(ethernetPort);
+			flagGT = false;
+			gretunnelConfiguration = null;
+		}
+		else if (flagLT) {
 			LogicalTunnelPort lt = new LogicalTunnelPort();
 			lt.setName(ethernetPort.getName());
 			lt.setPortNumber(ethernetPort.getPortNumber());
@@ -107,7 +158,8 @@ public class IPInterfaceParser extends DigesterEngine {
 				// setPortImplementsVlan(vlanEndpoint);
 				vlanEndpoint = null;
 			}
-			mapElements.put(location, lt);
+			model.addLogicalDevice(lt);
+			// mapElements.put(location, lt);
 			flagLT = false;
 			peerUnit = 0;
 		} else {
@@ -123,9 +175,39 @@ public class IPInterfaceParser extends DigesterEngine {
 				ethernetPort.merge(hashEthernetPort);
 				mapElements.remove(location);
 			}
-			mapElements.put(location, ethernetPort);
+			// mapElements.put(location, ethernetPort);
+			model.addLogicalDevice(ethernetPort);
 		}
 
+	}
+
+	private void addGreTunnel(EthernetPort ethernetPort) {
+
+		if (gretunnelConfiguration != null) {
+			GRETunnelService gretunnelService = new GRETunnelService();
+			gretunnelService.setName(ethernetPort.getName() + '.' + ethernetPort.getPortNumber());
+			gretunnelService.setGRETunnelConfiguration(gretunnelConfiguration);
+			for (ProtocolEndpoint pE : ethernetPort.getProtocolEndpoint()) {
+
+				if (pE instanceof IPProtocolEndpoint) {
+
+					IPProtocolEndpoint ipProtocolEndpoint = (IPProtocolEndpoint) pE;
+					GRETunnelEndpoint gretunnelEndpoint = new GRETunnelEndpoint();
+					String ip = ipProtocolEndpoint.getIPv4Address();
+					if (ip != null) {
+						gretunnelEndpoint.setIPv4Address(ip);
+					} else {
+						ip = ipProtocolEndpoint.getIPv6Address();
+						gretunnelEndpoint.setIPv6Address(ip);
+					}
+					gretunnelEndpoint.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+
+					gretunnelService.addProtocolEndpoint(gretunnelEndpoint);
+				}
+			}
+
+			model.addHostedService(gretunnelService);
+		}
 	}
 
 	/* Configure name */
@@ -146,6 +228,29 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	/* GRETunnel Endpoint */
+	public void setSourceAddress(String ip) {
+		if (gretunnelConfiguration == null)
+			gretunnelConfiguration = new GRETunnelConfiguration();
+		ip = ip.split("/")[0];
+		gretunnelConfiguration.setSourceAddress(ip);
+
+	}
+
+	public void setDestinationAddress(String ip) {
+		if (gretunnelConfiguration == null)
+			gretunnelConfiguration = new GRETunnelConfiguration();
+		ip = ip.split("/")[0];
+		gretunnelConfiguration.setDestinationAddress(ip);
+	}
+
+	public void setGRETunnelKey(String key) {
+		if (gretunnelConfiguration == null)
+			gretunnelConfiguration = new GRETunnelConfiguration();
+		int new_key = Integer.parseInt(key);
+		gretunnelConfiguration.setKey(new_key);
 	}
 
 	/* IP Protocol Endpoint */
@@ -184,40 +289,11 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	}
 
-	public HashMap<String, Object> getMapElements() {
-		HashMap<String, Object> mapElements = super.getMapElements();
-
-		/* method to check */
-		checkStatus(mapElements);
-
-		return mapElements;
-	}
-
-	public void checkStatus(HashMap<String, Object> mapElements) {
-		for (String key : mapElements.keySet()) {
-			Object element = mapElements.get(key);
-
-			if (element instanceof NetworkPort) {
-				NetworkPort networkPort = (NetworkPort) element;
-				String name = networkPort.getName(); // always it have one element
-
-				OperationalStatus status = OperationalStatus.OK;
-				if (mapStatus.containsKey(name))
-					status = mapStatus.get(name);
-
-				networkPort.setOperationalStatus(status);
-
-			}
-		}
-
-	}
-
+	@Deprecated
 	public String toPrint() {
 
 		HashMap<String, Object> mapElements = this.getMapElements();
-
 		String str = "" + '\n';
-
 		for (String key : mapElements.keySet()) {
 			NetworkPort port = (NetworkPort) mapElements.get(key);
 			str += "- EthernetPort: " + '\n';

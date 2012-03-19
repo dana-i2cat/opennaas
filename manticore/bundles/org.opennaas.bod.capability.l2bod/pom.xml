@@ -14,30 +14,23 @@
 	<packaging>bundle</packaging>
 	<name>BoD :: L2BoD capability</name>
 	<description>L2BoD Capability Implementation</description>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<dependencies>
 		<!-- mantychore dependencies -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.queuemanager</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore.network</groupId>
 			<artifactId>net.i2cat.mantychore.network.model</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas.bod.actionsets</groupId>
 			<artifactId>org.opennaas.bod.actionsets</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		<!--  auxiliar methods to use with commands -->
 		<dependency>
@@ -46,14 +39,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/test/resources</directory>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.ops4j</groupId>
@@ -62,7 +47,6 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
-				<version>2.3.5</version>
 				<extensions>true</extensions>
 				<!--
 					| the following instructions build a simple set of public/private
@@ -79,7 +63,6 @@
 						-->
 						<Import-Package>
   							org.slf4j,
-  							org.apache.activemq,
 							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
 							*
 							</Import-Package>

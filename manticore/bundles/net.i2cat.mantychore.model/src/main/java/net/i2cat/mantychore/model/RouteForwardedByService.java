@@ -9,127 +9,107 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class RouteForwardedByService as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * RouteForwardedByServiceBean Interface. The CIM class
- * RouteForwardedByService is described as follows:
- *
- * This assocation makes explicit the next hops that are forwarded by a
- * specific ForwardingService, to reach the destination. Every
- * ForwardingService can have its own unique set of routing destinations and
- * next hops. The association is deprecated since it is incorrect to mandate
- * the existence of a ForwardingService in order to define the existence of a
- * route.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class RouteForwardedByService as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the RouteForwardedByServiceBean Interface. The CIM class RouteForwardedByService
+ * is described as follows:
+ * 
+ * This assocation makes explicit the next hops that are forwarded by a specific ForwardingService, to reach the destination. Every ForwardingService
+ * can have its own unique set of routing destinations and next hops. The association is deprecated since it is incorrect to mandate the existence of
+ * a ForwardingService in order to define the existence of a route.
  */
-    @Deprecated
+@Deprecated
 public class RouteForwardedByService extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a RouteForwardedByServiceBeanImpl Class which
-     * implements the RouteForwardedByServiceBean Interface, and encapsulates
-     * the CIM class RouteForwardedByService in a Java Bean. The CIM class
-     * RouteForwardedByService is described as follows:
-     *
-     * This assocation makes explicit the next hops that are forwarded by a
-     * specific ForwardingService, to reach the destination. Every
-     * ForwardingService can have its own unique set of routing destinations
-     * and next hops. The association is deprecated since it is incorrect to
-     * mandate the existence of a ForwardingService in order to define the
-     * existence of a route.
-     */
-    public RouteForwardedByService(){};
-    /**
-     * This method create an Association of the type RouteForwardedByService
-     * between one ForwardingService object and NextHopRouting object
-     */
-    @Deprecated
-    public static RouteForwardedByService link(ForwardingService
-	antecedent,NextHopRouting dependent){
+	/**
+	 * This constructor creates a RouteForwardedByServiceBeanImpl Class which implements the RouteForwardedByServiceBean Interface, and encapsulates
+	 * the CIM class RouteForwardedByService in a Java Bean. The CIM class RouteForwardedByService is described as follows:
+	 * 
+	 * This assocation makes explicit the next hops that are forwarded by a specific ForwardingService, to reach the destination. Every
+	 * ForwardingService can have its own unique set of routing destinations and next hops. The association is deprecated since it is incorrect to
+	 * mandate the existence of a ForwardingService in order to define the existence of a route.
+	 */
+	public RouteForwardedByService() {
+	};
 
-    return (RouteForwardedByService)
-	Association.link(RouteForwardedByService.class,antecedent,dependent);
-    }//link
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property adminDistance.
-     */
-    @Deprecated    private int adminDistance;
-    /**
-     * This method returns the RouteForwardedByService.adminDistance property
-     * value. This property is described as follows:
-     *
-     * This property contains the current administrative distance of this
-     * route, for the ForwardingService. Note that this property indicates
-     * current, specific values - whereas an instance of the
-     * CIM_AdministrativeDistance class defines default distances.
-     *
-     * @return	int	current adminDistance property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public int getAdminDistance(){
+	/**
+	 * This method create an Association of the type RouteForwardedByService between one ForwardingService object and NextHopRouting object
+	 */
+	@Deprecated
+	public static RouteForwardedByService link(ForwardingService
+			antecedent, NextHopRouting dependent) {
 
-    return this.adminDistance;
-    } // getAdminDistance
+		return (RouteForwardedByService) Association.link(RouteForwardedByService.class, antecedent, dependent);
+	}// link
 
-    /**
-     * This method sets the RouteForwardedByService.adminDistance property
-     * value. This property is described as follows:
-     *
-     * This property contains the current administrative distance of this
-     * route, for the ForwardingService. Note that this property indicates
-     * current, specific values - whereas an instance of the
-     * CIM_AdministrativeDistance class defines default distances.
-     *
-     * @param	int	new adminDistance property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setAdminDistance(int adminDistance) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property adminDistance.
+	 */
+	@Deprecated
+	private int	adminDistance;
 
-    this.adminDistance = adminDistance;
-    } // setAdminDistance
+	/**
+	 * This method returns the RouteForwardedByService.adminDistance property value. This property is described as follows:
+	 * 
+	 * This property contains the current administrative distance of this route, for the ForwardingService. Note that this property indicates current,
+	 * specific values - whereas an instance of the CIM_AdministrativeDistance class defines default distances.
+	 * 
+	 * @return int current adminDistance property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public int getAdminDistance() {
 
+		return this.adminDistance;
+	} // getAdminDistance
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property pathMetric.
-     */
-    @Deprecated    private int pathMetric;
-    /**
-     * This method returns the RouteForwardedByService.pathMetric property
-     * value. This property is described as follows:
-     *
-     * PathMetric provides a numeric indication as to the preference of this
-     * route compared to other routes that reach the same destination.
-     *
-     * @return	int	current pathMetric property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public int getPathMetric(){
+	/**
+	 * This method sets the RouteForwardedByService.adminDistance property value. This property is described as follows:
+	 * 
+	 * This property contains the current administrative distance of this route, for the ForwardingService. Note that this property indicates current,
+	 * specific values - whereas an instance of the CIM_AdministrativeDistance class defines default distances.
+	 * 
+	 * @param int new adminDistance property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAdminDistance(int adminDistance) {
 
-    return this.pathMetric;
-    } // getPathMetric
+		this.adminDistance = adminDistance;
+	} // setAdminDistance
 
-    /**
-     * This method sets the RouteForwardedByService.pathMetric property value.
-     * This property is described as follows:
-     *
-     * PathMetric provides a numeric indication as to the preference of this
-     * route compared to other routes that reach the same destination.
-     *
-     * @param	int	new pathMetric property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setPathMetric(int pathMetric) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property pathMetric.
+	 */
+	@Deprecated
+	private int	pathMetric;
 
-    this.pathMetric = pathMetric;
-    } // setPathMetric
+	/**
+	 * This method returns the RouteForwardedByService.pathMetric property value. This property is described as follows:
+	 * 
+	 * PathMetric provides a numeric indication as to the preference of this route compared to other routes that reach the same destination.
+	 * 
+	 * @return int current pathMetric property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public int getPathMetric() {
 
+		return this.pathMetric;
+	} // getPathMetric
 
+	/**
+	 * This method sets the RouteForwardedByService.pathMetric property value. This property is described as follows:
+	 * 
+	 * PathMetric provides a numeric indication as to the preference of this route compared to other routes that reach the same destination.
+	 * 
+	 * @param int new pathMetric property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setPathMetric(int pathMetric) {
+
+		this.pathMetric = pathMetric;
+	} // setPathMetric
 
 } // Class RouteForwardedByService

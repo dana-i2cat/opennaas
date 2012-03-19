@@ -1,30 +1,30 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.CoreOptions.systemProperty;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.ManagedSystemElement.OperationalStatus;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
+
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -39,50 +39,66 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.ops4j.pax.exam.Inject;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class UpDownTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	static Log			log				= LogFactory
-															.getLog(UpDownTest.class);
-	static MockResource	mockResource;
-	String				deviceID		= "junos";
-	String				queueID			= "queue";
-	static ICapability	chassisCapability;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class UpDownTest
+{
+	private final static Log	log			= LogFactory.getLog(UpDownTest.class);
+	private final String		deviceID	= "junos";
+	private final String		queueID		= "queue";
+
+	private MockResource		mockResource;
+	private ICapability			chassisCapability;
+	private ICapability			queueCapability;
+	private boolean				isMock		= false;
 
 	@Inject
-	BundleContext		bundleContext	= null;
-	private ICapability	queueCapability;
-	boolean				isMock			= false;
+	private BundleContext		bundleContext;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory	queueManagerFactory;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	@Filter("(capability=chassis)")
+	private ICapabilityFactory	chassisFactory;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer	routerService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
-		String uri = System.getProperty("protocol.uri");
-		if (uri != null && !uri.equals("${protocol.uri}")) {
-			Option[] optionsWithURI = options(systemProperty("protocol.uri").value(uri));
-			options = combine(options, optionsWithURI);
-		}
-		return options;
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	public void initResource() {
 
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
@@ -121,19 +137,13 @@ public class UpDownTest extends AbstractIntegrationTest {
 
 		try {
 			log.info("INFO: Before test, getting queue...");
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
 			Assert.assertNotNull(queueManagerFactory);
 
 			queueCapability = queueManagerFactory.create(mockResource);
 			queueCapability.initialize();
 
-			// IQueueManagerService queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
-			// "(capability=queue)(capability.name=" + deviceID + ")", 5000);
-
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
-			ICapabilityFactory chassisFactory = getOsgiService(ICapabilityFactory.class, "capability=chassis", 10000);
 			// Test elements not null
 			log.info("Checking chassis factory");
 			Assert.assertNotNull(chassisFactory);
@@ -156,11 +166,8 @@ public class UpDownTest extends AbstractIntegrationTest {
 		}
 	}
 
-	// @Before
-	public void initBundles() {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
+	@Before
+	public void setup() {
 		initResource();
 		initCapability();
 	}
@@ -179,71 +186,90 @@ public class UpDownTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	public void UpDownActionTest() {
+	public void UpDownActionTest() throws CapabilityException {
+		Response resp;
+		QueueResponse queueResponse;
 
-		initBundles();
+		resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
 
-		try {
+		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
 
-			Response resp;
-			QueueResponse queueResponse;
+		String str = "";
+		ComputerSystem model = (ComputerSystem) mockResource.getModel();
+		Assert.assertNotNull(model);
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof EthernetPort) {
+				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperationalStatus());
 
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
+				str += "- EthernetPort: " + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				str += port.getOperationalStatus();
+				str += '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+								protocolEndpoint;
+						str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
+						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+					}
+				}
 
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
-
-			String interfaceName = "fe-0/1/3";
-
-			/* check model */
-			LogicalDevice logicalDevice = null;
-			try {
-				logicalDevice = getLogicalDevice(interfaceName, (ComputerSystem) mockResource.getModel());
-			} catch (Exception ex) {
-				Assert.fail("LogicalDevice not found");
+			}
+			else {
+				str += "not searched device";
 			}
 
-			if (logicalDevice.getOperationalStatus() != OperationalStatus.OK) {
-				Assert.fail("The test can't be executed because the needed interface is down");
-			}
-
-			/* send to change status */
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-					newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
-			Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
-
-			if (!isMock) {
-				checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.STOPPED);
-			}
-
-			/* send to change status */
-			resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-					newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
-			Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
-
-			if (!isMock) {
-				checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.OK);
-			}
-
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
 		}
 
+		log.info(str);
+
+		String interfaceName = "fe-0/1/3";
+
+		/* check model */
+		LogicalDevice logicalDevice = null;
+		try {
+			logicalDevice = getLogicalDevice(interfaceName, (ComputerSystem) mockResource.getModel());
+		} catch (Exception ex) {
+			Assert.fail("LogicalDevice not found");
+		}
+
+		if (logicalDevice.getOperationalStatus() != OperationalStatus.OK) {
+			Assert.fail("The test can't be executed because the needed interface is down");
+		}
+
+		/* send to change status */
+		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
+				newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
+
+		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
+		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
+
+		if (!isMock) {
+			checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.STOPPED);
+		}
+
+		/* send to change status */
+		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
+				newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
+
+		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
+		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
+
+		if (!isMock) {
+			checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.OK);
+		}
 	}
 
 	private void checkOperationalStatus(ComputerSystem model, String interfaceName, OperationalStatus status) {

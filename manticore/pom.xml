@@ -9,17 +9,127 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>base-mantychore</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 	<name>Mantychore</name>
 
-        <licenses>
-            <license>
-                <name>GNU General Public License 3</name>
-                <url>LICENSE</url>
-            </license>
-        </licenses>
+	<licenses>
+		<license>
+			<name>GNU General Public License 3</name>
+			<url>LICENSE</url>
+		</license>
+	</licenses>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>net.i2cat.luminis.protocols</groupId>
+				<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.actionsets</groupId>
+				<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+				<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.wonesys</groupId>
+				<artifactId>com.wonesys.emsModule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.model</groupId>
+				<artifactId>net.i2cat.mantychore.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.queuemanager</groupId>
+				<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.protocols</groupId>
+				<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.fragment</groupId>
+				<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.actionsets</groupId>
+				<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore</groupId>
+				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.repository</groupId>
+				<artifactId>net.i2cat.mantychore.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<!-- OSGI API -->
@@ -79,7 +189,7 @@
 			<pluginManagement> <plugins> <plugin>
 			<groupId>com.google.code.maven-license-plugin</groupId>
 			<artifactId>maven-license-plugin</artifactId>
-			<version>1.4.0</version> </plugin> </plugins> </pluginManagement>
+			</plugin> </plugins> </pluginManagement>
 		-->
 		<plugins>
 			<!--
@@ -93,12 +203,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4</version>
 			</plugin>
 			<!--<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>1.0</version>
 				<executions>
 					<execution>
 						<id>enforce-versions</id>
@@ -120,18 +228,8 @@
 				</executions>
 			</plugin>-->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
-				<version>${karaf.version}</version>
 			</plugin>
 		</plugins>
 	</build>

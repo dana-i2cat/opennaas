@@ -8,65 +8,45 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ProvidesServiceToElement as well as methods comparable to
- * the invokeMethods defined for this class. This Class implements the
- * ProvidesServiceToElementBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ProvidesServiceToElement as well as methods comparable
+ * to the invokeMethods defined for this class. This Class implements the ProvidesServiceToElementBean Interface. The CIM class
  * ProvidesServiceToElement is described as follows:
- *
- * Note: The use of the CIM_ProvidesServiceToElement class has been
- * deprecated. Instead, ServiceAvailableToElement conveys the semantics of
- * use, while the subclasses of ProvidesServiceToElement (or the
- * ConcreteDependency association) describe dependency relationships.
- * CIM_ProvidesServiceToElement was meant to generalize the
- * ServiceServiceDependency association. This method indicates that
- * ManagedElements can use the functionality provided by one or more
- * Services. An example of the association is that a Processor and an
- * enclosure (a PhysicalElement) can use AlertOnLAN Services to signal an
- * incomplete or erroneous boot. In reality, AlertOnLAN is simply a
- * HostedService on a computer system that is generally available for use and
- * is not a dependency of the processor or enclosure. To describe that the
- * use of the service might be restricted or have limited availability or
- * applicability, the CIM_ServiceAvailableToElement association would be
- * instantiated.
+ * 
+ * Note: The use of the CIM_ProvidesServiceToElement class has been deprecated. Instead, ServiceAvailableToElement conveys the semantics of use, while
+ * the subclasses of ProvidesServiceToElement (or the ConcreteDependency association) describe dependency relationships. CIM_ProvidesServiceToElement
+ * was meant to generalize the ServiceServiceDependency association. This method indicates that ManagedElements can use the functionality provided by
+ * one or more Services. An example of the association is that a Processor and an enclosure (a PhysicalElement) can use AlertOnLAN Services to signal
+ * an incomplete or erroneous boot. In reality, AlertOnLAN is simply a HostedService on a computer system that is generally available for use and is
+ * not a dependency of the processor or enclosure. To describe that the use of the service might be restricted or have limited availability or
+ * applicability, the CIM_ServiceAvailableToElement association would be instantiated.
  */
-    @Deprecated
+@Deprecated
 public class ProvidesServiceToElement extends Dependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a ProvidesServiceToElementBeanImpl Class which
-     * implements the ProvidesServiceToElementBean Interface, and
-     * encapsulates the CIM class ProvidesServiceToElement in a Java Bean.
-     * The CIM class ProvidesServiceToElement is described as follows:
-     *
-     * Note: The use of the CIM_ProvidesServiceToElement class has been
-     * deprecated. Instead, ServiceAvailableToElement conveys the semantics
-     * of use, while the subclasses of ProvidesServiceToElement (or the
-     * ConcreteDependency association) describe dependency relationships.
-     * CIM_ProvidesServiceToElement was meant to generalize the
-     * ServiceServiceDependency association. This method indicates that
-     * ManagedElements can use the functionality provided by one or more
-     * Services. An example of the association is that a Processor and an
-     * enclosure (a PhysicalElement) can use AlertOnLAN Services to signal an
-     * incomplete or erroneous boot. In reality, AlertOnLAN is simply a
-     * HostedService on a computer system that is generally available for use
-     * and is not a dependency of the processor or enclosure. To describe
-     * that the use of the service might be restricted or have limited
-     * availability or applicability, the CIM_ServiceAvailableToElement
-     * association would be instantiated.
-     */
-    public ProvidesServiceToElement(){};
-    /**
-     * This method create an Association of the type ProvidesServiceToElement
-     * between one Service object and ManagedElement object
-     */
-    @Deprecated
-    public static ProvidesServiceToElement link(Service
-	antecedent,ManagedElement dependent){
+	/**
+	 * This constructor creates a ProvidesServiceToElementBeanImpl Class which implements the ProvidesServiceToElementBean Interface, and encapsulates
+	 * the CIM class ProvidesServiceToElement in a Java Bean. The CIM class ProvidesServiceToElement is described as follows:
+	 * 
+	 * Note: The use of the CIM_ProvidesServiceToElement class has been deprecated. Instead, ServiceAvailableToElement conveys the semantics of use,
+	 * while the subclasses of ProvidesServiceToElement (or the ConcreteDependency association) describe dependency relationships.
+	 * CIM_ProvidesServiceToElement was meant to generalize the ServiceServiceDependency association. This method indicates that ManagedElements can
+	 * use the functionality provided by one or more Services. An example of the association is that a Processor and an enclosure (a PhysicalElement)
+	 * can use AlertOnLAN Services to signal an incomplete or erroneous boot. In reality, AlertOnLAN is simply a HostedService on a computer system
+	 * that is generally available for use and is not a dependency of the processor or enclosure. To describe that the use of the service might be
+	 * restricted or have limited availability or applicability, the CIM_ServiceAvailableToElement association would be instantiated.
+	 */
+	public ProvidesServiceToElement() {
+	};
 
-    return (ProvidesServiceToElement)
-	Association.link(ProvidesServiceToElement.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ProvidesServiceToElement between one Service object and ManagedElement object
+	 */
+	@Deprecated
+	public static ProvidesServiceToElement link(Service
+			antecedent, ManagedElement dependent) {
+
+		return (ProvidesServiceToElement) Association.link(ProvidesServiceToElement.class, antecedent, dependent);
+	}// link
 
 } // Class ProvidesServiceToElement

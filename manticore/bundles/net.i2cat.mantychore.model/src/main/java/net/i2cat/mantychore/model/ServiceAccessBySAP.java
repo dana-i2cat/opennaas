@@ -8,40 +8,32 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class ServiceAccessBySAP as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * ServiceAccessBySAPBean Interface. The CIM class ServiceAccessBySAP is
- * described as follows:
- *
- * CIM_ServiceAccessBySAP is an association that identifies the access points
- * for a Service. For example, a printer might be accessed by NetWare,
- * MacIntosh or Windows ServiceAccessPoints, which might all be hosted on
- * different Systems.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAccessBySAP as well as methods comparable to
+ * the invokeMethods defined for this class. This Class implements the ServiceAccessBySAPBean Interface. The CIM class ServiceAccessBySAP is described
+ * as follows:
+ * 
+ * CIM_ServiceAccessBySAP is an association that identifies the access points for a Service. For example, a printer might be accessed by NetWare,
+ * MacIntosh or Windows ServiceAccessPoints, which might all be hosted on different Systems.
  */
 public class ServiceAccessBySAP extends Dependency implements Serializable {
 
-    /**
-     * This constructor creates a ServiceAccessBySAPBeanImpl Class which
-     * implements the ServiceAccessBySAPBean Interface, and encapsulates the
-     * CIM class ServiceAccessBySAP in a Java Bean. The CIM class
-     * ServiceAccessBySAP is described as follows:
-     *
-     * CIM_ServiceAccessBySAP is an association that identifies the access
-     * points for a Service. For example, a printer might be accessed by
-     * NetWare, MacIntosh or Windows ServiceAccessPoints, which might all be
-     * hosted on different Systems.
-     */
-    public ServiceAccessBySAP(){};
-    /**
-     * This method create an Association of the type ServiceAccessBySAP
-     * between one Service object and ServiceAccessPoint object
-     */
-    public static ServiceAccessBySAP link(Service
-	antecedent,ServiceAccessPoint dependent){
+	/**
+	 * This constructor creates a ServiceAccessBySAPBeanImpl Class which implements the ServiceAccessBySAPBean Interface, and encapsulates the CIM
+	 * class ServiceAccessBySAP in a Java Bean. The CIM class ServiceAccessBySAP is described as follows:
+	 * 
+	 * CIM_ServiceAccessBySAP is an association that identifies the access points for a Service. For example, a printer might be accessed by NetWare,
+	 * MacIntosh or Windows ServiceAccessPoints, which might all be hosted on different Systems.
+	 */
+	public ServiceAccessBySAP() {
+	};
 
-    return (ServiceAccessBySAP)
-	Association.link(ServiceAccessBySAP.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type ServiceAccessBySAP between one Service object and ServiceAccessPoint object
+	 */
+	public static ServiceAccessBySAP link(Service
+			antecedent, ServiceAccessPoint dependent) {
+
+		return (ServiceAccessBySAP) Association.link(ServiceAccessBySAP.class, antecedent, dependent);
+	}// link
 
 } // Class ServiceAccessBySAP

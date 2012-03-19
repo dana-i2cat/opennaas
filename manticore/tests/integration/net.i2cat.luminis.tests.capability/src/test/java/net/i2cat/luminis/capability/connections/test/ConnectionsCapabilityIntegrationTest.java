@@ -1,9 +1,9 @@
 package net.i2cat.luminis.capability.connections.test;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
 import net.i2cat.mantychore.model.FCPort;
@@ -31,45 +31,64 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.ops4j.pax.exam.Inject;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	static Log			log				= LogFactory
-															.getLog(ConnectionsCapabilityIntegrationTest.class);
-	static MockResource	mockResource;
-	String				deviceID		= "roadm";
-	String				queueID			= "queue";
-	static ICapability	connectionsCapability;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ConnectionsCapabilityIntegrationTest
+{
+	private final static Log	log				= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
+
+	private final String		deviceID		= "roadm";
+	private final String		queueID			= "queue";
+
+	private MockResource		mockResource;
+	private ICapability			connectionsCapability;
+	private ICapability			queueCapability;
 
 	@Inject
-	BundleContext		bundleContext	= null;
-	private ICapability	queueCapability;
+	private BundleContext		bundleContext;
+
+	@Inject
+	@Filter("(capability=queue)")
+	private ICapabilityFactory	queueManagerFactory;
+
+	@Inject
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	@Filter("(capability=connections)")
+	private ICapabilityFactory	connectionFactory;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	public void initResource() throws Exception {
@@ -99,53 +118,33 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 
 	}
 
-	public void initCapability() {
+	public void initCapability() throws Exception {
 
-		try {
-			log.info("INFO: Before test, getting queue...");
-			ICapabilityFactory queueManagerFactory = getOsgiService(ICapabilityFactory.class, "capability=queue", 5000);
-			Assert.assertNotNull(queueManagerFactory);
+		log.info("INFO: Before test, getting queue...");
 
-			queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability = queueManagerFactory.create(mockResource);
 
-			// IQueueManagerService queueManagerService = (IQueueManagerService) getOsgiService(IQueueManagerService.class,
-			// "(capability=queue)(capability.name=" + deviceID + ")", 5000);
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
 
-			IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
-
-			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
-
-			ICapabilityFactory connectionFactory = getOsgiService(ICapabilityFactory.class, "capability=connections", 10000);
-			// Test elements not null
-			log.info("Checking connections factory");
-			Assert.assertNotNull(connectionFactory);
-			log.info("Checking capability descriptor");
-			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
-			log.info("Creating connection capability");
-			connectionsCapability = connectionFactory.create(mockResource);
-			Assert.assertNotNull(connectionsCapability);
-			connectionsCapability.initialize();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error(e.getMessage());
-
-			Assert.fail();
-		}
+		// Test elements not null
+		log.info("Checking connections factory");
+		Assert.assertNotNull(connectionFactory);
+		log.info("Checking capability descriptor");
+		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
+		log.info("Creating connection capability");
+		connectionsCapability = connectionFactory.create(mockResource);
+		Assert.assertNotNull(connectionsCapability);
+		connectionsCapability.initialize();
 	}
 
 	@Before
-	public void initBundles() throws Exception {
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
+	public void setup() throws Exception {
 		initResource();
 		initCapability();
 	}
 
 	@Test
-	public void TestConnectionsAction() {
+	public void TestConnectionsAction() throws Exception {
 		log.info("Test connections actions");
 		List<String> availableActions = new ArrayList<String>();
 		availableActions.add(ActionConstants.MAKECONNECTION);
@@ -153,90 +152,80 @@ public class ConnectionsCapabilityIntegrationTest extends AbstractIntegrationTes
 		availableActions.add(ActionConstants.REFRESHCONNECTIONS);
 		// availableActions.add(ActionConstants.GETINVENTORY);
 
-		try {
+		log.info("checking capability actionSet contains desired actions...");
+		IActionSet actionSet = ((AbstractCapability) connectionsCapability).getActionSet();
+		List<String> actionSetNames = actionSet.getActionNames();
 
-			log.info("checking capability actionSet contains desired actions...");
-			IActionSet actionSet = ((AbstractCapability) connectionsCapability).getActionSet();
-			List<String> actionSetNames = actionSet.getActionNames();
-
-			for (String actionName : availableActions) {
-				Assert.assertTrue(actionSetNames.contains(actionName));
-			}
-
-			/* send message */
-			log.info("send message makeConnection...");
-			FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) mockResource.getModel());
-			Response resp = (Response) connectionsCapability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			/* check queue */
-			List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 1);
-			/* check queue */
-			log.info("exec queue...");
-			QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-
-			Assert.assertTrue(queueResponse.isOk());
-
-			boolean foundAndOk = false;
-			for (ActionResponse response : queueResponse.getResponses()) {
-				if (response.getActionID().equals(ActionConstants.MAKECONNECTION)) {
-					if (response.getStatus() == STATUS.OK) {
-						foundAndOk = true;
-						for (Response subresponse : response.getResponses()) {
-							Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
-						}
-					}
-				}
-			}
-			Assert.assertTrue(foundAndOk);
-
-			/* check queue */
-			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
-
-			/* ---------------- work flow for remove connections -------------------- */
-
-			/* send message */
-			log.info("send message removeConnection...");
-			resp = (Response) connectionsCapability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-			Assert.assertTrue(resp.getStatus() == Status.OK);
-			Assert.assertTrue(resp.getErrors().size() == 0);
-
-			/* check queue */
-			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 1);
-
-			/* check queue */
-			log.info("exec queue...");
-			queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-			Assert.assertTrue(queueResponse.isOk());
-
-			foundAndOk = false;
-			for (ActionResponse response : queueResponse.getResponses()) {
-				if (response.getActionID().equals(ActionConstants.REMOVECONNECTION)) {
-					if (response.getStatus() == STATUS.OK) {
-						foundAndOk = true;
-						for (Response subresponse : response.getResponses()) {
-							Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
-						}
-					}
-				}
-			}
-			Assert.assertTrue(foundAndOk);
-
-			/* check queue */
-			queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-			Assert.assertTrue(queue.size() == 0);
-
-		} catch (CapabilityException e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
+		for (String actionName : availableActions) {
+			Assert.assertTrue(actionSetNames.contains(actionName));
 		}
+
+		/* send message */
+		log.info("send message makeConnection...");
+		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) mockResource.getModel());
+		Response resp = (Response) connectionsCapability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
+
+		/* check queue */
+		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 1);
+		/* check queue */
+		log.info("exec queue...");
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+
+		Assert.assertTrue(queueResponse.isOk());
+
+		boolean foundAndOk = false;
+		for (ActionResponse response : queueResponse.getResponses()) {
+			if (response.getActionID().equals(ActionConstants.MAKECONNECTION)) {
+				if (response.getStatus() == STATUS.OK) {
+					foundAndOk = true;
+					for (Response subresponse : response.getResponses()) {
+						Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
+					}
+				}
+			}
+		}
+		Assert.assertTrue(foundAndOk);
+
+		/* check queue */
+		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
+
+		/* ---------------- work flow for remove connections -------------------- */
+
+		/* send message */
+		log.info("send message removeConnection...");
+		resp = (Response) connectionsCapability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
+		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertTrue(resp.getErrors().size() == 0);
+
+		/* check queue */
+		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 1);
+
+		/* check queue */
+		log.info("exec queue...");
+		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(queueResponse.isOk());
+
+		foundAndOk = false;
+		for (ActionResponse response : queueResponse.getResponses()) {
+			if (response.getActionID().equals(ActionConstants.REMOVECONNECTION)) {
+				if (response.getStatus() == STATUS.OK) {
+					foundAndOk = true;
+					for (Response subresponse : response.getResponses()) {
+						Assert.assertTrue(subresponse.getStatus() == Response.Status.OK);
+					}
+				}
+			}
+		}
+		Assert.assertTrue(foundAndOk);
+
+		/* check queue */
+		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		Assert.assertTrue(queue.size() == 0);
 	}
 
 	private FiberConnection newMakeConnectionParams(ProteusOpticalSwitch proteus) throws Exception {

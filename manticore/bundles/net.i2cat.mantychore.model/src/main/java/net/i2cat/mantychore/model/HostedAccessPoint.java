@@ -8,47 +8,37 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class HostedAccessPoint as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * HostedAccessPointBean Interface. The CIM class HostedAccessPoint is
- * described as follows:
- *
- * CIM_HostedAccessPoint is an association between a Service AccessPoint and
- * the System on which it is provided. The cardinality of this association is
- * one-to-many and is weak with respect to the System. Each System can host
- * many ServiceAccessPoints. Heuristic: If the implementation of the
- * ServiceAccessPoint is modeled, it must be implemented by a Device or
- * SoftwareFeature that is part of the System that is hosting the
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedAccessPoint as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the HostedAccessPointBean Interface. The CIM class HostedAccessPoint is described as
+ * follows:
+ * 
+ * CIM_HostedAccessPoint is an association between a Service AccessPoint and the System on which it is provided. The cardinality of this association
+ * is one-to-many and is weak with respect to the System. Each System can host many ServiceAccessPoints. Heuristic: If the implementation of the
+ * ServiceAccessPoint is modeled, it must be implemented by a Device or SoftwareFeature that is part of the System that is hosting the
  * ServiceAccessPoint.
  */
 public class HostedAccessPoint extends HostedDependency implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a HostedAccessPointBeanImpl Class which
-     * implements the HostedAccessPointBean Interface, and encapsulates the
-     * CIM class HostedAccessPoint in a Java Bean. The CIM class
-     * HostedAccessPoint is described as follows:
-     *
-     * CIM_HostedAccessPoint is an association between a Service AccessPoint
-     * and the System on which it is provided. The cardinality of this
-     * association is one-to-many and is weak with respect to the System.
-     * Each System can host many ServiceAccessPoints. Heuristic: If the
-     * implementation of the ServiceAccessPoint is modeled, it must be
-     * implemented by a Device or SoftwareFeature that is part of the System
-     * that is hosting the ServiceAccessPoint.
-     */
-    public HostedAccessPoint(){};
-    /**
-     * This method create an Association of the type HostedAccessPoint between
-     * one System object and ServiceAccessPoint object
-     */
-    public static HostedAccessPoint link(System antecedent,ServiceAccessPoint
-	dependent){
+	/**
+	 * This constructor creates a HostedAccessPointBeanImpl Class which implements the HostedAccessPointBean Interface, and encapsulates the CIM class
+	 * HostedAccessPoint in a Java Bean. The CIM class HostedAccessPoint is described as follows:
+	 * 
+	 * CIM_HostedAccessPoint is an association between a Service AccessPoint and the System on which it is provided. The cardinality of this
+	 * association is one-to-many and is weak with respect to the System. Each System can host many ServiceAccessPoints. Heuristic: If the
+	 * implementation of the ServiceAccessPoint is modeled, it must be implemented by a Device or SoftwareFeature that is part of the System that is
+	 * hosting the ServiceAccessPoint.
+	 */
+	public HostedAccessPoint() {
+	};
 
-    return (HostedAccessPoint)
-	Association.link(HostedAccessPoint.class,antecedent,dependent);
-    }//link
+	/**
+	 * This method create an Association of the type HostedAccessPoint between one System object and ServiceAccessPoint object
+	 */
+	public static HostedAccessPoint link(System antecedent, ServiceAccessPoint
+			dependent) {
+
+		return (HostedAccessPoint) Association.link(HostedAccessPoint.class, antecedent, dependent);
+	}// link
 
 } // Class HostedAccessPoint

@@ -1,21 +1,20 @@
 package org.opennaas.bod.tests.capability.l2bod;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+
+import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -23,14 +22,29 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.ops4j.pax.exam.Inject;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import org.osgi.service.event.Event;
+import org.osgi.service.event.EventAdmin;
+import org.osgi.service.event.EventHandler;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class L2BoDCapabilityIntegrationTest extends AbstractIntegrationTest {
+public class L2BoDCapabilityIntegrationTest
+{
+	private static final Log	log					= LogFactory.getLog(L2BoDCapabilityIntegrationTest.class);
 
 	private static final String	ACTION_NAME			= "dummy";
 
@@ -49,113 +63,68 @@ public class L2BoDCapabilityIntegrationTest extends AbstractIntegrationTest {
 	@Inject
 	private BundleContext		bundleContext;
 
+	@Inject
 	private IResourceManager	resourceManager;
 
 	private ICapability			l2bodCapability;
 
-	private static Log			log					= LogFactory
-															.getLog(L2BoDCapabilityIntegrationTest.class);
-
-	// private IResourceRepository resourceRepository = null;
-
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-	/**
-	 * Initialize the configuration
-	 *
-	 * @return
-	 */
 	@Configuration
-	public static Option[] configure() {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-		return options;
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-bod"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
-	@Before
-	public void initBundles() throws ResourceException {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		// Get Resource Manager
-		resourceManager = getOsgiService(IResourceManager.class, 50000);
-
-		clearRepository();
-
-		log.info("INFO: Initialized!");
-	}
-
-	@Test
 	/**
 	 * Test to check if repostitory is accessible from OSGi.
 	 */
-	public void isCapabilityAccessibleFromResource() {
+	@Test
+	public void isCapabilityAccessibleFromResource() throws Exception {
 
-		try {
+		// L2BoD Capability Descriptor
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+		CapabilityDescriptor capabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILIY_TYPE,
+																						   CAPABILITY_URI);
+		lCapabilityDescriptors.add(capabilityDescriptor);
 
-			// L2BoD Capability Descriptor
-			List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-			CapabilityDescriptor capabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILIY_TYPE,
-					CAPABILITY_URI);
-			lCapabilityDescriptors.add(capabilityDescriptor);
+		// BoD Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
+																					 RESOURCE_INFO_NAME);
 
-			// BoD Resource Descriptor
-			ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
-					RESOURCE_INFO_NAME);
+		// Create resource
+		IResource resource = resourceManager.createResource(resourceDescriptor);
 
-			// Create resource
-			IResource resource = resourceManager.createResource(resourceDescriptor);
+		// Start resource
+		resourceManager.startResource(resource.getResourceIdentifier());
+		Assert.assertTrue(resource.getCapabilities().size() > 0);
 
-			// Start resource
-			resourceManager.startResource(resource.getResourceIdentifier());
-			Assert.assertTrue(resource.getCapabilities().size() > 0);
+		// Stop resource
+		resourceManager.stopResource(resource.getResourceIdentifier());
 
-			// Stop resource
-			resourceManager.stopResource(resource.getResourceIdentifier());
-
-			// Remove resource
-			resourceManager.removeResource(resource.getResourceIdentifier());
-			Assert.assertTrue(resourceManager.listResources().isEmpty());
-
-		} catch (IllegalArgumentException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (RuntimeException e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		} catch (Exception e) {
-			log.error("Exception!! ", e.getCause());
-			Assert.fail(e.getMessage());
-		}
+		// Remove resource
+		resourceManager.removeResource(resource.getResourceIdentifier());
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
 
 	/**
 	 * At the end of the tests, we empty the repository
 	 */
-	private void clearRepository() {
+	@After
+	public void clearRepository() throws ResourceException {
 
 		log.info("Clearing resource repo");
 
 		List<IResource> toRemove = resourceManager.listResources();
 
 		for (IResource resource : toRemove) {
-			try {
-				if (resource.getState().equals(State.ACTIVE)) {
-					resourceManager.stopResource(resource.getResourceIdentifier());
-				}
-				resourceManager.removeResource(resource.getResourceIdentifier());
-			} catch (ResourceException e) {
-				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
-				Assert.fail(e.getLocalizedMessage());
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
 			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
 
 		log.info("Resource repo cleared!");
 	}
-
 }

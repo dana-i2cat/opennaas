@@ -1,16 +1,15 @@
 package net.i2cat.luminis.actions.tests;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
 import java.util.HashMap;
 import java.util.List;
+import java.io.File;
 
 import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RefreshModelConnectionsAction;
 import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
 import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
 import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+
 import net.i2cat.mantychore.model.FCPort;
 import net.i2cat.mantychore.model.LogicalDevice;
 import net.i2cat.mantychore.model.LogicalPort;
@@ -25,14 +24,14 @@ import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOptica
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
 import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
@@ -42,40 +41,32 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-@RunWith(JUnit4TestRunner.class)
-public class ConnectionActionsIntegrationTest extends AbstractIntegrationTest {
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
-	Log				log			= LogFactory.getLog(ConnectionActionsIntegrationTest.class);
+@RunWith(JUnit4TestRunner.class)
+public class ConnectionActionsIntegrationTest {
+
+	Log log	= LogFactory.getLog(ConnectionActionsIntegrationTest.class);
 
 	private String	resourceId	= "pedrosa";
 
 	@Configuration
-	public static Option[] configuration() throws Exception {
-
-		Option[] options = combine(
-				IntegrationTestsHelper.getLuminisTestOptions(),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				);
-
-		return options;
-	}
-
-	public void initBundles() {
-
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("INFO: Initialized!");
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	@Test
 	public void testRefreshMakeAndRemoveConnectionsWithMock() {
-
-		initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);
@@ -94,8 +85,6 @@ public class ConnectionActionsIntegrationTest extends AbstractIntegrationTest {
 
 	// @Test //uses real connection
 	public void testRefreshMakeAndRemoveConnectionsReal() {
-
-		initBundles();
 
 		ProteusOpticalSwitch opticalSwitch1 = new ProteusOpticalSwitch();
 		opticalSwitch1.setName(resourceId);

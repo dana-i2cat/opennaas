@@ -6,15 +6,13 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>assembly</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
 	<name>Mantychore Framework :: Assembly</name>
 	<properties>
 		<mantychore.release.name>0.5</mantychore.release.name>
 		<mantychore.platform.basedir>mantychore-${mantychore.release.name}</mantychore.platform.basedir>
 		<mantychore.platform.name>mantychore-${mantychore.release.name}</mantychore.platform.name>
-		<mantychore.platform.path>../platform/target/mantychore/opennaas-1.0.0-SNAPSHOT</mantychore.platform.path>
+		<mantychore.platform.path>../platform/target/mantychore/opennaas-${project.version}</mantychore.platform.path>
 	</properties>
 	<packaging>pom</packaging>
 	<!-- | imported (non-local) bundles are listed here as dependencies | and

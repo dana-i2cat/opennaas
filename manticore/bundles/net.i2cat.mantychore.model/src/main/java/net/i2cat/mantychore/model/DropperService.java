@@ -9,329 +9,274 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DropperService as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DropperServiceBean Interface. The CIM class DropperService is described as
- * follows:
- *
- * DropperService represents the ability to selectively drop network traffic,
- * and/or to invoke another ConditioningService (indicated using the
- * NextService association) for further processing of traffic that is not
- * dropped. It is the base class for different types of droppers. Droppers
- * are distinguished by the algorithm that they use to drop traffic. The
- * NextService association has special semantics for droppers, in addition to
- * conveying the general information of 'what happens next' (that apply to
- * all Conditioning Services). The queue(s) from which a particular dropper
- * drops packets are identified by following chain(s) of NextService
- * associations 'rightwards' from the dropper, until they reach a queue.
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DropperService as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the DropperServiceBean Interface. The CIM class DropperService is described as follows:
+ * 
+ * DropperService represents the ability to selectively drop network traffic, and/or to invoke another ConditioningService (indicated using the
+ * NextService association) for further processing of traffic that is not dropped. It is the base class for different types of droppers. Droppers are
+ * distinguished by the algorithm that they use to drop traffic. The NextService association has special semantics for droppers, in addition to
+ * conveying the general information of 'what happens next' (that apply to all Conditioning Services). The queue(s) from which a particular dropper
+ * drops packets are identified by following chain(s) of NextService associations 'rightwards' from the dropper, until they reach a queue.
  */
 public class DropperService extends ConditioningService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a DropperServiceBeanImpl Class which
-     * implements the DropperServiceBean Interface, and encapsulates the CIM
-     * class DropperService in a Java Bean. The CIM class DropperService is
-     * described as follows:
-     *
-     * DropperService represents the ability to selectively drop network
-     * traffic, and/or to invoke another ConditioningService (indicated using
-     * the NextService association) for further processing of traffic that is
-     * not dropped. It is the base class for different types of droppers.
-     * Droppers are distinguished by the algorithm that they use to drop
-     * traffic. The NextService association has special semantics for
-     * droppers, in addition to conveying the general information of 'what
-     * happens next' (that apply to all Conditioning Services). The queue(s)
-     * from which a particular dropper drops packets are identified by
-     * following chain(s) of NextService associations 'rightwards' from the
-     * dropper, until they reach a queue.
-     */
-    public DropperService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DropperType.
-     */
+	/**
+	 * This constructor creates a DropperServiceBeanImpl Class which implements the DropperServiceBean Interface, and encapsulates the CIM class
+	 * DropperService in a Java Bean. The CIM class DropperService is described as follows:
+	 * 
+	 * DropperService represents the ability to selectively drop network traffic, and/or to invoke another ConditioningService (indicated using the
+	 * NextService association) for further processing of traffic that is not dropped. It is the base class for different types of droppers. Droppers
+	 * are distinguished by the algorithm that they use to drop traffic. The NextService association has special semantics for droppers, in addition
+	 * to conveying the general information of 'what happens next' (that apply to all Conditioning Services). The queue(s) from which a particular
+	 * dropper drops packets are identified by following chain(s) of NextService associations 'rightwards' from the dropper, until they reach a queue.
+	 */
+	public DropperService() {
+	};
 
-    public enum DropperType{
-    OTHER,
-    RANDOM,
-    HEADTAIL,
-    ABSOLUTE_DROPPER
-    }
-    private DropperType dropperType;
-    /**
-     * This method returns the DropperService.dropperType property value. This
-     * property is described as follows:
-     *
-     * This property is an enumerated 16-bit unsigned integer that defines the
-     * type of dropper. Its Values are: 1: Other 2: Random 3: HeadTail 4:
-     * Absolute Dropper Note: The DropperType property and the DropperService
-     * subclasses provide similar information. This property is defined for
-     * query purposes and to not require a subclass for all types of
-     * DropperServices (for example, to describe an Absolute Dropper in
-     * today's model). Therefore, DropperService can be instantiated directly
-     * and the Type property is needed.
-     *
-     * @return	int	current dropperType property value
-     * @exception	Exception
-     */
-    public DropperType getDropperType(){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DropperType.
+	 */
 
-    return this.dropperType;
-    } // getDropperType
+	public enum DropperType {
+		OTHER,
+		RANDOM,
+		HEADTAIL,
+		ABSOLUTE_DROPPER
+	}
 
-    /**
-     * This method sets the DropperService.dropperType property value. This
-     * property is described as follows:
-     *
-     * This property is an enumerated 16-bit unsigned integer that defines the
-     * type of dropper. Its Values are: 1: Other 2: Random 3: HeadTail 4:
-     * Absolute Dropper Note: The DropperType property and the DropperService
-     * subclasses provide similar information. This property is defined for
-     * query purposes and to not require a subclass for all types of
-     * DropperServices (for example, to describe an Absolute Dropper in
-     * today's model). Therefore, DropperService can be instantiated directly
-     * and the Type property is needed.
-     *
-     * @param	int	new dropperType property value
-     * @exception	Exception
-     */
-    public void setDropperType(DropperType dropperType){
+	private DropperType	dropperType;
 
-    this.dropperType = dropperType;
-    } // setDropperType
+	/**
+	 * This method returns the DropperService.dropperType property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated 16-bit unsigned integer that defines the type of dropper. Its Values are: 1: Other 2: Random 3: HeadTail 4:
+	 * Absolute Dropper Note: The DropperType property and the DropperService subclasses provide similar information. This property is defined for
+	 * query purposes and to not require a subclass for all types of DropperServices (for example, to describe an Absolute Dropper in today's model).
+	 * Therefore, DropperService can be instantiated directly and the Type property is needed.
+	 * 
+	 * @return int current dropperType property value
+	 * @exception Exception
+	 */
+	public DropperType getDropperType() {
 
+		return this.dropperType;
+	} // getDropperType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property otherDropperType.
-     */
-    private String otherDropperType;
-    /**
-     * This method returns the DropperService.otherDropperType property value.
-     * This property is described as follows:
-     *
-     * This property contains a vendor-specific value for the type of dropping
-     * that is done. It is used when the value of the DropperType property is
-     * 1 (Other).
-     *
-     * @return	String	current otherDropperType property value
-     * @exception	Exception
-     */
-    public String getOtherDropperType(){
+	/**
+	 * This method sets the DropperService.dropperType property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated 16-bit unsigned integer that defines the type of dropper. Its Values are: 1: Other 2: Random 3: HeadTail 4:
+	 * Absolute Dropper Note: The DropperType property and the DropperService subclasses provide similar information. This property is defined for
+	 * query purposes and to not require a subclass for all types of DropperServices (for example, to describe an Absolute Dropper in today's model).
+	 * Therefore, DropperService can be instantiated directly and the Type property is needed.
+	 * 
+	 * @param int new dropperType property value
+	 * @exception Exception
+	 */
+	public void setDropperType(DropperType dropperType) {
 
-    return this.otherDropperType;
-    } // getOtherDropperType
+		this.dropperType = dropperType;
+	} // setDropperType
 
-    /**
-     * This method sets the DropperService.otherDropperType property value.
-     * This property is described as follows:
-     *
-     * This property contains a vendor-specific value for the type of dropping
-     * that is done. It is used when the value of the DropperType property is
-     * 1 (Other).
-     *
-     * @param	String	new otherDropperType property value
-     * @exception	Exception
-     */
-    public void setOtherDropperType(String otherDropperType) {
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property otherDropperType.
+	 */
+	private String	otherDropperType;
 
-    this.otherDropperType = otherDropperType;
-    } // setOtherDropperType
+	/**
+	 * This method returns the DropperService.otherDropperType property value. This property is described as follows:
+	 * 
+	 * This property contains a vendor-specific value for the type of dropping that is done. It is used when the value of the DropperType property is
+	 * 1 (Other).
+	 * 
+	 * @return String current otherDropperType property value
+	 * @exception Exception
+	 */
+	public String getOtherDropperType() {
 
+		return this.otherDropperType;
+	} // getOtherDropperType
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property AlwaysDrop.
-     */
-    @Deprecated
-    public enum AlwaysDrop{
-    UNKNOWN,
-    ALWAYS_DROP,
-    DO_NOT_ALWAYS_DROP
-    }
-    @Deprecated
-    private AlwaysDrop alwaysDrop;
-    /**
-     * This method returns the DropperService.alwaysDrop property value. This
-     * property is described as follows:
-     *
-     * This property indicates whether the Dropper will always drop incoming
-     * packets (value=1) regardless of their type. It is deprecated since its
-     * information is conveyed by the DropperType property (value=4,
-     * 'Absolute Dropper').
-     *
-     * @return	int	current alwaysDrop property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public AlwaysDrop getAlwaysDrop(){
+	/**
+	 * This method sets the DropperService.otherDropperType property value. This property is described as follows:
+	 * 
+	 * This property contains a vendor-specific value for the type of dropping that is done. It is used when the value of the DropperType property is
+	 * 1 (Other).
+	 * 
+	 * @param String
+	 *            new otherDropperType property value
+	 * @exception Exception
+	 */
+	public void setOtherDropperType(String otherDropperType) {
 
-    return this.alwaysDrop;
-    } // getAlwaysDrop
+		this.otherDropperType = otherDropperType;
+	} // setOtherDropperType
 
-    /**
-     * This method sets the DropperService.alwaysDrop property value. This
-     * property is described as follows:
-     *
-     * This property indicates whether the Dropper will always drop incoming
-     * packets (value=1) regardless of their type. It is deprecated since its
-     * information is conveyed by the DropperType property (value=4,
-     * 'Absolute Dropper').
-     *
-     * @param	int	new alwaysDrop property value
-     * @exception	Exception
-     */
-    @Deprecated
-    public void setAlwaysDrop(AlwaysDrop alwaysDrop){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property AlwaysDrop.
+	 */
+	@Deprecated
+	public enum AlwaysDrop {
+		UNKNOWN,
+		ALWAYS_DROP,
+		DO_NOT_ALWAYS_DROP
+	}
 
-    this.alwaysDrop = alwaysDrop;
-    } // setAlwaysDrop
+	@Deprecated
+	private AlwaysDrop	alwaysDrop;
 
+	/**
+	 * This method returns the DropperService.alwaysDrop property value. This property is described as follows:
+	 * 
+	 * This property indicates whether the Dropper will always drop incoming packets (value=1) regardless of their type. It is deprecated since its
+	 * information is conveyed by the DropperType property (value=4, 'Absolute Dropper').
+	 * 
+	 * @return int current alwaysDrop property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public AlwaysDrop getAlwaysDrop() {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DropFrom.
-     */
+		return this.alwaysDrop;
+	} // getAlwaysDrop
 
-    public enum DropFrom{
-    UNKNOWN,
-    HEAD,
-    TAIL
-    }
-    private DropFrom dropFrom;
-    /**
-     * This method returns the DropperService.dropFrom property value. This
-     * property is described as follows:
-     *
-     * This enumeration indicates the point in the associated queue
-     * (associated via the NextService relationship) from which packets
-     * should be dropped. If the value is 0 "Unknown", then packets MAY be
-     * dropped from any location in the queue.
-     *
-     * @return	int	current dropFrom property value
-     * @exception	Exception
-     */
-    public DropFrom getDropFrom(){
+	/**
+	 * This method sets the DropperService.alwaysDrop property value. This property is described as follows:
+	 * 
+	 * This property indicates whether the Dropper will always drop incoming packets (value=1) regardless of their type. It is deprecated since its
+	 * information is conveyed by the DropperType property (value=4, 'Absolute Dropper').
+	 * 
+	 * @param int new alwaysDrop property value
+	 * @exception Exception
+	 */
+	@Deprecated
+	public void setAlwaysDrop(AlwaysDrop alwaysDrop) {
 
-    return this.dropFrom;
-    } // getDropFrom
+		this.alwaysDrop = alwaysDrop;
+	} // setAlwaysDrop
 
-    /**
-     * This method sets the DropperService.dropFrom property value. This
-     * property is described as follows:
-     *
-     * This enumeration indicates the point in the associated queue
-     * (associated via the NextService relationship) from which packets
-     * should be dropped. If the value is 0 "Unknown", then packets MAY be
-     * dropped from any location in the queue.
-     *
-     * @param	int	new dropFrom property value
-     * @exception	Exception
-     */
-    public void setDropFrom(DropFrom dropFrom){
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DropFrom.
+	 */
 
-    this.dropFrom = dropFrom;
-    } // setDropFrom
+	public enum DropFrom {
+		UNKNOWN,
+		HEAD,
+		TAIL
+	}
 
+	private DropFrom	dropFrom;
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DropStartMetric.
-     */
+	/**
+	 * This method returns the DropperService.dropFrom property value. This property is described as follows:
+	 * 
+	 * This enumeration indicates the point in the associated queue (associated via the NextService relationship) from which packets should be
+	 * dropped. If the value is 0 "Unknown", then packets MAY be dropped from any location in the queue.
+	 * 
+	 * @return int current dropFrom property value
+	 * @exception Exception
+	 */
+	public DropFrom getDropFrom() {
 
-    public enum DropStartMetric{
-    OTHER,
-    QUEUE_THRESHOLD,
-    ARRIVAL_RATE
-    }
-    private DropStartMetric dropStartMetric;
-    /**
-     * This method returns the DropperService.dropStartMetric property value.
-     * This property is described as follows:
-     *
-     * This property is an enumerated unsigned 16-bit integer that defines the
-     * metric used to trigger the start of dropping packets. This does NOT
-     * mean that all packets will be dropped; it does mean that SOME packets
-     * will start to be dropped. The number and type of packets dropped is a
-     * function of the type of algorithm used by this Dropper. Values are: 1:
-     * Other 2: Queue Threshold 3: Arrival Rate.
-     *
-     * @return	int	current dropStartMetric property value
-     * @exception	Exception
-     */
-    public DropStartMetric getDropStartMetric(){
+		return this.dropFrom;
+	} // getDropFrom
 
-    return this.dropStartMetric;
-    } // getDropStartMetric
+	/**
+	 * This method sets the DropperService.dropFrom property value. This property is described as follows:
+	 * 
+	 * This enumeration indicates the point in the associated queue (associated via the NextService relationship) from which packets should be
+	 * dropped. If the value is 0 "Unknown", then packets MAY be dropped from any location in the queue.
+	 * 
+	 * @param int new dropFrom property value
+	 * @exception Exception
+	 */
+	public void setDropFrom(DropFrom dropFrom) {
 
-    /**
-     * This method sets the DropperService.dropStartMetric property value.
-     * This property is described as follows:
-     *
-     * This property is an enumerated unsigned 16-bit integer that defines the
-     * metric used to trigger the start of dropping packets. This does NOT
-     * mean that all packets will be dropped; it does mean that SOME packets
-     * will start to be dropped. The number and type of packets dropped is a
-     * function of the type of algorithm used by this Dropper. Values are: 1:
-     * Other 2: Queue Threshold 3: Arrival Rate.
-     *
-     * @param	int	new dropStartMetric property value
-     * @exception	Exception
-     */
-    public void setDropStartMetric(DropStartMetric dropStartMetric){
+		this.dropFrom = dropFrom;
+	} // setDropFrom
 
-    this.dropStartMetric = dropStartMetric;
-    } // setDropStartMetric
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DropStartMetric.
+	 */
 
+	public enum DropStartMetric {
+		OTHER,
+		QUEUE_THRESHOLD,
+		ARRIVAL_RATE
+	}
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property DropMaintainMetric.
-     */
+	private DropStartMetric	dropStartMetric;
 
-    public enum DropMaintainMetric{
-    OTHER,
-    QUEUE_THRESHOLD,
-    ARRIVAL_RATE
-    }
-    private DropMaintainMetric dropMaintainMetric;
-    /**
-     * This method returns the DropperService.dropMaintainMetric property
-     * value. This property is described as follows:
-     *
-     * This property is an enumerated unsigned 16-bit integer that defines the
-     * metric used to determine when ALL packets will be dropped REGARDLESS
-     * of the type of algorithm used by this Dropper. Values are: 1: Other 2:
-     * Queue Threshold 3: Arrival Rate.
-     *
-     * @return	int	current dropMaintainMetric property value
-     * @exception	Exception
-     */
-    public DropMaintainMetric getDropMaintainMetric(){
+	/**
+	 * This method returns the DropperService.dropStartMetric property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated unsigned 16-bit integer that defines the metric used to trigger the start of dropping packets. This does NOT
+	 * mean that all packets will be dropped; it does mean that SOME packets will start to be dropped. The number and type of packets dropped is a
+	 * function of the type of algorithm used by this Dropper. Values are: 1: Other 2: Queue Threshold 3: Arrival Rate.
+	 * 
+	 * @return int current dropStartMetric property value
+	 * @exception Exception
+	 */
+	public DropStartMetric getDropStartMetric() {
 
-    return this.dropMaintainMetric;
-    } // getDropMaintainMetric
+		return this.dropStartMetric;
+	} // getDropStartMetric
 
-    /**
-     * This method sets the DropperService.dropMaintainMetric property value.
-     * This property is described as follows:
-     *
-     * This property is an enumerated unsigned 16-bit integer that defines the
-     * metric used to determine when ALL packets will be dropped REGARDLESS
-     * of the type of algorithm used by this Dropper. Values are: 1: Other 2:
-     * Queue Threshold 3: Arrival Rate.
-     *
-     * @param	int	new dropMaintainMetric property value
-     * @exception	Exception
-     */
-    public void setDropMaintainMetric(DropMaintainMetric
-	dropMaintainMetric){
+	/**
+	 * This method sets the DropperService.dropStartMetric property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated unsigned 16-bit integer that defines the metric used to trigger the start of dropping packets. This does NOT
+	 * mean that all packets will be dropped; it does mean that SOME packets will start to be dropped. The number and type of packets dropped is a
+	 * function of the type of algorithm used by this Dropper. Values are: 1: Other 2: Queue Threshold 3: Arrival Rate.
+	 * 
+	 * @param int new dropStartMetric property value
+	 * @exception Exception
+	 */
+	public void setDropStartMetric(DropStartMetric dropStartMetric) {
 
-    this.dropMaintainMetric = dropMaintainMetric;
-    } // setDropMaintainMetric
+		this.dropStartMetric = dropStartMetric;
+	} // setDropStartMetric
 
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property DropMaintainMetric.
+	 */
 
+	public enum DropMaintainMetric {
+		OTHER,
+		QUEUE_THRESHOLD,
+		ARRIVAL_RATE
+	}
+
+	private DropMaintainMetric	dropMaintainMetric;
+
+	/**
+	 * This method returns the DropperService.dropMaintainMetric property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated unsigned 16-bit integer that defines the metric used to determine when ALL packets will be dropped REGARDLESS of
+	 * the type of algorithm used by this Dropper. Values are: 1: Other 2: Queue Threshold 3: Arrival Rate.
+	 * 
+	 * @return int current dropMaintainMetric property value
+	 * @exception Exception
+	 */
+	public DropMaintainMetric getDropMaintainMetric() {
+
+		return this.dropMaintainMetric;
+	} // getDropMaintainMetric
+
+	/**
+	 * This method sets the DropperService.dropMaintainMetric property value. This property is described as follows:
+	 * 
+	 * This property is an enumerated unsigned 16-bit integer that defines the metric used to determine when ALL packets will be dropped REGARDLESS of
+	 * the type of algorithm used by this Dropper. Values are: 1: Other 2: Queue Threshold 3: Arrival Rate.
+	 * 
+	 * @param int new dropMaintainMetric property value
+	 * @exception Exception
+	 */
+	public void setDropMaintainMetric(DropMaintainMetric
+			dropMaintainMetric) {
+
+		this.dropMaintainMetric = dropMaintainMetric;
+	} // setDropMaintainMetric
 
 } // Class DropperService

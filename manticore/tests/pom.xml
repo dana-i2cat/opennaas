@@ -11,6 +11,27 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<!-- include your project here -->
 	<name>Mantychore:: Tests</name>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>net.i2cat.mantychore</groupId>
+				<artifactId>assembly</artifactId>
+				<version>${project.version}</version>
+				<type>zip</type>
+				<classifier>bin</classifier>
+				<scope>test</scope>
+				<exclusions>
+					<!-- This exclusion is recommended by the Karaf
+					     test container manual to ensure compatibility
+					     with Eclipse. -->
+					<exclusion>
+						<groupId>org.apache.karaf.shell</groupId>
+						<artifactId>org.apache.karaf.shell.dev</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<modules>
 		<module>integration</module>
 		<module>sprints</module>

@@ -1,21 +1,19 @@
 package mantychore;
 
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
+import javax.inject.Inject;
+import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 import net.i2cat.nexus.tests.KarafCommandHelper;
 import net.i2cat.nexus.tests.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.felix.service.command.CommandProcessor;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,67 +30,77 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Customizer;
-import org.ops4j.pax.exam.Inject;
 import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.swissbox.tinybundles.core.TinyBundles;
-import org.ops4j.pax.swissbox.tinybundles.dp.Constants;
+import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class ConfigureLRTest extends AbstractIntegrationTest {
-	static Log					log				= LogFactory
-															.getLog(ConfigureLRTest.class);
-
-	@Inject
-	BundleContext				bundleContext	= null;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class ConfigureLRTest
+{
+	static Log log = LogFactory.getLog(ConfigureLRTest.class);
 
 	String						resourceFriendlyID;
 	String						logicalRouterName;
 	IResource					resource;
-	private CommandProcessor	commandprocessor;
-	private IResourceManager	resourceManager;
 	private boolean				isMock			= true;
 
-	public static Option[] configuration() throws Exception {
+	@Inject
+	private BundleContext bundleContext;
 
-		Option[] options = combine(
-				IntegrationTestsHelper.getMantychoreTestOptions(IntegrationTestsHelper.FELIX_CONTAINER),
-				mavenBundle().groupId("net.i2cat.nexus").artifactId(
-						"net.i2cat.nexus.tests.helper")
-				// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-				// ////////import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
+	@Inject
+	private CommandProcessor commandprocessor;
 
-				);
+	@Inject
+	private IResourceManager resourceManager;
 
-		return options;
-	}
+	@Inject
+	private IProtocolManager protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer routerRepositoryService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    private BlueprintContainer chasisService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    private BlueprintContainer ipService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    private BlueprintContainer queueService;
+
+    @ProbeBuilder
+    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+        return probe;
+    }
 
 	@Configuration
-	public Option[] additionalConfiguration() throws Exception {
-		return combine(configuration(), new Customizer() {
-			@Override
-			public InputStream customizeTestProbe(InputStream testProbe) throws Exception {
-				return TinyBundles.modifyBundle(testProbe).set(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional")
-						.build();
-			}
-		});
-	}
-
-	@Before
-	public void initBundles() {
-		log.info("Waiting to load all bundles");
-		/* Wait for the activation of all tLogicalROuterhe bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-		log.info("Loaded all bundles");
-		resourceManager = getOsgiService(IResourceManager.class, 5000);
-		commandprocessor = getOsgiService(CommandProcessor.class);
-		clearRepo();
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
-		IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 5000);
 
 		ProtocolSessionContext context = ResourceHelper.newSessionContextNetconf();
 
@@ -105,9 +113,8 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 		return false;
 	}
 
+	@Before
 	public void initResource() {
-
-		clearRepo();
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("chassis");
@@ -131,6 +138,7 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 
 	}
 
+	@After
 	public void clearRepo() {
 
 		log.info("Clearing resource repo");
@@ -159,8 +167,6 @@ public class ConfigureLRTest extends AbstractIntegrationTest {
 
 	@Test
 	public void ConfigureInterfaceInterfaceTest() throws Exception {
-		initBundles();
-		initResource();
 
 		List<String> response;
 		List<String> response1;

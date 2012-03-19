@@ -9,101 +9,84 @@ import java.io.*;
 import java.lang.Exception;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class TransparentBridgingService as well as methods comparable
- * to the invokeMethods defined for this class. This Class implements the
- * TransparentBridgingServiceBean Interface. The CIM class
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class TransparentBridgingService as well as methods
+ * comparable to the invokeMethods defined for this class. This Class implements the TransparentBridgingServiceBean Interface. The CIM class
  * TransparentBridgingService is described as follows:
- *
- * This service class represents the learning/transparent bridging aspect of a
- * SwitchService.
+ * 
+ * This service class represents the learning/transparent bridging aspect of a SwitchService.
  */
 public class TransparentBridgingService extends ForwardingService implements
-    Serializable {
+		Serializable {
 
-    /**
-     * This constructor creates a TransparentBridgingServiceBeanImpl Class
-     * which implements the TransparentBridgingServiceBean Interface, and
-     * encapsulates the CIM class TransparentBridgingService in a Java Bean.
-     * The CIM class TransparentBridgingService is described as follows:
-     *
-     * This service class represents the learning/transparent bridging aspect
-     * of a SwitchService.
-     */
-    public TransparentBridgingService(){};
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property agingTime.
-     */
-    private long agingTime;
-    /**
-     * This method returns the TransparentBridgingService.agingTime property
-     * value. This property is described as follows:
-     *
-     * The timeout period in seconds for aging out dynamically learned
-     * forwarding information. 802.1D-1990 recommends a default of 300
-     * seconds.
-     *
-     * @return	long	current agingTime property value
-     * @exception	Exception
-     */
-    public long getAgingTime(){
+	/**
+	 * This constructor creates a TransparentBridgingServiceBeanImpl Class which implements the TransparentBridgingServiceBean Interface, and
+	 * encapsulates the CIM class TransparentBridgingService in a Java Bean. The CIM class TransparentBridgingService is described as follows:
+	 * 
+	 * This service class represents the learning/transparent bridging aspect of a SwitchService.
+	 */
+	public TransparentBridgingService() {
+	};
 
-    return this.agingTime;
-    } // getAgingTime
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property agingTime.
+	 */
+	private long	agingTime;
 
-    /**
-     * This method sets the TransparentBridgingService.agingTime property
-     * value. This property is described as follows:
-     *
-     * The timeout period in seconds for aging out dynamically learned
-     * forwarding information. 802.1D-1990 recommends a default of 300
-     * seconds.
-     *
-     * @param	long	new agingTime property value
-     * @exception	Exception
-     */
-    public void setAgingTime(long agingTime) {
+	/**
+	 * This method returns the TransparentBridgingService.agingTime property value. This property is described as follows:
+	 * 
+	 * The timeout period in seconds for aging out dynamically learned forwarding information. 802.1D-1990 recommends a default of 300 seconds.
+	 * 
+	 * @return long current agingTime property value
+	 * @exception Exception
+	 */
+	public long getAgingTime() {
 
-    this.agingTime = agingTime;
-    } // setAgingTime
+		return this.agingTime;
+	} // getAgingTime
 
+	/**
+	 * This method sets the TransparentBridgingService.agingTime property value. This property is described as follows:
+	 * 
+	 * The timeout period in seconds for aging out dynamically learned forwarding information. 802.1D-1990 recommends a default of 300 seconds.
+	 * 
+	 * @param long new agingTime property value
+	 * @exception Exception
+	 */
+	public void setAgingTime(long agingTime) {
 
-    /**
-     * The following constants are defined for use with the ValueMap/Values
-     * qualified property fID.
-     */
-    private long fID;
-    /**
-     * This method returns the TransparentBridgingService.fID property value.
-     * This property is described as follows:
-     *
-     * Filtering Database Identifier used by VLAN-aware switches that have
-     * more than one filtering database.
-     *
-     * @return	long	current fID property value
-     * @exception	Exception
-     */
-    public long getFID(){
+		this.agingTime = agingTime;
+	} // setAgingTime
 
-    return this.fID;
-    } // getFID
+	/**
+	 * The following constants are defined for use with the ValueMap/Values qualified property fID.
+	 */
+	private long	fID;
 
-    /**
-     * This method sets the TransparentBridgingService.fID property value.
-     * This property is described as follows:
-     *
-     * Filtering Database Identifier used by VLAN-aware switches that have
-     * more than one filtering database.
-     *
-     * @param	long	new fID property value
-     * @exception	Exception
-     */
-    public void setFID(long fID) {
+	/**
+	 * This method returns the TransparentBridgingService.fID property value. This property is described as follows:
+	 * 
+	 * Filtering Database Identifier used by VLAN-aware switches that have more than one filtering database.
+	 * 
+	 * @return long current fID property value
+	 * @exception Exception
+	 */
+	public long getFID() {
 
-    this.fID = fID;
-    } // setFID
+		return this.fID;
+	} // getFID
 
+	/**
+	 * This method sets the TransparentBridgingService.fID property value. This property is described as follows:
+	 * 
+	 * Filtering Database Identifier used by VLAN-aware switches that have more than one filtering database.
+	 * 
+	 * @param long new fID property value
+	 * @exception Exception
+	 */
+	public void setFID(long fID) {
 
+		this.fID = fID;
+	} // setFID
 
 } // Class TransparentBridgingService

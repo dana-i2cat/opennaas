@@ -8,29 +8,22 @@ package net.i2cat.mantychore.model;
 import java.io.*;
 
 /**
- * This Class contains accessor and mutator methods for all properties defined
- * in the CIM class DefaultSetting as well as methods comparable to the
- * invokeMethods defined for this class. This Class implements the
- * DefaultSettingBean Interface. The CIM class DefaultSetting is described as
- * follows:
- *
- * DefaultSetting represents the association between a ManagedSystemElement
- * and the single Setting class that is defined to be the default setting for
+ * This Class contains accessor and mutator methods for all properties defined in the CIM class DefaultSetting as well as methods comparable to the
+ * invokeMethods defined for this class. This Class implements the DefaultSettingBean Interface. The CIM class DefaultSetting is described as follows:
+ * 
+ * DefaultSetting represents the association between a ManagedSystemElement and the single Setting class that is defined to be the default setting for
  * this Element.
  */
 public class DefaultSetting extends ElementSetting implements Serializable {
 
-    /**
-     * This constructor creates a DefaultSettingBeanImpl Class which
-     * implements the DefaultSettingBean Interface, and encapsulates the CIM
-     * class DefaultSetting in a Java Bean. The CIM class DefaultSetting is
-     * described as follows:
-     *
-     * DefaultSetting represents the association between a
-     * ManagedSystemElement and the single Setting class that is defined to
-     * be the default setting for this Element.
-     */
-    public DefaultSetting(){};
-
+	/**
+	 * This constructor creates a DefaultSettingBeanImpl Class which implements the DefaultSettingBean Interface, and encapsulates the CIM class
+	 * DefaultSetting in a Java Bean. The CIM class DefaultSetting is described as follows:
+	 * 
+	 * DefaultSetting represents the association between a ManagedSystemElement and the single Setting class that is defined to be the default setting
+	 * for this Element.
+	 */
+	public DefaultSetting() {
+	};
 
 } // Class DefaultSetting

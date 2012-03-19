@@ -11,71 +11,13 @@
 	<artifactId>platform</artifactId>
 	<!--  properties to use fuse  -->
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 	</properties>
-	<repositories>
-		<repository>
-			<id>maven.i2cat.net</id>
-			<name>maven.i2cat.net-releases</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
-		</repository>
-		<repository>
-			<id>i2cat</id>
-			<name>i2cat maven repository</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
-		</repository>
-		<repository>
-			<id>i2cat libs-snapshot-local</id>
-			<name>maven.i2cat.net-snapshots</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-snapshot-local</url>
-		</repository>
-		<repository>
-			<id>springsource-external</id>
-			<name>SpringSource Enterprise Bundle Repository - External Bundle
-				Releases</name>
-			<url>http://repository.springsource.com/maven/bundles/external</url>
-		</repository>
-		<repository>
-			<id>springsource-releases</id>
-			<name>SpringSource Enterprise Bundle Repository - SpringSource Bundle
-				Releases</name>
-			<url>http://repository.springsource.com/maven/bundles/release</url>
-		</repository>
-		<repository>
-			<id>Maven-central</id>
-			<name>Maven central</name>
-			<url>http://repo1.maven.org/maven2</url>
-		</repository>
-		<repository>
-			<id>osp4j</id>
-			<name>OSP4J releases</name>
-			<url>http://repository.ops4j.org/maven2</url>
-		</repository>
-		<repository>
-			<id>DynamicJava</id>
-			<name>DynamicJava Repository</name>
-			<url>http://maven.dynamicjava.org/</url>
-		</repository>
-		<repository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>fusesource</id>
-			<name>Fuse Source releases</name>
-			<url>http://repo.fusesource.com/maven2/</url>
-		</pluginRepository>
-	</pluginRepositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<!--
@@ -146,12 +88,12 @@
 								<artifactItem>
 									<artifactId>opennaas-core-features</artifactId>
 									<groupId>org.opennaas</groupId>
-									<version>1.0.0-SNAPSHOT</version>
+									<version>${opennaas.version}</version>
 									<type>xml</type>
 									<classifier>features</classifier>
-									<outputDirectory>${target-platform.path}/${servicemix.path}/system/org/opennaas/opennaas-core-features/1.0.0-SNAPSHOT/</outputDirectory>
+									<outputDirectory>${target-platform.path}/${servicemix.path}/system/org/opennaas/opennaas-core-features/${opennaas.version}/</outputDirectory>
 									<overWrite>true</overWrite>
-									<destFileName>opennaas-core-features-1.0.0-SNAPSHOT-features.xml</destFileName>
+									<destFileName>opennaas-core-features-${opennaas.version}-features.xml</destFileName>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
@@ -161,30 +103,26 @@
 			<plugin>
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
-				<version>${karaf.version}</version>
 				<executions>
 					<execution>
 						<id>add-features-to-repo</id>
-						<phase>generate-resources</phase>
+						<phase>package</phase>
 						<goals>
 							<goal>add-features-to-repo</goal>
 						</goals>
 						<configuration>
 							<karafVersion>${karaf.version}</karafVersion>
 							<descriptors>
-								<descriptor>mvn:org.apache.servicemix/apache-servicemix/${servicemix.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
-								<descriptor>mvn:org.apache.activemq/activemq-karaf/${activemq.version}/xml/features</descriptor>
+								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
 								<descriptor>mvn:org.opennaas/opennaas-core-features/${project.version}/xml/features</descriptor>
 							</descriptors>
-							<!-- Only add the features we specify
-							     explicitly.  Remaining features are
-							     included by copying servicemix above.
-							     -->
-							<addTransitiveFeatures>false</addTransitiveFeatures>
+							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature>opennaas-core-deps</feature>
+								<feature>opennaas-persistence</feature>
 								<feature>opennaas-core</feature>
+								<feature>opennaas-platformmanager</feature>
 							</features>
 							<repository>${target-platform.path}/${servicemix.path}/system</repository>
 						</configuration>
@@ -194,7 +132,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4</version>
 				<executions>
 					<!-- process the resources to resolve the version variables -->
 					<execution>

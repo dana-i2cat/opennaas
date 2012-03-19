@@ -1,38 +1,48 @@
 package net.i2cat.luminis.transports.wonesys.tests;
 
 import static org.junit.Assert.assertNotNull;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.OptionUtils.combine;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
+import javax.inject.Inject;
 
 import net.i2cat.luminis.transports.wonesys.ITransport;
 import net.i2cat.luminis.transports.wonesys.ITransportListener;
 import net.i2cat.luminis.transports.wonesys.WonesysTransport;
 import net.i2cat.luminis.transports.wonesys.WonesysTransportException;
 import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.nexus.tests.IntegrationTestsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.karaf.testing.AbstractIntegrationTest;
+
+import org.junit.Test;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Inject;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 
-@RunWith(JUnit4TestRunner.class)
-public class WonesysTransportTest extends AbstractIntegrationTest implements ITransportListener {
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
-	Log						log				= LogFactory.getLog(WonesysTransportTest.class);
+@RunWith(JUnit4TestRunner.class)
+public class WonesysTransportTest implements ITransportListener
+{
+	Log	log	= LogFactory.getLog(WonesysTransportTest.class);
 
 	@Inject
 	private BundleContext	bundleContext;
@@ -43,34 +53,20 @@ public class WonesysTransportTest extends AbstractIntegrationTest implements ITr
 	boolean					eventReceived	= false;
 	String					receivedMessage;
 
-	IEventManager			eventManager;
+	@Inject
+	private IEventManager	eventManager;
 
 	@Configuration
-	public static Option[] configure() {
-		return combine(
-						IntegrationTestsHelper.getLuminisTestOptions(),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
-						mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.events")
-		// , vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5006")
-		);
-	}
-
-	public void loadBundles() {
-
-		assertNotNull(bundleContext);
-
-		/* Wait for the activation of all the bundles */
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		eventManager = getOsgiService(IEventManager.class, 20000);
-		assertNotNull(eventManager);
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	// FIXME Uncomment to test transport works ok
 	// @Test //uses real connection
 	public void sendAsyncTest() {
-
-		loadBundles();
 
 		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		try {
@@ -99,10 +95,8 @@ public class WonesysTransportTest extends AbstractIntegrationTest implements ITr
 	}
 
 	// FIXME Uncomment to test transport works ok
-	// @Test //uses real connection
+	//@Test //uses real connection
 	public void sendReceiveTest() {
-
-		loadBundles();
 
 		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
 		try {

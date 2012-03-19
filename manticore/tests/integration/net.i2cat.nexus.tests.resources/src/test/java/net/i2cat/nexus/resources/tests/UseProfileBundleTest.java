@@ -1,7 +1,6 @@
 package net.i2cat.nexus.resources.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Enumeration;
@@ -11,9 +10,12 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.After;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -26,64 +28,63 @@ import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
-import org.ops4j.pax.exam.util.ServiceLookup;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class UseProfileBundleTest { // extends AbstractIntegrationTest {
-	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-
-	static Log			log				= LogFactory.getLog(UseProfileBundleTest.class);
-
-	IResourceManager	resourceManager;
-	IProfileManager		profileManager;
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class UseProfileBundleTest
+{
+	static Log log = LogFactory.getLog(UseProfileBundleTest.class);
 
 	@Inject
-	BundleContext		bundleContext	= null;
+	private IResourceManager resourceManager;
+
+	@Inject
+	private IProfileManager profileManager;
+
+	@Inject
+	private BundleContext bundleContext;
+
+	@Inject
+	private IProtocolManager protocolManager;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer routerRepositoryService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    private BlueprintContainer chasisService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=opennaas-core-tests-mockprofile)")
+    private BlueprintContainer mockProfileService;
 
 	@Configuration
-	public Option[] config() {
-		return new Option[] { karafDistributionConfiguration().frameworkUrl("mvn:net.i2cat.mantychore/assembly/1.0.0-SNAPSHOT/zip/bin")
-				.karafVersion("2.2.2").name("mantychore") };
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeTestMockProfile(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
-	/*
-	 * @Configuration public static Option[] configure() {
-	 *
-	 * Option[] options = combine( IntegrationTestsHelper.getMantychoreTestOptions(),
-	 * //mavenBundle().groupId("net.i2cat.nexus").artifactId("net.i2cat.nexus.tests.helper"),
-	 * mavenBundle().groupId("org.opennaas").artifactId("opennaas-core-tests-mockprofile") // ,
-	 * vmOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005") ); return options; }
-	 */
-
-	// @Before
-	public void initBundles() {
-
-		waitForAllBundlesActive(bundleContext);
-
-		// resourceManager = getOsgiService(IResourceManager.class, 50000);
-		// profileManager = getOsgiService(IProfileManager.class, 30000);
-
-		resourceManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.IResourceManager");
-		profileManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.profile.IProfileManager");
-
-		Assert.assertNotNull(profileManager);
-		Assert.assertNotNull(resourceManager);
-
-		clearRepo();
-		log.info("INFO: Initialized!");
-	}
-
-	// @After
+	@After
 	public void clearRepo() {
-
 		log.info("Clearing resource repo");
 
 		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
@@ -114,8 +115,6 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 	 */
 	@Test
 	public void createResourceWithProfile() {
-
-		initBundles();
 
 		try {
 
@@ -168,8 +167,6 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 	}
 
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
-		// IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 15000);
-		IProtocolManager protocolManager = ServiceLookup.getService(bundleContext, "org.opennaas.core.resources.protocol.IProtocolManager");
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 	}
 
@@ -190,93 +187,5 @@ public class UseProfileBundleTest { // extends AbstractIntegrationTest {
 				"netconf");
 		// ADDED
 		return protocolSessionContext;
-	}
-
-	/**
-	 * Wait for all bundles to be active, tries to start non active bundles.
-	 */
-	private static void waitForAllBundlesActive(BundleContext bundleContext) {
-
-		log.info("Waiting for activation of all bundles");
-
-		int MAX_RETRIES = 20;
-		Bundle b = null;
-		boolean active = true;
-
-		for (int i = 0; i < MAX_RETRIES; i++) {
-			active = true;
-			for (int j = 0; j < bundleContext.getBundles().length; j++) {
-				Bundle bundle = bundleContext.getBundles()[j];
-				if (bundle.getHeaders().get("Fragment-Host") == null &&
-					bundle.getState() == Bundle.RESOLVED) {
-					active = false;
-					try {
-						bundleContext.getBundles()[j].start();
-					} catch (Exception ex) {
-						ex.printStackTrace();
-					}
-				}
-			}
-
-			if (active) {
-				break;
-			}
-
-			listBundles(bundleContext);
-			log.info("Waiting for activation of all bundles, this is the " + i + " try. Sleeping for 1 second");
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException ex) {
-				ex.printStackTrace();
-				break;
-			}
-		}
-
-		listBundles(bundleContext);
-
-		if (active)
-			log.info("All the bundles activated. Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
-		else
-			log.warn("MAX RETRIES REACHED!!! Waiting for 15 seconds more to allow Blueprint to publish all the services into the OSGi registry");
-
-		try {
-			Thread.sleep(15000);
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	private static String listBundles(BundleContext bundleContext) {
-		Bundle b = null;
-		String listBundles = "";
-		for (int i = 0; i < bundleContext.getBundles().length; i++) {
-			b = bundleContext.getBundles()[i];
-			listBundles += b.toString() + " : " + getStateString(b.getState()) + '\n';
-			if (getStateString(b.getState()).equals("INSTALLED")) {
-				try {
-					b.start();
-				} catch (Exception e) {
-					listBundles += "ERROR: " + e.getMessage() + '\n';
-					e.printStackTrace();
-				}
-			}
-		}
-		log.info(listBundles);
-		return listBundles;
-
-	}
-
-	private static String getStateString(int value) {
-		if (value == Bundle.ACTIVE) {
-			return "ACTIVE";
-		} else if (value == Bundle.INSTALLED) {
-			return "INSTALLED";
-		} else if (value == Bundle.RESOLVED) {
-			return "RESOLVED";
-		} else if (value == Bundle.UNINSTALLED) {
-			return "UNINSTALLED";
-		}
-
-		return "UNKNOWN";
 	}
 }
