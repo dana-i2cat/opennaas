@@ -273,6 +273,12 @@ setupDefaults() {
     #DEFAULT_JAVA_DEBUG_OPTS="-Xrunyjpagent"
 }
 
+applyKarafHistoryWorkaround() {
+    if [ ! -f ~/.karaf/karaf.history ]; then
+        echo > ~/.karaf/karaf.history
+    fi
+}
+
 init() {
     # Determine if there is special OS handling we must perform
     detectOS
@@ -304,6 +310,8 @@ init() {
     # Install debug options
     setupDebugOptions
 
+    # Workaround for issue opennaas-162
+    applyKarafHistoryWorkaround
 }
 
 run() {
