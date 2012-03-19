@@ -21,10 +21,12 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 
 	IModel	oldModel;
 
+	@Override
 	public void resetModel(IResource resource) throws ResourceException {
 		resource.setModel(new NetworkModel());
 	}
 
+	@Override
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 
@@ -36,7 +38,10 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 			/* abstract capabilities have to be initialized */
 			log.debug("Found a capability in the resource.");
 			/* abstract capabilities have to be initialized */
-			if (capab instanceof AbstractCapability) {
+			if (capab instanceof AbstractCapability
+					// FIXME We can access to the capability but not to his implementation. Required to change this implementation
+					&& capab.getCapabilityInformation() != null
+					&& !capab.getCapabilityInformation().getType().equals("netqueue")) {
 				log.debug("Executing capabilities startup...");
 				Response response = ((AbstractCapability) capab).sendRefreshActions();
 				if (!response.getStatus().equals(Status.OK)) {
