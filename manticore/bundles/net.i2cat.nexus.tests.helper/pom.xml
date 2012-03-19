@@ -26,6 +26,22 @@
 			<groupId>org.apache.felix</groupId>
 			<artifactId>org.apache.felix.gogo.runtime</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-junit4</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+			<artifactId>paxexam-karaf-container</artifactId>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -38,7 +54,14 @@
 					<instructions>
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
+						<!-- Guava and Pax Exam are optional
+						     depedencies because we currently use them
+						     in the context of the JUnitRunner and not
+						     from withing the OSGi based test
+						     container. -->
 						<Import-Package>
+							org.ops4j.pax.exam.junit;resolution:=optional,
+							com.google.common.*;resolution:=optional,
 							org.slf4j,
 							org.osgi.framework,
 							*

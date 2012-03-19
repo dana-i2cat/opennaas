@@ -29,20 +29,13 @@
    		<module>org.opennaas.router.tests.capability.gretunnel</module>
 		<module>org.opennaas.router.tests.capability.ospf</module>
 		<module>org.opennaas.network.tests.capability.queue</module>
+		<module>org.opennaas.router.tests.capability.staticroute</module>
 	</modules>
 
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
-			<artifactId>paxexam-karaf-container</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.ops4j.pax.exam</groupId>
-			<artifactId>pax-exam-junit4</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.mantychore</groupId>

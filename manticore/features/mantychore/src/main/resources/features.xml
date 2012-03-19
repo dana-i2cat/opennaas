@@ -62,6 +62,7 @@
 		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.ip/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.gretunnel/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.ospf/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.staticroute/1.0.0-SNAPSHOT</bundle>
 	</feature>
 
 	<feature name="opennaas-network" version="${project.version}">
@@ -110,4 +111,5 @@
 		<feature version="${opennaas.version}">opennaas-core</feature>
 		<bundle>mvn:org.opennaas/opennaas-core-tests-mockprofile/${project.version}</bundle>
 	</feature>
+
 </features>

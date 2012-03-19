@@ -55,7 +55,7 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		logger.info("Shuting down Hibernate JPA layer.");
+		logger.info("Shutting down EntityManager.");
 		if (em != null) {
 			em.close();
 		}
@@ -281,6 +281,7 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 		assertEquals(networkTopology.getDevices().get(1).getName(), "router:R-AS2-2");
 		assertEquals(networkTopology.getDevices().get(2).getName(), "router:R-AS2-3");
 
+		em.getTransaction().commit();
 	}
 
 	@Test
@@ -349,6 +350,7 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 
 		assertEquals(networkTopology.getInterfaces().get(7).getName(), "router:R-AS2-3:lo0.4");
 
+		em.getTransaction().commit();
 	}
 
 	@Test
@@ -366,5 +368,6 @@ public class ResourceDescriptorRepositoryTest extends TestCase {
 			assertTrue(loaded.getResourceReferences().containsKey(frienlyName));
 			assertEquals(config.getResourceReferences().get(frienlyName), loaded.getResourceReferences().get(frienlyName));
 		}
+		em.getTransaction().commit();
 	}
 }

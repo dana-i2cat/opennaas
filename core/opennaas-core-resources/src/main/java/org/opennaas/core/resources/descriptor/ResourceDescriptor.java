@@ -19,6 +19,8 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,7 +35,7 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
  */
 @XmlRootElement
 @Entity
-@org.hibernate.annotations.NamedQueries({ @org.hibernate.annotations.NamedQuery(name = "resourceDescriptor.findByType", query = "from ResourceDescriptor r where r.information.type = :type") })
+@NamedQueries({ @NamedQuery(name = "resourceDescriptor.findByType", query = "select r from ResourceDescriptor r where r.information.type = :type") })
 public class ResourceDescriptor {
 
 	public static final String			VIRTUAL				= "virtual";

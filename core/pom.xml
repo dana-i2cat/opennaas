@@ -12,7 +12,6 @@
 	<modules>
 		<module>opennaas-core-features</module>
 		<module>karafbranding-opennaas</module>
-		<module>opennaas-core-hibernate</module>
 		<module>opennaas-core-persistence</module>
 		<module>opennaas-core-hsqldb</module>
 		<module>opennaas-core-events</module>

@@ -1,12 +1,5 @@
 package net.i2cat.mantychore.commandskaraf;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
-import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -15,15 +8,16 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.KarafCommandHelper;
+import net.i2cat.nexus.tests.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.felix.service.command.CommandProcessor;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
@@ -37,22 +31,23 @@ import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
+
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class ProfileCommandsKarafTest
+public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 {
 	static Log log = LogFactory.getLog(ProfileCommandsKarafTest.class);
 
@@ -62,9 +57,6 @@ public class ProfileCommandsKarafTest
 
 	@Inject
 	private IProfileManager		profileManager;
-
-	@Inject
-	private CommandProcessor	commandprocessor;
 
 	@Inject
 	private IProtocolManager	protocolManager;
@@ -81,42 +73,13 @@ public class ProfileCommandsKarafTest
     @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
     private BlueprintContainer	queueService;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
-
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router,nexus-tests-helper"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeTestHelper(),
+					   noConsole(),
 					   keepRuntimeFolder());
-	}
-
-	public String capture() throws IOException {
-		StringWriter sw = new StringWriter();
-		BufferedReader rdr = new BufferedReader(new InputStreamReader(System.in));
-		String s = rdr.readLine();
-		while (s != null) {
-			sw.write(s);
-			s = rdr.readLine();
-		}
-		return sw.toString();
 	}
 
 	/**
@@ -158,11 +121,11 @@ public class ProfileCommandsKarafTest
 
 		profileManager.addProfile(profile1);
 
-		KarafCommandHelper.executeCommand("profile:list", commandprocessor);
-		KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
+		executeCommand("profile:list");
+		executeCommand("profile:info " + profile1.getProfileName());
 
 		profileManager.addProfile(profile2);
-		KarafCommandHelper.executeCommand("profile:list", commandprocessor);
+		executeCommand("profile:list");
 
 		// add resource with profile1
 		resourceDescriptor.setProfileId(profile1.getProfileName());
@@ -172,19 +135,19 @@ public class ProfileCommandsKarafTest
 
 		repository.startResource(resource.getResourceDescriptor().getId());
 
-		KarafCommandHelper.executeCommand("profile:list", commandprocessor);
-		KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
+		executeCommand("profile:list");
+		executeCommand("profile:info " + profile1.getProfileName());
 
-		KarafCommandHelper.executeCommand("profile:remove " + profile2.getProfileName(), commandprocessor);
-		KarafCommandHelper.executeCommand("profile:list", commandprocessor);
+		executeCommand("profile:remove " + profile2.getProfileName());
+		executeCommand("profile:list");
 
 		// there is no such profile, but it does not fail for that ;)
 		// it silently does nothing
-		KarafCommandHelper.executeCommand("profile:remove " + profile2.getProfileName(), commandprocessor);
+		executeCommand("profile:remove " + profile2.getProfileName());
 
 		boolean failed = false;
 		try {
-			KarafCommandHelper.executeCommand("profile:remove " + profile1.getProfileName(), commandprocessor);
+			executeCommand("profile:remove " + profile1.getProfileName());
 		} catch (ResourceException e) {
 			// profile in use
 			failed = true;
@@ -197,12 +160,12 @@ public class ProfileCommandsKarafTest
 		// log.debug("executing command  #>resource:remove " + resourceFriendlyID);
 		// executeCommand("resource:remove " + resourceFriendlyID);
 
-		KarafCommandHelper.executeCommand("profile:remove " + profile1.getProfileName(), commandprocessor);
-		KarafCommandHelper.executeCommand("profile:list", commandprocessor);
+		executeCommand("profile:remove " + profile1.getProfileName());
+		executeCommand("profile:list");
 
 		// there is no such profile, but it does not fail for that ;)
 		// it silently does nothing
-		KarafCommandHelper.executeCommand("profile:info " + profile1.getProfileName(), commandprocessor);
+		executeCommand("profile:info " + profile1.getProfileName());
 	}
 
 	@Test
@@ -229,17 +192,16 @@ public class ProfileCommandsKarafTest
 		// launch setInterface Action and assert DummyAction is executed instead of original one
 		repository.startResource(resource.getResourceIdentifier().getId());
 
-		ArrayList<String> response = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
+		List<String> response = executeCommand("ipv4:list " + resourceFriendlyID);
 
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = KarafCommandHelper.executeCommand("ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0",
-													 commandprocessor);
+		response = executeCommand("ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = KarafCommandHelper.executeCommand("ipv4:list " + resourceFriendlyID, commandprocessor);
+		response = executeCommand("ipv4:list " + resourceFriendlyID);
 		// assert command output contains no ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 	}

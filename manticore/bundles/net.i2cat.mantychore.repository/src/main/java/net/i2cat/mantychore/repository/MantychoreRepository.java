@@ -41,8 +41,8 @@ public class MantychoreRepository extends ResourceRepository {
 		}
 	}
 
-	public MantychoreRepository(String resourceType, String persistenceUnit) {
-		super(resourceType, persistenceUnit);
+	public MantychoreRepository(String resourceType) {
+		super(resourceType);
 	}
 
 	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {

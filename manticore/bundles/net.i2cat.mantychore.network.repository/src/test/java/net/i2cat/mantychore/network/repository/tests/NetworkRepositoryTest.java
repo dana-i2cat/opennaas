@@ -21,11 +21,10 @@ public class NetworkRepositoryTest {
 
 
 	NetworkRepository	NetworkRepository;
-	String					persistenceUnit	= "ResourceCore";
 
 	@Test
 	public void testCapabilityFactories() {
-		NetworkRepository = new NetworkRepository("NetworkRepository", persistenceUnit);
+		NetworkRepository = new NetworkRepository("NetworkRepository");
 		NetworkRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		NetworkRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -39,7 +38,7 @@ public class NetworkRepositoryTest {
 
 	@Test
 	public void testCreateRemoveResources() {
-		NetworkRepository = new NetworkRepository("network", persistenceUnit);
+		NetworkRepository = new NetworkRepository("network");
 		NetworkRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		NetworkRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
@@ -74,7 +73,7 @@ public class NetworkRepositoryTest {
 	@Test
 	public void testModifyResources() {
 
-		NetworkRepository = new NetworkRepository("network", persistenceUnit);
+		NetworkRepository = new NetworkRepository("network");
 		NetworkRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 
 		NetworkRepository.capabilityFactoryAdded(new MockCapabilityFactory("factory1"));
