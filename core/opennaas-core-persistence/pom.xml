@@ -12,9 +12,8 @@
 	<description>Dynamic JPA Persistence tools for Nexus</description>
 	<dependencies>
 		<dependency>
-			<!-- This dep has to be here on the top or all shit breaks loose -->
-			<groupId>org.hibernate.java-persistence</groupId>
-			<artifactId>jpa-api</artifactId>
+			<groupId>org.apache.openjpa</groupId>
+			<artifactId>openjpa</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
@@ -24,10 +23,6 @@
 			<groupId>org.apache.geronimo.specs</groupId>
 			<artifactId>geronimo-jpa_2.0_spec</artifactId>
 		</dependency>-->
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hibernate</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-hsqldb</artifactId>

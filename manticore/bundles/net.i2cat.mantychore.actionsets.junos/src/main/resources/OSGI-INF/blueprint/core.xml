@@ -55,4 +55,14 @@
 			<entry key="actionset.version" value="10.10"/>
 		</service-properties>
 	</service>
+	<bean id="staticRouteActionSet" class="net.i2cat.mantychore.actionsets.junos.StaticRouteActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="staticRouteActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="junos"/>
+			<entry key="actionset.capability" value="staticroute"/>
+			<entry key="actionset.version" value="10.10"/>
+		</service-properties>
+	</service>
 </blueprint>
