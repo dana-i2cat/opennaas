@@ -19,10 +19,10 @@ public class ActionConstants {
 	public static final String	SETINTERFACEDESCRIPTION			= "setInterfaceDescription";
 
 	// GRETunnel ActionSET
-	public static final String	CREATETUNNEL			= "createTunnel";
-	public static final String	DELETETUNNEL			= "deleteTunnel";
-	public static final String	GETTUNNELCONFIG			= "getTunnelConfiguration";
-	public static final String	SHOWTUNNELS				= "showTunnels";
+	public static final String	CREATETUNNEL					= "createTunnel";
+	public static final String	DELETETUNNEL					= "deleteTunnel";
+	public static final String	GETTUNNELCONFIG					= "getTunnelConfiguration";
+	public static final String	SHOWTUNNELS						= "showTunnels";
 
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS				= "getLogicalRouters";
@@ -43,4 +43,6 @@ public class ActionConstants {
 	public static final String	OSPF_ADD_INTERFACE_IN_AREA		= "addOSPFInterfaceInArea";
 	public static final String	OSPF_REMOVE_INTERFACE_IN_AREA	= "removeOSPFInterfaceInArea";
 
+	// Static Route actionset
+	public static final String	STATIC_ROUTE_CREATE				= "createStaticRoute";
 }
