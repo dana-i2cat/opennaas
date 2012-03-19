@@ -3,6 +3,10 @@ package org.opennaas.network.tests.capability.queue;
 /**
  * 
  */
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.maven;
@@ -59,19 +63,11 @@ public class QueueIntegrationTest {
 	 */
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-				.frameworkUrl(maven()
-						.groupId("net.i2cat.mantychore")
-						.artifactId("assembly")
-						.type("zip")
-						.classifier("bin")
-						.versionAsInProject())
-				.karafVersion("2.2.2")
-				.name("mantychore")
-				.unpackDirectory(new File("target/paxexam")),
-				keepRuntimeFolder()
-		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-		);
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-bod, opennaas-network, opennaas-netconf"),
+					   includeTestHelper(),
+					   noConsole(),
+					   keepRuntimeFolder());
 	}
 
 	/**

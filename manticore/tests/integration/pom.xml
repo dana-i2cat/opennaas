@@ -51,6 +51,22 @@
 			<groupId>org.ops4j.pax.swissbox</groupId>
 			<artifactId>pax-swissbox-framework</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.i2cat.mantychore</groupId>
+			<artifactId>assembly</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<classifier>bin</classifier>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.karaf.shell</groupId>
+					<artifactId>org.apache.karaf.shell.dev</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+				
 	</dependencies>
 
 	<build>
