@@ -1,0 +1,44 @@
+
+shell:echo "creating resource"
+resource:create /home/isart/workspace/opennaas/opennaas/manticore/utils/resource.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+shell:echo "create subinterface fe-0/1/0.12"
+chassis:createsubinterface -v 12 -d "to be moved to logicalTest1" router:junos20 fe-0/1/0.12
+queue:execute router:junos20
+
+shell:echo "create logical router and add subinterfce fe-0/1/0.12"
+chassis:createlogicalrouter router:junos20 logicalTest1
+chassis:addinterfacetolr router:junos20 router:logicalTest1 fe-0/1/0.12
+queue:execute router:junos20
+
+shell:echo "start logical router"
+protocols:context router:logicalTest1 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:logicalTest1
+
+shell:echo "show interfaces in logical router"
+ipv4:list router:logicalTest1
+
+shell:echo "update fe-0/1/0.12 description"
+ipv4:setinterfacedescription router:logicalTest1 fe-0/1/0.12 "moved to logicalTest1"
+queue:execute router:logicalTest1
+
+shell:echo "stop logical router"
+resource:stop router:logicalTest1
+
+shell:echo "remove subinterface fe-0/1/0.12 from logical router"
+chassis:removeinterfacefromlr router:junos20 router:logicalTest1 fe-0/1/0.12
+queue:execute router:junos20
+
+shell:echo "show interfaces in parent router" 
+ipv4:list router:junos20
+
+shell:echo "cleanup"
+resource:remove router:logicalTest1
+
+chassis:deletelogicalrouter router:junos20 logicalTest1
+queue:execute router:junos20
+resource:stop router:junos20
+resource:remove router:junos20
+

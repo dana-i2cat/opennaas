@@ -16,7 +16,7 @@ queue:execute router:junos20
 
 
 
-protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+protocols:context router:routerV1 netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:routerV1
 ipv4:list router:routerV1
 
@@ -30,11 +30,10 @@ resource:list
 
 
 #Restoring configuration
-resource:stop router:junos20
-resource:remove router:junos20
-
 resource:stop router:routerV1
 resource:remove router:routerV1
 
+resource:stop router:junos20
+resource:remove router:junos20
 
 #protocols:remove ...

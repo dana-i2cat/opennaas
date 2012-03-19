@@ -1,10 +1,16 @@
 package mantychore;
 
-import javax.inject.Inject;
-import java.io.File;
-import java.io.InputStream;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.nexus.tests.KarafCommandHelper;
@@ -29,75 +35,70 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ProbeBuilder;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ConfigureLRTest
 {
-	static Log log = LogFactory.getLog(ConfigureLRTest.class);
+	static Log					log		= LogFactory.getLog(ConfigureLRTest.class);
 
 	String						resourceFriendlyID;
 	String						logicalRouterName;
 	IResource					resource;
-	private boolean				isMock			= true;
+	private boolean				isMock	= true;
 
 	@Inject
-	private BundleContext bundleContext;
+	private BundleContext		bundleContext;
 
 	@Inject
-	private CommandProcessor commandprocessor;
+	private CommandProcessor	commandprocessor;
 
 	@Inject
-	private IResourceManager resourceManager;
+	private IResourceManager	resourceManager;
 
 	@Inject
-	private IProtocolManager protocolManager;
+	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-    private BlueprintContainer routerRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer	routerRepositoryService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
-    private BlueprintContainer chasisService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+	private BlueprintContainer	chasisService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
-    private BlueprintContainer ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	private BlueprintContainer	queueService;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
+	@ProbeBuilder
+	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+		probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+		return probe;
+	}
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
@@ -237,14 +238,6 @@ public class ConfigureLRTest
 		/* test for ethernet interfaces */
 		result = testLogicalRouterConfigureCheckInterface(commandprocessor, "lo0", "1", "192.168.1.3", "255.255.255.0", "router:" + logicalRouterName);
 		Assert.assertFalse(result);
-		/* test to check that add interface don't work if the logical resource is started */
-		// chassis:addInterface R1 L1 fe-0/0/1.1
-		// check interface is included in the L1
-		List<String> response3 = KarafCommandHelper.executeCommand(
-				"chassis:addInterface " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
-				commandprocessor);
-		log.info(response3.get(0));
-		Assert.assertTrue(!response3.get(1).isEmpty() && response3.get(1).contains("ERROR"));
 
 		boolean isSent = true;
 		try {
@@ -260,17 +253,17 @@ public class ConfigureLRTest
 		/* test to check add and remove interface */
 		resourceManager.stopResource(logicalResource.getResourceIdentifier());
 
-		// chassis:addInterface R1 L1 fe-0/0/1.1
+		// chassis:addInterfaceToLR R1 L1 fe-0/0/1.1
 		// check interface is included in the L1
 		List<String> response4 = KarafCommandHelper.executeCommand(
-				"chassis:addInterface " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
+				"chassis:addInterfaceToLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
 				commandprocessor);
 		log.info(response4.get(0));
 
-		// chassis:removeInterface R1 L1 fe-0/0/1.1
+		// chassis:removeInterfaceFromLR R1 L1 fe-0/0/1.1
 		// check interface is not included in the L1
 		List<String> response5 = KarafCommandHelper.executeCommand(
-				"chassis:removeInterface " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
+				"chassis:removeInterfaceFromLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
 				commandprocessor);
 		log.info(response5.get(0));
 

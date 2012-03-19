@@ -47,6 +47,8 @@
 		<feature version="${project.version}">opennaas-cim</feature>
 		<feature version="${project.version}">opennaas-netconf</feature>
 
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+
 		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/${project.version}</bundle>
 	</feature>
 

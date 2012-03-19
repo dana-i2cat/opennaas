@@ -1,10 +1,8 @@
 ###############################################################################
 ###########                       MACROS                            ###########
 ###############################################################################
-
 #macro (isEthernet $element $resp)
 	#set( $resp = "false" )
-	<!-- hola !! $element.LinkTechnology.toString() -->
 	#if($element.LinkTechnology.toString().equals("ETHERNET"))
 		#set( $resp = "true" )
 	#end
@@ -41,11 +39,9 @@
 				#if($logicalRouter.equals("false") && $param.PortNumber != 0)	
 					<vlan-tagging operation="merge"/>
 				#end
-				<unit>				
+				<unit>
 					## IT CAN BE DANGEROUS IF WE CAN CHECK THE PARAMS... YOU CAN RESET THE CONFIGURATON FOR ALL THE INTERFACE
 					<name>$param.PortNumber</name>
-					
-					
 					#set( $isvlan = "false" )
 					#foreach ($endpoint in $param.ProtocolEndpoint)
 						#if($endpoint.getClass().getSimpleName().equals("VLANEndpoint"))
@@ -54,7 +50,6 @@
 							#break
 						#end
 					#end
-					
 					#if($isvlan.equals("true"))
 						<vlan-id operation="merge">$vlanId</vlan-id>
 						## <VLAN-TAGGING/> !! WE HAVE TO ADD VLAN-TAGGING
