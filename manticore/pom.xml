@@ -130,6 +130,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.network.capability.queue</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
 				<version>${project.version}</version>
 			</dependency>
