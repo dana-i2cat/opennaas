@@ -15,8 +15,8 @@ protocols:context router:lrtest netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:lrtest
 
 ipv4:setip router:lrtest fe-0/1/0.12 192.168.1.1 255.255.255.0
-staticroute:create router:lrtest 0.0.0.0 0.0.0.0 192.168.1.1
 
+staticroute:create router:lrtest 0.0.0.0 0.0.0.0 192.168.1.1
 queue:execute -d router:lrtest
 
 #Cleanup
