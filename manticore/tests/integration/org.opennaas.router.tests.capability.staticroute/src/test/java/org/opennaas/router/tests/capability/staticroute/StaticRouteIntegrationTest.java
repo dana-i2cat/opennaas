@@ -4,6 +4,7 @@
 package org.opennaas.router.tests.capability.staticroute;
 
 import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -76,11 +77,10 @@ public abstract class StaticRouteIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router, nexus-tests-helper"),
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
 				noConsole(),
-				keepRuntimeFolder()
-		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005")
-		);
+				keepRuntimeFolder());
 	}
 
 	@Before
