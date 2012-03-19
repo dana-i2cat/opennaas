@@ -21,6 +21,7 @@ public class ActionConstants {
 	public static final String	CREATELOGICALROUTER					= "createLogicalRouter";
 	public static final String	ADDINTERFACETOLOGICALROUTER			= "addInterfaceToLogicalRouter";
 	public static final String	REMOVEINTERFACEFROMLOGICALROUTER	= "removeInterfaceFromLogicalRouter";
+
 	// TODO THE SAME NAME FOR THE OTHER LIST LOGICAL ROUTERS
 	public static final String	GETLOGICALROUTERS					= "getLogicalRouters";
 	// TODO LISTLOGICALROUTER!!!
@@ -45,4 +46,6 @@ public class ActionConstants {
 	public static final String	OSPF_ADD_INTERFACE_IN_AREA			= "addOSPFInterfaceInArea";
 	public static final String	OSPF_REMOVE_INTERFACE_IN_AREA		= "removeOSPFInterfaceInArea";
 
+	// Static Route actionset
+	public static final String	STATIC_ROUTE_CREATE				= "createStaticRoute";
 }

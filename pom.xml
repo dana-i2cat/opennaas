@@ -30,10 +30,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<ant.version>1.7.0_4</ant.version>
-		<activemq.version>5.5.1-fuse-01-20</activemq.version>
+		<activemq.version>5.5.1-fuse-03-06</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
 		<beanutils.version>1.8.0</beanutils.version>
-		<camel.version>2.8.0-fuse-01-20</camel.version>
+		<camel.version>2.8.0-fuse-03-06</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.codec.version>1.4</commons.codec.version>
 		<commons.collections.version>3.2.1_1</commons.collections.version>
@@ -43,7 +43,8 @@
 		<commons.io.version>1.4</commons.io.version>
 		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
-		<cxf.version>2.4.3-fuse-00-20</cxf.version>
+		<commons.pool.version>1.5.4</commons.pool.version>
+		<cxf.version>2.4.3-fuse-01-02</cxf.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -56,40 +57,38 @@
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
-		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
+		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
 		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.2-fuse-02-20</karaf.version>
+		<karaf.version>2.2.2-fuse-04-06</karaf.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
-		<nmr.version>1.5.1-fuse-01-20</nmr.version>
+		<openjpa.version>2.2.0</openjpa.version>
+		<nmr.version>1.5.1-fuse-03-06</nmr.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
 		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
-		<pax.logging.version>1.6.2</pax.logging.version>
+		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
+		<servicemix.version>4.4.1-fuse-03-06</servicemix.version>
 		<servicemix.specs.version>1.8.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
+		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
+		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
-		<xbean.version>3.8</xbean.version>
+		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
 			<!-- Our own modules -->
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-hibernate</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>opennaas-core-hsqldb</artifactId>
@@ -188,11 +187,11 @@
 				<artifactId>geronimo-jta_1.1_spec</artifactId>
 				<version>${geronimo.jta.version}</version>
 			</dependency>
-			<!-- Persistence (hibernate, hsqldb) -->
+			<!-- Persistence -->
 			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
-				<version>${hibernate.version}</version>
+				<groupId>org.apache.openjpa</groupId>
+				<artifactId>openjpa</artifactId>
+				<version>${openjpa.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hsqldb</groupId>
@@ -726,6 +725,23 @@
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.openjpa</groupId>
+					<artifactId>openjpa-maven-plugin</artifactId>
+					<version>${openjpa.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.openjpa</groupId>
+							<artifactId>openjpa</artifactId>
+							<version>${openjpa.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+							<version>${commons.logging.version}</version>
+						</dependency>
+					</dependencies>
 				</plugin>
 			</plugins>
 		</pluginManagement>

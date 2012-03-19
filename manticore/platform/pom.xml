@@ -48,7 +48,7 @@
 								<artifactItem>
 									<groupId>org.opennaas</groupId>
 									<artifactId>assembly</artifactId>
-									<version>1.0.0-SNAPSHOT</version>
+									<version>${opennaas.version}</version>
 								</artifactItem>
 							</artifactItems>
 							<outputDirectory>${target-platform.path}</outputDirectory>
@@ -67,13 +67,13 @@
 								<artifactItem>
 									<artifactId>mantychore</artifactId>
 									<groupId>net.i2cat.mantychore</groupId>
-									<version>1.0.0-SNAPSHOT</version>
+									<version>${project.version}</version>
 									<!-- TODO: use variable project.version -->
 									<type>xml</type>
 									<classifier>features</classifier>
-									<outputDirectory>${target-platform.path}/${opennaas.path}/system/net/i2cat/mantychore/mantychore/1.0.0-SNAPSHOT/</outputDirectory>
+									<outputDirectory>${target-platform.path}/${opennaas.path}/system/net/i2cat/mantychore/mantychore/${project.version}/</outputDirectory>
 									<overWrite>true</overWrite>
-									<destFileName>mantychore-1.0.0-SNAPSHOT-features.xml</destFileName>
+									<destFileName>mantychore-${project.version}-features.xml</destFileName>
 								</artifactItem>
 							</artifactItems>
 						</configuration>

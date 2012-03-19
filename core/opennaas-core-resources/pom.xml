@@ -60,23 +60,29 @@
 						<Bundle-SymbolicName>opennaas-core-resources</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-Activator>org.opennaas.core.resources.Activator</Bundle-Activator>
-						<!--
-							| assume public classes are in the top package, and private
-							classes are under ".internal"
-						-->
-						<Import-Package>
-							org.slf4j,
-							org.hibernate.proxy,
-							org.hibernate,
-							org.hibernate.criterion,
-							org.hsqldb,
-							javax.persistence,
-							javassist.util.proxy,
-							*</Import-Package>
-						<DynamicImport-Package>org.hibernate.*,javassist.*</DynamicImport-Package>
+						<Import-Package>org.hsqldb,*</Import-Package>
 						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
 					</instructions>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.openjpa</groupId>
+				<artifactId>openjpa-maven-plugin</artifactId>
+				<configuration>
+					<includes>**/descriptor/**/*.class</includes>
+					<excludes>**/ResourceDescriptorRepository.class,**/ResourceDescriptorConstants.class</excludes>
+					<addDefaultConstructor>true</addDefaultConstructor>
+					<enforcePropertyRestrictions>true</enforcePropertyRestrictions>
+				</configuration>
+				<executions>
+					<execution>
+						<id>enhancer</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>enhance</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
