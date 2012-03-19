@@ -36,7 +36,7 @@ queue:execute -d router:test2
 ipv4:list router:test1
 ipv4:list router:test2
 
-chassis:deleteSubInterface router:junos20 router:junos20 lt-1/2/0.121
+chassis:deleteSubInterface router:junos20 lt-1/2/0.121
 chassis:deletelogicalrouter router:junos20 test1 
 chassis:deletelogicalrouter router:junos20 test2 
 
