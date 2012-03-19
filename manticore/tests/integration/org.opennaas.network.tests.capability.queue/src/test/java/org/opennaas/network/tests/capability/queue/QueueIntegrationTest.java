@@ -7,12 +7,9 @@ import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
 import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.ops4j.pax.exam.CoreOptions.maven;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +17,6 @@ import javax.inject.Inject;
 
 import net.i2cat.nexus.tests.ResourceHelper;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -64,29 +60,24 @@ public class QueueIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-bod, opennaas-network, opennaas-netconf"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-network", "opennaas-netconf"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
-	 * Test to check activateOSPF method
+	 * Test to check netqueue method
+	 * 
+	 * @throws ProtocolException
+	 * @throws ResourceException
 	 */
 	@Test
-	public void executeQueueTest() {
-		try {
-			startResource();
-			QueueCapability queueCapability = (QueueCapability) networkResource.getCapability(getOSPFInformation(CAPABILIY_TYPE));
-			queueCapability.execute();
-			stopResource();
-		} catch (ResourceException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		} catch (ProtocolException e) {
-			e.printStackTrace();
-			Assert.fail(e.getMessage());
-		}
+	public void executeQueueTest() throws ResourceException, ProtocolException {
+		startResource();
+		QueueCapability queueCapability = (QueueCapability) networkResource.getCapability(getOSPFInformation(CAPABILIY_TYPE));
+		queueCapability.execute();
+		stopResource();
 	}
 
 	/**
@@ -120,7 +111,7 @@ public class QueueIntegrationTest {
 	 * @throws ResourceException
 	 * @throws ProtocolException
 	 */
-	private void stopResource() throws ResourceException, ProtocolException {
+	private void stopResource() throws ResourceException {
 		// Stop resource
 		resourceManager.stopResource(networkResource.getResourceIdentifier());
 
