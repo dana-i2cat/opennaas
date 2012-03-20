@@ -59,6 +59,10 @@ public class ResourceManagerIntegrationTest
 	private IProtocolManager	protocolManager;
 
     @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    private BlueprintContainer	repositoryService;
+
+    @Inject
     @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
     private BlueprintContainer	chassisService;
 
