@@ -127,7 +127,7 @@ public class NetworkModelHelper {
 
 	/**
 	 * Get the interface from Network Model and interface name
-	 *
+	 * 
 	 * @param networkElements
 	 * @return Interface
 	 */
@@ -143,7 +143,7 @@ public class NetworkModelHelper {
 	}
 
 	/**
-	 *
+	 * 
 	 * @param name
 	 * @param networkElements
 	 * @return lowest current position of networkElements containing an element named with given name.
@@ -151,7 +151,8 @@ public class NetworkModelHelper {
 	public static int getNetworkElementByName(String name, List<NetworkElement> networkElements) {
 		int pos = 0;
 		for (NetworkElement networkElement : networkElements) {
-			if (networkElement.getName().equals(name))
+			if (networkElement.getName() != null
+					&& networkElement.getName().equals(name))
 				return pos;
 			pos++;
 		}
@@ -188,7 +189,7 @@ public class NetworkModelHelper {
 
 	/**
 	 * Removes given NetworkElement from given networkModel (if exists).
-	 *
+	 * 
 	 * @param toRemove
 	 * @param networkModel
 	 * @return updated network model
