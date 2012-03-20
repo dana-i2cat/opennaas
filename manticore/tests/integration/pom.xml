@@ -30,6 +30,7 @@
 		<module>org.opennaas.router.tests.capability.ospf</module>
 		<module>org.opennaas.network.tests.capability.queue</module>
 		<module>org.opennaas.router.tests.capability.staticroute</module>
+		<module>org.opennaas.network.tests.capability.ospf</module>
 	</modules>
 
 	<dependencies>
