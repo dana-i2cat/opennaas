@@ -9,6 +9,7 @@ import org.openengsb.labs.paxexam.karaf.options.KarafDistributionBaseConfigurati
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
+import org.ops4j.pax.exam.options.extra.VMOption;
 
 public abstract class OpennaasExamOptions
 {
@@ -67,5 +68,10 @@ public abstract class OpennaasExamOptions
 	public final static Option noConsole()
 	{
 		return configureConsole().ignoreLocalConsole().ignoreRemoteShell();
+	}
+	
+	public final static Option openDebugSocket()
+	{
+		return new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005");
 	}
 }

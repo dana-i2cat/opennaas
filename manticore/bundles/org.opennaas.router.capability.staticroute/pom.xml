@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<!-- Maven parent  -->
+	<parent>
+		<artifactId>mantychore-bundles</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+    	<version>1.0.0-SNAPSHOT</version>
+  	</parent>
+	<!--  POM id -->
+	<groupId>org.opennaas</groupId>
+	<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>Router :: Static route capability</name>
+	<description>Static Route Implementation</description>
+	<dependencies>
+		<!-- mantychore dependencies -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		</dependency>
+		<!--  auxiliar methods to use with commands -->
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId} </Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator>org.opennaas.router.capability.staticroute.Activator</Bundle-Activator>
+						<!--
+							| assume public classes are in the top package, and private
+							classes are under ".internal"
+						-->
+						<Import-Package>
+  							org.slf4j,
+							org.apache.felix.service.command, <!--  necessary to do karaf commands -->
+							*
+							</Import-Package>
+						<Export-Package>
+							org.opennaas.router.capability.staticroute;version="${project.version}"
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

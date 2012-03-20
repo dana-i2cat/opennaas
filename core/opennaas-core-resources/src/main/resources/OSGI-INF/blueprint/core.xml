@@ -65,6 +65,10 @@
 		</command>
 		<command name="resource/export">
 			<action class="org.opennaas.core.resources.shell.ExportResourceDescriptorCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="resource/info">
 			<action class="org.opennaas.core.resources.shell.InfoResourcesCommand"/>

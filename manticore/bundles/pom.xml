@@ -49,6 +49,7 @@
 		<module>org.opennaas.router.capability.gretunnel</module>
 		<module>org.opennaas.router.capability.ospf</module>
 		<module>org.opennaas.network.capability.queue</module>
+		<module>org.opennaas.router.capability.staticroute</module>
 		<module>org.opennaas.network.capability.ospf</module>
 	</modules>
 </project>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.capability.chassis.ChassisCapability;
+import net.i2cat.mantychore.model.ComputerSystem;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -12,6 +13,7 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "chassis", name = "createLogicalRouter", description = "Create a logical router on a given resource.")
@@ -54,30 +56,29 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			// printInfo("Sending message to the queue");
 
-			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRname);
+			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRname);
 
 			/* add interfaces */
+			// FIXME This kind of logic should go in Capability, not in a karaf command!
+			AddInterfaceToLRCommand addInterfaceCommand = new AddInterfaceToLRCommand();
 			if (subinterfaces != null) {
 				for (String interf : subinterfaces) {
-					AddInterfaceCommand addInterface = new AddInterfaceCommand();
 					try {
-						addInterface.setBundleContext(super.getBundleContext());
-						addInterface.setInterfaceName(interf);
-						addInterface.setPhysicalResourceId(resourceId);
-						addInterface.setLogicalResourceId("router:" + LRname);
-						addInterface.setCheckTargetResource(false);
+						ComputerSystem addInterfaceParams = addInterfaceCommand.createLRModelWithInterface("router:" + LRname, interf);
+						Response addResp = (Response) chassisCapability.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, addInterfaceParams);
+						if (addResp.getStatus().equals(Response.Status.ERROR)) {
+							printError("Can not add " + interf);
+							for (String errorMsg : addResp.getErrors()) {
+								printError(errorMsg);
+							}
+						}
 					} catch (Exception e) {
+						printError("Can not add " + interf);
 						printError(e);
 					}
-					try {
-						addInterface.doExecute();
-					} catch (Exception e) {
-						printError("Problem to add interfaces: Failed to add interface " + interf + " ...");
-						printError(e.getMessage());
-					}
 				}
-
 			}
+			printResponseStatus(resp);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -92,4 +93,5 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
+
 }
