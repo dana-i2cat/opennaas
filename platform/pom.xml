@@ -7,24 +7,170 @@
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
 	<name>OpenNaaS platform</name>
 	<artifactId>platform</artifactId>
-	<!--  properties to use fuse  -->
+
 	<properties>
 		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 	</properties>
+
 	<dependencies>
+		<!-- We must list all the things we want to include in the
+		     distribution. Otherwise there is no guarantee that Maven
+		     has build those artifacts first. -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-hsqldb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-persistence</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas.bod.actionsets</groupId>
+			<artifactId>org.opennaas.bod.actionsets</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas.bod.capability</groupId>
+			<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-tests-mockprofile</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-features</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.protocols</groupId>
+			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.actionsets</groupId>
+			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.capability</groupId>
+			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.capability</groupId>
+			<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+			<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wonesys</groupId>
+			<artifactId>com.wonesys.emsModule</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.model</groupId>
+			<artifactId>net.i2cat.mantychore.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.fragment</groupId>
+			<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore</groupId>
+			<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.capability</groupId>
+			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.capability</groupId>
+			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.repository</groupId>
+			<artifactId>net.i2cat.mantychore.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.network</groupId>
+			<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.network</groupId>
+			<artifactId>net.i2cat.mantychore.network.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.network</groupId>
+			<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas </groupId>
+			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>apache-servicemix</artifactId>
+		</dependency>
 	</dependencies>
-	<!--
-  | imported (non-local) bundles are listed here as dependencies | and
-  will be deployed by pax:provision unless they are marked | with
-  <optional>true</optional>
- -->
+
 	<build>
 		<resources>
 			<resource>
@@ -120,9 +266,9 @@
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature>opennaas-persistence</feature>
-								<feature>opennaas-core</feature>
-								<feature>opennaas-platformmanager</feature>
+								<feature>opennaas</feature>
+								<feature>nexus-tests-helper</feature>
+								<feature>nexus-testprofile</feature>
 							</features>
 							<repository>${target-platform.path}/${servicemix.path}/system</repository>
 						</configuration>
@@ -133,15 +279,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
-					<!-- process the resources to resolve the version variables -->
 					<execution>
 						<id>filter-resources</id>
-						<goals>
+					<goals>
 							<goal>resources</goal>
 						</goals>
 						<phase>process-resources</phase>
 						<configuration>
-							<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
 							<encoding>UTF-8</encoding>
 						</configuration>
 					</execution>
@@ -153,16 +297,6 @@
 						</goals>
 						<configuration>
 							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-							<!--
-      <resources>
-		  <resource>
-		    <directory>src/main/java</directory>
-		    <includes>
-		      <include>**/*.xml</include>
-		    </includes>
-		  </resource>
-	  </resources>
-      -->
 							<overwrite>true</overwrite>
 							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
 							<resources>
@@ -172,8 +306,6 @@
 							</resources>
 						</configuration>
 					</execution>
-					<!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
-     maven clean plugin... -->
 				</executions>
 			</plugin>
 		</plugins>

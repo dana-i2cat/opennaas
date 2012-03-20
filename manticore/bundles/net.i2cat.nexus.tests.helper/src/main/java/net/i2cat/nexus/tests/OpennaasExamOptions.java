@@ -19,10 +19,9 @@ public abstract class OpennaasExamOptions
 		return
 			karafDistributionConfiguration()
 			.frameworkUrl(maven()
-						  .groupId("net.i2cat.mantychore")
+						  .groupId("org.opennaas")
 						  .artifactId("assembly")
 						  .type("zip")
-						  .classifier("bin")
 						  .versionAsInProject())
 			.karafVersion("2.2.2")
 			.name("opennaas")
@@ -69,7 +68,7 @@ public abstract class OpennaasExamOptions
 	{
 		return configureConsole().ignoreLocalConsole().ignoreRemoteShell();
 	}
-	
+
 	public final static Option openDebugSocket()
 	{
 		return new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005");

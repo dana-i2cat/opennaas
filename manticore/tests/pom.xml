@@ -14,11 +14,10 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>net.i2cat.mantychore</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>assembly</artifactId>
 				<version>${project.version}</version>
 				<type>zip</type>
-				<classifier>bin</classifier>
 				<scope>test</scope>
 				<exclusions>
 					<!-- This exclusion is recommended by the Karaf
