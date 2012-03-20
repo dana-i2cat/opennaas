@@ -1,21 +1,13 @@
 package net.i2cat.mantychore.network.capability.basic.shell;
 
-import java.util.List;
-
 import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
 import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
-import net.i2cat.mantychore.network.model.NetworkModel;
-import net.i2cat.mantychore.network.model.NetworkModelHelper;
-import net.i2cat.mantychore.network.model.topology.NetworkElement;
-import net.i2cat.mantychore.network.repository.NetworkMapperModelToDescriptor;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "net", name = "removeResource", description = "Remove a resource from the network")
@@ -45,22 +37,22 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 		}
 
 		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
-		if (! (networkCapability instanceof ITopologyManager)) {
+		if (!(networkCapability instanceof ITopologyManager)) {
 			printError("Failed to get required capability.");
 			printEndCommand();
 			return null;
 		}
 
 		try {
-			((ITopologyManager)networkCapability).removeResource(resource);
-		} catch (CapabilityException e){
-			printError("Error adding resource.");
+			((ITopologyManager) networkCapability).removeResource(resource);
+		} catch (CapabilityException e) {
+			printError("Error deleting resource.");
 			printError(e);
 			printEndCommand();
 			return null;
 		}
 
-		printInfo("Resource " + resourceId + "removed from network " + networkId);
+		printInfo("Resource " + resourceId + " removed from network " + networkId);
 		printEndCommand();
 		return null;
 	}
