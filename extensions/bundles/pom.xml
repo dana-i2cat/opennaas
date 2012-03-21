@@ -39,11 +39,11 @@
 		<module>queuemanager</module>
 		<module>com.wonesys.emsModule</module>
 
-		<module>luminis.ROADM.repository</module>
-		<module>luminis.protocols.wonesys</module>
-		<module>luminis.actionsets.wonesys</module>
-		<module>luminis.capability.connections</module>
-		<module>luminis.capability.monitoring</module>
+		<module>roadm.repository</module>
+		<module>roadm.protocols.wonesys</module>
+		<module>roadm.actionsets.wonesys</module>
+		<module>roadm.capability.connections</module>
+		<module>roadm.capability.monitoring</module>
 
 		<module>nexus.alarms.repository</module>
 		<module>nexus.tests.helper</module>
