@@ -33,10 +33,9 @@
 			<artifactId>pax-exam-junit4</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore</groupId>
-			<artifactId>assembly</artifactId>
+			<groupId>org.opennaas</groupId>
+			<artifactId>platform</artifactId>
 			<type>zip</type>
-			<classifier>bin</classifier>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.nexus</groupId>

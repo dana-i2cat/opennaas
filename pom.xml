@@ -91,6 +91,12 @@
 			<!-- Our own modules -->
 			<dependency>
 				<groupId>org.opennaas</groupId>
+				<artifactId>platform</artifactId>
+				<version>${project.version}</version>
+				<type>pom</type>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
 				<artifactId>opennaas-core-hsqldb</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -137,6 +143,132 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>opennaas-core-features</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.protocols</groupId>
+				<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.actionsets</groupId>
+				<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+				<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.wonesys</groupId>
+				<artifactId>com.wonesys.emsModule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.model</groupId>
+				<artifactId>net.i2cat.mantychore.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.queuemanager</groupId>
+				<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.protocols</groupId>
+				<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.fragment</groupId>
+				<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.actionsets</groupId>
+				<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore</groupId>
+				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.repository</groupId>
+				<artifactId>net.i2cat.mantychore.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.network.capability.queue</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -543,7 +675,6 @@
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
-				<type>pom</type>
 				<version>${servicemix.version}</version>
 			</dependency>
 
@@ -578,9 +709,8 @@
 
 	<modules>
         <module>core</module>
-		<module>platform</module>
-		<module>assembly</module>
 		<module>manticore</module>
+		<module>platform</module>
 	</modules>
 
 	<build>
