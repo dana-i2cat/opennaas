@@ -12,25 +12,25 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>net.i2cat.nexus.tests.events</module>
-		<module>net.i2cat.nexus.tests.resources</module>
-		<module>net.i2cat.mantychore.tests.capability</module>
-		<module>net.i2cat.mantychore.tests.repository</module>
-		<module>net.i2cat.mantychore.tests.capability.queue</module>
-		<module>net.i2cat.mantychore.tests.commandsKaraf</module>
-		<module>net.i2cat.luminis.tests.protocols.wonesys</module>
-		<module>net.i2cat.luminis.tests.actions</module>
-		<module>net.i2cat.luminis.tests.capability</module>
-		<module>net.i2cat.luminis.tests.repository</module>
-  		<module>net.i2cat.luminis.tests.commandsKaraf</module>
-  		<module>org.opennaas.bod.tests.repository</module>
-  		<module>org.opennaas.bod.tests.capability.l2bod</module>
-   		<module>org.opennaas.bod.tests</module>
-   		<module>org.opennaas.router.tests.capability.gretunnel</module>
-		<module>org.opennaas.router.tests.capability.ospf</module>
-		<module>org.opennaas.network.tests.capability.queue</module>
-		<module>org.opennaas.router.tests.capability.staticroute</module>
-		<module>org.opennaas.network.tests.capability.ospf</module>
+		<module>events</module>
+		<module>resources</module>
+		<module>queuemanager</module>
+		<module>commandsKaraf</module>
+		<module>roadm.actions</module>
+		<module>roadm.protocols.wonesys</module>
+		<module>roadm.repository</module>
+		<module>roadm.capability</module>
+  		<module>roadm.commandsKaraf</module>
+  		<module>bod.repository</module>
+  		<module>bod.capability.l2bod</module>
+   		<module>bod</module>
+		<module>router.repository</module>
+		<module>router.capability</module>
+   		<module>router.capability.gretunnel</module>
+		<module>router.capability.ospf</module>
+		<module>router.capability.staticroute</module>
+		<module>network.capability.queue</module>
+		<module>network.capability.ospf</module>
 <!--		<module>week26</module>  -->
 		<module>week35</module>
 		<module>sprint0_2</module>
