@@ -25,11 +25,11 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.router.capability.ospf.IOSPFService;
+import org.opennaas.router.capability.ospf.OSPFCapability;
 
 public class NetOSPFCapability extends AbstractCapability implements INetOSPFService {
 
@@ -74,37 +74,36 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 			for (IResource router : getRouterResources()) {
 
 				// get router ospf capability
-				Information information = new Information();
-				information.setType("ospf");
-				IOSPFService ospfCapability = (IOSPFService) router.getCapability(information);
 
-				if (ospfCapability != null) {
-					// configure OSPF
-					OSPFService serviceConfig = new OSPFService();
-					tmpResponse = ospfCapability.configureOSPF(serviceConfig);
-					if (tmpResponse.getStatus().equals(Status.ERROR))
-						return tmpResponse;
+				OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), "ospf");
 
-					// configure backbone area
-					OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
-					OSPFArea ospfArea = new OSPFArea();
-					ospfArea.setAreaID(backboneAreaId);
-					ospfArea.setAreaType(AreaType.PLAIN);
-					tmpResponse = ospfCapability.configureOSPFArea(areaConfig);
-					if (tmpResponse.getStatus().equals(Status.ERROR))
-						return tmpResponse;
+				// configure OSPF
+				OSPFService serviceConfig = new OSPFService();
+				tmpResponse = ospfCapability.configureOSPF(serviceConfig);
+				if (tmpResponse.getStatus().equals(Status.ERROR))
+					return tmpResponse;
 
-					// addInterfaces to backbone area
-					List<LogicalPort> interfaces = (List<LogicalPort>) getAllInterfaces(router);
-					tmpResponse = ospfCapability.addInterfacesInOSPFArea(interfaces, ospfArea);
-					if (tmpResponse.getStatus().equals(Status.ERROR))
-						return tmpResponse;
+				// configure backbone area
+				OSPFAreaConfiguration areaConfig = new OSPFAreaConfiguration();
+				OSPFArea ospfArea = new OSPFArea();
+				ospfArea.setAreaID(backboneAreaId);
+				ospfArea.setAreaType(AreaType.PLAIN);
+				areaConfig.setOSPFArea(ospfArea);
+				tmpResponse = ospfCapability.configureOSPFArea(areaConfig);
+				if (tmpResponse.getStatus().equals(Status.ERROR))
+					return tmpResponse;
 
-					// activate OSPF
-					tmpResponse = ospfCapability.activateOSPF();
-					if (tmpResponse.getStatus().equals(Status.ERROR))
-						return tmpResponse;
-				}
+				// addInterfaces to backbone area
+				List<LogicalPort> interfaces = (List<LogicalPort>) getAllInterfaces(router);
+				tmpResponse = ospfCapability.addInterfacesInOSPFArea(interfaces, ospfArea);
+				if (tmpResponse.getStatus().equals(Status.ERROR))
+					return tmpResponse;
+
+				// activate OSPF
+				tmpResponse = ospfCapability.activateOSPF();
+				if (tmpResponse.getStatus().equals(Status.ERROR))
+					return tmpResponse;
+
 			}
 
 		} catch (ActivatorException e) {
@@ -112,6 +111,15 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		}
 
 		return Response.queuedResponse(CAPABILITY_NAME + " activateOSPF");
+	}
+
+	private ICapability getCapability(List<ICapability> capabilities, String type) throws CapabilityException {
+		for (ICapability capability : capabilities) {
+			if (capability.getCapabilityInformation().getType().equals(type)) {
+				return capability;
+			}
+		}
+		throw new CapabilityException("Error getting capability " + type);
 	}
 
 	@Override
