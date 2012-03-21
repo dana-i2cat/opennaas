@@ -711,7 +711,6 @@
         <module>core</module>
 		<module>manticore</module>
 		<module>platform</module>
-		<module>assembly</module>
 	</modules>
 
 	<build>

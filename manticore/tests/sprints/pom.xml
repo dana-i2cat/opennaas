@@ -34,7 +34,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>assembly</artifactId>
+			<artifactId>platform</artifactId>
 			<type>zip</type>
 		</dependency>
 		<dependency>

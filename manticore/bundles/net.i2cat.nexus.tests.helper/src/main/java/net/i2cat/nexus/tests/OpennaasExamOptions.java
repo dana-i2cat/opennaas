@@ -20,7 +20,7 @@ public abstract class OpennaasExamOptions
 			karafDistributionConfiguration()
 			.frameworkUrl(maven()
 						  .groupId("org.opennaas")
-						  .artifactId("assembly")
+						  .artifactId("platform")
 						  .type("zip")
 						  .versionAsInProject())
 			.karafVersion("2.2.2")
