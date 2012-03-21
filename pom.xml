@@ -709,7 +709,7 @@
 
 	<modules>
         <module>core</module>
-		<module>manticore</module>
+		<module>extensions</module>
 		<module>platform</module>
 	</modules>
 
