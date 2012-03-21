@@ -31,7 +31,7 @@ public class ResourceRepository implements IResourceRepository {
 	protected Map<String, IResource>						resourceRepository		= null;
 
 	/** The resource descriptor repository **/
-	protected GenericRepository<ResourceDescriptor, String>	descriptorRepository	= null;
+	protected GenericRepository<ResourceDescriptor, String> descriptorRepository	= null;
 
 	/** The capability factories by capability id **/
 	protected Map<String, ICapabilityFactory>				capabilityFactories		= null;
@@ -41,21 +41,18 @@ public class ResourceRepository implements IResourceRepository {
 
 	private IResourceBootstrapperFactory					bootstrapperFactory		= null;
 
-	private String											persistenceUnit			= null;
-
 	/**
 	 * Construct a new resource repository for resources of the given type
 	 *
 	 * @throws ResourceException
 	 */
-	public ResourceRepository(String resourceType, String persistenceUnit) {
+	public ResourceRepository(String resourceType) {
 
 		if (resourceType == null)
 			throw new IllegalArgumentException("ResourceType can not be null");
 
 		logger.debug("Creating a new resource repository of type " + resourceType);
 		this.resourceType = resourceType;
-		this.persistenceUnit = persistenceUnit;
 		this.capabilityFactories = new Hashtable<String, ICapabilityFactory>();
 		this.resourceRepository = new Hashtable<String, IResource>();
 	}
@@ -63,25 +60,30 @@ public class ResourceRepository implements IResourceRepository {
 	/**
 	 * Construct a new resource repository for resources of the given type with the given list of CapabiltyFactories FIXME JUST FOR TESTING!!!
 	 */
-	public ResourceRepository(String resourceType, String persistenceUnit,
+	public ResourceRepository(String resourceType,
 			Map<String, ICapabilityFactory> capabilityFactories) {
 
-		this(resourceType, persistenceUnit);
+		this(resourceType);
 		this.capabilityFactories = capabilityFactories;
 	}
 
-	public void setPersistenceUnit(String persistenceUnit) {
-		this.persistenceUnit = persistenceUnit;
-	}
-
 	/* SETTERS AND GETTERS */
-
 	public void setResourceDescriptorRepository(GenericRepository<ResourceDescriptor, String> descriptorRepository) {
 		// TODO REMOVE
 		if (descriptorRepository == null)
 			throw new IllegalArgumentException();
 
 		this.descriptorRepository = descriptorRepository;
+	}
+
+	/**
+	 * Specialized setter for resourceDescriptorRepository.
+	 *
+     * The only purpose of this setter is to work around issues with
+     * Blueprint not being able to cast to the generic type of the real setter.
+	 */
+	public void setResourceDescriptorRepository(ResourceDescriptorRepository descriptorRepository) {
+		setResourceDescriptorRepository((GenericRepository<ResourceDescriptor, String>) descriptorRepository);
 	}
 
 	public void setResourceBootstrapperFactory(IResourceBootstrapperFactory bootstrapperFactory) {
@@ -151,24 +153,11 @@ public class ResourceRepository implements IResourceRepository {
 
 	public void init() throws ResourceException {
 		logger.debug("Initializing Resource Repository " + resourceType);
-
-		try {
-			initializeResourceDescriptorRepository();
-		} catch (Exception e) {
-			throw new ResourceException(e);
-		}
 		// try {
 		loadExistingResources();
 		// } catch (ResourceException e) {
 		// logger.warn("Failed to load some resources from database");
 		// }
-	}
-
-	public void initializeResourceDescriptorRepository() throws Exception {
-		ResourceDescriptorRepository resourceDescriptorRepository = new ResourceDescriptorRepository();
-		resourceDescriptorRepository.setPersistenceUnit(persistenceUnit);
-		resourceDescriptorRepository.initializeEntityManager();
-		this.setResourceDescriptorRepository(resourceDescriptorRepository);
 	}
 
 	/* RESOURCE METHODS */
@@ -202,21 +191,11 @@ public class ResourceRepository implements IResourceRepository {
 	}
 
 	public void removeResource(String identifier) throws ResourceException {
-		// logger.debug("Removing resource runtime object for ID #"
-		// + identifier);
-		// stopResource(identifier);
-		// logger.debug("Removing resource configuration for ID #"
-		// + identifier);
-
 		logger.info("Removing resource with ID #" + identifier);
 
 		IResource resource = getResource(identifier);
-		unpersistResourceDescriptor(resource.getResourceDescriptor());
-
-		logger.info("Resource shutdown");
 		shutdownResource(identifier);
-
-		logger.info("Unpersisted and removed resource");
+		unpersistResourceDescriptor(resource.getResourceDescriptor());
 	}
 
 	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
