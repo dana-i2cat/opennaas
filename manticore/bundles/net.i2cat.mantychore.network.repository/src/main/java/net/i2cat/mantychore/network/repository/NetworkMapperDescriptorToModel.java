@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.i2cat.mantychore.network.model.NetworkModel;
+import net.i2cat.mantychore.network.model.NetworkModelHelper;
 import net.i2cat.mantychore.network.model.ResourcesReferences;
+import net.i2cat.mantychore.network.model.topology.Link;
 import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 import org.opennaas.core.resources.ResourceException;
@@ -70,48 +72,33 @@ public class NetworkMapperDescriptorToModel {
 				if (interf.getLinkTo() == null)
 					continue;
 
-				String nameSource = cleanName(interf.getName());
-				String nameTarget = cleanName(interf.getLinkTo().getName());
-
-				int sourcePosInterf = getInterface(nameSource, existingInterfaces);
+				int sourcePosInterf = getNetworkResourceByName(interf.getName(), existingInterfaces);
 				if (sourcePosInterf == -1)
-					throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameSource);
+					throw new ResourceException("Error to fill network model. Interface doesn't exist: " + interf.getName());
 				net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
 						.get(sourcePosInterf);
 
-				int targetPosInterf = getInterface(nameTarget, existingInterfaces);
+				int targetPosInterf = getNetworkResourceFromReference(interf.getLinkTo().getName(), existingInterfaces);
 
-				// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
-				// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
-				// If the interface doesn't exist, This interface can reference to an external interface in other network domain
 				if (targetPosInterf == -1) {
+					// Interfaces may link to undefined interfaces.
+					// This undefined interfaces refer to interfaces external to the described network
+					// In order to represent the link, we create this interface
+					// FIXME this interface should'nt be included as a networkElement of this network
+
 					net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
-					newInterf.setName(cleanName(interf.getName()));
+					newInterf.setName((interf.getLinkTo().getName()));
 					existingInterfaces.add(newInterf);
 					targetPosInterf = existingInterfaces.size() - 1;
 				}
 
-				// if (targetPosInterf == -1)
-				// throw new ResourceException("Error to fill network model. Interface doesn't exist: " + nameTarget);
-
 				net.i2cat.mantychore.network.model.topology.Interface targetInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
 						.get(targetPosInterf);
 
-				// If it is the first relation
-
-				if (targetInterf.getLinkTo() == null) {
-					// It is the first interface, you have to create the link
-					net.i2cat.mantychore.network.model.topology.Link linkModel = new net.i2cat.mantychore.network.model.topology.Link();
-					linkModel.setSource(sourceInterf);
-					linkModel.setSink(targetInterf);
-					linkModel.setBidirectional(false);
-					sourceInterf.setLinkTo(linkModel);
-					targetInterf.setLinkTo(linkModel);
-					// adding links
-					existingLinks.add(linkModel);
+				if (thereIsALinkToInterface(targetInterf, existingLinks)) {
+					throw new ResourceException("Invalid configuration. Two interfaces has links to the same third one");
 				} else {
-					// The two interfaces have a link each other. The link is bidirectional
-					sourceInterf.getLinkTo().setBidirectional(true);
+					linkInterfaces(sourceInterf, targetInterf, existingLinks);
 				}
 			}
 		}
@@ -124,17 +111,14 @@ public class NetworkMapperDescriptorToModel {
 
 				List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> interfaces = new ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
 				for (InterfaceId interfaceId : device.getHasInterfaces()) {
-					int posInterf = getInterface(interfaceId.getResource(), existingInterfaces);
+					int posInterf = getNetworkResourceFromReference(interfaceId.getResource(), existingInterfaces);
 
-					// FIXME THIS CASE CAN NOT HAPPEN. ALL THE INTERFACES HAVE TO BE MAPPED IN A DESCRIPTOR. ANYWAY, IN ORDER TO BE COMPATIBLE
-					// WITH NDL DESCRIPTORS, WE ADD THESE REFERENCES
 					if (posInterf == -1) {
-						net.i2cat.mantychore.network.model.topology.Interface interf = createInterface(interfaceId.getResource());
-						existingInterfaces.add(interf);
-						posInterf = existingInterfaces.size() - 1;
+						// All device interfaces should be a defined interface resource in the rdf document
+						throw new ResourceException("Error to fill network model. Interface doesn't exist: " + interfaceId.getResource());
 					}
-					net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces
-							.get(posInterf);
+					net.i2cat.mantychore.network.model.topology.Interface sourceInterf =
+							(net.i2cat.mantychore.network.model.topology.Interface) existingInterfaces.get(posInterf);
 					interfaces.add(sourceInterf);
 				}
 				modelDevice.setInterfaces(interfaces);
@@ -149,7 +133,7 @@ public class NetworkMapperDescriptorToModel {
 				networkDomain.setName(networkDomainModel.getName());
 				List<net.i2cat.mantychore.network.model.topology.Device> devices = new ArrayList<net.i2cat.mantychore.network.model.topology.Device>();
 				for (DeviceId deviceId : networkDomainModel.getHasDevices()) {
-					int posDevice = getDevice(deviceId.getResource(), existingDevices);
+					int posDevice = getNetworkResourceFromReference(deviceId.getResource(), existingDevices);
 					if (posDevice == -1)
 						throw new ResourceException("Error to fill network model. It doesn't exist device for this network " + deviceId.getResource());
 
@@ -169,34 +153,74 @@ public class NetworkMapperDescriptorToModel {
 		networkElems.addAll(existingDomains);
 		networkModel.setNetworkElements(networkElems);
 
+		// FIXME domain should have interfaces, and administrative domain!!!
+
+		// add interfaces
+		// List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> interfaces = new
+		// ArrayList<net.i2cat.mantychore.network.model.topology.ConnectionPoint>();
+		// for (InterfaceId interfaceId : networkDomainModel.getInterfaces()) {
+		// int posInterf = getInterfaceFromReference(interfaceId.getResource(), existingInterfaces);
+		//
+		// if (posInterf == -1)
+		// throw new ResourceException("Error to fill network model. Interface doesn't exist: " + interfaceId.getResource());
+		//
+		// net.i2cat.mantychore.network.model.topology.Interface sourceInterf = (net.i2cat.mantychore.network.model.topology.Interface)
+		// existingInterfaces
+		// .get(posInterf);
+		// interfaces.add(sourceInterf);
+		// }
+		// networkDomain.setHasInterface(interfaces);
+
 		return networkModel;
+	}
+
+	private static boolean thereIsALinkToInterface(net.i2cat.mantychore.network.model.topology.Interface targetInterf, List<Link> existingLinks) {
+		for (Link link : existingLinks) {
+			if (link.getSink() != null && link.getSink().equals(targetInterf)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void linkInterfaces(net.i2cat.mantychore.network.model.topology.Interface sourceInterf,
+			net.i2cat.mantychore.network.model.topology.Interface targetInterf,
+			List<net.i2cat.mantychore.network.model.topology.Link> existingLinks) throws ResourceException {
+
+		if (targetInterf.getLinkTo() == null) {
+			// It is the first interface of a link, a link should be created from source to target
+			net.i2cat.mantychore.network.model.topology.Link linkModel = NetworkModelHelper.linkInterfaces(sourceInterf, targetInterf, false);
+			existingLinks.add(linkModel);
+		} else {
+			if (targetInterf.getLinkTo().getSink().equals(sourceInterf)) {
+				// The two interfaces have a link each other. The link is bidirectional
+				sourceInterf.setLinkTo(targetInterf.getLinkTo());
+				sourceInterf.getLinkTo().setBidirectional(true);
+			} else {
+				throw new ResourceException(
+						"Invalid configuration. An interface is linked to one that links to a another. It should link to the first or none!");
+			}
+		}
+
 	}
 
 	private static net.i2cat.mantychore.network.model.topology.Interface createInterface(String name) {
 		net.i2cat.mantychore.network.model.topology.Interface newInterf = new net.i2cat.mantychore.network.model.topology.Interface();
-		newInterf.setName(cleanName(name));
+		newInterf.setName(name);
 		return newInterf;
 	}
 
-	private static int getInterface(String name, List<net.i2cat.mantychore.network.model.topology.ConnectionPoint> listInterfaces) {
-		// format name to search
-		name = cleanName(name);
-
-		int pos = 0;
-		for (net.i2cat.mantychore.network.model.topology.ConnectionPoint connectionPoint : listInterfaces) {
-			if (connectionPoint.getName().equals(name))
-				return pos;
-			pos++;
-		}
-
-		return -1;
+	private static int getNetworkResourceFromReference(String reference,
+			List<? extends net.i2cat.mantychore.network.model.topology.NetworkElement> networkElements) {
+		String name = cleanName(reference);
+		return getNetworkResourceByName(name, networkElements);
 	}
 
-	private static int getDevice(String name, List<net.i2cat.mantychore.network.model.topology.Device> devices) {
-		name = cleanName(name);
+	private static int getNetworkResourceByName(String name,
+			List<? extends net.i2cat.mantychore.network.model.topology.NetworkElement> networkElements) {
 		int pos = 0;
-		for (net.i2cat.mantychore.network.model.topology.Device device : devices) {
-			if (device.getName().equals(name))
+		for (net.i2cat.mantychore.network.model.topology.NetworkElement networkElement : networkElements) {
+			if (networkElement.getName().equals(name))
 				return pos;
 			pos++;
 		}
