@@ -711,6 +711,7 @@
         <module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
+		<module>tests</module>
 	</modules>
 
 	<build>

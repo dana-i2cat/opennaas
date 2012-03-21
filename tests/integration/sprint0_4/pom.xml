@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.opennaas</groupId>
+		<artifactId>tests.integration</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>net.i2cat.mantychore.tests.sprints.sprint0_4</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Sprint 0.4 - Sprint tests</name>
+	<description>Sprint 0.4 - Sprint tests (ConfigSubInterface, SetDescription)</description>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.model</artifactId>
+		</dependency>
+	</dependencies>
+</project>

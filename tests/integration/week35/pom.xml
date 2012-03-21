@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.opennaas</groupId>
+		<artifactId>tests.integration</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>net.i2cat.mantychore.tests.sprints.week35</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Week 35 - Sprint tests</name>
+	<description>Week 35 - Sprint tests (auto-refresh)</description>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+		</dependency>
+	</dependencies>
+</project>
