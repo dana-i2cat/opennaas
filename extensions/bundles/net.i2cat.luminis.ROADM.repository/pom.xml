@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.luminis.ROADM.repository</groupId>
 	<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -20,15 +19,15 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 		</dependency>
 		<!-- 		<dependency>
-			<groupId>net.i2cat.mantychore.capability</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 -->

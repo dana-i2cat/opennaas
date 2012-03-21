@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.nexus</groupId>
 	<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>

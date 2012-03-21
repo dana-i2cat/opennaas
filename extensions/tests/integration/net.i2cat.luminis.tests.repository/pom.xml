@@ -2,11 +2,10 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>itests-bundle-settings</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.luminis.tests.ROADM.repository</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Luminis ROADM repository test</name>
@@ -19,16 +18,16 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
 		</dependency>
 		<!-- Capabilities of Mantychore need to change for capabilities of luminis ROADM -->
 		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.luminis.capability</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
 		</dependency>
 	</dependencies>

@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
   	<parent>
     	<artifactId>mantychore-bundles</artifactId>
-    	<groupId>net.i2cat.mantychore</groupId>
+    	<groupId>org.opennaas</groupId>
     	<version>1.0.0-SNAPSHOT</version>
   	</parent>
 	<!--  POM id -->
-	<groupId>org.opennaas.bod.capability</groupId>
   	<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -21,15 +20,15 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.network</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.network.model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opennaas.bod.actionsets</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.bod.actionsets</artifactId>
 		</dependency>
 		<!--  auxiliar methods to use with commands -->

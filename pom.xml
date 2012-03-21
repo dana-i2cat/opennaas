@@ -121,12 +121,12 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.opennaas.bod.actionsets</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.bod.actionsets</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.opennaas.bod.capability</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -146,27 +146,27 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.protocols</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.actionsets</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.capability</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.luminis.capability.connections</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.capability</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -176,72 +176,72 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.model</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.queuemanager</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.protocols</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.fragment</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.actionsets</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.capability</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.capability</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.repository</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.network.model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.network.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.nexus</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.nexus</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
 				<version>${project.version}</version>
 				<scope>test</scope>

@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.mantychore.network</groupId>
 	<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -20,17 +19,17 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.network</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.network.model</artifactId>
 		</dependency>
 		<!-- FIXME remove when Model2NdlMapper is in IModel instead of mantychore.model -->
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 		</dependency>
 		<!-- FIXME capability should not depend on repo, mapper should be moved-->
 		<dependency>
-			<groupId>net.i2cat.mantychore.network</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.network.repository</artifactId>
 		</dependency>
 	</dependencies>

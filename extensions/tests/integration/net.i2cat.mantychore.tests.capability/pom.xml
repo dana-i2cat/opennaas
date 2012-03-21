@@ -2,11 +2,10 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<artifactId>itests-bundle-settings</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
 	<artifactId>net.i2cat.mantychore.tests.capability</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore capablity test</name>
@@ -23,24 +22,24 @@
 			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 		<!--  added dependencies to call capability -->
 		<dependency>
-			<groupId>net.i2cat.mantychore.capability</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.capability</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
 		</dependency>
 		<dependency>

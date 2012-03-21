@@ -7,7 +7,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore</groupId>
 	<artifactId>base-mantychore</artifactId>
 
 	<packaging>pom</packaging>

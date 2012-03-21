@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.luminis.capability</groupId>
 	<artifactId>net.i2cat.luminis.capability.connections</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -18,7 +17,7 @@
 		<!-- mantychore dependencies -->
 		<!-- TODO clean pom when final structure of bundle is ready -->
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 		</dependency>
 		<dependency>
@@ -26,11 +25,11 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.luminis.actionsets</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
 		</dependency>
 		<!--  auxiliar methods to use with commands -->

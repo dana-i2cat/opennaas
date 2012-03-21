@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<artifactId>mantychore-tests</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>itests-bundle-settings</artifactId>
-	<groupId>net.i2cat.mantychore.sprints</groupId>
+	<artifactId>sprints-bundle-settings</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore :: POMS :: Sprint tests</name>
 	<packaging>pom</packaging>
@@ -38,7 +37,7 @@
 			<type>zip</type>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.nexus</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
 		</dependency>
 	</dependencies>

@@ -4,7 +4,7 @@
 	<packaging>pom</packaging>
 	<parent>
 		<artifactId>base-mantychore</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<name>Mantychore Bundles</name>

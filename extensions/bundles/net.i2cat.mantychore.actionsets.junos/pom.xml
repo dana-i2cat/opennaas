@@ -3,11 +3,10 @@
 	<!-- Maven parent  -->
 	<parent>
 		<artifactId>mantychore-bundles</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<groupId>net.i2cat.mantychore.actionsets</groupId>
 	<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
@@ -21,7 +20,7 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.model</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.model</artifactId>
 		</dependency>
 		<dependency>
@@ -29,7 +28,7 @@
 			<artifactId>netconf4j</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.protocols</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 		</dependency>
 		<dependency>
@@ -37,7 +36,7 @@
 			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.i2cat.mantychore.fragment</groupId>
+			<groupId>org.opennaas</groupId>
 			<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
 		</dependency>
 		<!--

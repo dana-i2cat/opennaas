@@ -43,7 +43,7 @@
 	</feature>
 
 	<feature name="opennaas-alarms" version="${project.version}">
-		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.alarms.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.nexus.alarms.repository/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-cim" version="${project.version}">
@@ -51,13 +51,13 @@
 
 		<!-- The core model unfortunately depends on the network model
 		     - it should be the other way around. -->
-		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.model/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.mantychore.model/net.i2cat.mantychore.model/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.network.model/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.model/${project.version}</bundle>
 
 		<!-- QueueManager should probably be part of opennaas-core,
 		     but we have to rename and move the project before we can
 		     make it part of the correct feature. -->
-		<bundle>mvn:net.i2cat.mantychore.queuemanager/net.i2cat.mantychore.queuemanager/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.queuemanager/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-netconf" version="${project.version}">
@@ -78,9 +78,9 @@
 		<bundle dependency="true">mvn:commons-digester/commons-digester/${commons.digester.version}</bundle>
 
 		<bundle>mvn:net.i2cat.netconf/netconf4j/${netconf4j.version}</bundle>
-		<bundle>mvn:net.i2cat.mantychore.protocols/net.i2cat.mantychore.protocols.netconf/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.protocols.netconf/${project.version}</bundle>
 		<!-- fragment, so no autostart -->
-		<bundle start="false">mvn:net.i2cat.mantychore.fragment/net.i2cat.mantychore.fragment.velocity/${project.version}</bundle>
+		<bundle start="false">mvn:org.opennaas/net.i2cat.mantychore.fragment.velocity/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
@@ -89,7 +89,7 @@
 
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
 
-		<bundle>mvn:net.i2cat.mantychore.actionsets/net.i2cat.mantychore.actionsets.junos/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.actionsets.junos/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-router" version="${project.version}">
@@ -99,9 +99,9 @@
 		     code is structured now things are upside down. -->
 		<feature version="${project.version}">opennaas-junos</feature>
 
-		<bundle>mvn:net.i2cat.mantychore.repository/net.i2cat.mantychore.repository/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.chassis/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.mantychore.capability/net.i2cat.mantychore.capability.ip/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.capability.chassis/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.capability.ip/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.gretunnel/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.ospf/1.0.0-SNAPSHOT</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.router.capability.staticroute/1.0.0-SNAPSHOT</bundle>
@@ -110,8 +110,8 @@
 	<feature name="opennaas-network" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
-		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.repository/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.mantychore.network/net.i2cat.mantychore.network.capability.basic/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.network.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.mantychore.network.capability.basic/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.network.capability.queue/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/opennaas.extension.network.capability.ospf/${project.version}</bundle>
 	</feature>
@@ -119,9 +119,9 @@
 	<feature name="opennaas-bod" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
-		<bundle>mvn:org.opennaas.bod.repository/org.opennaas.bod.repository/${project.version}</bundle>
-		<bundle>mvn:org.opennaas.bod.capability/org.opennaas.bod.capability.l2bod/${project.version}</bundle>
-		<bundle>mvn:org.opennaas.bod.actionsets/org.opennaas.bod.actionsets/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.bod.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.bod.capability.l2bod/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.bod.actionsets/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-luminis" version="${project.version}">
@@ -129,11 +129,11 @@
 
 		<bundle dependency="true">mvn:com.wonesys/com.wonesys.emsModule/${project.version}</bundle>
 
-		<bundle>mvn:net.i2cat.luminis.protocols/net.i2cat.luminis.protocols.wonesys/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.luminis.actionsets/net.i2cat.luminis.actionsets.wonesys/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.luminis.capability/net.i2cat.luminis.capability.connections/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.luminis.capability/net.i2cat.luminis.capability.monitoring/${project.version}</bundle>
-		<bundle>mvn:net.i2cat.luminis.ROADM.repository/net.i2cat.luminis.ROADM.repository/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.luminis.protocols.wonesys/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.luminis.actionsets.wonesys/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.luminis.capability.connections/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.luminis.capability.monitoring/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.luminis.ROADM.repository/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
@@ -147,7 +147,7 @@
 
 	<feature name="nexus-tests-helper" version="${project.version}">
 		<feature version="${opennaas.version}">opennaas-core</feature>
-		<bundle>mvn:net.i2cat.nexus/net.i2cat.nexus.tests.helper/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/net.i2cat.nexus.tests.helper/${project.version}</bundle>
 	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">

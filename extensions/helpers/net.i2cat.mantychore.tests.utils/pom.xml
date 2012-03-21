@@ -3,7 +3,7 @@
 	<!--  parent parameters  -->
 	<!--  TODO, the project's place is temporal, it will be necessary to add it in nexus -->
 	<parent>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<artifactId>mantychore-helpers</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>

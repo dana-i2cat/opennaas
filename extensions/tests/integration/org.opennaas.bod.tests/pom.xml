@@ -2,11 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<artifactId>itests-bundle-settings</artifactId>
-		<groupId>net.i2cat.mantychore</groupId>
+		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.opennaas.bod.itests-bundle-settings</groupId>
 	<artifactId>org.opennaas.bod.tests</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>org.opennass.bod.tests</name>
@@ -19,7 +18,7 @@
 			<artifactId>opennaas-core-resources</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opennaas.bod.capability</groupId>
+			<groupId>org.opennaas</groupId>
   		<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
 		</dependency>
 		<dependency>

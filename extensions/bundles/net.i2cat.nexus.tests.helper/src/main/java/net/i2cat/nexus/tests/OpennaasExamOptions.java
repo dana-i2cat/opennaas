@@ -31,7 +31,7 @@ public abstract class OpennaasExamOptions
 	public final static Option includeTestHelper()
 	{
 		return composite(mavenBundle()
-						 .groupId("net.i2cat.nexus")
+						 .groupId("org.opennaas")
 						 .artifactId("net.i2cat.nexus.tests.helper")
 						 .versionAsInProject());
 	}
