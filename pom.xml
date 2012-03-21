@@ -580,7 +580,7 @@
         <module>core</module>
 		<module>platform</module>
 		<module>assembly</module>
-		<module>manticore</module>
+		<module>extensions</module>
 	</modules>
 
 	<build>
