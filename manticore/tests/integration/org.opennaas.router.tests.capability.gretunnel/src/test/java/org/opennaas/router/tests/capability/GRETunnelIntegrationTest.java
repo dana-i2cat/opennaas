@@ -3,12 +3,6 @@
  */
 package org.opennaas.router.tests.capability;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +41,11 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
 
 /**
  * @author Jordi
@@ -94,22 +93,9 @@ public abstract class GRETunnelIntegrationTest
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 
