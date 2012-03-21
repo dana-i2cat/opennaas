@@ -30,10 +30,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<ant.version>1.7.0_4</ant.version>
-		<activemq.version>5.5.1-fuse-01-20</activemq.version>
+		<activemq.version>5.5.1-fuse-03-06</activemq.version>
 		<axiom.version>1.2.12</axiom.version>
 		<beanutils.version>1.8.0</beanutils.version>
-		<camel.version>2.8.0-fuse-01-20</camel.version>
+		<camel.version>2.8.0-fuse-03-06</camel.version>
 		<commons.logging.version>1.1.1</commons.logging.version>
 		<commons.codec.version>1.4</commons.codec.version>
 		<commons.collections.version>3.2.1_1</commons.collections.version>
@@ -43,9 +43,8 @@
 		<commons.io.version>1.4</commons.io.version>
 		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
-		<cxf.version>2.4.3-fuse-00-20</cxf.version>
-		<dynamicjava.version>1.0.0</dynamicjava.version>
-		<dynamicjava.classloading.version>1.0.1</dynamicjava.classloading.version>
+		<commons.pool.version>1.5.4</commons.pool.version>
+		<cxf.version>2.4.3-fuse-01-02</cxf.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -53,33 +52,37 @@
 		<geronimo.jta.version>1.1.1</geronimo.jta.version>
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
+		<guava.version>10.0.1</guava.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
-		<jaxb.impl.version>2.1.12_1</jaxb.impl.version>
+		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
 		<junit.version>4.10</junit.version>
-		<karaf.version>2.2.2-fuse-02-20</karaf.version>
+		<karaf.version>2.2.2-fuse-04-06</karaf.version>
 		<mantychore.version>${project.version}</mantychore.version>
 		<netconf4j.version>0.0.2</netconf4j.version>
-		<nmr.version>1.5.1-fuse-01-20</nmr.version>
+		<openjpa.version>2.2.0</openjpa.version>
+		<nmr.version>1.5.1-fuse-03-06</nmr.version>
 		<opennaas.version>${project.version}</opennaas.version>
 		<oro.version>2.0.8_4</oro.version>
 		<osgi.version>4.2.0</osgi.version>
 		<pax.exam2.version>2.3.0</pax.exam2.version>
-		<paxexam-karaf-container.version>0.5.0</paxexam-karaf-container.version>
-		<pax.logging.version>1.6.2</pax.logging.version>
+		<paxexam-karaf-container.version>0.5.1</paxexam-karaf-container.version>
+		<pax.logging.version>1.6.5</pax.logging.version>
 		<plexus.api.version>1.0-alpha-32</plexus.api.version>
 		<plexus.utils.version>2.0.5</plexus.utils.version>
-		<servicemix.version>4.4.1-fuse-01-20</servicemix.version>
+		<servicemix.version>4.4.1-fuse-03-06</servicemix.version>
 		<servicemix.specs.version>1.8.0</servicemix.specs.version>
 		<servicemix.velocity.version>1.7_1</servicemix.velocity.version>
 		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
+		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
+		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
-		<xbean.version>3.8</xbean.version>
+		<xbean.version>3.9</xbean.version>
 		<xmlschema.version>1.4.5</xmlschema.version>
 	</properties>
 
@@ -88,8 +91,9 @@
 			<!-- Our own modules -->
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-hibernate</artifactId>
+				<artifactId>platform</artifactId>
 				<version>${project.version}</version>
+				<type>pom</type>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
@@ -141,6 +145,132 @@
 				<artifactId>opennaas-core-features</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.protocols</groupId>
+				<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.actionsets</groupId>
+				<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.capability</groupId>
+				<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.luminis.ROADM.repository</groupId>
+				<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.wonesys</groupId>
+				<artifactId>com.wonesys.emsModule</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.model</groupId>
+				<artifactId>net.i2cat.mantychore.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.queuemanager</groupId>
+				<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.protocols</groupId>
+				<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.fragment</groupId>
+				<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.actionsets</groupId>
+				<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore</groupId>
+				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.capability</groupId>
+				<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.repository</groupId>
+				<artifactId>net.i2cat.mantychore.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.mantychore.network</groupId>
+				<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>net.i2cat.nexus</groupId>
+				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<version>${project.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.network.capability.queue</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 
 			<!-- Netconf4j -->
 			<dependency>
@@ -189,26 +319,11 @@
 				<artifactId>geronimo-jta_1.1_spec</artifactId>
 				<version>${geronimo.jta.version}</version>
 			</dependency>
-			<!-- Dynamic JPA, and persistence (hibernate, hsqldb) -->
+			<!-- Persistence -->
 			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>classloading-utils</artifactId>
-				<version>${dynamicjava.classloading.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>service-binding-utils</artifactId>
-				<version>${dynamicjava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.dynamicjava.osgi</groupId>
-				<artifactId>dynamic-jpa</artifactId>
-				<version>${dynamicjava.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>com.springsource.org.hibernate.ejb</artifactId>
-				<version>${hibernate.version}</version>
+				<groupId>org.apache.openjpa</groupId>
+				<artifactId>openjpa</artifactId>
+				<version>${openjpa.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hsqldb</groupId>
@@ -560,7 +675,6 @@
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
-				<type>pom</type>
 				<version>${servicemix.version}</version>
 			</dependency>
 
@@ -585,14 +699,18 @@
 				<artifactId>jpa-api</artifactId>
 				<version>${hibernate.jpa-api.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.googlecode.guava-osgi</groupId>
+				<artifactId>guava-osgi</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<modules>
         <module>core</module>
-		<module>platform</module>
-		<module>assembly</module>
 		<module>manticore</module>
+		<module>platform</module>
 	</modules>
 
 	<build>
@@ -738,6 +856,23 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.openjpa</groupId>
+					<artifactId>openjpa-maven-plugin</artifactId>
+					<version>${openjpa.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.openjpa</groupId>
+							<artifactId>openjpa</artifactId>
+							<version>${openjpa.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>commons-logging</groupId>
+							<artifactId>commons-logging</artifactId>
+							<version>${commons.logging.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -848,11 +983,6 @@
 			<id>osp4j</id>
 			<name>OSP4J releases</name>
 			<url>http://repository.ops4j.org/maven2</url>
-		</repository>
-		<repository>
-			<id>DynamicJava</id>
-			<name>DynamicJava Repository</name>
-			<url>http://maven.dynamicjava.org/</url>
 		</repository>
 		<repository>
 			<id>fusesource</id>

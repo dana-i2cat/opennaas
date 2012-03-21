@@ -2,9 +2,14 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Build the bootstrapper -->
 	<bean id="networkBootstrapperFactory" class="net.i2cat.mantychore.network.repository.NetworkBootstrapperFactory"/>
+    <bean id="resourceDescriptorRepository"
+          class="org.opennaas.core.resources.descriptor.ResourceDescriptorRepository"
+          init-method="initializeEntityManager" destroy-method="close">
+         <property name="persistenceUnit" value="ResourceCore"/>
+    </bean>
 	<bean id="networkRepository" class="net.i2cat.mantychore.network.repository.NetworkRepository" init-method="init">
 		<argument value="network"/>
-		<argument value="ResourceCore"/>
+		<property name="resourceDescriptorRepository" ref="resourceDescriptorRepository"/>
 		<property name="resourceBootstrapperFactory" ref="networkBootstrapperFactory"/>
 	</bean>
 	<!-- Get capability factories from the OSGi registry -->

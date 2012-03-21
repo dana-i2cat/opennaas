@@ -1,0 +1,27 @@
+<!--  Router 2. -->
+<resourceDescriptor>
+    <!--  Queue capability information. -->
+	<capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information><type>ipv4</type></information>
+    </capabilityDescriptors>
+    <!-- Capability information. It specifies device model and version -->
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information><type>chassis</type></information>
+    </capabilityDescriptors>
+    <!--  Queue capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information><type>queue</type></information>
+    </capabilityDescriptors>
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>router</type>
+        <name>R-AS2-2</name>
+    </information>
+    <properties/>
+</resourceDescriptor>

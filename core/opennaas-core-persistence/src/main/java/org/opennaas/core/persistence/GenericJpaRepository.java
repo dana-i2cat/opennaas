@@ -7,146 +7,136 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Projections;
+import org.apache.openjpa.persistence.criteria.OpenJPACriteriaBuilder;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
- * JPA implementation of the GenericRepository. Note that this implementation
- * also expects Hibernate as JPA implementation. That's because we like the
- * Criteria API.
+ * JPA implementation of the GenericRepository. Note that this
+ * implementation also expects OpenJPA as JPA implementation. That's
+ * because we use the Criteria API.
  *
  * @author Jurgen Lust
- * @author $LastChangedBy: jlust $
- *
- * @version $LastChangedRevision: 257 $
  *
  * @param <T>
  *            The persistent type
  * @param <ID>
  *            The primary key type
  */
-public class GenericJpaRepository<T, ID extends Serializable> implements
-		GenericRepository<T, ID> {
-
-	// ~ Instance fields
-	// --------------------------------------------------------
-
-	private final Class<T> persistentClass;
+public class GenericJpaRepository<T, ID extends Serializable>
+	implements GenericRepository<T, ID>
+{
+	private final Class<T> entityClass;
 	private EntityManager entityManager;
 
-	// ~ Constructors
-	// -----------------------------------------------------------
+	public GenericJpaRepository(final Class<T> entityClass) {
+		this.entityClass = entityClass;
+	}
 
 	@SuppressWarnings("unchecked")
 	public GenericJpaRepository() {
-		this.persistentClass = (Class<T>) ((ParameterizedType) getClass()
-				.getGenericSuperclass()).getActualTypeArguments()[0];
+		entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	public GenericJpaRepository(final Class<T> persistentClass) {
-		super();
-		this.persistentClass = persistentClass;
+	private OpenJPACriteriaBuilder getCriteriaBuilder() {
+		return (OpenJPACriteriaBuilder) entityManager.getCriteriaBuilder();
 	}
 
-	// ~ Methods
-	// ----------------------------------------------------------------
-
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#countAll()
-	 */
+	@Override
 	public int countAll() {
-		return countByCriteria();
+		OpenJPACriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<Long> query = builder.createQuery(Long.class);
+
+		Root<T> entities = query.from(entityClass);
+		query.select(builder.count(entities));
+
+		return (int) (long) entityManager.createQuery(query).getSingleResult();
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#countByExample(java.lang.Object)
-	 */
+	@Override
 	public int countByExample(final T exampleInstance) {
-		Session session = (Session) getEntityManager().getDelegate();
-		Criteria crit = session.createCriteria(getEntityClass());
-		crit.setProjection(Projections.rowCount());
-		crit.add(Example.create(exampleInstance));
+		OpenJPACriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<Long> query = builder.createQuery(Long.class);
 
-		return (Integer) crit.list().get(0);
+		Root<T> entities = query.from(entityClass);
+		query.where(builder.qbe(entities, exampleInstance));
+		query.select(builder.count(entities));
+
+		return (int) (long) entityManager.createQuery(query).getSingleResult();
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#findAll()
-	 */
+	@Override
 	public List<T> findAll() {
-		return findByCriteria();
+		OpenJPACriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<T> query = builder.createQuery(entityClass);
+
+		query.from(entityClass);
+
+		return entityManager.createQuery(query).getResultList();
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#findByExample(java.lang.Object)
-	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<T> findByExample(final T exampleInstance) {
-		Session session = (Session) getEntityManager().getDelegate();
-		Criteria crit = session.createCriteria(getEntityClass());
-		final List<T> result = crit.list();
-		return result;
+		OpenJPACriteriaBuilder builder = getCriteriaBuilder();
+		CriteriaQuery<T> query = builder.createQuery(entityClass);
+
+		Root<T> entities = query.from(entityClass);
+		query.where(builder.qbe(entities, exampleInstance));
+
+		return entityManager.createQuery(query).getResultList();
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#findById(java.io.Serializable)
-	 */
+	@Override
 	public T findById(final ID id) {
-		final T result = getEntityManager().find(persistentClass, id);
-		return result;
+		return entityManager.find(entityClass, id);
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#findByNamedQuery(java.lang.String, java.lang.Object[])
-	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<T> findByNamedQuery(final String name, Object... params) {
-		javax.persistence.Query query = getEntityManager().createNamedQuery(
-				name);
+		TypedQuery<T> query = entityManager.createNamedQuery(name, entityClass);
 
 		for (int i = 0; i < params.length; i++) {
 			query.setParameter(i + 1, params[i]);
 		}
 
-		final List<T> result = (List<T>) query.getResultList();
-		return result;
+		return query.getResultList();
 	}
 
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#findByNamedQueryAndNamedParams(java.lang.String, java.util.Map)
-	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<T> findByNamedQueryAndNamedParams(final String name,
-			final Map<String, ? extends Object> params) {
-		javax.persistence.Query query = getEntityManager().createNamedQuery(
-				name);
+												  final Map<String,? extends Object> params)
+	{
+		TypedQuery<T> query = entityManager.createNamedQuery(name, entityClass);
 
-		for (final Map.Entry<String, ? extends Object> param : params
-				.entrySet()) {
+		for (Map.Entry<String,? extends Object> param: params.entrySet()) {
 			query.setParameter(param.getKey(), param.getValue());
 		}
 
-		final List<T> result = (List<T>) query.getResultList();
-		return result;
+		return query.getResultList();
 	}
 
 	/**
 	 * @see be.bzbit.framework.domain.repository.GenericRepository#getEntityClass()
 	 */
+	@Override
 	public Class<T> getEntityClass() {
-		return persistentClass;
+		return entityClass;
 	}
 
-	/**
-	 * set the JPA entity manager to use.
-	 *
-	 * @param entityManager
-	 */
+	@Override
+	public void delete(T entity) {
+		entityManager.remove(entity);
+	}
+
+	@Override
+	public T save(T entity) {
+		return entityManager.merge(entity);
+	}
+
 	@Required
 	@PersistenceContext
 	public void setEntityManager(final EntityManager entityManager) {
@@ -155,65 +145,5 @@ public class GenericJpaRepository<T, ID extends Serializable> implements
 
 	public EntityManager getEntityManager() {
 		return entityManager;
-	}
-
-	/**
-	 * Use this inside subclasses as a convenience method.
-	 */
-	protected List<T> findByCriteria(final Criterion... criterion) {
-		return findByCriteria(-1, -1, criterion);
-	}
-
-	/**
-	 * Use this inside subclasses as a convenience method.
-	 */
-	@SuppressWarnings("unchecked")
-	protected List<T> findByCriteria(final int firstResult,
-			final int maxResults, final Criterion... criterion) {
-		Session session = (Session) getEntityManager().getDelegate();
-		Criteria crit = session.createCriteria(getEntityClass());
-
-		for (final Criterion c : criterion) {
-			crit.add(c);
-		}
-
-		if (firstResult > 0) {
-			crit.setFirstResult(firstResult);
-		}
-
-		if (maxResults > 0) {
-			crit.setMaxResults(maxResults);
-		}
-
-		final List<T> result = crit.list();
-		return result;
-	}
-
-	protected int countByCriteria(Criterion... criterion) {
-		Session session = (Session) getEntityManager().getDelegate();
-		Criteria crit = session.createCriteria(getEntityClass());
-		crit.setProjection(Projections.rowCount());
-
-		for (final Criterion c : criterion) {
-			crit.add(c);
-		}
-
-		return (Integer) crit.list().get(0);
-	}
-
-
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#delete(java.lang.Object)
-	 */
-	public void delete(T entity) {
-		getEntityManager().remove(entity);
-	}
-
-	/**
-	 * @see be.bzbit.framework.domain.repository.GenericRepository#save(java.lang.Object)
-	 */
-	public T save(T entity) {
-		final T savedEntity = getEntityManager().merge(entity);
-		return savedEntity;
 	}
 }

@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 public class ROADMRepository extends ResourceRepository {
 	Log	log	= LogFactory.getLog(ROADMRepository.class);
 
-	public ROADMRepository(String resourceType, String persistenceUnit) {
-		super(resourceType, persistenceUnit);
+	public ROADMRepository(String resourceType) {
+		super(resourceType);
 	}
 
 	public void capabilityFactoryAdded(ICapabilityFactory capabilityFactory) {

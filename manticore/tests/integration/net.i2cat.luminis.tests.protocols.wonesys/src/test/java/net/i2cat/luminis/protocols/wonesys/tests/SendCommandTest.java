@@ -1,12 +1,5 @@
 package net.i2cat.luminis.protocols.wonesys.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.exam.OptionUtils.combine;
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -28,11 +21,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 
@@ -58,6 +49,10 @@ import org.opennaas.core.events.IEventManager;
 
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+
 @RunWith(JUnit4TestRunner.class)
 public class SendCommandTest {
 
@@ -75,40 +70,15 @@ public class SendCommandTest {
 
 	private String			resourceId		= "Proteus-Pedrosa";
 	private String			hostIpAddress	= "10.10.80.11";
-	private String			hostPort	 		= "27773";
+	private String			hostPort 		= "27773";
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-luminis"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-luminis"),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
-
-	/*
-	public void loadBundles() {
-
-		assertNotNull(bundleContext);
-
-		// Wait for the activation of all the bundles
-		IntegrationTestsHelper.waitForAllBundlesActive(bundleContext);
-
-		//IProtocolManager protocolManager = getOsgiService(IProtocolManager.class, 20000);
-		assertNotNull(protocolManager);
-	}*/
 
 	@Test
 	public void testSendMultipleMessages() throws ProtocolException {

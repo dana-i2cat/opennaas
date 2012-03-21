@@ -1,11 +1,5 @@
 package net.i2cat.mantychore.queuemanager.tests;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
-import static org.ops4j.pax.exam.CoreOptions.options;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
@@ -15,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import junit.framework.Assert;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
@@ -42,19 +35,23 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
+
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
+
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
+
+import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
 @RunWith(JUnit4TestRunner.class)
 public class PrepareCommitRollbackTest
@@ -87,30 +84,10 @@ public class PrepareCommitRollbackTest
 
 	@Configuration
 	public static Option[] configuration() {
-		return options(karafDistributionConfiguration()
-					   .frameworkUrl(maven()
-									 .groupId("net.i2cat.mantychore")
-									 .artifactId("assembly")
-									 .type("zip")
-									 .classifier("bin")
-									 .versionAsInProject())
-					   .karafVersion("2.2.2")
-					   .name("mantychore")
-					   .unpackDirectory(new File("target/paxexam")),
-					   editConfigurationFilePut("etc/org.apache.karaf.features.cfg",
-												"featuresBoot",
-												"opennaas-router"),
-					   configureConsole()
-					   .ignoreLocalConsole()
-					   .ignoreRemoteShell(),
-					   mavenBundle()
-					   .groupId("org.ops4j.base")
-					   .artifactId("ops4j-base-spi")
-					   .versionAsInProject(),
-					   mavenBundle()
-					   .groupId("org.ops4j.pax.swissbox")
-					   .artifactId("pax-swissbox-framework")
-					   .versionAsInProject(),
+		return options(opennaasDistributionConfiguration(),
+					   includeFeatures("opennaas-router"),
+					   includeSwissboxFramework(),
+					   noConsole(),
 					   keepRuntimeFolder());
 	}
 

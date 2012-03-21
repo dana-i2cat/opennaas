@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
+	<parent>
+		<artifactId>mantychore-bundles</artifactId>
+		<groupId>net.i2cat.mantychore</groupId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<!--  POM id -->
+	<groupId>org.opennaas</groupId>
+	<artifactId>opennaas.extension.network.capability.queue</artifactId>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>Network Queue Capability</name>
+	<description>Network Queue Capability Implementation</description>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.servicemix.bundles</groupId>
+			<artifactId>org.apache.servicemix.bundles.xerces</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.artifactId} </Bundle-SymbolicName>
+						<Bundle-Version>${project.version}</Bundle-Version>
+						<Bundle-Activator>org.opennaas.network.capability.queue.Activator</Bundle-Activator>
+						<!--
+							| assume public classes are in the top package, and private
+							classes are under ".internal"
+						-->
+						<Import-Package>!${project.artifactId}.*,
+  							org.slf4j,
+							org.apache.felix.service.command,
+							*
+							</Import-Package>
+						<Export-Package>
+							org.opennaas.network.capability.queue;version="${project.version}"
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
