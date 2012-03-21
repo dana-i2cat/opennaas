@@ -1,9 +1,9 @@
 package net.i2cat.mantychore.model.mappers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-import jline.internal.Log;
 import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
@@ -53,7 +53,6 @@ public class Cim2NdlMapper {
 	 * @return NetworkElements created to represent given managedElement in networkModel.
 	 */
 	private static List<NetworkElement> addManagedElementToNetworkModel(System managedElement, NetworkModel networkModel, String name) {
-
 		List<NetworkElement> createdElements = new ArrayList<NetworkElement>();
 
 		// create device
@@ -96,24 +95,12 @@ public class Cim2NdlMapper {
 
 	/* method to add devices */
 	private static String addResourceName(Device device, String name) {
-
 		return device.getName() + ":" + name;
 	}
 
-	// /**
-	// * FIXME change the interface place
-	// */
-	// private static boolean existInterface(List<Interface> interfaces, String name) {
-	//
-	// for (Interface interf : interfaces) {
-	// if (interf.getName().equals(name))
-	// return true;
-	// }
-	// return false;
-	// }
-
 	/**
-	 * Creates interfaces representing given managedElement endpoints, and adds them to networkModel.
+	 * Creates interfaces representing given managedElement endpoints, and adds them to networkModel. Add physical ethernet, pure ethernet, tagged
+	 * ethernet and ip interfaces
 	 * 
 	 * @param managedElement
 	 * @param dev
@@ -121,107 +108,219 @@ public class Cim2NdlMapper {
 	 * @return Created interfaces.
 	 */
 	private static List<Interface> addInterfacesToNetworkModel(System managedElement, Device dev, NetworkModel networkModel) {
-
 		List<Interface> interfaces = new ArrayList<Interface>();
 
-		try {
-			for (NetworkPort port : ModelHelper.getInterfaces(managedElement)) {
-				Interface topIface = generateInterfaceBasedOnPortType(port, dev, networkModel);
+		// Add the physical interfaces
+		interfaces.addAll(addPhysicalInterfaces(managedElement, dev, networkModel));
 
-				// if (!existInterface(interfaces, topIface.getName()))
-				interfaces.add(topIface);
+		// Add the pure ethernet interfaces
+		interfaces.addAll(addPureEthernetInterfaces(managedElement, dev, networkModel));
 
-				if (port.getProtocolEndpoint() != null) {
+		// Add the tagged ethernet interfaces
+		interfaces.addAll(addTaggedEthernetInterfaces(managedElement, dev, networkModel));
 
-					// add VLAN interfaces
-					for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
-						if (endpoint instanceof VLANEndpoint) {
-							// eth over eth
-							Interface iface = new Interface();
-							iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
-
-							Layer ifaceLayer = obtainTaggedEthernetLayer(networkModel);
-							iface.setLayer(ifaceLayer);
-
-							iface.setServerInterface(topIface);
-							topIface.getClientInterfaces().add(iface);
-
-							// TODO is there other info to add? (e.g: VLANID?)
-
-							iface.setDevice(dev);
-							dev.getInterfaces().add(iface);
-
-							networkModel.getNetworkElements().add(iface);
-							interfaces.add(iface);
-						}
-					}
-
-					// add IP interfaces
-					for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
-						if (endpoint instanceof IPProtocolEndpoint) {
-							// ip over
-							Interface iface = new Interface();
-							// FIXME what if there is no ipv4 address?
-							iface.setName(addResourceName(dev, ((IPProtocolEndpoint) endpoint).getIPv4Address()));
-
-							Layer ifaceLayer = obtainIPLayer(networkModel);
-							iface.setLayer(ifaceLayer);
-
-							// find server interface
-							// traverse interfaces in reverse order to find VLAN interfaces before pure eth ifaces
-							Interface serverInterface = null;
-							for (int i = interfaces.size() - 1; i >= 0 && serverInterface == null; i--) {
-								if (interfaces.get(i).getName().equals(addResourceName(dev, port.getName() + "." + port.getPortNumber()))) {
-									serverInterface = interfaces.get(i);
-								}
-							}
-							iface.setServerInterface(serverInterface);
-							serverInterface.getClientInterfaces().add(iface);
-
-							// TODO is there other info to add? (e.g: ipAddress?)
-
-							iface.setDevice(dev);
-							dev.getInterfaces().add(iface);
-
-							networkModel.getNetworkElements().add(iface);
-							interfaces.add(iface);
-						}
-					}
-
-					// TODO ADD OTHER PROTOCOL ENDPOINTS IN CORRECT ORDER (lower layer first)
-
-				}
-			}
-
-		} catch (Exception e) {
-			Log.debug(e.getMessage(), e.getCause());
-			Log.debug("debugging");
-		}
+		// Add the ip interfaces
+		interfaces.addAll(addIPInterfaces(managedElement, dev, networkModel));
 
 		return interfaces;
 	}
 
-	private static Interface generateInterfaceBasedOnPortType(NetworkPort port, Device dev, NetworkModel networkModel) {
+	/**
+	 * Add all the physical interfaces to the model if it don't exist
+	 * 
+	 * @param managedElement
+	 * @param dev
+	 * @param networkModel
+	 * @return list of interfaces
+	 */
+	private static Collection<? extends Interface> addPhysicalInterfaces(System managedElement, Device dev, NetworkModel networkModel) {
+		List<Interface> listInterface = new ArrayList<Interface>();
+		List<NetworkPort> listNetworkPort = ModelHelper.getInterfaces(managedElement);
 
-		Interface iface = null;
-		if (port instanceof EthernetPort || port instanceof LogicalTunnelPort) {
+		for (NetworkPort port : listNetworkPort) {
+			if (port instanceof EthernetPort || port instanceof LogicalTunnelPort) {
+				if (!existsdPhysicalInterface(listInterface, addResourceName(dev, port.getName()))) {
+					Layer ethLayer = obtainEthernetLayer(networkModel);
 
-			iface = new Interface();
-			iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
-			// iface.setName(addResourceName(dev, port.getName()));
+					Interface iface = new Interface();
+					iface.setName(addResourceName(dev, port.getName()));
+					iface.setLayer(ethLayer);
+					iface.setDevice(dev);
 
-			Layer ethLayer = obtainEthernetLayer(networkModel);
-			iface.setLayer(ethLayer);
-
-			iface.setDevice(dev);
-			dev.getInterfaces().add(iface);
-
-			networkModel.getNetworkElements().add(iface);
-
-		} else {
-			// FIXME complete with other types of port
+					dev.getInterfaces().add(iface);
+					networkModel.getNetworkElements().add(iface);
+					listInterface.add(iface);
+				}
+			}
 		}
-		return iface;
+		return listInterface;
+	}
+
+	/**
+	 * Add the pure ethernet interfaces in the model -> Haven't VLAN enpoints
+	 * 
+	 * @param managedElement
+	 * @param dev
+	 * @param networkModel
+	 * @return list of interfaces
+	 */
+	private static Collection<? extends Interface> addPureEthernetInterfaces(System managedElement, Device dev, NetworkModel networkModel) {
+		List<Interface> listInterface = new ArrayList<Interface>();
+		List<NetworkPort> listNetworkPort = ModelHelper.getInterfaces(managedElement);
+
+		for (NetworkPort port : listNetworkPort) {
+			if (!haveVLANEndpoints(port)) {
+				if (port instanceof EthernetPort || port instanceof LogicalTunnelPort) {
+					Layer ethLayer = obtainEthernetLayer(networkModel);
+
+					Interface iface = new Interface();
+					iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
+					iface.setLayer(ethLayer);
+					iface.setDevice(dev);
+
+					Interface topIFace = getInterfaceByName(networkModel.getNetworkElements(), addResourceName(dev, port.getName()));
+					if (topIFace != null) {
+						iface.setServerInterface(topIFace);
+						topIFace.getClientInterfaces().add(iface);
+					}
+
+					dev.getInterfaces().add(iface);
+					networkModel.getNetworkElements().add(iface);
+					listInterface.add(iface);
+				}
+			}
+		}
+		return listInterface;
+	}
+
+	/**
+	 * @param managedElement
+	 * @param dev
+	 * @param networkModel
+	 * @return list of interfaces
+	 */
+	private static Collection<? extends Interface> addTaggedEthernetInterfaces(System managedElement, Device dev, NetworkModel networkModel) {
+		List<Interface> listInterface = new ArrayList<Interface>();
+		List<NetworkPort> listNetworkPort = ModelHelper.getInterfaces(managedElement);
+
+		for (NetworkPort port : listNetworkPort) {
+			if (port.getProtocolEndpoint() != null) {
+				for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
+					if (endpoint instanceof VLANEndpoint) {
+						Layer ifaceLayer = obtainTaggedEthernetLayer(networkModel);
+
+						Interface iface = new Interface();
+						iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
+						iface.setLayer(ifaceLayer);
+						iface.setDevice(dev);
+
+						Interface topIFace = getInterfaceByName(networkModel.getNetworkElements(), addResourceName(dev, port.getName()));
+						if (topIFace != null) {
+							iface.setServerInterface(topIFace);
+							topIFace.getClientInterfaces().add(iface);
+						}
+
+						dev.getInterfaces().add(iface);
+						networkModel.getNetworkElements().add(iface);
+						listInterface.add(iface);
+					}
+				}
+			}
+		}
+		return listInterface;
+	}
+
+	/**
+	 * @param managedElement
+	 * @param dev
+	 * @param networkModel
+	 * @return list of interfaces
+	 */
+	private static Collection<? extends Interface> addIPInterfaces(System managedElement, Device dev, NetworkModel networkModel) {
+		List<Interface> listInterface = new ArrayList<Interface>();
+		List<NetworkPort> listNetworkPort = ModelHelper.getInterfaces(managedElement);
+
+		for (NetworkPort port : listNetworkPort) {
+			if (port.getProtocolEndpoint() != null) {
+				for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
+					if (endpoint instanceof IPProtocolEndpoint) {
+						Layer ifaceLayer = obtainIPLayer(networkModel);
+
+						Interface iface = new Interface();
+						iface.setName(addResourceName(dev, ((IPProtocolEndpoint) endpoint).getIPv4Address()));
+						iface.setLayer(ifaceLayer);
+
+						Interface topIFace = getInterfaceByName(networkModel.getNetworkElements(),
+								addResourceName(dev, port.getName() + "." + port.getPortNumber()));
+						if (topIFace != null) {
+							iface.setServerInterface(topIFace);
+							topIFace.getClientInterfaces().add(iface);
+						}
+
+						iface.setDevice(dev);
+						dev.getInterfaces().add(iface);
+						networkModel.getNetworkElements().add(iface);
+
+						listInterface.add(iface);
+					}
+				}
+			}
+		}
+		return listInterface;
+	}
+
+	/**
+	 * Check if exists the physical interface in the model
+	 * 
+	 * @param listInterface
+	 * @param addResourceName
+	 * @return true if exists the physical interface
+	 */
+	private static boolean existsdPhysicalInterface(List<Interface> listInterface, String ifaceName) {
+		boolean exists = false;
+		for (Interface iface : listInterface) {
+			if (iface.getName().equals(ifaceName)) {
+				exists = true;
+			}
+		}
+		return exists;
+	}
+
+	/**
+	 * Check if the port have VLAN endpoints
+	 * 
+	 * @param port
+	 * @return true if have VLAN endpoints
+	 */
+	private static boolean haveVLANEndpoints(NetworkPort port) {
+		boolean haveVLANEnpoints = false;
+		for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
+			if (endpoint instanceof VLANEndpoint) {
+				haveVLANEnpoints = true;
+			}
+		}
+		return haveVLANEnpoints;
+	}
+
+	/**
+	 * Get the interface by name, if not exists return null
+	 * 
+	 * @param list
+	 * @param addResourceName
+	 * @return the interface with name = name
+	 */
+	private static Interface getInterfaceByName(List<NetworkElement> list, String name) {
+		Interface _interface = null;
+		for (NetworkElement networkElement : list) {
+			if (networkElement instanceof Interface) {
+				if (networkElement.getName() != null
+						&& networkElement.getName().equals(name)) {
+					_interface = (Interface) networkElement;
+					break;
+				}
+			}
+		}
+		return _interface;
 	}
 
 	/**
@@ -240,7 +339,7 @@ public class Cim2NdlMapper {
 		for (NetworkPort port : ModelHelper.getInterfaces((managedElement))) {
 			if (port instanceof LogicalTunnelPort) {
 				// avoid duplicating links
-				if (!linkedPorts.contains((LogicalTunnelPort) port)) {
+				if (!linkedPorts.contains(port)) {
 
 					// get lt endpoints
 					LogicalTunnelPort srcPort = (LogicalTunnelPort) port;
@@ -291,6 +390,10 @@ public class Cim2NdlMapper {
 		return links;
 	}
 
+	/**
+	 * @param networkModel
+	 * @return
+	 */
 	private static Layer obtainEthernetLayer(NetworkModel networkModel) {
 		for (Layer layer : NetworkModelHelper.getLayers(networkModel)) {
 			if (layer instanceof EthernetLayer) {
@@ -300,6 +403,10 @@ public class Cim2NdlMapper {
 		return new EthernetLayer();
 	}
 
+	/**
+	 * @param networkModel
+	 * @return
+	 */
 	private static Layer obtainIPLayer(NetworkModel networkModel) {
 		for (Layer layer : NetworkModelHelper.getLayers(networkModel)) {
 			if (layer instanceof IPLayer) {
@@ -309,6 +416,10 @@ public class Cim2NdlMapper {
 		return new IPLayer();
 	}
 
+	/**
+	 * @param networkModel
+	 * @return
+	 */
 	private static Layer obtainTaggedEthernetLayer(NetworkModel networkModel) {
 		for (Layer layer : NetworkModelHelper.getLayers(networkModel)) {
 			if (layer instanceof TaggedEthernetLayer) {

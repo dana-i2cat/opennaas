@@ -1,21 +1,13 @@
 package net.i2cat.mantychore.network.capability.basic.shell;
 
-import net.i2cat.mantychore.model.ManagedElement;
-import net.i2cat.mantychore.model.mappers.Cim2NdlMapper;
 import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
 import net.i2cat.mantychore.network.capability.basic.NetworkBasicCapability;
-import net.i2cat.mantychore.network.model.NetworkModel;
-import net.i2cat.mantychore.network.repository.NetworkMapperModelToDescriptor;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.opennaas.core.resources.ILifecycle.State;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 @Command(scope = "net", name = "addResource", description = "Add a resource to the network")
@@ -45,22 +37,22 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 		}
 
 		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
-		if (! (networkCapability instanceof ITopologyManager)) {
+		if (!(networkCapability instanceof ITopologyManager)) {
 			printError("Failed to get required capability.");
 			printEndCommand();
 			return null;
 		}
 
 		try {
-			((ITopologyManager)networkCapability).addResource(resource);
-		} catch (CapabilityException e){
+			((ITopologyManager) networkCapability).addResource(resource);
+		} catch (CapabilityException e) {
 			printError("Error adding resource.");
 			printError(e);
 			printEndCommand();
 			return null;
 		}
 
-		printInfo("Resource " + resourceId + "added to network " + networkId);
+		printInfo("Resource " + resourceId + " added to network " + networkId);
 		printEndCommand();
 		return null;
 	}
