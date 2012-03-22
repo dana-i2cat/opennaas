@@ -69,9 +69,9 @@ public class NetworkMapperModelToDescriptor {
 			if (interf.getLinkTo() != null) {
 				String toLinkName = "";
 				if (interf.getLinkTo().getSource().getName().equals(interf.getName())) {
-					toLinkName = interf.getLinkTo().getSink().getName();
+					toLinkName = newInterfaceId(interf.getLinkTo().getSink().getName()).getResource();
 				} else {
-					toLinkName = interf.getLinkTo().getSource().getName();
+					toLinkName = newInterfaceId(interf.getLinkTo().getSource().getName()).getResource();
 				}
 				interfaceDescriptor.setLinkTo(newLink(toLinkName));
 			}
@@ -86,13 +86,21 @@ public class NetworkMapperModelToDescriptor {
 		return networkTopology;
 	}
 
-	private static String addNumberSign(String name) {
+	private static String addHashCharacter(String name) {
 		if (!name.startsWith("#"))
 			return "#" + name;
 		else
 			return name;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 *            Name of the NetworkDomain in network model to get
+	 * @param existingDomains
+	 *            List of NetworkDomains in descriptor topology.
+	 * @return Position inside existingDomains of the NetworkDomain to get, or -1 if existingDomains does not contain desired domain.
+	 */
 	private static int getNetworkDomain(String name, List<org.opennaas.core.resources.descriptor.network.NetworkDomain> existingDomains) {
 		int pos = 0;
 		for (org.opennaas.core.resources.descriptor.network.NetworkDomain networkDomain : existingDomains) {
@@ -105,10 +113,18 @@ public class NetworkMapperModelToDescriptor {
 
 	private static DeviceId newDeviceId(String name) {
 		DeviceId deviceId = new DeviceId();
-		deviceId.setResource(name);
+		deviceId.setResource(addHashCharacter(name));
 		return deviceId;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 *            Name of the Device in network model to get
+	 * @param existingDevices
+	 *            List of Interfaces in descriptor topology.
+	 * @return Position inside existingDevices of the Device to get, or -1 if existingDevices does not contain desired device.
+	 */
 	private static int getDevice(String name, List<org.opennaas.core.resources.descriptor.network.Device> existingDevices) {
 		int pos = 0;
 		for (org.opennaas.core.resources.descriptor.network.Device device : existingDevices) {
@@ -122,7 +138,7 @@ public class NetworkMapperModelToDescriptor {
 
 	private static InterfaceId newInterfaceId(String name) {
 		InterfaceId interfaceId = new InterfaceId();
-		interfaceId.setResource(name);
+		interfaceId.setResource(addHashCharacter(name));
 		return interfaceId;
 	}
 
@@ -150,6 +166,14 @@ public class NetworkMapperModelToDescriptor {
 		return device;
 	}
 
+	/**
+	 * 
+	 * @param name
+	 *            Name of the Interface in network model to get
+	 * @param interfaces
+	 *            List of Interfaces in descriptor topology.
+	 * @return Position inside interfaces of the Interface to get, or -1 if interfaces does not contain desired interface.
+	 */
 	private static int getInterface(String name, List<org.opennaas.core.resources.descriptor.network.Interface> interfaces) {
 		int pos = 0;
 		for (org.opennaas.core.resources.descriptor.network.Interface interf : interfaces) {
