@@ -61,7 +61,7 @@ public class SendReceiveEventsTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-core"),
+					   includeFeatures("org.opennaas.core"),
 					   noConsole(),
 					   keepRuntimeFolder());
 	}

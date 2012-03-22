@@ -7,7 +7,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>base-mantychore</artifactId>
+	<artifactId>org.opennaas.extensions</artifactId>
 
 	<packaging>pom</packaging>
 	<name>Mantychore</name>

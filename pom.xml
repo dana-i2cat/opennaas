@@ -97,27 +97,27 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-hsqldb</artifactId>
+				<artifactId>org.opennaas.core.hsqldb</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-persistence</artifactId>
+				<artifactId>org.opennaas.core.persistence</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-resources</artifactId>
+				<artifactId>org.opennaas.core.resources</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-events</artifactId>
+				<artifactId>org.opennaas.core.events</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+				<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -132,7 +132,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-tests-mockprofile</artifactId>
+				<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -142,7 +142,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-features</artifactId>
+				<artifactId>org.opennaas.core.features</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -743,7 +743,12 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.3.5</version>
+					<version>2.3.7</version>
+					<configuration>
+						<instructions>
+							<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						</instructions>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.ops4j</groupId>
@@ -921,17 +926,17 @@
 						<param>--platform=felix</param>
 					</provision>
 				</configuration>
-				<executions>
-					<!--
-           | uncomment to auto-generate IDE files
-          <execution>
-            <id>ide-support</id>
-            <goals>
-              <goal>eclipse</goal>
-            </goals>
-          </execution>
-          -->
-				</executions>
+				<extensions>true</extensions>
+					<!--| uncomment to auto-generate IDE files
+						<executions>
+						<execution>
+						<id>ide-support</id>
+						<goals>
+						<goal>eclipse</goal>
+						</goals>
+						</execution>
+						</executions>
+					-->
 			</plugin>
 
 			<plugin>

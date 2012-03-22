@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<artifactId>opennaas-core</artifactId>
+		<artifactId>org.opennaas.core</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>opennaas-core-persistence</artifactId>
+	<artifactId>org.opennaas.core.persistence</artifactId>
 	<packaging>bundle</packaging>
 	<name>OpenNaaS :: Core :: JPA Persistence</name>
 	<description>Dynamic JPA Persistence tools for Nexus</description>
@@ -25,7 +25,7 @@
 		</dependency>-->
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hsqldb</artifactId>
+			<artifactId>org.opennaas.core.hsqldb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -39,18 +39,11 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.ops4j</groupId>
-				<artifactId>maven-pax-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}
-						</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
 						<Bundle-Activator>org.opennaas.core.persistence.Activator</Bundle-Activator>
 						<Import-Package>org.osgi.framework, javax.persistence, org.w3c.dom, javax.xml.parsers, org.slf4j, *</Import-Package>
 						<Export-Package>org.opennaas.core.persistence.*;version="${project.version}"</Export-Package>

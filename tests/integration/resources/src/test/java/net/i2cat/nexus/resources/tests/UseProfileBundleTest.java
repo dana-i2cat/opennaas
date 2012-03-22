@@ -71,7 +71,7 @@ public class UseProfileBundleTest
     private BlueprintContainer chasisService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=opennaas-core-tests-mockprofile)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.tests-mockprofile)")
     private BlueprintContainer mockProfileService;
 
 	@Configuration

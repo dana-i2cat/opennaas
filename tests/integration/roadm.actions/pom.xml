@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 
 		<!-- Capabilities of Mantychore need to change for capabilities of luminis ROADM -->

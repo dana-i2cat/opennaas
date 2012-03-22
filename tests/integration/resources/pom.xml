@@ -15,11 +15,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-tests-mockprofile</artifactId>
+			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 	</dependencies>
 </project>

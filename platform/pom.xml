@@ -26,23 +26,23 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hsqldb</artifactId>
+			<artifactId>org.opennaas.core.hsqldb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-persistence</artifactId>
+			<artifactId>org.opennaas.core.persistence</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-events</artifactId>
+			<artifactId>org.opennaas.core.events</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -54,11 +54,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-tests-mockprofile</artifactId>
+			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-features</artifactId>
+			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -216,7 +216,7 @@
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
-								<descriptor>mvn:org.opennaas/opennaas-core-features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>

@@ -35,15 +35,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-events</artifactId>
+			<artifactId>org.opennaas.core.events</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>

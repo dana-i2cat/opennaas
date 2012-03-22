@@ -41,7 +41,7 @@ public abstract class OpennaasExamOptions
 		return
 			mavenBundle()
 			.groupId("org.opennaas")
-			.artifactId("opennaas-core-tests-mockprofile")
+			.artifactId("org.opennaas.core.tests-mockprofile")
 			.versionAsInProject();
 	}
 
