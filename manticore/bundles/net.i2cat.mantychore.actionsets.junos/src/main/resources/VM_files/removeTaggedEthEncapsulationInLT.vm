@@ -1,0 +1,23 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$elementName.equals("") )
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.getName()</name>
+			<unit>
+				<name>$param.getPortNumber()</name>
+				<encapsulation>ethernet</encapsulation>
+				<vlan-id operation="delete"/>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
