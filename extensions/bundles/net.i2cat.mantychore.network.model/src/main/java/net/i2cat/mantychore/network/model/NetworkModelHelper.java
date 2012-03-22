@@ -159,6 +159,22 @@ public class NetworkModelHelper {
 		return -1;
 	}
 
+	/**
+	 * Return all elements in networkElements being of class clazz.
+	 * 
+	 * @param clazz
+	 * @param networkElements
+	 * @return
+	 */
+	public static List<NetworkElement> getNetworkElementsByClassName(Class clazz, List<NetworkElement> networkElements) {
+		List<NetworkElement> matchingElements = new ArrayList<NetworkElement>();
+		for (NetworkElement networkElement : networkElements) {
+			if (networkElement.getClass().equals(clazz))
+				matchingElements.add(networkElement);
+		}
+		return matchingElements;
+	}
+
 	public static Link linkInterfaces(Interface src, Interface dst, boolean bidiLink) {
 		Link link = new Link();
 		link.setSource(src);

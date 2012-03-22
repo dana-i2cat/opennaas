@@ -44,7 +44,7 @@ public class MockNetworkModel {
 	public static List<NetworkElement> createDevices(List<NetworkElement> networkElements) {
 		List<NetworkElement> listDevices = new ArrayList<NetworkElement>();
 
-		Device device = createDevice("#router:R-AS2-1");
+		Device device = createDevice("router:R-AS2-1");
 		List<ConnectionPoint> interfaces = new ArrayList<ConnectionPoint>();
 		interfaces.add((ConnectionPoint) networkElements.get(0));
 		interfaces.add((ConnectionPoint) networkElements.get(1));
@@ -52,7 +52,7 @@ public class MockNetworkModel {
 		device.setInterfaces(interfaces);
 		listDevices.add(device);
 
-		Device device2 = createDevice("#router:R-AS2-2");
+		Device device2 = createDevice("router:R-AS2-2");
 		List<ConnectionPoint> interfaces2 = new ArrayList<ConnectionPoint>();
 		interfaces2.add((ConnectionPoint) networkElements.get(3));
 		interfaces2.add((ConnectionPoint) networkElements.get(4));
@@ -60,7 +60,7 @@ public class MockNetworkModel {
 		device2.setInterfaces(interfaces2);
 		listDevices.add(device2);
 
-		Device device3 = createDevice("#router:R-AS2-3");
+		Device device3 = createDevice("router:R-AS2-3");
 		List<ConnectionPoint> interfaces3 = new ArrayList<ConnectionPoint>();
 		interfaces3.add((ConnectionPoint) networkElements.get(6));
 		interfaces3.add((ConnectionPoint) networkElements.get(7));
@@ -74,17 +74,17 @@ public class MockNetworkModel {
 
 	public static List<NetworkElement> createInterfaces(List<NetworkElement> networkElements) {
 		List<NetworkElement> listInterfaces = new ArrayList<NetworkElement>();
-		listInterfaces.add(createInterface("#router:R-AS2-1:lt-1/2/0.51"));
-		listInterfaces.add(createInterface("#router:R-AS2-1:lt-1/2/0.100"));
-		listInterfaces.add(createInterface("#router:R-AS2-1:lo0.1"));
-		listInterfaces.add(createInterface("#router:R-AS2-2:lt-1/2/0.102"));
-		listInterfaces.add(createInterface("#router:R-AS2-2:lt-1/2/0.101"));
-		listInterfaces.add(createInterface("#router:R-AS2-2:lo0.3"));
-		listInterfaces.add(createInterface("#router:R-AS2-3:lt-1/2/0.103"));
-		listInterfaces.add(createInterface("#router:R-AS2-3:lo0.4"));
+		listInterfaces.add(createInterface("router:R-AS2-1:lt-1/2/0.51"));
+		listInterfaces.add(createInterface("router:R-AS2-1:lt-1/2/0.100"));
+		listInterfaces.add(createInterface("router:R-AS2-1:lo0.1"));
+		listInterfaces.add(createInterface("router:R-AS2-2:lt-1/2/0.102"));
+		listInterfaces.add(createInterface("router:R-AS2-2:lt-1/2/0.101"));
+		listInterfaces.add(createInterface("router:R-AS2-2:lo0.3"));
+		listInterfaces.add(createInterface("router:R-AS2-3:lt-1/2/0.103"));
+		listInterfaces.add(createInterface("router:R-AS2-3:lo0.4"));
 
 		/* external network */
-		listInterfaces.add(createInterface("#router:R1:lt-1/2/0.50"));
+		listInterfaces.add(createInterface("router:R1:lt-1/2/0.50"));
 
 		networkElements.addAll(listInterfaces);
 		return networkElements;
@@ -139,9 +139,6 @@ public class MockNetworkModel {
 	}
 
 	private static int getInterface(String name, List<ConnectionPoint> listInterfaces) {
-		// format name to search
-		name = cleanName(name);
-
 		int pos = 0;
 		for (ConnectionPoint connectionPoint : listInterfaces) {
 			if (connectionPoint.getName().equals(name))
@@ -161,17 +158,4 @@ public class MockNetworkModel {
 		}
 		return -1;
 	}
-
-	private static String cleanName(String name) {
-		if (name.startsWith("#")) {
-			int lastIndex = name.lastIndexOf("#");
-			if (lastIndex != -1) {
-				return name.substring(lastIndex + 1);
-
-			}
-		}
-		return name;
-
-	}
-
 }

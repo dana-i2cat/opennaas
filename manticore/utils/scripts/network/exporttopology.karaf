@@ -1,0 +1,18 @@
+
+#Creating and initializing a router
+resource:create /home/isart/workspace/opennaas/opennaas/manticore/utils/resource.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+#Creating and initializing a network with empty model
+resource:create /home/isart/workspace/opennaas/opennaas/manticore/utils/basicNetwork.descriptor
+resource:start network:basicNet1
+
+#adding router to the network
+net:addResource network:basicNet1 router:junos20
+
+#adding a link
+net:l2attach network:basicNet1 router:junos20:fe-0/0/1.12 router:junos20:fe-0/0/3.1
+
+#exporting network topology
+resource:export -nt /home/isart/Escriptori/topology.xml network:basicNet1 /home/isart/Escriptori/basicNet1.descriptor
