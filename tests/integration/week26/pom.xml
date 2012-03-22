@@ -24,11 +24,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 	</dependencies>
 </project>

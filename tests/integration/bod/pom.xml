@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-  		<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
+  		<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>

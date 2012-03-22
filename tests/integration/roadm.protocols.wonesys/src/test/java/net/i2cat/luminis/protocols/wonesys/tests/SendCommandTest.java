@@ -65,7 +65,7 @@ public class SendCommandTest {
 	private IProtocolManager protocolManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	BlueprintContainer wonesysProtocolService;
 
 	private String			resourceId		= "Proteus-Pedrosa";

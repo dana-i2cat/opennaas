@@ -15,23 +15,23 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -47,15 +47,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+			<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -63,11 +63,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 	</dependencies>
 </project>

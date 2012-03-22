@@ -45,7 +45,7 @@ public class AutomaticRefreshLuminisTest
 	private ICapabilityFactory	connectionFactory;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
     private BlueprintContainer routerService;
 
 	@Configuration

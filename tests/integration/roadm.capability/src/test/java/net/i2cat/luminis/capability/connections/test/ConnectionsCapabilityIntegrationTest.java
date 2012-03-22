@@ -80,7 +80,7 @@ public class ConnectionsCapabilityIntegrationTest
 	private ICapabilityFactory	connectionFactory;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration

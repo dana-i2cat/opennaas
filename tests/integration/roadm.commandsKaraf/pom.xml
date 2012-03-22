@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 	</dependencies>
 </project>

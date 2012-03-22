@@ -19,15 +19,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 		</dependency>
 	</dependencies>
 </project>

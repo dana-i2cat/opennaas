@@ -24,19 +24,19 @@
 		</dependency>
 		<dependency>
 			<groupId>com.wonesys</groupId>
-			<artifactId>com.wonesys.emsModule</artifactId>
+			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>westhawk</groupId>

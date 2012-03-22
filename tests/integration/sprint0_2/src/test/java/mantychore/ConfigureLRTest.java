@@ -71,19 +71,19 @@ public class ConfigureLRTest
 	private IProtocolManager	protocolManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer	routerRepositoryService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
 	private BlueprintContainer	chasisService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
 	private BlueprintContainer	ipService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
 	private BlueprintContainer	queueService;
 
 	@ProbeBuilder

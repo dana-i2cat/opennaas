@@ -82,11 +82,11 @@ public class ChassisCapabilityIntegrationTest
 	private ICapabilityFactory	chassisFactory;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer	routerService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.actionsets.junos)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.actionsets.junos)")
 	private BlueprintContainer	junosActionsetService;
 
 	@Configuration

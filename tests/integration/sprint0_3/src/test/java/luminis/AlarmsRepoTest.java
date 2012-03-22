@@ -68,19 +68,19 @@ public class AlarmsRepoTest
 	private IAlarmsRepository	alarmRepo;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
 	private BlueprintContainer		roadmRepositoryService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
 	private BlueprintContainer		queueService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.monitoring)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.monitoring)")
 	private BlueprintContainer 		monitoringService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer      wonesysProtocolService;
 
 	private boolean				alarmReceived;

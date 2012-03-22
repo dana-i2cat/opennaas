@@ -68,7 +68,7 @@ public abstract class StaticRouteIntegrationTest
 	protected BundleContext			bundleContext;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.protocols.netconf)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
 	private BlueprintContainer		netconfService;
 
 	private static final Log		log								= LogFactory

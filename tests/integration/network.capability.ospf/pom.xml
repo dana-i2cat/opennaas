@@ -20,15 +20,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
 		</dependency>
  	</dependencies>
 </project>

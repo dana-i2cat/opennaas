@@ -75,7 +75,7 @@ public class MantychoreRepositoryIntegrationTest
 	private IProtocolManager	protocolManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
     private BlueprintContainer	chassisService;
 
 	@Configuration

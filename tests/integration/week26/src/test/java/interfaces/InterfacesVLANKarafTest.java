@@ -69,15 +69,15 @@ public class InterfacesVLANKarafTest
 	private IResourceManager	resourceManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer routerService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
     private BlueprintContainer queueService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
     private BlueprintContainer chassisService;
 
     @ProbeBuilder

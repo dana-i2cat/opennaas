@@ -78,7 +78,7 @@ public class IPCapabilityIntegrationTest
 	private ICapabilityFactory	ipFactory;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer	routerService;
 
 	@Configuration

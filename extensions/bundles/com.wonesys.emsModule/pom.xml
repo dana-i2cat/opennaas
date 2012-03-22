@@ -8,7 +8,7 @@
 	</parent>
 	<!--  POM id -->
 	<groupId>com.wonesys</groupId>
-	<artifactId>com.wonesys.emsModule</artifactId>
+	<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
@@ -60,8 +60,6 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
 							!javax.swing.*,
 							!netscape.security.*,
@@ -72,7 +70,7 @@
 							-->
 							*</Import-Package>
 						<Export-Package>
-							${project.artifactId}.*;version="${project.version}",
+							com.wonesys.emsModule.*;version="${project.version}",
 							!uk.co.westhawk.tablelayout,
 							uk.co.westhawk.*
 						</Export-Package>
