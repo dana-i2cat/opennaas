@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>net.i2cat.mantychore</groupId>
+		<artifactId>mantychore-tests</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>itests-bundle-settings</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Mantychore :: POMS :: Integration Test</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>net.i2cat.nexus.tests.events</module>
+		<module>net.i2cat.nexus.tests.resources</module>
+		<module>net.i2cat.mantychore.tests.capability</module>
+		<module>net.i2cat.mantychore.tests.repository</module>
+		<module>net.i2cat.mantychore.tests.capability.queue</module>
+		<module>net.i2cat.mantychore.tests.commandsKaraf</module>
+		<module>net.i2cat.luminis.tests.protocols.wonesys</module>
+		<module>net.i2cat.luminis.tests.actions</module>
+		<module>net.i2cat.luminis.tests.capability</module>
+		<module>net.i2cat.luminis.tests.repository</module>
+  		<module>net.i2cat.luminis.tests.commandsKaraf</module>
+  		<module>org.opennaas.bod.tests.repository</module>
+  		<module>org.opennaas.bod.tests.capability.l2bod</module>
+   		<module>org.opennaas.bod.tests</module>
+   		<module>org.opennaas.router.tests.capability.gretunnel</module>
+		<module>org.opennaas.router.tests.capability.ospf</module>
+		<module>org.opennaas.network.tests.capability.queue</module>
+		<module>org.opennaas.router.tests.capability.staticroute</module>
+		<module>org.opennaas.network.tests.capability.ospf</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>platform</artifactId>
+			<type>zip</type>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.nexus</groupId>
+			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.swissbox</groupId>
+			<artifactId>pax-swissbox-framework</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
