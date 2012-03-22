@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!--  parent parameters  -->
-	<!--  TODO, the project's place is temporal, it will be necessary to add it in nexus -->
+	<!-- Maven parent  -->
 	<parent>
+		<artifactId>mantychore-bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<artifactId>mantychore-helpers</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+	<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
-	<name>Mantychore :: Test utils</name>
-	<description>Mantychore :: Test utils</description>
 	<packaging>bundle</packaging>
+	<name>Mantychore Netconf Protocol</name>
+	<description>Mantychore Netconf Protocol Implementation</description>
 	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>opennaas-core-resources</artifactId>
@@ -26,6 +33,15 @@
 				<groupId>org.ops4j</groupId>
 				<artifactId>maven-pax-plugin</artifactId>
 			</plugin>
+			<!--
+				TOCHECK, IT INCLUDES PARAMETERS IN TESTS <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration> <systemPropertyVariables>
+				<propertyName>propertyValue</propertyName>
+				<buildDirectory>${project.build.directory}</buildDirectory> [...]
+				</systemPropertyVariables> </configuration> </plugin>
+			-->
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -35,11 +51,8 @@
 						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
 						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							org.slf4j,
-							org.ops4j.pax.exam,
-							org.apache.karaf.testing,
-							org.osgi.framework,
-						*</Import-Package>
+							!${project.artifactId}.*,org.slf4j,
+							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
 							${project.artifactId}.*;version="${project.version}"
 						</Export-Package>
