@@ -1,8 +1,14 @@
 package net.i2cat.mantychore.ipcapability.test;
 
-import java.io.File;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
@@ -12,15 +18,12 @@ import net.i2cat.mantychore.model.EthernetPort;
 import net.i2cat.mantychore.model.IPProtocolEndpoint;
 import net.i2cat.mantychore.model.NetworkPort;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -36,20 +39,14 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -77,22 +74,22 @@ public class IPCapabilityIntegrationTest
 	@Filter("(capability=ipv4)")
 	private ICapabilityFactory	ipFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-    private BlueprintContainer	routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer	routerService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() {
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
@@ -131,7 +128,7 @@ public class IPCapabilityIntegrationTest
 		Assert.assertNotNull(queueManagerFactory);
 
 		queueCapability = queueManagerFactory.create(mockResource);
-
+		queueCapability.initialize();
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		// Test elements not null
