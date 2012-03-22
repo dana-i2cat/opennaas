@@ -24,8 +24,6 @@
 	<!-- mvn build will only recurse on pom.xml inside this folders: -->
 	<!-- include your project here -->
 	<modules>
-		<module>cim</module>
-
 		<module>router.actionsets.junos</module>
 		<module>router.repository</module>
 		<module>router.capability.chassis</module>
@@ -33,6 +31,7 @@
 		<module>router.capability.gretunnel</module>
 		<module>router.capability.ospf</module>
 		<module>router.capability.staticroute</module>
+                <module>router.model</module>
 
 		<module>fragment.velocity</module>
 		<module>protocols.netconf</module>
