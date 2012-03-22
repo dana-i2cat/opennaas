@@ -47,15 +47,16 @@ public class Cim2NdlMapperTest {
 	}
 
 	/**
-	 * There are 2 bidirectional links <br>
+	 * There are 3 bidirectional links <br>
 	 * Each link has a reference to two interfaces Each interface in a link <br>
 	 * Has a reference to that link Each link is in the same layer than its interfaces <br>
 	 */
 	private boolean checkLinks(List<NetworkElement> createdElements) {
 		List<Link> links = NetworkModelHelper.getLinks(createdElements);
 
-		Assert.assertEquals(2, links.size());
-
+		Assert.assertEquals(3, links.size());
+		int taggedEthLinksCount = 0;
+		int ethLinksCount = 0;
 		for (Link link : links) {
 			Assert.assertNotNull(link.getSource());
 			Assert.assertNotNull(link.getSink());
@@ -69,7 +70,15 @@ public class Cim2NdlMapperTest {
 			Assert.assertTrue(link.getLayer().equals(link.getSink().getLayer()));
 
 			Assert.assertTrue(link.isBidirectional());
+
+			if (link.getLayer() instanceof TaggedEthernetLayer) {
+				taggedEthLinksCount++;
+			} else if (link.getLayer() instanceof EthernetLayer) {
+				ethLinksCount++;
+			}
 		}
+		Assert.assertEquals(1, taggedEthLinksCount);
+		Assert.assertEquals(2, ethLinksCount);
 
 		return true;
 	}
@@ -98,7 +107,7 @@ public class Cim2NdlMapperTest {
 		ipIfaceCount = checkIPInterfaces(connectionPoints);
 
 		// check number of interfaces is correct
-		Assert.assertEquals(ethIfaceCount, 9);
+		Assert.assertEquals(ethIfaceCount, 14);
 		Assert.assertEquals(vlanIfaceCount, 10);
 		Assert.assertEquals(ipIfaceCount, 5);
 
@@ -114,13 +123,6 @@ public class Cim2NdlMapperTest {
 	private int checkEthernetInterfaces(List<ConnectionPoint> connectionPoints) {
 		int ethIfaceCount = 0;
 
-		// Physical Interfaces
-		boolean fe_0_0_2Found = false;
-		boolean fe_0_0_3Found = false;
-		boolean fe_0_0_1Found = false;
-		boolean fe_0_1_1Found = false;
-		boolean lt_0_2_1Found = false;
-
 		// Pure Ethernet Interfaces
 		boolean fe_0_0_2_0Found = false;
 		boolean fe_0_0_3_0Found = false;
@@ -130,12 +132,6 @@ public class Cim2NdlMapperTest {
 		for (ConnectionPoint connectionPoint : connectionPoints) {
 			if (connectionPoint instanceof Interface) {
 				if (connectionPoint.getLayer() instanceof EthernetLayer) {
-					fe_0_0_2Found = fe_0_0_2Found || connectionPoint.getName().endsWith("fe-0/0/2");
-					fe_0_0_3Found = fe_0_0_3Found || connectionPoint.getName().endsWith("fe-0/0/3");
-					fe_0_0_1Found = fe_0_0_1Found || connectionPoint.getName().endsWith("fe-0/0/1");
-					fe_0_1_1Found = fe_0_1_1Found || connectionPoint.getName().endsWith("fe-0/1/1");
-					lt_0_2_1Found = lt_0_2_1Found || connectionPoint.getName().endsWith("lt-0/2/1");
-
 					fe_0_0_2_0Found = fe_0_0_2_0Found || connectionPoint.getName().endsWith("fe-0/0/2.0");
 					fe_0_0_3_0Found = fe_0_0_3_0Found || connectionPoint.getName().endsWith("fe-0/0/3.0");
 					lt_0_2_1_1Found = lt_0_2_1_1Found || connectionPoint.getName().endsWith("lt-0/2/1.1");
@@ -145,13 +141,6 @@ public class Cim2NdlMapperTest {
 				}
 			}
 		}
-
-		// Physical Interfaces
-		Assert.assertTrue(fe_0_0_2Found);
-		Assert.assertTrue(fe_0_0_3Found);
-		Assert.assertTrue(fe_0_0_1Found);
-		Assert.assertTrue(fe_0_1_1Found);
-		Assert.assertTrue(lt_0_2_1Found);
 
 		// Pure Ethernet Interfaces
 		Assert.assertTrue(fe_0_0_2_0Found);
@@ -198,7 +187,7 @@ public class Cim2NdlMapperTest {
 				Assert.assertNotNull(connectionPoint.getServerInterface().getLayer());
 				Assert.assertTrue("any interface in TaggedEthLayer has a serverInterface in EthLayer",
 						connectionPoint.getServerInterface().getLayer() instanceof EthernetLayer);
-				Assert.assertEquals(connectionPoint.getName().split("\\.")[0]
+				Assert.assertEquals(connectionPoint.getName()
 						, connectionPoint.getServerInterface().getName());
 
 				vlanIfaceCount++;
