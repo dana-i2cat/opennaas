@@ -11,6 +11,7 @@ import net.i2cat.mantychore.network.repository.NetworkMapperDescriptorToModel;
 import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
 
 public class NetworkMapperModelToDescriptorTest {
@@ -18,10 +19,23 @@ public class NetworkMapperModelToDescriptorTest {
 	@Test
 	public void testMockMapperNetworkElems() {
 		try {
-			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(MockNetworkDescriptor
-					.newNetworkDescriptorWithNetworkDomain());
+
+			NetworkTopology topology = MockNetworkDescriptor.newNetworkDescriptorWithNetworkDomain();
+
+			int topologyDeviceCount = topology.getDevices().size();
+			int topologyInterfacesCount = topology.getInterfaces().size();
+			int topologyDomainsCount = topology.getNetworkDomains().size();
+			int topologyLinksCount = 3; // has 3 links (2 of them bidi)
+			topologyInterfacesCount += 1; // has a link to an external interface
+
+			NetworkModel networkModel = NetworkMapperDescriptorToModel.descriptorToModel(topology);
 			Assert.assertNotNull(networkModel.getNetworkElements());
-			Assert.assertEquals(networkModel.getNetworkElements().size(), 16);
+
+			Assert.assertEquals(topologyDomainsCount, NetworkModelHelper.getDomains(networkModel).size());
+			Assert.assertEquals(topologyDeviceCount, NetworkModelHelper.getDevices(networkModel).size());
+			Assert.assertEquals(topologyInterfacesCount, NetworkModelHelper.getInterfaces(networkModel.getNetworkElements()).size());
+			Assert.assertEquals(topologyLinksCount, NetworkModelHelper.getLinks(networkModel).size());
+
 		} catch (ResourceException e) {
 			Assert.fail(e.getMessage());
 		}

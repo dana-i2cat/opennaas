@@ -84,7 +84,7 @@ public class MockNetworkDescriptor {
 		rdfDescriptor.setDevices(devices);
 
 		List<Interface> interfaces = new ArrayList<Interface>();
-		interfaces.add(newInterface("router:R-AS2-1:lt-1/2/0.51", "#router:R1:lt-1/2/0.50", "1.2E+9"));
+		interfaces.add(newInterface("router:R-AS2-1:lt-1/2/0.51", "#router:R1:lt-1/2/0.50", "1.2E+9")); // link to external interface
 		interfaces.add(newInterface("router:R-AS2-1:lt-1/2/0.100", "#router:R-AS2-2:lt-1/2/0.101", "1.2E+9"));
 		interfaces.add(newInterface("router:R-AS2-1:lo0.1"));
 
