@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <!-- Maven parent  -->
+  <parent>
+    <artifactId>mantychore-bundles</artifactId>
+    <groupId>net.i2cat.mantychore</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <!--  POM id -->
+  <groupId>org.opennaas.bod.actionsets</groupId>
+  <artifactId>org.opennaas.bod.actionsets</artifactId>
+  <!--  Maven configuration -->
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>bundle</packaging>
+  <name>BoD ActionSet</name>
+  <description>BoD ActionSet Implementation</description>
+  <dependencies>
+  	<!-- Internal Mantychore dependencies -->
+	<dependency>
+	  <groupId>org.opennaas</groupId>
+	  <artifactId>opennaas-core-resources</artifactId>
+	</dependency>
+  </dependencies>
+  <build>
+	<plugins>
+	  <plugin>
+		<groupId>org.ops4j</groupId>
+		<artifactId>maven-pax-plugin</artifactId>
+		<extensions>true</extensions>
+   	  </plugin>
+   	  <plugin>
+	    <groupId>org.apache.felix</groupId>
+		<artifactId>maven-bundle-plugin</artifactId>
+		<extensions>true</extensions>
+		<configuration>
+		  <instructions>
+		    <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+		    <Bundle-Version>${project.version}</Bundle-Version>
+		    <Import-Package>org.slf4j,*</Import-Package>
+			  <!--  TODO Is it necessary to check the ${project.artifactId}.actions -->
+		    <Export-Package>
+		      org.opennaas.bod.actionsets.dummy;version="${project.version}",
+			  org.opennaas.bod.actionsets.dummy.actions;version="${project.version}"
+		    </Export-Package>
+		  </instructions>
+	    </configuration>
+	  </plugin>
+    </plugins>
+  </build>
+</project>

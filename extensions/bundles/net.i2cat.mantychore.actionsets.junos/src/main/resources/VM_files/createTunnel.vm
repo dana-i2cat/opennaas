@@ -1,0 +1,33 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+			<unit operation="replace">
+				<name>$portNumber</name>
+				<tunnel>
+					<source>$param.GRETunnelConfiguration.getSourceAddress()</source>
+					<destination>$param.GRETunnelConfiguration.getDestinationAddress()</destination>
+				</tunnel>
+				<family>
+					<inet>
+						<address>
+							<name>$param.ProtocolEndpoint.get(0).getIPv4Address()/$ipUtilsHelper.parseLongToShortIpv4NetMask($param.ProtocolEndpoint.get(0).getSubnetMask())</name>
+						</address>
+					</inet>
+				</family>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
+

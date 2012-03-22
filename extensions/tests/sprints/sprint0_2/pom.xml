@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>net.i2cat.mantychore.sprints</groupId>
+		<artifactId>itests-bundle-settings</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+
+	<groupId>net.i2cat.mantychore.itests-bundle-settings</groupId>
+	<artifactId>net.i2cat.mantychore.tests.sprints.sprint0_2</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Sprint 0.2 - Sprint tests</name>
+	<description>Sprint 0.2 - Sprint tests (LogicalRouters and RawSocketAlarm)</description>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.i2cat.luminis.protocols</groupId>
+			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.actionsets</groupId>
+			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.capability</groupId>
+			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.luminis.capability</groupId>
+			<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>opennaas-core-events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.queuemanager</groupId>
+			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.capability</groupId>
+			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.i2cat.mantychore.actionsets</groupId>
+			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+		</dependency>
+	</dependencies>
+</project>
