@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
     </parent>
 
-	<artifactId>org.opennaas.network.tests.capability.queue</artifactId>
+	<artifactId>org.opennaas.tests.integration.network.capability.queue</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore network queue test</name>
 	<description>Mantychore network queue test</description>

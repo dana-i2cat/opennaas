@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.luminis.tests.capability</artifactId>
+	<artifactId>org.opennaas.tests.integration.roadm.capability</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Luminis capablity test</name>
 	<description>Luminis capability Implementation test</description>

@@ -7,7 +7,7 @@
 	</parent>
 
   	<!--  POM id -->
-	<artifactId>org.opennaas.network.tests.capability.ospf</artifactId>
+	<artifactId>org.opennaas.tests.integration.network.capability.ospf</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>NetOSPF capability test</name>
 	<description>NetOSPF capability test</description>

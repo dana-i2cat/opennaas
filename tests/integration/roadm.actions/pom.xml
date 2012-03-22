@@ -7,7 +7,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.luminis.tests.actions</artifactId>
+	<artifactId>org.opennaas.tests.integration.roadm.actions</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Luminis ROADM action test</name>
 	<description>Luminis ROADM action test</description>

@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.mantychore.tests.repository</artifactId>
+	<artifactId>org.opennaas.tests.integration.router.repository</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore repository test</name>
 	<description>Mantychore repository test</description>

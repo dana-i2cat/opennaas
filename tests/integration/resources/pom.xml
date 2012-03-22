@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.nexus.tests.resources</artifactId>
+	<artifactId>org.opennaas.tests.integration.resources</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus:: Integrations Resources Tests</name>
 	<description>nexus resource integration test</description>
