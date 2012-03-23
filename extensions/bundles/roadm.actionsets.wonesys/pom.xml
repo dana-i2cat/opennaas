@@ -56,7 +56,7 @@
 						<Import-Package>org.slf4j,*</Import-Package>
 						<!--  TODO Is it necessary to check the net.i2cat.luminis.actionsets.wonesys.actions -->
 						<Export-Package>
-							net.i2cat.luminis.commandsets*;version="${project.version}",
+							net.i2cat.luminis.commandsets.wonesys.*;version="${project.version}",
 							net.i2cat.luminis.actionsets.wonesys;version="${project.version}",
 							net.i2cat.luminis.actionsets.wonesys.actions;version="${project.version}"
 						</Export-Package>

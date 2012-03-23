@@ -53,7 +53,7 @@
 						</Import-Package>
 						<Export-Package>
 							net.i2cat.luminis.protocols.wonesys.*;version="${project.version}",
-							net.i2cat.luminis.transports*;version="${project.version}"
+							net.i2cat.luminis.transports.wonesys.*;version="${project.version}"
 						</Export-Package>
 						<Bundle-Activator>net.i2cat.luminis.protocols.wonesys.WonesysProtocolBundleActivator</Bundle-Activator>
 					</instructions>

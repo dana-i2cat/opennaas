@@ -98,7 +98,7 @@
 						</Import-Package>
 						<!--  TODO Is it necessary to check the net.i2cat.mantychore.actionsets.junos.actions -->
 						<Export-Package>
-							net.i2cat.mantychore.commandsets*;version="${project.version}",
+							net.i2cat.mantychore.commandsets.junos.*;version="${project.version}",
 							net.i2cat.mantychore.actionsets.junos;version="${project.version}",
 							net.i2cat.mantychore.actionsets.junos.actions;version="${project.version}"
 						</Export-Package>
