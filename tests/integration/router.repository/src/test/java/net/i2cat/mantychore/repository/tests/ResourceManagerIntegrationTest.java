@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.repository.tests;
+package org.opennaas.extensions.router.repository.tests;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

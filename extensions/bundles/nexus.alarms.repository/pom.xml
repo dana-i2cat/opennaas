@@ -39,10 +39,10 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>net.i2cat.nexus.alarms.repository.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.nexus.alarms.repository.Activator</Bundle-Activator>
 						<Import-Package>!net.i2cat.nexus.alarms.repository,org.slf4j,*</Import-Package>
 						<Export-Package>
-						net.i2cat.nexus.alarms.repository.*;version="${project.version}"
+						org.opennaas.extensions.nexus.alarms.repository.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

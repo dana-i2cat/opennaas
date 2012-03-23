@@ -16,11 +16,11 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="queueCapabilityFactory" class="org.opennaas.network.capability.queue.QueueCapabilityFactory">
+	<bean id="queueCapabilityFactory" class="org.opennaas.extensions.network.capability.queue.QueueCapabilityFactory">
 		<property name="type" value="netqueue"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.network.capability.queue.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.network.capability.queue.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="queueCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -30,7 +30,7 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="netqueue/execute">
-			<action class="org.opennaas.network.capability.queue.shell.ExecuteCommand"/>
+			<action class="org.opennaas.extensions.network.capability.queue.shell.ExecuteCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

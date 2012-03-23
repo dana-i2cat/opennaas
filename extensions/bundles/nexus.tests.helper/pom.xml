@@ -64,7 +64,7 @@
 							*
 						</Import-Package>
 						<Export-Package>
-							net.i2cat.nexus.tests.*;version="${project.version}",
+							org.opennaas.extensions.nexus.tests.helper.*;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>

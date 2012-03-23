@@ -16,11 +16,11 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="staticrouteCapabilityFactory" class="org.opennaas.router.capability.staticroute.StaticRouteCapabilityFactory">
+	<bean id="staticrouteCapabilityFactory" class="org.opennaas.extensions.router.capability.staticroute.StaticRouteCapabilityFactory">
 		<property name="type" value="staticroute"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.router.capability.staticroute.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.staticroute.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="staticrouteCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -33,7 +33,7 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="staticroute/create">
-			<action class="org.opennaas.router.capability.staticroute.shell.CreateStaticRouteCommand"/>
+			<action class="org.opennaas.extensions.router.capability.staticroute.shell.CreateStaticRouteCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

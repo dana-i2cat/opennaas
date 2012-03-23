@@ -3,10 +3,10 @@
  */
 package org.opennaas.router.tests.capability.staticroute;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

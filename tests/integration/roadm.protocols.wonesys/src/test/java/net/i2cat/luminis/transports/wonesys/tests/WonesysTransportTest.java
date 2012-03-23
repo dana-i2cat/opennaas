@@ -1,4 +1,4 @@
-package net.i2cat.luminis.transports.wonesys.tests;
+package org.opennaas.extensions.roadm.wonesys.transports.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -8,11 +8,11 @@ import java.io.IOException;
 import java.util.Properties;
 import javax.inject.Inject;
 
-import net.i2cat.luminis.transports.wonesys.ITransport;
-import net.i2cat.luminis.transports.wonesys.ITransportListener;
-import net.i2cat.luminis.transports.wonesys.WonesysTransport;
-import net.i2cat.luminis.transports.wonesys.WonesysTransportException;
-import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransportException;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,7 +35,7 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

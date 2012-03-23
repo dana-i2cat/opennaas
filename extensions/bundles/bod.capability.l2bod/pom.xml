@@ -53,7 +53,7 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.opennaas.bod.capability.l2bod.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.bod.capability.l2bod.Activator</Bundle-Activator>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
@@ -64,7 +64,7 @@
 							*
 							</Import-Package>
 						<Export-Package>
-							org.opennaas.bod.capability.l2bod;version="${project.version}"
+							org.opennaas.extensions.bod.capability.l2bod;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

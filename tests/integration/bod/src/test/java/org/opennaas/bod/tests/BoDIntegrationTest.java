@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import org.opennaas.bod.capability.l2bod.L2BoDCapability;
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
@@ -44,7 +44,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

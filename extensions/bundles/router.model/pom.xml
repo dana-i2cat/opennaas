@@ -59,12 +59,12 @@
 							classes are under ".internal"
 						-->
 						<!--
-						<Import-Package>!net.i2cat.mantychore.model.*,
+						<Import-Package>!org.opennaas.extensions.router.model.*,
 							org.springmodules.*;version="0.8",org.slf4j;version="1.5.6",*</Import-Package>
-						<Export-Package>net.i2cat.mantychore.model;version="${project.version}"</Export-Package>-->
-						<Import-Package>!net.i2cat.mantychore.model.*,org.slf4j,*</Import-Package>
-						<Export-Package>net.i2cat.mantychore.model;version="${project.version}",
-							net.i2cat.mantychore.model.*;version="${project.version}"
+						<Export-Package>org.opennaas.extensions.router.model;version="${project.version}"</Export-Package>-->
+						<Import-Package>!org.opennaas.extensions.router.model.*,org.slf4j,*</Import-Package>
+						<Export-Package>org.opennaas.extensions.router.model;version="${project.version}",
+							org.opennaas.extensions.router.model.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

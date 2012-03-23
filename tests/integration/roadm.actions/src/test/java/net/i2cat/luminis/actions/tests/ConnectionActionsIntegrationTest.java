@@ -4,26 +4,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.io.File;
 
-import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
-import net.i2cat.luminis.actionsets.wonesys.actions.RefreshModelConnectionsAction;
-import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
-import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.MakeConnectionAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RefreshModelConnectionsAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RemoveConnectionAction;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
 
-import net.i2cat.mantychore.model.FCPort;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalPort;
-import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
+import org.opennaas.extensions.router.model.FCPort;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.WDMFCPort;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard.CardType;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysDropCard;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +46,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

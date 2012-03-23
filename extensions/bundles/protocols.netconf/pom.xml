@@ -49,10 +49,10 @@
 				<configuration>
 					<instructions>
 						<Import-Package>
-							!net.i2cat.mantychore.protocols.netconf.*,org.slf4j,
+							!org.opennaas.extensions.protocols.netconf.*,org.slf4j,
 							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
-							net.i2cat.mantychore.protocols.netconf.*;version="${project.version}"
+							org.opennaas.extensions.protocols.netconf.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

@@ -49,18 +49,18 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>net.i2cat.mantychore.network.capability.basic.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.network.capability.basic.Activator</Bundle-Activator>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!net.i2cat.mantychore.network.capability.basic.*,
+						<Import-Package>!org.opennaas.extensions.network.capability.basic.*,
   							org.slf4j,
 							org.apache.felix.service.command,
 							*
 							</Import-Package>
 						<Export-Package>
-							net.i2cat.mantychore.network.capability.basic;version="${project.version}"
+							org.opennaas.extensions.network.capability.basic;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

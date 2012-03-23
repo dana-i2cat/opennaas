@@ -53,9 +53,9 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!net.i2cat.mantychore.network.model.*,*</Import-Package>
-						<Export-Package>net.i2cat.mantychore.network.model;version="${project.version}",
-							net.i2cat.mantychore.network.model.*;version="${project.version}"
+						<Import-Package>!org.opennaas.extensions.network.model.*,*</Import-Package>
+						<Export-Package>org.opennaas.extensions.network.model;version="${project.version}",
+							org.opennaas.extensions.network.model.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

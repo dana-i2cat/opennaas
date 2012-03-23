@@ -45,13 +45,13 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>net.i2cat.mantychore.queuemanager.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.queuemanager.Activator</Bundle-Activator>
 						<Import-Package>!net.i2cat.mantychore.queuemanager,org.slf4j,
 							org.apache.felix.service.command,				<!--  necessary to do karaf commands -->
 							*
 						</Import-Package>
 						<Export-Package>
-						net.i2cat.mantychore.queuemanager;version="${project.version}"
+						org.opennaas.extensions.queuemanager;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

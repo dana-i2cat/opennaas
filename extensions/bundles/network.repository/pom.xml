@@ -47,10 +47,10 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>net.i2cat.mantychore.network.repository.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.network.repository.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<!--<Export-Package>
-						net.i2cat.mantychore.repository.*;version="${project.version}"
+						org.opennaas.extensions.router.repository.*;version="${project.version}"
 						</Export-Package>-->
 					</instructions>
 				</configuration>

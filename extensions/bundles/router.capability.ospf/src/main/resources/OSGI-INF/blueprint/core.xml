@@ -16,11 +16,11 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="ospfCapabilityFactory" class="org.opennaas.router.capability.ospf.OSPFCapabilityFactory">
+	<bean id="ospfCapabilityFactory" class="org.opennaas.extensions.router.capability.ospf.OSPFCapabilityFactory">
 		<property name="type" value="ospf"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.router.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.ospf.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="ospfCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -33,56 +33,56 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="ospf/configure">
-			<action class="org.opennaas.router.capability.ospf.shell.ConfigureCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.ConfigureCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/show">
-			<action class="org.opennaas.router.capability.ospf.shell.ShowCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.ShowCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/activate">
-			<action class="org.opennaas.router.capability.ospf.shell.ActivateCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.ActivateCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/deactivate">
-			<action class="org.opennaas.router.capability.ospf.shell.DeactivateCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.DeactivateCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/configureArea">
-			<action class="org.opennaas.router.capability.ospf.shell.ConfigureAreaCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.ConfigureAreaCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/configureInterfaceInArea">
-			<action class="org.opennaas.router.capability.ospf.shell.ConfigureInterfaceInAreaCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.ConfigureInterfaceInAreaCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/enableInterface">
-			<action class="org.opennaas.router.capability.ospf.shell.EnableInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.EnableInterfaceCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ospf/disableInterface">
-			<action class="org.opennaas.router.capability.ospf.shell.DisableInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ospf.shell.DisableInterfaceCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

@@ -35,8 +35,8 @@
 		    <Import-Package>org.slf4j,*</Import-Package>
 			  <!--  TODO Is it necessary to check the org.opennaas.bod.actionsets.actions -->
 		    <Export-Package>
-		      org.opennaas.bod.actionsets.dummy;version="${project.version}",
-			  org.opennaas.bod.actionsets.dummy.actions;version="${project.version}"
+		      org.opennaas.extensions.bod.actionsets.dummy;version="${project.version}",
+			  org.opennaas.extensions.bod.actionsets.dummy.actions;version="${project.version}"
 		    </Export-Package>
 		  </instructions>
 	    </configuration>

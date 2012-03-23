@@ -4,21 +4,21 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import net.i2cat.luminis.actions.tests.mock.MockProtocolSessionManager;
-import net.i2cat.luminis.actionsets.wonesys.actions.MakeConnectionAction;
-import net.i2cat.luminis.actionsets.wonesys.actions.RemoveConnectionAction;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.MakeConnectionAction;
+import org.opennaas.extensions.roadm.wonesys.actionsets.actions.RemoveConnectionAction;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
 
-import net.i2cat.mantychore.model.FCPort;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.WDMFCPort;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-import net.i2cat.mantychore.model.utils.OpticalSwitchCardFactory;
-import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
+import org.opennaas.extensions.router.model.FCPort;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.WDMFCPort;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
+import org.opennaas.extensions.router.model.utils.OpticalSwitchCardFactory;
+import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,6 +1,6 @@
 package net.i2cat.luminis.actions.tests.mock;
 
-import net.i2cat.luminis.transports.wonesys.mock.ProteusMock;
+import org.opennaas.extensions.roadm.wonesys.transports.mock.ProteusMock;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;

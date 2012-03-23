@@ -94,13 +94,13 @@
 						-->
 						<!-- avoid importing our own package -->
 						<Import-Package>
-							!net.i2cat.mantychore.actionsets.junos.*;version="${project.version}",org.slf4j,*
+							!org.opennaas.extensions.router.junos.actionssets.*;version="${project.version}",org.slf4j,*
 						</Import-Package>
-						<!--  TODO Is it necessary to check the net.i2cat.mantychore.actionsets.junos.actions -->
+						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
-							net.i2cat.mantychore.commandsets.junos.*;version="${project.version}",
-							net.i2cat.mantychore.actionsets.junos;version="${project.version}",
-							net.i2cat.mantychore.actionsets.junos.actions;version="${project.version}"
+							org.opennaas.extensions.router.junos.commandsets.*;version="${project.version}",
+							org.opennaas.extensions.router.junos.actionssets;version="${project.version}",
+							org.opennaas.extensions.router.junos.actionssets.actions;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

@@ -36,7 +36,7 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.opennaas.network.capability.ospf.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.network.capability.ospf.Activator</Bundle-Activator>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
@@ -47,7 +47,7 @@
 							*
 							</Import-Package>
 						<Export-Package>
-							org.opennaas.network.capability.ospf;version="${project.version}"
+							org.opennaas.extensions.network.capability.ospf;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

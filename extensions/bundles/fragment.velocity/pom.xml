@@ -53,11 +53,11 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<Import-Package>!net.i2cat.mantychore.fragment.velocity.*,
+						<Import-Package>!org.opennaas.extensions.fragment.velocity.*,
 							*
 							</Import-Package>
 						<Export-Package>
-							net.i2cat.mantychore.fragment.velocity;version="${project.version}"
+							org.opennaas.extensions.fragment.velocity;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

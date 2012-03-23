@@ -1,4 +1,4 @@
-package net.i2cat.luminis.protocols.wonesys.tests;
+package org.opennaas.extensions.roadm.wonesys.protocols.tests;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,13 +44,13 @@ import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
-import net.i2cat.luminis.protocols.wonesys.alarms.IWonesysAlarmConfigurator;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEvent;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmEventFilter;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfigurator;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEvent;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEventFilter;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.junit.Assert.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;

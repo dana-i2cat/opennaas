@@ -3,7 +3,7 @@ package net.i2cat.luminis.actions.tests;
 import java.util.List;
 import java.util.Set;
 
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
