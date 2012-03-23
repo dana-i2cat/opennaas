@@ -81,6 +81,27 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="chassis/setTaggedEthernetEncapsulation">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.SetTaggedEthernetEncapsulationCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="chassis/removeTaggedEthernetEncapsulation">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveTaggedEthernetEncapsulationCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="chassis/setVlanId">
+			<action class="net.i2cat.mantychore.capability.chassis.shell.SetVlanIdCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 		<command name="chassis/showInterfaces">
 			<action class="net.i2cat.mantychore.capability.chassis.shell.ShowInterfacesCommand"/>
 			<completers>
