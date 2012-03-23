@@ -16,7 +16,7 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="NetOSPFCapabilityFactory" class="org.opennaas.network.capability.ospf.NetOSPFCapabilityFactory">
+	<bean id="NetOSPFCapabilityFactory" class="org.opennaas.extensions.network.capability.ospf.NetOSPFCapabilityFactory">
 		<property name="type" value="netospf"/>
 	</bean>
 	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
@@ -25,7 +25,7 @@
 		</service-properties>
 	</service>
 	
-	<bean id="resourceNameCompleter" class="org.opennaas.network.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.network.capability.ospf.shell.completers.ResourceNameCompleter"/>
 	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<entry key="capability" value="netospf"/>
@@ -34,7 +34,7 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="netospf/activate">
-			<action class="org.opennaas.network.capability.ospf.shell.ActivateCommand"/>
+			<action class="org.opennaas.extensions.network.capability.ospf.shell.ActivateCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

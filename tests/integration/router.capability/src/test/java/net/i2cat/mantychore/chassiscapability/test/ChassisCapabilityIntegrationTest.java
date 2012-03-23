@@ -1,8 +1,8 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -13,15 +13,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.IPProtocolEndpoint;
-import net.i2cat.mantychore.model.LogicalDevice;
-import net.i2cat.mantychore.model.LogicalPort;
-import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -82,11 +82,11 @@ public class ChassisCapabilityIntegrationTest
 	private ICapabilityFactory	chassisFactory;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer	routerService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.actionsets.junos)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.actionsets.junos)")
 	private BlueprintContainer	junosActionsetService;
 
 	@Configuration

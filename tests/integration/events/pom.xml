@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.nexus.tests.events</artifactId>
+	<artifactId>org.opennaas.tests.integration.events</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus :: Event management test</name>
 	<description>Event management implementation test</description>
@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-events</artifactId>
+			<artifactId>org.opennaas.core.events</artifactId>
 		</dependency>
 	</dependencies>
 </project>

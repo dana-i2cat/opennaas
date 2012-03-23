@@ -1,8 +1,8 @@
 package api;
 
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.LogicalDevice;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalDevice;
 
 public class CheckParametersHelper {
 

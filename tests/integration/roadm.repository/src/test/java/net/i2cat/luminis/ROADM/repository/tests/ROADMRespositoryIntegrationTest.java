@@ -1,19 +1,19 @@
-package net.i2cat.luminis.ROADM.repository.tests;
+package org.opennaas.extensions.roadm.repository.tests;
 
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.luminis.actionsets.wonesys.ActionConstants;
-import net.i2cat.mantychore.model.FCPort;
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
+import org.opennaas.extensions.router.model.FCPort;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
+import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,7 +49,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -73,11 +73,11 @@ public class ROADMRespositoryIntegrationTest
 	private IResourceManager	resourceManger;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
 	private BlueprintContainer	repositoryService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration

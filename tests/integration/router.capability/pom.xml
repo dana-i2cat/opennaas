@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.mantychore.tests.capability</artifactId>
+	<artifactId>org.opennaas.tests.integration.router.capability</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore capablity test</name>
 	<description>Mantychore capability Implementation test</description>
@@ -15,32 +15,32 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<!--  added dependencies to call capability -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

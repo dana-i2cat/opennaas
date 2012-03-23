@@ -26,84 +26,84 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-hsqldb</artifactId>
+			<artifactId>org.opennaas.core.hsqldb</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-persistence</artifactId>
+			<artifactId>org.opennaas.core.persistence</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-events</artifactId>
+			<artifactId>org.opennaas.core.events</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.bod.actionsets</artifactId>
+			<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
+			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-tests-mockprofile</artifactId>
+			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-features</artifactId>
+			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.wonesys</groupId>
-			<artifactId>com.wonesys.emsModule</artifactId>
+			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -111,59 +111,59 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.repository</artifactId>
+			<artifactId>org.opennaas.extensions.router.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.network.model</artifactId>
+			<artifactId>org.opennaas.extensions.network.model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+			<artifactId>org.opennaas.extensions.network.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+			<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+			<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.network.capability.queue</artifactId>
+			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicemix</groupId>
@@ -216,7 +216,7 @@
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
-								<descriptor>mvn:org.opennaas/opennaas-core-features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>

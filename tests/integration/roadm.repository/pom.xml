@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.luminis.tests.ROADM.repository</artifactId>
+	<artifactId>org.opennaas.tests.integration.roadm.repository</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Luminis ROADM repository test</name>
 	<description>Luminis ROADM repository test</description>
@@ -15,20 +15,20 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
 		</dependency>
 		<!-- Capabilities of Mantychore need to change for capabilities of luminis ROADM -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
 	</dependencies>
 </project>

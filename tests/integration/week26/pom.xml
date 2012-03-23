@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.mantychore.tests.sprints.week26</artifactId>
+	<artifactId>org.opennaas.tests.integration.week26</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Week 26 - Sprint tests</name>
 	<description>Week 26 - Sprint tests (interfaces and queue)</description>
@@ -20,15 +20,15 @@
 
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 	</dependencies>
 </project>

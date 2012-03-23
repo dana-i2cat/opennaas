@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- Maven parent  -->
 	<parent>
-		<artifactId>mantychore-bundles</artifactId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>net.i2cat.mantychore.repository</artifactId>
+	<artifactId>org.opennaas.extensions.router.repository</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
@@ -16,19 +16,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -36,7 +36,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -55,12 +55,10 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
-						<Bundle-Activator>net.i2cat.mantychore.repository.Activator</Bundle-Activator>
+						<Bundle-Activator>org.opennaas.extensions.router.repository.Activator</Bundle-Activator>
 						<Import-Package>org.slf4j,*</Import-Package>
 						<!--<Export-Package>
-						net.i2cat.mantychore.repository.*;version="${project.version}"
+						org.opennaas.extensions.router.repository.*;version="${project.version}"
 						</Export-Package>-->
 					</instructions>
 				</configuration>

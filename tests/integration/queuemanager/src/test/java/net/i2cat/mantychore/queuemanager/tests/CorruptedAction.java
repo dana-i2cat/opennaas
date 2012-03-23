@@ -1,8 +1,8 @@
-package net.i2cat.mantychore.queuemanager.tests;
+package org.opennaas.extensions.queuemanager.tests;
 
 import java.util.Vector;
 
-import net.i2cat.mantychore.protocols.netconf.NetconfProtocolSession;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSession;
 import net.i2cat.netconf.rpc.Error;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;

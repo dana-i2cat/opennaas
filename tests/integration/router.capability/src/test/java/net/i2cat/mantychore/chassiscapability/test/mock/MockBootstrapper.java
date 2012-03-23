@@ -1,6 +1,6 @@
 package net.i2cat.mantychore.chassiscapability.test.mock;
 
-import net.i2cat.mantychore.model.ComputerSystem;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

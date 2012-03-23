@@ -1,4 +1,4 @@
-package net.i2cat.luminis.protocols.wonesys.tests;
+package org.opennaas.extensions.roadm.wonesys.protocols.tests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -27,11 +27,11 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 
-import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
-import net.i2cat.luminis.commandsets.wonesys.WonesysResponse;
-import net.i2cat.luminis.commandsets.wonesys.commands.GetInventoryCommand;
-import net.i2cat.luminis.commandsets.wonesys.commands.psroadm.GetChannels;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysResponse;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.GetInventoryCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.psroadm.GetChannels;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
@@ -49,7 +49,7 @@ import org.opennaas.core.events.IEventManager;
 
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -65,7 +65,7 @@ public class SendCommandTest {
 	private IProtocolManager protocolManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	BlueprintContainer wonesysProtocolService;
 
 	private String			resourceId		= "Proteus-Pedrosa";

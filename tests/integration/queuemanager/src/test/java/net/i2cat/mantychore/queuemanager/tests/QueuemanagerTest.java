@@ -1,12 +1,12 @@
-package net.i2cat.mantychore.queuemanager.tests;
+package org.opennaas.extensions.queuemanager.tests;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -38,7 +38,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
@@ -65,11 +65,11 @@ public class QueuemanagerTest
 	private ICapabilityFactory		queueManagerFactory;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer		routerService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
     private BlueprintContainer		queueService;
 
 	@Configuration

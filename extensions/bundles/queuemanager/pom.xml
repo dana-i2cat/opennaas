@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- Maven parent  -->
 	<parent>
-		<artifactId>mantychore-bundles</artifactId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+	<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
@@ -17,11 +17,11 @@
 		<!--  it will be necessary to change the place the  -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 
 		<!-- 		<dependency>
@@ -45,15 +45,13 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
-						<Bundle-Activator>net.i2cat.mantychore.queuemanager.Activator</Bundle-Activator>
-						<Import-Package>!${project.artifactId},org.slf4j,
+						<Bundle-Activator>org.opennaas.extensions.queuemanager.Activator</Bundle-Activator>
+						<Import-Package>!net.i2cat.mantychore.queuemanager,org.slf4j,
 							org.apache.felix.service.command,				<!--  necessary to do karaf commands -->
 							*
 						</Import-Package>
 						<Export-Package>
-						net.i2cat.mantychore.queuemanager;version="${project.version}"
+						org.opennaas.extensions.queuemanager;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
