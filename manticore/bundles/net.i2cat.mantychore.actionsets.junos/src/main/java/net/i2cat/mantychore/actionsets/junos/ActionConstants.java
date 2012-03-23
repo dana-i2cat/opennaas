@@ -13,6 +13,10 @@ public class ActionConstants {
 	public static final String	DELETESUBINTERFACE					= "deletesubinterface";
 	public static final String	CONFIGURESUBINTERFACE				= "configureSubInterface";
 	public static final String	SETENCAPSULATION					= "setEncapsulation";
+	public static final String	SET_TAGGEDETHERNET_ENCAPSULATION	= "setTaggedEthEncapsulation";
+	public static final String	REMOVE_TAGGEDETHERNET_ENCAPSULATION	= "removeTaggedEthEncapsulation";
+	public static final String	SET_VLANID							= "setVlanId";
+
 	public static final String	CONFIGURESTATUS						= "configureStatus";
 	public static final String	SETINTERFACEDESCRIPTION				= "setInterfaceDescription";
 
@@ -47,5 +51,6 @@ public class ActionConstants {
 	public static final String	OSPF_REMOVE_INTERFACE_IN_AREA		= "removeOSPFInterfaceInArea";
 
 	// Static Route actionset
-	public static final String	STATIC_ROUTE_CREATE				= "createStaticRoute";
+	public static final String	STATIC_ROUTE_CREATE					= "createStaticRoute";
+
 }
