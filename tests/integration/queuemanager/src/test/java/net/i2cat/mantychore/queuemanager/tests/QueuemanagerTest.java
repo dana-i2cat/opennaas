@@ -8,6 +8,16 @@ import javax.inject.Inject;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IncorrectLifecycleStateException;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -19,22 +29,12 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
@@ -75,10 +75,10 @@ public class QueuemanagerTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeSwissboxFramework(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeSwissboxFramework(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class QueuemanagerTest
 	}
 
 	@Before
-	public void before() throws ProtocolException, CapabilityException {
+	public void before() throws ProtocolException, IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		/* initialize model */
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
@@ -115,6 +115,7 @@ public class QueuemanagerTest
 
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability.initialize();
 		queueManagerService = getService(bundleContext, IQueueManagerService.class, 20000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}

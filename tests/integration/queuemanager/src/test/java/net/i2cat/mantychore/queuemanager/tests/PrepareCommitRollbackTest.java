@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -19,6 +20,16 @@ import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.rpc.Query;
 import net.i2cat.netconf.rpc.QueryFactory;
 import net.i2cat.netconf.rpc.Reply;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IncorrectLifecycleStateException;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -30,14 +41,6 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
-
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -85,10 +88,10 @@ public class PrepareCommitRollbackTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeSwissboxFramework(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeSwissboxFramework(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -111,7 +114,7 @@ public class PrepareCommitRollbackTest
 	}
 
 	@Before
-	public void before() throws ProtocolException, CapabilityException {
+	public void before() throws ProtocolException, IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		mockResource = new MockResource();
 		mockResource.setModel(new ComputerSystem());
 		List<String> capabilities = new ArrayList<String>();
@@ -125,6 +128,7 @@ public class PrepareCommitRollbackTest
 
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability.initialize();
 		queueManagerService = getService(bundleContext, IQueueManagerService.class, 50000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}

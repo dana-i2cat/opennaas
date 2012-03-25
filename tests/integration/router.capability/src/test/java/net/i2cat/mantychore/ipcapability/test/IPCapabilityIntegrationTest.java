@@ -131,7 +131,7 @@ public class IPCapabilityIntegrationTest
 		Assert.assertNotNull(queueManagerFactory);
 
 		queueCapability = queueManagerFactory.create(mockResource);
-
+        queueCapability.initialize();
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		// Test elements not null
@@ -159,25 +159,25 @@ public class IPCapabilityIntegrationTest
 		log.info("TEST ip ACTION");
 
 		Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertTrue(resp.getStatus() == Status.OK);
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		Assert.assertEquals(resp.getStatus(), Status.OK);
+		Assert.assertEquals(resp.getErrors().size(), 0);
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertTrue(queue.size() == 1);
+		Assert.assertEquals(queue.size(), 1);
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
-		Assert.assertTrue(queueResponse.getResponses().size() == 1);
-		Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
-		Assert.assertTrue(queueResponse.getConfirmResponse().getStatus() == ActionResponse.STATUS.OK);
-		Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
+		Assert.assertEquals(queueResponse.getResponses().size(), 1);
+		Assert.assertEquals(queueResponse.getPrepareResponse().getStatus(), ActionResponse.STATUS.OK);
+		Assert.assertEquals(queueResponse.getConfirmResponse().getStatus(), ActionResponse.STATUS.OK);
+		Assert.assertEquals(queueResponse.getRestoreResponse().getStatus(), ActionResponse.STATUS.PENDING);
 
 		ActionResponse actionResponse = queueResponse.getResponses().get(0);
 		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 		for (Response response : actionResponse.getResponses()) {
-			Assert.assertTrue(response.getStatus() == Response.Status.OK);
+			Assert.assertEquals(response.getStatus(), Response.Status.OK);
 		}
 
 		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertTrue(queue.size() == 0);
+		Assert.assertEquals(queue.size(), 0);
 	}
 
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {

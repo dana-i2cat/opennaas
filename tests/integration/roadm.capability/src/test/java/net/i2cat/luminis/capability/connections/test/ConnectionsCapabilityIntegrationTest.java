@@ -123,7 +123,8 @@ public class ConnectionsCapabilityIntegrationTest
 		log.info("INFO: Before test, getting queue...");
 
 		queueCapability = queueManagerFactory.create(mockResource);
-
+		queueCapability.initialize();
+		
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
 
 		// Test elements not null
