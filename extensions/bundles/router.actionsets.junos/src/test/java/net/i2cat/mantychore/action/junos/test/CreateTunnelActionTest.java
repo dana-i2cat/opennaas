@@ -54,23 +54,19 @@ public class CreateTunnelActionTest {
 	 * Execute the action
 	 * 
 	 * @throws IOException
+	 * @throws ActionException
 	 */
 	@Test
-	public void executeActionTest() throws IOException {
+	public void executeActionTest() throws IOException, ActionException {
 		action.setModelToUpdate(new ComputerSystem());
 
 		// Add params
 		GRETunnelService greTunnelService = getGRETunnelService();
 		action.setParams(greTunnelService);
 
-		try {
-			ActionResponse response = action.execute(protocolsessionmanager);
-			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.CREATETUNNEL));
-		} catch (ActionException e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
+		ActionResponse response = action.execute(protocolsessionmanager);
+		Assert.assertTrue(response.getActionID()
+				.equals(ActionConstants.CREATETUNNEL));
 
 		net.i2cat.mantychore.model.System computerSystem = (net.i2cat.mantychore.model.System) action.getModelToUpdate();
 		Assert.assertNotNull(computerSystem);
@@ -86,7 +82,7 @@ public class CreateTunnelActionTest {
 
 		GRETunnelService greService = new GRETunnelService();
 		greService.setElementName("");
-		greService.setName("gre.1");
+		greService.setName("gr-0/1/1.2");
 
 		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
 		greConfig.setSourceAddress("147.56.89.62");

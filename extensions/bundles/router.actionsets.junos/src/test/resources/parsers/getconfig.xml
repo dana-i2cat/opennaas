@@ -9,7 +9,7 @@
 				</unit>
 			</interface>
 			<interface>
-				<name>gre</name>
+				<name>gr-0/1/0</name>
 				<unit>
 					<name>0</name>
 					<tunnel>
@@ -23,7 +23,7 @@
 								<name>10.1.1.1/24</name>
 							</address>
 						</inet>
-					</family>
+					</family>	
 				</unit>
 			</interface>
 			<interface>

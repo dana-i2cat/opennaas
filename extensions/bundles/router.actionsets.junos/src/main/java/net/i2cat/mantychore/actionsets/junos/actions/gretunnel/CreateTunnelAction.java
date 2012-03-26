@@ -19,8 +19,8 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 
 public class CreateTunnelAction extends JunosAction {
 
-	private static final String	NAME_PATTERN	= "gre.([\\d{1}&&[^0]])(\\d*)";
-
+	private static final String	NAME_PATTERN	= "gr-(\\d{1}/\\d{1}/\\d*)";
+	private static final String	PORT_PATTERN	= "\\d*";
 	private final Log			log				= LogFactory.getLog(CreateTunnelAction.class);
 
 	public CreateTunnelAction() {
@@ -75,9 +75,15 @@ public class CreateTunnelAction extends JunosAction {
 			Map<String, Object> extraParams = new HashMap<String, Object>();
 			extraParams.put("ipUtilsHelper", ipUtilsHelper);
 
+			String portNumber = null;
 			String name = ((GRETunnelService) params).getName();
-			String portNumber = name.split("\\.")[1];
+
+			if (name.contains("."))
+				portNumber = name.split("\\.")[1];
+			else
+				portNumber = "0";
 			name = name.split("\\.")[0];
+
 			((GRETunnelService) params).setName(name);
 			extraParams.put("portNumber", portNumber);
 
@@ -96,13 +102,19 @@ public class CreateTunnelAction extends JunosAction {
 	}
 
 	/**
-	 * Check if name has this patter gre.{x} where x >= 1
+	 * Checks if the interfaceName follows the gr-/x/x/x{.x} pattern
 	 * 
-	 * @param name
-	 * @return true if name has the pattern
+	 * @param interfaceName
+	 * @return true if name follows the indicated pattern
 	 */
-	private boolean checkNamePattern(String name) {
-		return name.matches(NAME_PATTERN);
+	private boolean checkNamePattern(String interfaceName) {
+		String name = interfaceName.split("\\.")[0];
+		String portNumber = null;
+		if (name.contains("."))
+			portNumber = interfaceName.split("\\.")[1];
+		if (portNumber != null)
+			return (name.matches(NAME_PATTERN) && (portNumber.matches(PORT_PATTERN)));
+		else
+			return (name.matches(NAME_PATTERN));
 	}
-
 }

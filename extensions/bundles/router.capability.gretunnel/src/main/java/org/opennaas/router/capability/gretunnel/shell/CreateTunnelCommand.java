@@ -1,8 +1,11 @@
 package org.opennaas.router.capability.gretunnel.shell;
 
+import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.GREService;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
+import net.i2cat.mantychore.model.ProtocolEndpoint;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -21,8 +24,8 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to create the GRE Tunnel", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "tunnelName", description = "Name of the tunnel to create", required = true, multiValued = false)
-	private String	tunnelName;
+	@Argument(index = 1, name = "interfaceName", description = "GRE interface name", required = true, multiValued = false)
+	private String	interfaceName;
 
 	@Argument(index = 2, name = "ipv4Address", description = "IP of the tunnel", required = true, multiValued = false)
 	private String	ipv4Address;
@@ -61,13 +64,31 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		}
 	}
 
+	// TODO change this function when we fix the showconfiguration command.
+	// so we will be able to know which GRE interface it's in use at the Router.
+
 	/**
 	 * @return GRETunnelService with the in parameters setted
+	 * @throws Exception
 	 */
-	private GRETunnelService getTunnelService() {
+	private GRETunnelService getTunnelService() throws Exception {
 		// Create the GRETunnelService
+
+		IResource router = getResourceFromFriendlyName(resourceId);
+		ComputerSystem model = (ComputerSystem) router.getModel();
+		GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
+
+		boolean found = false;
+		for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+			if (pE.getName().equals(interfaceName))
+				found = true;
+		}
+		if (!found)
+			throw new Exception("GRE Interface not available at this router.");
+
 		GRETunnelService greTunnelService = new GRETunnelService();
-		greTunnelService.setName(tunnelName);
+
+		greTunnelService.setName(interfaceName);
 
 		// Create the tunnel configuration
 		GRETunnelConfiguration greTunnelConfiguration = new GRETunnelConfiguration();

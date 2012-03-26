@@ -3,10 +3,16 @@
  */
 package org.opennaas.router.tests.capability;
 
-import java.io.File;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
+import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import net.i2cat.mantychore.model.ComputerSystem;
@@ -16,12 +22,11 @@ import net.i2cat.mantychore.model.GRETunnelService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
-import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -33,19 +38,13 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.router.capability.gretunnel.IGRETunnelService;
 import org.opennaas.router.tests.capability.mock.MockBootstrapper;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
 
 /**
  * @author Jordi
@@ -54,7 +53,7 @@ import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
 public abstract class GRETunnelIntegrationTest
 {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	protected static final String	TUNNEL_NAME		= "gre.1";
+	protected static final String	TUNNEL_NAME		= "gr-1/0/3.1";
 	protected static final String	IPV4_ADDRESS	= "192.168.32.1";
 	protected static final String	SUBNET_MASK		= "255.255.255.0";
 	protected static final String	IP_SOURCE		= "147.56.89.62";
@@ -79,30 +78,30 @@ public abstract class GRETunnelIntegrationTest
 	@Filter("(capability=gretunnel)")
 	private ICapabilityFactory		gretunnelFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-    private BlueprintContainer		routerRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+	private BlueprintContainer		routerRepositoryService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
-    private BlueprintContainer		queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+	private BlueprintContainer		queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=opennaas.extension.router.capability.gretunnel)")
-    private BlueprintContainer		gretunnelService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=opennaas.extension.router.capability.gretunnel)")
+	private BlueprintContainer		gretunnelService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	@Before
 	public void initBundles()
-		throws CapabilityException, IncorrectLifecycleStateException,
-			   ResourceException, CorruptStateException, ProtocolException
+			throws CapabilityException, IncorrectLifecycleStateException,
+			ResourceException, CorruptStateException, ProtocolException
 	{
 		initResource();
 		initCapability();
@@ -134,8 +133,8 @@ public abstract class GRETunnelIntegrationTest
 	 * Initialize the Queue and GRETunnel capabilies
 	 */
 	public void initCapability()
-		throws CapabilityException, IncorrectLifecycleStateException,
-			   ResourceException, CorruptStateException, ProtocolException
+			throws CapabilityException, IncorrectLifecycleStateException,
+			ResourceException, CorruptStateException, ProtocolException
 	{
 		log.info("INFO: Before Test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
@@ -171,7 +170,7 @@ public abstract class GRETunnelIntegrationTest
 
 	/**
 	 * Get the GRETunnelService
-	 *
+	 * 
 	 * @return GRETunnelService
 	 * @throws IOException
 	 */

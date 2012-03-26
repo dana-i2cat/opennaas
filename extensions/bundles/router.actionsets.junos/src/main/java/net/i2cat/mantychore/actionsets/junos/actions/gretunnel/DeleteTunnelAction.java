@@ -20,7 +20,9 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
  */
 public class DeleteTunnelAction extends JunosAction {
 
-	private static final String	NAME_PATTERN		= "gre.([\\d{1}&&[^0]])(\\d*)";
+	private static final String	NAME_PATTERN		= "gr-(\\d{1}/\\d{1}/\\d*)";
+	private static final String	PORT_PATTERN		= "\\d*";
+
 	private static final String	VELOCITY_TEMPLATE	= "/VM_files/deleteTunnel.vm";
 	private static final String	PROTOCOL_NAME		= "netconf";
 
@@ -108,7 +110,7 @@ public class DeleteTunnelAction extends JunosAction {
 		if (!(params instanceof GRETunnelService))
 			throw new ActionException(getActionID() + " only accept GRE Tunnel Services as params.");
 		if (!checkPatternName(((GRETunnelService) params).getName()))
-			throw new ActionException("The name of the GRE tunnel must have the following format -> gre.[1..n]");
+			throw new ActionException("The name of the GRE tunnel must have the following format -> gr-x/y/z{.a}");
 		if (!checkExistsName(((GRETunnelService) params).getName()))
 			throw new ActionException("The name of the GRE tunnel not exist in this router");
 		return true;
@@ -145,7 +147,7 @@ public class DeleteTunnelAction extends JunosAction {
 	 */
 	private String getPortNumber() {
 		String[] name = ((GRETunnelService) params).getName().split("\\.");
-		return name.length > 1 ? name[1] : null;
+		return name.length > 1 ? name[1] : "0";
 	}
 
 	/**
@@ -157,13 +159,20 @@ public class DeleteTunnelAction extends JunosAction {
 	}
 
 	/**
-	 * Check if name has this patter gre.{x} where x >= 1
+	 * Checks if the interfaceName follows the gr-/x/x/x{.x} pattern
 	 * 
-	 * @param name
-	 * @return true if name has the pattern
+	 * @param interfaceName
+	 * @return true if name follows the indicated pattern
 	 */
-	private boolean checkPatternName(String name) {
-		return name.matches(NAME_PATTERN);
+	private boolean checkPatternName(String interfaceName) {
+		String name = interfaceName.split("\\.")[0];
+		String portNumber = null;
+		if (name.contains("."))
+			portNumber = interfaceName.split("\\.")[1];
+		if (portNumber != null)
+			return (name.matches(NAME_PATTERN) && (portNumber.matches(PORT_PATTERN)));
+		else
+			return (name.matches(NAME_PATTERN));
 	}
 
 	/**
