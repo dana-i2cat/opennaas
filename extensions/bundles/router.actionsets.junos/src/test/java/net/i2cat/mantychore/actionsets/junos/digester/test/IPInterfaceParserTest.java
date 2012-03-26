@@ -10,6 +10,7 @@ import junit.framework.Assert;
 import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GREService;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
@@ -109,6 +110,31 @@ public class IPInterfaceParserTest {
 		log.info(str);
 	}
 
+	@Test
+	public void testGreServiceCreatedwithGRE() throws Exception {
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getconfig.xml");
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
+		Assert.assertEquals("There should be a GREService if a gre interface is present.", greServiceList.size(), 1);
+
+		GREService greService = greServiceList.get(0);
+
+		Assert.assertEquals("There GREService name should be gr-0/1/0 and not " + greService.getName(), greService.getName(), "gr-0/1/0");
+		Assert.assertTrue("The number of GRE Services in the model are not the same as the number of GRE in the config file", greService
+				.getProtocolEndpoint().size() == 1);
+
+		ProtocolEndpoint pE = greService.getProtocolEndpoint().get(0);
+		log.info(pE.getName());
+		Assert.assertEquals("The name of the GRE interface should be gr-0/1/0.0 and not " + pE.getName(), pE.getName(), "gr-0/1/0.0");
+
+	}
+
 	private String printGRETunnels(System model) {
 		String str = "";
 		int greCount = 0;
@@ -144,8 +170,9 @@ public class IPInterfaceParserTest {
 				}
 				Assert.assertTrue(protocolEpCount > 0);
 			}
-			Assert.assertTrue("There is only one gre service (we know in config there's only one)", greCount == 1);
 		}
+		Assert.assertTrue("There is only one gre, but it's not configured (we know in config there's only one)", greCount == 1);
+
 		return str;
 	}
 

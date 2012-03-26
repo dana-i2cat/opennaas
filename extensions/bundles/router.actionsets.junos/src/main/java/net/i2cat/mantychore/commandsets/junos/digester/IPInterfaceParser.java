@@ -2,9 +2,11 @@ package net.i2cat.mantychore.commandsets.junos.digester;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.i2cat.mantychore.commandsets.junos.commons.IPUtilsHelper;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GREService;
 import net.i2cat.mantychore.model.GRETunnelConfiguration;
 import net.i2cat.mantychore.model.GRETunnelEndpoint;
 import net.i2cat.mantychore.model.GRETunnelService;
@@ -31,6 +33,8 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	private System				model;
 
+	String						portNumber				= "";
+
 	String						location				= "";
 
 	VLANEndpoint				vlanEndpoint			= null;
@@ -41,7 +45,9 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	long						peerUnit				= 0;
 
-	public ArrayList<String>	disableInterface		= new ArrayList<String>();
+	private ArrayList<String>	disableInterface		= new ArrayList<String>();
+
+	private static String		GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
 
 	/** vlan info **/
 
@@ -84,8 +90,6 @@ public class IPInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/unit/tunnel/key", "setGRETunnelKey", 0);
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
-
-			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
 		}
 	}
@@ -138,12 +142,26 @@ public class IPInterfaceParser extends DigesterEngine {
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getName() + Integer.toString(ethernetPort.getPortNumber());
 
-		if (flagGT) {
-			addGreTunnel(ethernetPort);
-			flagGT = false;
-			gretunnelConfiguration = null;
-		}
-		else if (flagLT) {
+		if (ethernetPort.getName().startsWith("gr-")) {
+
+			GREService greService = new GREService();
+			List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
+			if (greServiceList.isEmpty()) {
+				greService.setName(ethernetPort.getName());
+				model.addHostedService(greService);
+			} else {
+				greService = greServiceList.get(0);
+			}
+			ProtocolEndpoint pE = new ProtocolEndpoint();
+			pE.setName(ethernetPort.getName() + '.' + ethernetPort.getPortNumber());
+			greService.addProtocolEndpoint(pE);
+
+			if (flagGT) {
+				addGreTunnel(ethernetPort);
+				flagGT = false;
+				gretunnelConfiguration = null;
+			}
+		} else if (flagLT) {
 			LogicalTunnelPort lt = new LogicalTunnelPort();
 			lt.setName(ethernetPort.getName());
 			lt.setPortNumber(ethernetPort.getPortNumber());
@@ -219,6 +237,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		// ethernetPort.setOtherPortType(location + "." + name);
 		ethernetPort.setName(location);
 		ethernetPort.setPortNumber(Integer.parseInt(name));
+		portNumber = name;
 	}
 
 	public void setDescription(String description) {

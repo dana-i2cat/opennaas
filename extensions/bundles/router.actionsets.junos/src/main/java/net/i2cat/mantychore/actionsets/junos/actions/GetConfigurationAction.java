@@ -10,6 +10,7 @@ import net.i2cat.mantychore.commandsets.junos.digester.IPInterfaceParser;
 import net.i2cat.mantychore.commandsets.junos.digester.ListLogicalRoutersParser;
 import net.i2cat.mantychore.commandsets.junos.digester.RoutingOptionsParser;
 import net.i2cat.mantychore.model.ComputerSystem;
+import net.i2cat.mantychore.model.GREService;
 import net.i2cat.mantychore.model.GRETunnelService;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ManagedElement;
@@ -148,6 +149,7 @@ public class GetConfigurationAction extends JunosAction {
 		routerModel.removeAllLogicalDeviceByType(NetworkPort.class);
 		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
+		routerModel.removeAllHostedServicesByType(GREService.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();
