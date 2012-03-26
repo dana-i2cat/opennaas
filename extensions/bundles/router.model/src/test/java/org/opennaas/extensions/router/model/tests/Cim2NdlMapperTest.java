@@ -1,27 +1,27 @@
-package net.i2cat.mantychore.model.tests;
+package org.opennaas.extensions.router.model.tests;
 
 import java.util.List;
 
 import junit.framework.Assert;
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.IPProtocolEndpoint;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.System;
-import net.i2cat.mantychore.model.VLANEndpoint;
-import net.i2cat.mantychore.model.mappers.Cim2NdlMapper;
-import net.i2cat.mantychore.network.model.NetworkModel;
-import net.i2cat.mantychore.network.model.NetworkModelHelper;
-import net.i2cat.mantychore.network.model.technology.ethernet.EthernetLayer;
-import net.i2cat.mantychore.network.model.technology.ethernet.TaggedEthernetLayer;
-import net.i2cat.mantychore.network.model.technology.ip.IPLayer;
-import net.i2cat.mantychore.network.model.topology.ConnectionPoint;
-import net.i2cat.mantychore.network.model.topology.Device;
-import net.i2cat.mantychore.network.model.topology.Interface;
-import net.i2cat.mantychore.network.model.topology.Link;
-import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 import org.junit.Test;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetLayer;
+import org.opennaas.extensions.network.model.technology.ethernet.TaggedEthernetLayer;
+import org.opennaas.extensions.network.model.technology.ip.IPLayer;
+import org.opennaas.extensions.network.model.topology.ConnectionPoint;
+import org.opennaas.extensions.network.model.topology.Device;
+import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.mappers.Cim2NdlMapper;
 
 public class Cim2NdlMapperTest {
 
