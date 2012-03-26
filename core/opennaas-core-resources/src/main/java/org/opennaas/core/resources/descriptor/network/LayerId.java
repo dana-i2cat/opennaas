@@ -5,7 +5,7 @@ import javax.persistence.Embeddable;
 import javax.xml.bind.annotation.XmlAttribute;
 
 @Embeddable
-public class InterfaceId {
+public class LayerId {
 
 	@Basic
 	private String	resource;
@@ -21,6 +21,6 @@ public class InterfaceId {
 
 	@Override
 	public String toString() {
-		return "InterfaceId [resource=" + resource + "]";
+		return "LayerId [resource=" + resource + "]";
 	}
 }

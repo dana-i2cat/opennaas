@@ -13,6 +13,8 @@ import net.i2cat.mantychore.network.model.topology.NetworkElement;
 
 import org.opennaas.core.resources.descriptor.network.DeviceId;
 import org.opennaas.core.resources.descriptor.network.InterfaceId;
+import org.opennaas.core.resources.descriptor.network.Layer;
+import org.opennaas.core.resources.descriptor.network.LayerId;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class NetworkMapperModelToDescriptor {
@@ -46,6 +48,7 @@ public class NetworkMapperModelToDescriptor {
 			for (Device device : networkDomain.getHasDevice()) {
 				deviceIds.add(newDeviceId(device.getName()));
 			}
+
 			networkDomainDescriptor.setHasDevices(deviceIds);
 		}
 
@@ -82,6 +85,7 @@ public class NetworkMapperModelToDescriptor {
 		networkTopology.setDevices(existingDevices);
 		networkTopology.setInterfaces(existingInterfaces);
 		networkTopology.setNetworkDomains(existingDomains);
+		networkTopology.setLayers(getLayers(networkModel));
 
 		return networkTopology;
 	}
@@ -91,6 +95,16 @@ public class NetworkMapperModelToDescriptor {
 			return "#" + name;
 		else
 			return name;
+	}
+
+	private static List<Layer> getLayers(NetworkModel networkModel) {
+		List<Layer> layers = new ArrayList<Layer>();
+		for (net.i2cat.mantychore.network.model.layer.Layer layer : NetworkModelHelper.getLayers(networkModel.getNetworkElements())) {
+			Layer descriptorLayer = new Layer();
+			descriptorLayer.setName(layer.getName());
+			layers.add(descriptorLayer);
+		}
+		return layers;
 	}
 
 	private static int getNetworkDomain(String name, List<org.opennaas.core.resources.descriptor.network.NetworkDomain> existingDomains) {
@@ -140,7 +154,10 @@ public class NetworkMapperModelToDescriptor {
 
 	private static org.opennaas.core.resources.descriptor.network.Interface newInterface(Interface networkElement) {
 		org.opennaas.core.resources.descriptor.network.Interface interf = new org.opennaas.core.resources.descriptor.network.Interface();
+		LayerId layerId = new LayerId();
+		layerId.setResource(networkElement.getLayer().getName());
 		interf.setName(networkElement.getName());
+		interf.setAtLayer(layerId);
 		return interf;
 	}
 

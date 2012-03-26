@@ -3,13 +3,10 @@ package org.opennaas.core.resources.descriptor.network;
 import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 
 @Entity
@@ -17,13 +14,13 @@ public class Device {
 
 	@Id
 	@GeneratedValue
-	private long 					id;
+	private long		id;
 
 	@Basic
-	String name;
+	String				name;
 
 	@ElementCollection
-	List<InterfaceId> hasInterfaces;
+	List<InterfaceId>	hasInterfaces;
 
 	@XmlElement(name = "name", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getName() {
@@ -42,7 +39,6 @@ public class Device {
 	public void setHasInterfaces(List<InterfaceId> hasInterfaces) {
 		this.hasInterfaces = hasInterfaces;
 	}
-
 
 	@Override
 	public String toString() {

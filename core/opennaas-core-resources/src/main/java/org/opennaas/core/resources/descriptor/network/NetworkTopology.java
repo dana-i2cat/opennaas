@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -14,28 +11,28 @@ import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
 @Entity
-@XmlRootElement(name="RDF", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+@XmlRootElement(name = "RDF", namespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 public class NetworkTopology {
 
 	@Id
 	@GeneratedValue
-	private long 					id;
+	private long				id;
 
 	@Basic
-	private String location;
-
-
-	@OneToMany(cascade = CascadeType.ALL)
-	private List<NetworkDomain> networkDomains;
-
+	private String				location;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Device> devices;
+	private List<NetworkDomain>	networkDomains;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	private	List<Interface> interfaces;
+	private List<Device>		devices;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Layer>			layers;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Interface>		interfaces;
 
 	public String getLocation() {
 		return location;
@@ -59,6 +56,15 @@ public class NetworkTopology {
 		return devices;
 	}
 
+	@XmlElement(name = "Layer", namespace = "http://www.science.uva.nl/research/sne/ndl#")
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public void setLayers(List<Layer> layers) {
+		this.layers = layers;
+	}
+
 	public void setDevices(List<Device> devices) {
 		this.devices = devices;
 	}
@@ -74,7 +80,7 @@ public class NetworkTopology {
 
 	@Override
 	public String toString() {
-		return "RDF [Location=" + location+ ", NetworkDomain=" + networkDomains + ", devices=" + devices
+		return "RDF [Location=" + location + ", NetworkDomain=" + networkDomains + ", devices=" + devices
 				+ ", interfaces=" + interfaces + "]";
 	}
 
