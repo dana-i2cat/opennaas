@@ -28,6 +28,8 @@ public class SetTaggedEthernetEncapsulationAction extends JunosAction {
 
 		// TODO Check params is in current candidate configuration
 
+		// TODO Check params does not have subinterfaces without configured vlan-id
+
 		EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
 		command.initialize();
 

@@ -4,6 +4,7 @@ import static com.google.common.base.Strings.nullToEmpty;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
@@ -12,11 +13,12 @@ import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
-import net.i2cat.mantychore.model.VLANEndpoint;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+
+import com.google.common.collect.Iterables;
 
 public class SetVlanIdAction extends JunosAction {
 
@@ -63,10 +65,8 @@ public class SetVlanIdAction extends JunosAction {
 			throw new ActionException("Vlan configuration in loopback interfaces is not supported.");
 		}
 
-		VLANEndpoint vlanEndpoint = getIfaceVLANEndpoint(((NetworkPort) params));
-
-		if (!isValidVlanId(vlanEndpoint.getVlanID())) {
-			throw new ActionException("Invalid vlanId. It must fit in 12 bits.");
+		if (!isValidVlanId(obtainDesiredVlanId((NetworkPort) params))) {
+			throw new ActionException("Invalid vlanId. Valid range is [0, 4096)");
 		}
 
 		return true;
@@ -81,11 +81,9 @@ public class SetVlanIdAction extends JunosAction {
 
 		String logicalRouterName = nullToEmpty(((ComputerSystem) modelToUpdate).getElementName());
 
-		VLANEndpoint vlanEndpoint = getIfaceVLANEndpoint(((NetworkPort) params));
-
 		Map<String, Object> extraParams = new HashMap<String, Object>();
 		extraParams.put("elementName", logicalRouterName);
-		extraParams.put("vlanId", vlanEndpoint.getVlanID());
+		extraParams.put("vlanId", obtainDesiredVlanId((NetworkPort) params));
 
 		try {
 			setVelocityMessage(prepareVelocityCommand(params, template, extraParams));
@@ -124,19 +122,13 @@ public class SetVlanIdAction extends JunosAction {
 		return (interfaceName.startsWith("lo"));
 	}
 
-	private VLANEndpoint getIfaceVLANEndpoint(NetworkPort networkPort) throws ActionException {
-		VLANEndpoint vlanEndpoint = null;
-		for (ProtocolEndpoint endpoint : ((NetworkPort) params).getProtocolEndpoint()) {
-			if (endpoint instanceof VLANEndpoint) {
-				vlanEndpoint = (VLANEndpoint) endpoint;
-				break;
-			}
+	private int obtainDesiredVlanId(NetworkPort networkPort) throws ActionException {
+		try {
+			ProtocolEndpoint endpoint = Iterables.getOnlyElement(networkPort.getProtocolEndpoint());
+			return Integer.parseInt(endpoint.getName()); // endpoint name stores the encapsulation label (vlanId in this case)
+		} catch (NoSuchElementException e) {
+			throw new ActionException("Invalid parameter. A vlanId must be specified.");
 		}
-		if (vlanEndpoint == null) {
-			throw new ActionException("Invalid parameter. NetworkPort must have a VLANEndpoint");
-		}
-
-		return vlanEndpoint;
 	}
 
 	private void setTemplateAccordingToParamsType(LogicalPort params) throws ActionException {

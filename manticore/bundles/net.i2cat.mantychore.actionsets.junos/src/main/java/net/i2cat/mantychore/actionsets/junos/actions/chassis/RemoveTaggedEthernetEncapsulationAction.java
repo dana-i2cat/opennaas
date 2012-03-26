@@ -11,6 +11,7 @@ import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
+import net.i2cat.mantychore.model.NetworkPort;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -27,6 +28,8 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
 		// TODO Check params is in current candidate configuration and has tagged ethernet encapsulation
+
+		// TODO Check params does not have subinterfaces with configured vlan-id
 
 		EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
 		command.initialize();
@@ -109,7 +112,7 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 	}
 
 	private boolean isLogicalInterface(LogicalPort iface) {
-		return isLogicalInterfaceName(iface.getName());
+		return (iface instanceof NetworkPort);
 	}
 
 	private boolean isEthernetInterface(LogicalPort iface) {
@@ -122,10 +125,6 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 
 	private boolean isLoopbackInterface(LogicalPort iface) {
 		return isLoopbackInterfaceName(iface.getName());
-	}
-
-	private boolean isLogicalInterfaceName(String interfaceName) {
-		return interfaceName.contains(".");
 	}
 
 	private boolean isEthernetInterfaceName(String interfaceName) {
