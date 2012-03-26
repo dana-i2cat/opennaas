@@ -1,11 +1,5 @@
 package org.opennaas.extensions.router.capability.gretunnel.shell;
 
-
-
-import org.opennaas.extensions.router.model.GRETunnelConfiguration;
-import org.opennaas.extensions.router.model.GRETunnelEndpoint;
-import org.opennaas.extensions.router.model.GRETunnelService;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -13,6 +7,12 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.gretunnel.GRETunnelCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GREService;
+import org.opennaas.extensions.router.model.GRETunnelConfiguration;
+import org.opennaas.extensions.router.model.GRETunnelEndpoint;
+import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 
 /**
  * @author Jordi Puig
