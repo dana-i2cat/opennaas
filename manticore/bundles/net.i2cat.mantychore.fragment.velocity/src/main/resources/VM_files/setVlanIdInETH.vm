@@ -10,7 +10,10 @@
 	<interfaces>
 		<interface>
 			<name>$param.getName()</name>
-			<vlan-tagging/>
+			<unit>
+				<name>$param.getPortNumber()</name>
+				<vlan-id>$vlanId</vlan-id>
+			</unit>
 		</interface>
 	</interfaces>
 	#if($logicalRouter.equals("true"))
