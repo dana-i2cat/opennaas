@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.mantychore.tests.capability.queue</artifactId>
+	<artifactId>org.opennaas.tests.integration.queuemanager</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Mantychore queue test</name>
 	<description>Mantychore Queue Test test</description>
@@ -15,15 +15,15 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>

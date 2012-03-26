@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.AbstractKarafCommandTest;
+import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -41,7 +41,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -62,15 +62,15 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 	private IProtocolManager	protocolManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer	routerRepositoryService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
     private BlueprintContainer	ipService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
     private BlueprintContainer	queueService;
 
 	@Configuration

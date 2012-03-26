@@ -16,11 +16,11 @@
 -->
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-	<bean id="gretunnelCapabilityFactory" class="org.opennaas.router.capability.gretunnel.GRETunnelCapabilityFactory">
+	<bean id="gretunnelCapabilityFactory" class="org.opennaas.extensions.router.capability.gretunnel.GRETunnelCapabilityFactory">
 		<property name="type" value="gretunnel"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.router.capability.gretunnel.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.gretunnel.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="gretunnelCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -33,21 +33,21 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="gretunnel/show">
-			<action class="org.opennaas.router.capability.gretunnel.shell.ShowTunnelsCommand"/>
+			<action class="org.opennaas.extensions.router.capability.gretunnel.shell.ShowTunnelsCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="gretunnel/create">
-			<action class="org.opennaas.router.capability.gretunnel.shell.CreateTunnelCommand"/>
+			<action class="org.opennaas.extensions.router.capability.gretunnel.shell.CreateTunnelCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="gretunnel/delete">
-			<action class="org.opennaas.router.capability.gretunnel.shell.DeleteTunnelCommand"/>
+			<action class="org.opennaas.extensions.router.capability.gretunnel.shell.DeleteTunnelCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

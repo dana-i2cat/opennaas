@@ -37,7 +37,7 @@ import org.osgi.service.event.EventHandler;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -59,7 +59,7 @@ public class AlarmsInProtocolSessionManagerTest implements EventHandler {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-core"),
+					   includeFeatures("org.opennaas.core"),
 					   noConsole(),
 					   keepRuntimeFolder());
 	}

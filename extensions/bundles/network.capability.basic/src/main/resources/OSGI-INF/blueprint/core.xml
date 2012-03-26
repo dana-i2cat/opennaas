@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="networkBasicCapabilityFactory" class="net.i2cat.mantychore.network.capability.basic.NetworkBasicCapabilityFactory">
+	<bean id="networkBasicCapabilityFactory" class="org.opennaas.extensions.network.capability.basic.NetworkBasicCapabilityFactory">
 		<property name="type" value="basicNetwork"/>
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
@@ -12,39 +12,39 @@
 		</service-properties>
 	</service>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.network.capability.basic.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.network.capability.basic.shell.completers.ResourceNameCompleter"/>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="net/listResources">
-			<action class="net.i2cat.mantychore.network.capability.basic.shell.ListResourcesCommand"/>
+			<action class="org.opennaas.extensions.network.capability.basic.shell.ListResourcesCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="net/addResource">
-			<action class="net.i2cat.mantychore.network.capability.basic.shell.AddResourceToNetworkCommand"/>
+			<action class="org.opennaas.extensions.network.capability.basic.shell.AddResourceToNetworkCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="net/removeResource">
-			<action class="net.i2cat.mantychore.network.capability.basic.shell.RemoveResourceFromNetworkCommand"/>
+			<action class="org.opennaas.extensions.network.capability.basic.shell.RemoveResourceFromNetworkCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="net/l2attach">
-			<action class="net.i2cat.mantychore.network.capability.basic.shell.L2AttachCommand"/>
+			<action class="org.opennaas.extensions.network.capability.basic.shell.L2AttachCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="net/l2detach">
-			<action class="net.i2cat.mantychore.network.capability.basic.shell.L2DetachCommand"/>
+			<action class="org.opennaas.extensions.network.capability.basic.shell.L2DetachCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

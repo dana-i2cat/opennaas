@@ -1,12 +1,12 @@
 package net.i2cat.luminis.actions.tests;
 
-import net.i2cat.luminis.commandsets.wonesys.WonesysCommand;
-import net.i2cat.luminis.commandsets.wonesys.commands.LockNodeCommand;
-import net.i2cat.luminis.commandsets.wonesys.commands.UnlockNodeCommand;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.LockNodeCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.UnlockNodeCommand;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
 
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import java.io.File;
 import javax.inject.Inject;
 
@@ -28,7 +28,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

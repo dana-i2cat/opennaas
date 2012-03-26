@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.mantychore.tests.sprints.week35</artifactId>
+	<artifactId>org.opennaas.tests.integration.week35</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Week 35 - Sprint tests</name>
 	<description>Week 35 - Sprint tests (auto-refresh)</description>
@@ -15,19 +15,19 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -3,9 +3,9 @@
  */
 package org.opennaas.router.tests.capability.ospf;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -67,7 +67,7 @@ public abstract class OSPFIntegrationTest
 	protected BundleContext			bundleContext;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.protocols.netconf)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
 	private BlueprintContainer		netconfService;
 
 	private static final Log		log						= LogFactory

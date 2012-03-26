@@ -17,7 +17,7 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="ipCapabilityFactory" class="net.i2cat.mantychore.capability.ip.IPCapabilityFactory">
+	<bean id="ipCapabilityFactory" class="org.opennaas.extensions.router.capability.ip.IPCapabilityFactory">
 		<property name="type" value="ipv4"/>
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
@@ -30,25 +30,25 @@
 		</service-properties>
 	</service>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.capability.ip.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.ip.shell.completers.ResourceNameCompleter"/>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="ipv4/list">
-			<action class="net.i2cat.mantychore.capability.ip.shell.ListInterfacesCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ip.shell.ListInterfacesCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ipv4/setIP">
-			<action class="net.i2cat.mantychore.capability.ip.shell.SetIPv4Command"/>
+			<action class="org.opennaas.extensions.router.capability.ip.shell.SetIPv4Command"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="ipv4/setInterfaceDescription">
-			<action class="net.i2cat.mantychore.capability.ip.shell.SetInterfaceDescriptionCommand"/>
+			<action class="org.opennaas.extensions.router.capability.ip.shell.SetInterfaceDescriptionCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

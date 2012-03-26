@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.i2cat.mantychore.model.LogicalPort;
-import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.NetworkPort.LinkTechnology;
-import net.i2cat.mantychore.model.OSPFArea;
-import net.i2cat.mantychore.model.OSPFArea.AreaType;
-import net.i2cat.mantychore.model.OSPFAreaConfiguration;
-import net.i2cat.mantychore.model.OSPFProtocolEndpoint;
-import net.i2cat.mantychore.model.OSPFService;
-import net.i2cat.mantychore.model.utils.ModelHelper;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,7 +23,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 

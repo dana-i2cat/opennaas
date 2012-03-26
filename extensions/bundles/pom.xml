@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<parent>
-		<artifactId>base-mantychore</artifactId>
+		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<name>Mantychore Bundles</name>
-	<artifactId>mantychore-bundles</artifactId>
+	<artifactId>org.opennaas.extensions.bundles</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>org.easymock</groupId>
@@ -21,8 +21,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<!-- mvn build will only recurse on pom.xml inside this folders: -->
-	<!-- include your project here -->
 	<modules>
 		<module>router.actionsets.junos</module>
 		<module>router.repository</module>
@@ -31,7 +29,7 @@
 		<module>router.capability.gretunnel</module>
 		<module>router.capability.ospf</module>
 		<module>router.capability.staticroute</module>
-                <module>router.model</module>
+		<module>router.model</module>
 
 		<module>fragment.velocity</module>
 		<module>protocols.netconf</module>

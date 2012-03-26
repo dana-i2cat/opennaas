@@ -1,9 +1,9 @@
 package org.opennaas.network.tests.capability.ospf;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -14,10 +14,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.network.capability.basic.ITopologyManager;
-import net.i2cat.mantychore.queuemanager.IQueueManagerService;
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.network.capability.basic.ITopologyManager;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,7 +35,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.network.capability.ospf.INetOSPFService;
+import org.opennaas.extensions.network.capability.ospf.INetOSPFService;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;

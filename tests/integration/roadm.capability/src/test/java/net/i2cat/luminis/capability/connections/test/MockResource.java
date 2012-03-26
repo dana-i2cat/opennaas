@@ -1,4 +1,4 @@
-package net.i2cat.luminis.capability.connections.test;
+package org.opennaas.extensions.roadm.capability.connections.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,10 +1,10 @@
 package helpers;
 
-import net.i2cat.mantychore.model.EthernetPort;
-import net.i2cat.mantychore.model.IPProtocolEndpoint;
-import net.i2cat.mantychore.model.LogicalTunnelPort;
-import net.i2cat.mantychore.model.NetworkPort;
-import net.i2cat.mantychore.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 
 public class ParamCreationHelper {
 

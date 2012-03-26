@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -37,7 +37,7 @@ import org.osgi.service.event.Event;
 import org.osgi.service.event.EventAdmin;
 import org.osgi.service.event.EventHandler;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -67,15 +67,15 @@ public class L2BoDCapabilityIntegrationTest
 	private IResourceManager	resourceManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.actionsets)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.actionsets.dummy)")
     private BlueprintContainer	actionSetService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.capability.l2bod)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
     private BlueprintContainer	l2bodService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.bod.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
     private BlueprintContainer	repositoryService;
 
 	private ICapability			l2bodCapability;

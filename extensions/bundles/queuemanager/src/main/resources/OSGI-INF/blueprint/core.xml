@@ -17,7 +17,7 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates a queue manager (not import as a capability) -->
-	<bean id="queueManagerFactory" class="net.i2cat.mantychore.queuemanager.QueueManagerFactory">
+	<bean id="queueManagerFactory" class="org.opennaas.extensions.queuemanager.QueueManagerFactory">
 		<property name="type" value="queue"/>
 	</bean>
 	<!-- Register the Service as an OSGi Service -->
@@ -30,24 +30,24 @@
 		</service-properties>
 	</service>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.queuemanager.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.queuemanager.shell.completers.ResourceNameCompleter"/>
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="queue/listActions">
-			<action class="net.i2cat.mantychore.queuemanager.shell.ListActionsCommand"/>
+			<action class="org.opennaas.extensions.queuemanager.shell.ListActionsCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="queue/execute">
-			<action class="net.i2cat.mantychore.queuemanager.shell.ExecuteCommand"/>
+			<action class="org.opennaas.extensions.queuemanager.shell.ExecuteCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="queue/remove">
-			<action class="net.i2cat.mantychore.queuemanager.shell.RemoveCommand"/>
+			<action class="org.opennaas.extensions.queuemanager.shell.RemoveCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

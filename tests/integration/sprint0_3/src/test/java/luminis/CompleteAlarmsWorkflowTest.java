@@ -9,8 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +42,7 @@ import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -75,11 +75,11 @@ public class CompleteAlarmsWorkflowTest
 	private ICapabilityFactory monitoringFactory;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.ROADM.repository)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
 	private BlueprintContainer roadmRepositoryService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer wonesysProtocolService;
 
 	@Configuration

@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-  	<artifactId>org.opennaas.bod.tests.capability.l2bod</artifactId>
+  	<artifactId>org.opennaas.tests.integration.bod.capability.l2bod</artifactId>
   	<modelVersion>4.0.0</modelVersion>
 	<name>L2BoD capability tests</name>
 	<description>L2BoD capability tests</description>
@@ -15,15 +15,15 @@
  	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.repository</artifactId>
+			<artifactId>org.opennaas.extensions.router.repository</artifactId>
 		</dependency>
  	</dependencies>
 </project>

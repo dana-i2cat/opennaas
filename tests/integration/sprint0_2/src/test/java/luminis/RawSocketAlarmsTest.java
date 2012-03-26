@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.Properties;
 import javax.inject.Inject;
 
-import net.i2cat.luminis.actionsets.wonesys.WonesysAlarmsDriver;
-import net.i2cat.luminis.protocols.wonesys.WonesysProtocolSession;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarm;
-import net.i2cat.luminis.protocols.wonesys.alarms.WonesysAlarmFactory;
-import net.i2cat.luminis.transports.wonesys.rawsocket.RawSocketTransport;
-import net.i2cat.mantychore.model.utils.OpticalSwitchFactory;
+import org.opennaas.extensions.roadm.wonesys.actionsets.WonesysAlarmsDriver;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmFactory;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,7 +44,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

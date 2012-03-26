@@ -3,10 +3,10 @@ package org.opennaas.network.tests.capability.queue;
 /**
  * 
  */
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeFeatures;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.includeTestHelper;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.noConsole;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -15,7 +15,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.network.capability.queue.QueueCapability;
+import org.opennaas.extensions.network.capability.queue.QueueCapability;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;

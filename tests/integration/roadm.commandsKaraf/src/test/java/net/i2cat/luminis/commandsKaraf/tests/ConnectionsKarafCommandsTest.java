@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.model.opticalSwitch.DWDMChannel;
-import net.i2cat.mantychore.model.opticalSwitch.FiberConnection;
-import net.i2cat.mantychore.model.opticalSwitch.WDMChannelPlan;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import net.i2cat.mantychore.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
-import net.i2cat.nexus.tests.AbstractKarafCommandTest;
+import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +42,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -72,11 +72,11 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 	private IProtocolManager    protocolManager;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.capability.connections)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)")
 	private BlueprintContainer connectionService;
 
 	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.luminis.protocols.wonesys)")
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer	wonesysProtocolService;
 
 	String				resourceName	= "pedrosa";

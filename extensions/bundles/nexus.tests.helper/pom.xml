@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<artifactId>mantychore-bundles</artifactId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+	<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>Nexus :: Integration Test Helper</name>
 	<description>Nexus Integration test helper</description>
@@ -15,11 +15,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-features</artifactId>
+			<artifactId>org.opennaas.core.features</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
@@ -51,8 +51,6 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
 						<!-- Guava and Pax Exam are optional
 						     depedencies because we currently use them
 						     in the context of the JUnitRunner and not
@@ -66,7 +64,7 @@
 							*
 						</Import-Package>
 						<Export-Package>
-							net.i2cat.nexus.tests.*;version="${project.version}",
+							org.opennaas.extensions.nexus.tests.helper.*;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>

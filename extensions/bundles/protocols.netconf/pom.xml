@@ -2,12 +2,12 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- Maven parent  -->
 	<parent>
-		<artifactId>mantychore-bundles</artifactId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+	<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -48,13 +48,11 @@
 				<extensions>true</extensions>
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
 						<Import-Package>
-							!${project.artifactId}.*,org.slf4j,
+							!org.opennaas.extensions.protocols.netconf.*,org.slf4j,
 							org.opennaas.core.protocols.sessionmanager;version="${project.version}",*</Import-Package>
 						<Export-Package>
-							${project.artifactId}.*;version="${project.version}"
+							org.opennaas.extensions.protocols.netconf.*;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

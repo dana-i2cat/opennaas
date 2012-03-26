@@ -16,11 +16,11 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="l2bodCapabilityFactory" class="org.opennaas.bod.capability.l2bod.L2BoDCapabilityFactory">
+	<bean id="l2bodCapabilityFactory" class="org.opennaas.extensions.bod.capability.l2bod.L2BoDCapabilityFactory">
 		<property name="type" value="l2bod"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.bod.capability.l2bod.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.bod.capability.l2bod.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="l2bodCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -33,14 +33,14 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="l2bod/requestConnection">
-			<action class="org.opennaas.bod.capability.l2bod.shell.RequestConnectionCommand"/>
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.RequestConnectionCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="l2bod/shutdownConnection">
-			<action class="org.opennaas.bod.capability.l2bod.shell.ShutdownConnectionCommand"/>
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.ShutdownConnectionCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

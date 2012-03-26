@@ -8,7 +8,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.router.capability.staticroute.StaticRouteCapability;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 

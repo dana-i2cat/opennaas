@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.repository.tests;
+package org.opennaas.extensions.router.repository.tests;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -59,19 +59,19 @@ public class ResourceManagerIntegrationTest
 	private IProtocolManager	protocolManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer	repositoryService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
     private BlueprintContainer	chassisService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
     private BlueprintContainer	ipService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
     private BlueprintContainer	queueService;
 
 	@Configuration

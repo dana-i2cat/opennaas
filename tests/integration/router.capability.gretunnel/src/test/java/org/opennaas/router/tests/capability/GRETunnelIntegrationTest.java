@@ -15,10 +15,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.GRETunnelConfiguration;
-import net.i2cat.mantychore.model.GRETunnelEndpoint;
-import net.i2cat.mantychore.model.GRETunnelService;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GRETunnelConfiguration;
+import org.opennaas.extensions.router.model.GRETunnelEndpoint;
+import org.opennaas.extensions.router.model.GRETunnelService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,6 +38,7 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelService;
 import org.opennaas.router.tests.capability.mock.MockBootstrapper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -46,6 +47,14 @@ import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
+<<<<<<< HEAD
+=======
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+
+>>>>>>> c104b777e3bf9fccf9af5b0902bafb744d0363c0
 /**
  * @author Jordi
  */
@@ -78,17 +87,18 @@ public abstract class GRETunnelIntegrationTest
 	@Filter("(capability=gretunnel)")
 	private ICapabilityFactory		gretunnelFactory;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
-	private BlueprintContainer		routerRepositoryService;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.queuemanager)")
-	private BlueprintContainer		queueService;
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+    private BlueprintContainer		routerRepositoryService;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=opennaas.extension.router.capability.gretunnel)")
-	private BlueprintContainer		gretunnelService;
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+    private BlueprintContainer		queueService;
+
+    @Inject
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.gretunnel)")
+    private BlueprintContainer		gretunnelService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -197,7 +207,7 @@ public abstract class GRETunnelIntegrationTest
 	 * Add service to the model
 	 */
 	private void addGRETunnelService() {
-		net.i2cat.mantychore.model.ComputerSystem system = new net.i2cat.mantychore.model.ComputerSystem();
+		org.opennaas.extensions.router.model.ComputerSystem system = new org.opennaas.extensions.router.model.ComputerSystem();
 		system.addHostedService(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
 	}
 }

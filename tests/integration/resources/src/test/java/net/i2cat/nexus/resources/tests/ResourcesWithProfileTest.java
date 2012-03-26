@@ -47,7 +47,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -70,15 +70,15 @@ public class ResourcesWithProfileTest
 	IProtocolManager protocolManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.repository)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
     private BlueprintContainer routerRepositoryService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
     private BlueprintContainer chasisService;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.ip)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
     private BlueprintContainer ipService;
 
 	@Configuration

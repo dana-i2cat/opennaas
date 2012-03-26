@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-  	<artifactId>org.opennaas.router.tests.capability.ospf</artifactId>
+  	<artifactId>org.opennaas.tests.integration.router.capability.ospf</artifactId>
   	<modelVersion>4.0.0</modelVersion>
 	<name>OSPF capability tests</name>
 	<description>OSPF capability tests</description>
@@ -15,19 +15,19 @@
  	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.repository</artifactId>
+			<artifactId>org.opennaas.extensions.router.repository</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 		</dependency>
  	</dependencies>
 </project>

@@ -17,11 +17,11 @@
 	-->
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates protocol capabilities -->
-	<bean id="chassisCapabilityFactory" class="net.i2cat.mantychore.capability.chassis.ChassisCapabilityFactory">
+	<bean id="chassisCapabilityFactory" class="org.opennaas.extensions.router.capability.chassis.ChassisCapabilityFactory">
 		<property name="type" value="chassis"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="net.i2cat.mantychore.capability.chassis.shell.completers.ResourceNameCompleter"/>
+	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.chassis.shell.completers.ResourceNameCompleter"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="chassisCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -34,55 +34,55 @@
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="chassis/addInterfaceToLR">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.AddInterfaceToLRCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.AddInterfaceToLRCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/removeInterfaceFromLR">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.RemoveInterfaceFromLRCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.RemoveInterfaceFromLRCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/createLogicalRouter">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateLogicalRouterCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.CreateLogicalRouterCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/deleteLogicalRouter">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteLogicalRouterCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.DeleteLogicalRouterCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/listLogicalRouters">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.ListLogicalRoutersCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.ListLogicalRoutersCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/createSubInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.CreateSubInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.CreateSubInterfaceCommand"/>
 		</command>
 		<command name="chassis/deleteSubInterface">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DeleteSubInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.DeleteSubInterfaceCommand"/>
 		</command>
 		<command name="chassis/setEncapsulation">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.SetEncapsulationCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.SetEncapsulationCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="chassis/showInterfaces">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.ShowInterfacesCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.ShowInterfacesCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
@@ -90,10 +90,10 @@
 		</command>
 		<!--  up an down interfaces  -->
 		<command name="chassis/up">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.UpInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.UpInterfaceCommand"/>
 		</command>
 		<command name="chassis/down">
-			<action class="net.i2cat.mantychore.capability.chassis.shell.DownInterfaceCommand"/>
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.DownInterfaceCommand"/>
 		</command>
 	</command-bundle>
 </blueprint>

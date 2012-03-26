@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<!-- Maven parent  -->
 	<parent>
-		<artifactId>mantychore-bundles</artifactId>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
-	<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+	<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
@@ -17,11 +17,11 @@
 		<!-- Internal Mantychore dependencies -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-resources</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.model</artifactId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
@@ -29,15 +29,15 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
 		</dependency>
 		<!--
 			specify the last version from xerces-impl to work with the digester
@@ -88,21 +88,19 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-						<Bundle-Version>${project.version}</Bundle-Version>
 						<!--
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
 						<!-- avoid importing our own package -->
 						<Import-Package>
-							!${project.artifactId}.*;version="${project.version}",org.slf4j,*
+							!org.opennaas.extensions.router.junos.actionssets.*;version="${project.version}",org.slf4j,*
 						</Import-Package>
-						<!--  TODO Is it necessary to check the ${project.artifactId}.actions -->
+						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
-							net.i2cat.mantychore.commandsets*;version="${project.version}",
-							net.i2cat.mantychore.actionsets.junos;version="${project.version}",
-							net.i2cat.mantychore.actionsets.junos.actions;version="${project.version}"
+							org.opennaas.extensions.router.junos.commandsets.*;version="${project.version}",
+							org.opennaas.extensions.router.junos.actionssets;version="${project.version}",
+							org.opennaas.extensions.router.junos.actionssets.actions;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>

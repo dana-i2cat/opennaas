@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.repository.tests;
+package org.opennaas.extensions.router.repository.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import net.i2cat.mantychore.actionsets.junos.ActionConstants;
-import net.i2cat.mantychore.model.ComputerSystem;
-import net.i2cat.mantychore.model.System;
-import net.i2cat.nexus.tests.ResourceHelper;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +51,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -75,7 +75,7 @@ public class MantychoreRepositoryIntegrationTest
 	private IProtocolManager	protocolManager;
 
     @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=net.i2cat.mantychore.capability.chassis)")
+    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
     private BlueprintContainer	chassisService;
 
 	@Configuration

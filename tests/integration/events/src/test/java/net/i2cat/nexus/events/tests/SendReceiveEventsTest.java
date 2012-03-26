@@ -33,7 +33,7 @@ import org.osgi.service.event.EventHandler;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static net.i2cat.nexus.tests.OpennaasExamOptions.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
@@ -61,7 +61,7 @@ public class SendReceiveEventsTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-core"),
+					   includeFeatures("org.opennaas.core"),
 					   noConsole(),
 					   keepRuntimeFolder());
 	}
