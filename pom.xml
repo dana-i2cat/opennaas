@@ -97,42 +97,42 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-hsqldb</artifactId>
+				<artifactId>org.opennaas.core.hsqldb</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-persistence</artifactId>
+				<artifactId>org.opennaas.core.persistence</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-resources</artifactId>
+				<artifactId>org.opennaas.core.resources</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-events</artifactId>
+				<artifactId>org.opennaas.core.events</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-protocols-sessionmanager</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas.bod.actionsets</groupId>
-				<artifactId>org.opennaas.bod.actionsets</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas.bod.capability</groupId>
-				<artifactId>org.opennaas.bod.capability.l2bod</artifactId>
+				<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-tests-mockprofile</artifactId>
+				<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -142,133 +142,133 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas-core-features</artifactId>
+				<artifactId>org.opennaas.core.features</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.protocols</groupId>
-				<artifactId>net.i2cat.luminis.protocols.wonesys</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.actionsets</groupId>
-				<artifactId>net.i2cat.luminis.actionsets.wonesys</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.capability</groupId>
-				<artifactId>net.i2cat.luminis.capability.connections</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.capability</groupId>
-				<artifactId>net.i2cat.luminis.capability.monitoring</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.luminis.ROADM.repository</groupId>
-				<artifactId>net.i2cat.luminis.ROADM.repository</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.wonesys</groupId>
-				<artifactId>com.wonesys.emsModule</artifactId>
+				<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.model</groupId>
-				<artifactId>net.i2cat.mantychore.model</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.queuemanager</groupId>
-				<artifactId>net.i2cat.mantychore.queuemanager</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.protocols</groupId>
-				<artifactId>net.i2cat.mantychore.protocols.netconf</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.fragment</groupId>
-				<artifactId>net.i2cat.mantychore.fragment.velocity</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.actionsets</groupId>
-				<artifactId>net.i2cat.mantychore.actionsets.junos</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore</groupId>
+				<groupId>org.opennaas</groupId>
 				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.capability</groupId>
-				<artifactId>net.i2cat.mantychore.capability.chassis</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.capability</groupId>
-				<artifactId>net.i2cat.mantychore.capability.ip</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.repository</groupId>
-				<artifactId>net.i2cat.mantychore.repository</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.router.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
-				<artifactId>net.i2cat.mantychore.network.capability.basic</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
-				<artifactId>net.i2cat.mantychore.network.model</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.network.model</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.mantychore.network</groupId>
-				<artifactId>net.i2cat.mantychore.network.repository</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.network.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.nexus</groupId>
-				<artifactId>net.i2cat.nexus.alarms.repository</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>net.i2cat.nexus</groupId>
-				<artifactId>net.i2cat.nexus.tests.helper</artifactId>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
 				<version>${project.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas.extension.network.capability.ospf</artifactId>
+				<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas.extension.network.capability.queue</artifactId>
+				<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas.extension.router.capability.gretunnel</artifactId>
+				<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas.extension.router.capability.ospf</artifactId>
+				<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>opennaas.extension.router.capability.staticroute</artifactId>
+				<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 
@@ -711,6 +711,7 @@
         <module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
+		<module>tests</module>
 	</modules>
 
 	<build>
@@ -742,7 +743,12 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.3.5</version>
+					<version>2.3.7</version>
+					<configuration>
+						<instructions>
+							<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						</instructions>
+					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.ops4j</groupId>
@@ -920,17 +926,17 @@
 						<param>--platform=felix</param>
 					</provision>
 				</configuration>
-				<executions>
-					<!--
-           | uncomment to auto-generate IDE files
-          <execution>
-            <id>ide-support</id>
-            <goals>
-              <goal>eclipse</goal>
-            </goals>
-          </execution>
-          -->
-				</executions>
+				<extensions>true</extensions>
+					<!--| uncomment to auto-generate IDE files
+						<executions>
+						<execution>
+						<id>ide-support</id>
+						<goals>
+						<goal>eclipse</goal>
+						</goals>
+						</execution>
+						</executions>
+					-->
 			</plugin>
 
 			<plugin>

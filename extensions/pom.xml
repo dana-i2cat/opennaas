@@ -7,8 +7,7 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>net.i2cat.mantychore</groupId>
-	<artifactId>base-mantychore</artifactId>
+	<artifactId>org.opennaas.extensions</artifactId>
 
 	<packaging>pom</packaging>
 	<name>Mantychore</name>
@@ -67,7 +66,6 @@
 	<modules>
 		<module>helpers</module>
 		<module>bundles</module>
-	 	<module>tests</module>
 	</modules>
 
 	<build>
