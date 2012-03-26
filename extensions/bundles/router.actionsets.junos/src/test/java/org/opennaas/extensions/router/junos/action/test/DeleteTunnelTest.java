@@ -52,23 +52,19 @@ public class DeleteTunnelTest {
 	 * Execute the action
 	 * 
 	 * @throws IOException
+	 * @throws ActionException
 	 */
 	@Test
-	public void executeActionTest() throws IOException {
+	public void executeActionTest() throws IOException, ActionException {
 		action.setModelToUpdate(new ComputerSystem());
 
 		// Add params
 		GRETunnelService greTunnelService = getGRETunnelService();
 		action.setParams(greTunnelService);
 
-		try {
-			ActionResponse response = action.execute(protocolsessionmanager);
-			Assert.assertTrue(response.getActionID()
-					.equals(ActionConstants.DELETETUNNEL));
-		} catch (ActionException e) {
-			e.printStackTrace();
-			Assert.fail();
-		}
+		ActionResponse response = action.execute(protocolsessionmanager);
+		Assert.assertTrue(response.getActionID()
+				.equals(ActionConstants.DELETETUNNEL));
 
 		org.opennaas.extensions.router.model.System computerSystem = (org.opennaas.extensions.router.model.System) action.getModelToUpdate();
 		Assert.assertNotNull(computerSystem);
@@ -82,7 +78,7 @@ public class DeleteTunnelTest {
 	 */
 	private GRETunnelService getGRETunnelService() throws IOException {
 		GRETunnelService greTunnelService = new GRETunnelService();
-		greTunnelService.setName("gre.1");
+		greTunnelService.setName("gr-0/1/3.2");
 		return greTunnelService;
 	}
 

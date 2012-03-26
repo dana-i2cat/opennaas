@@ -41,4 +41,13 @@
 			</completers>
 		</command>		
 	</command-bundle>
+	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
+		<command name="netospf/deactivate">
+			<action class="org.opennaas.extensions.network.capability.ospf.shell.DeactivateCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>		
+	</command-bundle>
 </blueprint>

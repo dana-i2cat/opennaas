@@ -3,18 +3,6 @@ package org.opennaas.extensions.network.capability.ospf;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFArea.AreaType;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.OSPFService;
-import org.opennaas.extensions.router.model.System;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -29,7 +17,21 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.topology.Device;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.model.GREService;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class NetOSPFCapability extends AbstractCapability implements INetOSPFService {
 
@@ -59,6 +61,29 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException();
+	}
+
+	public Response deactivateOSPF() throws CapabilityException, ActivatorException {
+
+		long backboneAreaId = 0l; // 0.0.0.0
+
+		Response response = new Response();
+		response.setCommandName(CAPABILITY_NAME + " deactivateOSPF");
+
+		Response tmpResponse;
+		for (IResource router : getRouterResources()) {
+
+			// get router ospf capability
+			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), "ospf");
+
+			OSPFService ospfService = new OSPFService();
+
+			tmpResponse = ospfCapability.clearOSPFconfiguration(ospfService);
+			if (tmpResponse.getStatus().equals(Status.ERROR))
+				return tmpResponse;
+		}
+		return Response.queuedResponse(CAPABILITY_NAME + " deactivateOSPF");
+
 	}
 
 	@Override
@@ -96,6 +121,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 				// addInterfaces to backbone area
 				List<LogicalPort> interfaces = (List<LogicalPort>) getAllInterfaces(router);
 				tmpResponse = ospfCapability.addInterfacesInOSPFArea(interfaces, ospfArea);
+
 				if (tmpResponse.getStatus().equals(Status.ERROR))
 					return tmpResponse;
 
@@ -200,7 +226,27 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 	}
 
 	private List<? extends LogicalPort> getAllInterfaces(IResource router) {
-		return ModelHelper.getInterfaces((System) router.getModel());
+		List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
+		interfaces.addAll(ModelHelper.getInterfaces((System) router.getModel()));
+		interfaces.addAll(getAllGREInterfaces(router));
+		return interfaces;
 	}
 
+	private List<NetworkPort> getAllGREInterfaces(IResource router) {
+		// TODO Auto-generated method stub
+		List<NetworkPort> endpointList = new ArrayList<NetworkPort>();
+		List<GREService> greServiceList = ((System) router.getModel()).getAllHostedServicesByType(new GREService());
+		if (!greServiceList.isEmpty()) {
+			GREService greService = greServiceList.get(0);
+			for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+				NetworkPort lp = new NetworkPort();
+				String name = pE.getName().split("\\.")[0];
+				String portNumber = pE.getName().split("\\.")[1];
+				lp.setName(name);
+				lp.setPortNumber(Integer.valueOf(portNumber));
+				endpointList.add(lp);
+			}
+		}
+		return endpointList;
+	}
 }

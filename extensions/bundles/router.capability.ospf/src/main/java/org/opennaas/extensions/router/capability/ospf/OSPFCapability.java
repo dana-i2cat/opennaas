@@ -4,18 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
-import org.opennaas.extensions.router.model.OSPFService;
-import org.opennaas.extensions.router.model.Service;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -26,6 +14,17 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
+import org.opennaas.extensions.router.model.OSPFService;
+import org.opennaas.extensions.router.model.Service;
 
 /**
  * @author Isart Canyameres
@@ -204,7 +203,8 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#addInterfacesInOSPFArea(java.util.List, org.opennaas.extensions.router.model.OSPFArea)
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#addInterfacesInOSPFArea(java.util.List,
+	 * org.opennaas.extensions.router.model.OSPFArea)
 	 */
 	@Override
 	public Response addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
@@ -232,7 +232,8 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#removeInterfacesInOSPFArea(java.util.List, org.opennaas.extensions.router.model.OSPFArea)
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#removeInterfacesInOSPFArea(java.util.List,
+	 * org.opennaas.extensions.router.model.OSPFArea)
 	 */
 	@Override
 	public Response removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {

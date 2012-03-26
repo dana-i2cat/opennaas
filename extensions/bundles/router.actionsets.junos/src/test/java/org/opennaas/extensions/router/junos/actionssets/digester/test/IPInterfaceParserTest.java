@@ -7,9 +7,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import junit.framework.Assert;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Test;
 import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -18,10 +23,6 @@ import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
 
 public class IPInterfaceParserTest {
 	private final Log	log	= LogFactory.getLog(IPInterfaceParserTest.class);
@@ -109,6 +110,31 @@ public class IPInterfaceParserTest {
 		log.info(str);
 	}
 
+	@Test
+	public void testGreServiceCreatedwithGRE() throws Exception {
+		System model = createSampleModel();
+		IPInterfaceParser parser = new IPInterfaceParser(model);
+
+		String message = readStringFromFile("/parsers/getconfig.xml");
+		parser.init();
+		parser.configurableParse(new ByteArrayInputStream(message.getBytes()));
+		String str = "\n";
+
+		List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
+		Assert.assertEquals("There should be a GREService if a gre interface is present.", greServiceList.size(), 1);
+
+		GREService greService = greServiceList.get(0);
+
+		Assert.assertEquals("There GREService name should be gr-0/1/0 and not " + greService.getName(), greService.getName(), "gr-0/1/0");
+		Assert.assertTrue("The number of GRE Services in the model are not the same as the number of GRE in the config file", greService
+				.getProtocolEndpoint().size() == 1);
+
+		ProtocolEndpoint pE = greService.getProtocolEndpoint().get(0);
+		log.info(pE.getName());
+		Assert.assertEquals("The name of the GRE interface should be gr-0/1/0.0 and not " + pE.getName(), pE.getName(), "gr-0/1/0.0");
+
+	}
+
 	private String printGRETunnels(System model) {
 		String str = "";
 		int greCount = 0;
@@ -144,8 +170,9 @@ public class IPInterfaceParserTest {
 				}
 				Assert.assertTrue(protocolEpCount > 0);
 			}
-			Assert.assertTrue("There is only one gre service (we know in config there's only one)", greCount == 1);
 		}
+		Assert.assertTrue("There is only one gre, but it's not configured (we know in config there's only one)", greCount == 1);
+
 		return str;
 	}
 

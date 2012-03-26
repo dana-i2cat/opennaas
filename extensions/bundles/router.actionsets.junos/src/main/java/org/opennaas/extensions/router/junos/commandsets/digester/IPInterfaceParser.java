@@ -2,9 +2,13 @@ package org.opennaas.extensions.router.junos.commandsets.digester;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import org.apache.commons.digester.Digester;
+import org.apache.commons.digester.RuleSetBase;
 import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -17,9 +21,6 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 
-import org.apache.commons.digester.Digester;
-import org.apache.commons.digester.RuleSetBase;
-
 /**
  * 
  * Parser of the interfaces. Takes the name and unit of the interface. Set IP values, VLAN and peer-unit when exists
@@ -31,6 +32,8 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	private System				model;
 
+	String						portNumber				= "";
+
 	String						location				= "";
 
 	VLANEndpoint				vlanEndpoint			= null;
@@ -41,7 +44,9 @@ public class IPInterfaceParser extends DigesterEngine {
 
 	long						peerUnit				= 0;
 
-	public ArrayList<String>	disableInterface		= new ArrayList<String>();
+	private ArrayList<String>	disableInterface		= new ArrayList<String>();
+
+	private static String		GRE_PATTERN				= "gr-(\\d{1}/\\d{1}/\\d{1})";
 
 	/** vlan info **/
 
@@ -84,8 +89,6 @@ public class IPInterfaceParser extends DigesterEngine {
 			addMyRule("*/interfaces/interface/unit/tunnel/key", "setGRETunnelKey", 0);
 
 			addMyRule("*/interfaces/interface/unit/vlan-id", "addVLAN", 0);
-
-			addMyRule("*/interfaces/interface/name", "setLocation", 0);
 
 		}
 	}
@@ -138,12 +141,26 @@ public class IPInterfaceParser extends DigesterEngine {
 	public void addInterface(EthernetPort ethernetPort) {
 		String location = ethernetPort.getName() + Integer.toString(ethernetPort.getPortNumber());
 
-		if (flagGT) {
-			addGreTunnel(ethernetPort);
-			flagGT = false;
-			gretunnelConfiguration = null;
-		}
-		else if (flagLT) {
+		if (ethernetPort.getName().startsWith("gr-")) {
+
+			GREService greService = new GREService();
+			List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
+			if (greServiceList.isEmpty()) {
+				greService.setName(ethernetPort.getName());
+				model.addHostedService(greService);
+			} else {
+				greService = greServiceList.get(0);
+			}
+			ProtocolEndpoint pE = new ProtocolEndpoint();
+			pE.setName(ethernetPort.getName() + '.' + ethernetPort.getPortNumber());
+			greService.addProtocolEndpoint(pE);
+
+			if (flagGT) {
+				addGreTunnel(ethernetPort);
+				flagGT = false;
+				gretunnelConfiguration = null;
+			}
+		} else if (flagLT) {
 			LogicalTunnelPort lt = new LogicalTunnelPort();
 			lt.setName(ethernetPort.getName());
 			lt.setPortNumber(ethernetPort.getPortNumber());
@@ -219,6 +236,7 @@ public class IPInterfaceParser extends DigesterEngine {
 		// ethernetPort.setOtherPortType(location + "." + name);
 		ethernetPort.setName(location);
 		ethernetPort.setPortNumber(Integer.parseInt(name));
+		portNumber = name;
 	}
 
 	public void setDescription(String description) {
