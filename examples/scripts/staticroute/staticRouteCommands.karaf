@@ -1,0 +1,29 @@
+shell:echo Script to test ospf commands for a router
+
+#Creating and initializing resource
+resource:create C:/Users/Jordi/git/opennaas/manticore/utils/routerWithStaticRoute.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+chassis:createsubinterface -v 12 router:junos20 fe-0/1/0.12
+queue:execute router:junos20
+
+chassis:createlogicalrouter router:junos20 lrtest fe-0/1/0.12
+queue:execute router:junos20
+
+protocols:context router:lrtest netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:lrtest
+
+ipv4:setip router:lrtest fe-0/1/0.12 192.168.1.1 255.255.255.0
+
+staticroute:create router:lrtest 0.0.0.0 0.0.0.0 192.168.1.1
+queue:execute -d router:lrtest
+
+#Cleanup
+chassis:deletelogicalrouter router:junos20 lrtest
+queue:execute router:junos20
+
+resource:stop router:lrtest
+resource:remove router:lrtest
+resource:stop router:junos20
+resource:remove router:junos20

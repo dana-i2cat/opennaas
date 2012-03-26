@@ -8,20 +8,19 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS :: Core</name>
-	<artifactId>opennaas-core</artifactId>
+	<artifactId>org.opennaas.core</artifactId>
 	<modules>
-		<module>opennaas-core-features</module>
-		<module>karafbranding-opennaas</module>
-		<module>opennaas-core-hibernate</module>
-		<module>opennaas-core-persistence</module>
-		<module>opennaas-core-hsqldb</module>
-		<module>opennaas-core-events</module>
-		<module>opennaas-core-platformmanager</module>
-		<module>opennaas-core-resources</module>
+		<module>features</module>
+		<module>karafbranding</module>
+		<module>persistence</module>
+		<module>hsqldb</module>
+		<module>events</module>
+		<module>platformmanager</module>
+		<module>resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->
-		<module>opennaas-core-protocols-sessionmanager</module>
-		<!--<module>opennaas-core-resourcemanager-soapendpoint</module>-->
-		<module>opennaas-core-tests-mockprofile</module>
+		<module>protocols-sessionmanager</module>
+		<!--<module>org.opennaas.core.resourcemanager-soapendpoint</module>-->
+		<module>tests-mockprofile</module>
 	</modules>
 	<build>
 		<plugins>
