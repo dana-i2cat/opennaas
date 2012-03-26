@@ -1,5 +1,8 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.chassis;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
@@ -7,10 +10,6 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedElement;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
 
 /**
  * Configures a subinterface with given params. If given subinterface doesn't exist it is created.If it already exists, overrides it with given data.
@@ -41,7 +40,7 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 				throw new ActionException("Not valid name for the interface");
 
 			if (eth.getName().startsWith("gr-"))
-				setTemplate("/VM_files/");
+				setTemplate("/VM_files/configureGRELogicalInterface.vm");
 			else
 				setTemplate("/VM_files/configureEthVLAN.vm");
 
