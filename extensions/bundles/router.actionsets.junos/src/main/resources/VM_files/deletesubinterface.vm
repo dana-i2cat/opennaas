@@ -1,0 +1,25 @@
+###############################################################################
+###########                 DELETE AN INTERFACE UNIT                ###########
+###############################################################################
+
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$elementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$elementName</name>
+	#end
+	<interfaces>	
+		<interface>
+		<name>$param.getName()</name>
+			<unit operation="delete">
+				<name>$param.getPortNumber()</name>
+			</unit>
+		</interface>
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>

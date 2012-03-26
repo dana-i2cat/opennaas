@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<!--  	publish action set services  -->
+	<bean id="connectionsActionSet" class="org.opennaas.extensions.roadm.wonesys.actionsets.ConnectionsActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="connectionsActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="proteus"/>
+			<entry key="actionset.capability" value="connections"/>
+			<entry key="actionset.version" value="1.0"/>
+		</service-properties>
+	</service>
+	<!--  	publish action set services  -->
+	<bean id="queueActionSet" class="org.opennaas.extensions.roadm.wonesys.actionsets.QueueActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="queueActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<!--  identify the junos actionset -->
+			<entry key="actionset.name" value="proteus"/>
+			<!--  queue have to be changed -->
+			<entry key="actionset.capability" value="queue"/>
+			<entry key="actionset.version" value="1.0"/>
+		</service-properties>
+	</service>
+	<bean id="monitoringActionSet" class="org.opennaas.extensions.roadm.wonesys.actionsets.MonitoringActionSet"/>
+	<!-- Register an Junos action factory as an OSGi Service -->
+	<service ref="monitoringActionSet" interface="org.opennaas.core.resources.action.IActionSet">
+		<service-properties>
+			<entry key="actionset.name" value="proteus"/>
+			<!--  queue have to be changed -->
+			<entry key="actionset.capability" value="monitoring"/>
+			<entry key="actionset.version" value="1.0"/>
+		</service-properties>
+	</service>
+</blueprint>
