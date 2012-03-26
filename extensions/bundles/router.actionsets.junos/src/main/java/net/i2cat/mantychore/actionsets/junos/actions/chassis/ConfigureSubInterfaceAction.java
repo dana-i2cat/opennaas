@@ -11,11 +11,12 @@ import net.i2cat.mantychore.model.ManagedElement;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+
 /**
- * Configures a subinterface with given params.
- * If given subinterface doesn't exist it is created.If it already exists, overrides it with given data.
- *
- * @param params: EthernetPort or LogicalTunnelPort identifying the subinterface to configure and containing all data to configure it.
+ * Configures a subinterface with given params. If given subinterface doesn't exist it is created.If it already exists, overrides it with given data.
+ * 
+ * @param params
+ *            : EthernetPort or LogicalTunnelPort identifying the subinterface to configure and containing all data to configure it.
  */
 public class ConfigureSubInterfaceAction extends JunosAction {
 
@@ -39,7 +40,10 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 			if (eth.getName() == null || eth.getName().isEmpty())
 				throw new ActionException("Not valid name for the interface");
 
-			setTemplate("/VM_files/configureEthVLAN.vm");
+			if (eth.getName().startsWith("gr-"))
+				setTemplate("/VM_files/");
+			else
+				setTemplate("/VM_files/configureEthVLAN.vm");
 
 		} else if (params instanceof LogicalTunnelPort) {
 			LogicalTunnelPort lt = (LogicalTunnelPort) params;
@@ -82,24 +86,25 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 		if (getParams() == null)
 			throw new ActionException("Params in " + getActionID() + "are null.");
 		checkParams(getParams());
-		if (template == null || template.equals("")) throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
+		if (template == null || template.equals(""))
+			throw new ActionException("The path to Velocity template in Action " + getActionID() + " is null.");
 
 		try {
 
-			//fill logical router id
-			if (((ComputerSystem)modelToUpdate).getElementName() != null) {
-				//is logicalRouter, add LRName param
-				((ManagedElement)params).setElementName(((ComputerSystem)modelToUpdate).getElementName());
-			//TODO If we don't have a ManagedElement initialized
-			} else if (params!= null && params instanceof ManagedElement && ((ManagedElement)params).getElementName()==null){
-				((ManagedElement)params).setElementName("");
+			// fill logical router id
+			if (((ComputerSystem) modelToUpdate).getElementName() != null) {
+				// is logicalRouter, add LRName param
+				((ManagedElement) params).setElementName(((ComputerSystem) modelToUpdate).getElementName());
+				// TODO If we don't have a ManagedElement initialized
+			} else if (params != null && params instanceof ManagedElement && ((ManagedElement) params).getElementName() == null) {
+				((ManagedElement) params).setElementName("");
 
 			}
 
-			//fill description param
+			// fill description param
 			if (params instanceof ManagedElement
-					&& (((ManagedElement)params).getDescription()==null || ((ManagedElement)params).getDescription().equals(""))) {
-				((ManagedElement)params).setDescription("");
+					&& (((ManagedElement) params).getDescription() == null || ((ManagedElement) params).getDescription().equals(""))) {
+				((ManagedElement) params).setDescription("");
 			}
 
 			setVelocityMessage(prepareVelocityCommand(params, template));

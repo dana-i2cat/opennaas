@@ -2,6 +2,7 @@ package net.i2cat.mantychore.capability.chassis.shell;
 
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.EthernetPort;
+import net.i2cat.mantychore.model.GREService;
 import net.i2cat.mantychore.model.LogicalTunnelPort;
 import net.i2cat.mantychore.model.ProtocolEndpoint;
 import net.i2cat.mantychore.model.VLANEndpoint;
@@ -108,7 +109,17 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 						printSymbolWithoutDoubleLine("description: " + lt.getDescription());
 					}
 				}
+
 				printSymbol("");
+			}
+
+			GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
+			if (greService != null) {
+				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+					printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
+					printSymbol("");
+
+				}
 			}
 
 		} catch (ResourceException e) {
