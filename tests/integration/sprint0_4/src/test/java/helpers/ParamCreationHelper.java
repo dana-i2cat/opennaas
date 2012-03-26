@@ -70,4 +70,15 @@ public class ParamCreationHelper {
 		eth.addProtocolEndpoint(vlan);
 		return eth;
 	}
+
+	public static Object newParamsInterfaceGRE() {
+		EthernetPort eth = new EthernetPort();
+		eth.setName("gr-0/3/2");
+		eth.setPortNumber(2);
+		IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		ip.setIPv4Address("192.168.32.1");
+		ip.setSubnetMask("255.255.255.0");
+		eth.addProtocolEndpoint(ip);
+		return eth;
+	}
 }

@@ -3,18 +3,6 @@ package org.opennaas.extensions.router.junos.actionssets.actions;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
-import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
-import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
-import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.ManagedElement;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.System;
 import net.i2cat.netconf.rpc.Reply;
 
 import org.apache.commons.logging.Log;
@@ -24,6 +12,19 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.commandsets.commands.GetNetconfCommand;
+import org.opennaas.extensions.router.junos.commandsets.digester.DigesterEngine;
+import org.opennaas.extensions.router.junos.commandsets.digester.IPInterfaceParser;
+import org.opennaas.extensions.router.junos.commandsets.digester.ListLogicalRoutersParser;
+import org.opennaas.extensions.router.junos.commandsets.digester.RoutingOptionsParser;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GREService;
+import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.ManagedElement;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.System;
 import org.xml.sax.SAXException;
 
 public class GetConfigurationAction extends JunosAction {
@@ -148,6 +149,7 @@ public class GetConfigurationAction extends JunosAction {
 		routerModel.removeAllLogicalDeviceByType(NetworkPort.class);
 		routerModel.removeAllLogicalDeviceByType(LogicalTunnelPort.class);
 		routerModel.removeAllHostedServicesByType(GRETunnelService.class);
+		routerModel.removeAllHostedServicesByType(GREService.class);
 
 		IPInterfaceParser ipInterfaceParser = new IPInterfaceParser(routerModel);
 		ipInterfaceParser.init();

@@ -1,11 +1,5 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -13,6 +7,12 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.GREService;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 
 @Command(scope = "chassis", name = "showInterfaces", description = "List all interfaces of a given resource.")
 public class ShowInterfacesCommand extends GenericKarafCommand {
@@ -108,7 +108,17 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 						printSymbolWithoutDoubleLine("description: " + lt.getDescription());
 					}
 				}
+
 				printSymbol("");
+			}
+
+			GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
+			if (greService != null) {
+				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
+					printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
+					printSymbol("");
+
+				}
 			}
 
 		} catch (ResourceException e) {

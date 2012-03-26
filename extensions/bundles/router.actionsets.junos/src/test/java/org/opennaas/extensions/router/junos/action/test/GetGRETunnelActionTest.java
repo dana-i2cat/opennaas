@@ -6,6 +6,14 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import junit.framework.Assert;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.gretunnel.GetTunnelConfigurationAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
@@ -22,14 +30,6 @@ import org.opennaas.extensions.router.model.NextHopRoute;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.VLANEndpoint;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
 
 public class GetGRETunnelActionTest {
 
@@ -133,15 +133,12 @@ public class GetGRETunnelActionTest {
 	}
 
 	@Test
-	public void testExecute() {
-		try {
-			ActionResponse response = action.execute(protocolsessionmanager);
-		} catch (ActionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Assert.fail();
-		}
+	public void testExecute() throws ActionException {
+
+		ActionResponse response = action.execute(protocolsessionmanager);
+
 		org.opennaas.extensions.router.model.System routerModel = (org.opennaas.extensions.router.model.System) action.getModelToUpdate();
+
 		Assert.assertNotNull(routerModel);
 		printTest(routerModel);
 	}
