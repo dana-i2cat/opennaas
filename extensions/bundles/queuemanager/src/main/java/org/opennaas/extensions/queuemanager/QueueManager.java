@@ -121,12 +121,9 @@ public class QueueManager extends AbstractCapability implements
 			boolean errorHappened = false;
 			try {
 				/* execute queued actions */
-				try {
-					queueResponse = executeQueuedActions(queueResponse,
-							protocolSessionManager);
-				} catch (ActionException e) {
-					throw new CapabilityException(e);
-				}
+				queueResponse = executeQueuedActions(queueResponse,
+						protocolSessionManager);
+			
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -440,26 +437,32 @@ public class QueueManager extends AbstractCapability implements
 	// Resources.
 
 	/**
+	 * Executes actions in the queue.
+	 * 
+	 * Queue execution stops at the first action to return error.
+	 * Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
 	 * @param protocolSessionManager
 	 *            to use in actions execution
 	 * @return given queueResponse with executed actions responses.
-	 * @throws ActionException
-	 *             if an Action throws it during its execution
 	 */
 	private QueueResponse executeQueuedActions(QueueResponse queueResponse,
-			IProtocolSessionManager protocolSessionManager)
-			throws ActionException {
+			IProtocolSessionManager protocolSessionManager) {
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			/* use pool for get protocol session */
-			log.debug("getting protocol session...");
+			
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
-			ActionResponse actionResponse = action
-					.execute(protocolSessionManager);
+			ActionResponse actionResponse;
+			try {
+				actionResponse = action.execute(protocolSessionManager);
+			} catch (ActionException e) {
+				log.error("Error executing action " + action.getActionID(), e);	
+				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
+			}
 			queueResponse.getResponses().set(numAction, actionResponse);
 			numAction++;
 
