@@ -8,16 +8,24 @@ import java.util.Map;
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
 import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants;
+import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants.TargetConfiguration;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.JunosCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
+
+	private String	getInterfaceTemplate	= "/VM_files/getInterface.vm";
+	private String	getSubInterfaceTemplate	= "/VM_files/getSubInterface.vm";
 
 	public RemoveTaggedEthernetEncapsulationAction() {
 		this.setActionID(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION);
@@ -27,20 +35,33 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
-		// TODO Check params is in current candidate configuration and has tagged ethernet encapsulation
-
-		// TODO Check params does not have subinterfaces with configured vlan-id
-
-		EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
-		command.initialize();
-
 		try {
-			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+
+			Response getInterfaceResponse = getInterfaceFromCandidate((LogicalPort) params, protocol);
+			actionResponse.addResponse(getInterfaceResponse);
+
+			if (getInterfaceResponse.getStatus().equals(Response.Status.OK)) {
+
+				// TODO Check params exists in the router.
+				// checkInterfaceExists("", getInterfaceResponse);
+
+				// Check params has tagged ethernet encapsulation
+				if (interfaceHasTaggedEthernetEncapsulation((LogicalPort) params, getInterfaceResponse)) {
+
+					// Check params does not have subinterfaces with configured vlan-id
+					checkNoSubInterfaceWithVlanId((LogicalPort) params, getInterfaceResponse);
+
+					// remove eth encapsulation
+					EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage(), CommandNetconfConstants.NONE_OPERATION);
+					command.initialize();
+					actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+				}
+			}
+			validateAction(actionResponse);
+
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
-		validateAction(actionResponse);
-
 	}
 
 	@Override
@@ -137,6 +158,60 @@ public class RemoveTaggedEthernetEncapsulationAction extends JunosAction {
 
 	private boolean isLoopbackInterfaceName(String interfaceName) {
 		return (interfaceName.startsWith("lo"));
+	}
+
+	private Response getInterfaceFromCandidate(LogicalPort iface, IProtocolSession protocol) throws ActionException, ProtocolException {
+
+		String getInterfaceFilter = prepareGetInterfaceMessage(iface);
+
+		JunosCommand getCommand = new GetNetconfCommand(getInterfaceFilter, TargetConfiguration.CANDIDATE);
+		getCommand.initialize();
+		return sendCommandToProtocol(getCommand, protocol);
+	}
+
+	private String prepareGetInterfaceMessage(LogicalPort iface) throws ActionException {
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", nullToEmpty(((ComputerSystem) getModelToUpdate()).getElementName()));
+
+		try {
+			String templateToUse;
+			if (isLogicalInterface(iface)) {
+				templateToUse = getSubInterfaceTemplate;
+			} else {
+				templateToUse = getInterfaceTemplate;
+			}
+			return prepareVelocityCommand(iface, templateToUse, extraParams);
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
+	}
+
+	private void checkInterfaceExists(String ifaceName, Response getInterfaceResponse) throws ActionException {
+		// Check params is in current candidate configuration
+		// FIXME it may not be in candidate but exist. Not all interfaces are in config
+		// It should fail only if interface does not exists in the router!
+		if (getInterfaceResponse.getInformation().equals("<configuration></configuration>")) {
+			// an empty configuration means filter has failed
+			throw new ActionException("Interface " + ifaceName + " not found in this router configuration");
+		}
+	}
+
+	private void checkNoSubInterfaceWithVlanId(LogicalPort iface, Response getInterfaceResponse) throws ActionException {
+
+		if (isPhysicalInterface(iface) && getInterfaceResponse.getInformation().contains("vlan-id")) {
+			throw new ActionException("Interface has subinterfaces with vlanId. Please remove them before changing encapsulation.");
+		}
+	}
+
+	private boolean interfaceHasTaggedEthernetEncapsulation(LogicalPort iface, Response getInterfaceResponse) throws ActionException {
+		if (isEthernetInterface(iface)) {
+			return getInterfaceResponse.getInformation().contains("vlan-tagging");
+		} else if (isLogicalTunnelInterface(iface)) {
+			return getInterfaceResponse.getInformation().contains("<encapsulation>vlan</encapsulation>");
+		} else {
+			return false;
+		}
 	}
 
 }

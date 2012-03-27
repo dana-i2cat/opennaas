@@ -8,7 +8,10 @@ import java.util.NoSuchElementException;
 
 import net.i2cat.mantychore.actionsets.junos.ActionConstants;
 import net.i2cat.mantychore.actionsets.junos.actions.JunosAction;
+import net.i2cat.mantychore.commandsets.junos.commands.CommandNetconfConstants.TargetConfiguration;
 import net.i2cat.mantychore.commandsets.junos.commands.EditNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.GetNetconfCommand;
+import net.i2cat.mantychore.commandsets.junos.commands.JunosCommand;
 import net.i2cat.mantychore.model.ComputerSystem;
 import net.i2cat.mantychore.model.LogicalPort;
 import net.i2cat.mantychore.model.NetworkPort;
@@ -16,11 +19,15 @@ import net.i2cat.mantychore.model.ProtocolEndpoint;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 import com.google.common.collect.Iterables;
 
 public class SetVlanIdAction extends JunosAction {
+
+	private String	getSubInterfaceTemplate	= "/VM_files/getSubInterface.vm";
 
 	public SetVlanIdAction() {
 		this.setActionID(ActionConstants.SET_VLANID);
@@ -30,17 +37,30 @@ public class SetVlanIdAction extends JunosAction {
 	@Override
 	public void executeListCommand(ActionResponse actionResponse, IProtocolSession protocol) throws ActionException {
 
-		// TODO Check params is in current candidate configuration
-
-		EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
-		command.initialize();
-
 		try {
-			actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+
+			Response getInterfaceResponse = getInterfaceFromCandidate((LogicalPort) params, protocol);
+			actionResponse.addResponse(getInterfaceResponse);
+
+			if (getInterfaceResponse.getStatus().equals(Response.Status.OK)) {
+
+				// Check params is in current candidate configuration
+				// Not all interfaces are in config.
+				// However, interfaces with tagged-ethernet should be, as they have something configured.
+				checkInterfaceExists(getInterfaceResponse);
+
+				// No need to check that params has tagged-ethernet encapsulation, router will fail if not.
+
+				EditNetconfCommand command = new EditNetconfCommand(getVelocityMessage());
+				command.initialize();
+
+				actionResponse.addResponse(sendCommandToProtocol(command, protocol));
+
+			}
+			validateAction(actionResponse);
 		} catch (Exception e) {
 			throw new ActionException(this.actionID + ": " + e.getMessage(), e);
 		}
-		validateAction(actionResponse);
 	}
 
 	@Override
@@ -141,4 +161,32 @@ public class SetVlanIdAction extends JunosAction {
 		}
 	}
 
+	private Response getInterfaceFromCandidate(LogicalPort iface, IProtocolSession protocol) throws ActionException, ProtocolException {
+
+		String getInterfaceFilter = prepareGetInterfaceMessage(iface);
+
+		JunosCommand getCommand = new GetNetconfCommand(getInterfaceFilter, TargetConfiguration.CANDIDATE);
+		getCommand.initialize();
+		return sendCommandToProtocol(getCommand, protocol);
+	}
+
+	private String prepareGetInterfaceMessage(LogicalPort iface) throws ActionException {
+
+		Map<String, Object> extraParams = new HashMap<String, Object>();
+		extraParams.put("elementName", nullToEmpty(((ComputerSystem) getModelToUpdate()).getElementName()));
+
+		try {
+			return prepareVelocityCommand(iface, getSubInterfaceTemplate, extraParams);
+		} catch (Exception e) {
+			throw new ActionException(e);
+		}
+	}
+
+	private void checkInterfaceExists(Response getInterfaceResponse) throws ActionException {
+
+		if (getInterfaceResponse.getInformation().equals("<configuration></configuration>")) {
+			// an empty configuration means filter has failed
+			throw new ActionException("Interface not found in this router");
+		}
+	}
 }
