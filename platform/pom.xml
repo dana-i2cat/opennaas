@@ -1,48 +1,187 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<packaging>pom</packaging>
+
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
+
+	<packaging>pom</packaging>
 	<name>OpenNaaS platform</name>
 	<artifactId>platform</artifactId>
-	<!--  properties to use fuse  -->
+
 	<properties>
-		<target-platform.path>target/opennaas</target-platform.path>
 		<servicemix.path>apache-servicemix-${servicemix.version}</servicemix.path>
 	</properties>
+
 	<dependencies>
+		<!-- We must list all the things we want to include in the
+		     distribution. Otherwise there is no guarantee that Maven
+		     has build those artifacts first. -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>karafbranding-opennaas</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.hsqldb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.persistence</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.events</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.features</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.wonesys</groupId>
+			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.netconf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.servicemix</groupId>
+			<artifactId>apache-servicemix</artifactId>
+		</dependency>
 	</dependencies>
-	<!--
-  | imported (non-local) bundles are listed here as dependencies | and
-  will be deployed by pax:provision unless they are marked | with
-  <optional>true</optional>
- -->
+
 	<build>
-		<resources>
-			<resource>
-				<directory>${pom.basedir}/src/main/filtered-resources</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>**/*</include>
-				</includes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
+				<!-- Unpack servicemix. The assembly will use this
+				     when packaging opennaas. -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>unpack-apache-servicemix</id>
-						<phase>package</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>unpack</goal>
 						</goals>
@@ -51,62 +190,23 @@
 								<artifactItem>
 									<groupId>org.apache.servicemix</groupId>
 									<artifactId>apache-servicemix</artifactId>
-									<version>${servicemix.version}</version>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${target-platform.path}</outputDirectory>
-							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludes>**\/bin\/servicemix,**\/bin\/servicemix.bat,**\/examples\/**</excludes>
-							<!--<chmod file="${target-platform.path}/${servicemix.path}/bin/*" perm="ugo+rx" />-->
-						</configuration>
-					</execution>
-					<execution>
-						<id>copy-karafbranding</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.opennaas</groupId>
-									<artifactId>karafbranding-opennaas</artifactId>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${target-platform.path}/${servicemix.path}/lib</outputDirectory>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-					<execution>
-						<id>get-opennaas-feature</id>
-						<phase>package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<artifactId>opennaas-core-features</artifactId>
-									<groupId>org.opennaas</groupId>
-									<version>${opennaas.version}</version>
-									<type>xml</type>
-									<classifier>features</classifier>
-									<outputDirectory>${target-platform.path}/${servicemix.path}/system/org/opennaas/opennaas-core-features/${opennaas.version}/</outputDirectory>
-									<overWrite>true</overWrite>
-									<destFileName>opennaas-core-features-${opennaas.version}-features.xml</destFileName>
 								</artifactItem>
 							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
+				<!-- Build a system repository with the artifacts we
+				     need. The assembly will include this when
+				     packaging opennaas. -->
 				<groupId>org.apache.karaf.tooling</groupId>
 				<artifactId>features-maven-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>add-features-to-repo</id>
-						<phase>package</phase>
+						<phase>prepare-package</phase>
 						<goals>
 							<goal>add-features-to-repo</goal>
 						</goals>
@@ -116,64 +216,43 @@
 								<descriptor>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.servicemix.nmr/apache-servicemix-nmr/${nmr.version}/xml/features</descriptor>
 								<descriptor>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</descriptor>
-								<descriptor>mvn:org.opennaas/opennaas-core-features/${project.version}/xml/features</descriptor>
+								<descriptor>mvn:org.opennaas/org.opennaas.core.features/${project.version}/xml/features</descriptor>
 							</descriptors>
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
-								<feature>opennaas-persistence</feature>
-								<feature>opennaas-core</feature>
-								<feature>opennaas-platformmanager</feature>
+								<feature>opennaas</feature>
+								<feature>nexus-tests-helper</feature>
+								<feature>nexus-testprofile</feature>
 							</features>
-							<repository>${target-platform.path}/${servicemix.path}/system</repository>
+							<repository>target/system</repository>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
+				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
-					<!-- process the resources to resolve the version variables -->
 					<execution>
-						<id>filter-resources</id>
-						<goals>
-							<goal>resources</goal>
-						</goals>
-						<phase>process-resources</phase>
-						<configuration>
-							<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-							<encoding>UTF-8</encoding>
-						</configuration>
-					</execution>
-					<execution>
-						<id>install-opennaas-configs</id>
+						<id>make-distribution</id>
 						<phase>package</phase>
 						<goals>
-							<goal>copy-resources</goal>
+							<goal>single</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-							<!--
-      <resources>
-		  <resource>
-		    <directory>src/main/java</directory>
-		    <includes>
-		      <include>**/*.xml</include>
-		    </includes>
-		  </resource>
-	  </resources>
-      -->
-							<overwrite>true</overwrite>
-							<outputDirectory>${target-platform.path}/${servicemix.path}</outputDirectory>
-							<resources>
-								<resource>
-									<directory>target/classes</directory>
-								</resource>
-							</resources>
+							<descriptors>
+								<descriptor>src/main/assembly/opennaas.xml</descriptor>
+							</descriptors>
+							<formats>
+								<format>dir</format>
+								<format>tar.gz</format>
+								<format>zip</format>
+							</formats>
+							<appendAssemblyId>false</appendAssemblyId>
+							<finalName>opennaas-${project.version}</finalName>
 						</configuration>
 					</execution>
-					<!--  Try to copy the files under service mix into the root iaas dir and delete the service mix dir with the
-     maven clean plugin... -->
 				</executions>
 			</plugin>
 		</plugins>

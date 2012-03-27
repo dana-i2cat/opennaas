@@ -1,0 +1,24 @@
+<configuration>
+	#set( $logicalRouter = "false" )
+	#if(!$param.ElementName.equals("") )		
+		#set( $logicalRouter = "true" )
+	#end
+	#if($logicalRouter.equals("true"))
+		<logical-systems>
+			<name>$param.ElementName</name>
+	#end
+	<interfaces>	
+		<interface>
+			<name>$param.Name</name>
+				<unit>					
+					<name>$param.PortNumber</name>
+					#if(!$param.description.equals(""))
+						<description>$param.description</description>
+					#end															
+			</unit>
+		</interface>	
+	</interfaces>
+	#if($logicalRouter.equals("true"))
+		</logical-systems>
+	#end
+</configuration>
