@@ -145,6 +145,7 @@ public class QueueManager extends AbstractCapability implements
 							errorHappened = true;
 
 					} catch (ActionException e) {
+						queueResponse.setConfirmResponse(ActionResponse.errorResponse(QueueConstants.CONFIRM, e.getLocalizedMessage()));
 						throw new CapabilityException(e);
 					}
 
