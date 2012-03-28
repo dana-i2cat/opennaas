@@ -195,12 +195,29 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		// ignore returned object, we do this only to check a sessionFactory for this protocol is available
 		protocolManager.getSessionFactory((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
 
+		unregisterContext((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
+
 		registeredContexts.put((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL), context);
 	}
 
 	@Override
-	public void unregisterContext(String protocol) {
-		registeredContexts.remove(protocol);
+	public void unregisterContext(String protocol) throws ProtocolException {
+		ProtocolSessionContext removedContext = registeredContexts.remove(protocol);
+		if (removedContext != null) {
+			for (IProtocolSession session : getLiveSessionsByContext(removedContext)) {
+				destroyProtocolSession(session.getSessionId());
+			}
+		}
+	}
+
+	private List<IProtocolSession> getLiveSessionsByContext(ProtocolSessionContext context) {
+		List<IProtocolSession> sessionsWithGivenContext = new ArrayList<IProtocolSession>();
+		for (ProtocolPooled pooledSession : liveSessions.values()) {
+			if (pooledSession.getProtocolSession().getSessionContext().equals(context)) {
+				sessionsWithGivenContext.add(pooledSession.getProtocolSession());
+			}
+		}
+		return sessionsWithGivenContext;
 	}
 
 	@Override

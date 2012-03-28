@@ -88,21 +88,24 @@ public interface IProtocolSessionManager {
 	/**
 	 * Registers a new context on this session manager. The context will be used if a session with the context's protocol is requested.
 	 * 
-	 * Only one context per protocol is accepted. Newest registered context will be used.
+	 * Only one context per protocol is accepted. Older registered context for given context's protocol (if any) will be unregistered.
 	 * 
 	 * @param context
 	 * @throws ProtocolException
-	 *             If trying to register a context for a protocol that is not supported.
+	 *             If trying to register a context for a protocol that is not supported. Or unregistering older context fails.
 	 */
 	void registerContext(ProtocolSessionContext context) throws ProtocolException;
 
 	/**
-	 * Unregisters a previously registered context. This context will no longer used to create new sessions.
+	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
+	 * terminated.
 	 * 
 	 * @param protocol
 	 *            The protocol of the context that will be unregistered.
+	 * @throws ProtocolException
+	 *             If there is an error terminating sessions
 	 */
-	void unregisterContext(String protocol);
+	void unregisterContext(String protocol) throws ProtocolException;
 
 	/**
 	 * Returns the list of registered contexts.
