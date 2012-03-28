@@ -72,7 +72,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			// printInfo("Sending message to the queue");
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, params);
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (ResourceException e) {
 			printError(e);

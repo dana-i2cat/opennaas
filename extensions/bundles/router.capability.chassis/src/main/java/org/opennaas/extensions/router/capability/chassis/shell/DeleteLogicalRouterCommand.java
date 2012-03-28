@@ -54,7 +54,7 @@ public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			// printInfo("Sending message to the queue");
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, prepareParams());
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (ResourceException e) {
 			printError(e);

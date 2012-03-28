@@ -87,7 +87,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 			// printInfo("Sending message to the queue");
 			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETIPv4, params);
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (ResourceException e) {
 			printError(e);

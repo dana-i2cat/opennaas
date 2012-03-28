@@ -55,7 +55,7 @@ public class UpInterfaceCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			// printInfo("Sending message to the queue");
 			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS, prepareConfigureStatusParams(interfaceName));
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (ResourceException e) {
 			printError(e);

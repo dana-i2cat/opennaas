@@ -58,7 +58,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 			FiberConnection connectionRequest = buildConnectionRequest();
 
 			Response response = (Response) capability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-			printResponseStatus(response);
+			printResponseStatus(response, resourceId);
 
 		} catch (Exception e) {
 			printError("Error in make connection");

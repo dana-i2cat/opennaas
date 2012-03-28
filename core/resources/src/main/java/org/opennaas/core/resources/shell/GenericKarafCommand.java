@@ -269,7 +269,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return true;
 	}
 
-	protected Object printResponseStatus(Response response) {
+	protected Object printResponseStatus(Response response, String resourceId) {
 		if (response.getStatus().equals(Response.Status.OK)) {
 			return null;
 		} else if (response.getStatus().equals(Response.Status.ERROR)) {
@@ -278,7 +278,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 				printError(error);
 			return -1;
 		} else if (response.getStatus().equals(Response.Status.QUEUED)) {
-			printSymbol("Queued " + response.getSentMessage());
+			printSymbol("Queued " + response.getSentMessage() + " for " + resourceId);
 			return null;
 		} else {
 			printSymbol(response.getStatus().toString());

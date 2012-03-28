@@ -54,7 +54,7 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 			FiberConnection connectionRequest = buildConnectionRequest();
 
 			Response response = (Response) capability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-			printResponseStatus(response);
+			printResponseStatus(response, resourceId);
 
 		} catch (Exception e) {
 			printError("Error in remove connection");
