@@ -1,5 +1,7 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
+import java.util.List;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -112,12 +114,13 @@ public class ShowInterfacesCommand extends GenericKarafCommand {
 				printSymbol("");
 			}
 
-			GREService greService = model.getAllHostedServicesByType(new GREService()).get(0);
-			if (greService != null) {
+			List<GREService> greServiceList = model.getAllHostedServicesByType(new GREService());
+
+			if (!greServiceList.isEmpty()) {
+				GREService greService = greServiceList.get(0);
 				for (ProtocolEndpoint pE : greService.getProtocolEndpoint()) {
 					printSymbolWithoutDoubleLine("GRE INTERFACE: " + pE.getName());
 					printSymbol("");
-
 				}
 			}
 
