@@ -1,12 +1,5 @@
 package org.opennaas.extensions.router.capability.ospf.shell;
 
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.OSPFArea;
-import org.opennaas.extensions.router.model.OSPFArea.AreaType;
-import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
-import org.opennaas.extensions.router.model.utils.ModelHelper;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -15,6 +8,12 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
+import org.opennaas.extensions.router.model.OSPFArea;
+import org.opennaas.extensions.router.model.OSPFArea.AreaType;
+import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * @author Isart Canyameres
@@ -67,7 +66,7 @@ public class ConfigureAreaCommand extends GenericKarafCommand {
 			} else {
 				response = ospfCapability.configureOSPFArea(areaConfig);
 			}
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
