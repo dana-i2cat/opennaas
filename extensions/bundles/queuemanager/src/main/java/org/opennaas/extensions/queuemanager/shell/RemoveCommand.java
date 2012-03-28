@@ -54,7 +54,7 @@ public class RemoveCommand extends GenericKarafCommand {
 			// printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);
 			Response resp = (Response) queue.sendMessage(QueueConstants.MODIFY, params);
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (Exception e) {
 			printError("Error removing action from queue.");
