@@ -64,7 +64,7 @@ public class ChassisCapability extends AbstractCapability {
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		return Response.okResponse(idOperation);
+		return Response.queuedResponse(idOperation);
 	}
 
 	@Override

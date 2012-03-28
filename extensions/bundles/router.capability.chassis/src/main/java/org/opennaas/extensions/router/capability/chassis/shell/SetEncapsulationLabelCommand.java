@@ -1,18 +1,17 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 @Command(scope = "chassis", name = "setEncapsulationlabel", description = "Set an encapsulation label in a given interface.")
 public class SetEncapsulationLabelCommand extends GenericKarafCommand {
@@ -40,7 +39,7 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 
 			Response response = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATIONLABEL, iface);
-			printResponseStatus(response);
+			printResponseStatus(response, resourceId);
 
 		} catch (Exception e) {
 			printError("Error setting vlan.");

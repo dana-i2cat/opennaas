@@ -70,9 +70,17 @@
 		</command>
 		<command name="chassis/createSubInterface">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.CreateSubInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/deleteSubInterface">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.DeleteSubInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/setEncapsulation">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.SetEncapsulationCommand"/>
@@ -98,9 +106,17 @@
 		<!--  up an down interfaces  -->
 		<command name="chassis/up">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.UpInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/down">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.DownInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 	</command-bundle>
 </blueprint>
