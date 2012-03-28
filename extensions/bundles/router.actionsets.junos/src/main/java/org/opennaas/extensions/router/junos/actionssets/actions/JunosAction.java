@@ -48,10 +48,10 @@ public abstract class JunosAction extends Action {
 		for (Response response : actionResponse.getResponses()) {
 			if (response.getStatus() == Response.Status.ERROR) {
 				actionResponse.setStatus(ActionResponse.STATUS.ERROR);
+				actionResponse.setInformation(concatenateErrors(response.getErrors()));
 				return;
 			}
 		}
-
 	}
 
 	public Response sendCommandToProtocol(JunosCommand command, IProtocolSession
