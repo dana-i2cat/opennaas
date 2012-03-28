@@ -601,9 +601,16 @@ public class QueueManager extends AbstractCapability implements
 	 * @return the response of remove the action
 	 */
 	private Object remove(int posAction) {
-		queue.remove(posAction);
-		return Response.okResponse(QueueConstants.MODIFY,
-				"Remove operation in pos: " + posAction);
+
+		try {
+			queue.remove(posAction);
+			return Response.okResponse(QueueConstants.MODIFY,
+					"Remove operation in pos: " + posAction);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Vector<String> errors = new Vector<String>(1);
+			errors.add("Invalid index. Index " + posAction + " does not point to any action in the queue.");
+			return Response.errorResponse(QueueConstants.MODIFY, errors);
+		}
 
 	}
 
