@@ -1,11 +1,11 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
@@ -13,15 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.VLANEndpoint;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +37,14 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -170,12 +170,12 @@ public class ChassisCapabilityIntegrationTest
 		int actionCount = 0;
 
 		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
@@ -207,17 +207,17 @@ public class ChassisCapabilityIntegrationTest
 		int actionCount = 0;
 
 		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
@@ -239,13 +239,13 @@ public class ChassisCapabilityIntegrationTest
 
 		resp = (Response) chassisCapability
 				.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, newParamsLRWithInterface("cpe1", "fe-0/1/0", 13));
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER,
 				newParamsLRWithInterface("cpe2", "fe-0/0/3", 13));
-		assertEquals(Status.OK, resp.getStatus());
+		assertEquals(Status.QUEUED, resp.getStatus());
 		assertTrue("There should be no errors", resp.getErrors().isEmpty());
 		actionCount++;
 

@@ -1,16 +1,15 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.NetworkPort;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
 
 @Command(scope = "chassis", name = "addInterfaceToLR", description = "Transfere an exitent subinterface from a physical router to a logical one.")
 public class AddInterfaceToLRCommand extends GenericKarafCommand {
@@ -39,7 +38,7 @@ public class AddInterfaceToLRCommand extends GenericKarafCommand {
 			ICapability chassisCapability = getCapability(sourceResource.getCapabilities(), ChassisCapability.CHASSIS);
 
 			Response response = (Response) chassisCapability.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, logicalRouterModel);
-			printResponseStatus(response);
+			printResponseStatus(response, physicalResourceId);
 
 		} catch (Exception e) {
 			printError(e);

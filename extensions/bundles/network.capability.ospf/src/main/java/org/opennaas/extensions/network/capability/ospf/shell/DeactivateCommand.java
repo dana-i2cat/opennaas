@@ -23,7 +23,7 @@ public class DeactivateCommand extends GenericKarafCommand {
 			IResource network = getResourceFromFriendlyName(networkId);
 			NetOSPFCapability netOSPFCapability = (NetOSPFCapability) getCapability(network.getCapabilities(), NetOSPFCapability.CAPABILITY_NAME);
 			Response response = netOSPFCapability.deactivateOSPF();
-			return printResponseStatus(response);
+			return printResponseStatus(response, networkId);
 
 		} catch (ResourceException e) {
 			printError(e);

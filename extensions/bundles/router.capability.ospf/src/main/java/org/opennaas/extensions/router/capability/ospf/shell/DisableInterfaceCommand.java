@@ -3,8 +3,6 @@ package org.opennaas.extensions.router.capability.ospf.shell;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -12,6 +10,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 
 /**
  * @author Isart Canyameres
@@ -44,7 +43,7 @@ public class DisableInterfaceCommand extends GenericKarafCommand {
 
 			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
 			Response response = ospfCapability.disableOSPFInterfaces(ospfPeps);
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();

@@ -1,12 +1,9 @@
 package org.opennaas.extensions.router.capability.ip;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Vector;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.ManagedSystemElement;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -15,10 +12,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
 public class IPCapability extends AbstractCapability {
 	public final static String	IPv4		= "ipv4";
@@ -88,9 +82,8 @@ public class IPCapability extends AbstractCapability {
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		return Response.okResponse(idOperation);
+		return Response.queuedResponse(idOperation);
 	}
-
 
 	private Response prepareErrorMessage(String nameError, String message) {
 		Vector<String> errorMsgs = new Vector<String>();

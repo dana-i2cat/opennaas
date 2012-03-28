@@ -1,25 +1,24 @@
 package net.i2cat.mantychore.ipcapability.test;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.NetworkPort;
 
-import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -36,20 +35,19 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.util.Filter;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -77,16 +75,16 @@ public class IPCapabilityIntegrationTest
 	@Filter("(capability=ipv4)")
 	private ICapabilityFactory	ipFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer	routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() {
@@ -131,7 +129,7 @@ public class IPCapabilityIntegrationTest
 		Assert.assertNotNull(queueManagerFactory);
 
 		queueCapability = queueManagerFactory.create(mockResource);
-        queueCapability.initialize();
+		queueCapability.initialize();
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		// Test elements not null
@@ -159,10 +157,10 @@ public class IPCapabilityIntegrationTest
 		log.info("TEST ip ACTION");
 
 		Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertEquals(resp.getStatus(), Status.OK);
-		Assert.assertEquals(resp.getErrors().size(), 0);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
+		Assert.assertEquals(0, resp.getErrors().size());
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertEquals(queue.size(), 1);
+		Assert.assertEquals(1, queue.size());
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
 		Assert.assertEquals(queueResponse.getResponses().size(), 1);
@@ -173,11 +171,11 @@ public class IPCapabilityIntegrationTest
 		ActionResponse actionResponse = queueResponse.getResponses().get(0);
 		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
 		for (Response response : actionResponse.getResponses()) {
-			Assert.assertEquals(response.getStatus(), Response.Status.OK);
+			Assert.assertEquals(Response.Status.OK, response.getStatus());
 		}
 
 		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertEquals(queue.size(), 0);
+		Assert.assertEquals(0, queue.size());
 	}
 
 	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
