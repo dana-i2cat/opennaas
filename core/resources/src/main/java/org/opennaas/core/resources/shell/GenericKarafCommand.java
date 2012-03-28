@@ -273,9 +273,13 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		if (response.getStatus().equals(Response.Status.OK)) {
 			return null;
 		} else if (response.getStatus().equals(Response.Status.ERROR)) {
+			printError("Error in " + response.getSentMessage());
 			for (String error : response.getErrors())
 				printError(error);
 			return -1;
+		} else if (response.getStatus().equals(Response.Status.QUEUED)) {
+			printSymbol("Queued " + response.getSentMessage());
+			return null;
 		} else {
 			printSymbol(response.getStatus().toString());
 			return null;

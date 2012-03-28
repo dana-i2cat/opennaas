@@ -1,12 +1,5 @@
 package org.opennaas.extensions.router.capability.ip.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.ip.IPCapability;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -14,7 +7,14 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.ip.IPCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
 @Command(scope = "ipv4", name = "setIP", description = "Set an IP address in a given interface of a resource")
 public class SetIPv4Command extends GenericKarafCommand {
@@ -86,7 +86,8 @@ public class SetIPv4Command extends GenericKarafCommand {
 			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
 
 			// printInfo("Sending message to the queue");
-			ipCapability.sendMessage(ActionConstants.SETIPv4, params);
+			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETIPv4, params);
+			printResponseStatus(resp);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -135,7 +136,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 	/**
 	 * TODO FORMAT TO STRING
-	 *
+	 * 
 	 * @param ipAddress
 	 * @return
 	 */

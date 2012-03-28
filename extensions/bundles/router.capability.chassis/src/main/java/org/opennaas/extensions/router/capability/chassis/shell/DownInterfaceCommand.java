@@ -1,10 +1,5 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -12,7 +7,12 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 
 @Command(scope = "chassis", name = "down", description = "Down a physical interface")
 public class DownInterfaceCommand extends GenericKarafCommand {
@@ -52,7 +52,8 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 			validateResource(resource);
 			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS, prepareConfigureStatusParams(interfaceName));
+			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS, prepareConfigureStatusParams(interfaceName));
+			printResponseStatus(resp);
 
 		} catch (ResourceException e) {
 			printError(e);

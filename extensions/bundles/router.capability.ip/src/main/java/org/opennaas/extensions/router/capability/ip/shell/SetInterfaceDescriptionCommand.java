@@ -1,10 +1,5 @@
 package org.opennaas.extensions.router.capability.ip.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.ip.IPCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalPort;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -12,7 +7,12 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.ip.IPCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalPort;
 
 @Command(scope = "ipv4", name = "setInterfaceDescription", description = "Sets given description to given interface.")
 public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
@@ -57,7 +57,8 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
 			// printInfo("Sending message to the queue");
-			ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
+			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
+			printResponseStatus(resp);
 
 		} catch (ResourceException e) {
 			printError(e);
