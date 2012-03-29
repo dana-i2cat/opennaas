@@ -30,8 +30,11 @@ import org.osgi.service.event.EventHandler;
 public class ProtocolSessionManager implements IProtocolSessionManager, IProtocolSessionListener, IProtocolMessageFilter, EventHandler {
 
 	private String								resourceID									= null;
+	/* key: sessionId, value: pooled session */
 	private Map<String, ProtocolPooled>			liveSessions								= null;
+	/* key: sessionId, value: context */
 	private Map<String, ProtocolSessionContext>	liveSessionContexts							= null;
+	/* key: protocol, value: context */
 	private Map<String, ProtocolSessionContext>	registeredContexts							= null;
 	private List<String>						lockedProtocolSessions						= null;
 	private ProtocolManager						protocolManager								= null;
@@ -117,18 +120,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return registeredContexts;
 	}
 
-	/**
-	 * Get the miliseconds since this session was last released.
-	 * 
-	 * @param sessionIds
-	 * @return System.currentTimeMillis() snapshot taken when released.
-	 */
-	public long getSessionlastUsed(String sessionIds) {
-		// This function is a bit bad placed, but saves us from having a lastUsed field in the IProtocolSession implementations, which are potentially
-		// done by third parties.
-		return liveSessions.get(sessionIds).getLastUsed();
-	}
-
 	private synchronized IProtocolSession createProtocolSession(ProtocolSessionContext protocolSessionContext) throws ProtocolException {
 
 		long now = System.currentTimeMillis();
@@ -159,17 +150,13 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	@Override
 	public synchronized void destroyProtocolSession(String sessionID) throws ProtocolException {
-		if (sessionID == null) {
-			throw new ProtocolException("The session ID provided is null");
-		}
 
-		if (!liveSessions.containsKey(sessionID)) {
+		IProtocolSession protocolSession = getSessionById(sessionID);
+		if (protocolSession == null) {
 			throw new ProtocolException("There is no existing session with this ID: " + sessionID);
 		}
 
 		lockProtocolSession(sessionID);
-
-		IProtocolSession protocolSession = liveSessions.get(sessionID).getProtocolSession();
 
 		/* disconnect the session */
 		if (protocolSession.getStatus().equals(Status.CONNECTED)) {
@@ -190,50 +177,104 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	@Override
+	public synchronized IProtocolSession obtainSessionByProtocol(String protocol, boolean lock) throws ProtocolException {
+
+		if (protocol == null)
+			throw new ProtocolException("Requested protocol is null.");
+
+		ProtocolSessionContext context = registeredContexts.get(protocol);
+		if (context == null)
+			throw new ProtocolException("No such registered context for protocol: " + protocol);
+
+		return obtainSession(context, lock);
+	}
+
+	@Override
+	public synchronized IProtocolSession obtainSession(ProtocolSessionContext context, boolean lock) throws ProtocolException {
+
+		IProtocolSession session = getSessionByContext(context);
+
+		if (session == null) {
+			session = createProtocolSession(context);
+		}
+
+		if (lock)
+			lockProtocolSession(session.getSessionId());
+
+		return session;
+	}
+
+	@Override
+	public synchronized IProtocolSession getSessionById(String sessionId, boolean lock) throws ProtocolException {
+
+		IProtocolSession session = getSessionById(sessionId);
+		if (session == null)
+			throw new ProtocolException("There is no existing session with ID: " + sessionId);
+
+		if (lock)
+			lockProtocolSession(sessionId);
+
+		return session;
+	}
+
+	/**
+	 * 
+	 * @param sessionId
+	 * @return IProtocolSession with given sessionId, if there is one, or null otherwise
+	 */
+	private synchronized IProtocolSession getSessionById(String sessionId) {
+		if (sessionId == null)
+			return null;
+
+		ProtocolPooled pooled = liveSessions.get(sessionId);
+		if (pooled == null)
+			return null;
+
+		return pooled.getProtocolSession();
+	}
+
+	/**
+	 * 
+	 * @param context
+	 * @return IProtocolSession with given context, if there is one, or null otherwise
+	 */
+	private IProtocolSession getSessionByContext(ProtocolSessionContext context) {
+		for (ProtocolPooled pooledSession : liveSessions.values()) {
+			if (pooledSession.getProtocolSession().getSessionContext().equals(context)) {
+				return pooledSession.getProtocolSession();
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public void registerContext(ProtocolSessionContext context) throws ProtocolException {
 
-		// ignore returned object, we do this only to check a sessionFactory for this protocol is available
-		protocolManager.getSessionFactory((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
+		String protocol = (String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
 
-		unregisterContext((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
+		checkIsSupportedProtocol(protocol);
 
-		registeredContexts.put((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL), context);
+		// unregister the old context (if any)
+		unregisterContext(protocol);
+
+		registeredContexts.put(protocol, context);
 	}
 
 	@Override
 	public void unregisterContext(String protocol) throws ProtocolException {
 		ProtocolSessionContext removedContext = registeredContexts.remove(protocol);
 		if (removedContext != null) {
-			for (IProtocolSession session : getLiveSessionsByContext(removedContext)) {
-				destroyProtocolSession(session.getSessionId());
+			IProtocolSession toDestory = getSessionByContext(removedContext);
+			if (toDestory != null) {
+				destroyProtocolSession(toDestory.getSessionId());
 			}
 		}
 	}
 
-	private List<IProtocolSession> getLiveSessionsByContext(ProtocolSessionContext context) {
-		List<IProtocolSession> sessionsWithGivenContext = new ArrayList<IProtocolSession>();
-		for (ProtocolPooled pooledSession : liveSessions.values()) {
-			if (pooledSession.getProtocolSession().getSessionContext().equals(context)) {
-				sessionsWithGivenContext.add(pooledSession.getProtocolSession());
-			}
+	private void checkIsSupportedProtocol(String protocol) throws ProtocolException {
+		if (!protocolManager.getAllSessionFactories().contains(protocol)) {
+			throw new ProtocolException("Unsupported protocol " + protocol);
 		}
-		return sessionsWithGivenContext;
-	}
-
-	@Override
-	public synchronized boolean isLocked(String sessionId) throws ProtocolException {
-
-		if (sessionId == null) {
-			throw new ProtocolException("The session ID provided is null");
-		}
-
-		if (!liveSessions.containsKey(sessionId)) {
-			throw new ProtocolException("There is no existing session with ID: " + sessionId);
-		}
-
-		ProtocolPooled pooled = liveSessions.get(sessionId);
-
-		return ((ReentrantLock) pooled.getLock()).isLocked();
 	}
 
 	private synchronized void lockProtocolSession(String sessionID) throws ProtocolException {
@@ -244,17 +285,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		if (!liveSessions.containsKey(sessionID)) {
 			throw new ProtocolException("There is no existing session with ID: " + sessionID);
 		}
-
-		// if (lockedProtocolSessions.contains(sessionID)) {
-		// throw new ProtocolException("Trying to lock a sessionID that is currently locked");
-		// }
-
-		// while (lockedProtocolSessions.contains(sessionID)) {
-		// try {
-		// lockedProtocolSessions.wait();
-		// } catch (InterruptedException e) {
-		// }
-		// }
 
 		liveSessions.get(sessionID).getLock().lock();
 
@@ -276,6 +306,34 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		lockedProtocolSessions.remove(sessionID);
 		liveSessions.get(sessionID).getLock().unlock();
+	}
+
+	@Override
+	public synchronized boolean isLocked(String sessionId) throws ProtocolException {
+
+		if (sessionId == null) {
+			throw new ProtocolException("The session ID provided is null");
+		}
+
+		if (!liveSessions.containsKey(sessionId)) {
+			throw new ProtocolException("There is no existing session with ID: " + sessionId);
+		}
+
+		ProtocolPooled pooled = liveSessions.get(sessionId);
+
+		return ((ReentrantLock) pooled.getLock()).isLocked();
+	}
+
+	/**
+	 * Get the miliseconds since this session was last released.
+	 * 
+	 * @param sessionIds
+	 * @return System.currentTimeMillis() snapshot taken when released.
+	 */
+	public long getSessionlastUsed(String sessionIds) {
+		// This function is a bit bad placed, but saves us from having a lastUsed field in the IProtocolSession implementations, which are potentially
+		// done by third parties.
+		return liveSessions.get(sessionIds).getLastUsed();
 	}
 
 	public synchronized void purgeOldSessions() throws ProtocolException {
@@ -302,56 +360,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	@Override
-	public synchronized IProtocolSession obtainSessionByProtocol(String protocol, boolean lock) throws ProtocolException {
-
-		if (protocol == null)
-			throw new ProtocolException("Requested protocol is null.");
-
-		ProtocolSessionContext context = registeredContexts.get(protocol);
-		if (context == null)
-			throw new ProtocolException("No such registered context for protocol: " + protocol);
-
-		return obtainSession(context, lock);
-	}
-
-	@Override
-	public synchronized IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException {
-
-		ProtocolPooled pooled = liveSessions.get(sessionId);
-
-		if (pooled == null)
-			throw new ProtocolException("Session id " + sessionId + "not found.");
-
-		if (lock)
-			lockProtocolSession(pooled.getProtocolSession().getSessionId());
-
-		return pooled.getProtocolSession();
-	}
-
-	@Override
-	public synchronized IProtocolSession obtainSession(ProtocolSessionContext context, boolean lock) throws ProtocolException {
-
-		IProtocolSession session = null;
-
-		if (liveSessions.size() > 0) {
-			for (ProtocolPooled pooledSession : liveSessions.values()) {
-				if (pooledSession.getProtocolSession().getSessionContext().equals(context))
-					session = pooledSession.getProtocolSession();
-				break;
-			}
-		}
-
-		if (session == null) {
-			session = createProtocolSession(context);
-		}
-
-		if (lock)
-			lockProtocolSession(session.getSessionId());
-
-		return session;
-	}
-
-	@Override
 	public synchronized void releaseSession(String sessionId) throws ProtocolException {
 		touchSession(sessionId);
 		unlockProtocolSession(sessionId);
@@ -363,10 +371,15 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	private void touchSession(String sessionId) {
-		for (ProtocolPooled pooled : liveSessions.values())
-			if (pooled.getProtocolSession().getSessionId().equals(sessionId))
+		if (sessionId != null) {
+			ProtocolPooled pooled = liveSessions.get(sessionId);
+			if (pooled != null) {
 				pooled.lastUsed = System.currentTimeMillis();
+			}
+		}
 	}
+
+	/* EVENTS METHODS */
 
 	/**
 	 * If you receive a message its a CONNECTION_LOST so destroy the session.

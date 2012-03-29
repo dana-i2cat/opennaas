@@ -41,7 +41,7 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 	}
 
 	@Override
-	public IProtocolSession obtainSessionById(String arg0, boolean arg1) throws ProtocolException {
+	public IProtocolSession getSessionById(String arg0, boolean arg1) throws ProtocolException {
 		return newMockWonesysProtocolSession();
 	}
 

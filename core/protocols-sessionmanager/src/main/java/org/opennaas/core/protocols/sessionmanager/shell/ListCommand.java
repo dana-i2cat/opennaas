@@ -72,7 +72,7 @@ public class ListCommand extends GenericKarafCommand {
 			}
 
 			for (String session : protocolManager.getProtocolSessionManager(resourceIdentifier.getId()).getAllProtocolSessionIds()) {
-				ProtocolSessionContext context = sessionManager.obtainSessionById(session, sessionManager.isLocked(session))
+				ProtocolSessionContext context = sessionManager.getSessionById(session, sessionManager.isLocked(session))
 						.getSessionContext();
 				printInfo(doubleTab + "Protocol: " + context.getSessionParameters().get(context.PROTOCOL));
 				if (verbose) {
@@ -86,7 +86,7 @@ public class ListCommand extends GenericKarafCommand {
 						age = MILLISECONDS.toMinutes(millis) + ":" + (MILLISECONDS.toSeconds(millis) - MINUTES.toSeconds(MILLISECONDS
 								.toMinutes(millis)));
 					}
-					Status sessionStatus = sessionManager.obtainSessionById(session, sessionManager.isLocked(session)).getStatus();
+					Status sessionStatus = sessionManager.getSessionById(session, sessionManager.isLocked(session)).getStatus();
 					printInfo(doubleTab + " Session ID: " + session + " STATUS: " + sessionStatus + " (Not used in: " + age + ")");
 				}
 			}
@@ -104,7 +104,7 @@ public class ListCommand extends GenericKarafCommand {
 				sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(device);
 				for (String session : sessionManager.getAllProtocolSessionIds()) {
 
-					ProtocolSessionContext context = sessionManager.obtainSessionById(session, sessionManager.isLocked(session))
+					ProtocolSessionContext context = sessionManager.getSessionById(session, sessionManager.isLocked(session))
 							.getSessionContext();
 					printInfo(doubleTab + "Protocol: " + context.getSessionParameters().get(context.PROTOCOL));
 
@@ -119,7 +119,7 @@ public class ListCommand extends GenericKarafCommand {
 							age = MILLISECONDS.toMinutes(millis) + ":" + (MILLISECONDS.toSeconds(millis) - MINUTES.toSeconds(MILLISECONDS
 									.toMinutes(millis)));
 						}
-						Status sessionStatus = sessionManager.obtainSessionById(session, sessionManager.isLocked(session)).getStatus();
+						Status sessionStatus = sessionManager.getSessionById(session, sessionManager.isLocked(session)).getStatus();
 						printInfo(doubleTab + " Session ID: " + session + " STATUS: " + sessionStatus + " (Not used in: " + age + ")");
 					}
 				}

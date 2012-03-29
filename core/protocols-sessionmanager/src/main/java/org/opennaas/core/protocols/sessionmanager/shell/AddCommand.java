@@ -1,19 +1,17 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
- * List the device ids registered to the protocol manager
- * FIXME: Is this really doing that?
  * @author Pau Minoves
- *
  */
 @Command(scope = "protocols", name = "add", description = "Brings up a live connection from the pool with the given protocol if there is none.")
 public class AddCommand extends GenericKarafCommand {
@@ -22,7 +20,7 @@ public class AddCommand extends GenericKarafCommand {
 	String	resourceId;
 
 	@Argument(name = "protocol", index = 1, required = true, description = "The protocol to use. This argument defines the factory and context used to create this session.")
-	String	protocol;	// user and password are inside PROTOCOL_URI
+	String	protocol;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -43,10 +41,12 @@ public class AddCommand extends GenericKarafCommand {
 
 		IProtocolManager protocolManager = getProtocolManager();
 		ProtocolSessionManager sessionManager = (ProtocolSessionManager) protocolManager.getProtocolSessionManager(resourceIdentifier.getId());
-		if (sessionManager.obtainSessionByProtocol(protocol, false) != null) {
-			printInfo("Protocol added.");
-		} else {
-			printError("Protocol not added");
+		IProtocolSession availableSession;
+		try {
+			availableSession = sessionManager.obtainSessionByProtocol(protocol, false);
+			printInfo("Available session: " + availableSession.getSessionId());
+		} catch (ProtocolException e) {
+			printError("Faild to add session", e);
 		}
 		printEndCommand();
 		return null;

@@ -65,7 +65,7 @@ public interface IProtocolSessionManager {
 	 * @return The protocol session.
 	 * @throws ProtocolException
 	 */
-	public IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException;
+	public IProtocolSession getSessionById(String sessionId, boolean lock) throws ProtocolException;
 
 	/**
 	 * Return a session to the pool. This will release the internal lock on the session.
