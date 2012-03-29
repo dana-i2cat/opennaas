@@ -1,0 +1,28 @@
+shell:echo Script to test GRE tunnel commands for a router
+
+#Creating and initializing resource
+resource:create C:/Users/Jordi/git/opennaas/manticore/utils/routerWithGRE.descriptor
+protocols:context router:junos20 netconf mock://user:password@1.1.1.1:22/netconf
+resource:start router:junos20
+
+#Create the GRE tunnel
+shell:echo "gretunnel:create router:junos20 gre.3 192.168.32.1 255.255.255.0 192.168.5.1 192.168.5.10"
+gretunnel:create router:junos20 gre.3 192.168.32.1 255.255.255.0 192.168.5.1 192.168.5.10
+queue:execute router:junos20
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:junos20"
+gretunnel:show router:junos20
+
+#Delete the GRE tunnel
+shell:echo "gretunnel:delete router:junos20 gre.3"
+gretunnel:delete router:junos20 gre.3
+queue:execute router:junos20
+
+#Show the GRE tunnel
+shell:echo "gretunnel:show router:junos20"
+gretunnel:show router:junos20
+
+#Cleanup
+resource:stop router:junos20
+resource:remove router:junos20
