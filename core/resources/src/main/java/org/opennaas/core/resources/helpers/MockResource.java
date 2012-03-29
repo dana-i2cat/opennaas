@@ -88,21 +88,25 @@ public class MockResource implements IResource {
 		resourceDescriptor.setId(resourceId);
 	}
 
+	@Override
 	public void addCapability(ICapability capability) {
 		log.info("add Capability...");
 		capabilities.put(capability.getCapabilityInformation().getType(),
 				capability);
 	}
 
+	@Override
 	public ICapability removeCapability(Information info) {
 		return capabilities.remove(info.getType());
 	}
 
+	@Override
 	public ICapability getCapability(Information info) {
 		log.info("get Capability...");
 		return capabilities.get(info.getType());
 	}
 
+	@Override
 	public List<ICapability> getCapabilities() {
 		log.info("get Capabilities...");
 
@@ -113,6 +117,7 @@ public class MockResource implements IResource {
 		return capabs;
 	}
 
+	@Override
 	public void setCapabilities(List<ICapability> capabs) {
 		log.info("set Capabilities...");
 
@@ -121,57 +126,68 @@ public class MockResource implements IResource {
 		}
 	}
 
+	@Override
 	public IModel getModel() {
 		log.info("get Model...");
 		return model;
 	}
 
+	@Override
 	public void setModel(IModel model) {
 		log.info("set Model...");
 		this.model = model;
 
 	}
 
+	@Override
 	public void activate() throws ResourceException {
 		log.info("Activate...");
 
 	}
 
+	@Override
 	public void deactivate() throws ResourceException {
 		log.info("Deactivate...");
 
 	}
 
+	@Override
 	public void initialize() throws ResourceException {
 		log.info("Initialize...");
 
 	}
 
+	@Override
 	public State getState() {
 		log.info("get State...");
 		return null;
 	}
 
+	@Override
 	public void setState(State arg0) {
 		log.info("set State...");
 
 	}
 
+	@Override
 	public void shutdown() throws ResourceException {
 		log.info("shutdown...");
 
 	}
 
+	@Override
 	public ResourceDescriptor getResourceDescriptor() {
 		log.info("get Resource Descriptor...");
 		return resourceDescriptor;
 	}
 
+	@Override
 	public IResourceIdentifier getResourceIdentifier() {
 		log.info("get Resource Identifier...");
 		return resourceIdentifier;
 	}
 
+	@Override
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		log.info("set Resource Descriptor...");
 		this.resourceDescriptor = resourceDescriptor;
@@ -184,30 +200,42 @@ public class MockResource implements IResource {
 		resourceIdentifier = identifier;
 	}
 
+	@Override
 	public void start() throws ResourceException {
 		log.info("Start...");
 
 	}
 
+	@Override
 	public void stop() throws ResourceException {
 		log.info("Stop...");
 
 	}
 
+	@Override
 	public void setProfile(IProfile profile) {
 
 	}
 
+	@Override
 	public IProfile getProfile() {
 		return null;
 	}
 
+	@Override
 	public IResourceBootstrapper getBootstrapper() {
 		return bootstrapper;
 	}
 
+	@Override
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
+	}
+
+	@Override
+	public ICapability getCapabilityByType(String type) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
@@ -22,12 +20,14 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
 	Log		log	= LogFactory.getLog(MantychoreBootstrapper.class);
 
 	IModel	oldModel;
 
+	@Override
 	public void resetModel(IResource resource) throws ResourceException {
 		resource.setModel(new ComputerSystem());
 		((ComputerSystem) resource.getModel()).setName(resource.getResourceDescriptor().getInformation().getName());
@@ -35,6 +35,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			((ComputerSystem) resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 	}
 
+	@Override
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 		oldModel = resource.getModel();
@@ -54,7 +55,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		ICapability queueCapab = resource.getCapability(createQueueInformation());
+		ICapability queueCapab = resource.getCapabilityByType(createQueueInformation().getType());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING
