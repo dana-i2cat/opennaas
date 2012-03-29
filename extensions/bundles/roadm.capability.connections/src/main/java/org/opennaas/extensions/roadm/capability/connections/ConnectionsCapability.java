@@ -2,7 +2,8 @@ package org.opennaas.extensions.roadm.capability.connections;
 
 import java.util.Vector;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
@@ -11,9 +12,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
 public class ConnectionsCapability extends AbstractCapability {
 
@@ -46,7 +45,7 @@ public class ConnectionsCapability extends AbstractCapability {
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
 
-		return Response.okResponse(idOperation);
+		return Response.queuedResponse(idOperation);
 	}
 
 	@Override

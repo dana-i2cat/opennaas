@@ -18,17 +18,20 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.MockAction;
+import org.opennaas.core.resources.helpers.MockActionExceptionOnExecute;
 import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueResponse;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -150,6 +153,25 @@ public class QueuemanagerTest
 		Assert.assertTrue(queueManagerService.getActions().size() == 1);
 		queueManagerService.execute();
 		Assert.assertTrue(queueManagerService.getActions().size() == 0);
+		log.info("INFO: OK!");
+	}
+	
+	@Test
+	public void executeActionThatThrowsException() throws ProtocolException, CapabilityException {
+		log.info("INFO: Execute actions");
+
+		IAction action = new MockActionExceptionOnExecute();
+		action.setActionID("mockAction");
+
+		queueManagerService.queueAction(action);
+		Assert.assertEquals(1, queueManagerService.getActions().size());
+		QueueResponse response = queueManagerService.execute();
+		Assert.assertFalse(response.isOk());
+		Assert.assertFalse(response.getResponses().isEmpty());
+		Assert.assertEquals(STATUS.ERROR, response.getResponses().get(0).getStatus());
+		Assert.assertNotNull("Action information should contain the error message", response.getResponses().get(0).getInformation());
+		Assert.assertFalse("Restore should be executed", STATUS.PENDING.equals(response.getRestoreResponse().getStatus()));
+		
 		log.info("INFO: OK!");
 	}
 

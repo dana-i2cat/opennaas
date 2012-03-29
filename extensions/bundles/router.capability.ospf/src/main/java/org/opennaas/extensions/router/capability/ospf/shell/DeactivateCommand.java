@@ -25,7 +25,7 @@ public class DeactivateCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
 			Response response = ospfCapability.deactivateOSPF();
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
