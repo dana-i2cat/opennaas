@@ -13,9 +13,9 @@ import org.opennaas.core.resources.profile.IProfile;
 
 /**
  * Main resource class
- *
+ * 
  * @author Mathieu Lemay
- *
+ * 
  */
 public class Resource implements IResource {
 
@@ -37,7 +37,7 @@ public class Resource implements IResource {
 	/** The resource specific bootstapper class */
 	private IResourceBootstrapper	bootstrapper		= null;
 
-	private IModel			model;
+	private IModel					model;
 
 	private IProfile				profile				= null;
 
@@ -46,18 +46,22 @@ public class Resource implements IResource {
 		setState(State.INSTANTIATED);
 	}
 
+	@Override
 	public State getState() {
 		return state;
 	}
 
+	@Override
 	public void setState(State state) {
 		this.state = state;
 	}
 
+	@Override
 	public IResourceIdentifier getResourceIdentifier() {
 		return resourceIdentifier;
 	}
 
+	@Override
 	public void initialize() throws IncorrectLifecycleStateException, ResourceException {
 		if (!(getState().equals(State.INSTANTIATED) || getState().equals(State.SHUTDOWN)))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (initialize) in state " + getState(), getState());
@@ -68,6 +72,7 @@ public class Resource implements IResource {
 		setState(State.INITIALIZED);
 	}
 
+	@Override
 	public void activate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.INITIALIZED))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (activate) in state " + getState(), getState());
@@ -92,6 +97,7 @@ public class Resource implements IResource {
 		setState(State.ACTIVE);
 	}
 
+	@Override
 	public void deactivate() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		if (!getState().equals(State.ACTIVE))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (deactivate) in state " + getState(), getState());
@@ -140,6 +146,7 @@ public class Resource implements IResource {
 		setState(State.INITIALIZED);
 	}
 
+	@Override
 	public void shutdown() throws IncorrectLifecycleStateException, ResourceException {
 		if (!getState().equals(State.INITIALIZED))
 			throw new IncorrectLifecycleStateException("Unrecognized transition method (shutdown) in state " + getState(), getState());
@@ -150,22 +157,38 @@ public class Resource implements IResource {
 		setState(State.SHUTDOWN);
 	}
 
+	@Override
 	public ResourceDescriptor getResourceDescriptor() {
 		return resourceDescriptor;
 	}
 
+	@Override
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		this.resourceDescriptor = resourceDescriptor;
 	}
 
+	@Override
 	public void setResourceIdentifier(IResourceIdentifier resourceIdentifier) {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
+	@Override
 	public void addCapability(ICapability capability) {
 		capabilities.add(capability);
 	}
 
+	public ICapability getCapabilityByType(String type) {
+		Iterator<ICapability> capabilityIterator = capabilities.iterator();
+		while (capabilityIterator.hasNext()) {
+			ICapability capability = capabilityIterator.next();
+			if (capability.getCapabilityInformation().getType().equals(type)) {
+				return capability;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public ICapability getCapability(Information information) {
 		Iterator<ICapability> capabilityIterator = capabilities.iterator();
 		while (capabilityIterator.hasNext()) {
@@ -177,20 +200,24 @@ public class Resource implements IResource {
 		return null;
 	}
 
+	@Override
 	public ICapability removeCapability(Information information) {
 		ICapability capability = getCapability(information);
 		capabilities.remove(capability);
 		return capability;
 	}
 
+	@Override
 	public List<ICapability> getCapabilities() {
 		return capabilities;
 	}
 
+	@Override
 	public void setCapabilities(List<ICapability> capabilities) {
 		this.capabilities = capabilities;
 	}
 
+	@Override
 	public void start() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to start it");
@@ -203,6 +230,7 @@ public class Resource implements IResource {
 		}
 	}
 
+	@Override
 	public void stop() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to stop it");
@@ -218,6 +246,7 @@ public class Resource implements IResource {
 	/**
 	 * @return the bootstrapper
 	 */
+	@Override
 	public IResourceBootstrapper getBootstrapper() {
 		return bootstrapper;
 	}
@@ -226,6 +255,7 @@ public class Resource implements IResource {
 	 * @param bootstrapper
 	 *            the bootstrapper to set
 	 */
+	@Override
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
 	}
@@ -234,6 +264,7 @@ public class Resource implements IResource {
 	 * @param model
 	 *            the model to set
 	 */
+	@Override
 	public void setModel(IModel model) {
 		this.model = model;
 	}
@@ -241,14 +272,17 @@ public class Resource implements IResource {
 	/**
 	 * @return the model
 	 */
+	@Override
 	public IModel getModel() {
 		return model;
 	}
 
+	@Override
 	public IProfile getProfile() {
 		return profile;
 	}
 
+	@Override
 	public void setProfile(IProfile profile) {
 		this.profile = profile;
 	}
@@ -256,7 +290,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to initialize and activate all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 *
+	 * 
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure
@@ -324,7 +358,7 @@ public class Resource implements IResource {
 	/**
 	 * Tries to deactivate and shutdown all capabilities in capabilities [0,lastCapabilityIndex]. If specified, on fail it performs a rollback
 	 * operation to leave capabilities in same state as they were
-	 *
+	 * 
 	 * @param lastCapabilityIndex
 	 * @param rollback
 	 *            flag to activate rollback in case of failure

@@ -201,5 +201,11 @@ public class MockResource implements IResource {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public ICapability getCapabilityByType(String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
