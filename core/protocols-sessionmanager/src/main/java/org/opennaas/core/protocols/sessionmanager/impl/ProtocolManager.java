@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
@@ -13,16 +15,12 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class ProtocolManager implements IProtocolManager {
 
-	private  Log								log					= LogFactory.getLog(ProtocolManager.class);
+	private Log										log					= LogFactory.getLog(ProtocolManager.class);
 
 	private Map<String, IProtocolSessionManager>	sessionManagers		= null;
-	private IEventManager						eventManager;
-
+	private IEventManager							eventManager;
 
 	/**
 	 * Stores the protocolFactories present in the platform, indexed by the protocol id
@@ -49,13 +47,14 @@ public class ProtocolManager implements IProtocolManager {
 		return resourceID;
 	}
 
+	@Override
 	public synchronized void destroyProtocolSessionManager(String resourceID) throws ProtocolException {
 		if (resourceID == null) {
 			throw new ProtocolException("deviceID is null");
 		}
 
 		if (!sessionManagers.containsKey(resourceID)) {
-			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
+			throw new ProtocolException("This deviceID is not associated to any existing ProtocolSessionManager");
 		}
 
 		IProtocolSessionManager protocolSessionManager = sessionManagers.remove(resourceID);
@@ -68,6 +67,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	}
 
+	@Override
 	public synchronized IProtocolSessionManager getProtocolSessionManagerWithContext(String resourceId, ProtocolSessionContext context)
 			throws ProtocolException {
 		if (resourceId == null) {
@@ -88,6 +88,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	}
 
+	@Override
 	public synchronized IProtocolSessionManager getProtocolSessionManager(String resourceId) throws ProtocolException {
 		if (resourceId == null) {
 			throw new ProtocolException("deviceID is null");
@@ -103,6 +104,7 @@ public class ProtocolManager implements IProtocolManager {
 		return sessionManagers.get(resourceId);
 	}
 
+	@Override
 	public List<String> getAllResourceIds() {
 		Iterator<String> iterator = sessionManagers.keySet().iterator();
 		List<String> result = new ArrayList<String>();
@@ -117,6 +119,7 @@ public class ProtocolManager implements IProtocolManager {
 	 * SESSION FACTORIES
 	 */
 
+	@Override
 	public List<String> getAllSessionFactories() {
 		Iterator<String> iterator = protocolFactories.keySet().iterator();
 		List<String> result = new ArrayList<String>();
@@ -145,7 +148,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	/**
 	 * Called by blueprint every time a sessionFactory is registered in the OSGi repository
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -158,7 +161,7 @@ public class ProtocolManager implements IProtocolManager {
 
 	/**
 	 * Called by blueprint every time a sessionFactory is unregistered from the OSGi repository
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -173,15 +176,15 @@ public class ProtocolManager implements IProtocolManager {
 
 	/**
 	 * Blueprint callback (executed when EventManager is available)
-	 *
+	 * 
 	 * @param eventManager
 	 */
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
 
-		for (IProtocolSessionManager sessionManager: sessionManagers.values()){
-			if (sessionManager instanceof ProtocolSessionManager){
-				((ProtocolSessionManager)sessionManager).setEventManager(eventManager);
+		for (IProtocolSessionManager sessionManager : sessionManagers.values()) {
+			if (sessionManager instanceof ProtocolSessionManager) {
+				((ProtocolSessionManager) sessionManager).setEventManager(eventManager);
 			}
 		}
 	}
