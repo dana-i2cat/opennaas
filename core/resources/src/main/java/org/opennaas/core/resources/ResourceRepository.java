@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.persistence.GenericRepository;
@@ -16,12 +18,14 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorRepository;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 
 /**
  * Base class for all the resource repository implementations.
- *
+ * 
  * @author Mathieu Leman (ITI)
- *
+ * 
  */
 public class ResourceRepository implements IResourceRepository {
 	/** logger */
@@ -31,7 +35,7 @@ public class ResourceRepository implements IResourceRepository {
 	protected Map<String, IResource>						resourceRepository		= null;
 
 	/** The resource descriptor repository **/
-	protected GenericRepository<ResourceDescriptor, String> descriptorRepository	= null;
+	protected GenericRepository<ResourceDescriptor, String>	descriptorRepository	= null;
 
 	/** The capability factories by capability id **/
 	protected Map<String, ICapabilityFactory>				capabilityFactories		= null;
@@ -41,9 +45,12 @@ public class ResourceRepository implements IResourceRepository {
 
 	private IResourceBootstrapperFactory					bootstrapperFactory		= null;
 
+	@Inject
+	private IProtocolManager								protocolManager;
+
 	/**
 	 * Construct a new resource repository for resources of the given type
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public ResourceRepository(String resourceType) {
@@ -78,9 +85,8 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Specialized setter for resourceDescriptorRepository.
-	 *
-     * The only purpose of this setter is to work around issues with
-     * Blueprint not being able to cast to the generic type of the real setter.
+	 * 
+	 * The only purpose of this setter is to work around issues with Blueprint not being able to cast to the generic type of the real setter.
 	 */
 	public void setResourceDescriptorRepository(ResourceDescriptorRepository descriptorRepository) {
 		setResourceDescriptorRepository((GenericRepository<ResourceDescriptor, String>) descriptorRepository);
@@ -109,7 +115,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Set the type of resource for the repository
-	 *
+	 * 
 	 * @param resourceType
 	 *            the resourceType to set
 	 */
@@ -182,6 +188,8 @@ public class ResourceRepository implements IResourceRepository {
 			throw new ResourceException(e);
 		}
 
+		createProtocolSessionManagerForResource(resource.getResourceIdentifier().getId());
+
 		logger.debug("Resource Initialized");
 		resourceDescriptor = persistResourceDescriptor(resourceDescriptor);
 
@@ -195,6 +203,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		IResource resource = getResource(identifier);
 		shutdownResource(identifier);
+		removeProtocolSessionManagerForResource(identifier);
 		unpersistResourceDescriptor(resource.getResourceDescriptor());
 	}
 
@@ -226,7 +235,7 @@ public class ResourceRepository implements IResourceRepository {
 					persistResourceDescriptor(oldConfig);
 				} catch (ResourceException e1) {
 					logger.error("Impossible to restore old configuration for resource ID #"
-								+ resource.getResourceDescriptor().getId());
+							+ resource.getResourceDescriptor().getId());
 					throw e1;
 				}
 				throw e;
@@ -285,7 +294,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Loads and starts a resource into memory. Uses resourceDescriptor id to identify the resource
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -447,7 +456,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource is valid to be started
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -459,7 +468,7 @@ public class ResourceRepository implements IResourceRepository {
 
 	/**
 	 * Checks if the resource type is valid so it can be created.
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @throws ResourceException
 	 */
@@ -621,6 +630,24 @@ public class ResourceRepository implements IResourceRepository {
 		}
 
 		descriptorRepository.delete(descriptor);
+	}
+
+	private void createProtocolSessionManagerForResource(String resourceId) {
+		try {
+			protocolManager.getProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			// ignored:
+			// it can only fail for resourceId already associated to a protocolSession (nothing wrong then)
+		}
+	}
+
+	private void removeProtocolSessionManagerForResource(String resourceId) {
+		try {
+			protocolManager.destroyProtocolSessionManager(resourceId);
+		} catch (ProtocolException e) {
+			// ignored:
+			// it can fail for resourceId not associated to a protocolSession (nothing wrong then)
+		}
 	}
 
 }
