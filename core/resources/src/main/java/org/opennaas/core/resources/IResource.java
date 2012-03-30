@@ -9,9 +9,9 @@ import org.opennaas.core.resources.profile.IProfile;
 
 /**
  * The top level resource interface
- *
+ * 
  * @author Mathieu Lemay (c)2009 Inocybe Technologies inc.
- *
+ * 
  */
 public interface IResource extends ILifecycle {
 
@@ -21,21 +21,21 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Get the resource instance descriptor
-	 *
+	 * 
 	 * @return
 	 */
 	public ResourceDescriptor getResourceDescriptor();
 
 	/**
 	 * Set the resource descriptor
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 */
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor);
 
 	/**
 	 * Set all the capabilities of this resource
-	 *
+	 * 
 	 * @param capabilities
 	 *            the resource capabilities
 	 */
@@ -43,14 +43,14 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Get all the capabilities of this resource
-	 *
+	 * 
 	 * @return the engine capabilities
 	 */
 	public List<ICapability> getCapabilities();
 
 	/**
 	 * Add a capability to this resource
-	 *
+	 * 
 	 * @param capability
 	 *            the actual capability
 	 */
@@ -58,7 +58,7 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Remove a capability from this resource
-	 *
+	 * 
 	 * @param information
 	 *            the information of the capability
 	 * @return the removed capability (null if the capability does not exist)
@@ -67,22 +67,29 @@ public interface IResource extends ILifecycle {
 
 	/**
 	 * Get a particular capability form this resource
-	 *
+	 * 
 	 * @return the capability
 	 */
 	public ICapability getCapability(Information information);
 
 	/**
+	 * Get capability by type
+	 * 
+	 * @return the capability
+	 */
+	public ICapability getCapabilityByType(String type);
+
+	/**
 	 * Start the Resource. The resource must already be instantiated and in the initialized state. This method will perform the necessary
 	 * bootstrapping to transition from INITIALIZED to ACTIVE State
-	 *
+	 * 
 	 * @throws CorruptStateException
 	 */
 	public void start() throws ResourceException, CorruptStateException;
 
 	/**
 	 * Stop the resource. This method will transition to the SHUTDOWN State
-	 *
+	 * 
 	 * @throws CorruptStateException
 	 */
 	public void stop() throws ResourceException, CorruptStateException;

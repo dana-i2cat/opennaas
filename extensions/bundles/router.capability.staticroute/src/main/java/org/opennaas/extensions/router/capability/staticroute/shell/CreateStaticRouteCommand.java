@@ -39,7 +39,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			StaticRouteCapability staticRouteCapability = (StaticRouteCapability) getCapability(router.getCapabilities(),
 					StaticRouteCapability.CAPABILITY_NAME);
 			Response response = staticRouteCapability.create(netIdIpAdress, maskIpAdress, nextHopIpAddress);
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
