@@ -100,6 +100,17 @@ public interface IProtocolSessionManager {
 	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
 	 * terminated.
 	 * 
+	 * @param context
+	 *            The context that will be unregistered.
+	 * @throws ProtocolException
+	 *             If there is an error terminating sessions
+	 */
+	void unregisterContext(ProtocolSessionContext context) throws ProtocolException;
+
+	/**
+	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
+	 * terminated.
+	 * 
 	 * @param protocol
 	 *            The protocol of the context that will be unregistered.
 	 * @throws ProtocolException
@@ -132,4 +143,5 @@ public interface IProtocolSessionManager {
 	 * @throws ProtocolException
 	 */
 	boolean isLocked(String sessionId) throws ProtocolException;
+
 }

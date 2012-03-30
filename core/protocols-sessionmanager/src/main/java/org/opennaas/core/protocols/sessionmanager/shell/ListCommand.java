@@ -2,6 +2,11 @@ package org.opennaas.core.protocols.sessionmanager.shell;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
+
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
+import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -9,16 +14,11 @@ import org.opennaas.core.resources.protocol.IProtocolSession.Status;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-
 /**
  * List the device ids registere do the protocol manager
- *
+ * 
  * @author Pau Minoves
- *
+ * 
  */
 @Command(scope = "protocols", name = "list", description = "List devices to which we have a live protocol session.")
 public class ListCommand extends GenericKarafCommand {
@@ -43,7 +43,7 @@ public class ListCommand extends GenericKarafCommand {
 
 		if (optionProtocols) {
 			printInfo("Supported protocols:");
-			for (String protocol : protocolManager.getAllSessionFactories()) {
+			for (String protocol : protocolManager.getAllSupportedProtocols()) {
 				printInfo(protocol);
 			}
 			printEndCommand();

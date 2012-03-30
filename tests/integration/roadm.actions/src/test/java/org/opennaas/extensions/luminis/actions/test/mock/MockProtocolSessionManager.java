@@ -74,6 +74,12 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 
 	}
 
+	@Override
+	public void unregisterContext(ProtocolSessionContext context) throws ProtocolException {
+		// TODO Auto-generated method stub
+
+	}
+
 	public IProtocolSession newMockWonesysProtocolSession() {
 
 		ProtocolSessionContext sessionContext = new ProtocolSessionContext();

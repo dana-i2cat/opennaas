@@ -264,15 +264,21 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	public void unregisterContext(String protocol) throws ProtocolException {
 		ProtocolSessionContext removedContext = registeredContexts.remove(protocol);
 		if (removedContext != null) {
-			IProtocolSession toDestory = getSessionByContext(removedContext);
-			if (toDestory != null) {
-				destroyProtocolSession(toDestory.getSessionId());
+			IProtocolSession toDestroy = getSessionByContext(removedContext);
+			if (toDestroy != null) {
+				destroyProtocolSession(toDestroy.getSessionId());
 			}
 		}
 	}
 
+	@Override
+	public void unregisterContext(ProtocolSessionContext context) throws ProtocolException {
+		String protocol = (String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL);
+		unregisterContext(protocol);
+	}
+
 	private void checkIsSupportedProtocol(String protocol) throws ProtocolException {
-		if (!protocolManager.getAllSessionFactories().contains(protocol)) {
+		if (!protocolManager.isSupportedProtocol(protocol)) {
 			throw new ProtocolException("Unsupported protocol " + protocol);
 		}
 	}

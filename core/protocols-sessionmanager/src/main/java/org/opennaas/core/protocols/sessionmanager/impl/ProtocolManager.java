@@ -62,14 +62,13 @@ public class ProtocolManager implements IProtocolManager {
 			throw new ProtocolException("This deviceID is not associated to any existing ProtocolSessionManager");
 		}
 
-		IProtocolSessionManager protocolSessionManager = sessionManagers.remove(resourceID);
+		IProtocolSessionManager protocolSessionManager = sessionManagers.get(resourceID);
 
-		String[] sessionIdsToRemove = new String[protocolSessionManager.getAllProtocolSessionIds().size()];
-		sessionIdsToRemove = protocolSessionManager.getAllProtocolSessionIds().toArray(sessionIdsToRemove);
-		for (int i = 0; i < sessionIdsToRemove.length; i++) {
-			protocolSessionManager.destroyProtocolSession(sessionIdsToRemove[i]);
+		for (ProtocolSessionContext toUnregister : protocolSessionManager.getRegisteredContexts()) {
+			protocolSessionManager.unregisterContext(toUnregister);
 		}
 
+		sessionManagers.remove(resourceID);
 	}
 
 	@Override
@@ -116,6 +115,7 @@ public class ProtocolManager implements IProtocolManager {
 		return result;
 	}
 
+	@Override
 	public List<String> getAllSupportedProtocols() {
 		return getAllSessionFactories();
 	}
@@ -130,7 +130,6 @@ public class ProtocolManager implements IProtocolManager {
 	 * SESSION FACTORIES
 	 */
 
-	@Override
 	public List<String> getAllSessionFactories() {
 		List<String> result = new ArrayList<String>();
 		result.addAll(protocolFactories.keySet());
