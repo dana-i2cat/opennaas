@@ -23,6 +23,18 @@ public class Interface {
 	@Basic
 	private String	capacity;
 
+	@Embedded
+	private LayerId	atLayer;
+
+	@XmlElement(name = "atLayer", namespace = "http://www.science.uva.nl/research/sne/ndl#")
+	public LayerId getAtLayer() {
+		return atLayer;
+	}
+
+	public void setAtLayer(LayerId atLayer) {
+		this.atLayer = atLayer;
+	}
+
 	@XmlElement(name = "name", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public String getName() {
 		return nameInterface;
