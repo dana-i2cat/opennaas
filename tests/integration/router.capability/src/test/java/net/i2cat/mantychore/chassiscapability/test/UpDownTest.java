@@ -1,21 +1,18 @@
 package net.i2cat.mantychore.chassiscapability.test;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import net.i2cat.mantychore.chassiscapability.test.mock.MockBootstrapper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.commons.logging.Log;
@@ -24,7 +21,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -39,21 +35,22 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -89,9 +86,9 @@ public class UpDownTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() {
@@ -191,7 +188,7 @@ public class UpDownTest
 		QueueResponse queueResponse;
 
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
 		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
@@ -244,7 +241,7 @@ public class UpDownTest
 		/* send to change status */
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
 				newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
-		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
 		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
@@ -259,7 +256,7 @@ public class UpDownTest
 		/* send to change status */
 		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
 				newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
-		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
 		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);

@@ -2,10 +2,6 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 
 import java.util.List;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
@@ -15,6 +11,9 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 @Command(scope = "chassis", name = "createLogicalRouter", description = "Create a logical router on a given resource.")
 public class CreateLogicalRouterCommand extends GenericKarafCommand {
@@ -78,7 +77,7 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 					}
 				}
 			}
-			printResponseStatus(resp);
+			printResponseStatus(resp, resourceId);
 
 		} catch (ResourceException e) {
 			printError(e);
