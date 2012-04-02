@@ -83,8 +83,9 @@ public class ProtocolManager implements IProtocolManager {
 			log.debug("No existing ProtocolSessionManager for resource " + resourceId);
 
 			createProtocolSessionManager(resourceId);
-			sessionManagers.get(resourceId).registerContext(context);
 		}
+
+		sessionManagers.get(resourceId).registerContext(context);
 
 		return sessionManagers.get(resourceId);
 	}
