@@ -19,6 +19,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.tests-mockprofile</artifactId>
 		</dependency>
 	</dependencies>
