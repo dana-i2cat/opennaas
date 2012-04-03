@@ -16,13 +16,11 @@ public class ResourceNameCompleter implements Completer {
 
 	@Override
 	public int complete(String buffer, int cursor, List<String> candidates) {
-		IResourceManager resourceManager = null;
-		List<IResource> list = null;
+		
 		StringsCompleter delegate = new StringsCompleter();
 
 		try {
-			resourceManager = Activator.getResourceManagerService();
-			list = resourceManager.listResources();
+			List<IResource> list = Activator.getResourceManagerService().listResources();
 
 			for (IResource resource : list) {
 				String value = resource.getResourceDescriptor().getInformation().getType()
