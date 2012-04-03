@@ -1,5 +1,5 @@
 #Creating and initializing resource
-resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue.descriptor
+resource:create C:/Users/Jordi/git/opennaas/examples/descriptors/netqueue.descriptor
 resource:start network:network1
 
 resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue-router1.descriptor

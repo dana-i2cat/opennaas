@@ -50,7 +50,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
 			Response response = tunnelCapability.createGRETunnel(getTunnelService());
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();

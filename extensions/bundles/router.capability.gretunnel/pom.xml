@@ -2,7 +2,7 @@
   <parent>
     <artifactId>org.opennaas.extensions.bundles</artifactId>
     <groupId>org.opennaas</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.8</version>
   </parent>
   <artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
   <!--  Maven configuration -->
@@ -18,22 +18,18 @@
     <dependency>
 	  <groupId>org.opennaas</groupId>
 	  <artifactId>org.opennaas.core.resources</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
 	  <groupId>org.opennaas</groupId>
 	  <artifactId>org.opennaas.extensions.queuemanager</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
 	</dependency>
 	<dependency>
 	  <groupId>org.opennaas</groupId>
 	  <artifactId>org.opennaas.extensions.network.model</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
 	</dependency>
 	<dependency>
 	  <groupId>org.opennaas</groupId>
 	  <artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
 	</dependency>
 	<!--  auxiliar methods to use with commands -->
 	<dependency>
@@ -55,7 +51,6 @@
 	<plugin>
 	  <groupId>org.apache.felix</groupId>
 	  <artifactId>maven-bundle-plugin</artifactId>
-	  <version>2.3.5</version>
 	  <extensions>true</extensions>
 	  <!--
 	  | the following instructions build a simple set of public/private
