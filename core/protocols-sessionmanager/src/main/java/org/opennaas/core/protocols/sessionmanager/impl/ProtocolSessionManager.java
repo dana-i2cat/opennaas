@@ -10,6 +10,8 @@ import java.util.UUID;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
@@ -22,9 +24,6 @@ import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -95,14 +94,17 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		this.protocolManager = protocolManager;
 	}
 
+	@Override
 	public String getResourceID() {
 		return resourceID;
 	}
 
+	@Override
 	public Set<String> getAllProtocolSessionIds() {
 		return liveSessions.keySet();
 	}
 
+	@Override
 	public List<ProtocolSessionContext> getRegisteredContexts() {
 		List<ProtocolSessionContext> contexts = new ArrayList<ProtocolSessionContext>();
 		for (ProtocolSessionContext context : getRegisteredProtocolSessionContexts().values()) {
@@ -117,7 +119,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 	/**
 	 * Get the miliseconds since this session was last released.
-	 *
+	 * 
 	 * @param sessionIds
 	 * @return System.currentTimeMillis() snapshot taken when released.
 	 */
@@ -155,6 +157,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return protocolSession;
 	}
 
+	@Override
 	public synchronized void destroyProtocolSession(String sessionID) throws ProtocolException {
 		if (sessionID == null) {
 			throw new ProtocolException("The session ID provided is null");
@@ -186,18 +189,38 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		lockedProtocolSessions.remove(sessionID);
 	}
 
+	@Override
 	public void registerContext(ProtocolSessionContext context) throws ProtocolException {
 
-		// ignore returned object, we do this for the throw.
+		// ignore returned object, we do this only to check a sessionFactory for this protocol is available
 		protocolManager.getSessionFactory((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
+
+		unregisterContext((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
 
 		registeredContexts.put((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL), context);
 	}
 
-	public void unregisterContext(String protocol) {
-		registeredContexts.remove(protocol);
+	@Override
+	public void unregisterContext(String protocol) throws ProtocolException {
+		ProtocolSessionContext removedContext = registeredContexts.remove(protocol);
+		if (removedContext != null) {
+			for (IProtocolSession session : getLiveSessionsByContext(removedContext)) {
+				destroyProtocolSession(session.getSessionId());
+			}
+		}
 	}
 
+	private List<IProtocolSession> getLiveSessionsByContext(ProtocolSessionContext context) {
+		List<IProtocolSession> sessionsWithGivenContext = new ArrayList<IProtocolSession>();
+		for (ProtocolPooled pooledSession : liveSessions.values()) {
+			if (pooledSession.getProtocolSession().getSessionContext().equals(context)) {
+				sessionsWithGivenContext.add(pooledSession.getProtocolSession());
+			}
+		}
+		return sessionsWithGivenContext;
+	}
+
+	@Override
 	public synchronized boolean isLocked(String sessionId) throws ProtocolException {
 
 		if (sessionId == null) {
@@ -278,6 +301,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		}
 	}
 
+	@Override
 	public synchronized IProtocolSession obtainSessionByProtocol(String protocol, boolean lock) throws ProtocolException {
 
 		if (protocol == null)
@@ -290,6 +314,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return obtainSession(context, lock);
 	}
 
+	@Override
 	public synchronized IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException {
 
 		ProtocolPooled pooled = liveSessions.get(sessionId);
@@ -303,6 +328,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return pooled.getProtocolSession();
 	}
 
+	@Override
 	public synchronized IProtocolSession obtainSession(ProtocolSessionContext context, boolean lock) throws ProtocolException {
 
 		IProtocolSession session = null;
@@ -325,11 +351,13 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return session;
 	}
 
+	@Override
 	public synchronized void releaseSession(String sessionId) throws ProtocolException {
 		touchSession(sessionId);
 		unlockProtocolSession(sessionId);
 	}
 
+	@Override
 	public synchronized void releaseSession(IProtocolSession session) throws ProtocolException {
 		releaseSession(session.getSessionId());
 	}
@@ -343,6 +371,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	/**
 	 * If you receive a message its a CONNECTION_LOST so destroy the session.
 	 */
+	@Override
 	public void messageReceived(Object message) {
 		if (message instanceof String) {
 			try {
@@ -357,6 +386,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	/**
 	 * Specify the type of message which we want to listen
 	 */
+	@Override
 	public boolean notify(Object message) {
 		if (message instanceof Status) {
 			Status status = (Status) message;
@@ -411,7 +441,6 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	public void setEventManager(IEventManager eventManager) {
 		this.eventManager = eventManager;
 	}
-
 
 	private IEventManager getEventManager() throws ProtocolException {
 		if (this.eventManager == null)

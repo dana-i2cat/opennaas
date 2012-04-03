@@ -1,10 +1,37 @@
 package org.opennaas.extensions.roadm.capability.connections.test;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.command.Response.Status;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
@@ -14,52 +41,23 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOp
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
 import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
-
-import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.ResourceIdentifier;
-import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
-import org.opennaas.core.resources.action.IAction;
-import org.opennaas.core.resources.action.IActionSet;
-import org.opennaas.core.resources.capability.AbstractCapability;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ConnectionsCapabilityIntegrationTest
 {
-	private final static Log	log				= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
+	private final static Log	log			= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
 
-	private final String		deviceID		= "roadm";
-	private final String		queueID			= "queue";
+	private final String		deviceID	= "roadm";
+	private final String		queueID		= "queue";
 
 	private MockResource		mockResource;
 	private ICapability			connectionsCapability;
@@ -86,9 +84,9 @@ public class ConnectionsCapabilityIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initResource() throws Exception {
@@ -99,7 +97,8 @@ public class ConnectionsCapabilityIntegrationTest
 		mockResource = new MockResource();
 		mockResource.setModel((IModel) switchFactory.newPedrosaProteusOpticalSwitch());
 		mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
-		mockResource.setResourceIdentifier(new ResourceIdentifier(mockResource.getResourceDescriptor().getInformation().getType(), mockResource.getResourceDescriptor().getId()));
+		mockResource.setResourceIdentifier(new ResourceIdentifier(mockResource.getResourceDescriptor().getInformation().getType(), mockResource
+				.getResourceDescriptor().getId()));
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class ConnectionsCapabilityIntegrationTest
 
 		queueCapability = queueManagerFactory.create(mockResource);
 		queueCapability.initialize();
-		
+
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
 
 		// Test elements not null
@@ -165,7 +164,7 @@ public class ConnectionsCapabilityIntegrationTest
 		log.info("send message makeConnection...");
 		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) mockResource.getModel());
 		Response resp = (Response) connectionsCapability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
 		/* check queue */
@@ -199,7 +198,7 @@ public class ConnectionsCapabilityIntegrationTest
 		/* send message */
 		log.info("send message removeConnection...");
 		resp = (Response) connectionsCapability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-		Assert.assertTrue(resp.getStatus() == Status.OK);
+		Assert.assertEquals(Status.QUEUED, resp.getStatus());
 		Assert.assertTrue(resp.getErrors().size() == 0);
 
 		/* check queue */

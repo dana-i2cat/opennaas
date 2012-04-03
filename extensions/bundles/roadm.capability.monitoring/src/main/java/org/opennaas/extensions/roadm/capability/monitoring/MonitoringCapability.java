@@ -3,24 +3,22 @@ package org.opennaas.extensions.roadm.capability.monitoring;
 import java.util.Properties;
 import java.util.Vector;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -52,14 +50,14 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 			if (idOperation.equals(MonitoringCapability.PROCESS_ALARM_ACTION)) {
 				log.debug("Executing MonitoringCapability.PROCESS_ALARM_ACTION");
-				//execute directly, skipping queue
+				// execute directly, skipping queue
 				return executeAction(action, idOperation);
 
 			} else {
-				//queue action
+				// queue action
 				IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
 				queueManager.queueAction(action);
-				return Response.okResponse(idOperation);
+				return Response.queuedResponse(idOperation);
 			}
 
 		} catch (Exception e) {
@@ -105,15 +103,15 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	}
 
 	/**
-	 * Executes given action directly, without passing it to the queue.
-	 * Given action will be executed with no ProtocolSessionManager (null)
+	 * Executes given action directly, without passing it to the queue. Given action will be executed with no ProtocolSessionManager (null)
+	 * 
 	 * @param action
 	 * @return Response telling if action has gone ok or not
 	 * @throws ActionException
 	 */
 	private Response executeAction(IAction action, String idOperation) throws ActionException {
 
-		log.debug("Executing action " + idOperation +"...");
+		log.debug("Executing action " + idOperation + "...");
 
 		// skip the queue and execute directly
 		ActionResponse response = action.execute(null);
@@ -127,8 +125,6 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 			return Response.errorResponse(idOperation, errorMsgs);
 		}
 	}
-
-
 
 	private void registerAsCapabilityAlarmListener() throws CapabilityException {
 		log.debug("Registering as CapabilityAlarm listener");

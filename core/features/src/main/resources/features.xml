@@ -102,9 +102,9 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.chassis/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ip/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/1.0.0-SNAPSHOT</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/1.0.0-SNAPSHOT</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.gretunnel/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.ospf/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.staticroute/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-network" version="${project.version}">

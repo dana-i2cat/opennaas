@@ -94,5 +94,12 @@ public class MockActionFactory {
 
 		return action;
 	}
+	
+	public static IAction newMockActionExceptionOnExecute(String actionID) {
+		MockActionExceptionOnExecute action = new MockActionExceptionOnExecute();
+		action.setActionID(actionID);
+
+		return action;
+	}
 
 }
