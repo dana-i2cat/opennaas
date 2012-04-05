@@ -19,9 +19,19 @@
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<!-- Single point of entry to get profiles -->
 	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
-	<!-- Command completers -->
+	<!-- Command completers published as services-->
 	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
+	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">
+		<service-properties>
+			<entry key="completer.name" value="resourceNameCompleter"/>
+		</service-properties>
+	</service>
 	<bean id="profileNameCompleter" class="org.opennaas.core.resources.shell.completers.ProfileNameCompleter"/>
+	<service ref="profileNameCompleter" interface="org.apache.karaf.shell.console.Completer">
+		<service-properties>
+			<entry key="completer.name" value="profileNameCompleter"/>
+		</service-properties>
+	</service>
 	<!-- Listen for Resource Repositories -->
 	<reference-list interface="org.opennaas.core.resources.IResourceRepository" availability="optional">
 		<reference-listener ref="resourceManager" bind-method="resourceRepositoryAdded" unbind-method="resourceRepositoryRemoved"/>
