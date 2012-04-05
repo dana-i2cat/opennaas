@@ -3,11 +3,11 @@ package org.opennaas.extensions.luminis.actions.test;
 import java.util.List;
 import java.util.Set;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
 
 public class MockProtocolSessionManager implements IProtocolSessionManager {
 
@@ -42,7 +42,7 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 	}
 
 	@Override
-	public IProtocolSession obtainSessionById(String arg0, boolean arg1) throws ProtocolException {
+	public IProtocolSession getSessionById(String arg0, boolean arg1) throws ProtocolException {
 		return newMockWonesysProtocolSession();
 	}
 
@@ -75,6 +75,12 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 
 	}
 
+	@Override
+	public void unregisterContext(ProtocolSessionContext context) throws ProtocolException {
+		// TODO Auto-generated method stub
+
+	}
+
 	public IProtocolSession newMockWonesysProtocolSession() {
 		ProtocolSessionContext sessionContext = new ProtocolSessionContext();
 		sessionContext.addParameter("protocol.mock", "true");
@@ -95,5 +101,4 @@ public class MockProtocolSessionManager implements IProtocolSessionManager {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }
