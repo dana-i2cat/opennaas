@@ -78,6 +78,7 @@
 		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
 		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
+		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
@@ -350,6 +351,11 @@
 				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.compendium</artifactId>
 				<version>${osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+				<version>${servicemix.javax-inject.version}</version>
 			</dependency>
 			<!-- Karaf -->
 			<dependency>

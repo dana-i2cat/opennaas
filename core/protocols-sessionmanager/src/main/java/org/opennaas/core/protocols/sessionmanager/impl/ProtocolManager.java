@@ -33,6 +33,9 @@ public class ProtocolManager implements IProtocolManager {
 	}
 
 	private synchronized String createProtocolSessionManager(String resourceID) throws ProtocolException {
+		log.debug("Creating new ProtocolSessionManager for resource " + resourceID);
+
+		// FIXME in the near future, a check should be done here to avoid creating PSM for resources that don't exist in ResourceManager.
 
 		if (sessionManagers.containsKey(resourceID)) {
 			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
@@ -49,6 +52,8 @@ public class ProtocolManager implements IProtocolManager {
 
 	@Override
 	public synchronized void destroyProtocolSessionManager(String resourceID) throws ProtocolException {
+		log.debug("Destroying ProtocolSessionManager for resource " + resourceID);
+
 		if (resourceID == null) {
 			throw new ProtocolException("deviceID is null");
 		}
@@ -57,35 +62,32 @@ public class ProtocolManager implements IProtocolManager {
 			throw new ProtocolException("This deviceID is not associated to any existing ProtocolSessionManager");
 		}
 
-		IProtocolSessionManager protocolSessionManager = sessionManagers.remove(resourceID);
+		IProtocolSessionManager protocolSessionManager = sessionManagers.get(resourceID);
 
-		String[] sessionIdsToRemove = new String[protocolSessionManager.getAllProtocolSessionIds().size()];
-		sessionIdsToRemove = protocolSessionManager.getAllProtocolSessionIds().toArray(sessionIdsToRemove);
-		for (int i = 0; i < sessionIdsToRemove.length; i++) {
-			protocolSessionManager.destroyProtocolSession(sessionIdsToRemove[i]);
+		for (ProtocolSessionContext toUnregister : protocolSessionManager.getRegisteredContexts()) {
+			protocolSessionManager.unregisterContext(toUnregister);
 		}
 
+		sessionManagers.remove(resourceID);
 	}
 
 	@Override
 	public synchronized IProtocolSessionManager getProtocolSessionManagerWithContext(String resourceId, ProtocolSessionContext context)
 			throws ProtocolException {
+
 		if (resourceId == null) {
 			throw new ProtocolException("deviceID is null");
 		}
 
 		if (!sessionManagers.containsKey(resourceId)) {
-			log.debug("No existing ProtocolSessionManager for resource " + resourceId + ". Creating one...");
+			log.debug("No existing ProtocolSessionManager for resource " + resourceId);
 
-			ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceId);
-			protocolSessionManager.setProtocolManager(this);
-			protocolSessionManager.setEventManager(getEventManager());
-			protocolSessionManager.registerContext(context);
-
-			sessionManagers.put(resourceId, protocolSessionManager);
+			createProtocolSessionManager(resourceId);
 		}
-		return sessionManagers.get(resourceId);
 
+		sessionManagers.get(resourceId).registerContext(context);
+
+		return sessionManagers.get(resourceId);
 	}
 
 	@Override
@@ -95,9 +97,8 @@ public class ProtocolManager implements IProtocolManager {
 		}
 
 		if (!sessionManagers.containsKey(resourceId)) {
-			log.debug("No existing ProtocolSessionManager for resource " + resourceId + ". Creating one...");
+			log.debug("No existing ProtocolSessionManager for resource " + resourceId);
 
-			// FIXME in the near future, a check to ResourceManager should be done here to avoid creating PSM for resources that don't exist.
 			createProtocolSessionManager(resourceId);
 		}
 
@@ -115,18 +116,24 @@ public class ProtocolManager implements IProtocolManager {
 		return result;
 	}
 
+	@Override
+	public List<String> getAllSupportedProtocols() {
+		return getAllSessionFactories();
+	}
+
+	public boolean isSupportedProtocol(String protocol) {
+		if (protocol == null)
+			return false;
+		return protocolFactories.containsKey(protocol);
+	}
+
 	/*
 	 * SESSION FACTORIES
 	 */
 
-	@Override
 	public List<String> getAllSessionFactories() {
-		Iterator<String> iterator = protocolFactories.keySet().iterator();
 		List<String> result = new ArrayList<String>();
-		while (iterator.hasNext()) {
-			result.add(iterator.next());
-		}
-
+		result.addAll(protocolFactories.keySet());
 		return result;
 	}
 

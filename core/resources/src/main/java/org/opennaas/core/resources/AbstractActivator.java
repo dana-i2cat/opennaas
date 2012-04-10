@@ -35,25 +35,23 @@ public abstract class AbstractActivator {
 	/**
 	 * Fetch a service from OSGI Registry
 	 * 
+	 * @param bundleContext
+	 * @param filter
 	 * @return Object service instance
-	 * @throws InterruptedException
-	 * @throws InterruptedException
 	 * @throws ActivatorException
+	 *             if service could not be retrieved
 	 */
 	protected static Object getServiceFromRegistry(BundleContext bundleContext, Filter filter)
 			throws ActivatorException {
-		ServiceTracker tracker = new ServiceTracker(bundleContext, filter, null);
 
-		tracker.open();
-		Object service = null;
-		log.debug("Looking up Service from regisrty with properties: " + filter);
-		try {
-			service = tracker.waitForService(20000);
-		} catch (InterruptedException e) {
-			throw new ActivatorException(e);
+		log.debug("Looking up Service from registry with properties: " + filter);
+
+		if (bundleContext == null) {
+			throw new ActivatorException(ErrorConstants.ERROR_ACTIVATOR_SERVICE_NOTFOUND + " BundleContext is null");
 		}
-		tracker.close();
 
+		ServiceTracker tracker = new ServiceTracker(bundleContext, filter, null);
+		Object service = getServiceUsingTracker(tracker);
 		if (service != null) {
 			return service;
 		}
@@ -64,17 +62,33 @@ public abstract class AbstractActivator {
 	/**
 	 * Fetch a service from OSGI Registry
 	 * 
+	 * @param bundleContext
+	 * @param clazz
 	 * @return Object service instance
-	 * @throws InterruptedException
-	 * @throws InterruptedException
+	 * @throws ActivatorException
+	 *             if service could not be retrieved
 	 */
 	protected static Object getServiceFromRegistry(BundleContext bundleContext, String clazz)
 			throws ActivatorException {
-		ServiceTracker tracker = new ServiceTracker(bundleContext, clazz, null);
 
+		log.debug("Looking up Service from registry from class: " + clazz);
+
+		if (bundleContext == null) {
+			throw new ActivatorException(ErrorConstants.ERROR_ACTIVATOR_SERVICE_NOTFOUND + " BundleContext is null");
+		}
+
+		ServiceTracker tracker = new ServiceTracker(bundleContext, clazz, null);
+		Object service = getServiceUsingTracker(tracker);
+		if (service != null) {
+			return service;
+		}
+
+		throw new ActivatorException(ErrorConstants.ERROR_ACTIVATOR_SERVICE_NOTFOUND);
+	}
+
+	protected static Object getServiceUsingTracker(ServiceTracker tracker) throws ActivatorException {
 		tracker.open();
 		Object service = null;
-		log.debug("Looking up Service: " + clazz + " From service registry");
 		try {
 			service = tracker.waitForService(20000);
 		} catch (InterruptedException e) {
@@ -82,11 +96,7 @@ public abstract class AbstractActivator {
 		}
 		tracker.close();
 
-		if (service != null) {
-			return service;
-		}
-
-		throw new ActivatorException(ErrorConstants.ERROR_ACTIVATOR_SERVICE_NOTFOUND);
+		return service;
 	}
 
 }
