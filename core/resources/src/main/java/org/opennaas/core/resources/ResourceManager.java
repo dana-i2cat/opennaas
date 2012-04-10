@@ -3,7 +3,6 @@ package org.opennaas.core.resources;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,14 +15,14 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 /**
  * This class is the entry point to the resource for resource clients.
- *
+ * 
  * @author Eduard Grasa
  * @author Roc Vallès <roc.valles@i2cat.net>
- *
+ * 
  */
 public class ResourceManager implements IResourceManager {
 
-	Log											logger					= LogFactory.getLog(ResourceManager.class);
+	Log												logger	= LogFactory.getLog(ResourceManager.class);
 	/** The map of engine repository services, stored by type */
 	private final Map<String, IResourceRepository>	resourceRepositories;
 
@@ -37,7 +36,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is registered
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -52,7 +51,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Called by blueprint every time a resource repository is unregistered
-	 *
+	 * 
 	 * @param serviceInstance
 	 * @param serviceProperties
 	 */
@@ -66,7 +65,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Create a new resource with a given resourceDescriptor
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @returns the new resource
 	 * @throws ResourceException
@@ -80,7 +79,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * List all the existing resources of a given type. If type is null, list all the resources of all types
-	 *
+	 * 
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
 	 *         value.
 	 */
@@ -102,14 +101,14 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * List all the existing resources
-	 *
+	 * 
 	 * @return
 	 */
 	@Override
 	public synchronized List<IResource> listResources() {
 		logger.info("Resource Manager: listing the resources");
 		List<IResource> result = new ArrayList<IResource>();
-		for (IResourceRepository repository: resourceRepositories.values()) {
+		for (IResourceRepository repository : resourceRepositories.values()) {
 			result.addAll(repository.listResources());
 		}
 		return result;
@@ -117,7 +116,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Modify the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @return the modified resource
 	 * @throws ResourceException
@@ -139,7 +138,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Remove the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -151,7 +150,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Start the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -163,7 +162,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Stop the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -175,7 +174,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Stop the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -203,20 +202,24 @@ public class ResourceManager implements IResourceManager {
 	public synchronized void exportNetworkTopology(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException {
 		IResourceRepository repo = getResourceRepository(resourceIdentifier.getType());
 		ResourceDescriptor resourceDescriptor = repo.getResource(resourceIdentifier.getId()).getResourceDescriptor();
-		try {
-			File file = new File(fileName);
-			JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
-			context.createMarshaller().marshal(resourceDescriptor.getNetworkTopology(), file);
-			logger.info("NetworkTopology of resource " + resourceIdentifier.getId() + " exported to file " + fileName);
-			resourceDescriptor.setNetworkTopology(null); // Reset networkTopology
-		} catch (Exception ex) {
-			throw new ResourceException(ex.getMessage(), ex);
+		if (resourceDescriptor.getNetworkTopology() != null) {
+			try {
+				File file = new File(fileName);
+				JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
+				context.createMarshaller().marshal(resourceDescriptor.getNetworkTopology(), file);
+				logger.info("NetworkTopology of resource " + resourceIdentifier.getId() + " exported to file " + fileName);
+				resourceDescriptor.setNetworkTopology(null); // Reset networkTopology
+			} catch (Exception ex) {
+				throw new ResourceException(ex.getMessage(), ex);
+			}
+		} else {
+			throw new ResourceException("The resource hasn't a network topology to export.");
 		}
 	}
 
 	/**
 	 * Get an existing resource
-	 *
+	 * 
 	 * @param engineIdentifier
 	 *            the id of the resource to get
 	 * @return the resource
@@ -247,7 +250,7 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Get the IdentifierInformation for a given name (Resource.Information.name) of resource
-	 *
+	 * 
 	 * @return the ResourceIdentifier
 	 */
 	@Override
@@ -274,15 +277,15 @@ public class ResourceManager implements IResourceManager {
 
 	/**
 	 * Get the Name for a given resource ID (Resource.descriptor.id) of resource
-	 *
+	 * 
 	 * @return the Name. If null didn't find a resource with this ID
 	 */
 	@Override
 	public synchronized String getNameFromResourceID(String ID)
-		throws ResourceException
+			throws ResourceException
 	{
-		for (IResourceRepository repository: resourceRepositories.values()) {
-			for (IResource resource: repository.listResources()) {
+		for (IResourceRepository repository : resourceRepositories.values()) {
+			for (IResource resource : repository.listResources()) {
 				if ((resource.getResourceIdentifier().getId()).equals(ID)) {
 					return resource.getResourceDescriptor().getInformation().getName();
 				}
@@ -294,10 +297,10 @@ public class ResourceManager implements IResourceManager {
 
 	@Override
 	public synchronized IResource getResourceById(String resourceId)
-		throws ResourceException
+			throws ResourceException
 	{
 		// FIXME: resourceIds are supposed to be GUIDs, however nobody ever verifies that there aren't collisions.
-		for (IResourceRepository repo: resourceRepositories.values()) {
+		for (IResourceRepository repo : resourceRepositories.values()) {
 			try {
 				return repo.getResource(resourceId);
 			} catch (ResourceException e) {
