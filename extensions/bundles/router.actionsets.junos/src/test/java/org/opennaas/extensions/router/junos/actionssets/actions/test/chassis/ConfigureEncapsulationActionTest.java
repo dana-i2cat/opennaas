@@ -5,18 +5,6 @@ import java.util.List;
 
 import junit.framework.Assert;
 import mock.MockEventManager;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.junos.actionssets.actions.chassis.RemoveTaggedEthernetEncapsulationAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetTaggedEthernetEncapsulationAction;
-import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetVlanIdAction;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,9 +17,21 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.junos.actionssets.actions.chassis.RemoveTaggedEthernetEncapsulationAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetTaggedEthernetEncapsulationAction;
+import org.opennaas.extensions.router.junos.actionssets.actions.chassis.SetVlanIdAction;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
+import org.opennaas.extensions.router.model.VLANEndpoint;
 
 public class ConfigureEncapsulationActionTest {
-	
+
 	private static SetTaggedEthernetEncapsulationAction		setEncapsulationAction;
 	private static RemoveTaggedEthernetEncapsulationAction	removeEncapsulationAction;
 	private static SetVlanIdAction							setVlanAction;
@@ -174,19 +174,25 @@ public class ConfigureEncapsulationActionTest {
 	@Test
 	public void checkTemplate() throws ActionException {
 		try {
-			// action.checkParams(newParamEthernetPort("fe-0/3/1", 2, 3));
-			// action.prepareMessage();
-			//
-			// Assert.assertEquals(action.getTemplate(), "/VM_files/configureEthVLAN.vm");
+			// in lt interfaces
+			LogicalPort ltIface = createLogicalTunnelPort("lt-1/2/0", 2);
+			ltIface = addVlanToIface(ltIface, 101);
 
-			LogicalPort feIface = createLogicalTunnelPort("lt-1/2/0", 2);
+			setVlanAction.setParams(ltIface);
+			setVlanAction.checkParams(ltIface);
+			setVlanAction.prepareMessage();
+
+			Assert.assertEquals(setVlanAction.getTemplate(), "/VM_files/setVlanId.vm");
+
+			// in eth interfaces
+			LogicalPort feIface = createEthernetPort("fe-1/2/0", 2);
 			feIface = addVlanToIface(feIface, 101);
 
 			setVlanAction.setParams(feIface);
 			setVlanAction.checkParams(feIface);
 			setVlanAction.prepareMessage();
 
-			Assert.assertEquals(setVlanAction.getTemplate(), "/VM_files/setVlanIdInLT.vm");
+			Assert.assertEquals(setVlanAction.getTemplate(), "/VM_files/setVlanId.vm");
 
 		} finally {
 			setVlanAction.setParams(null);

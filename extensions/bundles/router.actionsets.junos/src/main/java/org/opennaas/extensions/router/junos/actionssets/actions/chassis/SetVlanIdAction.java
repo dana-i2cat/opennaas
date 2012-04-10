@@ -152,9 +152,9 @@ public class SetVlanIdAction extends JunosAction {
 
 	private void setTemplateAccordingToParamsType(LogicalPort params) throws ActionException {
 		if (isLogicalTunnelInterface(params)) {
-			setTemplate("/VM_files/setVlanIdInLT.vm");
+			setTemplate("/VM_files/setVlanId.vm");
 		} else if (isEthernetInterface(params)) {
-			setTemplate("/VM_files/setVlanIdInETH.vm");
+			setTemplate("/VM_files/setVlanId.vm");
 		} else {
 			throw new ActionException("Failed to determine Velocity template in Action " + getActionID());
 		}
