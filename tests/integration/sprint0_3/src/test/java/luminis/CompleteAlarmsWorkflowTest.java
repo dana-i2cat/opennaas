@@ -1,16 +1,20 @@
 package luminis;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +35,8 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -38,13 +44,8 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -72,22 +73,22 @@ public class CompleteAlarmsWorkflowTest
 
 	@Inject
 	@Filter("(capability=monitoring)")
-	private ICapabilityFactory monitoringFactory;
+	private ICapabilityFactory	monitoringFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
-	private BlueprintContainer roadmRepositoryService;
+	private BlueprintContainer	roadmRepositoryService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
-	private BlueprintContainer wonesysProtocolService;
+	private BlueprintContainer	wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-alarms", "opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-alarms", "opennaas-luminis"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	private TestInitInfo setUp() throws ResourceException, ProtocolException {
@@ -102,14 +103,15 @@ public class CompleteAlarmsWorkflowTest
 
 		IResource resource = resourceManager.createResource(createResourceDescriptorWithMonitoring());
 
-		// create session
+		// add SessionContext
 		IProtocolSessionManager sessionManager = protocolManager.getProtocolSessionManagerWithContext(resource.getResourceIdentifier().getId(),
 				createWonesysSessionContextMock());
 
-		IProtocolSession session = sessionManager.obtainSessionByProtocol("wonesys", false);
-
 		// start resource
 		resourceManager.startResource(resource.getResourceIdentifier());
+
+		// create session
+		IProtocolSession session = sessionManager.obtainSessionByProtocol("wonesys", false);
 
 		String transportId = ((WonesysProtocolSession) session).getWonesysTransport().getTransportID();
 
@@ -127,7 +129,6 @@ public class CompleteAlarmsWorkflowTest
 	private void tearDown(TestInitInfo initInfo) throws ResourceException, ProtocolException {
 		resourceManager.stopResource(initInfo.resource.getResourceIdentifier());
 		resourceManager.removeResource(initInfo.resource.getResourceIdentifier());
-		initInfo.sessionManager.destroyProtocolSession(initInfo.session.getSessionId());
 		alarmsRepo.clear();
 	}
 

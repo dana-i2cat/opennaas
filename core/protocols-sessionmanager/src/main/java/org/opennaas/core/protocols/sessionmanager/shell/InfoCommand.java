@@ -52,7 +52,7 @@ public class InfoCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		IProtocolSession protocolSession = protocolSessionManager.obtainSessionById(sessionId, false);
+		IProtocolSession protocolSession = protocolSessionManager.getSessionById(sessionId, false);
 
 		if (protocolSession == null) {
 			printError("Unable to obtain a session with session id: " + sessionId);

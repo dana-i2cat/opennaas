@@ -60,7 +60,7 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		printInfo("Resource " + resourceId + "added to network " + networkId);
+		printInfo("Resource " + resourceId + " added to network " + networkId);
 		printEndCommand();
 		return null;
 	}

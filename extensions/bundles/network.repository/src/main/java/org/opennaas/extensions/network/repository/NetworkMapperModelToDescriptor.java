@@ -3,6 +3,11 @@ package org.opennaas.extensions.network.repository;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.core.resources.descriptor.network.DeviceId;
+import org.opennaas.core.resources.descriptor.network.InterfaceId;
+import org.opennaas.core.resources.descriptor.network.Layer;
+import org.opennaas.core.resources.descriptor.network.LayerId;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.domain.NetworkDomain;
@@ -10,10 +15,6 @@ import org.opennaas.extensions.network.model.topology.ConnectionPoint;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
-
-import org.opennaas.core.resources.descriptor.network.DeviceId;
-import org.opennaas.core.resources.descriptor.network.InterfaceId;
-import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class NetworkMapperModelToDescriptor {
 
@@ -82,6 +83,7 @@ public class NetworkMapperModelToDescriptor {
 		networkTopology.setDevices(existingDevices);
 		networkTopology.setInterfaces(existingInterfaces);
 		networkTopology.setNetworkDomains(existingDomains);
+		networkTopology.setLayers(getLayers(networkModel));
 
 		return networkTopology;
 	}
@@ -91,6 +93,16 @@ public class NetworkMapperModelToDescriptor {
 			return "#" + name;
 		else
 			return name;
+	}
+
+	private static List<Layer> getLayers(NetworkModel networkModel) {
+		List<Layer> layers = new ArrayList<Layer>();
+		for (org.opennaas.extensions.network.model.layer.Layer layer : NetworkModelHelper.getLayers(networkModel.getNetworkElements())) {
+			Layer descriptorLayer = new Layer();
+			descriptorLayer.setName(layer != null ? addHashCharacter(layer.getName()) : null);
+			layers.add(descriptorLayer);
+		}
+		return layers;
 	}
 
 	/**
@@ -156,7 +168,10 @@ public class NetworkMapperModelToDescriptor {
 
 	private static org.opennaas.core.resources.descriptor.network.Interface newInterface(Interface networkElement) {
 		org.opennaas.core.resources.descriptor.network.Interface interf = new org.opennaas.core.resources.descriptor.network.Interface();
+		LayerId layerId = new LayerId();
+		layerId.setResource(networkElement.getLayer() != null ? networkElement.getLayer().getName() : null);
 		interf.setName(networkElement.getName());
+		interf.setAtLayer(layerId);
 		return interf;
 	}
 

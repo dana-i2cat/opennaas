@@ -65,7 +65,7 @@ public interface IProtocolSessionManager {
 	 * @return The protocol session.
 	 * @throws ProtocolException
 	 */
-	public IProtocolSession obtainSessionById(String sessionId, boolean lock) throws ProtocolException;
+	public IProtocolSession getSessionById(String sessionId, boolean lock) throws ProtocolException;
 
 	/**
 	 * Return a session to the pool. This will release the internal lock on the session.
@@ -95,6 +95,17 @@ public interface IProtocolSessionManager {
 	 *             If trying to register a context for a protocol that is not supported. Or unregistering older context fails.
 	 */
 	void registerContext(ProtocolSessionContext context) throws ProtocolException;
+
+	/**
+	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
+	 * terminated.
+	 * 
+	 * @param context
+	 *            The context that will be unregistered.
+	 * @throws ProtocolException
+	 *             If there is an error terminating sessions
+	 */
+	void unregisterContext(ProtocolSessionContext context) throws ProtocolException;
 
 	/**
 	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
@@ -132,4 +143,5 @@ public interface IProtocolSessionManager {
 	 * @throws ProtocolException
 	 */
 	boolean isLocked(String sessionId) throws ProtocolException;
+
 }
