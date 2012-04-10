@@ -89,6 +89,13 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="chassis/setEncapsulationLabel">
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.SetEncapsulationLabelCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 		<command name="chassis/showInterfaces">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.ShowInterfacesCommand"/>
 			<completers>
