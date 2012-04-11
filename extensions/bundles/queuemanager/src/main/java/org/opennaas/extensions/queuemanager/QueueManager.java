@@ -123,7 +123,6 @@ public class QueueManager extends AbstractCapability implements
 				/* execute queued actions */
 				queueResponse = executeQueuedActions(queueResponse,
 						protocolSessionManager);
-			
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -276,6 +275,8 @@ public class QueueManager extends AbstractCapability implements
 				return modify(params);
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
+			} else if (idOperation.equals(QueueConstants.CLEAR)) {
+				return clear();
 			}
 
 		} catch (CapabilityException e) {
@@ -440,8 +441,7 @@ public class QueueManager extends AbstractCapability implements
 	/**
 	 * Executes actions in the queue.
 	 * 
-	 * Queue execution stops at the first action to return error.
-	 * Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * Queue execution stops at the first action to return error. Both an error ActionResponse an an ActionException are interpreted as an error.
 	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
@@ -454,14 +454,14 @@ public class QueueManager extends AbstractCapability implements
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			
+
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
 			ActionResponse actionResponse;
 			try {
 				actionResponse = action.execute(protocolSessionManager);
 			} catch (ActionException e) {
-				log.error("Error executing action " + action.getActionID(), e);	
+				log.error("Error executing action " + action.getActionID(), e);
 				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
 			}
 			queueResponse.getResponses().set(numAction, actionResponse);
@@ -581,6 +581,18 @@ public class QueueManager extends AbstractCapability implements
 			throws CapabilityException {
 		queueAction((IAction) action);
 		return execute();
+	}
+
+	private Response clear() {
+
+		int numActions = getQueue().size();
+		for (int i = 0; i < numActions; i++) {
+			Response response = (Response) remove(0);
+			if (!response.getErrors().isEmpty())
+				return response;
+		}
+
+		return Response.okResponse(QueueConstants.CLEAR);
 	}
 
 	/**
