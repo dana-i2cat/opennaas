@@ -33,10 +33,12 @@ public class ClearCommand extends GenericKarafCommand {
 
 			Response resp = (Response) queue.sendMessage(QueueConstants.CLEAR, null);
 
+			printResponseStatus(resp, resourceId);
+
 			if (resp.getErrors().isEmpty())
 				printInfo("Removed all actions from the queue");
 			else
-				printInfo("Error clearing the queue.");
+				printError("Error clearing the queue.");
 
 		} catch (Exception e) {
 			printError(e.getMessage());
