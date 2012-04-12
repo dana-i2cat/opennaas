@@ -54,5 +54,6 @@
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
+                <module>bod.autobahn</module>
 	</modules>
 </project>
