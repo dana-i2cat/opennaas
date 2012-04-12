@@ -8,6 +8,8 @@ import javax.inject.Inject;
 
 import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.topology.Interface;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -109,6 +111,10 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		repository.startResource(resource.getResourceDescriptor().getId());
 
+		NetworkModel model = (NetworkModel) resource.getModel();
+		model.getNetworkElements().add(createInterface("int1"));
+		model.getNetworkElements().add(createInterface("int2"));
+
 		List<String> response =
 			executeCommand("l2bod:requestConnection  " + resourceFriendlyID + " int1 int2 ");
 		// assert command output does not contain ERROR tag
@@ -120,6 +126,13 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 
 		repository.stopResource(resource.getResourceIdentifier().getId());
 		repository.removeResource(resource.getResourceIdentifier().getId());
+	}
+
+	private Interface createInterface(String name)
+	{
+		Interface i = new Interface();
+		i.setName(name);
+		return i;
 	}
 
 	/**
