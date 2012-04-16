@@ -5,6 +5,7 @@
 .settings/
 .svn/
 .metadata
+.DS_Store
 target/
 core/*/META-INF
 core/*/OSGI-INF
