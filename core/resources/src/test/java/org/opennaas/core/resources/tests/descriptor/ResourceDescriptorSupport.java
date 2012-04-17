@@ -9,7 +9,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockNetworkDescriptor;
+import org.opennaas.core.resources.mock.MockNetworkDescriptor;
 
 public class ResourceDescriptorSupport {
 

@@ -1,24 +1,16 @@
 package org.opennaas.extensions.network.repository.tests;
 
-import org.opennaas.extensions.network.repository.NetworkRepository;
-import net.i2cat.mantychore.tests.utils.mock.MockCapabilityFactory;
-import net.i2cat.mantychore.tests.utils.mock.MockDescriptorRepository;
-
-import net.i2cat.mantychore.tests.utils.ResourceHelper;
-
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.ResourceException;
-
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.mock.MockCapabilityFactory;
+import org.opennaas.core.resources.mock.MockDescriptorRepository;
+import org.opennaas.extensions.network.repository.NetworkRepository;
 
 public class NetworkRepositoryTest {
-
-
 
 	NetworkRepository	NetworkRepository;
 
@@ -86,7 +78,7 @@ public class NetworkRepositoryTest {
 			Assert.assertTrue(resource.getResourceDescriptor().getCapabilityDescriptors().size() == 2);
 			Assert.assertTrue(resource.getResourceIdentifier().getType().equals("network"));
 
-			resource = NetworkRepository.modifyResource(id, oldResourceDescriptor("networkOld","network"));
+			resource = NetworkRepository.modifyResource(id, oldResourceDescriptor("networkOld", "network"));
 			IResource newResource = NetworkRepository.getResource(resource.getResourceIdentifier().getId());
 			Assert.assertTrue(newResource.getResourceDescriptor().getCapabilityDescriptors().size() == 1);
 			Assert.assertTrue(newResource.getResourceIdentifier().getType().equals("network"));
@@ -97,8 +89,6 @@ public class NetworkRepositoryTest {
 		}
 
 	}
-
-
 
 	private ResourceDescriptor oldResourceDescriptor(String name, String type) {
 		ResourceDescriptor networkDescriptor = ResourceHelper.newResourceDescriptorNetwork(name);
