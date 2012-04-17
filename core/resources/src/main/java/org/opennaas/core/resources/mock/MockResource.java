@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.tests.utils.mock;
+package org.opennaas.core.resources.mock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.CapabilityProperty;
@@ -29,9 +30,12 @@ public class MockResource implements IResource {
 	IModel						model;
 	ResourceDescriptor			resourceDescriptor;
 	List<CapabilityDescriptor>	capabilityDescriptors;
+	IResourceIdentifier			resourceIdentifier;
+	IResourceBootstrapper		bootstrapper;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
-			String typeCapability) {
+			String typeCapability, String actionCapability) {
+
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
 
 		// TODO IS IT EXIT A BETTER METHOD TO PASS THE URI
@@ -53,12 +57,12 @@ public class MockResource implements IResource {
 				ResourceDescriptorConstants.ACTION_VERSION, "10.10");
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
-		property = new CapabilityProperty(
-				ResourceDescriptorConstants.ACTION_PROTOCOL, "netconf");
-		capabilityDescriptor.getCapabilityProperties().add(property);
-
 		property = new CapabilityProperty(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		capabilityDescriptor.getCapabilityProperties().add(property);
+
+		property = new CapabilityProperty(
+				ResourceDescriptorConstants.ACTION_CAPABILITY, actionCapability);
 		capabilityDescriptor.getCapabilityProperties().add(property);
 
 		Information capabilityInformation = new Information();
@@ -73,7 +77,7 @@ public class MockResource implements IResource {
 		resourceDescriptor = new ResourceDescriptor();
 		capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-
+		resourceIdentifier = new ResourceIdentifier();
 	}
 
 	public String getResourceId() {
@@ -87,20 +91,39 @@ public class MockResource implements IResource {
 	@Override
 	public void addCapability(ICapability capability) {
 		log.info("add Capability...");
-		capabilities.put(capability.getCapabilityInformation().getName(),
+		capabilities.put(capability.getCapabilityInformation().getType(),
 				capability);
-
 	}
 
 	@Override
 	public ICapability removeCapability(Information info) {
-		return capabilities.remove(info.getName());
+		return capabilities.remove(info.getType());
 	}
 
 	@Override
 	public ICapability getCapability(Information info) {
 		log.info("get Capability...");
-		return capabilities.get(info.getName());
+		return capabilities.get(info.getType());
+	}
+
+	@Override
+	public List<ICapability> getCapabilities() {
+		log.info("get Capabilities...");
+
+		ArrayList<ICapability> capabs = new ArrayList<ICapability>();
+		for (ICapability capab : capabilities.values()) {
+			capabs.add(capab);
+		}
+		return capabs;
+	}
+
+	@Override
+	public void setCapabilities(List<ICapability> capabs) {
+		log.info("set Capabilities...");
+
+		for (ICapability capab : capabs) {
+			addCapability(capab);
+		}
 	}
 
 	@Override
@@ -153,12 +176,6 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public List<ICapability> getCapabilities() {
-		log.info("get Capabilities...");
-		return null;
-	}
-
-	@Override
 	public ResourceDescriptor getResourceDescriptor() {
 		log.info("get Resource Descriptor...");
 		return resourceDescriptor;
@@ -167,13 +184,7 @@ public class MockResource implements IResource {
 	@Override
 	public IResourceIdentifier getResourceIdentifier() {
 		log.info("get Resource Identifier...");
-		return null;
-	}
-
-	@Override
-	public void setCapabilities(List<ICapability> arg0) {
-		log.info("set Capabilities...");
-
+		return resourceIdentifier;
 	}
 
 	@Override
@@ -184,9 +195,9 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public void setResourceIdentifier(IResourceIdentifier arg0) {
+	public void setResourceIdentifier(IResourceIdentifier identifier) {
 		log.info("set Resource Identifier...");
-
+		resourceIdentifier = identifier;
 	}
 
 	@Override
@@ -203,6 +214,7 @@ public class MockResource implements IResource {
 
 	@Override
 	public void setProfile(IProfile profile) {
+
 	}
 
 	@Override
@@ -212,14 +224,12 @@ public class MockResource implements IResource {
 
 	@Override
 	public IResourceBootstrapper getBootstrapper() {
-		// TODO Auto-generated method stub
-		return null;
+		return bootstrapper;
 	}
 
 	@Override
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
-		// TODO Auto-generated method stub
-
+		this.bootstrapper = bootstrapper;
 	}
 
 	@Override
