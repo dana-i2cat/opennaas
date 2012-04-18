@@ -1,13 +1,9 @@
 package net.i2cat.nexus.resources.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.junit.Assert.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,13 +47,13 @@ public class ProtocolSessionManagerTest {
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer		routerRepositoryService;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.protocols-sessionmanager)")
-	private BlueprintContainer		protocolManagerService;
+	// @Inject
+	// @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.protocols-sessionmanager)")
+	// private BlueprintContainer protocolManagerService;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.resources)")
-	private BlueprintContainer		resourceManagerService;
+	// @Inject
+	// @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.resources)")
+	// private BlueprintContainer resourceManagerService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")

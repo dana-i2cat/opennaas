@@ -42,7 +42,6 @@
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
 
-		<module>nexus.alarms.repository</module>
 		<module>nexus.tests.helper</module>
 
 		<module>network.model</module>

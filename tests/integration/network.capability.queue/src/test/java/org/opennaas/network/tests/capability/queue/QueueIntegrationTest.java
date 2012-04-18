@@ -3,19 +3,14 @@ package org.opennaas.network.tests.capability.queue;
 /**
  * 
  */
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,9 +25,12 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.network.capability.queue.QueueCapability;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * @author Jordi
@@ -46,11 +44,17 @@ public class QueueIntegrationTest {
 	private static final String	RESOURCE_TYPE		= "network";
 	private static final String	RESOURCE_INFO_NAME	= "Network Queue Test";
 	private static final String	RESOURCE_URI		= "mock://user:pass@host.net:2212/mocksubsystem";
+
 	@Inject
 	private IProtocolManager	protocolManager;
+
 	@Inject
 	private IResourceManager	resourceManager;
 	private IResource			networkResource;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.network.repository)")
+	private BlueprintContainer	networkRepositoryService;
 
 	/**
 	 * Initialize the configuration
