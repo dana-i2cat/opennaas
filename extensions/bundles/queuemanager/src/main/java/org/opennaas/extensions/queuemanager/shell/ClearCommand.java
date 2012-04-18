@@ -3,9 +3,6 @@ package org.opennaas.extensions.queuemanager.shell;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.queuemanager.QueueManager;
 
@@ -25,20 +22,10 @@ public class ClearCommand extends GenericKarafCommand {
 			IResource resource = getResourceFromFriendlyName(resourceId);
 			validateResource(resource);
 
-			ICapability queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
-			if (queue == null) {
-				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
-				return -1;
-			}
+			QueueManager queue = (QueueManager) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			queue.empty();
 
-			Response resp = (Response) queue.sendMessage(QueueConstants.CLEAR, null);
-
-			printResponseStatus(resp, resourceId);
-
-			if (resp.getErrors().isEmpty())
-				printInfo("Removed all actions from the queue");
-			else
-				printError("Error clearing the queue.");
+			printInfo("Removed all actions from the queue");
 
 		} catch (Exception e) {
 			printError(e.getMessage());

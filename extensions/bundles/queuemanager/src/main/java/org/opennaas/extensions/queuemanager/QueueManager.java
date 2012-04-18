@@ -275,10 +275,7 @@ public class QueueManager extends AbstractCapability implements
 				return modify(params);
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
-			} else if (idOperation.equals(QueueConstants.CLEAR)) {
-				return clear();
 			}
-
 		} catch (CapabilityException e) {
 			throw new CapabilityException(e);
 		}
@@ -581,18 +578,6 @@ public class QueueManager extends AbstractCapability implements
 			throws CapabilityException {
 		queueAction((IAction) action);
 		return execute();
-	}
-
-	private Response clear() {
-
-		int numActions = getQueue().size();
-		for (int i = 0; i < numActions; i++) {
-			Response response = (Response) remove(0);
-			if (!response.getErrors().isEmpty())
-				return response;
-		}
-
-		return Response.okResponse(QueueConstants.CLEAR);
 	}
 
 	/**
