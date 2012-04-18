@@ -233,11 +233,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
 				<version>${project.version}</version>
 				<scope>test</scope>

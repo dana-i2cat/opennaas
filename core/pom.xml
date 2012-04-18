@@ -14,11 +14,9 @@
 		<module>karafbranding</module>
 		<module>persistence</module>
 		<module>hsqldb</module>
-		<module>events</module>
 		<module>platformmanager</module>
 		<module>resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->
-		<module>protocols-sessionmanager</module>
 		<!--<module>org.opennaas.core.resourcemanager-soapendpoint</module>-->
 		<module>tests-mockprofile</module>
 	</modules>

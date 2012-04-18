@@ -6,7 +6,7 @@ import org.opennaas.extensions.router.junos.actionssets.actions.ipv4.SetIPv4Acti
 import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestHelper;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
 import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

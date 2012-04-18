@@ -11,7 +11,7 @@ import org.opennaas.extensions.router.model.GRETunnelService;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 

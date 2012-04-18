@@ -14,8 +14,8 @@ import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
