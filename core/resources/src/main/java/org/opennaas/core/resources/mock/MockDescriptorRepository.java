@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.tests.utils.mock;
+package org.opennaas.core.resources.mock;
 
 import java.util.List;
 import java.util.Map;

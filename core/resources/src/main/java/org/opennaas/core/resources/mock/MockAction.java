@@ -1,5 +1,4 @@
-package org.opennaas.core.resources.helpers;
-
+package org.opennaas.core.resources.mock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,6 +11,8 @@ public class MockAction extends Action {
 	private Log				log				= LogFactory.getLog(MockAction.class);
 	private ActionResponse	actionResponse	= new ActionResponse();
 
+	boolean					executed		= false;
+
 	@Override
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
@@ -20,6 +21,7 @@ public class MockAction extends Action {
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
 		log.info("----> Executing action: MOCK ACTION: " + actionID);
 		actionResponse.setActionID(actionID);
+		executed = true;
 		return actionResponse;
 	}
 
@@ -30,6 +32,12 @@ public class MockAction extends Action {
 
 	public void setActionResponse(ActionResponse actionResponse) {
 		this.actionResponse = actionResponse;
+	}
+
+	// TODO probably promote to Action
+	public boolean isExecuted()
+	{
+		return executed;
 	}
 
 	public ActionResponse getActionResponse() {

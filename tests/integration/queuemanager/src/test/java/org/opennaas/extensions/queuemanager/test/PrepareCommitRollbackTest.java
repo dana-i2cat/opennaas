@@ -1,7 +1,11 @@
 package org.opennaas.extensions.queuemanager.test;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -10,11 +14,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import net.i2cat.netconf.NetconfSession;
 import net.i2cat.netconf.SessionContext;
 import net.i2cat.netconf.rpc.Query;
@@ -35,33 +34,30 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockAction;
-import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.mock.MockAction;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.util.Filter;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
 @RunWith(JUnit4TestRunner.class)
 public class PrepareCommitRollbackTest
 {
-	private final static Log		log				= LogFactory.getLog(PrepareCommitRollbackTest.class);
+	private final static Log		log			= LogFactory.getLog(PrepareCommitRollbackTest.class);
 
-	private final String			resourceID		= "junosResource";
+	private final String			resourceID	= "junosResource";
 
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
@@ -77,13 +73,13 @@ public class PrepareCommitRollbackTest
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer		routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer		routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer		queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer		queueService;
 
 	@Configuration
 	public static Option[] configuration() {

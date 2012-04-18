@@ -1,4 +1,4 @@
-package org.opennaas.core.resources.helpers;
+package org.opennaas.core.resources.mock;
 
 import java.util.ArrayList;
 import java.util.List;

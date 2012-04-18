@@ -1,4 +1,4 @@
-package net.i2cat.mantychore.tests.utils;
+package org.opennaas.core.resources.helpers;
 
 import java.util.ArrayList;
 import java.util.HashMap;

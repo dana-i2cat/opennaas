@@ -1,12 +1,14 @@
 package org.opennaas.extensions.queuemanager.test;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,14 +26,16 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockAction;
-import org.opennaas.core.resources.helpers.MockActionExceptionOnExecute;
-import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.mock.MockAction;
+import org.opennaas.core.resources.mock.MockActionExceptionOnExecute;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -41,18 +45,13 @@ import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
-
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 @RunWith(JUnit4TestRunner.class)
 public class QueuemanagerTest
 {
-	private final static Log		log				= LogFactory.getLog(QueuemanagerTest.class);
+	private final static Log		log			= LogFactory.getLog(QueuemanagerTest.class);
 
-	private final String			resourceID		= "junosResource";
+	private final String			resourceID	= "junosResource";
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
 	private IQueueManagerService	queueManagerService;
@@ -67,13 +66,13 @@ public class QueuemanagerTest
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer		routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer		routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer		queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer		queueService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -155,7 +154,7 @@ public class QueuemanagerTest
 		Assert.assertTrue(queueManagerService.getActions().size() == 0);
 		log.info("INFO: OK!");
 	}
-	
+
 	@Test
 	public void executeActionThatThrowsException() throws ProtocolException, CapabilityException {
 		log.info("INFO: Execute actions");
@@ -171,7 +170,7 @@ public class QueuemanagerTest
 		Assert.assertEquals(STATUS.ERROR, response.getResponses().get(0).getStatus());
 		Assert.assertNotNull("Action information should contain the error message", response.getResponses().get(0).getInformation());
 		Assert.assertFalse("Restore should be executed", STATUS.PENDING.equals(response.getRestoreResponse().getStatus()));
-		
+
 		log.info("INFO: OK!");
 	}
 
