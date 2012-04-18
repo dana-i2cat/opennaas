@@ -11,8 +11,8 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
 
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 

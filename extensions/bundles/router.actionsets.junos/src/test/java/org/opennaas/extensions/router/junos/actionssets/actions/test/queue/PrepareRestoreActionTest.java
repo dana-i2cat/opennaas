@@ -8,8 +8,8 @@ import org.opennaas.extensions.router.junos.actionssets.actions.queue.PrepareAct
 import org.opennaas.extensions.router.junos.actionssets.actions.queue.RestoreAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
 import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;

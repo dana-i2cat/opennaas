@@ -1,55 +1,46 @@
 package org.opennaas.extensions.commandsKaraf.test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockProfile;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.mock.MockProfile;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
+import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.util.Filter;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 {
-	static Log log = LogFactory.getLog(ProfileCommandsKarafTest.class);
+	static Log					log	= LogFactory.getLog(ProfileCommandsKarafTest.class);
 
 	@Inject
 	@Filter("(type=router)")
@@ -61,25 +52,25 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer	routerRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerRepositoryService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer	ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer	queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
