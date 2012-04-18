@@ -6,7 +6,7 @@ import org.opennaas.extensions.router.junos.actionssets.actions.test.ActionTestH
 import org.opennaas.extensions.router.junos.actionssets.actions.test.GetConfigActionTest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 

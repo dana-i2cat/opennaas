@@ -31,10 +31,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
