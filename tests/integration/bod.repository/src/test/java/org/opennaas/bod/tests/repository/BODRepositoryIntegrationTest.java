@@ -50,6 +50,10 @@ public class BODRepositoryIntegrationTest
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
 	private BlueprintContainer	bodService;
 
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	private BlueprintContainer	l2bodService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
