@@ -11,6 +11,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
@@ -20,12 +21,12 @@ import org.opennaas.core.resources.profile.IProfile;
 /**
  * This class provides an abstract implementation for the ICapability interface. This class must be extended by each module and must implement the
  * abstract lifecycle methods.
- *
+ * 
  * @author Mathieu Lemay (ITI)
  * @author Scott Campbell(CRC)
  * @author Eduard Grasa (i2CAT)
  * @author Carlos Baez (i2CAT)
- *
+ * 
  */
 public abstract class AbstractCapability implements ICapability {
 
@@ -57,7 +58,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * The resource where this capability belongs
-	 *
+	 * 
 	 * @param resource
 	 */
 	public void setResource(IResource resource) {
@@ -66,7 +67,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Returns the current capability state
-	 *
+	 * 
 	 * @return state enum object
 	 */
 	public State getState() {
@@ -82,7 +83,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Initializes this capability, the status will be INITIALIZED, then will be ACTIVE if enabled.
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public void initialize() throws CapabilityException {
@@ -92,7 +93,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Activates this capability and change state to ACTIVE.
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public void activate() throws CapabilityException {
@@ -102,7 +103,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Deactivate this capability and change state to INACTIVE
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public void deactivate() throws CapabilityException {
@@ -112,7 +113,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Prepares capability for Garbage Collection state will be SHUTDOWN until it is collected.
-	 *
+	 * 
 	 * @throws ResourceException
 	 */
 	public void shutdown() throws CapabilityException {
@@ -156,7 +157,25 @@ public abstract class AbstractCapability implements ICapability {
 	}
 
 	/**
-	 *
+	 * 
+	 * @param actionId
+	 * @param actionParameters
+	 * @return created action with given parameters
+	 * @throws CapabilityException
+	 *             if an error occurs creating the action or checking it's parameters.
+	 */
+	protected IAction createActionAndCheckParams(String actionId, Object actionParameters) throws CapabilityException {
+
+		IAction action = createAction(actionId);
+		action.setParams(actionParameters);
+		action.setModelToUpdate(resource.getModel());
+		action.checkParams(action.getParams());
+
+		return action;
+	}
+
+	/**
+	 * 
 	 * @return Action for this capability with given id stored in profile, or null if there is no such action in profile.
 	 * @throws ActionException
 	 *             if there is a problem instantiating the action
@@ -199,7 +218,7 @@ public abstract class AbstractCapability implements ICapability {
 
 	/**
 	 * Sends to the queue necessary actions that should be executed before this capability is operative.
-	 *
+	 * 
 	 * @return
 	 */
 	public Response sendRefreshActions(List params) {
