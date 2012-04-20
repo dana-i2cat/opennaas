@@ -249,24 +249,28 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		}
 	}
 
+	// TODO Remove
 	@Override
 	protected void activateCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
 
 	}
 
+	// TODO Remove
 	@Override
 	protected void deactivateCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
 
 	}
 
+	// TODO Remove
 	@Override
 	protected void initializeCapability() throws CapabilityException {
 		// TODO Auto-generated method stub
 
 	}
 
+	// TODO Remove
 	@Override
 	protected void shutdownCapability() throws CapabilityException {
 		// TODO Auto-generated method stub

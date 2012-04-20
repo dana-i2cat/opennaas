@@ -201,12 +201,16 @@ public abstract class AbstractCapability implements ICapabilityLifecycle {
 
 	public abstract IActionSet getActionSet() throws CapabilityException;
 
+	// TODO REMOVE, child classes may override initialize() method
 	protected abstract void initializeCapability() throws CapabilityException;
 
+	// TODO REMOVE, child classes may override activate() method
 	protected abstract void activateCapability() throws CapabilityException;
 
+	// TODO REMOVE, child classes may override deactivate() method
 	protected abstract void deactivateCapability() throws CapabilityException;
 
+	// TODO REMOVE, child classes may override shutdown() method
 	protected abstract void shutdownCapability() throws CapabilityException;
 
 	/**
