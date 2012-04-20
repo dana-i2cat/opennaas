@@ -1,13 +1,12 @@
 package org.opennaas.core.resources.mock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class MockCapability extends AbstractCapability {
 
@@ -30,31 +29,11 @@ public class MockCapability extends AbstractCapability {
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		return super.actionSet;
 	}
 
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
+	public void setActionSet(IActionSet actionSet) {
+		super.actionSet = actionSet;
 
 	}
 
@@ -62,6 +41,32 @@ public class MockCapability extends AbstractCapability {
 	public Response sendRefreshActions() {
 		sentStartUp = true;
 		return Response.okResponse("");
+	}
+
+	public String	internalCall	= null;
+
+	public String getInternalCall() {
+		return internalCall;
+	}
+
+	@Override
+	protected void activateCapability() throws CapabilityException {
+		internalCall = "activate";
+	}
+
+	@Override
+	protected void deactivateCapability() throws CapabilityException {
+		internalCall = "deactivate";
+	}
+
+	@Override
+	protected void initializeCapability() throws CapabilityException {
+		internalCall = "initialize";
+	}
+
+	@Override
+	protected void shutdownCapability() throws CapabilityException {
+		internalCall = "shutdown";
 	}
 
 }

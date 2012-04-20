@@ -123,10 +123,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
@@ -205,7 +201,6 @@
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
 								<feature>opennaas</feature>
-								<feature>nexus-tests-helper</feature>
 								<feature>nexus-testprofile</feature>
 							</features>
 							<repository>target/system</repository>

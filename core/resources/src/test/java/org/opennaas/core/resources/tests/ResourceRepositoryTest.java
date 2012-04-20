@@ -1,18 +1,12 @@
 package org.opennaas.core.resources.tests;
 
-import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.replay;
-import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.easymock.EasyMock.*;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,12 +17,13 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.mock.MockDescriptorRepository;
 
 /**
  * Test class for the ResourceRepository class
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 public class ResourceRepositoryTest {
 	/*
@@ -44,7 +39,7 @@ public class ResourceRepositoryTest {
 		Map<String, ICapabilityFactory> capabilityFactories = new Hashtable<String, ICapabilityFactory>();
 		capabilityFactories.put("MockCapability", mockCapabilityFactory);
 		resourceRepository = new ResourceRepository("Mock", capabilityFactories);
-		resourceRepository.setResourceDescriptorRepository(new MockResourceDescriptorRepository());
+		resourceRepository.setResourceDescriptorRepository(new MockDescriptorRepository());
 	}
 
 	@Test
