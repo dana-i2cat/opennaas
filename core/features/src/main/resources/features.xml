@@ -118,6 +118,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
 	</feature>
 
+        <feature name="opennaas-autobahn" version="${project.version}">
+            <feature>cxf</feature>
+            <feature version="${project.version}">opennaas-bod</feature>
+
+            <bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
+        </feature>
+
 	<feature name="opennaas-luminis" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
