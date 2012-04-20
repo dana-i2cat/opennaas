@@ -1,4 +1,4 @@
-package org.opennaas.router.tests.capability.staticroute;
+package org.opennaas.itests.router.staticroute;
 
 import junit.framework.Assert;
 

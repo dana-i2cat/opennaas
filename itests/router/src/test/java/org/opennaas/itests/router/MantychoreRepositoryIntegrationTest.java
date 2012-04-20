@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.repository.tests;
+package org.opennaas.itests.router;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;

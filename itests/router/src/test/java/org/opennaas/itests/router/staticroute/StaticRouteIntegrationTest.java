@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.opennaas.router.tests.capability.staticroute;
+package org.opennaas.itests.router.staticroute;
 
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeTestHelper;

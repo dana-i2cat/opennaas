@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.opennaas.router.tests.capability.ospf;
+package org.opennaas.itests.router.ospf;
 
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.noConsole;

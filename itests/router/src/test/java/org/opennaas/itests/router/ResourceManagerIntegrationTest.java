@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.repository.tests;
+package org.opennaas.itests.router;
 
 import java.io.File;
 import java.util.ArrayList;
