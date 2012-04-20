@@ -88,15 +88,9 @@
 							| assume public classes are in the top package, and private
 							classes are under ".internal"
 						-->
-						<!-- avoid importing our own package -->
-						<Import-Package>
-							!org.opennaas.extensions.router.junos.actionssets.*;version="${project.version}",org.slf4j,*
-						</Import-Package>
 						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
-							org.opennaas.extensions.router.junos.commandsets.*;version="${project.version}",
-							org.opennaas.extensions.router.junos.actionssets;version="${project.version}",
-							org.opennaas.extensions.router.junos.actionssets.actions;version="${project.version}"
+							*
 						</Export-Package>
 					</instructions>
 				</configuration>
