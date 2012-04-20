@@ -1,4 +1,4 @@
-package org.opennaas.itest.core.events;
+package org.opennaas.itests.core.events;
 
 import java.io.File;
 import java.io.InputStream;

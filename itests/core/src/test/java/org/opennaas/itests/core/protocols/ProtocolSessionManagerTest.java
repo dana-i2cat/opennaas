@@ -1,4 +1,4 @@
-package net.i2cat.nexus.resources.tests;
+package org.opennaas.itests.core.protocols;
 
 import static org.junit.Assert.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;

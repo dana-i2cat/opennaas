@@ -1,4 +1,4 @@
-package org.opennaas.extensions.nexus.resources.test;
+package org.opennaas.itests.core.resources;
 
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
