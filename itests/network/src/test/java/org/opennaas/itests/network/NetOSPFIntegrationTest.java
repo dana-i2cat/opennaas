@@ -1,4 +1,4 @@
-package org.opennaas.network.tests.capability.ospf;
+package org.opennaas.itests.network;
 
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeTestHelper;

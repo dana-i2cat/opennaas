@@ -1,4 +1,4 @@
-package org.opennaas.network.tests.capability.queue;
+package org.opennaas.itests.network;
 
 /**
  * 
