@@ -12,7 +12,10 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>core</module>
+		<module>router</module>
 		<module>network</module>
+		<module>roadm</module>
 	</modules>
 
 	<dependencies>
