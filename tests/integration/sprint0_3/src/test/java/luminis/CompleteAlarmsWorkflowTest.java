@@ -1,9 +1,9 @@
 package luminis;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;

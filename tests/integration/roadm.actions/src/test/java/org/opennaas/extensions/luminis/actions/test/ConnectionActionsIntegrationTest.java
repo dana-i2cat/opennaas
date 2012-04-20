@@ -46,7 +46,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

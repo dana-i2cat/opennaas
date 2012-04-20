@@ -3,9 +3,9 @@
  */
 package org.opennaas.router.tests.capability.ospf;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -14,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -76,7 +76,7 @@ public abstract class OSPFIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router, nexus-tests-helper"),
+				includeFeatures("opennaas-router"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

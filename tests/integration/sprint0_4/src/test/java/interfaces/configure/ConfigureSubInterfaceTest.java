@@ -1,11 +1,8 @@
 package interfaces.configure;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import helpers.CheckParametersHelper;
 import helpers.ParamCreationHelper;
 
@@ -26,13 +23,13 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.InitializerTestHelper;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;

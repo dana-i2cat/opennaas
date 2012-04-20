@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.System;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -51,7 +51,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

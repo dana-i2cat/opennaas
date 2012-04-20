@@ -1,19 +1,16 @@
 package interfaces.setdesc;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 import helpers.CheckParametersHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -26,26 +23,27 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.InitializerTestHelper;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -63,21 +61,21 @@ public class SetInterfaceDescriptionActionInLRTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-    private BlueprintContainer chassisService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	private BlueprintContainer	chassisService;
 
 	private boolean				isMock;
 	private ResourceDescriptor	resourceDescriptor;
@@ -94,10 +92,10 @@ public class SetInterfaceDescriptionActionInLRTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public SetInterfaceDescriptionActionInLRTest() {
@@ -107,10 +105,10 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Prepare the resource to do the test
-	 *
+	 * 
 	 * @throws ResourceException
 	 * @throws ProtocolException
-	 *
+	 * 
 	 */
 	@Before
 	public void setUp() throws ResourceException, ProtocolException {
@@ -169,9 +167,9 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Reset info for next tests
-	 *
+	 * 
 	 * @throws ResourceException
-	 *
+	 * 
 	 */
 	@After
 	public void tearDown() throws ResourceException {
@@ -215,7 +213,7 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	@Test
 	public void setInterfaceDescriptionActionInLRTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		setSubInterfaceDescriptionTest();
 		setInterfaceDescriptionTest();
@@ -225,7 +223,7 @@ public class SetInterfaceDescriptionActionInLRTest
 	 * Put related task
 	 * */
 	public void setSubInterfaceDescriptionTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -269,7 +267,7 @@ public class SetInterfaceDescriptionActionInLRTest
 	 * Test the possibility to configure subinterfaces with an encapsulation
 	 * */
 	public void setInterfaceDescriptionTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");

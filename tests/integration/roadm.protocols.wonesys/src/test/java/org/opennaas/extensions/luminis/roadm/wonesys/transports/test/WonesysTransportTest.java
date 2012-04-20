@@ -1,10 +1,8 @@
 package org.opennaas.extensions.luminis.roadm.wonesys.transports.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.Properties;
 
@@ -28,6 +26,8 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
+
+
 
 @RunWith(JUnit4TestRunner.class)
 public class WonesysTransportTest implements ITransportListener
