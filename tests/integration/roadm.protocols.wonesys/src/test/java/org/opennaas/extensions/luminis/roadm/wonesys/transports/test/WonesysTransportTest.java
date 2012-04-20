@@ -1,48 +1,38 @@
-package org.opennaas.extensions.luminis.wonesys.transports.test;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-import javax.inject.Inject;
-
-import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
-import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
-import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
-import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransportException;
-import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.junit.Test;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-
-import org.opennaas.core.events.EventFilter;
-import org.opennaas.core.events.IEventManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.service.event.Event;
+package org.opennaas.extensions.luminis.roadm.wonesys.transports.test;
 
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
+import java.util.Properties;
+
+import javax.inject.Inject;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.runner.RunWith;
+import org.opennaas.core.events.EventFilter;
+import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransportException;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.event.Event;
+
+
+
 @RunWith(JUnit4TestRunner.class)
 public class WonesysTransportTest implements ITransportListener
 {
-	Log	log	= LogFactory.getLog(WonesysTransportTest.class);
+	Log						log				= LogFactory.getLog(WonesysTransportTest.class);
 
 	@Inject
 	private BundleContext	bundleContext;
@@ -59,9 +49,9 @@ public class WonesysTransportTest implements ITransportListener
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	// FIXME Uncomment to test transport works ok
@@ -95,7 +85,7 @@ public class WonesysTransportTest implements ITransportListener
 	}
 
 	// FIXME Uncomment to test transport works ok
-	//@Test //uses real connection
+	// @Test //uses real connection
 	public void sendReceiveTest() {
 
 		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
