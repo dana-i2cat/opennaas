@@ -118,12 +118,23 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public void setCapabilities(List<ICapability> capabs) {
+	public void setCapabilities(List<? extends ICapability> capabs) {
 		log.info("set Capabilities...");
 
 		for (ICapability capab : capabs) {
 			addCapability(capab);
 		}
+	}
+
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<ICapability> interfaze) {
+		List<ICapability> filteredCapabilities = new ArrayList<ICapability>();
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				filteredCapabilities.add(capability);
+			}
+		}
+		return filteredCapabilities;
 	}
 
 	@Override

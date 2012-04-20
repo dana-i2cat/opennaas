@@ -139,7 +139,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 		return Response.queuedResponse(CAPABILITY_NAME + " activateOSPF");
 	}
 
-	private ICapability getCapability(List<ICapability> capabilities, String type) throws CapabilityException {
+	private ICapability getCapability(List<? extends ICapability> capabilities, String type) throws CapabilityException {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;

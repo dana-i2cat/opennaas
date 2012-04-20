@@ -6,7 +6,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
@@ -15,34 +17,35 @@ import org.opennaas.core.resources.profile.IProfile;
  * Main resource class
  * 
  * @author Mathieu Lemay
+ * @author Isart Canyameres Giménez (i2cat)
  * 
  */
 public class Resource implements IResource {
 
 	/** The logger **/
-	Log								logger				= LogFactory.getLog(Resource.class);
+	Log									logger				= LogFactory.getLog(Resource.class);
 
 	/** The resource identifier **/
-	private IResourceIdentifier		resourceIdentifier	= null;
+	private IResourceIdentifier			resourceIdentifier	= null;
 
 	/** The resource current state **/
-	private State					state				= null;
+	private State						state				= null;
 
 	/** The resource descriptor **/
-	private ResourceDescriptor		resourceDescriptor	= null;
+	private ResourceDescriptor			resourceDescriptor	= null;
 
 	/** The resource capabilities **/
-	private List<ICapability>		capabilities		= null;
+	private List<ICapabilityLifecycle>	capabilities		= null;
 
 	/** The resource specific bootstapper class */
-	private IResourceBootstrapper	bootstrapper		= null;
+	private IResourceBootstrapper		bootstrapper		= null;
 
-	private IModel					model;
+	private IModel						model;
 
-	private IProfile				profile				= null;
+	private IProfile					profile				= null;
 
 	public Resource() {
-		capabilities = new ArrayList<ICapability>();
+		capabilities = new ArrayList<ICapabilityLifecycle>();
 		setState(State.INSTANTIATED);
 	}
 
@@ -131,13 +134,12 @@ public class Resource implements IResource {
 			problemMessages = e.getMessage() + '\n';
 		}
 
-		for (ICapability capability : capabilities) {
+		for (ICapabilityLifecycle capability : capabilities) {
 			try {
 				capability.deactivate();
 			} catch (Exception e) {
 				problemMessages = e.getMessage() + '\n' + problemMessages;
 			}
-
 		}
 
 		if (!problemMessages.isEmpty())
@@ -174,23 +176,25 @@ public class Resource implements IResource {
 
 	@Override
 	public void addCapability(ICapability capability) {
-		capabilities.add(capability);
+		if (!(capability instanceof ICapabilityLifecycle))
+			throw new IllegalArgumentException("Given capability must be of type " + ICapabilityLifecycle.class.getName());
+
+		capabilities.add((ICapabilityLifecycle) capability);
 	}
 
-	public ICapability getCapabilityByType(String type) {
-		Iterator<ICapability> capabilityIterator = capabilities.iterator();
-		while (capabilityIterator.hasNext()) {
-			ICapability capability = capabilityIterator.next();
+	@Override
+	public ICapability getCapabilityByType(String type) throws ResourceException {
+		for (ICapability capability : getCapabilities()) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
 			}
 		}
-		return null;
+		throw new ResourceException("Error getting capability " + type);
 	}
 
 	@Override
 	public ICapability getCapability(Information information) {
-		Iterator<ICapability> capabilityIterator = capabilities.iterator();
+		Iterator<? extends ICapability> capabilityIterator = getCapabilities().iterator();
 		while (capabilityIterator.hasNext()) {
 			ICapability capability = capabilityIterator.next();
 			if (capability.getCapabilityInformation().equals(information)) {
@@ -208,13 +212,29 @@ public class Resource implements IResource {
 	}
 
 	@Override
-	public List<ICapability> getCapabilities() {
+	public List<? extends ICapability> getCapabilities() {
 		return capabilities;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public void setCapabilities(List<ICapability> capabilities) {
-		this.capabilities = capabilities;
+	public void setCapabilities(List<? extends ICapability> capabilities) {
+		for (ICapability capability : capabilities) {
+			if (!(capability instanceof ICapabilityLifecycle))
+				throw new IllegalArgumentException("Given capability must be of type " + ICapabilityLifecycle.class.getName());
+		}
+		this.capabilities = (List<ICapabilityLifecycle>) capabilities;
+	}
+
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<ICapability> interfaze) {
+		List<ICapability> filteredCapabilities = new ArrayList<ICapability>();
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				filteredCapabilities.add(capability);
+			}
+		}
+		return filteredCapabilities;
 	}
 
 	@Override

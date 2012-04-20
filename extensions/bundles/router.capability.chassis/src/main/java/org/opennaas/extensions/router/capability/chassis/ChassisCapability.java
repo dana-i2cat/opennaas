@@ -2,7 +2,6 @@ package org.opennaas.extensions.router.capability.chassis;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,7 +10,6 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
@@ -25,6 +23,7 @@ import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class ChassisCapability extends AbstractCapability implements IChassisCapability {
 
+	// TODO MOVE TO ICapability r4enamed to CAPABILITY_NAME
 	public final static String	CHASSIS		= "chassis";
 
 	Log							log			= LogFactory.getLog(ChassisCapability.class);
@@ -38,64 +37,24 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	}
 
 	@Override
-	protected void initializeCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-
-	}
-
-	@Override
+	// TODO MOVE TO A PARENT
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
+			// TODO do not use Activator for this
 			return Activator.getChassisActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
 	}
 
+	// TODO REMOVE
 	@Override
-	public Object sendMessage(String idOperation, Object params) {
-		log.debug("Sending message to Chassis Capability");
-
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.queuedResponse(idOperation);
-	}
-
-	private Response prepareErrorMessage(String nameError, String message) {
-		Vector<String> errorMsgs = new Vector<String>();
-		errorMsgs.add(message);
-		return Response.errorResponse(nameError, errorMsgs);
-
+	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*
@@ -290,4 +249,27 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		}
 	}
 
+	@Override
+	protected void activateCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void deactivateCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void initializeCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected void shutdownCapability() throws CapabilityException {
+		// TODO Auto-generated method stub
+
+	}
 }

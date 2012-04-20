@@ -12,12 +12,13 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 
 public class ResourceLifeCycleTest {
 	Resource	resource;
@@ -182,7 +183,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 
 			mockCapability.initialize(); // expect capability to be initialized and activated
 			mockCapability.activate();
@@ -223,7 +224,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 
 			mockCapability.deactivate(); // expected
 			mockCapability.shutdown();
@@ -264,7 +265,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 			mockCapability.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -323,7 +324,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 			mockCapability.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -381,7 +382,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 			mockCapability.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -439,7 +440,7 @@ public class ResourceLifeCycleTest {
 			Resource resource = new Resource();
 			resource.initialize();
 
-			ICapability mockCapability = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 			mockCapability.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -500,7 +501,7 @@ public class ResourceLifeCycleTest {
 			resource.initialize();
 
 			// fails to deactivate
-			ICapability mockCapability2 = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability2 = createMock(ICapabilityLifecycle.class);
 			mockCapability2.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -517,7 +518,7 @@ public class ResourceLifeCycleTest {
 			replay(mockCapability2);
 
 			// fails to activate
-			ICapability mockCapability1 = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability1 = createMock(ICapabilityLifecycle.class);
 			mockCapability1.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -578,7 +579,7 @@ public class ResourceLifeCycleTest {
 			resource.initialize();
 
 			// fails to activate
-			ICapability mockCapability1 = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability1 = createMock(ICapabilityLifecycle.class);
 			mockCapability1.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -595,7 +596,7 @@ public class ResourceLifeCycleTest {
 			replay(mockCapability1);
 
 			// fails to deactivate
-			ICapability mockCapability2 = createMock(ICapability.class);
+			ICapabilityLifecycle mockCapability2 = createMock(ICapabilityLifecycle.class);
 			mockCapability2.getState();
 			expectLastCall().andReturn(State.INITIALIZED).anyTimes();
 
@@ -670,7 +671,7 @@ public class ResourceLifeCycleTest {
 
 		/* check fail capability */
 
-		ICapability mockCapability = createMock(ICapability.class);
+		ICapabilityLifecycle mockCapability = createMock(ICapabilityLifecycle.class);
 		/* force to fail the deactivate method */
 		mockCapability.deactivate();
 		expectLastCall().andThrow(new ResourceException()).anyTimes();

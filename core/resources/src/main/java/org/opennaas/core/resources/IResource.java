@@ -39,14 +39,14 @@ public interface IResource extends ILifecycle {
 	 * @param capabilities
 	 *            the resource capabilities
 	 */
-	public void setCapabilities(List<ICapability> capabilities);
+	public void setCapabilities(List<? extends ICapability> capabilities);
 
 	/**
 	 * Get all the capabilities of this resource
 	 * 
 	 * @return the engine capabilities
 	 */
-	public List<ICapability> getCapabilities();
+	public List<? extends ICapability> getCapabilities();
 
 	/**
 	 * Add a capability to this resource
@@ -76,8 +76,17 @@ public interface IResource extends ILifecycle {
 	 * Get capability by type
 	 * 
 	 * @return the capability
+	 * @Throws ResourceException if this resource does not have any capability of given type
 	 */
-	public ICapability getCapabilityByType(String type);
+	public ICapability getCapabilityByType(String type) throws ResourceException;
+
+	/**
+	 * Get capabilities of this resource that implement given interface
+	 * 
+	 * @param interfaze
+	 * @return Capabilities of this resource with given interface
+	 */
+	public List<ICapability> getCapabilitiesByInterface(Class<ICapability> interfaze);
 
 	/**
 	 * Start the Resource. The resource must already be instantiated and in the initialized state. This method will perform the necessary

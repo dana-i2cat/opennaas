@@ -28,7 +28,7 @@ import org.opennaas.core.resources.profile.IProfile;
  * @author Carlos Baez (i2CAT)
  * 
  */
-public abstract class AbstractCapability implements ICapability {
+public abstract class AbstractCapability implements ICapabilityLifecycle {
 
 	Log								log				= LogFactory.getLog(AbstractCapability.class);
 
@@ -136,7 +136,7 @@ public abstract class AbstractCapability implements ICapability {
 		this.descriptor = descriptor;
 	}
 
-	public Action createAction(String actionId) throws CapabilityException {
+	protected Action createAction(String actionId) throws CapabilityException {
 
 		try {
 			Action action = null;

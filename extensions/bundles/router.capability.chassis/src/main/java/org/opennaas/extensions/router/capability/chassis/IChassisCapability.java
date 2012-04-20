@@ -3,12 +3,13 @@ package org.opennaas.extensions.router.capability.chassis;
 import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
-public interface IChassisCapability {
+public interface IChassisCapability extends ICapability {
 
 	/*
 	 * Interfaces
