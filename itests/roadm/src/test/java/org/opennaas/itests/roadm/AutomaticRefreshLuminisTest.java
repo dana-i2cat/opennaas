@@ -1,4 +1,4 @@
-package automaticrefresh;
+package org.opennaas.itests.roadm;
 
 import java.io.File;
 import java.util.List;
@@ -12,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.ops4j.pax.exam.Option;
