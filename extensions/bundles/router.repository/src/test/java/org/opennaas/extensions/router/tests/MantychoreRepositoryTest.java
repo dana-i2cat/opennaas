@@ -1,19 +1,22 @@
-package org.opennaas.extensions.router.repository.tests;
+package org.opennaas.extensions.router.tests;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.router.repository.MantychoreRepository;
+import org.junit.Assert;
+import org.junit.Test;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.opennaas.core.resources.mock.MockCapabilityFactory;
+import org.opennaas.core.resources.mock.MockDescriptorRepository;
+import org.opennaas.core.resources.mock.MockResource;
+import org.opennaas.extensions.router.repository.MantychoreRepository;
 
 public class MantychoreRepositoryTest {
 	MantychoreRepository	mantychoreRepository;
