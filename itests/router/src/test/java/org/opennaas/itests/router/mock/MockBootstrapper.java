@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.capability.chassis.tests.mock;
+package org.opennaas.itests.router.mock;
 
 import org.opennaas.extensions.router.model.ComputerSystem;
 
@@ -18,16 +18,15 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 
 public class MockBootstrapper implements IResourceBootstrapper {
-	Log	log	= LogFactory.getLog(MockBootstrapper.class);
+	Log		log	= LogFactory.getLog(MockBootstrapper.class);
 
-	IModel oldModel;
+	IModel	oldModel;
 
-	public void resetModel (IResource resource) throws ResourceException {
+	public void resetModel(IResource resource) throws ResourceException {
 		resource.setModel(new ComputerSystem());
 		if (isALogicalRouter(resource))
-			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
+			((ComputerSystem) resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 	}
-
 
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
@@ -62,7 +61,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		//MockBootstrapper does not create childs
+		// MockBootstrapper does not create childs
 	}
 
 	private Information createQueueInformation() {
@@ -83,6 +82,6 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			return false;
 
 		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null
-				&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
+		&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
 	}
 }

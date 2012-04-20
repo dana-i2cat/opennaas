@@ -1,4 +1,4 @@
-package org.opennaas.router.tests.capability;
+package org.opennaas.itests.router.gre;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 /**
  *
  */
-package org.opennaas.router.tests.capability;
+package org.opennaas.itests.router.gre;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
@@ -35,7 +35,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
-import org.opennaas.router.tests.capability.mock.MockBootstrapper;
+import org.opennaas.itests.router.mock.MockBootstrapper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
