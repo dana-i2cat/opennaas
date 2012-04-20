@@ -35,7 +35,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

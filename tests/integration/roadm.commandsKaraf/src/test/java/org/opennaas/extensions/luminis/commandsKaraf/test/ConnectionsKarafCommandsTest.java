@@ -28,7 +28,7 @@ import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
-import org.opennaas.extensions.nexus.tests.helper.AbstractKarafCommandTest;
+import org.opennaas.core.resources.helpers.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -42,7 +42,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

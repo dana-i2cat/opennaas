@@ -1,7 +1,7 @@
 package org.opennaas.extensions.router.capability.ip.tests;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
