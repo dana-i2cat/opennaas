@@ -22,7 +22,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -50,13 +50,13 @@ public class BODRepositoryIntegrationTest
 	@Inject
 	private IResourceManager	resourceManager;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-	private BlueprintContainer	bodService;
+//	@Inject
+//	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+//	private BlueprintContainer	bodService;
 
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
-	private BlueprintContainer	l2bodService;
+//	@Inject
+//	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+//	private BlueprintContainer	l2bodService;
 
 	@Configuration
 	public static Option[] configuration() {
