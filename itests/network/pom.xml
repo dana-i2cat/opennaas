@@ -6,7 +6,6 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-  	<!--  POM id -->
 	<artifactId>org.opennaas.itests.network</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<name>OpenNaaS :: iTests :: Network</name>

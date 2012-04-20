@@ -1,4 +1,4 @@
-package org.opennaas.extensions.nexus.events.test;
+package org.opennaas.itest.core.events;
 
 import java.io.File;
 import java.io.InputStream;
