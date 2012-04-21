@@ -1,4 +1,4 @@
-package org.opennaas.extensions.commandsKaraf.test;
+package org.opennaas.itests.core.shell;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -14,12 +14,15 @@ import org.opennaas.core.resources.helpers.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
@@ -40,29 +43,27 @@ import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class QueueCommandsKarafTest extends AbstractKarafCommandTest
+public class ResourceCommandsKarafTest extends AbstractKarafCommandTest
 {
-	static Log					log	=
-		LogFactory.getLog(ResourceCommandsKarafTest.class);
+	static Log log = LogFactory.getLog(ResourceCommandsKarafTest.class);
 
 	@Inject
-	@Filter("(type=router)")
-	private IResourceRepository	repository;
+	private IResourceManager	resourceManager;
 
 	@Inject
 	private IProtocolManager	protocolManager;
 
     @Inject
     @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer	routerRepositoryService;
+    private BlueprintContainer routerRepositoryService;
 
     @Inject
     @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer	ipService;
+    private BlueprintContainer ipService;
 
     @Inject
     @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer	queueService;
+    private BlueprintContainer queueService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -92,46 +93,81 @@ public class QueueCommandsKarafTest extends AbstractKarafCommandTest
 		return protocolSessionContext;
 	}
 
-	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
+	public void createProtocolForResource(String resourceId)
+			throws ProtocolException {
+		protocolManager.getProtocolSessionManagerWithContext(resourceId,
+				newSessionContextNetconf());
 
 	}
 
 	@Test
-	public void SetAndGetInterfacesCommandTest() {
+	public void InfoCommandTest() throws Exception {
 		List<String> capabilities = new ArrayList<String>();
 
 		capabilities.add("ipv4");
 		capabilities.add("queue");
 
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource1", "router", capabilities);
-		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory
+				.newResourceDescriptor("junosm20", "router", capabilities);
+		String resourceFriendlyID =
+			resourceDescriptor.getInformation()
+				.getType()
+				+ ":"
+				+ resourceDescriptor.getInformation().getName();
 
-		try {
-			IResource resource = repository.createResource(resourceDescriptor);
-			createProtocolForResource(resource.getResourceIdentifier().getId());
-			repository.startResource(resource.getResourceDescriptor().getId());
+		IResource resource =
+			resourceManager.createResource(resourceDescriptor);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		resourceManager.startResource(resource.getResourceIdentifier());
 
-			List<String> response = executeCommand(
-					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
-			// assert command output does not contain ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		List<String> response =
+			executeCommand("resource:info " + resourceFriendlyID);
 
-			response = executeCommand("queue:listActions  " + resourceFriendlyID);
-			// assert command output does not contain ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		if (!response.get(1).isEmpty()) {
+			Assert.fail(response.get(1));
+		}
+		Assert.assertTrue(response.get(1).isEmpty());
 
-			response = executeCommand("queue:execute  " + resourceFriendlyID);
-			// assert command output does not contain ERROR tag
-			Assert.assertTrue(response.get(1).isEmpty());
+		Assert.assertTrue(response.get(0).contains("Resource ID: junosm20"));
+		Assert.assertTrue(response.get(0).contains("Type: ipv4"));
+		Assert.assertTrue(response.get(0).contains("Type: queue"));
 
-			repository.stopResource(resource.getResourceIdentifier().getId());
-			repository.removeResource(resource.getResourceIdentifier().getId());
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		resourceManager.removeResource(resource.getResourceIdentifier());
+	}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail(e.getLocalizedMessage());
+	@After
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceManager.listResources()
+				.size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource
+							.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource "
+							+ resource.getResourceIdentifier().getId()
+							+ " from repository.");
+				}
+			}
+			try {
+				resourceManager
+						.removeResource(resource.getResourceIdentifier());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource "
+						+ resource.getResourceIdentifier().getId()
+						+ " from repository.");
+			}
+
 		}
 
+		log.info("Resource repo cleared!");
 	}
+
 }

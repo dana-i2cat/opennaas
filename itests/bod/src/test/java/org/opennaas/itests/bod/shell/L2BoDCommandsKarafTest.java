@@ -1,4 +1,4 @@
-package org.opennaas.extensions.commandsKaraf.test;
+package org.opennaas.itests.bod.shell;
 
 import java.io.File;
 import java.io.InputStream;

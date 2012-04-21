@@ -1,4 +1,4 @@
-package org.opennaas.extensions.commandsKaraf.test;
+package org.opennaas.itests.core.shell;
 
 import org.opennaas.core.resources.action.Action;
 import org.opennaas.core.resources.action.ActionException;
