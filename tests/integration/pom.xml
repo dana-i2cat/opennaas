@@ -13,10 +13,6 @@
 
 	<modules>
 		<module>queuemanager</module>
-		<module>commandsKaraf</module>
-  		<module>bod.repository</module>
-  		<module>bod.capability.l2bod</module>
-   		<module>bod</module>
 <!--		<module>week26</module>  -->
 	</modules>
 

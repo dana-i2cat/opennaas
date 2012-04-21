@@ -1,4 +1,4 @@
-package org.opennaas.bod.tests.capability.l2bod;
+package org.opennaas.itests.bod;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,13 +12,20 @@ import org.apache.commons.logging.LogFactory;
 
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -42,43 +49,30 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
-public class L2BoDCapabilityIntegrationTest
+public class BoDIntegrationTest
 {
-	private static final Log	log					= LogFactory.getLog(L2BoDCapabilityIntegrationTest.class);
+	private final static Log	log				= LogFactory.getLog(BoDIntegrationTest.class);
 
-	private static final String	ACTION_NAME			= "dummy";
-
-	private static final String	VERSION				= "1.0";
-
-	private static final String	CAPABILIY_TYPE		= "l2bod";
-
-	private static final String	CAPABILITY_URI		= "mock://user:pass@host.net:2212/mocksubsystem";
-
-	private static final String	RESOURCE_TYPE		= "bod";
-
-	private static final String	RESOURCE_URI		= "user:pass@host.net:2212";
-
-	private static final String	RESOURCE_INFO_NAME	= "L2BoD Test";
+	private ProtocolSessionManager	protocolSessionManager;
 
 	@Inject
-	private BundleContext		bundleContext;
+	private BundleContext			bundleContext;
 
 	@Inject
-	private IResourceManager	resourceManager;
-
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.actionsets.dummy)")
-    private BlueprintContainer	actionSetService;
-
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
-    private BlueprintContainer	l2bodService;
+	private IResourceManager		resourceManager;
 
     @Inject
     @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-    private BlueprintContainer	repositoryService;
+    private BlueprintContainer		repositoryService;
 
-	private ICapability			l2bodCapability;
+	private static final String		ACTION_NAME			= "dummy";
+	private static final String		VERSION				= "1.0";
+	private static final String		CAPABILITY_TYPE		= "l2bod";
+	private static final String		CAPABILITY_URI		= "mock://user:pass@host.net:2212/mocksubsystem";
+
+	private static final String		RESOURCE_TYPE		= "bod";
+	private static final String		RESOURCE_URI		= "user:pass@host.net:2212";
+	private static final String		RESOURCE_INFO_NAME	= "BoD Resource";
 
 	@Configuration
 	public static Option[] configuration() {
@@ -89,16 +83,14 @@ public class L2BoDCapabilityIntegrationTest
 					   keepRuntimeFolder());
 	}
 
-	/**
-	 * Test to check if repostitory is accessible from OSGi.
-	 */
 	@Test
-	public void isCapabilityAccessibleFromResource() throws Exception {
+	public void BoDResourceTest() throws Exception {
 
 		// L2BoD Capability Descriptor
+
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		CapabilityDescriptor capabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILIY_TYPE,
-																						   CAPABILITY_URI);
+		CapabilityDescriptor capabilityDescriptor =
+			ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILITY_TYPE, CAPABILITY_URI);
 		lCapabilityDescriptors.add(capabilityDescriptor);
 
 		// BoD Resource Descriptor
@@ -108,25 +100,41 @@ public class L2BoDCapabilityIntegrationTest
 		// Create resource
 		IResource resource = resourceManager.createResource(resourceDescriptor);
 
-		// Start resource
+		// Start Resource
 		resourceManager.startResource(resource.getResourceIdentifier());
-		Assert.assertTrue(resource.getCapabilities().size() > 0);
+		Assert.assertTrue(resource.getState().equals(State.ACTIVE));
 
-		// Stop resource
+		// Get Capabilities
+		List<ICapability> CapabilityList = resource.getCapabilities();
+		Assert.assertTrue(CapabilityList.size() > 0);
+
+		// Get and Execute Actions
+		for (ICapability capability : CapabilityList) {
+			Assert.assertTrue(capability.getCapabilityInformation().getType().equals(CAPABILITY_TYPE));
+
+			IActionSet actionSet = ((L2BoDCapability) capability).getActionSet();
+			List<String> actionList = actionSet.getActionNames();
+			Assert.assertTrue(actionList.size() > 0);
+
+			for (String actionName : actionList) {
+				IAction action = actionSet.obtainAction(actionName);
+				ActionResponse actionResponse = action.execute(protocolSessionManager);
+				Assert.assertTrue(actionResponse.getStatus().equals(STATUS.OK));
+
+			}
+		}
+		// Stop Resource
 		resourceManager.stopResource(resource.getResourceIdentifier());
 
-		// Remove resource
+		// Remove Resource from ResourceManager
 		resourceManager.removeResource(resource.getResourceIdentifier());
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
 
-	/**
-	 * At the end of the tests, we empty the repository
-	 */
 	@After
 	public void clearRepository() throws ResourceException {
 
-		log.info("Clearing resource repo");
+		log.info("Clearing resource repository");
 
 		List<IResource> toRemove = resourceManager.listResources();
 
@@ -134,9 +142,6 @@ public class L2BoDCapabilityIntegrationTest
 			if (resource.getState().equals(State.ACTIVE)) {
 				resourceManager.stopResource(resource.getResourceIdentifier());
 			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
 		}
-
-		log.info("Resource repo cleared!");
 	}
 }

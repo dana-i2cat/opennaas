@@ -1,4 +1,4 @@
-package org.opennaas.bod.tests.repository;
+package org.opennaas.itests.bod;
 
 import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;

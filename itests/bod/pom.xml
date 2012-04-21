@@ -16,6 +16,25 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+  			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+		</dependency>
+		
+		<!--  FIXME check if necessary and delete otherwise -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
+		</dependency>		
+		
 	</dependencies>
 
 </project>
