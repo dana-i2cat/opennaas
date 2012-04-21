@@ -116,11 +116,11 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		model.getNetworkElements().add(createInterface("int2"));
 
 		List<String> response =
-			executeCommand("l2bod:requestConnection  " + resourceFriendlyID + " int1 int2 ");
+			executeCommand("l2bod:requestConnection --endtime 2012-04-20T18:36:00Z --capacity 10 " + resourceFriendlyID + " int1 int2");
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = executeCommand("l2bod:shutdownConnection  " + resourceFriendlyID + " int1 int2 ");
+		response = executeCommand("l2bod:shutdownConnection " + resourceFriendlyID + " int1 int2");
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 

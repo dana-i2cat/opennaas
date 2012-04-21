@@ -119,6 +119,7 @@
 	<feature name="opennaas-bod" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
+		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>

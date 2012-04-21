@@ -1,17 +1,21 @@
 package org.opennaas.extensions.bod.autobahn.bod;
 
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
 
+import net.geant.autobahn.administration.Mode;
 import net.geant.autobahn.useraccesspoint.Priority;
+import net.geant.autobahn.useraccesspoint.PortType;
 import net.geant.autobahn.useraccesspoint.ReservationRequest;
 import net.geant.autobahn.useraccesspoint.Resiliency;
 import net.geant.autobahn.useraccesspoint.ServiceRequest;
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
+
+import org.joda.time.DateTime;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -21,6 +25,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
+import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 
 import org.opennaas.extensions.network.model.topology.Interface;
 
@@ -39,13 +44,14 @@ public class RequestConnectionAction extends AutobahnAction
 		throws ActionException
 	{
 		try {
-			log.info("Requesting connection between " + params);
+			log.info("Submitting " + params);
 
 			UserAccessPoint userAccessPoint =
 				getUserAccessPointService(protocolSessionManager);
-
+			ServiceRequest serviceRequest =
+				createServiceRequest((RequestConnectionParameters) params);
 			String serviceId =
-				userAccessPoint.submitService(createServiceRequest());
+				userAccessPoint.submitService(serviceRequest);
 
 			log.info("Submitted service request " + serviceId);
 
@@ -59,31 +65,23 @@ public class RequestConnectionAction extends AutobahnAction
 		}
 	}
 
-	protected AutobahnInterface getInterface(int index)
-	{
-		List<Interface> interfaces = (List<Interface>) params;
-		return (AutobahnInterface) interfaces.get(index);
-	}
-
-	protected ServiceRequest createServiceRequest()
+	protected ServiceRequest
+		createServiceRequest(RequestConnectionParameters request)
 		throws DatatypeConfigurationException
 	{
-		GregorianCalendar now = new GregorianCalendar();
-		GregorianCalendar tomorrow = new GregorianCalendar();
-		tomorrow.add(GregorianCalendar.DAY_OF_MONTH, 1);
-
-		DatatypeFactory factory = DatatypeFactory.newInstance();
+		boolean processNow =
+			request.startTime.isBefore(DateTime.now().plusSeconds(10));
 
 		ReservationRequest reservationRequest = new ReservationRequest();
-		reservationRequest.setStartPort(getInterface(0).getPortType());
-		reservationRequest.setEndPort(getInterface(1).getPortType());
-		reservationRequest.setStartTime(factory.newXMLGregorianCalendar(now));
-		reservationRequest.setEndTime(factory.newXMLGregorianCalendar(tomorrow));
+		reservationRequest.setStartPort(getPortType(request.interface1, request.vlanid));
+		reservationRequest.setEndPort(getPortType(request.interface2, request.vlanid));
+		reservationRequest.setStartTime(toXMLCalendar(request.startTime));
+		reservationRequest.setEndTime(toXMLCalendar(request.endTime));
 		reservationRequest.setDescription("Submitted by OpenNaaS");
-		reservationRequest.setCapacity(10000000);
+		reservationRequest.setCapacity(request.capacity);
 		reservationRequest.setBidirectional(true);
 		reservationRequest.setPriority(Priority.NORMAL);
-		reservationRequest.setProcessNow(true);
+		reservationRequest.setProcessNow(processNow);
 		reservationRequest.setResiliency(Resiliency.NONE);
 
 		ServiceRequest serviceRequest = new ServiceRequest();
@@ -92,5 +90,24 @@ public class RequestConnectionAction extends AutobahnAction
 		serviceRequest.getReservations().add(reservationRequest);
 
 		return serviceRequest;
+	}
+
+	private PortType getPortType(Interface i, int vlan)
+	{
+		PortType port = ((AutobahnInterface) i).getPortType();
+		if (vlan == -1) {
+			port.setMode(Mode.UNTAGGED);
+		} else {
+			port.setMode(Mode.VLAN);
+			port.setVlan(vlan);
+		}
+		return port;
+	}
+
+	private XMLGregorianCalendar toXMLCalendar(DateTime dt)
+		throws DatatypeConfigurationException
+	{
+		DatatypeFactory factory = DatatypeFactory.newInstance();
+		return factory.newXMLGregorianCalendar(dt.toGregorianCalendar());
 	}
 }
