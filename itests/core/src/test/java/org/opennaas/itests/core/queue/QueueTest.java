@@ -1,16 +1,16 @@
-package queue;
+package org.opennaas.itests.core.queue;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-import org.opennaas.extensions.queuemanager.QueueManager;
-import org.opennaas.core.resources.helpers.ResourceHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,55 +27,50 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.core.resources.helpers.MockActionFactory;
-import org.opennaas.core.resources.helpers.MockResource;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.mock.MockActionFactory;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.QueueManager;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
-import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
 /**
  * Tests new queue operations. In the sprint for the week 26, it is planned to add new features in the queue.
- *
+ * 
  * tasks:
- *
+ * 
  * 1.- A queue have to remove elements from its queue list
- *
+ * 
  * 2.- The queue has to implement a method to report responses from a list of actions
- *
+ * 
  * @author Carlos Báez Ruiz
- *
+ * 
  *         jira ticket : http://jira.i2cat.net:8080/browse/MANTYCHORE-185
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
 public class QueueTest
 {
-	/* Note that the tests in this class have to run in isolation;
-	 * this is because the initialization code is creating a new queue
-	 * before each test runs.
+	/*
+	 * Note that the tests in this class have to run in isolation; this is because the initialization code is creating a new queue before each test
+	 * runs.
 	 */
 
+	private final static Log		log			= LogFactory.getLog(QueueTest.class);
 
-	private final static Log		log				= LogFactory.getLog(QueueTest.class);
-
-	private final static String		resourceID		= "junosResource";
+	private final static String		resourceID	= "junosResource";
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
 	private IQueueManagerService	queueManagerService;
@@ -93,11 +88,11 @@ public class QueueTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-cim", "opennaas-netconf"),
-					   includeTestHelper(),
-					   includeSwissboxFramework(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-cim", "opennaas-netconf"),
+				includeTestHelper(),
+				includeSwissboxFramework(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public void initBundles() throws ProtocolException {
@@ -138,14 +133,13 @@ public class QueueTest
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
 
-		/* The queue manager factory registers the new queue manager
-		 * as a service. Hence we cannot obtain this reference through
-		 * injection.
+		/*
+		 * The queue manager factory registers the new queue manager as a service. Hence we cannot obtain this reference through injection.
 		 */
 		queueManagerService =
-			getService(bundleContext, IQueueManagerService.class, 20000,
-					   String.format("(capability=queue)(capability.name=%s)",
-									 resourceID));
+				getService(bundleContext, IQueueManagerService.class, 20000,
+						String.format("(capability=queue)(capability.name=%s)",
+								resourceID));
 	}
 
 	@After
@@ -156,13 +150,13 @@ public class QueueTest
 
 	/**
 	 * A queue have to be new operations. In this sprint, it have to implement the remove operation to remove actions from the queue.
-	 *
+	 * 
 	 * Estimation: 3 hours
-	 *
+	 * 
 	 * tasks:
-	 *
+	 * 
 	 * 1.- Add unitary tests,
-	 *
+	 * 
 	 * 2.- Implement operation in the queue
 	 */
 	@Test
@@ -187,13 +181,13 @@ public class QueueTest
 
 	/**
 	 * A queue have to be new operations. In this sprint, it have to implement the remove operation to remove actions from the queue.
-	 *
+	 * 
 	 * Estimation: 5
-	 *
+	 * 
 	 * hours tasks:
-	 *
+	 * 
 	 * 1.- Add unitary test
-	 *
+	 * 
 	 * 2.- Add necessary refactoring to add new information in the queue
 	 */
 	@Test

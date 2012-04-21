@@ -1,4 +1,4 @@
-package interfaces;
+package org.opennaas.itests.router.ip;
 
 import java.io.File;
 import java.io.InputStream;
