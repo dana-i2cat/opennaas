@@ -1,4 +1,4 @@
-package org.opennaas.extensions.queuemanager.test;
+package org.opennaas.itests.core.queue;
 
 import java.util.Vector;
 
