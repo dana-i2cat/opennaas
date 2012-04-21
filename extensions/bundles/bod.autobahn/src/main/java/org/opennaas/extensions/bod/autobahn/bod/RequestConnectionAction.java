@@ -1,7 +1,5 @@
 package org.opennaas.extensions.bod.autobahn.bod;
 
-import java.util.List;
-
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -13,7 +11,6 @@ import net.geant.autobahn.useraccesspoint.ReservationRequest;
 import net.geant.autobahn.useraccesspoint.Resiliency;
 import net.geant.autobahn.useraccesspoint.ServiceRequest;
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
-import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
 import org.joda.time.DateTime;
 
@@ -24,6 +21,9 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
+import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
+import org.opennaas.extensions.bod.autobahn.commands.RequestConnectionCommand;
+import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 
@@ -44,21 +44,17 @@ public class RequestConnectionAction extends AutobahnAction
 		throws ActionException
 	{
 		try {
-			log.info("Submitting " + params);
-
 			UserAccessPoint userAccessPoint =
 				getUserAccessPointService(protocolSessionManager);
 			ServiceRequest serviceRequest =
 				createServiceRequest((RequestConnectionParameters) params);
-			String serviceId =
-				userAccessPoint.submitService(serviceRequest);
+			IAutobahnCommand command =
+				new RequestConnectionCommand(userAccessPoint, serviceRequest);
 
-			log.info("Submitted service request " + serviceId);
+			Transaction.getInstance().add(command);
 
 			return ActionResponse.okResponse(getActionID());
 		} catch (DatatypeConfigurationException e) {
-			throw new ActionException(e);
-		} catch (UserAccessPointException_Exception e) {
 			throw new ActionException(e);
 		} catch (ProtocolException e) {
 			throw new ActionException(e);

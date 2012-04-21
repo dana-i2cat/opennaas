@@ -6,6 +6,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.queue.QueueConstants;
 
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
+import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 
 public class RestoreAction extends AutobahnAction
 {
@@ -20,6 +21,7 @@ public class RestoreAction extends AutobahnAction
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 		throws ActionException
 	{
+		Transaction.getInstance().rollback();
 		return ActionResponse.okResponse(getActionID());
 	}
 }

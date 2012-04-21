@@ -21,6 +21,10 @@
           <artifactId>guava-osgi</artifactId>
           <version>${guava.version}</version>
       </dependency>
+	  <dependency>
+		  <groupId>joda-time</groupId>
+		  <artifactId>joda-time</artifactId>
+	  </dependency>
   </dependencies>
 
   <build>

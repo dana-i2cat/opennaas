@@ -3,7 +3,6 @@ package org.opennaas.extensions.bod.autobahn.bod;
 import java.util.List;
 
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
-import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -12,6 +11,9 @@ import org.opennaas.core.resources.action.ActionResponse;
 
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
+import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
+import org.opennaas.extensions.bod.autobahn.commands.ShutdownConnectionCommand;
+import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
 
@@ -31,44 +33,31 @@ public class ShutdownConnectionAction extends AutobahnAction
 		throws ActionException
 	{
 		try {
-			log.info("Shuttting down connection between " + params);
-
-			String serviceId = getServiceIdOfLink();
-
 			UserAccessPoint userAccessPoint =
 				getUserAccessPointService(protocolSessionManager);
-			userAccessPoint.cancelService(serviceId);
+			IAutobahnCommand command =
+				new ShutdownConnectionCommand(userAccessPoint, getLink());
 
-			getInterface(0).setLinkTo(null);
-
-			log.info("Cancelled service request " + serviceId);
+			Transaction.getInstance().add(command);
 
 			return ActionResponse.okResponse(getActionID());
-		} catch (UserAccessPointException_Exception e) {
-			throw new ActionException(e);
 		} catch (ProtocolException e) {
 			throw new ActionException(e);
 		}
 	}
 
-	protected String getServiceIdOfLink()
+	protected AutobahnLink getLink()
 		throws ActionException
 	{
 		AutobahnInterface source = getInterface(0);
 		AutobahnInterface sink = getInterface(1);
 		AutobahnLink link = (AutobahnLink) source.getLinkTo();
 
-		log.info(String.valueOf(link));
-		if (link != null) {
-			log.info(link.getSink().hashCode());
-		}
-		log.info(sink.hashCode());
-
 		if (link == null || link.getSink() != sink) {
 			throw new ActionException(source.toString() + " is not linked to " + sink);
 		}
 
-		return link.getService().getBodID();
+		return link;
 	}
 
 	protected AutobahnInterface getInterface(int index)
