@@ -1,7 +1,10 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
 import net.geant.autobahn.useraccesspoint.ReservationRequest;
+import net.geant.autobahn.useraccesspoint.ReservationResponse;
 import net.geant.autobahn.useraccesspoint.ServiceRequest;
+import net.geant.autobahn.useraccesspoint.ServiceResponse;
+import net.geant.autobahn.useraccesspoint.State;
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
@@ -9,6 +12,8 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.command.Response;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getOnlyElement;
+import static net.geant.autobahn.useraccesspoint.State.*;
 
 public class SubmitServiceCommand extends AutobahnCommand
 {
@@ -32,8 +37,17 @@ public class SubmitServiceCommand extends AutobahnCommand
 
 		try {
 			serviceId = userAccessPoint.submitService(serviceRequest);
+
+			if (getOnlyElement(serviceRequest.getReservations()).isProcessNow()) {
+				waitUntilOrFailure(ACTIVE);
+			} else {
+				waitUntilOrFailure(SCHEDULED);
+			}
+
 			return okResponse("submitService",
 							  "Service " + serviceId + " submitted");
+		} catch (ActionException e) {
+			return errorResponse("submit", e.getMessage());
 		} catch (UserAccessPointException_Exception e) {
 			return errorResponse("submit", e.getMessage());
 		}
@@ -42,7 +56,9 @@ public class SubmitServiceCommand extends AutobahnCommand
 	@Override
 	public Response undo()
 	{
-		checkState(serviceId != null);
+		if (serviceId == null) {
+			return okResponse("", "Nothing to undo");
+		}
 
 		try {
 			userAccessPoint.cancelService(serviceId);
@@ -51,5 +67,40 @@ public class SubmitServiceCommand extends AutobahnCommand
 		} catch (UserAccessPointException_Exception e) {
 			return errorResponse("submit", e.getMessage());
 		}
+	}
+
+	private void waitUntilOrFailure(State state)
+		throws ActionException, UserAccessPointException_Exception
+	{
+		while (true) {
+			ReservationResponse reservation = getReservation();
+			switch (reservation.getState()) {
+			case CANCELLED:
+				throw new ActionException("Reservation cancelled: " +
+										  reservation.getMessage());
+			case FAILED:
+				throw new ActionException("Reservation failed: " +
+										  reservation.getMessage());
+			default:
+				break;
+			}
+
+			if (reservation.getState().ordinal() >= state.ordinal()) {
+				return;
+			}
+
+			try {
+				Thread.currentThread().sleep(500);
+			} catch (InterruptedException e) {
+				throw new ActionException("Reservation was interrupted", e);
+			}
+		}
+	}
+
+	private ReservationResponse getReservation()
+		throws UserAccessPointException_Exception
+	{
+		ServiceResponse service = userAccessPoint.queryService(serviceId);
+		return getOnlyElement(service.getReservations());
 	}
 }

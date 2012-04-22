@@ -61,7 +61,12 @@ public class CancelServiceCommand extends AutobahnCommand
 	@Override
 	public Response undo()
 	{
-		checkState(cancelled && !undone);
+		checkState(!undone);
+
+		if (!cancelled) {
+			return okResponse("", "Nothing to undo");
+		}
+
 		try {
 			Response response;
 			if (!isBeforeNow(link.getReservation().getEndTime())) {
@@ -78,7 +83,7 @@ public class CancelServiceCommand extends AutobahnCommand
 							   "as it has expired already.");
 			}
 			undone = true;
-			return response;
+				return response;
 		} catch (UserAccessPointException_Exception e) {
 			return errorResponse("cancel", e.getMessage());
 		}

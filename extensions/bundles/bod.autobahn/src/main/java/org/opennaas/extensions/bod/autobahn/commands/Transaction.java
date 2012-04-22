@@ -7,6 +7,7 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.queue.QueueConstants;
 
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.Iterables.getFirst;
 import static com.google.common.collect.Lists.newArrayList;
 
 public class Transaction
@@ -54,13 +55,14 @@ public class Transaction
 			Response response = command.execute();
 			actionResponse.addResponse(response);
 
+			log.add(command);
+
 			if (response.getStatus() != Response.Status.OK) {
 				actionResponse.setStatus(ActionResponse.STATUS.ERROR);
-				actionResponse.setInformation("Commit failed");
+				actionResponse.setInformation(getFirst(response.getErrors(),
+													   "Commit failed"));
 				return actionResponse;
 			}
-
-			log.add(command);
 		}
 		open = false;
 
@@ -83,7 +85,8 @@ public class Transaction
 				actionResponse.addResponse(response);
 				if (response.getStatus() != Response.Status.OK) {
 					actionResponse.setStatus(ActionResponse.STATUS.ERROR);
-					actionResponse.setInformation("Rollback failed");
+					actionResponse.setInformation(getFirst(response.getErrors(),
+														   "Rollback failed"));
 				}
 			}
 
