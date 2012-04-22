@@ -1,7 +1,5 @@
 package org.opennaas.extensions.bod.autobahn.bod;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
 import com.google.common.collect.Maps;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
@@ -25,19 +24,12 @@ import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
 import org.opennaas.extensions.network.model.NetworkModel;
 
 import static com.google.common.collect.Iterables.concat;
+import static com.google.common.collect.Iterables.size;
 import static com.google.common.collect.Iterables.transform;
 
 public class GetTopologyAction extends AutobahnAction
 {
 	public final static String ACTIONID = "getTopology";
-
-	private final static Function<PortType,String> getAddress =
-		new Function<PortType,String>() {
-			@Override
-			public String apply(PortType port) {
-				return port.getAddress();
-			}
-		};
 
 	private final Log log = LogFactory.getLog(GetTopologyAction.class);
 
@@ -59,12 +51,9 @@ public class GetTopologyAction extends AutobahnAction
 			Iterable<ServiceType> services =
 				queryServices(protocolSessionManager);
 
-			log.info("Discovered interfaces " +
-					 Joiner.on(", ").join(transform(ports, getAddress)));
-
 			updateModel((NetworkModel) modelToUpdate, ports, services);
 
-			return ActionResponse.okResponse(getActionID());
+			return okResponse(ports, services);
 		} catch (UserAccessPointException_Exception e) {
 			throw new ActionException(e);
 		} catch (ProtocolException e) {
@@ -72,7 +61,28 @@ public class GetTopologyAction extends AutobahnAction
 		}
 	}
 
-	protected Iterable<PortType>
+	private ActionResponse okResponse(Iterable<PortType> ports,
+									  Iterable<ServiceType> services)
+	{
+		ActionResponse response = new ActionResponse();
+		response.setActionID(getActionID());
+		response.setStatus(ActionResponse.STATUS.OK);
+		response.setInformation("Discovered " + size(ports) + " ports " +
+								"and " + size(services) + " services");
+		for (PortType port: ports) {
+			response.addResponse(newPortResponse(port));
+		}
+		return response;
+	}
+
+	private Response newPortResponse(PortType port)
+	{
+		return Response.okResponse("getPort", port.getAddress() +
+								   " (" + port.getDescription() +
+								   ")");
+	}
+
+	private Iterable<PortType>
 		queryPorts(IProtocolSessionManager protocolSessionManager)
 		throws ProtocolException, UserAccessPointException_Exception
 	{
@@ -83,7 +93,7 @@ public class GetTopologyAction extends AutobahnAction
 		return concat(clientPorts, idcpPorts);
 	}
 
-	protected Iterable<ServiceType>
+	private Iterable<ServiceType>
 		queryServices(IProtocolSessionManager protocolSessionManager)
 		throws ProtocolException
 	{
@@ -116,12 +126,12 @@ public class GetTopologyAction extends AutobahnAction
 		model.getNetworkElements().addAll(interfaces.values());
 	}
 
-	protected boolean isFinalState(int state)
+	private boolean isFinalState(int state)
 	{
 		return state >= 20;
 	}
 
-	protected AutobahnInterface createInterface(PortType port)
+	private AutobahnInterface createInterface(PortType port)
 	{
 		AutobahnInterface i = new AutobahnInterface();
 		i.setPortType(port);
@@ -129,10 +139,10 @@ public class GetTopologyAction extends AutobahnAction
 		return i;
 	}
 
-	protected AutobahnLink createLink(AutobahnInterface source,
-									  AutobahnInterface sink,
-									  ServiceType service,
-									  ReservationType reservation)
+	private AutobahnLink createLink(AutobahnInterface source,
+									AutobahnInterface sink,
+									ServiceType service,
+									ReservationType reservation)
 	{
 		AutobahnLink link = new AutobahnLink();
 		link.setSource(source);
@@ -143,9 +153,9 @@ public class GetTopologyAction extends AutobahnAction
 		return link;
 	}
 
-	protected void updateLinkTo(Map<String,AutobahnInterface> interfaces,
-								ServiceType service,
-								ReservationType reservation)
+	private void updateLinkTo(Map<String,AutobahnInterface> interfaces,
+							  ServiceType service,
+							  ReservationType reservation)
 	{
 		AutobahnInterface source =
 			interfaces.get(reservation.getStartPort().getAddress());

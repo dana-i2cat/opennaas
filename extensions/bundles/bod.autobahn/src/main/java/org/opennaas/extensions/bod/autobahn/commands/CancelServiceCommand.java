@@ -14,13 +14,14 @@ import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 import org.joda.time.DateTime;
 
 import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.command.Response;
 
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
 
 import static com.google.common.base.Preconditions.checkState;
 
-public class ShutdownConnectionCommand extends AutobahnCommand
+public class CancelServiceCommand extends AutobahnCommand
 {
 	private final UserAccessPoint userAccessPoint;
 	private final AutobahnLink link;
@@ -29,17 +30,18 @@ public class ShutdownConnectionCommand extends AutobahnCommand
 	private boolean cancelled = false;
 	private boolean undone = false;
 
-	public ShutdownConnectionCommand(UserAccessPoint userAccessPoint,
-									 AutobahnLink link)
+	public CancelServiceCommand(UserAccessPoint userAccessPoint,
+								AutobahnLink link)
 	{
 		this.userAccessPoint = userAccessPoint;
 		this.link = link;
 		this.serviceId = link.getService().getBodID();
+
+		setCommandId("cancel");
 	}
 
 	@Override
-	public void execute()
-		throws ActionException
+	public Response execute()
 	{
 		checkState(!cancelled && !undone);
 
@@ -49,31 +51,36 @@ public class ShutdownConnectionCommand extends AutobahnCommand
 			userAccessPoint.cancelService(serviceId);
 			cancelled = true;
 
-			log.info("Cancelled service request " + serviceId);
+			return okResponse("cancelService",
+							  "Service " + serviceId + " cancelled");
 		} catch (UserAccessPointException_Exception e) {
-			throw new ActionException(e);
+			return errorResponse("cancelService", e.getMessage());
 		}
 	}
 
 	@Override
-	public void undo()
-		throws ActionException
+	public Response undo()
 	{
 		checkState(cancelled && !undone);
 		try {
-			ServiceRequest request = createServiceRequest();
+			Response response;
 			if (!isBeforeNow(link.getReservation().getEndTime())) {
 				String newServiceId =
-					userAccessPoint.submitService(request);
-				log.warn("Restored cancelled service. New service ID is " +
-						 newServiceId);
+					userAccessPoint.submitService(createServiceRequest());
+				response =
+					okResponse("submitService",
+							   "Restored service " + serviceId + ". " +
+							   "New service is " + newServiceId);
 			} else {
-				log.info("Did not restore cancelled service " + serviceId +
-						 " as it had expired anyway");
+				response =
+					okResponse("submitService",
+							   "Did not restore service " + serviceId +
+							   "as it has expired already.");
 			}
 			undone = true;
+			return response;
 		} catch (UserAccessPointException_Exception e) {
-			throw new ActionException(e);
+			return errorResponse("cancel", e.getMessage());
 		}
 	}
 

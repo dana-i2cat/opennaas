@@ -1,11 +1,10 @@
 package org.opennaas.extensions.bod.autobahn.commands;
 
 import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.command.Response;
 
 public interface IAutobahnCommand
 {
-	void execute()
-		throws ActionException;
-	void undo()
-		throws ActionException;
+	Response execute();
+	Response undo();
 }

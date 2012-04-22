@@ -22,7 +22,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
-import org.opennaas.extensions.bod.autobahn.commands.RequestConnectionCommand;
+import org.opennaas.extensions.bod.autobahn.commands.SubmitServiceCommand;
 import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
@@ -49,7 +49,7 @@ public class RequestConnectionAction extends AutobahnAction
 			ServiceRequest serviceRequest =
 				createServiceRequest((RequestConnectionParameters) params);
 			IAutobahnCommand command =
-				new RequestConnectionCommand(userAccessPoint, serviceRequest);
+				new SubmitServiceCommand(userAccessPoint, serviceRequest);
 
 			Transaction.getInstance().add(command);
 

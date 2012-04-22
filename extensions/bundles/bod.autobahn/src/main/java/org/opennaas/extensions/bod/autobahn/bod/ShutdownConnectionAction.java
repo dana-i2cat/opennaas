@@ -12,7 +12,7 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
-import org.opennaas.extensions.bod.autobahn.commands.ShutdownConnectionCommand;
+import org.opennaas.extensions.bod.autobahn.commands.CancelServiceCommand;
 import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
@@ -36,7 +36,7 @@ public class ShutdownConnectionAction extends AutobahnAction
 			UserAccessPoint userAccessPoint =
 				getUserAccessPointService(protocolSessionManager);
 			IAutobahnCommand command =
-				new ShutdownConnectionCommand(userAccessPoint, getLink());
+				new CancelServiceCommand(userAccessPoint, getLink());
 
 			Transaction.getInstance().add(command);
 

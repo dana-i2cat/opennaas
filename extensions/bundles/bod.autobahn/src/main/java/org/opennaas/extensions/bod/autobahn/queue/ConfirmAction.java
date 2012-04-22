@@ -21,7 +21,6 @@ public class ConfirmAction extends AutobahnAction
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 		throws ActionException
 	{
-		Transaction.getInstance().commit();
-		return ActionResponse.okResponse(getActionID());
+		return Transaction.getInstance().commit();
 	}
 }

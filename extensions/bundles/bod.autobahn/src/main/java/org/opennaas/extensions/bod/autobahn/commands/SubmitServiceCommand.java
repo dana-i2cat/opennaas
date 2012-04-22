@@ -6,55 +6,50 @@ import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 import net.geant.autobahn.useraccesspoint.UserAccessPointException_Exception;
 
 import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.command.Response;
 
 import static com.google.common.base.Preconditions.checkState;
 
-public class RequestConnectionCommand extends AutobahnCommand
+public class SubmitServiceCommand extends AutobahnCommand
 {
 	private final UserAccessPoint userAccessPoint;
 	private final ServiceRequest serviceRequest;
 
 	private String serviceId;
 
-	public RequestConnectionCommand(UserAccessPoint userAccessPoint,
-									ServiceRequest serviceRequest)
+	public SubmitServiceCommand(UserAccessPoint userAccessPoint,
+								ServiceRequest serviceRequest)
 	{
 		this.userAccessPoint = userAccessPoint;
 		this.serviceRequest = serviceRequest;
+		setCommandId("submit");
 	}
 
 	@Override
-	public void execute()
-		throws ActionException
+	public Response execute()
 	{
 		checkState(serviceId == null);
 
 		try {
-			for (ReservationRequest reservation: serviceRequest.getReservations()) {
-				log.info("Submitting request for connection between " +
-						 reservation.getStartPort().getAddress() + " and " +
-						 reservation.getEndPort().getAddress());
-			}
-
 			serviceId = userAccessPoint.submitService(serviceRequest);
-
-			log.info("Submitted service request " + serviceId);
+			return okResponse("submitService",
+							  "Service " + serviceId + " submitted");
 		} catch (UserAccessPointException_Exception e) {
-			throw new ActionException(e);
+			return errorResponse("submit", e.getMessage());
 		}
 	}
 
 	@Override
-	public void undo()
-		throws ActionException
+	public Response undo()
 	{
 		checkState(serviceId != null);
 
-		log.info("Cancelling service request " + serviceId);
 		try {
 			userAccessPoint.cancelService(serviceId);
+			return okResponse("cancelService",
+							  "Service " + serviceId + " cancelled");
 		} catch (UserAccessPointException_Exception e) {
-			throw new ActionException(e);
+			return errorResponse("submit", e.getMessage());
 		}
 	}
 }

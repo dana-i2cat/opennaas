@@ -21,7 +21,6 @@ public class RestoreAction extends AutobahnAction
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
 		throws ActionException
 	{
-		Transaction.getInstance().rollback();
-		return ActionResponse.okResponse(getActionID());
+		return Transaction.getInstance().rollback();
 	}
 }
