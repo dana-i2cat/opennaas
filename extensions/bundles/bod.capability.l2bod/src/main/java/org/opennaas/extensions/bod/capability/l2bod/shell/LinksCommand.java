@@ -30,7 +30,7 @@ public class LinksCommand extends GenericKarafCommand
 			for (Interface i: filter(model.getNetworkElements(), Interface.class)) {
 				Link link = i.getLinkTo();
 				if (link != null) {
-					printInfo(i.getName() + " -> " + link.getSink().getName());
+					printInfo(i.getName() + " -> " + link.getSink().getName() + " (" + link + ")");
 				}
 			}
 		} catch (Exception e) {

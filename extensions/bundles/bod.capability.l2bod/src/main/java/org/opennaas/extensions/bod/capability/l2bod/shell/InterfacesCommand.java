@@ -28,7 +28,7 @@ public class InterfacesCommand extends GenericKarafCommand
 
 			NetworkModel model = (NetworkModel) resource.getModel();
 			for (Interface i: filter(model.getNetworkElements(), Interface.class)) {
-				printInfo(i.getName());
+				printInfo(i.getName() + " (" + i + ")");
 			}
 		} catch (Exception e) {
 			printError("Error listing interfaces of  " + resourceId);

@@ -21,6 +21,10 @@ public class AutobahnInterface extends Interface
 	@Override
 	public String toString()
 	{
-		return (portType == null) ? super.toString() : portType.getAddress();
+		return (portType == null)
+			? super.toString()
+			: (portType.getDescription() == null)
+			? portType.getAddress()
+			: portType.getDescription();
 	}
 }

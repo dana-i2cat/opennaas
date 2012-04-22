@@ -3,6 +3,7 @@ package org.opennaas.extensions.bod.autobahn.model;
 import net.geant.autobahn.administration.ReservationType;
 import net.geant.autobahn.administration.ServiceType;
 
+import org.opennaas.extensions.bod.autobahn.ReservationState;
 import org.opennaas.extensions.network.model.topology.Link;
 
 public class AutobahnLink extends Link
@@ -28,5 +29,14 @@ public class AutobahnLink extends Link
 	public ServiceType getService()
 	{
 		return service;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "start=" + reservation.getStartTime() + "," +
+			"end=" + reservation.getEndTime() + "," +
+			"capacity=" + reservation.getCapacity() / 1000000.0 + "MB/s," +
+			"state=" + ReservationState.valueOf(reservation.getState());
 	}
 }
