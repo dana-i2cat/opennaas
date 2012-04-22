@@ -123,7 +123,6 @@ public class QueueManager extends AbstractCapability implements
 				/* execute queued actions */
 				queueResponse = executeQueuedActions(queueResponse,
 						protocolSessionManager);
-			
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -279,7 +278,6 @@ public class QueueManager extends AbstractCapability implements
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
 			}
-
 		} catch (CapabilityException e) {
 			throw new CapabilityException(e);
 		}
@@ -442,8 +440,7 @@ public class QueueManager extends AbstractCapability implements
 	/**
 	 * Executes actions in the queue.
 	 * 
-	 * Queue execution stops at the first action to return error.
-	 * Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * Queue execution stops at the first action to return error. Both an error ActionResponse an an ActionException are interpreted as an error.
 	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
@@ -456,14 +453,14 @@ public class QueueManager extends AbstractCapability implements
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			
+
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
 			ActionResponse actionResponse;
 			try {
 				actionResponse = action.execute(protocolSessionManager);
 			} catch (ActionException e) {
-				log.error("Error executing action " + action.getActionID(), e);	
+				log.error("Error executing action " + action.getActionID(), e);
 				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
 			}
 			queueResponse.getResponses().set(numAction, actionResponse);

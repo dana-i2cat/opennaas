@@ -209,11 +209,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
