@@ -89,7 +89,7 @@ public class AlarmsRepoTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-alarms", "opennaas-cim", "opennaas-luminis"),
+					   includeFeatures("opennaas-luminis"),
 					   noConsole(),
 					   keepRuntimeFolder());
 	}

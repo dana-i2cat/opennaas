@@ -86,7 +86,7 @@ public class CompleteAlarmsWorkflowTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-alarms", "opennaas-luminis"),
+				includeFeatures("opennaas-luminis"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
