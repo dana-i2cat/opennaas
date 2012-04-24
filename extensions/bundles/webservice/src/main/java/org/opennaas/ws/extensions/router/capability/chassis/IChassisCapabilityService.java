@@ -2,32 +2,33 @@ package org.opennaas.ws.extensions.router.capability.chassis;
 
 import javax.jws.WebService;
 
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.router.model.LogicalPort;
+
 /**
  * @author Jordi Puig
  */
 @WebService
 public interface IChassisCapabilityService {
 
-	public String testMethod();
+	/*
+	 * Interfaces
+	 */
 
-	// /*
-	// * Interfaces
-	// */
-	//
-	// /**
-	// * Activates given physical interface (iface) so it can receive/send traffic.
-	// *
-	// * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	// * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device
-	// queue
-	// * is required for queued actions to take effect.
-	// *
-	// * @param iface
-	// * to activate (must be a physical one)
-	// * @throws CapabilityException
-	// * if any error occurred. In that case, queue remains untouched.
-	// */
-	// public void upPhysicalInterface(LogicalPort iface) throws CapabilityException;
+	/**
+	 * Activates given physical interface (iface) so it can receive/send traffic.
+	 * 
+	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
+	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
+	 * is required for queued actions to take effect.
+	 * 
+	 * @param iface
+	 *            to activate (must be a physical one)
+	 * @throws CapabilityException
+	 *             if any error occurred. In that case, queue remains untouched.
+	 */
+	public void upPhysicalInterface(String resourceId, LogicalPort iface) throws CapabilityException;
+
 	//
 	// /**
 	// * Deactivates given physical interface (iface) so it can not receive/send traffic.
