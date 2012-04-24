@@ -25,7 +25,7 @@ the License. -->
     <jaxws:client id="testServiceProxy" serviceClass="webservice.ITestService" address="http://localhost:8181/cxf/testService" />
     <service ref="testServiceProxy" interface="webservice.ITestService" />
     
-<!--     <jaxws:client id="chassisCapabilityServiceProxy" serviceClass="org.opennaas.ws.extensions.router.capability.chassis.IChassisCapabilityService" address="http://localhost:8181/cxf/chassisCapabilityService" /> -->
-<!--     <service ref="chassisCapabilityServiceProxy" interface="org.opennaas.ws.extensions.router.capability.chassis.IChassisCapabilityService" /> -->
+    <jaxws:client id="chassisCapabilityServiceProxy" serviceClass="org.opennaas.ws.extensions.router.capability.chassis.IChassisCapabilityService" address="http://localhost:8181/cxf/chassisCapabilityService" />
+    <service ref="chassisCapabilityServiceProxy" interface="org.opennaas.ws.extensions.router.capability.chassis.IChassisCapabilityService" />
 
 </blueprint>

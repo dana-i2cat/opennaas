@@ -26,9 +26,9 @@ the License. -->
 	<bean id="testServiceImpl" class="webservice.TestServiceImpl"/>
     <jaxws:endpoint  implementor="#testServiceImpl" address="http://localhost:8181/cxf/testService"  />
 
-<!--     <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus> -->
-<!-- 	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.ws.extensions.router.capability.chassis.impl.ChassisCapabilityServiceImpl"/> -->
-<!--     <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8181/cxf/chassisCapabilityService"  /> -->
+    <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
+	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.ws.extensions.router.capability.chassis.impl.ChassisCapabilityServiceImpl"/>
+    <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8181/cxf/chassisCapabilityService"  />
 
 
 </blueprint>
