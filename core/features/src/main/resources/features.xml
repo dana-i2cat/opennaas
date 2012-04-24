@@ -77,6 +77,16 @@
 		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
 	</feature>
 
+	<feature name="opennaas-ws" version="${project.version}">		
+		<feature>http</feature>
+		<feature>cxf</feature>
+		
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
+		
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.wsproxy/${project.version}</bundle>	
+	</feature>
+
 	<feature name="opennaas-junos" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 		<feature version="${project.version}">opennaas-netconf</feature>
@@ -131,6 +141,7 @@
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
+		<feature version="${project.version}">opennaas-ws</feature>
 		<feature version="${project.version}">opennaas-router</feature>
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
