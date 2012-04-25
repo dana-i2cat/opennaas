@@ -153,6 +153,7 @@
 		<feature version="${project.version}">opennaas-bod</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
+		<feature version="${project.version}">opennaas-autobahn</feature>
 	</feature>
 
 	<feature name="nexus-tests-helper" version="${project.version}">
