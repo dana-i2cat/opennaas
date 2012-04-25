@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.Information;
@@ -227,7 +226,7 @@ public class Resource implements IResource {
 	}
 
 	@Override
-	public List<ICapability> getCapabilitiesByInterface(Class<ICapability> interfaze) {
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze) {
 		List<ICapability> filteredCapabilities = new ArrayList<ICapability>();
 		for (ICapability capability : getCapabilities()) {
 			if (interfaze.isInstance(capability)) {
@@ -235,6 +234,16 @@ public class Resource implements IResource {
 			}
 		}
 		return filteredCapabilities;
+	}
+
+	@Override
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException {
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				return capability;
+			}
+		}
+		throw new ResourceException("Cannot find capability with interface " + interfaze);
 	}
 
 	@Override
@@ -448,5 +457,4 @@ public class Resource implements IResource {
 		setState(State.ERROR);
 		throw new CorruptStateException(errorMessage + " Resource is in a corrupt state.", cause);
 	}
-
 }

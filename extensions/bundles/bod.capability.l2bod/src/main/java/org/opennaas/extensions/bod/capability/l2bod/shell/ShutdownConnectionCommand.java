@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
+import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
@@ -35,7 +35,7 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 
 			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			ICapability ipCapability = resource.getCapabilityByType(L2BoDCapability.CAPABILITY_NAME);
+			IL2BoDCapability ipCapability = (IL2BoDCapability) resource.getCapabilityByType(L2BoDCapability.CAPABILITY_NAME);
 
 			ipCapability.sendMessage(ActionConstants.SHUTDOWNCONNECTION, getInterfaces((NetworkModel) resource.getModel()));
 

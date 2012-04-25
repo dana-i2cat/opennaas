@@ -21,11 +21,6 @@ public interface ICapabilityLifecycle extends ICapability {
 	public State getState();
 
 	/**
-	 * Sets the current engine state
-	 */
-	public void setState(State state);
-
-	/**
 	 * Initializes this component, the status will be INITIALIZED.
 	 * 
 	 * @throws IncorrectLifecycleStateException

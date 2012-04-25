@@ -10,6 +10,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -54,7 +55,12 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 	}
 
 	@Override
-	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException();
 	}
 
@@ -146,30 +152,6 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFSer
 			}
 		}
 		throw new CapabilityException("Error getting capability " + type);
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
 	}
 
 	private List<IResource> getRouterResources() throws ActivatorException {

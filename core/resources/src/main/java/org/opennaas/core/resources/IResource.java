@@ -86,7 +86,17 @@ public interface IResource extends ILifecycle {
 	 * @param interfaze
 	 * @return Capabilities of this resource with given interface
 	 */
-	public List<ICapability> getCapabilitiesByInterface(Class<ICapability> interfaze);
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze);
+
+	/**
+	 * Get first capability in this resource capabilities implementing given interface
+	 * 
+	 * @param interfaze
+	 * @return Capability of this resource with given interface
+	 * @Throws ResourceException if this resource does not have any capability of given type
+	 * 
+	 */
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException;
 
 	/**
 	 * Start the Resource. The resource must already be instantiated and in the initialized state. This method will perform the necessary

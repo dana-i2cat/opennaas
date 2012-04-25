@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -36,9 +37,8 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 	}
 
 	@Override
-	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
 	}
 
 	@Override
@@ -47,28 +47,8 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		return new NetActionSet();
 	}
 
-	// LIVE-CYCLE METHODS //
-
 	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
+	public void queueAction(IAction action) throws CapabilityException {
 		// TODO Auto-generated method stub
 
 	}
@@ -289,4 +269,5 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor((NetworkModel) network.getModel());
 		network.getResourceDescriptor().setNetworkTopology(topology);
 	}
+
 }

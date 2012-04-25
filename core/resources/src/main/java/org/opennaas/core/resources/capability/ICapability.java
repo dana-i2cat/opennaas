@@ -14,9 +14,15 @@ import org.opennaas.core.resources.descriptor.Information;
 public interface ICapability {
 
 	/**
+	 * Get the name of this capability. Name must be unique for capabilities (must not be two capabilities with same name)
+	 * 
+	 * @return
+	 */
+	public String getCapabilityName();
+
+	/**
 	 * Get the descriptor for this capability
 	 * 
-	 * @param name
 	 */
 	public CapabilityDescriptor getCapabilityDescriptor();
 
@@ -42,11 +48,5 @@ public interface ICapability {
 	 */
 	// TODO REMOVE FROM THIS INTERFACE
 	public void setResource(IResource resource);
-
-	/**
-	 * Operation to send messages from a capability
-	 */
-	// TODO REMOVE FROM THIS INTERFACE
-	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException;
 
 }

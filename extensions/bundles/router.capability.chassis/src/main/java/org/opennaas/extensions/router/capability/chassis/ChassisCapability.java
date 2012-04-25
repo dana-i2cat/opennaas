@@ -23,17 +23,21 @@ import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class ChassisCapability extends AbstractCapability implements IChassisCapability {
 
-	// TODO MOVE TO ICapability r4enamed to CAPABILITY_NAME
-	public final static String	CHASSIS		= "chassis";
+	public static final String	CAPABILITY_TYPE	= "chassis";
 
-	Log							log			= LogFactory.getLog(ChassisCapability.class);
+	Log							log				= LogFactory.getLog(ChassisCapability.class);
 
-	private String				resourceId	= "";
+	private String				resourceId		= "";
 
 	public ChassisCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Chassis Capability");
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
@@ -43,18 +47,30 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
-			// TODO do not use Activator for this
+			// TODO do not use Activator for this, use injection instead
 			return Activator.getChassisActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
 	}
 
-	// TODO REMOVE
 	@Override
-	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
 	}
 
 	/*
@@ -181,32 +197,6 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		}
 	}
 
-	/**
-	 * Adds given action at the end of the queue.
-	 * 
-	 * @param action
-	 *            to put in the queue
-	 * @throws CapabilityException
-	 *             if failed to put action in the queue
-	 */
-	protected void queueAction(IAction action) throws CapabilityException {
-		getQueueManager(resourceId).queueAction(action);
-	}
-
-	/**
-	 * 
-	 * @return QueuemanagerService this capability is associated to.
-	 * @throws CapabilityException
-	 *             if desired queueManagerService could not be retrieved.
-	 */
-	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
-		try {
-			return Activator.getQueueManagerService(resourceId);
-		} catch (ActivatorException e) {
-			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
-		}
-	}
-
 	private boolean requiresTaggedEthernetEncapsulation(LogicalPort port) {
 		boolean hasTaggedEthernetEndpoint = false;
 		for (ProtocolEndpoint endpoint : port.getProtocolEndpoint()) {
@@ -247,33 +237,5 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 				throw new CapabilityException("Unsupported encapsulation type");
 			}
 		}
-	}
-
-	// TODO Remove
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	// TODO Remove
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	// TODO Remove
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	// TODO Remove
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
 	}
 }
