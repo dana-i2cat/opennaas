@@ -7,3 +7,4 @@ git remote add dana git@github.com:dana-i2cat/opennaas.git
 git remote add adrian git@github.com:adrian-rosello/opennaas.git 
 git remote add gerd git@github.com:gbehrmann/opennaas.git 
 git remote add santiago git@github.com:santiagozky/opennaas.git 
+git remote add eli git@github.com:eliRigol/opennaas.git 
