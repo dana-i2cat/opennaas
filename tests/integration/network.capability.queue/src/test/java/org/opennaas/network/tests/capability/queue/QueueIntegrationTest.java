@@ -4,7 +4,7 @@ package org.opennaas.network.tests.capability.queue;
  * 
  */
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
+import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.network.capability.queue.QueueCapability;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
