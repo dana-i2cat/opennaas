@@ -1,4 +1,4 @@
-package org.opennaas.ws.extensions.router.capability.chassis;
+package org.opennaas.extensions.ws.services;
 
 import javax.jws.WebService;
 

@@ -23,7 +23,13 @@ the License. -->
 ">
 
     <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
-	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.ws.extensions.router.capability.chassis.impl.ChassisCapabilityServiceImpl"/>
+    
+	<!-- Definition for resourceManager bean -->
+	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
+    
+	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ChassisCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
     <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8181/cxf/chassisCapabilityService"  />
 
 

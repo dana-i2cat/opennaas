@@ -1,4 +1,4 @@
-package org.opennaas.ws.impl.core.resources;
+package org.opennaas.extensions.ws.impl;
 
 import javax.inject.Inject;
 import javax.jws.WebService;
@@ -7,7 +7,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.ws.core.resources.IResourceManagerService;
+import org.opennaas.extensions.ws.services.IResourceManagerService;
 
 /**
  * @author Jordi Puig

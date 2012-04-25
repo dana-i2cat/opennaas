@@ -1,4 +1,4 @@
-package org.opennaas.ws.core.resources;
+package org.opennaas.extensions.ws.services;
 
 import javax.jws.WebService;
 
