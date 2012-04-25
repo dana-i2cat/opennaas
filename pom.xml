@@ -223,12 +223,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -697,7 +691,7 @@
         <module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
-		<module>tests</module>
+		<module>itests</module>
 	</modules>
 
 	<build>

@@ -10,19 +10,12 @@
 	
 	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
 	<service ref="profileManager" interface="org.opennaas.core.resources.profile.IProfileManager"/>
-		<service ref="profileNameCompleter" interface="org.apache.karaf.shell.console.Completer">
-		<service-properties>
-			<entry key="completer.name" value="profileNameCompleter"/>
-		</service-properties>
-	</service>
 	
 	<bean id="eventManager" class="org.opennaas.core.events.EventManager"/>
 	<service ref="eventManager" interface="org.opennaas.core.events.IEventManager"/>
 	
 	<bean id="alarmsRepository" class="org.opennaas.core.resources.alarms.AlarmsRepository"/>
 	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository"/>
-	
-	<bean id="profileNameCompleter" class="org.opennaas.core.resources.shell.completers.ProfileNameCompleter"/>
 	
 	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
 	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager"/>
@@ -31,6 +24,13 @@
 	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">
 		<service-properties>
 			<entry key="completer.name" value="resourceNameCompleter"/>
+		</service-properties>
+	</service>
+	
+	<bean id="profileNameCompleter" class="org.opennaas.core.resources.shell.completers.ProfileNameCompleter"/>
+	<service ref="profileNameCompleter" interface="org.apache.karaf.shell.console.Completer">
+		<service-properties>
+			<entry key="completer.name" value="profileNameCompleter"/>
 		</service-properties>
 	</service>
 	
