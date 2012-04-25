@@ -47,7 +47,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Constructor to test the component
-	 * 
+	 *
 	 * @param queueDescriptor
 	 */
 	public QueueManager(CapabilityDescriptor queueDescriptor) {
@@ -150,6 +150,8 @@ public class QueueManager extends AbstractCapability implements
 
 				}
 			} catch (Exception e) {
+				log.warn("Failed to execute queue", e);
+
 				// restore action
 				assert protocolSessionManager != null;
 				try {
@@ -308,7 +310,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * 
+	 *
 	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
 	 */
 	@Override
@@ -338,7 +340,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Refresh the actions of the queue
-	 * 
+	 *
 	 * @throws CapabilityException
 	 */
 	private void sendRefresh() throws CapabilityException {
@@ -399,8 +401,8 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Create a new resource descriptor with the name = nameResource <br>
-	 * 
-	 * 
+	 *
+	 *
 	 * @param resourceDescriptor
 	 * @param nameResource
 	 * @return the resourceDescriptor
@@ -474,7 +476,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Execute the actions of the queue
-	 * 
+	 *
 	 * @param protocolSessionManager
 	 * @return the action response
 	 * @throws ActionException
@@ -500,7 +502,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Execute the confirm action of the queue
-	 * 
+	 *
 	 * @param protocolSessionManager
 	 * @return the action response
 	 * @throws ActionException
@@ -521,7 +523,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Execute the prepare action of the queue
-	 * 
+	 *
 	 * @param protocolSessionManager
 	 * @return the action response
 	 * @throws ActionException
@@ -537,7 +539,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Execute the restore action of the queue
-	 * 
+	 *
 	 * @param protocolSessionManager
 	 * @return the action response
 	 * @throws ActionException
@@ -553,7 +555,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Get the action list of the queue
-	 * 
+	 *
 	 * @return a list of IAction
 	 */
 	private List<IAction> getQueue() {
@@ -569,7 +571,7 @@ public class QueueManager extends AbstractCapability implements
 	/**
 	 * Implementation for the execution of a single action. <br>
 	 * Clean the queue, add an action and send the message
-	 * 
+	 *
 	 * @param action
 	 * @return the queue response
 	 * @throws CapabilityException
@@ -628,7 +630,7 @@ public class QueueManager extends AbstractCapability implements
 
 	/**
 	 * Unregister the capability
-	 * 
+	 *
 	 * @throws InvalidSyntaxException
 	 * @throws BundleException
 	 */

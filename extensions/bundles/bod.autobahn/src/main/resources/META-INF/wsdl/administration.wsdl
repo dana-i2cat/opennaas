@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="Administration" targetNamespace="http://administration.autobahn.geant.net/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://administration.autobahn.geant.net/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://administration.autobahn.geant.net/" targetNamespace="useraccesspoint.autobahn.geant.net" version="1.0">
+<xs:import namespace="http://administration.autobahn.geant.net/"/>
+<xs:complexType name="PortType">
+<xs:sequence>
+<xs:element minOccurs="0" name="address" type="xs:string"/>
+<xs:element minOccurs="0" name="mode" type="ns1:mode"/>
+<xs:element name="vlan" type="xs:int"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element name="isIdcp" type="xs:boolean"/>
+<xs:element name="isClient" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="network.autobahn.geant.net" targetNamespace="reservation.autobahn.geant.net" version="1.0">
+<xs:import namespace="network.autobahn.geant.net"/>
+<xs:complexType name="User">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="homeDomain" type="ns1:AdminDomain"/>
+<xs:element minOccurs="0" name="email" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="network.autobahn.geant.net" targetNamespace="network.autobahn.geant.net" version="1.0">
+<xs:complexType name="AdminDomain">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="ASID" type="xs:string"/>
+<xs:element minOccurs="0" name="name" type="xs:string"/>
+<xs:element name="clientDomain" type="xs:boolean"/>
+<xs:element minOccurs="0" name="idcpServer" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Path">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" name="links" nillable="true" type="tns:Link"/>
+<xs:element name="monetary_cost" type="xs:double"/>
+<xs:element name="manual_cost" type="xs:double"/>
+<xs:element name="capacity" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Link">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element name="kind" type="xs:int"/>
+<xs:element minOccurs="0" name="startPort" type="tns:Port"/>
+<xs:element minOccurs="0" name="endPort" type="tns:Port"/>
+<xs:element name="bidirectional" type="xs:boolean"/>
+<xs:element name="delay" type="xs:int"/>
+<xs:element name="manualCost" type="xs:double"/>
+<xs:element name="monetaryCost" type="xs:double"/>
+<xs:element name="granularity" type="xs:long"/>
+<xs:element name="minResCapacity" type="xs:long"/>
+<xs:element name="maxResCapacity" type="xs:long"/>
+<xs:element name="capacity" type="xs:long"/>
+<xs:element minOccurs="0" name="resilience" type="xs:string"/>
+<xs:element minOccurs="0" name="timestamp" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="localName" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="tns:LinkType"/>
+<xs:element minOccurs="0" name="operationalState" type="tns:StateOper"/>
+<xs:element minOccurs="0" name="administrativeState" type="tns:StateAdmin"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Port">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element minOccurs="0" name="technology" type="xs:string"/>
+<xs:element name="bundled" type="xs:boolean"/>
+<xs:element minOccurs="0" name="node" type="tns:Node"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Node">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="type" type="xs:string"/>
+<xs:element minOccurs="0" name="address" type="xs:string"/>
+<xs:element minOccurs="0" name="provisioningDomain" type="tns:ProvisioningDomain"/>
+<xs:element minOccurs="0" name="name" type="xs:string"/>
+<xs:element minOccurs="0" name="country" type="xs:string"/>
+<xs:element minOccurs="0" name="city" type="xs:string"/>
+<xs:element minOccurs="0" name="institution" type="xs:string"/>
+<xs:element minOccurs="0" name="longitude" type="xs:string"/>
+<xs:element minOccurs="0" name="latitude" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ProvisioningDomain">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="provType" type="xs:string"/>
+<xs:element minOccurs="0" name="adminDomain" type="tns:AdminDomain"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="LinkType">
+<xs:sequence>
+<xs:element name="type" type="xs:int"/>
+<xs:element minOccurs="0" name="desc" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StateOper">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="desc" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StateAdmin">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+<xs:element minOccurs="0" name="desc" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="administration.autobahn.geant.net" xmlns:ns2="network.autobahn.geant.net" xmlns:tns="http://administration.autobahn.geant.net/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://administration.autobahn.geant.net/">
+<xs:import namespace="administration.autobahn.geant.net"/>
+<xs:import namespace="network.autobahn.geant.net"/>
+<xs:element name="cancelAllServices" type="tns:cancelAllServices"/>
+<xs:element name="cancelAllServicesResponse" type="tns:cancelAllServicesResponse"/>
+<xs:element name="getLog" type="tns:getLog"/>
+<xs:element name="getLogResponse" type="tns:getLogResponse"/>
+<xs:element name="getProperties" type="tns:getProperties"/>
+<xs:element name="getPropertiesResponse" type="tns:getPropertiesResponse"/>
+<xs:element name="getReservation" type="tns:getReservation"/>
+<xs:element name="getReservationResponse" type="tns:getReservationResponse"/>
+<xs:element name="getService" type="tns:getService"/>
+<xs:element name="getServiceResponse" type="tns:getServiceResponse"/>
+<xs:element name="getServices" type="tns:getServices"/>
+<xs:element name="getServicesResponse" type="tns:getServicesResponse"/>
+<xs:element name="getStatistics" type="tns:getStatistics"/>
+<xs:element name="getStatisticsResponse" type="tns:getStatisticsResponse"/>
+<xs:element name="getStatus" type="tns:getStatus"/>
+<xs:element name="getStatusResponse" type="tns:getStatusResponse"/>
+<xs:element name="getTopology" type="tns:getTopology"/>
+<xs:element name="getTopologyResponse" type="tns:getTopologyResponse"/>
+<xs:element name="handleTopologyChange" type="tns:handleTopologyChange"/>
+<xs:element name="handleTopologyChangeResponse" type="tns:handleTopologyChangeResponse"/>
+<xs:element name="restart" type="tns:restart"/>
+<xs:element name="restartResponse" type="tns:restartResponse"/>
+<xs:element name="setProperties" type="tns:setProperties"/>
+<xs:element name="setPropertiesResponse" type="tns:setPropertiesResponse"/>
+<xs:element name="setTopology" type="tns:setTopology"/>
+<xs:element name="setTopologyResponse" type="tns:setTopologyResponse"/>
+<xs:complexType name="getService">
+<xs:sequence>
+<xs:element minOccurs="0" name="arg0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getServiceResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="service" type="ns1:ServiceType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setTopology">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" type="ns2:Link"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setTopologyResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getStatus">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getStatusResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="status" type="ns1:Status"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getProperties">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getPropertiesResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="Properties" type="ns1:KeyValue"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getStatistics">
+<xs:sequence>
+<xs:element name="all" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getStatisticsResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="statistics" type="ns1:StatisticsType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="statisticsEntry">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="intradomain" type="xs:boolean"/>
+<xs:element minOccurs="0" name="reservation_id" type="xs:string"/>
+<xs:element name="setup_time" type="xs:long"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getTopology">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getTopologyResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="links" type="ns2:Link"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getLog">
+<xs:sequence>
+<xs:element name="all" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getLogResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="log" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setProperties">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="properties" type="ns1:KeyValue"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="setPropertiesResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="cancelAllServices">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="cancelAllServicesResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="handleTopologyChange">
+<xs:sequence>
+<xs:element name="arg0" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="handleTopologyChangeResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getServices">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="getServicesResponse">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="serivces" type="ns1:ServiceType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservation">
+<xs:sequence>
+<xs:element minOccurs="0" name="resID" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="getReservationResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="Reservation" type="ns1:ReservationType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="restart">
+<xs:sequence/>
+</xs:complexType>
+<xs:complexType name="restartResponse">
+<xs:sequence/>
+</xs:complexType>
+<xs:simpleType name="mode">
+<xs:restriction base="xs:string">
+<xs:enumeration value="VLAN"/>
+<xs:enumeration value="UNTAGGED"/>
+<xs:enumeration value="TRANSPARENT"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="AdministrationException" type="tns:AdministrationException"/>
+<xs:complexType name="AdministrationException">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="reservation.autobahn.geant.net" xmlns:ns2="useraccesspoint.autobahn.geant.net" xmlns:ns3="network.autobahn.geant.net" xmlns:ns4="http://administration.autobahn.geant.net/" xmlns:tns="administration.autobahn.geant.net" targetNamespace="administration.autobahn.geant.net" version="1.0">
+<xs:import namespace="reservation.autobahn.geant.net"/>
+<xs:import namespace="useraccesspoint.autobahn.geant.net"/>
+<xs:import namespace="network.autobahn.geant.net"/>
+<xs:import namespace="http://administration.autobahn.geant.net/"/>
+<xs:complexType name="ServiceType">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="justification" type="xs:string"/>
+<xs:element name="priority" type="xs:int"/>
+<xs:element minOccurs="0" name="user" type="ns1:User"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="reservations" nillable="true" type="tns:ReservationType"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="ReservationType">
+<xs:sequence>
+<xs:element minOccurs="0" name="bodID" type="xs:string"/>
+<xs:element minOccurs="0" name="startPort" type="ns2:PortType"/>
+<xs:element minOccurs="0" name="endPort" type="ns2:PortType"/>
+<xs:element minOccurs="0" name="startTime" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="endTime" type="xs:dateTime"/>
+<xs:element name="priority" type="xs:int"/>
+<xs:element minOccurs="0" name="description" type="xs:string"/>
+<xs:element name="capacity" type="xs:long"/>
+<xs:element name="mtu" type="xs:int"/>
+<xs:element name="maxDelay" type="xs:int"/>
+<xs:element minOccurs="0" name="resiliency" type="xs:string"/>
+<xs:element name="bidirectional" type="xs:boolean"/>
+<xs:element minOccurs="0" name="path" type="ns3:Path"/>
+<xs:element name="state" type="xs:int"/>
+<xs:element minOccurs="0" name="failureCause" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Status">
+<xs:sequence>
+<xs:element minOccurs="0" name="domain" type="xs:string"/>
+<xs:element name="longitude" type="xs:float"/>
+<xs:element name="latitude" type="xs:float"/>
+<xs:element maxOccurs="unbounded" name="neighbors" nillable="true" type="tns:Neighbor"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Neighbor">
+<xs:sequence>
+<xs:element minOccurs="0" name="domain" type="xs:string"/>
+<xs:element minOccurs="0" name="link" type="ns3:Link"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="KeyValue">
+<xs:sequence>
+<xs:element minOccurs="0" name="key" type="xs:string"/>
+<xs:element minOccurs="0" name="value" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="StatisticsType">
+<xs:sequence>
+<xs:element name="averageIntra" type="xs:long"/>
+<xs:element name="averageInter" type="xs:long"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="intra" nillable="true" type="ns4:statisticsEntry"/>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="inter" nillable="true" type="ns4:statisticsEntry"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="setTopologyResponse">
+    <wsdl:part name="parameters" element="tns:setTopologyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServicesResponse">
+    <wsdl:part name="parameters" element="tns:getServicesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setProperties">
+    <wsdl:part name="parameters" element="tns:setProperties">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelAllServices">
+    <wsdl:part name="parameters" element="tns:cancelAllServices">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="restartResponse">
+    <wsdl:part name="parameters" element="tns:restartResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setTopology">
+    <wsdl:part name="parameters" element="tns:setTopology">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getService">
+    <wsdl:part name="parameters" element="tns:getService">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatistics">
+    <wsdl:part name="parameters" element="tns:getStatistics">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="handleTopologyChange">
+    <wsdl:part name="parameters" element="tns:handleTopologyChange">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="handleTopologyChangeResponse">
+    <wsdl:part name="parameters" element="tns:handleTopologyChangeResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatus">
+    <wsdl:part name="parameters" element="tns:getStatus">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLog">
+    <wsdl:part name="parameters" element="tns:getLog">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServiceResponse">
+    <wsdl:part name="parameters" element="tns:getServiceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="restart">
+    <wsdl:part name="parameters" element="tns:restart">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatusResponse">
+    <wsdl:part name="parameters" element="tns:getStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTopologyResponse">
+    <wsdl:part name="parameters" element="tns:getTopologyResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTopology">
+    <wsdl:part name="parameters" element="tns:getTopology">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservationResponse">
+    <wsdl:part name="parameters" element="tns:getReservationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProperties">
+    <wsdl:part name="parameters" element="tns:getProperties">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelAllServicesResponse">
+    <wsdl:part name="parameters" element="tns:cancelAllServicesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="setPropertiesResponse">
+    <wsdl:part name="parameters" element="tns:setPropertiesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getReservation">
+    <wsdl:part name="parameters" element="tns:getReservation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getPropertiesResponse">
+    <wsdl:part name="parameters" element="tns:getPropertiesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLogResponse">
+    <wsdl:part name="parameters" element="tns:getLogResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getServices">
+    <wsdl:part name="parameters" element="tns:getServices">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getStatisticsResponse">
+    <wsdl:part name="parameters" element="tns:getStatisticsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="AdministrationException">
+    <wsdl:part name="AdministrationException" element="tns:AdministrationException">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Administration">
+    <wsdl:operation name="getService">
+      <wsdl:input name="getService" message="tns:getService">
+    </wsdl:input>
+      <wsdl:output name="getServiceResponse" message="tns:getServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setTopology">
+      <wsdl:input name="setTopology" message="tns:setTopology">
+    </wsdl:input>
+      <wsdl:output name="setTopologyResponse" message="tns:setTopologyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatus">
+      <wsdl:input name="getStatus" message="tns:getStatus">
+    </wsdl:input>
+      <wsdl:output name="getStatusResponse" message="tns:getStatusResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProperties">
+      <wsdl:input name="getProperties" message="tns:getProperties">
+    </wsdl:input>
+      <wsdl:output name="getPropertiesResponse" message="tns:getPropertiesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <wsdl:input name="getStatistics" message="tns:getStatistics">
+    </wsdl:input>
+      <wsdl:output name="getStatisticsResponse" message="tns:getStatisticsResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTopology">
+      <wsdl:input name="getTopology" message="tns:getTopology">
+    </wsdl:input>
+      <wsdl:output name="getTopologyResponse" message="tns:getTopologyResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <wsdl:input name="getLog" message="tns:getLog">
+    </wsdl:input>
+      <wsdl:output name="getLogResponse" message="tns:getLogResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setProperties">
+      <wsdl:input name="setProperties" message="tns:setProperties">
+    </wsdl:input>
+      <wsdl:output name="setPropertiesResponse" message="tns:setPropertiesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAllServices">
+      <wsdl:input name="cancelAllServices" message="tns:cancelAllServices">
+    </wsdl:input>
+      <wsdl:output name="cancelAllServicesResponse" message="tns:cancelAllServicesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="handleTopologyChange">
+      <wsdl:input name="handleTopologyChange" message="tns:handleTopologyChange">
+    </wsdl:input>
+      <wsdl:output name="handleTopologyChangeResponse" message="tns:handleTopologyChangeResponse">
+    </wsdl:output>
+      <wsdl:fault name="AdministrationException" message="tns:AdministrationException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getServices">
+      <wsdl:input name="getServices" message="tns:getServices">
+    </wsdl:input>
+      <wsdl:output name="getServicesResponse" message="tns:getServicesResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservation">
+      <wsdl:input name="getReservation" message="tns:getReservation">
+    </wsdl:input>
+      <wsdl:output name="getReservationResponse" message="tns:getReservationResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="restart">
+      <wsdl:input name="restart" message="tns:restart">
+    </wsdl:input>
+      <wsdl:output name="restartResponse" message="tns:restartResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="AdministrationServiceSoapBinding" type="tns:Administration">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setTopology">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setTopology">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setTopologyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatus">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getStatus">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getStatusResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getProperties">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getProperties">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getPropertiesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getStatistics">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getStatistics">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getStatisticsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getTopology">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTopology">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTopologyResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getLog">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getLog">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLogResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="setProperties">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="setProperties">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="setPropertiesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="cancelAllServices">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="cancelAllServices">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cancelAllServicesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="handleTopologyChange">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="handleTopologyChange">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="handleTopologyChangeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="AdministrationException">
+        <soap:fault name="AdministrationException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getServices">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getServices">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getServicesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getReservation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getReservation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getReservationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="restart">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="restart">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="restartResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Administration">
+    <wsdl:port name="AdministrationPort" binding="tns:AdministrationServiceSoapBinding">
+      <soap:address location="http://localhost:9090/AdministrationPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

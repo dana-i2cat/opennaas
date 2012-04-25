@@ -113,9 +113,19 @@
 	<feature name="opennaas-bod" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
+		<bundle dependency="true">mvn:joda-time/joda-time/${jodatime.version}</bundle>
+		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
+
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-autobahn" version="${project.version}">
+		<feature>cxf</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.autobahn/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-luminis" version="${project.version}">
