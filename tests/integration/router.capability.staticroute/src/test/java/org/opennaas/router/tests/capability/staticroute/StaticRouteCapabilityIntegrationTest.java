@@ -4,10 +4,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
@@ -47,7 +47,7 @@ public class StaticRouteCapabilityIntegrationTest extends StaticRouteIntegration
 				.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE));
 		staticRouteCapability.create("0.0.0.0", "0.0.0.0", "192.168.1.1");
 
-		ICapability queueCapability = routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
+		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(queueResponse.isOk());
 

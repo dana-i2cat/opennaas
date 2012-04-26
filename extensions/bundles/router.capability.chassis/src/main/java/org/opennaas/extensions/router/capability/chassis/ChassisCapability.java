@@ -2,6 +2,7 @@ package org.opennaas.extensions.router.capability.chassis;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,6 +11,7 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
@@ -236,6 +238,20 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 			} else {
 				throw new CapabilityException("Unsupported encapsulation type");
 			}
+		}
+	}
+
+	// TODO REMOVE
+	@Override
+	public Response sendMessage(String actionId, Object params) throws CapabilityException {
+		try {
+			IAction action = createActionAndCheckParams(actionId, params);
+			queueAction(action);
+			return Response.okResponse(actionId);
+		} catch (CapabilityException e) {
+			Vector<String> errors = new Vector<String>();
+			errors.add(e.getMessage());
+			return Response.errorResponse(actionId, errors);
 		}
 	}
 }
