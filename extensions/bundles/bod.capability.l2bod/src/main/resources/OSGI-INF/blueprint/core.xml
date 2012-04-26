@@ -46,5 +46,19 @@
 				<null/>
 			</completers>
 		</command>
+		<command name="l2bod/interfaces">
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.InterfacesCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="l2bod/links">
+			<action class="org.opennaas.extensions.bod.capability.l2bod.shell.LinksCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
 	</command-bundle>
 </blueprint>
