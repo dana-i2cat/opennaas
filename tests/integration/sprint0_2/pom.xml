@@ -35,14 +35,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.events</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>

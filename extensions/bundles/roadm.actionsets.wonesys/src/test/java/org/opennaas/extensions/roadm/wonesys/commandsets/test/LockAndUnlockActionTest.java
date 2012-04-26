@@ -9,8 +9,8 @@ import org.opennaas.extensions.roadm.wonesys.commandsets.test.mock.MockProtocolS
 import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
 import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;

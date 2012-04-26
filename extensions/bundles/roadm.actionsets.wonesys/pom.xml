@@ -16,10 +16,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.events</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 		<dependency>
@@ -33,10 +29,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

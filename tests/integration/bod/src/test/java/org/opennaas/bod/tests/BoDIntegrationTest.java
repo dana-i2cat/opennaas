@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;

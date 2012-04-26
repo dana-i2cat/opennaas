@@ -1,49 +1,40 @@
 package org.opennaas.bod.tests.repository;
 
-import java.io.File;
-import java.util.List;
-import javax.inject.Inject;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventHandler;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class BODRepositoryIntegrationTest
 {
-	private static final Log	log		= LogFactory.getLog(BODRepositoryIntegrationTest.class);
+	private static final Log	log	= LogFactory.getLog(BODRepositoryIntegrationTest.class);
 
 	@Inject
 	private BundleContext		bundleContext;
@@ -55,13 +46,21 @@ public class BODRepositoryIntegrationTest
 	@Inject
 	private IResourceManager	resourceManager;
 
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	private BlueprintContainer	bodService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	private BlueprintContainer	l2bodService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-bod"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-bod"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**

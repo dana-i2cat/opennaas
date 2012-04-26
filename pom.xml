@@ -114,16 +114,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.core.events</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -235,11 +225,6 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.repository</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
