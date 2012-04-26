@@ -19,6 +19,30 @@ public class MockCapability extends AbstractCapability {
 	}
 
 	@Override
+	public void activate() throws CapabilityException {
+		internalCall = "activate";
+		setState(State.ACTIVE);
+	}
+
+	@Override
+	public void deactivate() throws CapabilityException {
+		internalCall = "deactivate";
+		setState(State.INACTIVE);
+	}
+
+	@Override
+	public void initialize() throws CapabilityException {
+		internalCall = "initialize";
+		setState(State.INITIALIZED);
+	}
+
+	@Override
+	public void shutdown() throws CapabilityException {
+		internalCall = "shutdown";
+		setState(State.SHUTDOWN);
+	}
+
+	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		// TODO Auto-generated method stub
 		return null;

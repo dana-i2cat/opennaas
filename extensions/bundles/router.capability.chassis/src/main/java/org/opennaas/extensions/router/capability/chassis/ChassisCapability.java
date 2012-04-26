@@ -247,7 +247,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		try {
 			IAction action = createActionAndCheckParams(actionId, params);
 			queueAction(action);
-			return Response.okResponse(actionId);
+			return Response.queuedResponse(actionId);
 		} catch (CapabilityException e) {
 			Vector<String> errors = new Vector<String>();
 			errors.add(e.getMessage());

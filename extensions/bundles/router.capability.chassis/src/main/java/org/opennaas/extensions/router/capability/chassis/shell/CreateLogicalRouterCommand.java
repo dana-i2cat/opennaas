@@ -52,7 +52,7 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			// create call params
-			ComputerSystem logicalRouterModelWithInterfaces = createLRModelWithInterfaces(LRname, subinterfaces);
+			ComputerSystem logicalRouterModelWithInterfaces = createLRModelWithInterfaces("router:" + LRname, subinterfaces);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
 			chassisCapability.createLogicalRouter(logicalRouterModelWithInterfaces);
@@ -74,9 +74,11 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 	private ComputerSystem createLRModelWithInterfaces(String logicalRouterName, List<String> subinterfaces) throws Exception {
 		ComputerSystem lrModel = createLRModel(logicalRouterName);
 
-		for (String interfaceName : subinterfaces) {
-			NetworkPort iface = createInterface(interfaceName);
-			lrModel.addLogicalDevice(iface);
+		if (subinterfaces != null) {
+			for (String interfaceName : subinterfaces) {
+				NetworkPort iface = createInterface(interfaceName);
+				lrModel.addLogicalDevice(iface);
+			}
 		}
 		return lrModel;
 	}
