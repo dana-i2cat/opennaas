@@ -348,7 +348,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).shutdown();
 						}
 						if (i > 0)
@@ -366,7 +366,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).shutdown();
 						}
 						if (i > 0)
@@ -416,7 +416,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).activate();
 						}
 						if (i > 0)
@@ -434,7 +434,7 @@ public class Resource implements IResource {
 
 				if (rollback) {
 					try {
-						if (capabilities.get(i).getState().equals(State.INITIALIZED)) {
+						if (capabilities.get(i).getState().equals(ICapabilityLifecycle.State.INITIALIZED)) {
 							capabilities.get(i).activate();
 						}
 						if (i > 0)

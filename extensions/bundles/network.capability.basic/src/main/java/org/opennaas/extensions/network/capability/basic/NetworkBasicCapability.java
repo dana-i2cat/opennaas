@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.action.IAction;
@@ -62,7 +63,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 			throw new CapabilityException("Invalid null resourceToAdd");
 		}
 
-		if (!resourceToAdd.getState().equals(State.ACTIVE)) {
+		if (!resourceToAdd.getState().equals(ILifecycle.State.ACTIVE)) {
 			throw new CapabilityException("Resource should be started before adding it to a network.");
 		}
 
