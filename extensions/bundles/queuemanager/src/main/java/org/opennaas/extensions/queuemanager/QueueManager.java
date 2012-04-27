@@ -154,6 +154,8 @@ public class QueueManager extends AbstractCapability implements
 
 				}
 			} catch (Exception e) {
+				log.warn("Failed to execute queue", e);
+
 				// restore action
 				assert protocolSessionManager != null;
 				try {
@@ -289,7 +291,6 @@ public class QueueManager extends AbstractCapability implements
 
 	@Override
 	public void initialize() throws CapabilityException {
-
 		registerQueueCapability();
 		setState(State.INITIALIZED);
 	}

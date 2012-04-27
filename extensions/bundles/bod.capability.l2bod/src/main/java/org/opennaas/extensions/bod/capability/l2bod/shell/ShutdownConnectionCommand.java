@@ -1,7 +1,7 @@
 package org.opennaas.extensions.bod.capability.l2bod.shell;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
@@ -13,6 +13,9 @@ import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
+
+import com.google.common.collect.Lists;
 
 @Command(scope = "l2bod", name = "shutdownConnection", description = "Shutdown L2 connectivity between specified interfaces.")
 public class ShutdownConnectionCommand extends GenericKarafCommand {
@@ -57,19 +60,20 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 	 * 
 	 * @return list of interfaces
 	 */
-	private List<Interface> getInterfaces(NetworkModel networkModel) {
-
-		List<Interface> listInterfaces = new ArrayList<Interface>();
-
-		// Add Interface 1
-		Interface interface1 = NetworkModelHelper.getInterfaceByName(networkModel.getNetworkElements(), interfaceName1);
-		listInterfaces.add(interface1);
-
-		// Add Interface 2
-		Interface interface2 = NetworkModelHelper.getInterfaceByName(networkModel.getNetworkElements(), interfaceName2);
-		listInterfaces.add(interface2);
-
-		return listInterfaces;
+	private List<Interface> getInterfaces(NetworkModel model)
+	{
+		return Lists.newArrayList(getInterface(model, interfaceName1),
+				getInterface(model, interfaceName2));
 	}
 
+	private Interface getInterface(NetworkModel model, String name)
+	{
+		List<NetworkElement> elements = model.getNetworkElements();
+		Interface i =
+				NetworkModelHelper.getInterfaceByName(elements, name);
+		if (i == null) {
+			throw new NoSuchElementException("No such interface: " + name);
+		}
+		return i;
+	}
 }
