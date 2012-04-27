@@ -232,7 +232,12 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		IAction action = createAction(actionId);
 		action.setParams(actionParameters);
 		action.setModelToUpdate(resource.getModel());
-		action.checkParams(action.getParams());
+		// FIXME define checkParams signature. Should it return exception if fails or return false???
+		// now both Exception and return false have same meaning
+		boolean isOk = action.checkParams(action.getParams());
+		if (!isOk) {
+			throw new CapabilityException("Invalid parameters for action " + actionId);
+		}
 
 		return action;
 	}
