@@ -23,7 +23,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CHASSIS);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
 			iChassisCapability.createLogicalRouter(logicalRouter);
 		} catch (ResourceException e) {
 			// TODO
@@ -39,7 +39,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CHASSIS);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
 			iChassisCapability.deleteLogicalRouter(logicalRouter);
 		} catch (ResourceException e) {
 			// TODO
