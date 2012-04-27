@@ -36,14 +36,7 @@ public class GenericCapabilityServiceImpl {
 	 */
 	protected ICapability getCapability(String resourceId, String type) throws ResourceException {
 		IResource resource = getResource(resourceId);
-		ICapability iCapability = null;
-		for (ICapability capability : resource.getCapabilities()) {
-			String _type = capability.getCapabilityInformation().getType();
-			if (_type.equals(type)) {
-				iCapability = capability;
-			}
-		}
-		return iCapability;
+		return resource.getCapabilityByType(type);
 	}
 
 	/**
