@@ -2,7 +2,10 @@ package org.opennaas.extensions.ws.impl;
 
 import javax.jws.WebService;
 
-import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.ws.services.IChassisCapabilityService;
 
 /**
@@ -14,13 +17,33 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.ws.extensions.router.capability.chassis.IChassisCapabilityService#upPhysicalInterface(java.lang.String,
-	 * org.opennaas.extensions.router.model.LogicalPort)
+	 * @see org.opennaas.extensions.ws.services.IChassisCapabilityService#createLogicalRouter(java.lang.String,
+	 * org.opennaas.extensions.router.model.ComputerSystem)
 	 */
 	@Override
-	public void upPhysicalInterface(String resourceId, LogicalPort iface) {
-		// ICapability chassisCapability = getCapability(resourceId, ChassisCapability.CHASSIS);
-		// TODO Call the iChassis Capability method.
+	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
+		try {
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CHASSIS);
+			iChassisCapability.createLogicalRouter(logicalRouter);
+		} catch (ResourceException e) {
+			// TODO
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.ws.services.IChassisCapabilityService#deleteLogicalRouter(java.lang.String,
+	 * org.opennaas.extensions.router.model.ComputerSystem)
+	 */
+	@Override
+	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
+		try {
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CHASSIS);
+			iChassisCapability.deleteLogicalRouter(logicalRouter);
+		} catch (ResourceException e) {
+			// TODO
+		}
 	}
 
 }

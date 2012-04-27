@@ -38,7 +38,8 @@ public class GenericCapabilityServiceImpl {
 		IResource resource = getResource(resourceId);
 		ICapability iCapability = null;
 		for (ICapability capability : resource.getCapabilities()) {
-			if (capability.getCapabilityInformation().getType().equals(type)) {
+			String _type = capability.getCapabilityInformation().getType();
+			if (_type.equals(type)) {
 				iCapability = capability;
 			}
 		}

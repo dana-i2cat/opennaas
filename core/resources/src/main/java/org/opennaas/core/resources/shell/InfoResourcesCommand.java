@@ -15,9 +15,9 @@ import org.opennaas.core.resources.descriptor.Information;
 
 /**
  * Show the information of one or more Resources
- *
+ * 
  * @author Evelyn Torras
- *
+ * 
  */
 @Command(scope = "resource", name = "info", description = "Provides extended information about one or more resources.")
 public class InfoResourcesCommand extends GenericKarafCommand {
@@ -60,7 +60,8 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 						resource = manager.getResource(identifier);
 						Information information = resource.getResourceDescriptor().getInformation();
-						printInfo("Resource ID: " + information.getName());
+						printInfo("Resource Id: " + resource.getResourceIdentifier().getId());
+						printInfo("Resource Name: " + information.getName());
 						printInfo("State: " + resource.getState());
 						printSymbol(horizontalSeparator);
 						printInfo("Resource descriptor ");
@@ -93,7 +94,7 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 					} else {
 						printError("The resource " + id +
-										" is not found on repository.");
+								" is not found on repository.");
 					}
 				} catch (ResourceException e) {
 					printError(e);
