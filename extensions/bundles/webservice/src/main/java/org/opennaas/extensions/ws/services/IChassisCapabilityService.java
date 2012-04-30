@@ -7,6 +7,8 @@ import javax.jws.WebService;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 /**
  * @author Jordi Puig
@@ -46,52 +48,49 @@ public interface IChassisCapabilityService {
 	 */
 	public void downPhysicalInterface(String resourceId, LogicalPort iface) throws CapabilityException;
 
-	// /**
-	// * Creates given logical interface (iface).
-	// *
-	// * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	// * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device
-	// queue
-	// * is required for queued actions to take effect.
-	// *
-	// * @param iface
-	// * to be created
-	// * @throws CapabilityException
-	// * if any error occurred. In that case, queue remains untouched.
-	// */
-	// public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
-	//
-	// /**
-	// * Deletes given logical interface (iface).
-	// *
-	// * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	// * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device
-	// queue
-	// * is required for queued actions to take effect.
-	// *
-	// * @param iface
-	// * to be deleted
-	// * @throws CapabilityException
-	// * if any error occurred. In that case, queue remains untouched.
-	// */
-	// public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
-	//
-	// /**
-	// * Configures the type of encapsulation to use in given iface.
-	// *
-	// * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
-	// * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device
-	// queue
-	// * is required for queued actions to take effect.
-	// *
-	// * @param iface
-	// * to be configured
-	// * @param encapsulationType
-	// * to use in given iface
-	// * @throws CapabilityException
-	// * if any error occurred. In that case, queue remains untouched.
-	// */
-	// public void setEncapsulation(String resourceId, LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException;
+	/**
+	 * Creates given logical interface (iface).
+	 * 
+	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
+	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
+	 * is required for queued actions to take effect.
+	 * 
+	 * @param iface
+	 *            to be created
+	 * @throws CapabilityException
+	 *             if any error occurred. In that case, queue remains untouched.
+	 */
+	public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
+
+	/**
+	 * Deletes given logical interface (iface).
+	 * 
+	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
+	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
+	 * is required for queued actions to take effect.
+	 * 
+	 * @param iface
+	 *            to be deleted
+	 * @throws CapabilityException
+	 *             if any error occurred. In that case, queue remains untouched.
+	 */
+	public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
+
+	/**
+	 * Configures the type of encapsulation to use in given iface.
+	 * 
+	 * Note: This call uses the driver to communicate with the physical device this capability belongs to, and uses actions to modify the device
+	 * state. This call end by adding required actions to the device queue, hence device state is not modified yet. An execution of this device queue
+	 * is required for queued actions to take effect.
+	 * 
+	 * @param iface
+	 *            to be configured
+	 * @param encapsulationType
+	 *            to use in given iface
+	 * @throws CapabilityException
+	 *             if any error occurred. In that case, queue remains untouched.
+	 */
+	public void setEncapsulation(String resourceId, LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException;
 
 	/**
 	 * Configures the encapsulation label to use in given iface.

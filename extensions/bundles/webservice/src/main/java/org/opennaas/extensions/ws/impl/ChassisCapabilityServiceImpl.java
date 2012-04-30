@@ -9,6 +9,8 @@ import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.ws.services.IChassisCapabilityService;
 
 /**
@@ -104,22 +106,22 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 
 	}
 
-	// @Override
-	// public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
-	// IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
-	// iChassisCapability.createSubInterface(iface);
-	// }
-	//
-	// @Override
-	// public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
-	// IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
-	// iChassisCapability.deleteSubInterface(iface);
-	// }
-	//
-	// @Override
-	// public void setEncapsulation(String resourceId, LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
-	// IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
-	// iChassisCapability.setEncapsulation(iface, encapsulationType);
-	// }
+	@Override
+	public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
+		IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+		iChassisCapability.createSubInterface(iface);
+	}
+
+	@Override
+	public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
+		IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+		iChassisCapability.deleteSubInterface(iface);
+	}
+
+	@Override
+	public void setEncapsulation(String resourceId, LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
+		IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+		iChassisCapability.setEncapsulation(iface, encapsulationType);
+	}
 
 }
