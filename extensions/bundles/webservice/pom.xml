@@ -61,7 +61,7 @@
 <!-- 				<executions> -->
 <!-- 					<execution> -->
 <!-- 						<id>generate-wsdl</id> -->
-<!-- 						<phase>deploy</phase> -->
+<!-- 						<phase>install</phase> -->
 <!-- 						<configuration> -->
 <!-- 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className> -->
 <!-- 						</configuration> -->
