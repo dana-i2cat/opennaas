@@ -2,7 +2,7 @@ package org.opennaas.extensions.ws.impl;
 
 import javax.jws.WebService;
 
-import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -21,13 +21,9 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	 * org.opennaas.extensions.router.model.ComputerSystem)
 	 */
 	@Override
-	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
-		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
-			iChassisCapability.createLogicalRouter(logicalRouter);
-		} catch (ResourceException e) {
-			// TODO
-		}
+	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter) throws CapabilityException {
+		IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+		iChassisCapability.createLogicalRouter(logicalRouter);
 	}
 
 	/*
@@ -37,13 +33,9 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	 * org.opennaas.extensions.router.model.ComputerSystem)
 	 */
 	@Override
-	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter) {
-		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
-			iChassisCapability.deleteLogicalRouter(logicalRouter);
-		} catch (ResourceException e) {
-			// TODO
-		}
+	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter) throws CapabilityException {
+		IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+		iChassisCapability.deleteLogicalRouter(logicalRouter);
 	}
 
 }

@@ -1,5 +1,8 @@
 package org.opennaas.extensions.ws.services;
 
+import javax.jws.WebParam;
+
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
 /**
@@ -22,7 +25,8 @@ public interface IChassisCapabilityService {
 	 *            to be created
 	 * @param resourceId
 	 */
-	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter);
+	public void createLogicalRouter(@WebParam(name = "resourceId") String resourceId, @WebParam(name = "logicalRouter") ComputerSystem logicalRouter)
+			throws CapabilityException;
 
 	/**
 	 * Deletes given logical router.
@@ -31,6 +35,7 @@ public interface IChassisCapabilityService {
 	 *            existing logical router to delete.
 	 * @param resourceId
 	 */
-	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter);
+	public void deleteLogicalRouter(@WebParam(name = "resourceId") String resourceId, @WebParam(name = "logicalRouter") ComputerSystem logicalRouter)
+			throws CapabilityException;
 
 }
