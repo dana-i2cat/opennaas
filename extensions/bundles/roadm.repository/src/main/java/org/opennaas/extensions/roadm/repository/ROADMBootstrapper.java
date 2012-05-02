@@ -1,24 +1,23 @@
 package org.opennaas.extensions.roadm.repository;
 
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.core.resources.action.ActionResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.QueueManager;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
 public class ROADMBootstrapper implements IResourceBootstrapper {
-	Log						log	= LogFactory.getLog(ROADMBootstrapper.class);
+	Log				log	= LogFactory.getLog(ROADMBootstrapper.class);
 
 	private IModel	oldModel;
 
@@ -33,17 +32,18 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 		((ProteusOpticalSwitch) resource.getModel()).setName(resource.getResourceDescriptor().getInformation().getName());
 
 		log.debug("Executing capabilities startup...");
-		ICapability queueCapab = null;
+		IQueueManagerService queueCapab = null;
 		for (ICapability capab : resource.getCapabilities()) {
 			if (capab instanceof AbstractCapability) {
-				if (capab.getCapabilityInformation().getType().equalsIgnoreCase("queue")) {
-					queueCapab = capab;
+				// FIXME static access to implementation class QueueManager!!!
+				if (capab.getCapabilityInformation().getType().equalsIgnoreCase(QueueManager.CAPABILITY_TYPE)) {
+					queueCapab = (IQueueManagerService) capab;
 				} else {
-					Response response = ((AbstractCapability) capab).sendRefreshActions();
-					if (!response.getStatus().equals(Status.OK)) {
+					try {
+						((AbstractCapability) capab).sendRefreshActions();
+					} catch (CapabilityException e) {
 						throw new ResourceException(
-								"Failed to send refreshActions of " + capab.getCapabilityInformation().getType() + " capability. " + response
-										.getErrors().toString());
+								"Failed to send refreshActions of " + capab.getCapabilityInformation().getType() + " capability. ", e);
 					}
 				}
 			}
@@ -83,7 +83,7 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 		resource.setModel(oldModel);
 	}
 
-	public void resetModel (IResource resource) throws ResourceException {
+	public void resetModel(IResource resource) throws ResourceException {
 
 	}
 

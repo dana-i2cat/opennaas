@@ -9,13 +9,14 @@ import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 
 /**
  * @author Jordi Puig
  * @author Isart Canyameres
  */
-public interface IOSPFService {
+public interface IOSPFService extends ICapability {
 
 	/**
 	 * Enable OSPF on the router.

@@ -1,90 +1,88 @@
 package org.opennaas.extensions.bod.capability.l2bod.shell;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
-
 import org.joda.time.DateTime;
 import org.joda.time.format.ISODateTimeFormat;
-
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
+import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
+import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
-import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
-import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
-import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 
 @Command(scope = "l2bod", name = "requestConnection",
-		 description = "Request L2 connectivity between specified interfaces.")
+		description = "Request L2 connectivity between specified interfaces.")
 public class RequestConnectionCommand extends GenericKarafCommand
 {
 	@Argument(index = 0,
-			  name = "resourceType:resourceName",
-			  description = "The resource id to request the connectivity.",
-			  required = true,
-			  multiValued = false)
+			name = "resourceType:resourceName",
+			description = "The resource id to request the connectivity.",
+			required = true,
+			multiValued = false)
 	private String	resourceId;
 
 	@Argument(index = 1,
-			  name = "interface1",
-			  description = "The name of interface 1 to connect",
-			  required = true,
-			  multiValued = false)
+			name = "interface1",
+			description = "The name of interface 1 to connect",
+			required = true,
+			multiValued = false)
 	private String	interfaceName1;
 
 	@Argument(index = 2,
-			  name = "interface2",
-			  description = "The name of interface 2 to connect",
-			  required = true,
-			  multiValued = false)
+			name = "interface2",
+			description = "The name of interface 2 to connect",
+			required = true,
+			multiValued = false)
 	private String	interfaceName2;
 
 	@Option(name = "--vlanid",
 			aliases = { "-v" },
 			description = "VLAN ID to use for vlan-tagging",
 			multiValued = false)
-	private int vlanid = -1;
+	private int		vlanid	= -1;
 
 	@Option(name = "--starttime",
 			aliases = { "--start", "-s" },
 			description = "Start time (yyyy-MM-dd'T'HH:mm:ssZZ)",
 			multiValued = false)
-	private String startTime;
+	private String	startTime;
 
 	@Option(name = "--endtime",
 			aliases = { "--end", "-e" },
 			description = "End time (yyyy-MM-dd'T'HH:mm:ssZZ)",
 			required = true,
 			multiValued = false)
-	private String endTime;
+	private String	endTime;
 
 	@Option(name = "--capacity",
 			aliases = { "-c" },
 			description = "Capacity in MB/s",
 			required = true,
 			multiValued = false)
-	private int capacity;
+	private int		capacity;
 
 	@Override
 	protected Object doExecute()
 	{
 		printInitCommand("request connectivity of resource: " + resourceId +
-						 " and interfaces: " + interfaceName1 + " - " + interfaceName2);
+				" and interfaces: " + interfaceName1 + " - " + interfaceName2);
 		try {
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			ICapability ipCapability =
-				getCapability(resource.getCapabilities(), L2BoDCapability.CAPABILITY_NAME);
+
+			IL2BoDCapability ipCapability = (IL2BoDCapability) resource.getCapabilityByType(L2BoDCapability.CAPABILITY_NAME);
+
 			return ipCapability.sendMessage(ActionConstants.REQUESTCONNECTION,
-											createParameters(resource));
+					createParameters(resource));
+
 		} catch (Exception e) {
 			printError("Error requesting connectivity for resource: " + resourceId);
 			printError(e);
@@ -98,10 +96,10 @@ public class RequestConnectionCommand extends GenericKarafCommand
 	{
 		NetworkModel model = (NetworkModel) resource.getModel();
 		return new RequestConnectionParameters(getInterface(model, interfaceName1),
-											   getInterface(model, interfaceName2),
-											   capacity * 1000000L, vlanid,
-											   parseISO8601Date(startTime),
-											   parseISO8601Date(endTime));
+				getInterface(model, interfaceName2),
+				capacity * 1000000L, vlanid,
+				parseISO8601Date(startTime),
+				parseISO8601Date(endTime));
 	}
 
 	private DateTime parseISO8601Date(String s)
@@ -113,7 +111,7 @@ public class RequestConnectionCommand extends GenericKarafCommand
 	{
 		List<NetworkElement> elements = model.getNetworkElements();
 		Interface i =
-			NetworkModelHelper.getInterfaceByName(elements, name);
+				NetworkModelHelper.getInterfaceByName(elements, name);
 		if (i == null) {
 			throw new NoSuchElementException("No such interface: " + name);
 		}

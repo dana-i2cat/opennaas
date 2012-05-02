@@ -118,12 +118,33 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public void setCapabilities(List<ICapability> capabs) {
+	public void setCapabilities(List<? extends ICapability> capabs) {
 		log.info("set Capabilities...");
 
 		for (ICapability capab : capabs) {
 			addCapability(capab);
 		}
+	}
+
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze) {
+		List<ICapability> filteredCapabilities = new ArrayList<ICapability>();
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				filteredCapabilities.add(capability);
+			}
+		}
+		return filteredCapabilities;
+	}
+
+	@Override
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException {
+		for (ICapability capability : getCapabilities()) {
+			if (interfaze.isInstance(capability)) {
+				return capability;
+			}
+		}
+		throw new ResourceException("Cannot find capability with interface " + interfaze);
 	}
 
 	@Override
@@ -237,5 +258,4 @@ public class MockResource implements IResource {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

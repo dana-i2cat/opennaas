@@ -51,14 +51,37 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 		log.debug("Built new OSPF Capability");
 	}
 
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
+	}
+
 	/**
 	 * Execute the action defined in the idOperation param
 	 * 
 	 * @param idOperation
 	 * @param params
 	 */
-	@Override
-	public Object sendMessage(String idOperation, Object params) {
+	private Object sendMessage(String idOperation, Object params) {
 
 		// log.debug("Sending message to OSPF Capability");
 		try {
@@ -305,45 +328,4 @@ public class OSPFCapability extends AbstractCapability implements IOSPFService {
 
 		return (Response) sendMessage(ActionConstants.OSPF_DISABLE_INTERFACE, toDisable);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#activateCapability()
-	 */
-	@Override
-	protected void activateCapability() throws CapabilityException {
-		// Nothing to do
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivateCapability()
-	 */
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// Nothing to do
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
-	 */
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// Nothing to do
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdownCapability()
-	 */
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// Nothing to do
-	}
-
 }

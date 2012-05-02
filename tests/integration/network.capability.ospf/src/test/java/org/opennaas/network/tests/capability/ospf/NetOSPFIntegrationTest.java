@@ -79,7 +79,6 @@ public class NetOSPFIntegrationTest {
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
-		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"));
 	}
 
 	private void clearRepository() throws ResourceException {

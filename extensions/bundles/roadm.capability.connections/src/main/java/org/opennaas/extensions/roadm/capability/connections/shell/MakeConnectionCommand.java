@@ -4,10 +4,10 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.roadm.capability.connections.ConnectionsCapability;
+import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
@@ -48,7 +48,7 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 			if (resource == null)
 				return "";
 
-			ICapability capability = getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
+			IConnectionsCapability capability = (IConnectionsCapability) getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
 			if (capability == null) {
 				printError("Error getting the capability");
 				printEndCommand();

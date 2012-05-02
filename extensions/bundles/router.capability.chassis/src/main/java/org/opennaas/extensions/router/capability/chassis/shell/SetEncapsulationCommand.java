@@ -3,14 +3,10 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 @Command(scope = "chassis", name = "setEncapsulation", description = "Set encapsulation in a given interface.")
@@ -30,13 +26,11 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 		try {
 			checkArguments();
 
-			LogicalPort iface = createParams(interfaceName);
-
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			Response response = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, iface);
-			printResponseStatus(response, resourceId);
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.setEncapsulation(createInterface(interfaceName), getEncapsulationType(encapsulationType));
+
 		} catch (Exception e) {
 			printError("Error setting encapsulation");
 			printError(e);
@@ -44,8 +38,7 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private LogicalPort createParams(String interfaceName) throws Exception {
-
+	private LogicalPort createInterface(String interfaceName2) throws Exception {
 		LogicalPort iface;
 		if (isPhysicalInterfaceName(interfaceName)) {
 			// physical interface specified
@@ -58,17 +51,34 @@ public class SetEncapsulationCommand extends GenericKarafCommand {
 			iface.setName(interfaceNameAndPortNumber[0]);
 			((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
 		}
-
-		// specify encapsulation type in iface
-		ProtocolIFType type = getEncapsulationType(encapsulationType);
-		if (!type.equals(ProtocolIFType.UNKNOWN)) {
-			ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
-			encapsulationEndpoint.setProtocolIFType(type);
-			iface.addProtocolEndpoint(encapsulationEndpoint);
-		}
-
 		return iface;
 	}
+
+	// private LogicalPort createParams(String interfaceName) throws Exception {
+	//
+	// LogicalPort iface;
+	// if (isPhysicalInterfaceName(interfaceName)) {
+	// // physical interface specified
+	// iface = new LogicalPort();
+	// iface.setName(interfaceName);
+	// } else {
+	// // logical interface specified
+	// String[] interfaceNameAndPortNumber = splitInterfaces(interfaceName);
+	// iface = new NetworkPort();
+	// iface.setName(interfaceNameAndPortNumber[0]);
+	// ((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
+	// }
+	//
+	// // specify encapsulation type in iface
+	// ProtocolIFType type = getEncapsulationType(encapsulationType);
+	// if (!type.equals(ProtocolIFType.UNKNOWN)) {
+	// ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
+	// encapsulationEndpoint.setProtocolIFType(type);
+	// iface.addProtocolEndpoint(encapsulationEndpoint);
+	// }
+	//
+	// return iface;
+	// }
 
 	private boolean isPhysicalInterfaceName(String interfaceName) {
 		return !(interfaceName.contains("."));

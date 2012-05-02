@@ -6,9 +6,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.capability.ip.IPCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -55,7 +55,7 @@ public class SetInterfaceDescriptionCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability ipCapability = getCapability(resource.getCapabilities(), IPCapability.IPv4);
+			IIPCapability ipCapability = (IIPCapability) getCapability(resource.getCapabilities(), IPCapability.IPv4);
 			// printInfo("Sending message to the queue");
 			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, prepareParams());
 			printResponseStatus(resp, resourceId);

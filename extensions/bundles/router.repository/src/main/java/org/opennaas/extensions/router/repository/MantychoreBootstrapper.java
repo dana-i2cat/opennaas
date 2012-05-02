@@ -14,12 +14,11 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
@@ -48,14 +47,11 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			/* abstract capabilities have to be initialized */
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab).sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
-					throw new ResourceException();
-				}
+				((AbstractCapability) capab).sendRefreshActions();
 			}
 		}
 
-		ICapability queueCapab = resource.getCapabilityByType(createQueueInformation().getType());
+		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapabilityByType(createQueueInformation().getType());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING
