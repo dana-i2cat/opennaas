@@ -24,6 +24,10 @@
 			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
@@ -47,30 +51,25 @@
 					</instructions>
 				</configuration>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.cxf</groupId> -->
-<!-- 				<artifactId>cxf-codegen-plugin</artifactId> -->
-<!-- 				<version>2.0.9</version> -->
-<!-- 				<dependencies> -->
-<!-- 					<dependency> -->
-<!-- 						<groupId>org.apache.cxf</groupId> -->
-<!-- 						<artifactId>cxf-rt-frontend-jaxws</artifactId> -->
-<!-- 						<version>2.0.9</version> -->
-<!-- 					</dependency> -->
-<!-- 				</dependencies> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<id>generate-wsdl</id> -->
-<!-- 						<phase>install</phase> -->
-<!-- 						<configuration> -->
-<!-- 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className> -->
-<!-- 						</configuration> -->
-<!-- 						<goals> -->
-<!-- 							<goal>java2wsdl</goal> -->
-<!-- 						</goals> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
+			<plugin>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-java2ws-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-wsdl</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+							<classpath>org.opennaas.extensions.router.model</classpath>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
