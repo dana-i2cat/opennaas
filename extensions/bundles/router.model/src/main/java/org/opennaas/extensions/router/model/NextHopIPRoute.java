@@ -171,7 +171,7 @@ public class NextHopIPRoute extends NextHopRoute implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
 	 */
-	@XmlType(namespace = "http:/www.opennaas.org/ws/nextHopIPRoute/enums")
+	@XmlType(name = "NextHopIPRouteAddressTypeEnum")
 	public enum AddressType {
 		UNKNOWN,
 		IPV4,

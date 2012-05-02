@@ -343,7 +343,7 @@ public class LogicalDevice extends EnabledLogicalElement implements
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property PowerManagementCapabilities.
 	 */
-	@XmlType(namespace = "http:/www.ws.opennaas.org/logicaldevice/enums")
+	@XmlType(name = "LogicalDevicePowerManagementEnum")
 	@Deprecated
 	public enum PowerManagementCapabilities {
 		UNKNOWN,

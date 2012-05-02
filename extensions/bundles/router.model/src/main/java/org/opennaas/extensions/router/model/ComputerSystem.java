@@ -35,7 +35,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property NameFormat.
 	 */
-	@XmlType(namespace = "http:/www.opennaas.org/ws/computersystem/enums")
+	@XmlType(name = "ComputerSystemNameFormatEnum")
 	public enum NameFormat {
 		OTHER,
 		IP,
@@ -293,7 +293,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property PowerManagementCapabilities.
 	 */
-	@XmlType(namespace = "http:/www.ws.opennaas.org/computersystem/enums")
+	@XmlType(name = "ComputerSystemPowerManagementEnum")
 	@Deprecated
 	public enum PowerManagementCapabilities {
 		UNKNOWN,

@@ -195,7 +195,7 @@ public class IPProtocolEndpoint extends ProtocolEndpoint implements
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
 	 */
-	@XmlType(namespace = "http:/www.opennaas.org/ws/ipProtocolEndpoint/enums")
+	@XmlType(name = "IPProtocolEndpointAddressTypeEnum")
 	@Deprecated
 	public enum AddressType {
 		UNKNOWN,

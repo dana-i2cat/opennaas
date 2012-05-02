@@ -7,6 +7,7 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -37,7 +38,7 @@ public class AdminDomain extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property NameFormat.
 	 */
-	@XmlType(namespace = "http:/www.opennaas.org/ws/adminDomain/enums")
+	@XmlType(name = "AdminDomainNameFormatEnum")
 	public enum NameFormat {
 		OTHER,
 		AUTONOMOUS_SYSTEM,
