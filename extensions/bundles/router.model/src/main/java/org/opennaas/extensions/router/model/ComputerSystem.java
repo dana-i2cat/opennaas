@@ -35,7 +35,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property NameFormat.
 	 */
-
+	@XmlType(namespace = "http:/www.ws.opennaas.org/types/computersystem")
 	public enum NameFormat {
 		OTHER,
 		IP,

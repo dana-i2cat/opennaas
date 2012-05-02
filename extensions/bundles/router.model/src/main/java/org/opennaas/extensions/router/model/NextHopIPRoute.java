@@ -5,8 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class NextHopIPRoute as well as methods comparable to the
@@ -170,7 +171,7 @@ public class NextHopIPRoute extends NextHopRoute implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
 	 */
-
+	@XmlType(namespace = "http:/www.ws.opennaas.org/types/nextHopIPRoute")
 	public enum AddressType {
 		UNKNOWN,
 		IPV4,
