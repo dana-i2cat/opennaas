@@ -3,15 +3,10 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 @Command(scope = "chassis", name = "setEncapsulationlabel", description = "Set an encapsulation label in a given interface.")
 public class SetEncapsulationLabelCommand extends GenericKarafCommand {
@@ -33,13 +28,12 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 		try {
 			checkArguments();
 
-			LogicalPort iface = createParams(interfaceName, label);
+			LogicalPort iface = createParams(interfaceName);
 
 			IResource resource = getResourceFromFriendlyName(resourceId);
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
 
-			Response response = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATIONLABEL, iface);
-			printResponseStatus(response, resourceId);
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.setEncapsulationLabel(iface, label);
 
 		} catch (Exception e) {
 			printError("Error setting vlan.");
@@ -59,7 +53,7 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 		}
 	}
 
-	private LogicalPort createParams(String interfaceName, String label) throws Exception {
+	private LogicalPort createParams(String interfaceName) throws Exception {
 
 		LogicalPort iface;
 		if (isPhysicalInterfaceName(interfaceName)) {
@@ -71,15 +65,6 @@ public class SetEncapsulationLabelCommand extends GenericKarafCommand {
 			iface.setName(interfaceNameAndPortNumber[0]);
 			((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
 		}
-
-		// specify label in iface
-		// we use the name of the endpoint to store the encapsulation label
-		// and mark protocolType as unknown (it will be discovered by opennaas)
-		ProtocolEndpoint protocolEndpoint = new ProtocolEndpoint();
-		protocolEndpoint.setName(label);
-		protocolEndpoint.setProtocolIFType(ProtocolIFType.UNKNOWN);
-		iface.addProtocolEndpoint(protocolEndpoint);
-
 		return iface;
 	}
 

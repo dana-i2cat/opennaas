@@ -6,13 +6,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 
 @Command(scope = "chassis", name = "down", description = "Down a physical interface")
 public class DownInterfaceCommand extends GenericKarafCommand {
@@ -50,10 +46,9 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 			IResource resource = manager.getResource(resourceIdentifier);
 
 			validateResource(resource);
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS, prepareConfigureStatusParams(interfaceName));
-			printResponseStatus(resp, resourceId);
+
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.downPhysicalInterface(prepareConfigureStatusParams(interfaceName));
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -69,10 +64,9 @@ public class DownInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private Object prepareConfigureStatusParams(String nameInterface) {
+	private LogicalPort prepareConfigureStatusParams(String nameInterface) {
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName(nameInterface);
-		logicalPort.setOperationalStatus(OperationalStatus.STOPPED);
 		return logicalPort;
 	}
 }

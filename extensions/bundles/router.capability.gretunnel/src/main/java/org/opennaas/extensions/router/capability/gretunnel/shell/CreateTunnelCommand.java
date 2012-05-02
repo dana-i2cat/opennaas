@@ -48,7 +48,7 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		printInitCommand("Shows GRE tunnels");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
+			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_TYPE);
 			Response response = tunnelCapability.createGRETunnel(getTunnelService());
 			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {

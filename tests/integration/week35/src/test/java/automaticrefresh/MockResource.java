@@ -170,7 +170,7 @@ public class MockResource implements IResource {
 	}
 
 	@Override
-	public void setCapabilities(List<ICapability> arg0) {
+	public void setCapabilities(List<? extends ICapability> arg0) {
 		log.info("set Capabilities...");
 
 	}
@@ -224,6 +224,18 @@ public class MockResource implements IResource {
 
 	@Override
 	public ICapability getCapabilityByType(String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException {
 		// TODO Auto-generated method stub
 		return null;
 	}

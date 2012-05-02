@@ -5,14 +5,14 @@ import static com.google.common.base.Strings.nullToEmpty;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
-
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.extensions.router.model.EthernetPort;
 
 public class DeleteSubInterfaceAction extends JunosAction {
 
@@ -29,11 +29,11 @@ public class DeleteSubInterfaceAction extends JunosAction {
 
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
-		// TODO Auto-generated method stub
 
-		// check that there are params
-		// the param must be an EthernetPort element
-		return false;
+		if (!(params instanceof EthernetPort))
+			return false;
+
+		return true;
 	}
 
 	@Override

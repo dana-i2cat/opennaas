@@ -10,9 +10,8 @@ public class ChassisCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(ChassisCapability.CHASSIS), resource
-				.getResourceDescriptor()
-				.getId());
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(ChassisCapability.CAPABILITY_TYPE),
+				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
 	}

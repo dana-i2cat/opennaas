@@ -1,9 +1,12 @@
 package org.opennaas.extensions.queuemanager.test;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeSwissboxFramework;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -33,6 +36,7 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockAction;
@@ -124,7 +128,7 @@ public class PrepareCommitRollbackTest
 
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
-		queueCapability.initialize();
+		((ICapabilityLifecycle) queueCapability).initialize();
 		queueManagerService = getService(bundleContext, IQueueManagerService.class, 50000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}

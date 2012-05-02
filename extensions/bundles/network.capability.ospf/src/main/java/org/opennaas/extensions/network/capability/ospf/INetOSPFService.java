@@ -1,9 +1,10 @@
 package org.opennaas.extensions.network.capability.ospf;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 
-public interface INetOSPFService {
+public interface INetOSPFService extends ICapability {
 
 	/**
 	 * Enable OSPF on the network.

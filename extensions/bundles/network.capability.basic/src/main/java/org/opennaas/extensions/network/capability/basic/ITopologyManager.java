@@ -2,12 +2,13 @@ package org.opennaas.extensions.network.capability.basic;
 
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkConnection;
 
-public interface ITopologyManager {
+public interface ITopologyManager extends ICapability {
 
 	/**
 	 * Adds resource to network topology.

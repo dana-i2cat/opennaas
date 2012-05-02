@@ -1,5 +1,7 @@
 package org.opennaas.extensions.router.capability.chassis;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -10,22 +12,24 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
+import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
-public class ChassisCapability extends AbstractCapability {
+public class ChassisCapability extends AbstractCapability implements IChassisCapability {
 
-	public final static String	CHASSIS		= "chassis";
+	public static final String	CAPABILITY_TYPE	= "chassis";
 
-	Log							log			= LogFactory.getLog(ChassisCapability.class);
+	Log							log				= LogFactory.getLog(ChassisCapability.class);
 
-	private String				resourceId	= "";
+	private String				resourceId		= "";
 
 	public ChassisCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -34,119 +38,165 @@ public class ChassisCapability extends AbstractCapability {
 	}
 
 	@Override
-	protected void initializeCapability() throws CapabilityException {
-
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
-	public Object sendMessage(String idOperation, Object params) {
-		log.debug("Sending message to Chassis Capability");
-
-		// FIXME temporary hack, should be removed when this capability get its own interface
-		if (idOperation.equals(ActionConstants.SETENCAPSULATION)) {
-			return uncheckedSetEncapsulation(params);
-		} else if (idOperation.equals(ActionConstants.SETENCAPSULATIONLABEL)) {
-			return uncheckedSetEncapsulationLabel(params);
-		}
-
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.queuedResponse(idOperation);
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-
-	}
-
-	@Override
+	// TODO MOVE TO A PARENT
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
 		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
 
 		try {
+			// TODO do not use Activator for this, use injection instead
 			return Activator.getChassisActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
 	}
 
-	private Response prepareErrorMessage(String nameError, String message) {
-		Vector<String> errorMsgs = new Vector<String>();
-		errorMsgs.add(message);
-		return Response.errorResponse(nameError, errorMsgs);
-
-	}
-
-	private Response uncheckedSetEncapsulation(Object params) {
-		if (!(params instanceof LogicalPort)) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs.add("Invalid parameter. LogicalPort is expected.");
-			return Response.errorResponse(ActionConstants.SETENCAPSULATION, errorMsgs);
-		} else {
-			return setEncapsulation((LogicalPort) params);
-		}
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
 	}
 
 	/**
-	 * This method is likely to be part of this capability interface implementation, when it gets an interface!!
 	 * 
-	 * @param port
-	 * @return
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
 	 */
-	private Response setEncapsulation(LogicalPort port) {
-
-		Response removeResponse = removeCurrentEncapsulation(port);
-
-		if (removeResponse.getStatus().equals(Status.ERROR))
-			return removeResponse;
-
-		Response setEncapsulationResponse = setDesiredEncapsulation(port);
-		return setEncapsulationResponse;
-	}
-
-	private Response uncheckedSetEncapsulationLabel(Object params) {
-		if (!(params instanceof LogicalPort)) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs.add("Invalid parameter. LogicalPort is expected.");
-			return Response.errorResponse(ActionConstants.SETENCAPSULATIONLABEL, errorMsgs);
-		} else {
-			return setEncapsulationLabel((LogicalPort) params);
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
 	}
 
-	/**
-	 * This method is likely to be part of this capability interface implementation, when it gets an interface!!
-	 * 
-	 * @param port
-	 * @return
+	/*
+	 * IChassisService Implementation
 	 */
-	private Response setEncapsulationLabel(LogicalPort port) {
+
+	@Override
+	public void upPhysicalInterface(LogicalPort iface) throws CapabilityException {
+
+		iface.setOperationalStatus(OperationalStatus.OK);
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESTATUS, iface);
+		queueAction(action);
+	}
+
+	@Override
+	public void downPhysicalInterface(LogicalPort iface) throws CapabilityException {
+
+		iface.setOperationalStatus(OperationalStatus.STOPPED);
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESTATUS, iface);
+		queueAction(action);
+	}
+
+	@Override
+	public void createSubInterface(NetworkPort iface) throws CapabilityException {
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESUBINTERFACE, iface);
+		queueAction(action);
+	}
+
+	@Override
+	public void deleteSubInterface(NetworkPort iface) throws CapabilityException {
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.DELETESUBINTERFACE, iface);
+		queueAction(action);
+	}
+
+	@Override
+	public void setEncapsulation(LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
+
+		if (!encapsulationType.equals(ProtocolIFType.UNKNOWN)) {
+			ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
+			encapsulationEndpoint.setProtocolIFType(encapsulationType);
+			iface.addProtocolEndpoint(encapsulationEndpoint);
+		}
+
+		removeCurrentEncapsulation(iface);
+		setDesiredEncapsulation(iface);
+	}
+
+	@Override
+	public void setEncapsulationLabel(LogicalPort iface, String encapsulationLabel) throws CapabilityException {
+
+		// specify label in iface
+		// we use the name of the endpoint to store the encapsulation label
+		// and mark protocolType as unknown (it will be discovered by opennaas)
+		ProtocolEndpoint protocolEndpoint = new ProtocolEndpoint();
+		protocolEndpoint.setName(encapsulationLabel);
+		protocolEndpoint.setProtocolIFType(ProtocolIFType.UNKNOWN);
+		iface.addProtocolEndpoint(protocolEndpoint);
+
 		// FIXME it assumes there is only TAGGED_ETHERNET and NO encapsulation
-		return (Response) sendMessage(ActionConstants.SET_VLANID, port);
+		IAction action = createActionAndCheckParams(ChassisActionSet.SET_VLANID, iface);
+		queueAction(action);
+	}
+
+	@Override
+	public void createLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.CREATELOGICALROUTER, logicalRouter);
+		queueAction(action);
+
+		List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
+		interfaces.addAll(ModelHelper.getInterfaces(logicalRouter));
+		addInterfacesToLogicalRouter(logicalRouter, interfaces);
+	}
+
+	@Override
+	public void deleteLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
+
+		// By default, interfaces are not transfered back to the physical router.
+		// Instead, their configuration is lost. If the user wants to maintain them,
+		// it can be done launching removeInterfacesFromLogicalRouter(desiredInterfaces) before deleting it.
+
+		// List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
+		// interfaces.addAll(ModelHelper.getInterfaces(logicalRouter));
+		// removeInterfacesFromLogicalRouter(logicalRouter, interfaces);
+
+		IAction action = createActionAndCheckParams(ChassisActionSet.DELETELOGICALROUTER, logicalRouter);
+		queueAction(action);
+	}
+
+	@Override
+	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+		IAction action;
+		ComputerSystem logicalRouterStub;
+		for (LogicalPort interfaceToAdd : interfaces) {
+
+			logicalRouterStub = new ComputerSystem();
+			logicalRouterStub.setName(logicalRouter.getName());
+			logicalRouterStub.setElementName(logicalRouter.getElementName());
+			logicalRouterStub.addLogicalDevice(interfaceToAdd);
+
+			action = createActionAndCheckParams(ChassisActionSet.ADDINTERFACETOLOGICALROUTER, logicalRouterStub);
+			queueAction(action);
+		}
+	}
+
+	@Override
+	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+
+		IAction action;
+		ComputerSystem logicalRouterStub;
+		for (LogicalPort interfaceToAdd : interfaces) {
+
+			logicalRouterStub = new ComputerSystem();
+			logicalRouterStub.setName(logicalRouter.getName());
+			logicalRouterStub.setElementName(logicalRouter.getElementName());
+			logicalRouterStub.addLogicalDevice(interfaceToAdd);
+
+			action = createActionAndCheckParams(ChassisActionSet.REMOVEINTERFACEFROMLOGICALROUTER, logicalRouterStub);
+			queueAction(action);
+		}
 	}
 
 	private boolean requiresTaggedEthernetEncapsulation(LogicalPort port) {
@@ -164,34 +214,44 @@ public class ChassisCapability extends AbstractCapability {
 		return port.getProtocolEndpoint().isEmpty();
 	}
 
-	private Response removeCurrentEncapsulation(LogicalPort port) {
+	private void removeCurrentEncapsulation(LogicalPort port) throws CapabilityException {
 		// FIXME it assumes there is only TAGGED_ETHERNET and NO encapsulation
 
 		if (requiresTaggedEthernetEncapsulation(port)) {
 			// nothing to remove, as current can only be no encapsulation or required one
-			return Response.okResponse("removeEncapsulation");
 		} else {
 			// it is save to remove TAGGED_ETHERNET, as current can only be tagged or none
 			// and removing when it does not exists does not fail
-			return (Response) sendMessage(ActionConstants.REMOVE_TAGGEDETHERNET_ENCAPSULATION, port);
+			IAction action = createActionAndCheckParams(ChassisActionSet.REMOVE_TAGGEDETHERNET_ENCAPSULATION, port);
+			queueAction(action);
 		}
 	}
 
-	private Response setDesiredEncapsulation(LogicalPort port) {
-		Response toReturn;
+	private void setDesiredEncapsulation(LogicalPort port) throws CapabilityException {
+
 		if (requiresNoEncapsulation(port)) {
 			// nothing to set
-			toReturn = Response.okResponse(ActionConstants.SETENCAPSULATION);
 		} else {
 			if (requiresTaggedEthernetEncapsulation(port)) {
-				toReturn = (Response) sendMessage(ActionConstants.SET_TAGGEDETHERNET_ENCAPSULATION, port);
+				IAction action = createActionAndCheckParams(ChassisActionSet.SET_TAGGEDETHERNET_ENCAPSULATION, port);
+				queueAction(action);
 			} else {
-				Vector<String> errorMsgs = new Vector<String>();
-				errorMsgs.add("Unsupported encapsulation type");
-				toReturn = Response.errorResponse(ActionConstants.SETENCAPSULATION, errorMsgs);
+				throw new CapabilityException("Unsupported encapsulation type");
 			}
 		}
-		return toReturn;
 	}
 
+	// TODO REMOVE
+	@Override
+	public Response sendMessage(String actionId, Object params) throws CapabilityException {
+		try {
+			IAction action = createActionAndCheckParams(actionId, params);
+			queueAction(action);
+			return Response.queuedResponse(actionId);
+		} catch (CapabilityException e) {
+			Vector<String> errors = new Vector<String>();
+			errors.add(e.getMessage());
+			return Response.errorResponse(actionId, errors);
+		}
+	}
 }
