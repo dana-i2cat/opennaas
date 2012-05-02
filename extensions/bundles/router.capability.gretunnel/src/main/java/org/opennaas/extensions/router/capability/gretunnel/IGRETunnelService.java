@@ -5,12 +5,13 @@ import java.util.List;
 import org.opennaas.extensions.router.model.GRETunnelService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
 
 /**
  * @author Jordi Puig
  */
-public interface IGRETunnelService {
+public interface IGRETunnelService extends ICapability {
 
 	/**
 	 * Create a GRETunnel on the router

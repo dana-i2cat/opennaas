@@ -6,6 +6,7 @@ package org.opennaas.extensions.ws.impl;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 
 /**
@@ -34,16 +35,13 @@ public class GenericCapabilityServiceImpl {
 	 * @return the capability
 	 * @throws ResourceException
 	 */
-	protected ICapability getCapability(String resourceId, String type) throws ResourceException {
-		IResource resource = getResource(resourceId);
-		ICapability iCapability = null;
-		for (ICapability capability : resource.getCapabilities()) {
-			String _type = capability.getCapabilityInformation().getType();
-			if (_type.equals(type)) {
-				iCapability = capability;
-			}
+	protected ICapability getCapability(String resourceId, String type) throws CapabilityException {
+		try {
+			IResource resource = getResource(resourceId);
+			return resource.getCapabilityByType(type);
+		} catch (ResourceException e) {
+			throw new CapabilityException("Capability not found", e);
 		}
-		return iCapability;
 	}
 
 	/**

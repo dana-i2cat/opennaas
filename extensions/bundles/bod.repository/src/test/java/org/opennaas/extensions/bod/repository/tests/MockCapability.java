@@ -1,28 +1,20 @@
 package org.opennaas.extensions.bod.repository.tests;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-public class MockCapability implements ICapability {
+public class MockCapability implements ICapabilityLifecycle {
 	Log	log	= LogFactory.getLog(MockCapability.class);
 
 	@Override
 	public State getState() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void setState(State state) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -73,10 +65,15 @@ public class MockCapability implements ICapability {
 
 	}
 
+	// @Override
+	// public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
+	// log.info("MOCK CAPABILITY: send message!!");
+	// return null;
+	// }
+
 	@Override
-	public Object sendMessage(String idOperation, Object paramsModel) throws CapabilityException {
-		log.info("MOCK CAPABILITY: send message!!");
-		return null;
+	public String getCapabilityName() {
+		return "mockCapability";
 	}
 
 }

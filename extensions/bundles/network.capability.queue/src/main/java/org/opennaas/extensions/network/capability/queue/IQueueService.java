@@ -3,12 +3,13 @@ package org.opennaas.extensions.network.capability.queue;
 import java.util.Map;
 
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.queue.QueueResponse;
 
 /**
  * @author Jordi Puig
  */
-public interface IQueueService {
+public interface IQueueService extends ICapability {
 
 	/**
 	 * This action will execute each resource queue

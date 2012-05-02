@@ -53,6 +53,7 @@
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<guava.version>10.0.1</guava.version>
+		<jodatime.version>2.1</jodatime.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
@@ -119,6 +120,11 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -689,6 +695,11 @@
 				<groupId>com.googlecode.guava-osgi</groupId>
 				<artifactId>guava-osgi</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${jodatime.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

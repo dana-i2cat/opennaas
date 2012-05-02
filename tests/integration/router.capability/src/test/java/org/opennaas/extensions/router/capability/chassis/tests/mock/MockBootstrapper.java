@@ -1,7 +1,5 @@
 package org.opennaas.extensions.router.capability.chassis.tests.mock;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
@@ -9,25 +7,25 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MockBootstrapper implements IResourceBootstrapper {
-	Log	log	= LogFactory.getLog(MockBootstrapper.class);
+	Log		log	= LogFactory.getLog(MockBootstrapper.class);
 
-	IModel oldModel;
+	IModel	oldModel;
 
-	public void resetModel (IResource resource) throws ResourceException {
+	public void resetModel(IResource resource) throws ResourceException {
 		resource.setModel(new ComputerSystem());
 		if (isALogicalRouter(resource))
-			((ComputerSystem)resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
+			((ComputerSystem) resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 	}
-
 
 	public void bootstrap(IResource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
@@ -43,14 +41,15 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			/* abstract capabilities have to be initialized */
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab).sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
-					throw new ResourceException();
+				try {
+					((AbstractCapability) capab).sendRefreshActions();
+				} catch (CapabilityException e) {
+					throw new ResourceException(e);
 				}
 			}
 		}
 
-		ICapability queueCapab = resource.getCapability(createQueueInformation());
+		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING
@@ -62,7 +61,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		//MockBootstrapper does not create childs
+		// MockBootstrapper does not create childs
 	}
 
 	private Information createQueueInformation() {
@@ -83,6 +82,6 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			return false;
 
 		return (resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL) != null
-				&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
+		&& resourceDescriptor.getProperties().get(ResourceDescriptor.VIRTUAL).equals("true"));
 	}
 }

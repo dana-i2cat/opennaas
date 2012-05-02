@@ -5,8 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class IPProtocolEndpoint as well as methods comparable to
@@ -194,6 +195,7 @@ public class IPProtocolEndpoint extends ProtocolEndpoint implements
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property AddressType.
 	 */
+	@XmlType(namespace = "http:/www.opennaas.org/ws/ipProtocolEndpoint/enums")
 	@Deprecated
 	public enum AddressType {
 		UNKNOWN,

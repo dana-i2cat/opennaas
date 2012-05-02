@@ -1,9 +1,9 @@
 package org.opennaas.core.resources.tests.capability;
 
+import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
 public class MockCapability extends AbstractCapability {
@@ -19,32 +19,27 @@ public class MockCapability extends AbstractCapability {
 	}
 
 	@Override
-	protected void activateCapability() throws CapabilityException {
+	public void activate() throws CapabilityException {
 		internalCall = "activate";
+		setState(State.ACTIVE);
 	}
 
 	@Override
-	protected void deactivateCapability() throws CapabilityException {
+	public void deactivate() throws CapabilityException {
 		internalCall = "deactivate";
+		setState(State.INACTIVE);
 	}
 
 	@Override
-	protected void initializeCapability() throws CapabilityException {
+	public void initialize() throws CapabilityException {
 		internalCall = "initialize";
+		setState(State.INITIALIZED);
 	}
 
 	@Override
-	protected void shutdownCapability() throws CapabilityException {
+	public void shutdown() throws CapabilityException {
 		internalCall = "shutdown";
-	}
-
-	// @Override
-	// public void setResource(IResource resource) {
-	// }
-
-	public Response sendMessage(String idOperation, Object paramsModel) {
-		// TODO Auto-generated method stub
-		return null;
+		setState(State.SHUTDOWN);
 	}
 
 	@Override
@@ -59,7 +54,16 @@ public class MockCapability extends AbstractCapability {
 	}
 
 	@Override
-	public Response sendRefreshActions() {
-		return Response.okResponse("");
+	public void sendRefreshActions() {
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return "mockCapability";
 	}
 }
