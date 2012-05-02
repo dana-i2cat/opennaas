@@ -293,7 +293,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property PowerManagementCapabilities.
 	 */
-	@XmlType(namespace = "http:/www.ws.opennaas.org/types/computersystem")
+	@XmlType(namespace = "http:/www.ws.opennaas.org/computersystem/enums")
 	@Deprecated
 	public enum PowerManagementCapabilities {
 		UNKNOWN,
