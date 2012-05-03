@@ -4,9 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
+import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
 
 //
 /**
@@ -31,24 +30,28 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	nextHopIpAddress;
 
+	
 	@Override
 	protected Object doExecute() throws Exception {
-		printInitCommand("Create the static route");
+		printInitCommand("Create Static Route");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			StaticRouteCapability staticRouteCapability = (StaticRouteCapability) getCapability(router.getCapabilities(),
-					StaticRouteCapability.CAPABILITY_NAME);
-			Response response = staticRouteCapability.create(netIdIpAdress, maskIpAdress, nextHopIpAddress);
-			return printResponseStatus(response, resourceId);
+			
+			IStaticRouteCapability staticRouteCapability=(IStaticRouteCapability) router.getCapabilitiesByInterface(IStaticRouteCapability.class);		
+			staticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);					
+			
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
 			return -1;
 		} catch (Exception e) {
-			printError("Error creating the static route");
+			printError("Error creating Static route.");
 			printError(e);
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
+
 	}
 }

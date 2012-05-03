@@ -22,10 +22,6 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-		</dependency>
 		<!--  auxiliar methods to use with commands -->
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
