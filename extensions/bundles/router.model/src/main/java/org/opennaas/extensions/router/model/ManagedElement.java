@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.opennaas.core.resources.IModel;
 
@@ -25,7 +24,7 @@ public class ManagedElement implements IModel, Serializable {
 	/**
 	 * These are the associations where I am the "from" element
 	 */
-	Vector<Association>	toAssociations	= new Vector<Association>();
+	protected List<Association>	toAssociations	= new ArrayList<Association>();
 
 	/**
 	 * Returns the list of Associations where I am the "from" element
@@ -34,6 +33,15 @@ public class ManagedElement implements IModel, Serializable {
 	 */
 	public List<Association> getToAssociations() {
 		return toAssociations;
+	}
+
+	/**
+	 * Sets the list of Associations where I am the "from" element
+	 * 
+	 * @param toAssociations
+	 */
+	public void setToAssociations(List<Association> toAssociations) {
+		this.toAssociations = toAssociations;
 	}
 
 	/**
@@ -226,7 +234,7 @@ public class ManagedElement implements IModel, Serializable {
 	/**
 	 * These are the associations where I am the "to" element
 	 */
-	Vector<Association>	fromAssociations	= new Vector<Association>();
+	protected List<Association>	fromAssociations	= new ArrayList<Association>();
 
 	/**
 	 * Returns the list of Associations where I am the "to" element
@@ -235,6 +243,15 @@ public class ManagedElement implements IModel, Serializable {
 	 */
 	public List<Association> getFromAssociations() {
 		return fromAssociations;
+	}
+
+	/**
+	 * Sets the list of Associations where I am the "to" element
+	 * 
+	 * @param fromAssociations
+	 */
+	public void setFromAssociations(List<Association> fromAssociations) {
+		this.fromAssociations = fromAssociations;
 	}
 
 	/**
