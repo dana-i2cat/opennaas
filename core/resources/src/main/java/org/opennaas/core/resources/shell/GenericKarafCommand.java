@@ -236,7 +236,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return resource;
 	}
 
-	protected ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+	protected ICapability getCapability(List<? extends ICapability> capabilities, String type) throws Exception {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;

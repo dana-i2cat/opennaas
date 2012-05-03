@@ -24,14 +24,16 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
@@ -54,32 +56,32 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ConnectionsCapabilityIntegrationTest
 {
-	private final static Log	log			= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
+	private final static Log		log			= LogFactory.getLog(ConnectionsCapabilityIntegrationTest.class);
 
-	private final String		deviceID	= "roadm";
-	private final String		queueID		= "queue";
+	private final String			deviceID	= "roadm";
+	private final String			queueID		= "queue";
 
-	private MockResource		mockResource;
-	private ICapability			connectionsCapability;
-	private ICapability			queueCapability;
+	private MockResource			mockResource;
+	private IConnectionsCapability	connectionsCapability;
+	private IQueueManagerService	queueCapability;
 
 	@Inject
-	private BundleContext		bundleContext;
+	private BundleContext			bundleContext;
 
 	@Inject
 	@Filter("(capability=queue)")
-	private ICapabilityFactory	queueManagerFactory;
+	private ICapabilityFactory		queueManagerFactory;
 
 	@Inject
-	private IProtocolManager	protocolManager;
+	private IProtocolManager		protocolManager;
 
 	@Inject
 	@Filter("(capability=connections)")
-	private ICapabilityFactory	connectionFactory;
+	private ICapabilityFactory		connectionFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
-	private BlueprintContainer	wonesysProtocolService;
+	private BlueprintContainer		wonesysProtocolService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -121,8 +123,8 @@ public class ConnectionsCapabilityIntegrationTest
 
 		log.info("INFO: Before test, getting queue...");
 
-		queueCapability = queueManagerFactory.create(mockResource);
-		queueCapability.initialize();
+		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
 
@@ -132,9 +134,9 @@ public class ConnectionsCapabilityIntegrationTest
 		log.info("Checking capability descriptor");
 		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
 		log.info("Creating connection capability");
-		connectionsCapability = connectionFactory.create(mockResource);
+		connectionsCapability = (IConnectionsCapability) connectionFactory.create(mockResource);
 		Assert.assertNotNull(connectionsCapability);
-		connectionsCapability.initialize();
+		((ICapabilityLifecycle) connectionsCapability).initialize();
 	}
 
 	@Before

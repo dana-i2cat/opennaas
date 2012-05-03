@@ -14,12 +14,15 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
-public class IPCapability extends AbstractCapability {
-	public final static String	IPv4		= "ipv4";
+public class IPCapability extends AbstractCapability implements IIPCapability {
 
-	Log							log			= LogFactory.getLog(IPCapability.class);
+	public static final String	CAPABILITY_TYPE	= "ipv4";
 
-	private String				resourceId	= "";
+	public final static String	IPv4			= CAPABILITY_TYPE;
+
+	Log							log				= LogFactory.getLog(IPCapability.class);
+
+	private String				resourceId		= "";
 
 	public IPCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
@@ -28,15 +31,27 @@ public class IPCapability extends AbstractCapability {
 	}
 
 	@Override
-	protected void activateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
-	protected void deactivateCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
 
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
 	}
 
 	@Override
@@ -49,18 +64,6 @@ public class IPCapability extends AbstractCapability {
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
-
-	}
-
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
 
 	}
 

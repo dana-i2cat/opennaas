@@ -22,7 +22,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-public class MonitoringCapability extends AbstractCapability implements EventHandler {
+public class MonitoringCapability extends AbstractCapability implements EventHandler, IMonitoringCapability {
 
 	static Log					log						= LogFactory.getLog(MonitoringCapability.class);
 
@@ -37,6 +37,30 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Monitoring Capability");
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
 	}
 
 	@Override
@@ -81,25 +105,15 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	}
 
 	@Override
-	protected void activateCapability() throws CapabilityException {
+	public void activate() throws CapabilityException {
 		registerAsCapabilityAlarmListener();
+		setState(State.ACTIVE);
 	}
 
 	@Override
-	protected void deactivateCapability() throws CapabilityException {
+	public void deactivate() throws CapabilityException {
 		unregisterAsCapabilityAlarmListener();
-	}
-
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		// TODO Auto-generated method stub
-
+		setState(State.INACTIVE);
 	}
 
 	/**

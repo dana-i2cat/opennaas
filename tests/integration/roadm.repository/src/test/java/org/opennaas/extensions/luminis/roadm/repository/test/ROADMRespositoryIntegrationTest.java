@@ -1,28 +1,22 @@
 package org.opennaas.extensions.luminis.roadm.repository.test;
 
-import java.io.File;
-import java.util.List;
-import javax.inject.Inject;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
-import org.opennaas.extensions.router.model.FCPort;
-import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
-import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
-import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
-import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -39,25 +33,32 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
+import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
+import org.opennaas.extensions.router.model.FCPort;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.WonesysPassiveAddCard;
+import org.opennaas.extensions.router.model.utils.OpticalSwitchFactory;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ROADMRespositoryIntegrationTest
 {
-	private final static Log	log				= LogFactory.getLog(ROADMRespositoryIntegrationTest.class);
+	private final static Log	log	= LogFactory.getLog(ROADMRespositoryIntegrationTest.class);
 
 	@Inject
 	@Filter("(type=roadm)")
@@ -83,10 +84,10 @@ public class ROADMRespositoryIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -218,10 +219,10 @@ public class ROADMRespositoryIntegrationTest
 		Assert.assertNotNull(resource.getModel());
 		// Assert.assertNotNull(resource.getProfile());
 
-		ICapability connections = getCapability(resource.getCapabilities(), "connections");
+		IConnectionsCapability connections = (IConnectionsCapability) resource.getCapabilityByInterface(IConnectionsCapability.class);
 		if (connections == null)
 			Assert.fail("Capability not found");
-		ICapability queueCapability = getCapability(resource.getCapabilities(), "queue");
+		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilityByInterface(IQueueManagerService.class);
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 
@@ -250,7 +251,7 @@ public class ROADMRespositoryIntegrationTest
 
 		Response resp = (Response) connections.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE,
-																				  null);
+				null);
 
 		Assert.assertTrue(queueResponse.isOk());
 

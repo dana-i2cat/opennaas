@@ -31,7 +31,7 @@ public class DeleteTunnelCommand extends GenericKarafCommand {
 		printInitCommand("Delete GRE tunnel " + tunnelName);
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
+			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_TYPE);
 			Response response = tunnelCapability.deleteGRETunnel(getTunnelService());
 			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {

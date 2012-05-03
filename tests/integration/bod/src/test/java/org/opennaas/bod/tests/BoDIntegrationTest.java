@@ -1,22 +1,23 @@
 package org.opennaas.bod.tests;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
@@ -29,29 +30,19 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventHandler;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class BoDIntegrationTest
 {
-	private final static Log	log				= LogFactory.getLog(BoDIntegrationTest.class);
+	private final static Log		log					= LogFactory.getLog(BoDIntegrationTest.class);
 
 	private ProtocolSessionManager	protocolSessionManager;
 
@@ -61,9 +52,9 @@ public class BoDIntegrationTest
 	@Inject
 	private IResourceManager		resourceManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-    private BlueprintContainer		repositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	private BlueprintContainer		repositoryService;
 
 	private static final String		ACTION_NAME			= "dummy";
 	private static final String		VERSION				= "1.0";
@@ -77,10 +68,10 @@ public class BoDIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-bod"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-bod"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	@Test
@@ -90,12 +81,12 @@ public class BoDIntegrationTest
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		CapabilityDescriptor capabilityDescriptor =
-			ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILITY_TYPE, CAPABILITY_URI);
+				ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILITY_TYPE, CAPABILITY_URI);
 		lCapabilityDescriptors.add(capabilityDescriptor);
 
 		// BoD Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
-																					 RESOURCE_INFO_NAME);
+				RESOURCE_INFO_NAME);
 
 		// Create resource
 		IResource resource = resourceManager.createResource(resourceDescriptor);
@@ -105,11 +96,11 @@ public class BoDIntegrationTest
 		Assert.assertTrue(resource.getState().equals(State.ACTIVE));
 
 		// Get Capabilities
-		List<ICapability> CapabilityList = resource.getCapabilities();
-		Assert.assertTrue(CapabilityList.size() > 0);
+		List<? extends ICapability> capabilityList = resource.getCapabilities();
+		Assert.assertTrue(capabilityList.size() > 0);
 
 		// Get and Execute Actions
-		for (ICapability capability : CapabilityList) {
+		for (ICapability capability : capabilityList) {
 			Assert.assertTrue(capability.getCapabilityInformation().getType().equals(CAPABILITY_TYPE));
 
 			IActionSet actionSet = ((L2BoDCapability) capability).getActionSet();

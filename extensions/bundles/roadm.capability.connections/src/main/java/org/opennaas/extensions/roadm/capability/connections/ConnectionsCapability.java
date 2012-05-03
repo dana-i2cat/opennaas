@@ -14,18 +14,56 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
-public class ConnectionsCapability extends AbstractCapability {
+public class ConnectionsCapability extends AbstractCapability implements IConnectionsCapability {
 
-	public static String	CONNECTIONS	= "connections";
+	public static final String	CAPABILITY_TYPE	= "connections";
 
-	Log						log			= LogFactory.getLog(ConnectionsCapability.class);
+	public static String		CONNECTIONS		= CAPABILITY_TYPE;
 
-	private String			resourceId	= "";
+	Log							log				= LogFactory.getLog(ConnectionsCapability.class);
+
+	private String				resourceId		= "";
 
 	public ConnectionsCapability(CapabilityDescriptor descriptor, String resourceId) {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Connections Capability");
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
+		}
+	}
+
+	@Override
+	public IActionSet getActionSet() throws CapabilityException {
+		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+
+		try {
+			return Activator.getConnectionsActionSetService(name, version);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	@Override
@@ -47,37 +85,4 @@ public class ConnectionsCapability extends AbstractCapability {
 
 		return Response.queuedResponse(idOperation);
 	}
-
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
-		String version = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-
-		try {
-			return Activator.getConnectionsActionSetService(name, version);
-		} catch (ActivatorException e) {
-			throw new CapabilityException(e);
-		}
-	}
-
 }
