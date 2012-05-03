@@ -8,7 +8,7 @@ import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.gretunnel.GRETunnelCapability;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -33,7 +33,8 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 		printInitCommand("Shows GRE tunnels");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_TYPE);
+			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
+			tunnelCapability.showGRETunnelConfiguration();
 			List<GRETunnelService> lGRETunnelService = tunnelCapability.showGRETunnelConfiguration();
 			if (lGRETunnelService == null || lGRETunnelService.isEmpty()) {
 				printInfo("No GRE tunnels configured on the router");

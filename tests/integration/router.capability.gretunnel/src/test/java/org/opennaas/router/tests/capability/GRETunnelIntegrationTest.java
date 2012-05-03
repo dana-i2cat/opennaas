@@ -34,7 +34,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
-import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelService;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
@@ -63,7 +63,7 @@ public abstract class GRETunnelIntegrationTest
 															.getLog(GRETunnelIntegrationTest.class);
 	private static MockResource		mockResource;
 	protected IQueueManagerService	queueCapability;
-	protected IGRETunnelService		greTunnelCapability;
+	protected IGRETunnelCapability		greTunnelCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -144,7 +144,7 @@ public abstract class GRETunnelIntegrationTest
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("Creating gretunnel capability");
-		greTunnelCapability = (IGRETunnelService) gretunnelFactory.create(mockResource);
+		greTunnelCapability = (IGRETunnelCapability) gretunnelFactory.create(mockResource);
 		((ICapabilityLifecycle) greTunnelCapability).initialize();
 
 		mockResource.addCapability(queueCapability);
