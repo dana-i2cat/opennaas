@@ -2,32 +2,28 @@ package org.opennaas.extensions.router.capability.gretunnel;
 
 import java.util.List;
 
-import org.opennaas.extensions.router.model.GRETunnelService;
-
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
+import org.opennaas.extensions.router.model.GRETunnelService;
 
 /**
  * @author Jordi Puig
  */
-public interface IGRETunnelService extends ICapability {
+public interface IGRETunnelCapability extends ICapability {
 
 	/**
 	 * Create a GRETunnel on the router
 	 * 
-	 * @return
 	 * @throws CapabilityException
 	 */
-	public Response createGRETunnel(GRETunnelService greTunnelService) throws CapabilityException;
+	public void createGRETunnel(GRETunnelService greTunnelService) throws CapabilityException;
 
 	/**
 	 * Delete GRETunnel.
 	 * 
-	 * @return
 	 * @throws CapabilityException
 	 */
-	public Response deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException;
+	public void deleteGRETunnel(GRETunnelService greTunnelService) throws CapabilityException;
 
 	/**
 	 * Show the GRETunnel configuration.

@@ -7,6 +7,7 @@ import org.opennaas.extensions.network.model.topology.Interface;
 public class AutobahnInterface extends Interface
 {
 	private PortType portType;
+	private boolean isLocal;
 
 	public void setPortType(PortType portType)
 	{
@@ -18,13 +19,23 @@ public class AutobahnInterface extends Interface
 		return portType;
 	}
 
+	public void setLocal(boolean isLocal)
+	{
+		this.isLocal = isLocal;
+	}
+
+	public boolean isLocal()
+	{
+		return isLocal;
+	}
+
 	@Override
 	public String toString()
 	{
 		return (portType == null)
 			? super.toString()
-			: (portType.getDescription() == null)
-			? portType.getAddress()
-			: portType.getDescription();
+			: ((portType.getDescription() == null)
+			   ? portType.getAddress()
+			   : portType.getDescription()) + (isLocal ? ",local" : "");
 	}
 }

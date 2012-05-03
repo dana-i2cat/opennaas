@@ -2,19 +2,18 @@ package org.opennaas.extensions.router.capability.ospf.shell;
 
 import java.io.IOException;
 
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.OSPFArea;
 import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpointBase;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
 
 /**
  * @author Isart Canyameres
@@ -30,7 +29,7 @@ public class ShowCommand extends GenericKarafCommand {
 		printInitCommand("Show OSPF configuration");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
+			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 			OSPFService ospfService = ospfCapability.showOSPFConfiguration();
 			printOSPFConfiguration(ospfService);
 			return null;

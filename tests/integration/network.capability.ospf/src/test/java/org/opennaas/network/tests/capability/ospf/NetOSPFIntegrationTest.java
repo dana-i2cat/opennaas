@@ -31,7 +31,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.network.capability.ospf.INetOSPFService;
+import org.opennaas.extensions.network.capability.ospf.INetOSPFCapability;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
@@ -176,15 +176,14 @@ public class NetOSPFIntegrationTest {
 		}
 	}
 
-	private void callActivateOSPF() throws CapabilityException {
-
+	private void callActivateOSPF() throws ResourceException {
 		Information inf = new Information();
 		inf.setType(OSPF_CAPABILIY_TYPE);
 
-		INetOSPFService capability = (INetOSPFService) networkResource.getCapability(inf);
-		assertNotNull(capability);
+		INetOSPFCapability netOSPFCapability = (INetOSPFCapability) networkResource.getCapabilityByInterface(INetOSPFCapability.class);
 
-		capability.activateOSPF();
+		assertNotNull(netOSPFCapability);
+		netOSPFCapability.activateOSPF();
 	}
 
 	private void addRoutersToNetwork(List<IResource> routers) throws CapabilityException {
