@@ -46,14 +46,17 @@ public class GetTopologyAction extends AutobahnAction
 		try {
 			log.info("Retrieving Autobahn topology");
 
-			Iterable<PortType> ports =
-				queryPorts(protocolSessionManager);
+			Iterable<PortType> localPorts =
+				queryLocalPorts(protocolSessionManager);
+			Iterable<PortType> allPorts =
+				queryAllPorts(protocolSessionManager);
 			Iterable<ServiceType> services =
 				queryServices(protocolSessionManager);
 
-			updateModel((NetworkModel) modelToUpdate, ports, services);
+			updateModel((NetworkModel) modelToUpdate,
+						localPorts, allPorts, services);
 
-			return okResponse(ports, services);
+			return okResponse(allPorts, services);
 		} catch (UserAccessPointException_Exception e) {
 			throw new ActionException(e);
 		} catch (ProtocolException e) {
@@ -83,7 +86,16 @@ public class GetTopologyAction extends AutobahnAction
 	}
 
 	private Iterable<PortType>
-		queryPorts(IProtocolSessionManager protocolSessionManager)
+		queryLocalPorts(IProtocolSessionManager protocolSessionManager)
+		throws ProtocolException, UserAccessPointException_Exception
+	{
+		UserAccessPoint userAccessPoint =
+			getUserAccessPointService(protocolSessionManager);
+		return userAccessPoint.getDomainClientPorts();
+	}
+
+	private Iterable<PortType>
+		queryAllPorts(IProtocolSessionManager protocolSessionManager)
 		throws ProtocolException, UserAccessPointException_Exception
 	{
 		UserAccessPoint userAccessPoint =
@@ -103,16 +115,20 @@ public class GetTopologyAction extends AutobahnAction
 	}
 
 	private void updateModel(NetworkModel model,
-							 Iterable<PortType> ports,
+							 Iterable<PortType> localPorts,
+							 Iterable<PortType> allPorts,
 							 Iterable<ServiceType> services)
 	{
-		String userName = System.getProperty("user.name");
-
 		Map<String,AutobahnInterface> interfaces = Maps.newHashMap();
-		for (PortType port: ports) {
-			interfaces.put(port.getAddress(), createInterface(port));
+		for (PortType port: allPorts) {
+			interfaces.put(port.getAddress(), createInterface(port, false));
+		}
+		for (PortType port: localPorts) {
+			// Note that this will replace interfaces created above
+			interfaces.put(port.getAddress(), createInterface(port, true));
 		}
 
+		String userName = System.getProperty("user.name");
 		for (ServiceType service: services) {
 			if (userName.equals(service.getUser().getName())) {
 				for (ReservationType reservation: service.getReservations()) {
@@ -131,11 +147,12 @@ public class GetTopologyAction extends AutobahnAction
 		return state >= 20;
 	}
 
-	private AutobahnInterface createInterface(PortType port)
+	private AutobahnInterface createInterface(PortType port, boolean isLocal)
 	{
 		AutobahnInterface i = new AutobahnInterface();
 		i.setPortType(port);
 		i.setName(port.getAddress());
+		i.setLocal(isLocal);
 		return i;
 	}
 

@@ -63,8 +63,12 @@ public class RequestConnectionAction extends AutobahnAction
 
 	protected ServiceRequest
 		createServiceRequest(RequestConnectionParameters request)
-		throws DatatypeConfigurationException
+		throws ActionException, DatatypeConfigurationException
 	{
+		if (!((AutobahnInterface) request.interface1).isLocal()) {
+			throw new ActionException("First interface must be local to this Autobahn domain");
+		}
+
 		boolean processNow =
 			request.startTime.isBefore(DateTime.now().plusSeconds(10));
 
