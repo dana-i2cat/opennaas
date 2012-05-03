@@ -6,7 +6,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.staticroute.IStaticRouteCapability;
-import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 
 //
 /**
@@ -38,7 +37,7 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			
-			StaticRouteCapability staticRouteCapability=(StaticRouteCapability) router.getCapabilitiesByInterface(IStaticRouteCapability.class);		
+			IStaticRouteCapability staticRouteCapability=(IStaticRouteCapability) router.getCapabilitiesByInterface(IStaticRouteCapability.class);		
 			staticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);					
 			
 		} catch (ResourceException e) {

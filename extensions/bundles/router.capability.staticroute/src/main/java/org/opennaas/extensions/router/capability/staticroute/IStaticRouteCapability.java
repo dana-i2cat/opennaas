@@ -16,6 +16,6 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @param nextHopIpAddress   
 	 * @throws CapabilityException
 	 */
-	void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException;
+	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException;
 
 }
