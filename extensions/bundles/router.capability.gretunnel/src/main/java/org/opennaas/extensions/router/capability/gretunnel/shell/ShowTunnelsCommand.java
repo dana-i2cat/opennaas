@@ -34,7 +34,6 @@ public class ShowTunnelsCommand extends GenericKarafCommand {
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
 			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
-			tunnelCapability.showGRETunnelConfiguration();
 			List<GRETunnelService> lGRETunnelService = tunnelCapability.showGRETunnelConfiguration();
 			if (lGRETunnelService == null || lGRETunnelService.isEmpty()) {
 				printInfo("No GRE tunnels configured on the router");
