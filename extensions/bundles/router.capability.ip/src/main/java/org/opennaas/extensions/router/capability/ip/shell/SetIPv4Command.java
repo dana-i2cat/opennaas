@@ -6,11 +6,8 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.capability.ip.IPCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -63,7 +60,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 
 			validateResource(resource);
 			// printInfo("Preparing the message for setting the interface: ");
-			Object params = validateParams(resource);
+			LogicalDevice params = validateParams(resource);
 
 			if (params == null) {
 				printError("Interface " + interfaceName + " not found in model");
@@ -83,11 +80,9 @@ public class SetIPv4Command extends GenericKarafCommand {
 				printEndCommand();
 				return null;
 			}
-			IIPCapability ipCapability = (IIPCapability) getCapability(resource.getCapabilities(), IPCapability.IPv4);
 
-			// printInfo("Sending message to the queue");
-			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETIPv4, params);
-			printResponseStatus(resp, resourceId);
+			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
+			ipCapability.setIPv4(params);
 
 		} catch (ResourceException e) {
 			printError(e);

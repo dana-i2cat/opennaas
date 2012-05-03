@@ -1,7 +1,5 @@
 package org.opennaas.extensions.router.capability.ip;
 
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -9,10 +7,11 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
@@ -30,14 +29,26 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		log.debug("Built new IP Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setIPv4(org.opennaas.extensions.router.model.LogicalPort)
+	 */
 	@Override
-	public String getCapabilityName() {
-		return CAPABILITY_TYPE;
+	public void setIPv4(LogicalDevice iface) throws CapabilityException {
+		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, iface);
+		queueAction(action);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setInterfaceDescription(org.opennaas.extensions.router.model.LogicalPort)
+	 */
 	@Override
-	public void queueAction(IAction action) throws CapabilityException {
-		getQueueManager(resourceId).queueAction(action);
+	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException {
+		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
+		queueAction(action);
 	}
 
 	/**
@@ -68,30 +79,13 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	}
 
 	@Override
-	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
-		log.debug("Sending message to IP Capability");
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.queuedResponse(idOperation);
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
 	}
 
-	private Response prepareErrorMessage(String nameError, String message) {
-		Vector<String> errorMsgs = new Vector<String>();
-		errorMsgs.add(message);
-		return Response.errorResponse(nameError, errorMsgs);
-
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
 	}
+
 }
