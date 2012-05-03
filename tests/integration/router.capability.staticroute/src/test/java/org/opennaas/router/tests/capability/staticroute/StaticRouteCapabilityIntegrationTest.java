@@ -45,7 +45,7 @@ public class StaticRouteCapabilityIntegrationTest extends StaticRouteIntegration
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
 				.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE));
-		staticRouteCapability.create("0.0.0.0", "0.0.0.0", "192.168.1.1");
+		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
 
 		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
