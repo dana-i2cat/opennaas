@@ -79,8 +79,8 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void configureOSPF(OSPFService ospfService) throws CapabilityException {
-		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE, ospfService);
 		ospfService.setEnabledState(EnabledState.DISABLED); // mark OSPF as disabled, we are configuring only
+		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE, ospfService);
 		queueAction(action);
 	}
 
@@ -116,7 +116,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	@Override
 	public void deactivateOSPF() throws CapabilityException {
 		OSPFService service = new OSPFService();
-		service.setEnabledState(EnabledState.ENABLED);
+		service.setEnabledState(EnabledState.DISABLED);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_DEACTIVATE, service);
 		queueAction(action);
 	}

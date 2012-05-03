@@ -19,16 +19,16 @@ import org.opennaas.extensions.router.model.utils.ModelHelper;
 public class ConfigureAreaCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "Name of the router to apply this command on", required = true, multiValued = false)
-	private String			resourceId;
+	private String	resourceId;
 
 	@Argument(index = 1, name = "areaId", description = "OSPF area id.", required = true, multiValued = false)
-	private String			areaId;
+	private String	areaId;
 
 	@Option(name = "--areaType", aliases = { "-t" }, description = "OSPF area type. Accepted values: [PLAIN, STUB, NSSA]", required = false, multiValued = false)
-	private final String	areaType	= "PLAIN";
+	private String	areaType	= "PLAIN";
 
 	@Option(name = "--delete", aliases = { "-d" }, description = "Delete given area, instead of creating it.")
-	boolean					delete;
+	boolean			delete;
 
 	@Override
 	protected Object doExecute() throws Exception {
