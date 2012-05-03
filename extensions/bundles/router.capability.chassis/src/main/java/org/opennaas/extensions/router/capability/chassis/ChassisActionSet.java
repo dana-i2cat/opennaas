@@ -20,7 +20,7 @@ public class ChassisActionSet {
 	public static final String			ADDINTERFACETOLOGICALROUTER			= "addInterfaceToLogicalRouter";
 	public static final String			REMOVEINTERFACEFROMLOGICALROUTER	= "removeInterfaceFromLogicalRouter";
 
-	private static final List<String>	actionIds							= new ArrayList(Arrays.asList(
+	private static final List<String>	actionIds							= new ArrayList<String>(Arrays.asList(
 																					CONFIGURESTATUS,
 																					DELETESUBINTERFACE,
 																					CONFIGURESUBINTERFACE,
