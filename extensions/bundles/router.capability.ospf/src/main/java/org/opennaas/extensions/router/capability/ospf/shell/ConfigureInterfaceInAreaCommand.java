@@ -8,9 +8,8 @@ import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
@@ -52,15 +51,14 @@ public class ConfigureInterfaceInAreaCommand extends GenericKarafCommand {
 				interfaces.add(createInterface(interfaceName));
 			}
 
-			OSPFCapability ospfCapability = (OSPFCapability) getCapability(router.getCapabilities(), OSPFCapability.CAPABILITY_NAME);
+			IOSPFCapability ospfCapability = (IOSPFCapability) router.getCapabilityByInterface(IOSPFCapability.class);
 
-			Response response;
 			if (delete) {
-				response = ospfCapability.removeInterfacesInOSPFArea(interfaces, area);
+				ospfCapability.removeInterfacesInOSPFArea(interfaces, area);
 			} else {
-				response = ospfCapability.addInterfacesInOSPFArea(interfaces, area);
+				ospfCapability.addInterfacesInOSPFArea(interfaces, area);
 			}
-			return printResponseStatus(response, resourceId);
+
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -71,6 +69,8 @@ public class ConfigureInterfaceInAreaCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
 	}
 
 	private NetworkPort createInterface(String interfaceName) throws Exception {
