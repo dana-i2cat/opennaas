@@ -9,10 +9,9 @@ import org.junit.Test;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelService;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
@@ -30,11 +29,9 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 	public void createGRETunnelTest() throws CapabilityException
 	{
 		log.info("Test createGRETunnel method");
-		IGRETunnelService iGRETunnelService = (IGRETunnelService) greTunnelCapability;
-		Response resp = iGRETunnelService
+		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
+		iGRETunnelService
 				.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-		Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
-		Assert.assertTrue(resp.getErrors().size() == 0);
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(queueResponse.isOk());
 	}
@@ -42,10 +39,8 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 	@Test
 	public void deleteGRETunnelTest() throws CapabilityException {
 		log.info("Test createGRETunnel method");
-		IGRETunnelService iGRETunnelService = (IGRETunnelService) greTunnelCapability;
-		Response resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
-		Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
+		iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(queueResponse.isOk());
 	}
@@ -53,7 +48,7 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 	@Test
 	public void showGRETunnelConfigurationTest() throws CapabilityException {
 		log.info("Test showGRETunnelConfiguration method");
-		IGRETunnelService iGRETunnelService = (IGRETunnelService) greTunnelCapability;
+		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
 		List<GRETunnelService> resp = iGRETunnelService.showGRETunnelConfiguration();
 		Assert.assertTrue(resp.size() > 0);
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
@@ -63,14 +58,9 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 	@Test
 	public void testGRETunnelAction() throws CapabilityException {
 		log.info("TEST GRE TUNNEL ACTION");
-		IGRETunnelService iGRETunnelService = (IGRETunnelService) greTunnelCapability;
-		Response resp = iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-		Assert.assertEquals(resp.getStatus(), Response.Status.QUEUED);
-		Assert.assertEquals(resp.getErrors().size(), 0);
-
-		resp = iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
-		Assert.assertEquals(resp.getStatus(), Response.Status.QUEUED);
-		Assert.assertEquals(resp.getErrors().size(), 0);
+		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
+		iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+		iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
 
 		// resp = (Response) greTunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG,
 		// getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
