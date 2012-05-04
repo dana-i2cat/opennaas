@@ -7,10 +7,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
@@ -69,15 +67,11 @@ public class L2AttachCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		ICapability networkCapability = network.getCapabilityByType(NetworkBasicCapability.CAPABILITY_NAME);
-		if (!(networkCapability instanceof ITopologyManager)) {
-			printError("Failed to get required capability.");
-			printEndCommand();
-			return null;
-		}
+		INetworkBasicCapability networkCapability =
+				(INetworkBasicCapability) network.getCapabilityByInterface(INetworkBasicCapability.class);
 
 		try {
-			((ITopologyManager) networkCapability).L2attach(interface1, interface2);
+			networkCapability.l2attach(interface1, interface2);
 		} catch (CapabilityException e) {
 			printError("Error during attach");
 			printError(e);
@@ -88,5 +82,4 @@ public class L2AttachCommand extends GenericKarafCommand {
 		printEndCommand();
 		return null;
 	}
-
 }
