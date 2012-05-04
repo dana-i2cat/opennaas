@@ -1,26 +1,24 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.test.logicalrouters;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
-import mock.MockEventManager;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.action.ActionResponse;
+import org.opennaas.core.resources.action.ActionResponse.STATUS;
+import org.opennaas.core.resources.mock.MockEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.AddInterfaceToLogicalRouterAction;
 import org.opennaas.extensions.router.junos.actionssets.actions.logicalrouters.RemoveInterfaceFromLogicalRouterAction;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.impl.ProtocolSessionManager;
-import org.opennaas.core.resources.action.ActionException;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.ActionResponse.STATUS;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class AddInterfaceToLRTest {
 

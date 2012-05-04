@@ -1,8 +1,8 @@
 #Creating and initializing resource
-resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue.descriptor
+resource:create C:/Users/Jordi/git/opennaas/examples/descriptors/netqueue.descriptor
 resource:start network:network1
 
-resource:create C:/Users/Jordi/git/opennaas/manticore/utils/netqueue-router1.descriptor
+resource:create C:/Users/Jordi/git/opennaas/examples/descriptors/netqueue-router1.descriptor
 protocols:context router:R-AS2-1 netconf mock://user:password@1.1.1.1:22/netconf
 resource:start router:R-AS2-1
 

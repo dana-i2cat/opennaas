@@ -20,7 +20,7 @@
 		<property name="type" value="ospf"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="ospfCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>

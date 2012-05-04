@@ -1,7 +1,5 @@
 package org.opennaas.extensions.router.capability.ospf.shell;
 
-import org.opennaas.extensions.router.model.OSPFService;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -10,6 +8,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ospf.OSPFCapability;
+import org.opennaas.extensions.router.model.OSPFService;
 
 /**
  * @author Isart Canyameres
@@ -45,7 +44,7 @@ public class ConfigureCommand extends GenericKarafCommand {
 			} else {
 				response = ospfCapability.configureOSPF(ospfService);
 			}
-			return printResponseStatus(response);
+			return printResponseStatus(response, resourceId);
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();

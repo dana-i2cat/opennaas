@@ -10,7 +10,7 @@
 	<interfaces>	
 		<interface>
 		<name>$name</name>
-			<unit operation="delete">
+			<unit operation="replace">
 				<name>$portNumber</name>
 			</unit>
 		</interface>

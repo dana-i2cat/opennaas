@@ -38,14 +38,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.events</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
 		</dependency>
 		<dependency>
@@ -107,10 +99,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>
@@ -135,14 +123,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
@@ -156,10 +136,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -221,7 +197,6 @@
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
 								<feature>opennaas</feature>
-								<feature>nexus-tests-helper</feature>
 								<feature>nexus-testprofile</feature>
 							</features>
 							<repository>target/system</repository>

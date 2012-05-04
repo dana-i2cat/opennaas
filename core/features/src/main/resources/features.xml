@@ -37,13 +37,7 @@
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
 
-		<bundle>mvn:org.opennaas/org.opennaas.core.events/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.core.protocols-sessionmanager/${project.version}</bundle>
-	</feature>
-
-	<feature name="opennaas-alarms" version="${project.version}">
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.nexus.alarms.repository/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-cim" version="${project.version}">
@@ -137,17 +131,11 @@
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
-		<feature version="${project.version}">opennaas-alarms</feature>
 		<feature version="${project.version}">opennaas-router</feature>
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
-	</feature>
-
-	<feature name="nexus-tests-helper" version="${project.version}">
-		<feature version="${opennaas.version}">org.opennaas.core</feature>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.nexus.tests.helper/${project.version}</bundle>
 	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">

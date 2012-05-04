@@ -121,12 +121,8 @@ public class QueueManager extends AbstractCapability implements
 			boolean errorHappened = false;
 			try {
 				/* execute queued actions */
-				try {
-					queueResponse = executeQueuedActions(queueResponse,
-							protocolSessionManager);
-				} catch (ActionException e) {
-					throw new CapabilityException(e);
-				}
+				queueResponse = executeQueuedActions(queueResponse,
+						protocolSessionManager);
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -148,6 +144,7 @@ public class QueueManager extends AbstractCapability implements
 							errorHappened = true;
 
 					} catch (ActionException e) {
+						queueResponse.setConfirmResponse(ActionResponse.errorResponse(QueueConstants.CONFIRM, e.getLocalizedMessage()));
 						throw new CapabilityException(e);
 					}
 
@@ -279,7 +276,6 @@ public class QueueManager extends AbstractCapability implements
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
 			}
-
 		} catch (CapabilityException e) {
 			throw new CapabilityException(e);
 		}
@@ -440,26 +436,31 @@ public class QueueManager extends AbstractCapability implements
 	// Resources.
 
 	/**
+	 * Executes actions in the queue.
+	 * 
+	 * Queue execution stops at the first action to return error. Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
 	 * @param protocolSessionManager
 	 *            to use in actions execution
 	 * @return given queueResponse with executed actions responses.
-	 * @throws ActionException
-	 *             if an Action throws it during its execution
 	 */
 	private QueueResponse executeQueuedActions(QueueResponse queueResponse,
-			IProtocolSessionManager protocolSessionManager)
-			throws ActionException {
+			IProtocolSessionManager protocolSessionManager) {
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			/* use pool for get protocol session */
-			log.debug("getting protocol session...");
+
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
-			ActionResponse actionResponse = action
-					.execute(protocolSessionManager);
+			ActionResponse actionResponse;
+			try {
+				actionResponse = action.execute(protocolSessionManager);
+			} catch (ActionException e) {
+				log.error("Error executing action " + action.getActionID(), e);
+				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
+			}
 			queueResponse.getResponses().set(numAction, actionResponse);
 			numAction++;
 
@@ -601,9 +602,16 @@ public class QueueManager extends AbstractCapability implements
 	 * @return the response of remove the action
 	 */
 	private Object remove(int posAction) {
-		queue.remove(posAction);
-		return Response.okResponse(QueueConstants.MODIFY,
-				"Remove operation in pos: " + posAction);
+
+		try {
+			queue.remove(posAction);
+			return Response.okResponse(QueueConstants.MODIFY,
+					"Remove operation in pos: " + posAction);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Vector<String> errors = new Vector<String>(1);
+			errors.add("Invalid index. Index " + posAction + " does not point to any action in the queue.");
+			return Response.errorResponse(QueueConstants.MODIFY, errors);
+		}
 
 	}
 

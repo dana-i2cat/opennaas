@@ -21,7 +21,7 @@
 		<property name="type" value="chassis"/>
 	</bean>
 	<!-- Command completers -->
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.router.capability.chassis.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<!-- Register the Service as an OSGi Service -->
 	<service ref="chassisCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
@@ -70,12 +70,27 @@
 		</command>
 		<command name="chassis/createSubInterface">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.CreateSubInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/deleteSubInterface">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.DeleteSubInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/setEncapsulation">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.SetEncapsulationCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="chassis/setEncapsulationLabel">
+			<action class="org.opennaas.extensions.router.capability.chassis.shell.SetEncapsulationLabelCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
@@ -91,9 +106,17 @@
 		<!--  up an down interfaces  -->
 		<command name="chassis/up">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.UpInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 		<command name="chassis/down">
 			<action class="org.opennaas.extensions.router.capability.chassis.shell.DownInterfaceCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
 		</command>
 	</command-bundle>
 </blueprint>
