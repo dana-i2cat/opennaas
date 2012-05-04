@@ -30,7 +30,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.capability.ospf.INetOSPFCapability;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
@@ -190,7 +190,7 @@ public class NetOSPFIntegrationTest {
 		Information inf = new Information();
 		inf.setType(BASIC_CAPABILIY_TYPE);
 
-		ITopologyManager topologyCapability = (ITopologyManager) networkResource.getCapability(inf);
+		INetworkBasicCapability topologyCapability = (INetworkBasicCapability) networkResource.getCapability(inf);
 		assertNotNull(topologyCapability);
 
 		for (IResource router : routers) {

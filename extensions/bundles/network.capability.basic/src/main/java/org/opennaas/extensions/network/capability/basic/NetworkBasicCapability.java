@@ -37,8 +37,6 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		log.debug("Built new Network Basic Capability");
 	}
 
-	// ITopologyManager IMPLEMENTATION //
-
 	@Override
 	public NetworkModel addResource(IResource resourceToAdd) throws CapabilityException {
 
