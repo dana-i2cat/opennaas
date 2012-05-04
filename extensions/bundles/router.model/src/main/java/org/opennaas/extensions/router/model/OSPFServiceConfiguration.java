@@ -24,6 +24,11 @@ public class OSPFServiceConfiguration extends Dependency implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7510582691751824582L;
+
+	/**
 	 * This constructor creates a OSPFServiceConfigurationBeanImpl Class which implements the OSPFServiceConfigurationBean Interface, and encapsulates
 	 * the CIM class OSPFServiceConfiguration in a Java Bean. The CIM class OSPFServiceConfiguration is described as follows:
 	 * 

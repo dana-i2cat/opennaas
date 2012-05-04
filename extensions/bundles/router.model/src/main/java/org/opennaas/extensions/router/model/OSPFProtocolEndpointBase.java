@@ -17,6 +17,11 @@ import java.io.Serializable;
 public class OSPFProtocolEndpointBase extends ProtocolEndpoint implements
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -6537017184553228369L;
+
 	/* EndpointInArea */
 	/**
 	 * 

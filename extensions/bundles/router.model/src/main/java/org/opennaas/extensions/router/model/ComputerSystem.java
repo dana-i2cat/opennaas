@@ -22,6 +22,11 @@ import javax.xml.bind.annotation.XmlType;
 public class ComputerSystem extends System implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4611207438563668398L;
+
+	/**
 	 * This constructor creates a ComputerSystemBeanImpl Class which implements the ComputerSystemBean Interface, and encapsulates the CIM class
 	 * ComputerSystem in a Java Bean. The CIM class ComputerSystem is described as follows:
 	 * 

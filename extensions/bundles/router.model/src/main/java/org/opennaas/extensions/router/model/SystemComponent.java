@@ -23,6 +23,11 @@ import java.io.*;
 public class SystemComponent extends Component implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4408876726254639224L;
+
+	/**
 	 * This constructor creates a SystemComponentBeanImpl Class which implements the SystemComponentBean Interface, and encapsulates the CIM class
 	 * SystemComponent in a Java Bean. The CIM class SystemComponent is described as follows:
 	 * 

@@ -20,6 +20,11 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4635898523052855454L;
+
+	/**
 	 * Sets the ProvidesEndpoint association between a given Service and this element.
 	 * 
 	 * @param protocolEndpoint

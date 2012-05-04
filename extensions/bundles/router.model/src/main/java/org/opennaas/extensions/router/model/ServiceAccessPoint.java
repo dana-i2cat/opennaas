@@ -19,6 +19,11 @@ import java.util.List;
 public class ServiceAccessPoint extends EnabledLogicalElement implements
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4477790607710638709L;
+
 	/* BindsTo */
 	/**
 	 * 

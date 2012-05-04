@@ -21,10 +21,12 @@ import org.opennaas.core.resources.IModel;
  */
 public class ManagedElement implements IModel, Serializable {
 
+	private static final long	serialVersionUID	= 3787493356525574746L;
+
 	/**
 	 * These are the associations where I am the "from" element
 	 */
-	protected List<Association>	toAssociations	= new ArrayList<Association>();
+	protected List<Association>	toAssociations		= new ArrayList<Association>();
 
 	/**
 	 * Returns the list of Associations where I am the "from" element

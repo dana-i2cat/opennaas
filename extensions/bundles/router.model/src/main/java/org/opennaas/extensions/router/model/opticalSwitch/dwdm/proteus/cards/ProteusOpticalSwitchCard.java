@@ -30,6 +30,10 @@ public class ProteusOpticalSwitchCard extends LogicalModule implements IOpticalS
 	// getModulePorts().get(i).getPortsOnDevice() represents channels in ModulePort i.
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -6451792646851131259L;
+	/**
 	 * Type and subtype of the card
 	 */
 	private int	type;
