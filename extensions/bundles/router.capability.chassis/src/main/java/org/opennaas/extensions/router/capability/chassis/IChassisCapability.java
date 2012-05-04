@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -156,6 +155,4 @@ public interface IChassisCapability extends ICapability {
 	 */
 	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException;
 
-	// TODO REMOVE
-	public Response sendMessage(String actionId, Object params) throws CapabilityException;
 }

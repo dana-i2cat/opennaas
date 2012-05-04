@@ -180,7 +180,7 @@ public class SetInterfaceDescriptionActionTest
 		ethernetPort.setPortNumber(2);
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 
-		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
+		chassisCapability.createSubInterface(ethernetPort);
 		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
 
 		/* execute action */
@@ -190,9 +190,6 @@ public class SetInterfaceDescriptionActionTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 
 		if (isMock)
 			return;
@@ -205,7 +202,7 @@ public class SetInterfaceDescriptionActionTest
 		Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
 
 		// delete created sub interface
-		chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
+		chassisCapability.deleteSubInterface(ethernetPort);
 		response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
 	}
@@ -238,9 +235,6 @@ public class SetInterfaceDescriptionActionTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 
 		if (isMock)
 			return;

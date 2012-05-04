@@ -7,6 +7,7 @@ import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noC
 import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import helpers.CheckParametersHelper;
+import helpers.ParamCreationHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,7 +148,7 @@ public class SetInterfaceDescriptionActionInLRTest
 			LRName = resource.getModel().getChildren().get(0);
 		} else {
 			// create LR
-			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRName);
+			chassisCapability.createLogicalRouter(ParamCreationHelper.getLogicalRouter(LRName));
 			executeQueue(resource);
 		}
 
@@ -156,14 +157,14 @@ public class SetInterfaceDescriptionActionInLRTest
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName(interfaceName);
 		ethernetPort.setPortNumber(2);
-		chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
+		chassisCapability.deleteSubInterface(ethernetPort);
 
 		// put it in child
 		EthernetPort ethernetPort2 = new EthernetPort();
 		ethernetPort2.setName(ethernetPort.getName());
 		ethernetPort2.setPortNumber(ethernetPort.getPortNumber());
 		ethernetPort2.setElementName(LRName);
-		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort2);
+		chassisCapability.createSubInterface(ethernetPort2);
 		executeQueue(resource);
 
 		LRresource = resourceManager.getResource(resourceManager.getIdentifierFromResourceName("router", LRName));
@@ -187,7 +188,7 @@ public class SetInterfaceDescriptionActionInLRTest
 
 		if (iface != null) {
 			try {
-				chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, iface);
+				chassisCapability.deleteSubInterface(iface);
 			} catch (CapabilityException e) {
 				Assert.fail("It was impossible to send message " + ActionConstants.DELETESUBINTERFACE + " : " + e.getMessage());
 			}
@@ -196,7 +197,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		// delete LR
 		if (LRresource != null) {
 			try {
-				chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, LRName);
+				chassisCapability.deleteLogicalRouter(ParamCreationHelper.getLogicalRouter(LRName));
 			} catch (CapabilityException e) {
 				Assert.fail("It was impossible to send message " + ActionConstants.DELETELOGICALROUTER + " : " + e.getMessage());
 			}
@@ -252,9 +253,6 @@ public class SetInterfaceDescriptionActionInLRTest
 		/* execute action */
 		executeQueue(resource);
 
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
-
 		if (isMock)
 			return;
 
@@ -294,9 +292,6 @@ public class SetInterfaceDescriptionActionInLRTest
 
 		/* execute action */
 		executeQueue(resource);
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 
 		if (isMock)
 			return;

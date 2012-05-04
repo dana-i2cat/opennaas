@@ -27,7 +27,6 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
@@ -38,13 +37,12 @@ import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.tests.mock.MockBootstrapper;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -170,14 +168,7 @@ public class ChassisCapabilityIntegrationTest
 
 		int actionCount = 0;
 
-		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
-		actionCount++;
-
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
+		chassisCapability.setEncapsulation(newParamsInterfaceEthernetPort("fe-0/1/0", 13), ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
 		actionCount++;
 
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
@@ -202,24 +193,15 @@ public class ChassisCapabilityIntegrationTest
 	}
 
 	@Test
-	public void TestChassisAction() throws CapabilityException {
+	public void testChassisAction() throws CapabilityException {
 		log.info("TEST CHASSIS ACTIONS");
 
 		int actionCount = 0;
 
-		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
+		chassisCapability.createSubInterface(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 		actionCount++;
 
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
-		actionCount++;
-
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
+		chassisCapability.deleteSubInterface(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 		actionCount++;
 
 		// // FIXME disabled as it fails (it is tested in testSetEncapsulationAction, now ignored)
@@ -238,16 +220,14 @@ public class ChassisCapabilityIntegrationTest
 		// Assert.assertTrue(resp.getStatus() == Status.OK);
 		// Assert.assertTrue(resp.getErrors().size() == 0);
 
-		resp = (Response) chassisCapability
-				.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, newParamsLRWithInterface("cpe1", "fe-0/1/0", 13));
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
+		List<LogicalPort> lInterfaces = new ArrayList<LogicalPort>();
+		lInterfaces.add(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		chassisCapability.addInterfacesToLogicalRouter(newParamsLRWithInterface("cpe1"), lInterfaces);
 		actionCount++;
 
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.REMOVEINTERFACEFROMLOGICALROUTER,
-				newParamsLRWithInterface("cpe2", "fe-0/0/3", 13));
-		assertEquals(Status.QUEUED, resp.getStatus());
-		assertTrue("There should be no errors", resp.getErrors().isEmpty());
+		lInterfaces = new ArrayList<LogicalPort>();
+		lInterfaces.add(newParamsInterfaceEthernetPort("fe-0/0/3", 13));
+		chassisCapability.removeInterfacesFromLogicalRouter(newParamsLRWithInterface("cpe2"), lInterfaces);
 		actionCount++;
 
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
@@ -274,7 +254,7 @@ public class ChassisCapabilityIntegrationTest
 		assertTrue("Queue should be empty", queue.isEmpty());
 	}
 
-	private Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
+	private EthernetPort newParamsInterfaceEthernet(String name, String ipName, String mask) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName(name);
@@ -285,7 +265,7 @@ public class ChassisCapabilityIntegrationTest
 		return eth;
 	}
 
-	private Object newParamsInterfaceEthernetPort(String name, int port) {
+	private EthernetPort newParamsInterfaceEthernetPort(String name, int port) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName(name);
@@ -294,7 +274,7 @@ public class ChassisCapabilityIntegrationTest
 		return eth;
 	}
 
-	private Object newParamsInterfaceLogicalPort(String name) {
+	private LogicalPort newParamsInterfaceLogicalPort(String name) {
 		LogicalPort eth = new LogicalPort();
 		// eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName(name);
@@ -303,7 +283,7 @@ public class ChassisCapabilityIntegrationTest
 		return eth;
 	}
 
-	private Object newParamsInterfaceEthernetPortVLAN(String name, int port, int vlanID) {
+	private EthernetPort newParamsInterfaceEthernetPortVLAN(String name, int port, int vlanID) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
 		eth.setName(name);
@@ -316,13 +296,10 @@ public class ChassisCapabilityIntegrationTest
 		return eth;
 	}
 
-	private ComputerSystem newParamsLRWithInterface(String lrName, String ifaceName, int ifacePortNum) {
-
+	private ComputerSystem newParamsLRWithInterface(String lrName) {
 		ComputerSystem lrModel = new ComputerSystem();
 		lrModel.setName(lrName);
 		lrModel.setElementName(lrName);
-
-		lrModel.addLogicalDevice((LogicalDevice) newParamsInterfaceEthernetPort(ifaceName, ifacePortNum));
 		return lrModel;
 	}
 

@@ -17,7 +17,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
@@ -91,7 +90,7 @@ public class IPCapabilityIntegrationTest
 	public void initResource() {
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
