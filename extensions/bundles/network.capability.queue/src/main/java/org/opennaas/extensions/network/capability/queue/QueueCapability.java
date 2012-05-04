@@ -27,7 +27,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerService;
 /**
  * @author Jordi Puig
  */
-public class QueueCapability extends AbstractCapability implements IQueueService {
+public class QueueCapability extends AbstractCapability implements IQueueCapability {
 
 	public final static String	CAPABILITY_TYPE				= "netqueue";
 
