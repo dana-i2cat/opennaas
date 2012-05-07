@@ -1,7 +1,5 @@
 package org.opennaas.extensions.roadm.capability.connections;
 
-import java.util.Vector;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -9,10 +7,10 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 
 public class ConnectionsCapability extends AbstractCapability implements IConnectionsCapability {
 
@@ -30,6 +28,8 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		log.debug("Built new Connections Capability");
 	}
 
+	
+	
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
@@ -66,23 +66,23 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		}
 	}
 
+   //IConncectionsCapability implementation
 	@Override
-	public Object sendMessage(String idOperation, Object params) {
-		log.debug("Sending message to Connections Capability");
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.queuedResponse(idOperation);
+	public void makeConnection(FiberConnection connectionRequest)
+			throws CapabilityException {
+		
+		IAction action = createActionAndCheckParams(ConnectionsActionSet.MAKE_CONNECTION, connectionRequest);
+		queueAction(action);
+		
 	}
+
+
+	@Override
+	public void removeConnection(FiberConnection connectionRequest)
+			throws CapabilityException {
+		IAction action = createActionAndCheckParams(ConnectionsActionSet.REMOVE_CONNECTION, connectionRequest);
+		queueAction(action);
+				
+	}
+
 }

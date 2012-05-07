@@ -248,8 +248,7 @@ public class ROADMRespositoryIntegrationTest
 
 		/* make connection */
 		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) resource.getModel());
-
-		Response resp = (Response) connections.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
+		connections.makeConnection(connectionRequest);
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE,
 				null);
 
@@ -276,7 +275,7 @@ public class ROADMRespositoryIntegrationTest
 		// checking for model intern details is in action tests
 
 		/* remove connection */
-		resp = (Response) connections.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
+		connections.removeConnection(connectionRequest);
 		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
 		Assert.assertTrue(queueResponse.isOk());
