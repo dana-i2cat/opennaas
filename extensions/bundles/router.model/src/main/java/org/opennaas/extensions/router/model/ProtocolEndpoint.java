@@ -53,7 +53,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return
 	 */
 	public Service getService() {
-		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+		return (Service) this.getFirstFromAssociatedElementByType(ProvidesEndpoint.class);
 	}
 
 	/* BindsTo */
@@ -263,11 +263,6 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	} // setTimeOfLastStateChange
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property name.
-	 */
-	private String	name;
-
-	/**
 	 * This method returns the ProtocolEndpoint.name property value. This property is described as follows:
 	 * 
 	 * A string that identifies this ProtocolEndpoint with either a port or an interface on a device. To ensure uniqueness, the Name property should
@@ -280,7 +275,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	@Override
 	public String getName() {
 
-		return this.name;
+		return super.getName();
 	} // getName
 
 	/**
@@ -297,7 +292,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	@Override
 	public void setName(String name) {
 
-		this.name = name;
+		super.setName(name);
 	} // setName
 
 	/**
