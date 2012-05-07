@@ -1,5 +1,7 @@
 package org.opennaas.extensions.roadm.capability.monitoring;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -8,11 +10,14 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
+import org.opennaas.core.resources.alarms.IAlarmsRepository;
+import org.opennaas.core.resources.alarms.ResourceAlarm;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
@@ -34,6 +39,40 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Monitoring Capability");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.roadm.capability.monitoring.IMonitoringCapability#clearAlarms()
+	 */
+	@Override
+	public void clearAlarms() throws CapabilityException {
+		try {
+			IAlarmsRepository alarmsRepo = Activator.getAlarmsRepositoryService();
+			alarmsRepo.clearResourceAlarms(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.roadm.capability.monitoring.IMonitoringCapability#getAlarms()
+	 */
+	@Override
+	public List<ResourceAlarm> getAlarms() throws CapabilityException {
+		List<ResourceAlarm> alarms = new ArrayList<ResourceAlarm>();
+		try {
+			IAlarmsRepository alarmsRepo = Activator.getAlarmsRepositoryService();
+			alarms = alarmsRepo.getResourceAlarms(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		} catch (ResourceNotFoundException e) {
+			throw new CapabilityException(e);
+		}
+		return alarms;
 	}
 
 	@Override

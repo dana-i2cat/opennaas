@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
+import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceManager;
-import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.roadm.capability.monitoring.IMonitoringCapability;
 
 /**
  * Lists alarms per resource
@@ -23,39 +24,21 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-
 		printInitCommand("Clear alarms");
 		try {
-
-			IAlarmsRepository alarmsRepo = getAlarmsRepository();
 			ResourceManager manager = (ResourceManager) getResourceManager();
-
-			/* Clear alarms for all the resources */
-			if (resourceIDs == null || resourceIDs.size() == 0) {
-				alarmsRepo.clear();
-				printEndCommand();
-				return null;
-			}
-
 			for (String friendlyId : resourceIDs) {
-				String resourceId;
-				try {
-					resourceId = getResourceId(friendlyId, manager);
-				} catch (Exception e) {
-					printError(e);
-					printEndCommand();
-					return -1;
-				}
+				IResourceIdentifier resourceIdentifier = getResourceIdentifier(friendlyId, manager);
+				IResource resource = manager.getResource(resourceIdentifier);
+				IMonitoringCapability monitoringCapability = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
 
-				if (resourceId != null) {
-					alarmsRepo.clearResourceAlarms(resourceId);
+				if (monitoringCapability != null) {
+					monitoringCapability.clearAlarms();
 					printInfo("Cleared alarms for resource: " + friendlyId);
-
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
 			}
-
 		} catch (Exception e) {
 			printError(e);
 			printError("Error clearing alarms.");
@@ -65,12 +48,11 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 
 	}
 
-	private String getResourceId(String friendlyName, IResourceManager resourceManager) throws Exception {
-
+	private IResourceIdentifier getResourceIdentifier(String friendlyName, IResourceManager resourceManager) throws Exception {
 		String[] argsRouterName = new String[2];
 		argsRouterName = splitResourceName(friendlyName);
 
 		IResourceIdentifier identifier = resourceManager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-		return identifier.getId();
+		return identifier;
 	}
 }
