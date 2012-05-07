@@ -1,4 +1,4 @@
-package org.opennaas.itests.helpers;
+package org.opennaas.extensions.itests.helpers;
 
 import java.util.List;
 import javax.inject.Inject;

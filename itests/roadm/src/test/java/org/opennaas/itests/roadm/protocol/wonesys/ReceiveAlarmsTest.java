@@ -50,7 +50,7 @@ import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEvent;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEventFilter;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.junit.Assert.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;

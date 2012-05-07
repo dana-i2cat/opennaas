@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.itests.roadm.helpers.RepositoryHelper;
 
 
@@ -43,7 +43,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

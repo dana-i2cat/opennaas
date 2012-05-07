@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+import org.opennaas.extensions.itests.helpers.KarafCommandHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.System;
-import org.opennaas.itests.helpers.KarafCommandHelper;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
@@ -42,7 +42,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

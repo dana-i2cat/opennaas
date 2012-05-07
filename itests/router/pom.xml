@@ -53,14 +53,14 @@
 			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+		</dependency>		
+		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
 			<artifactId>netconf4j</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.itests.helpers</artifactId>
-			<version>${project.version}</version>
-		</dependency>
+
 	</dependencies>
 
 </project>

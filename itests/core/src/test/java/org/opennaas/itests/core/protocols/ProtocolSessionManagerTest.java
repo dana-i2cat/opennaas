@@ -2,7 +2,7 @@ package org.opennaas.itests.core.protocols;
 
 import static org.junit.Assert.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;

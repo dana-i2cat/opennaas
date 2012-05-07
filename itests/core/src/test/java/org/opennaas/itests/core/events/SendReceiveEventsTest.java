@@ -33,7 +33,7 @@ import org.osgi.service.event.EventHandler;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

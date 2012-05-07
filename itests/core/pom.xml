@@ -26,8 +26,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.itests.helpers</artifactId>
-			<version>${project.version}</version>
+			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 		</dependency>
 	</dependencies>
 

@@ -138,6 +138,11 @@
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 	</feature>
 
+   <feature name="itests-helpers" version="${project.version}">	  	
+     <feature version="${opennaas.version}">org.opennaas.core</feature>	  	
+     <bundle>mvn:org.opennaas/org.opennaas.extensions.itests.helpers/${project.version}</bundle>  	
+  </feature>
+
 	<feature name="nexus-testprofile" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>

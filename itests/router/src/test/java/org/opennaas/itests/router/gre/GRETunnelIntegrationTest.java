@@ -4,7 +4,7 @@
 package org.opennaas.itests.router.gre;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.io.IOException;
