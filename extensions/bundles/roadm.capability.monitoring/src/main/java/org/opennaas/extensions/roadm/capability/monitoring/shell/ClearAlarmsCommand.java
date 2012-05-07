@@ -31,16 +31,10 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 				IResourceIdentifier resourceIdentifier = getResourceIdentifier(friendlyId, manager);
 				IResource resource = manager.getResource(resourceIdentifier);
 				IMonitoringCapability monitoringCapability = (IMonitoringCapability) resource.getCapabilityByInterface(IMonitoringCapability.class);
-
-				if (monitoringCapability != null) {
-					monitoringCapability.clearAlarms();
-					printInfo("Cleared alarms for resource: " + friendlyId);
-				} else {
-					printError("The resource " + friendlyId + " is not found on repository.");
-				}
+				monitoringCapability.clearAlarms();
+				printInfo("Cleared alarms for resource: " + friendlyId);
 			}
 		} catch (Exception e) {
-			printError(e);
 			printError("Error clearing alarms.");
 		}
 		printEndCommand();
@@ -51,7 +45,6 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 	private IResourceIdentifier getResourceIdentifier(String friendlyName, IResourceManager resourceManager) throws Exception {
 		String[] argsRouterName = new String[2];
 		argsRouterName = splitResourceName(friendlyName);
-
 		IResourceIdentifier identifier = resourceManager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 		return identifier;
 	}

@@ -37,7 +37,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 				printAlarms(alarms);
 			}
 		} catch (Exception e) {
-			printError(e);
 			printError("Error listing alarms.");
 		}
 		printEndCommand();
@@ -47,7 +46,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 	private IResourceIdentifier getResourceIdentifier(String friendlyName, IResourceManager resourceManager) throws Exception {
 		String[] argsRouterName = new String[2];
 		argsRouterName = splitResourceName(friendlyName);
-
 		IResourceIdentifier identifier = resourceManager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
 		return identifier;
 	}
