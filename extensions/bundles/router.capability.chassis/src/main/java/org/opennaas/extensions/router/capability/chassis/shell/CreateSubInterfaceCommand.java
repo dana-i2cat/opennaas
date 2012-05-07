@@ -10,11 +10,8 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -71,10 +68,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			checkParams();
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, prepareParams());
-			printResponseStatus(resp, resourceId);
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.createSubInterface(prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);

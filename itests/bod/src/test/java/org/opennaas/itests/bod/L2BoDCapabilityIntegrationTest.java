@@ -1,20 +1,23 @@
 package org.opennaas.itests.bod;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.core.resources.helpers.ResourceHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -22,24 +25,13 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventHandler;
-
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 public class L2BoDCapabilityIntegrationTest
@@ -66,27 +58,29 @@ public class L2BoDCapabilityIntegrationTest
 	@Inject
 	private IResourceManager	resourceManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.actionsets.dummy)")
-    private BlueprintContainer	actionSetService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.actionsets.dummy)")
+	private BlueprintContainer	actionSetService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
-    private BlueprintContainer	l2bodService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	private BlueprintContainer	l2bodService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-    private BlueprintContainer	repositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	private BlueprintContainer	repositoryService;
 
 	private ICapability			l2bodCapability;
+
+	private IResource			resource;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-bod"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-bod"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -98,15 +92,15 @@ public class L2BoDCapabilityIntegrationTest
 		// L2BoD Capability Descriptor
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 		CapabilityDescriptor capabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, VERSION, CAPABILIY_TYPE,
-																						   CAPABILITY_URI);
+				CAPABILITY_URI);
 		lCapabilityDescriptors.add(capabilityDescriptor);
 
 		// BoD Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
-																					 RESOURCE_INFO_NAME);
+				RESOURCE_INFO_NAME);
 
 		// Create resource
-		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resource = resourceManager.createResource(resourceDescriptor);
 
 		// Start resource
 		resourceManager.startResource(resource.getResourceIdentifier());

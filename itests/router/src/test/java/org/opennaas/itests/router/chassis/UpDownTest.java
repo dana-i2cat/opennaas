@@ -1,8 +1,10 @@
 package org.opennaas.itests.router.chassis;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,8 +22,8 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -31,6 +33,8 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -53,32 +57,32 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class UpDownTest
 {
-	private final static Log	log			= LogFactory.getLog(UpDownTest.class);
-	private final String		deviceID	= "junos";
-	private final String		queueID		= "queue";
+	private final static Log		log			= LogFactory.getLog(UpDownTest.class);
+	private final String			deviceID	= "junos";
+	private final String			queueID		= "queue";
 
-	private MockResource		mockResource;
-	private ICapability			chassisCapability;
-	private ICapability			queueCapability;
-	private boolean				isMock		= false;
+	private MockResource			mockResource;
+	private IChassisCapability		chassisCapability;
+	private IQueueManagerService	queueCapability;
+	private boolean					isMock		= false;
 
 	@Inject
-	private BundleContext		bundleContext;
+	private BundleContext			bundleContext;
 
 	@Inject
 	@Filter("(capability=queue)")
-	private ICapabilityFactory	queueManagerFactory;
+	private ICapabilityFactory		queueManagerFactory;
 
 	@Inject
-	private IProtocolManager	protocolManager;
+	private IProtocolManager		protocolManager;
 
 	@Inject
 	@Filter("(capability=chassis)")
-	private ICapabilityFactory	chassisFactory;
+	private ICapabilityFactory		chassisFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer	routerService;
+	private BlueprintContainer		routerService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -133,8 +137,8 @@ public class UpDownTest
 			log.info("INFO: Before test, getting queue...");
 			Assert.assertNotNull(queueManagerFactory);
 
-			queueCapability = queueManagerFactory.create(mockResource);
-			queueCapability.initialize();
+			queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+			((ICapabilityLifecycle) queueCapability).initialize();
 
 			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
@@ -144,9 +148,9 @@ public class UpDownTest
 			log.info("Checking capability descriptor");
 			Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("chassis"));
 			log.info("Creating chassis capability");
-			chassisCapability = chassisFactory.create(mockResource);
+			chassisCapability = (IChassisCapability) chassisFactory.create(mockResource);
 			Assert.assertNotNull(chassisCapability);
-			chassisCapability.initialize();
+			((ICapabilityLifecycle) chassisCapability).initialize();
 
 			mockResource.addCapability(chassisCapability);
 			mockResource.addCapability(queueCapability);

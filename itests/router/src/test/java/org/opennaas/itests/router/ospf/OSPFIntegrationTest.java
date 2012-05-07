@@ -69,6 +69,10 @@ public abstract class OSPFIntegrationTest
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
 	private BlueprintContainer		netconfService;
+	
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer		routerRepoService;
 
 	private static final Log		log						= LogFactory
 																	.getLog(OSPFIntegrationTest.class);

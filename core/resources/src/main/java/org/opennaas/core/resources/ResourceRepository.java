@@ -381,7 +381,7 @@ public class ResourceRepository implements IResourceRepository {
 
 		/* prepare capabilities */
 		logger.debug("  Obtaining capabilities...");
-		List<ICapability> oldCapabilities = resource.getCapabilities();
+		List<? extends ICapability> oldCapabilities = resource.getCapabilities();
 		List<ICapability> capabilities = createCapabilities(resource);
 		resource.setCapabilities(capabilities);
 		logger.debug("  Capabilities obtained. Loading bootstrapper...");

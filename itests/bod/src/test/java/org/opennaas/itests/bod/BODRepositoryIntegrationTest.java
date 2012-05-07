@@ -1,12 +1,13 @@
 package org.opennaas.itests.bod;
 
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.List;
-
-import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import javax.inject.Inject;
 
@@ -28,12 +29,6 @@ import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import org.osgi.service.event.Event;
-import org.osgi.service.event.EventAdmin;
-import org.osgi.service.event.EventHandler;
-
 
 @RunWith(JUnit4TestRunner.class)
 public class BODRepositoryIntegrationTest
@@ -50,13 +45,13 @@ public class BODRepositoryIntegrationTest
 	@Inject
 	private IResourceManager	resourceManager;
 
-//	@Inject
-//	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-//	private BlueprintContainer	bodService;
+	// @Inject
+	// @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	// private BlueprintContainer bodService;
 
-//	@Inject
-//	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
-//	private BlueprintContainer	l2bodService;
+	// @Inject
+	// @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	// private BlueprintContainer l2bodService;
 
 	@Configuration
 	public static Option[] configuration() {

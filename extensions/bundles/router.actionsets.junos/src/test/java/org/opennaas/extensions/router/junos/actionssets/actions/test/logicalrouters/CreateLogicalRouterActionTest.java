@@ -56,21 +56,20 @@ public class CreateLogicalRouterActionTest {
 	}
 
 	@Test
-	public void checkParamsTest() {
+	public void checkParamsTest() throws ActionException {
 
-		// only accept EthernetPort and LogicalTunnelPort type
-		try {
-			Assert.assertTrue(action.checkParams(new String("L1")));
-		} catch (ActionException a) {
-			a.printStackTrace();
-			Assert.fail(a.getMessage());
-		}
+		ComputerSystem lrModel = new ComputerSystem();
+		lrModel.setName("L1");
 
+		Assert.assertTrue(action.checkParams(lrModel));
 	}
 
 	public void checkTemplate() {
 		try {
-			Assert.assertTrue(action.checkParams(new String("L1")));
+			ComputerSystem lrModel = new ComputerSystem();
+			lrModel.setName("L1");
+
+			Assert.assertTrue(action.checkParams(lrModel));
 
 			action.prepareMessage();
 
@@ -88,8 +87,10 @@ public class CreateLogicalRouterActionTest {
 	public void createLRTest() {
 
 		try {
+			ComputerSystem lrModel = new ComputerSystem();
+			lrModel.setName("L1");
 
-			action.setParams(new String("L1"));
+			action.setParams(lrModel);
 			ActionResponse response = action.execute(protocolSessionManager);
 			System.out.println(action.getVelocityMessage());
 		} catch (ActionException e) {

@@ -1,7 +1,5 @@
 package org.opennaas.itests.router.mock;
 
-import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
@@ -9,13 +7,14 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MockBootstrapper implements IResourceBootstrapper {
 	Log		log	= LogFactory.getLog(MockBootstrapper.class);
@@ -42,14 +41,15 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			/* abstract capabilities have to be initialized */
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab).sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
-					throw new ResourceException();
+				try {
+					((AbstractCapability) capab).sendRefreshActions();
+				} catch (CapabilityException e) {
+					throw new ResourceException(e);
 				}
 			}
 		}
 
-		ICapability queueCapab = resource.getCapability(createQueueInformation());
+		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING

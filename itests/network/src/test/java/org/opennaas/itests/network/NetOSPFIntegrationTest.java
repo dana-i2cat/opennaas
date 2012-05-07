@@ -1,23 +1,18 @@
 package org.opennaas.itests.network;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,14 +26,20 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.network.capability.ospf.INetOSPFService;
+import org.opennaas.extensions.network.capability.basic.ITopologyManager;
+import org.opennaas.extensions.network.capability.ospf.INetOSPFCapability;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 public class NetOSPFIntegrationTest {
@@ -57,8 +58,17 @@ public class NetOSPFIntegrationTest {
 
 	@Inject
 	private IProtocolManager		protocolManager;
+
 	@Inject
 	private IResourceManager		resourceManager;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.network.repository)")
+	private BlueprintContainer		networkRepoService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer		routerRepoService;
 
 	private IResource				networkResource;
 
@@ -69,7 +79,6 @@ public class NetOSPFIntegrationTest {
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
-		// , new VMOption("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"));
 	}
 
 	private void clearRepository() throws ResourceException {
@@ -167,15 +176,14 @@ public class NetOSPFIntegrationTest {
 		}
 	}
 
-	private void callActivateOSPF() throws CapabilityException {
-
+	private void callActivateOSPF() throws ResourceException {
 		Information inf = new Information();
 		inf.setType(OSPF_CAPABILIY_TYPE);
 
-		INetOSPFService capability = (INetOSPFService) networkResource.getCapability(inf);
-		assertNotNull(capability);
+		INetOSPFCapability netOSPFCapability = (INetOSPFCapability) networkResource.getCapabilityByInterface(INetOSPFCapability.class);
 
-		capability.activateOSPF();
+		assertNotNull(netOSPFCapability);
+		netOSPFCapability.activateOSPF();
 	}
 
 	private void addRoutersToNetwork(List<IResource> routers) throws CapabilityException {

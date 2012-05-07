@@ -3,9 +3,15 @@
  */
 package org.opennaas.itests.router.gre;
 
+
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,14 +29,16 @@ import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
@@ -58,8 +66,8 @@ public abstract class GRETunnelIntegrationTest
 	private final Log				log				= LogFactory
 															.getLog(GRETunnelIntegrationTest.class);
 	private static MockResource		mockResource;
-	protected ICapability			queueCapability;
-	protected ICapability			greTunnelCapability;
+	protected IQueueManagerService	queueCapability;
+	protected IGRETunnelCapability		greTunnelCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -134,14 +142,14 @@ public abstract class GRETunnelIntegrationTest
 			ResourceException, CorruptStateException, ProtocolException
 	{
 		log.info("INFO: Before Test, getting queue...");
-		queueCapability = queueManagerFactory.create(mockResource);
-		queueCapability.initialize();
+		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("Creating gretunnel capability");
-		greTunnelCapability = gretunnelFactory.create(mockResource);
-		greTunnelCapability.initialize();
+		greTunnelCapability = (IGRETunnelCapability) gretunnelFactory.create(mockResource);
+		((ICapabilityLifecycle) greTunnelCapability).initialize();
 
 		mockResource.addCapability(queueCapability);
 		mockResource.addCapability(greTunnelCapability);

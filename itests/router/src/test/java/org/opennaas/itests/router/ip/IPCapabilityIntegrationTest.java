@@ -1,8 +1,10 @@
 package org.opennaas.itests.router.ip;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +22,8 @@ import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -31,6 +33,8 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -50,31 +54,31 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class IPCapabilityIntegrationTest
 {
-	private final static Log	log			= LogFactory.getLog(IPCapabilityIntegrationTest.class);
-	private final String		deviceID	= "junos";
-	private final String		queueID		= "queue";
+	private final static Log		log			= LogFactory.getLog(IPCapabilityIntegrationTest.class);
+	private final String			deviceID	= "junos";
+	private final String			queueID		= "queue";
 
-	private MockResource		mockResource;
-	private ICapability			ipCapability;
-	private ICapability			queueCapability;
+	private MockResource			mockResource;
+	private IIPCapability			ipCapability;
+	private IQueueManagerService	queueCapability;
 
 	@Inject
-	private BundleContext		bundleContext;
+	private BundleContext			bundleContext;
 
 	@Inject
 	@Filter("(capability=queue)")
-	private ICapabilityFactory	queueManagerFactory;
+	private ICapabilityFactory		queueManagerFactory;
 
 	@Inject
-	private IProtocolManager	protocolManager;
+	private IProtocolManager		protocolManager;
 
 	@Inject
 	@Filter("(capability=ipv4)")
-	private ICapabilityFactory	ipFactory;
+	private ICapabilityFactory		ipFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer	routerService;
+	private BlueprintContainer		routerService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -125,8 +129,8 @@ public class IPCapabilityIntegrationTest
 		log.info("INFO: Before test, getting queue...");
 		Assert.assertNotNull(queueManagerFactory);
 
-		queueCapability = queueManagerFactory.create(mockResource);
-		queueCapability.initialize();
+		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		((ICapabilityLifecycle) queueCapability).initialize();
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		// Test elements not null
@@ -135,9 +139,9 @@ public class IPCapabilityIntegrationTest
 		log.info("Checking capability descriptor");
 		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ipv4"));
 		log.info("Creating ip capability");
-		ipCapability = ipFactory.create(mockResource);
+		ipCapability = (IIPCapability) ipFactory.create(mockResource);
 		Assert.assertNotNull(ipCapability);
-		ipCapability.initialize();
+		((ICapabilityLifecycle) ipCapability).initialize();
 
 		mockResource.addCapability(ipCapability);
 		mockResource.addCapability(queueCapability);

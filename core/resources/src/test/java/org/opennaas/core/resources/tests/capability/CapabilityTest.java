@@ -6,10 +6,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.mock.MockAction;
@@ -79,7 +79,7 @@ public class CapabilityTest {
 	@Test
 	public void testInitialize() throws ResourceException {
 		capability.initialize();
-		Assert.assertEquals(ILifecycle.State.INITIALIZED, capability.getState());
+		Assert.assertEquals(ICapabilityLifecycle.State.INITIALIZED, capability.getState());
 		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "initialize");
 	}
@@ -87,7 +87,7 @@ public class CapabilityTest {
 	@Test
 	public void testActivate() throws ResourceException {
 		capability.activate();
-		Assert.assertEquals(ILifecycle.State.ACTIVE, capability.getState());
+		Assert.assertEquals(ICapabilityLifecycle.State.ACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "activate");
 	}
@@ -124,7 +124,7 @@ public class CapabilityTest {
 	@Test
 	public void testDeactivate() throws ResourceException {
 		capability.deactivate();
-		Assert.assertEquals(ILifecycle.State.INACTIVE, capability.getState());
+		Assert.assertEquals(ICapabilityLifecycle.State.INACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "deactivate");
 	}
@@ -132,7 +132,7 @@ public class CapabilityTest {
 	@Test
 	public void testShutdown() throws ResourceException {
 		capability.shutdown();
-		Assert.assertEquals(ILifecycle.State.SHUTDOWN, capability.getState());
+		Assert.assertEquals(ICapabilityLifecycle.State.SHUTDOWN, capability.getState());
 		MockCapability mockCapability = capability;
 		Assert.assertEquals(mockCapability.getInternalCall(), "shutdown");
 	}

@@ -1,13 +1,16 @@
 package org.opennaas.itests.bod.shell;
 
-import java.io.File;
-import java.io.InputStream;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.core.resources.helpers.AbstractKarafCommandTest;
-import org.opennaas.core.resources.helpers.ResourceHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,28 +18,26 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
+import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.topology.Interface;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -59,7 +60,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	private static final String	RESOURCE_INFO_NAME		= "L2BoD_Test";
 
 	private static Log			log						=
-		LogFactory.getLog(L2BoDCommandsKarafTest.class);
+																LogFactory.getLog(L2BoDCommandsKarafTest.class);
 
 	@Inject
 	@Filter("(type=bod)")
@@ -68,21 +69,21 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
-    private BlueprintContainer	bodCapabilityService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.capability.l2bod)")
+	private BlueprintContainer	bodCapabilityService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
-    private BlueprintContainer	bodRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
+	private BlueprintContainer	bodRepositoryService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-bod", "opennaas-netconf"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-bod", "opennaas-netconf"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -109,17 +110,28 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		repository.startResource(resource.getResourceDescriptor().getId());
 
+		NetworkModel model = (NetworkModel) resource.getModel();
+		model.getNetworkElements().add(createInterface("int1"));
+		model.getNetworkElements().add(createInterface("int2"));
+
 		List<String> response =
-			executeCommand("l2bod:requestConnection  " + resourceFriendlyID + " int1 int2 ");
+				executeCommand("l2bod:requestConnection --endtime 2012-04-20T18:36:00Z --capacity 10 " + resourceFriendlyID + " int1 int2");
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = executeCommand("l2bod:shutdownConnection  " + resourceFriendlyID + " int1 int2 ");
+		response = executeCommand("l2bod:shutdownConnection " + resourceFriendlyID + " int1 int2");
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
 		repository.stopResource(resource.getResourceIdentifier().getId());
 		repository.removeResource(resource.getResourceIdentifier().getId());
+	}
+
+	private Interface createInterface(String name)
+	{
+		Interface i = new Interface();
+		i.setName(name);
+		return i;
 	}
 
 	/**
@@ -143,7 +155,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 
 	/**
 	 * Create the protocol to connect
-	 *
+	 * 
 	 * @param resourceId
 	 * @throws ProtocolException
 	 */
