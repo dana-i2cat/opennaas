@@ -1,11 +1,36 @@
 package org.opennaas.itests.router.chassis;
 
-import java.io.File;
-import java.io.InputStream;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandProcessor;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.itests.helpers.KarafCommandHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -14,40 +39,16 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.core.resources.helpers.ResourceHelper;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.felix.service.command.CommandProcessor;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ProbeBuilder;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -68,31 +69,31 @@ public class InterfacesVLANKarafTest
 	@Inject
 	private IResourceManager	resourceManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-    private BlueprintContainer chassisService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	private BlueprintContainer	chassisService;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
+	@ProbeBuilder
+	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+		probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+		return probe;
+	}
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
@@ -131,11 +132,14 @@ public class InterfacesVLANKarafTest
 		}
 	}
 
+	@Ignore
 	@Test
 	public void setVLANtest() throws Exception {
 
 		// SET ETH
 		int VLANid = 50;
+
+		String tag = "tagged-ethernet";
 		// For Real Router Test
 		// String inter = "fe-0/3/1";
 		// String subport = "30";
@@ -144,7 +148,7 @@ public class InterfacesVLANKarafTest
 		String inter = "fe-0/1/3";
 		String subport = "15";
 
-		testingMethod(inter, subport, VLANid);
+		testingMethod(inter, subport, VLANid, tag);
 
 		// SET LT
 		VLANid = 223;
@@ -157,11 +161,11 @@ public class InterfacesVLANKarafTest
 		inter = "lt-0/1/2";
 		subport = "12";
 
-		testingMethod(inter, subport, VLANid);
+		testingMethod(inter, subport, VLANid, tag);
 
 		// set LO
 		List<String> responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " lo0.1 1",
-																	   commandprocessor);
+				commandprocessor);
 		Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
 	}
 
@@ -253,7 +257,7 @@ public class InterfacesVLANKarafTest
 		return 0;
 	}
 
-	public void testingMethod(String inter, String subport, int VLANid) throws Exception {
+	public void testingMethod(String inter, String subport, int VLANid, String tag) throws Exception {
 
 		// REFRESH to fill up the model
 		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
@@ -266,7 +270,7 @@ public class InterfacesVLANKarafTest
 		// SET NEW VLAN
 		responseError = KarafCommandHelper.executeCommand(
 				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
-					, commandprocessor);
+				, commandprocessor);
 		// assert command output no contains ERROR tag
 		if (!responseError.get(1).isEmpty()) {
 			Assert.fail(responseError.get(1));
@@ -291,7 +295,7 @@ public class InterfacesVLANKarafTest
 		// ROLLBACK OF THE INTERFACE
 		responseError = KarafCommandHelper.executeCommand(
 				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
-							, commandprocessor);
+				, commandprocessor);
 		Assert.assertTrue(responseError.get(1).isEmpty());
 		responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
 		Assert.assertTrue(responseError.get(1).isEmpty());
