@@ -81,7 +81,7 @@ public class CapabilityTest {
 		capability.initialize();
 		Assert.assertEquals(ICapabilityLifecycle.State.INITIALIZED, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "initialize");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.INITIALIZED);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class CapabilityTest {
 		capability.activate();
 		Assert.assertEquals(ICapabilityLifecycle.State.ACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "activate");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.ACTIVE);
 	}
 
 	// @Test FIXME need to test with well formed ->IProtocolSessionManager psm
@@ -126,7 +126,7 @@ public class CapabilityTest {
 		capability.deactivate();
 		Assert.assertEquals(ICapabilityLifecycle.State.INACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "deactivate");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.INACTIVE);
 	}
 
 	@Test
@@ -134,6 +134,6 @@ public class CapabilityTest {
 		capability.shutdown();
 		Assert.assertEquals(ICapabilityLifecycle.State.SHUTDOWN, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "shutdown");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.SHUTDOWN);
 	}
 }

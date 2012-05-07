@@ -30,12 +30,6 @@ public class MockCapability extends AbstractCapability {
 
 	}
 
-	public String	internalCall	= null;
-
-	public String getInternalCall() {
-		return internalCall;
-	}
-
 	public void sendRefreshActions() {
 		sentStartUp = true;
 	}
