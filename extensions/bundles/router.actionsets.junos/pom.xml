@@ -90,7 +90,9 @@
 						-->
 						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
 						<Export-Package>
-							*
+							   org.opennaas.extensions.router.junos.commandsets.*;version="${project.version}",
+             				   org.opennaas.extensions.router.junos.actionssets;version="${project.version}",
+             				   org.opennaas.extensions.router.junos.actionssets.actions;version="${project.version}"
 						</Export-Package>
 					</instructions>
 				</configuration>
