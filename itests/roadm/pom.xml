@@ -44,6 +44,11 @@
 			<groupId>com.wonesys</groupId>
 			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.itests.helpers</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		
 		<!-- FIXME OpticalSwitchFactory must be moved to a roadm bundle. -->
 		<dependency>

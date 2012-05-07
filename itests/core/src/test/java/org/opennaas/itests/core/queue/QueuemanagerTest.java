@@ -1,7 +1,7 @@
 package org.opennaas.itests.core.queue;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
 

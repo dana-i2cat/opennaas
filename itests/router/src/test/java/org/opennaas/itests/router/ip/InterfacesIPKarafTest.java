@@ -12,7 +12,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.core.resources.helpers.KarafCommandHelper;
+import org.opennaas.itests.helpers.KarafCommandHelper;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
@@ -45,7 +45,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

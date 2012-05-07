@@ -3,10 +3,10 @@
  */
 package org.opennaas.itests.router.staticroute;
 
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 

@@ -1,4 +1,4 @@
-package org.opennaas.core.resources.helpers;
+package org.opennaas.itests.helpers;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

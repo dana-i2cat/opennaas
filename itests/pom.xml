@@ -16,6 +16,7 @@
 		<module>router</module>
 		<module>network</module>
 		<module>roadm</module>
+		<module>helpers</module>
 	</modules>
 
 	<dependencies>

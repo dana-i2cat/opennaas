@@ -43,7 +43,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 

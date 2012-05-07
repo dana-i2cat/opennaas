@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
-import org.opennaas.core.resources.helpers.AbstractKarafCommandTest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,6 +24,7 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -34,7 +34,7 @@ import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.core.resources.helpers.OpennaasExamOptions.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
