@@ -4,10 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 
 @Command(scope = "net", name = "removeResource", description = "Remove a resource from the network")
 public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
@@ -35,15 +33,11 @@ public class RemoveResourceFromNetworkCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		ICapability networkCapability = network.getCapabilityByType(NetworkBasicCapability.CAPABILITY_NAME);
-		if (!(networkCapability instanceof ITopologyManager)) {
-			printError("Failed to get required capability.");
-			printEndCommand();
-			return null;
-		}
+		INetworkBasicCapability networkCapability =
+				(INetworkBasicCapability) network.getCapabilityByInterface(INetworkBasicCapability.class);
 
 		try {
-			((ITopologyManager) networkCapability).removeResource(resource);
+			networkCapability.removeResource(resource);
 		} catch (CapabilityException e) {
 			printError("Error deleting resource.");
 			printError(e);

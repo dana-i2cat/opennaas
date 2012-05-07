@@ -8,9 +8,9 @@ import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.IActionSet;
 
 //FIXME this class should be in an other bundle!!!
-public class NetActionSet implements IActionSet {
+public class NetworkBasicActionSetImpl implements IActionSet {
 
-	String	actionSetId;
+	private String	actionSetId;
 
 	@Override
 	public String getActionSetId() {
@@ -24,7 +24,7 @@ public class NetActionSet implements IActionSet {
 
 	@Override
 	public List<String> getActionNames() {
-		return ActionNames.getActionNames();
+		return NetworkBasicActionSet.getActionNames();
 	}
 
 	@Override
@@ -34,7 +34,6 @@ public class NetActionSet implements IActionSet {
 
 	@Override
 	public Action obtainAction(String actionId) throws ActionException {
-		// TODO Auto-generated method stub
 		throw new ActionException("Action not found");
 	}
 
