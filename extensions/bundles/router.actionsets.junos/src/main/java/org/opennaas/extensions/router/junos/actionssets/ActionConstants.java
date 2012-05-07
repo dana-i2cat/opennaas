@@ -10,7 +10,7 @@ public class ActionConstants {
 	public static final String	VALIDATE							= "validate";
 
 	// Chassis ActionSET
-	public static final String	DELETESUBINTERFACE					= "deletesubinterface";
+	public static final String	DELETESUBINTERFACE					= "deleteSubInterface";
 	public static final String	CONFIGURESUBINTERFACE				= "configureSubInterface";
 	public static final String	SETENCAPSULATION					= "setEncapsulation";
 	public static final String	SETENCAPSULATIONLABEL				= "setEncapsulationLabel";
