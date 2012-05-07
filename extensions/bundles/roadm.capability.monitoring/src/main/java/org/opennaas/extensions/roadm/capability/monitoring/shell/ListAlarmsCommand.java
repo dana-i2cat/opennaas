@@ -25,10 +25,8 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-
 		printInitCommand("list alarms");
 		try {
-
 			IAlarmsRepository alarmsRepo = getAlarmsRepository();
 			ResourceManager manager = (ResourceManager) getResourceManager();
 
@@ -43,17 +41,12 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 				}
 
 				if (resourceId != null) {
-
 					printInfo("Resource ID: " + friendlyId);
-					// printSymbol(horizontalSeparator);
-
 					List<ResourceAlarm> alarms = alarmsRepo.getResourceAlarms(resourceId);
 					printAlarms(alarms);
-
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
-				// printSymbol(underLine);
 			}
 
 		} catch (Exception e) {
@@ -65,7 +58,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 	}
 
 	private String getResourceId(String friendlyName, IResourceManager resourceManager) throws Exception {
-
 		String[] argsRouterName = new String[2];
 		argsRouterName = splitResourceName(friendlyName);
 
@@ -81,7 +73,6 @@ public class ListAlarmsCommand extends GenericKarafCommand {
 				printInfo(doubleTab + "Property " + name + ": " + alarm.getProperty(name));
 			}
 			i++;
-			// printSymbol(horizontalSeparator);
 		}
 	}
 }

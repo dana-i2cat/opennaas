@@ -27,7 +27,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerService;
 /**
  * @author Jordi Puig
  */
-public class QueueCapability extends AbstractCapability implements IQueueCapability {
+public class QueueCapability extends AbstractCapability {
 
 	public final static String	CAPABILITY_TYPE				= "netqueue";
 
@@ -77,7 +77,6 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 * 
 	 * @see org.opennaas.extensions.network.capability.queue.IQueueService#execute()
 	 */
-	@Override
 	public Map<String, QueueResponse> execute() throws CapabilityException {
 		Map<String, QueueResponse> response = new Hashtable<String, QueueResponse>();
 		NetworkModel model = (NetworkModel) resource.getModel();

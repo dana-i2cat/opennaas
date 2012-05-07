@@ -24,13 +24,10 @@ import org.osgi.service.event.EventHandler;
 
 public class MonitoringCapability extends AbstractCapability implements EventHandler, IMonitoringCapability {
 
-	static Log					log						= LogFactory.getLog(MonitoringCapability.class);
+	static Log					log				= LogFactory.getLog(MonitoringCapability.class);
 
-	public static final String	CAPABILITY_NAME			= "monitoring";
-
-	public static final String	PROCESS_ALARM_ACTION	= "processAlarm";
-
-	private String				resourceId				= "";
+	public static final String	CAPABILITY_NAME	= "monitoring";
+	private String				resourceId		= "";
 	private int					registrationNumber;
 
 	public MonitoringCapability(CapabilityDescriptor descriptor, String resourceId) {
@@ -47,49 +44,6 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);
-	}
-
-	/**
-	 * 
-	 * @return QueuemanagerService this capability is associated to.
-	 * @throws CapabilityException
-	 *             if desired queueManagerService could not be retrieved.
-	 */
-	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
-		try {
-			return Activator.getQueueManagerService(resourceId);
-		} catch (ActivatorException e) {
-			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
-		}
-	}
-
-	@Override
-	public Object sendMessage(String idOperation, Object params) throws CapabilityException {
-
-		log.debug("Sending message to Monitoring Capability");
-		try {
-			IAction action = createAction(idOperation);
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-
-			if (idOperation.equals(MonitoringCapability.PROCESS_ALARM_ACTION)) {
-				log.debug("Executing MonitoringCapability.PROCESS_ALARM_ACTION");
-				// execute directly, skipping queue
-				return executeAction(action, idOperation);
-
-			} else {
-				// queue action
-				IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-				queueManager.queueAction(action);
-				return Response.queuedResponse(idOperation);
-			}
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
 	}
 
 	@Override
@@ -116,6 +70,23 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		setState(State.INACTIVE);
 	}
 
+	@Override
+	public void handleEvent(Event event) {
+		log.debug("Monitoring capability received an alarm!");
+		try {
+			Response response = executeProcessAlarmAction(MonitoringActionSet.PROCESS_ALARM, event);
+			if (response.getStatus().equals(Response.Status.OK)) {
+				log.info("Alarm processed");
+			} else {
+				log.error("Error processing alarm: process alarm action returned error " + response.getErrors());
+			}
+		} catch (CapabilityException e) {
+			log.error("Error processing alarm", e);
+		} catch (Exception e) {
+			log.error("Error processing alarm", e);
+		}
+	}
+
 	/**
 	 * Executes given action directly, without passing it to the queue. Given action will be executed with no ProtocolSessionManager (null)
 	 * 
@@ -124,12 +95,10 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	 * @throws ActionException
 	 */
 	private Response executeAction(IAction action, String idOperation) throws ActionException {
-
 		log.debug("Executing action " + idOperation + "...");
 
 		// skip the queue and execute directly
 		ActionResponse response = action.execute(null);
-
 		if (response.getStatus().equals(ActionResponse.STATUS.OK)) {
 			return Response.okResponse(idOperation);
 		} else {
@@ -140,11 +109,29 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		}
 	}
 
+	/**
+	 * Execute the ProcessAlarmAction skipping the queue
+	 * 
+	 * @param idOperation
+	 * @param params
+	 * @return a response
+	 * @throws CapabilityException
+	 */
+	private Response executeProcessAlarmAction(String idOperation, Event params) throws CapabilityException {
+		IAction action = createAction(idOperation);
+		action.setParams(params);
+		action.setModelToUpdate(resource.getModel());
+		log.debug("Executing process alarm action");
+		return executeAction(action, idOperation);
+	}
+
+	/**
+	 * @throws CapabilityException
+	 */
 	private void registerAsCapabilityAlarmListener() throws CapabilityException {
 		log.debug("Registering as CapabilityAlarm listener");
 
 		try {
-
 			// create filter to listen to CapabilityAlarms
 			Properties filterProperties = new Properties();
 			filterProperties.setProperty(CapabilityAlarm.RESOURCE_ID_PROPERTY, resourceId);
@@ -160,6 +147,9 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		}
 	}
 
+	/**
+	 * @throws CapabilityException
+	 */
 	private void unregisterAsCapabilityAlarmListener() throws CapabilityException {
 		log.debug("Unregistering as CapabilityAlarm listener");
 		try {
@@ -172,25 +162,18 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		}
 	}
 
-	@Override
-	public void handleEvent(Event event) {
-		log.debug("Monitoring capability received an alarm!");
-
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
 		try {
-
-			Response response = (Response) sendMessage(MonitoringCapability.PROCESS_ALARM_ACTION, event);
-			if (response.getStatus().equals(Response.Status.OK)) {
-				log.info("Alarm processed");
-			} else {
-				log.error("Error processing alarm: PROCESS_ALARM_ACTION returned error " + response.getErrors());
-			}
-
-		} catch (CapabilityException e) {
-			log.error(e);
-			log.error("Error processing alarm", e);
-		} catch (Exception e) {
-			log.error(e);
-			log.error("Error processing alarm", e);
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
 	}
+
 }

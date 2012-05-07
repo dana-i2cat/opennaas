@@ -12,7 +12,7 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * Lists alarms per resource
- *
+ * 
  * @author Carlos Baez
  */
 @Command(scope = "alarms", name = "clear", description = "Clear all alarms fromgiven resources")
@@ -54,7 +54,6 @@ public class ClearAlarmsCommand extends GenericKarafCommand {
 				} else {
 					printError("The resource " + friendlyId + " is not found on repository.");
 				}
-				// printSymbol(underLine);
 			}
 
 		} catch (Exception e) {
