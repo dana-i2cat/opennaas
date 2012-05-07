@@ -1,6 +1,6 @@
 package org.opennaas.extensions.bod.capability.l2bod;
 
-import java.util.Vector;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,9 +9,9 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
@@ -27,6 +27,29 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new L2BoD Capability");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#requestConnection(org.opennaas.extensions.bod.capability.l2bod.
+	 * RequestConnectionParameters)
+	 */
+	@Override
+	public void requestConnection(RequestConnectionParameters parameters) throws CapabilityException {
+		IAction action = createActionAndCheckParams(L2BoDActionSet.REQUEST_CONNECTION, parameters);
+		queueAction(action);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(java.util.List)
+	 */
+	@Override
+	public void shutDownConnection(List<Interface> listInterfaces) throws CapabilityException {
+		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, listInterfaces);
+		queueAction(action);
 	}
 
 	@Override
@@ -64,27 +87,6 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
-	}
-
-	@Override
-	public Object sendMessage(String idOperation, Object params) {
-
-		log.debug("Sending message to L2BoD Capability");
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.okResponse(idOperation);
 	}
 
 }

@@ -7,9 +7,7 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
-import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
@@ -31,22 +29,17 @@ public class ShutdownConnectionCommand extends GenericKarafCommand {
 
 	@Override
 	protected Object doExecute() throws Exception {
-
 		printInitCommand("shutdown connectivity of resource: " + resourceId + " and interfaces: " + interfaceName1 + " - " + interfaceName2);
 
 		try {
-
 			IResource resource = getResourceFromFriendlyName(resourceId);
-
-			IL2BoDCapability ipCapability = (IL2BoDCapability) resource.getCapabilityByType(L2BoDCapability.CAPABILITY_NAME);
-
-			ipCapability.sendMessage(ActionConstants.SHUTDOWNCONNECTION, getInterfaces((NetworkModel) resource.getModel()));
-
+			IL2BoDCapability ipCapability = (IL2BoDCapability) resource.getCapabilityByInterface(IL2BoDCapability.class);
+			ipCapability.shutDownConnection(getInterfaces((NetworkModel) resource.getModel()));
 		} catch (Exception e) {
 			printError("Error requesting connectivity for resource: " + resourceId);
 			printError(e);
 			printEndCommand();
-			return "";
+			return -1;
 		}
 		printEndCommand();
 		return null;
