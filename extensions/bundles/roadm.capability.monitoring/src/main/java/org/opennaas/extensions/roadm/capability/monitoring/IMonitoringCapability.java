@@ -9,11 +9,15 @@ import org.opennaas.core.resources.capability.ICapability;
 public interface IMonitoringCapability extends ICapability {
 
 	/**
+	 * Clear the alarms of the resource
+	 * 
 	 * @throws CapabilityException
 	 */
 	public void clearAlarms() throws CapabilityException;
 
 	/**
+	 * Get the alarms of the resource
+	 * 
 	 * @throws CapabilityException
 	 */
 	public List<ResourceAlarm> getAlarms() throws CapabilityException;
