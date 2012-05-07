@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -19,6 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  * capabilities and MAY serve as an aggregation point to associate one or more of the following elements: FileSystem, OperatingSystem, Processor and
  * Memory (Volatile and/or NonVolatile Storage).
  */
+@XmlRootElement
 public class ComputerSystem extends System implements Serializable {
 
 	/**
