@@ -33,6 +33,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
@@ -64,11 +68,46 @@
 				<artifactId>cxf-java2ws-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>generate-wsdl</id>
+						<id>generate-wsdl-chassis</id>
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-ospf</id>
+						<phase>process-classes</phase>
+						<configuration>
 							<className>org.opennaas.extensions.ws.services.IOSPFCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-gre</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IGRETunnelCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-l2bod</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IL2BoDCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

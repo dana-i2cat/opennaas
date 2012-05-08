@@ -45,5 +45,12 @@ the License. -->
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
     <jaxws:endpoint  implementor="#greTunnelCapabilityServiceImpl" address="http://localhost:8182/cxf/greTunnelCapabilityService"  />
+    
+    <!-- L2BoDTunnel Capability -->
+    <cxf:bus id="l2bodCapabilityServiceBus"></cxf:bus>
+	<bean id="l2bodCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.L2BoDCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#l2bodCapabilityServiceImpl" address="http://localhost:8182/cxf/l2bodCapabilityService"  />
 
 </blueprint>

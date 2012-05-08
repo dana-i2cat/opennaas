@@ -34,4 +34,8 @@ the License. -->
     <jaxws:client id="greTunnelCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" address="http://localhost:8182/cxf/greTunnelCapabilityService" />
     <service ref="greTunnelCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" />
 
+	<!-- L2BoD Capability -->
+    <jaxws:client id="l2bodCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" address="http://localhost:8182/cxf/l2bodCapabilityService" />
+    <service ref="l2bodCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" />
+
 </blueprint>
