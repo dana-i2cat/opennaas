@@ -67,12 +67,89 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#empty()
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
+	@Override
+	public IActionSet getActionSet() throws CapabilityException {
+		String name = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String protocol = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
+		String version = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+
+		try {
+			return Activator.getQueueActionSet(name, version, protocol);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
+	@Override
+	public void initialize() throws CapabilityException {
+		registerQueueCapability();
+		setState(State.INITIALIZED);
+	}
+
+	@Override
+	public void shutdown() throws CapabilityException {
+
+		try {
+			unregisterQueueCapability();
+			setState(State.SHUTDOWN);
+		} catch (InvalidSyntaxException e) {
+			log.error(e.getMessage());
+			throw new CapabilityException(e);
+		} catch (BundleException e) {
+			log.error(e.getMessage());
+			throw new CapabilityException(e);
+		}
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#clear()
 	 */
 	@Override
 	public void clear() {
 		log.debug("Clearing the queue...");
 		queue.clear();
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#getActions()
+	 */
+	@Override
+	public List<IAction> getActions() {
+		log.debug("Get actions");
+		List<IAction> actions = new ArrayList<IAction>();
+		for (IAction action : queue) {
+			actions.add(action);
+		}
+		return actions;
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
+	@Override
+	public void queueAction(IAction action) {
+		log.debug("Queue new action");
+		queue.add(action);
+	}
+
+	/**
+	 * @param params
+	 *            to modify
+	 * @return the response of modify the paramsor remove the action
+	 * @throws CapabilityException
+	 */
+	@Override
+	public void modify(ModifyParams modifyParams) throws CapabilityException {
+		if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
+			remove(modifyParams.getPosAction());
+		} else {
+			throw new UnsupportedOperationException("Unsupported operation in modify: " + modifyParams.getQueueOper());
+		}
 	}
 
 	/*
@@ -218,69 +295,6 @@ public class QueueManager extends AbstractCapability implements
 
 		clear();
 		return queueResponse;
-	}
-
-	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#getActions()
-	 */
-	@Override
-	public List<IAction> getActions() {
-		log.debug("Get actions");
-		List<IAction> actions = new ArrayList<IAction>();
-		for (IAction action : queue) {
-			actions.add(action);
-		}
-		return actions;
-	}
-
-	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#queueAction(org.opennaas.core.resources.action.IAction)
-	 */
-	@Override
-	public void queueAction(IAction action) {
-		log.debug("Queue new action");
-		queue.add(action);
-
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
-	 */
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		String name = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
-		String protocol = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
-		String version = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-
-		try {
-			return Activator.getQueueActionSet(name, version, protocol);
-		} catch (ActivatorException e) {
-			throw new CapabilityException(e);
-		}
-	}
-
-	@Override
-	public void initialize() throws CapabilityException {
-		registerQueueCapability();
-		setState(State.INITIALIZED);
-	}
-
-	@Override
-	public void shutdown() throws CapabilityException {
-
-		try {
-			unregisterQueueCapability();
-			setState(State.SHUTDOWN);
-		} catch (InvalidSyntaxException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		} catch (BundleException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		}
 	}
 
 	/**
@@ -511,21 +525,6 @@ public class QueueManager extends AbstractCapability implements
 			throws CapabilityException {
 		queueAction((IAction) action);
 		return execute();
-	}
-
-	/**
-	 * @param params
-	 *            to modify
-	 * @return the response of modify the paramsor remove the action
-	 * @throws CapabilityException
-	 */
-	@Override
-	public void modify(ModifyParams modifyParams) throws CapabilityException {
-		if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
-			remove(modifyParams.getPosAction());
-		} else {
-			throw new UnsupportedOperationException("Unsupported operation in modify: " + modifyParams.getQueueOper());
-		}
 	}
 
 	/**
