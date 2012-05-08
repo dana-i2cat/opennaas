@@ -59,7 +59,8 @@ public class InfoResourcesCommand extends GenericKarafCommand {
 
 						resource = manager.getResource(identifier);
 						Information information = resource.getResourceDescriptor().getInformation();
-						printInfo("Resource ID: " + information.getName());
+						printInfo("Resource Id: " + resource.getResourceIdentifier().getId());
+						printInfo("Resource Name: " + information.getName());
 						printInfo("State: " + resource.getState());
 						printSymbol(horizontalSeparator);
 						printInfo("Resource descriptor ");
