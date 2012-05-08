@@ -514,20 +514,6 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/**
-	 * Implementation for the execution of a single action. <br>
-	 * Clean the queue, add an action and send the message
-	 * 
-	 * @param action
-	 * @return the queue response
-	 * @throws CapabilityException
-	 */
-	private QueueResponse dummyExecute(Object action)
-			throws CapabilityException {
-		queueAction((IAction) action);
-		return execute();
-	}
-
-	/**
 	 * @param posAction
 	 *            position in the queue of the action to remove
 	 * @return the response of remove the action
