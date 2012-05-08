@@ -19,6 +19,11 @@ import java.util.List;
 public class ServiceAccessPoint extends EnabledLogicalElement implements
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4477790607710638709L;
+
 	/* BindsTo */
 	/**
 	 * 
@@ -202,37 +207,5 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 	public void setName(String name) {
 		super.setName(name);
 	} // setName
-
-	/**
-	 * Adds a new ProvidesEndpoint association between a given service and this element.
-	 * 
-	 * @param greTunnelConfiguration
-	 */
-	public void setService(Service service) {
-		if (service != null)
-			ProvidesEndpoint.link(this, service);
-	}
-
-	/**
-	 * Removes the ProvidesEndpoint association between the given service and this element.
-	 * 
-	 * @param greTunnelConfiguration
-	 */
-	public void unsetService(Service service) {
-		if (service != null) {
-			Association a = this.getFirstFromAssociationByTypeAndElement(ProvidesEndpoint.class, service);
-			if (a != null)
-				a.unlink();
-		}
-	}
-
-	/**
-	 * Returns the Service associated to this element.
-	 * 
-	 * @return
-	 */
-	public Service getService() {
-		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
-	}
 
 } // Class ServiceAccessPoint

@@ -18,6 +18,11 @@ import java.util.List;
 public class OSPFService extends RouteCalculationService implements
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8149792005737519557L;
+
 	/* OSPFServiceConfiguration */
 	/**
 	 * @return list of OSPFAreaConfiguration associated to this OSPFService through OSPFServiceConfiguration dependency.

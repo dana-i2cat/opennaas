@@ -5,9 +5,8 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class EnabledLogicalElement as well as methods comparable to
@@ -19,6 +18,11 @@ import java.lang.Exception;
  */
 public class EnabledLogicalElement extends LogicalElement implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6626174356716679399L;
 
 	/**
 	 * This constructor creates a EnabledLogicalElementBeanImpl Class which implements the EnabledLogicalElementBean Interface, and encapsulates the

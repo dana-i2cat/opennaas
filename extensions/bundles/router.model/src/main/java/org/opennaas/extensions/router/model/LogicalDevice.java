@@ -57,6 +57,11 @@ public class LogicalDevice extends EnabledLogicalElement implements
 	// }
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2805660470936210908L;
+
+	/**
 	 * MANUALLY ADDED TO CIM (14/04/2011) <br>
 	 * Adds a connection between this and given LogicalDevice.
 	 * 

@@ -5,8 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class FCPort as well as methods comparable to the
@@ -15,6 +14,11 @@ import java.lang.Exception;
  * Capabilities and management of a Fibre Channel Port Device.
  */
 public class FCPort extends NetworkPort implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7150497702629204976L;
 
 	/**
 	 * This constructor creates a FCPortBeanImpl Class which implements the FCPortBean Interface, and encapsulates the CIM class FCPort in a Java
