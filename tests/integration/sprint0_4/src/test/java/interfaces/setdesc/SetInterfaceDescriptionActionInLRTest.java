@@ -248,7 +248,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 		ethernetPort.setElementName(LRName);
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+		ipCapability.setInterfaceDescription(ethernetPort);
 
 		/* execute action */
 		executeQueue(resource);
@@ -288,7 +288,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		logicalPort.setElementName(LRName);
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
+		ipCapability.setInterfaceDescription(logicalPort);
 
 		/* execute action */
 		executeQueue(resource);
