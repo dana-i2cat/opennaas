@@ -4,6 +4,7 @@ import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.k
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.openDebugSocket;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
@@ -18,7 +19,6 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -93,6 +93,7 @@ public class InterfacesVLANKarafTest
 				includeFeatures("opennaas-router"),
 				includeTestHelper(),
 				noConsole(),
+				openDebugSocket(),
 				keepRuntimeFolder());
 	}
 
@@ -132,41 +133,22 @@ public class InterfacesVLANKarafTest
 		}
 	}
 
-	@Ignore
 	@Test
 	public void setVLANtest() throws Exception {
 
-		// SET ETH
 		int VLANid = 50;
-
 		String tag = "tagged-ethernet";
-		// For Real Router Test
-		// String inter = "fe-0/3/1";
-		// String subport = "30";
-
-		// For mock TEST
-		String inter = "fe-0/1/3";
-		String subport = "15";
-
-		testingMethod(inter, subport, VLANid, tag);
-
-		// SET LT
-		VLANid = 223;
-
-		// For Real Router Test
-		// inter = "lt-1/2/0";
-		// subport = "121";
-
-		// For mock TEST
-		inter = "lt-0/1/2";
-		subport = "12";
+		String inter = "lt-0/1/2";
+		String subport = "12";
 
 		testingMethod(inter, subport, VLANid, tag);
 
 		// set LO
+
 		List<String> responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " lo0.1 1",
 				commandprocessor);
-		Assert.assertTrue(responseError.get(1).contains("[ERROR] Not allowed VLAN configuration for loopback interface"));
+		Assert.assertTrue(responseError.get(1).contains("Encapsulation in loopback interfaces is not supported."));
+
 	}
 
 	public void checkModel(String inter, String port, int vlanid, IResource resource) {
@@ -269,9 +251,18 @@ public class InterfacesVLANKarafTest
 
 		// SET NEW VLAN
 		responseError = KarafCommandHelper.executeCommand(
-				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
+				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + tag
 				, commandprocessor);
 		// assert command output no contains ERROR tag
+		if (!responseError.get(1).isEmpty()) {
+			Assert.fail(responseError.get(1));
+		}
+		Assert.assertTrue(responseError.get(1).isEmpty());
+
+		responseError = KarafCommandHelper.executeCommand(
+				"chassis:setEncapsulationLabel " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
+				, commandprocessor);
+
 		if (!responseError.get(1).isEmpty()) {
 			Assert.fail(responseError.get(1));
 		}
@@ -294,7 +285,7 @@ public class InterfacesVLANKarafTest
 
 		// ROLLBACK OF THE INTERFACE
 		responseError = KarafCommandHelper.executeCommand(
-				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + OldVLAN
+				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + tag
 				, commandprocessor);
 		Assert.assertTrue(responseError.get(1).isEmpty());
 		responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
