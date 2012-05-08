@@ -10,9 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ospf.IOSPFCapability;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
@@ -63,8 +62,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.activateOSPF();
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -83,8 +82,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		ospfCapability.addInterfacesInOSPFArea(getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
 				getOSPFArea("0.0.0.0"));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -102,8 +101,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.clearOSPFconfiguration(getOSPFService("12345678"));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -120,8 +119,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.configureOSPFArea(getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -137,8 +136,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.configureOSPF(getOSPFService("12345678"));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -156,8 +155,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.deactivateOSPF();
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -174,8 +173,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.disableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -192,8 +191,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.enableOSPFInterfaces(getInterfaces(new String[] { "fe-0/0/3.45" }));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -210,8 +209,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.getOSPFConfiguration();
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -229,8 +228,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		ospfCapability.removeInterfacesInOSPFArea(getLogicalPorts(new String[] { "fe-0/0/2.1", "fe-0/0/2.2" }),
 				getOSPFArea("0.0.0.0"));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();
@@ -247,8 +246,8 @@ public class OSPFCapabilityIntegrationTest extends OSPFIntegrationTest {
 		IOSPFCapability ospfCapability = (IOSPFCapability) routerResource.getCapability(getOSPFInformation(OSPF_CAPABILIY_TYPE));
 		ospfCapability.removeOSPFArea(getOSPFAreaConfiguration("0.0.0.0", AreaType.NSSA));
 
-		IQueueManagerService queueCapability = (IQueueManagerService) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getOSPFInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();

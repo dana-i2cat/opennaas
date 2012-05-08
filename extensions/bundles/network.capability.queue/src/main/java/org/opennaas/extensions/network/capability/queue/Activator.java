@@ -2,8 +2,6 @@ package org.opennaas.extensions.network.capability.queue;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
@@ -11,6 +9,7 @@ import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -54,14 +53,14 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 * Get the Queue Manager Service
 	 * 
 	 * @param resourceId
-	 * @return IQueueManagerService
+	 * @return IQueueManagerCapability
 	 * @throws ActivatorException
 	 */
-	public static IQueueManagerService getQueueManagerService(String resourceId)
+	public static IQueueManagerCapability getQueueManagerService(String resourceId)
 			throws ActivatorException {
 		try {
 			log.debug("Calling QueueManagerService");
-			return (IQueueManagerService) getServiceFromRegistry(context,
+			return (IQueueManagerCapability) getServiceFromRegistry(context,
 					createFilterQueueManager(resourceId));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
@@ -81,7 +80,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "netqueue");
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME,
 				resourceId);
-		return createServiceFilter(IQueueManagerService.class.getName(),
+		return createServiceFilter(IQueueManagerCapability.class.getName(),
 				properties);
 	}
 

@@ -7,12 +7,11 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockActionFactory;
 import org.opennaas.core.resources.queue.ModifyParams;
-import org.opennaas.core.resources.queue.QueueConstants;
 
 public class QueueOperationsTest {
 
 	@Test
-	public void QueueAddRemoveTest() {
+	public void QueueAddRemoveTest() throws CapabilityException {
 		CapabilityDescriptor queueDescriptor = ResourceDescriptorFactory.newCapabilityDescriptor("queue", "junos");
 		QueueManager queueManager = new QueueManager(queueDescriptor);
 
@@ -24,11 +23,7 @@ public class QueueOperationsTest {
 		Assert.assertTrue(queueManager.getActions().size() == 3);
 
 		ModifyParams modifyParams = ModifyParams.newRemoveOperation(1);
-		try {
-			queueManager.sendMessage(QueueConstants.MODIFY, modifyParams);
-		} catch (CapabilityException e) {
-			Assert.fail(e.getMessage());
-		}
+		queueManager.modify(modifyParams);
 		Assert.assertTrue(queueManager.getActions().size() == 2);
 		Assert.assertTrue(queueManager.getActions().get(0).getActionID().equals("actionMock1"));
 		Assert.assertTrue(queueManager.getActions().get(1).getActionID().equals("actionMock3"));
