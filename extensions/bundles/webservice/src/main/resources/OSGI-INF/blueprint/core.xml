@@ -39,5 +39,11 @@ the License. -->
 	</bean>
     <jaxws:endpoint  implementor="#ospfCapabilityServiceImpl" address="http://localhost:8182/cxf/ospfCapabilityService"  />
 
+	<!-- GRETunnel Capability -->
+    <cxf:bus id="greTunnelCapabilityServiceBus"></cxf:bus>
+	<bean id="greTunnelCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.GRETunnelCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#greTunnelCapabilityServiceImpl" address="http://localhost:8182/cxf/greTunnelCapabilityService"  />
 
 </blueprint>

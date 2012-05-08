@@ -30,4 +30,8 @@ the License. -->
     <jaxws:client id="ospfCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IOSPFCapabilityService" address="http://localhost:8182/cxf/ospfCapabilityService" />
     <service ref="ospfCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IOSPFCapabilityService" />
 
+	<!-- GRETunnel Capability -->
+    <jaxws:client id="greTunnelCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" address="http://localhost:8182/cxf/greTunnelCapabilityService" />
+    <service ref="greTunnelCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" />
+
 </blueprint>

@@ -29,6 +29,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
