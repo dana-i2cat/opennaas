@@ -10,8 +10,10 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
@@ -35,7 +37,18 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	 * @see org.opennaas.extensions.router.capability.ip.IIPCapability#setIPv4(org.opennaas.extensions.router.model.LogicalPort)
 	 */
 	@Override
-	public void setIPv4(LogicalDevice iface) throws CapabilityException {
+	public void setIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		NetworkPort param = new NetworkPort();
+		param.setName(iface.getName());
+		if (iface instanceof NetworkPort) {
+			param.setPortNumber(((NetworkPort) iface).getPortNumber());
+			param.setLinkTechnology(((NetworkPort) iface).getLinkTechnology());
+		}
+		IPProtocolEndpoint ip = new IPProtocolEndpoint();
+		ip.setIPv4Address(ipProtocolEndpoint.getIPv4Address());
+		ip.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
+		param.addProtocolEndpoint(ipProtocolEndpoint);
+
 		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, iface);
 		queueAction(action);
 	}
