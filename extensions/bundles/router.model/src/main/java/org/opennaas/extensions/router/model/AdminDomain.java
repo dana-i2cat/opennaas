@@ -5,8 +5,10 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlEnum;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class AdminDomain as well as methods comparable to the
@@ -36,7 +38,7 @@ public class AdminDomain extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property NameFormat.
 	 */
-
+	@XmlType(name = "AdminDomainNameFormatEnum")
 	public enum NameFormat {
 		OTHER,
 		AUTONOMOUS_SYSTEM,
