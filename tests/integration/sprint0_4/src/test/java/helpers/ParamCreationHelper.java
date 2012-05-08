@@ -1,5 +1,6 @@
 package helpers;
 
+import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
@@ -80,5 +81,12 @@ public class ParamCreationHelper {
 		ip.setSubnetMask("255.255.255.0");
 		eth.addProtocolEndpoint(ip);
 		return eth;
+	}
+
+	public static ComputerSystem getLogicalRouter(String lrName) {
+		ComputerSystem lrModel = new ComputerSystem();
+		lrModel.setName(lrName);
+		lrModel.setElementName(lrName);
+		return lrModel;
 	}
 }
