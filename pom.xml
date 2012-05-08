@@ -709,6 +709,7 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>tests</module>
+		<module>clients</module>
 	</modules>
 
 	<build>
