@@ -42,9 +42,6 @@
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
 
-		<module>nexus.alarms.repository</module>
-		<module>nexus.tests.helper</module>
-
 		<module>network.model</module>
 		<module>network.repository</module>
 		<module>network.capability.basic</module>
@@ -54,5 +51,8 @@
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
+        <module>bod.autobahn</module>
+		<module>webservice</module>
+		<module>webservice-proxy</module>
 	</modules>
 </project>

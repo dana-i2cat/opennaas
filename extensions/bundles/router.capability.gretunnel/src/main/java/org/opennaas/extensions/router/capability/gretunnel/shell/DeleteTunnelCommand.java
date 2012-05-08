@@ -1,14 +1,12 @@
 package org.opennaas.extensions.router.capability.gretunnel.shell;
 
-import org.opennaas.extensions.router.model.GRETunnelService;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.gretunnel.GRETunnelCapability;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
+import org.opennaas.extensions.router.model.GRETunnelService;
 
 /**
  * @author Jordi Puig
@@ -32,9 +30,8 @@ public class DeleteTunnelCommand extends GenericKarafCommand {
 		printInitCommand("Delete GRE tunnel " + tunnelName);
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
-			Response response = tunnelCapability.deleteGRETunnel(getTunnelService());
-			return printResponseStatus(response);
+			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
+			tunnelCapability.deleteGRETunnel(getTunnelService());
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -45,6 +42,8 @@ public class DeleteTunnelCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
 	}
 
 	/**

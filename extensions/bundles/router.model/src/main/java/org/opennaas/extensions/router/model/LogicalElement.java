@@ -18,6 +18,11 @@ public class LogicalElement extends ManagedSystemElement implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7373054334816230549L;
+
+	/**
 	 * This constructor creates a LogicalElementBeanImpl Class which implements the LogicalElementBean Interface, and encapsulates the CIM class
 	 * LogicalElement in a Java Bean. The CIM class LogicalElement is described as follows:
 	 * 

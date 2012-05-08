@@ -1,0 +1,40 @@
+<resourceDescriptor>
+    <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information>
+		<type>basicNetwork</type>
+		<description> Manages the topology of the Network. </description>
+	</information>
+    </capabilityDescriptors>
+
+      <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information>
+		<type>netqueue</type>
+		<name> Network Queue capability </name>
+		<description> Manages the queue of all resources of the network. </description>
+	</information>
+    </capabilityDescriptors> 
+
+    <capabilityDescriptors>
+        <capabilityProperty value="network" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information>
+		<type>netospf</type>
+		<description> Enables OSPF on all resources of the network.</description>
+		<name> Network OSPF capability </name>
+	</information>
+    </capabilityDescriptors>
+
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>network</type>
+        <name>networkdemo</name>
+	<description> Network of abstract resources.</description>
+    </information>
+    <properties/> 
+</resourceDescriptor>
+

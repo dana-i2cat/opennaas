@@ -1,131 +1,119 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceIdentifier;
-import org.opennaas.core.resources.IResourceManager;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
-@Command(scope = "chassis", name = "setEncapsulation", description = "Set an encapsulation in a given interface.")
+@Command(scope = "chassis", name = "setEncapsulation", description = "Set encapsulation in a given interface.")
 public class SetEncapsulationCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource name.", required = true, multiValued = false)
 	private String	resourceId;
 
-	@Argument(index = 1, name = "subInterface", description = "The interface where to set the VLAN.", required = true, multiValued = false)
-	private String	subinterface;
+	@Argument(index = 1, name = "interfaceName", description = "The interface where to set the encapsulation.", required = true, multiValued = false)
+	private String	interfaceName;
 
-	@Argument(index = 2, name = "vlanid", description = "the VLAN id.", required = false, multiValued = false)
-	private int		vlanId	= -1;
+	@Argument(index = 2, name = "encapsulationType", description = "The encapsulation type to use. Possible values: [tagged-ethernet, none]", required = true, multiValued = false)
+	private String	encapsulationType;
 
 	@Override
 	protected Object doExecute() throws Exception {
-
-		printInitCommand("set Encapsulation");
-
 		try {
-			IResourceManager manager = getResourceManager();
+			checkArguments();
 
-			String[] argsRouterName = new String[2];
-			try {
-				argsRouterName = splitResourceName(resourceId);
-			} catch (Exception e) {
-				printError(e.getMessage());
-				printEndCommand();
-				return -1;
-			}
+			IResource resource = getResourceFromFriendlyName(resourceId);
 
-			String[] paramsInterface = splitInterfaces(subinterface);
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.setEncapsulation(createInterface(interfaceName), getEncapsulationType(encapsulationType));
 
-			// FIXME It is necessary to setvlans in loopback if we want configure LRs
-			if (isLoopback(paramsInterface[0]))
-				throw new Exception("Not allowed VLAN configuration for loopback interface");
-
-			IResourceIdentifier resourceIdentifier = manager.getIdentifierFromResourceName(argsRouterName[0], argsRouterName[1]);
-			if (resourceIdentifier == null) {
-				printError("Could not get resource with name: " + argsRouterName[0] + ":" + argsRouterName[1]);
-				printEndCommand();
-				return null;
-			}
-
-			IResource resource = manager.getResource(resourceIdentifier);
-
-			validateResource(resource);
-			checkParams();
-			NetworkPort params = prepareParams();
-
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.SETENCAPSULATION, params);
-
-		} catch (ResourceException e) {
-			printError(e);
-			printEndCommand();
-			return null;
 		} catch (Exception e) {
-			printError("Error setting vlan.");
+			printError("Error setting encapsulation");
 			printError(e);
-			printEndCommand();
-			return null;
 		}
-
-		printEndCommand();
 		return null;
 	}
 
-	private void checkParams() throws Exception {
-		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
-		Matcher matcher = ltPattern.matcher(subinterface);
-		if (!matcher.find())
-			throw new Exception("the command encapsulation is limited in logical tunnels");
-	}
-
-	private boolean isLoopback(String name) {
-		return name.startsWith("lo");
-
-	}
-
-	private NetworkPort prepareParams() throws Exception {
-		NetworkPort networkPort = null;
-		networkPort = new LogicalTunnelPort();
-
-		String[] args = subinterface.split("\\.");
-		// params
-		networkPort.setName(args[0]);
-		networkPort.setPortNumber(Integer.parseInt(args[1]));
-		networkPort.setLinkTechnology(LinkTechnology.OTHER);
-
-		if (vlanId != -1) {
-			VLANEndpoint vlanEndpoint = new VLANEndpoint();
-			vlanEndpoint.setVlanID(vlanId);
-			networkPort.addProtocolEndpoint(vlanEndpoint);
+	private LogicalPort createInterface(String interfaceName2) throws Exception {
+		LogicalPort iface;
+		if (isPhysicalInterfaceName(interfaceName)) {
+			// physical interface specified
+			iface = new LogicalPort();
+			iface.setName(interfaceName);
+		} else {
+			// logical interface specified
+			String[] interfaceNameAndPortNumber = splitInterfaces(interfaceName);
+			iface = new NetworkPort();
+			iface.setName(interfaceNameAndPortNumber[0]);
+			((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
 		}
-		return networkPort;
+		return iface;
 	}
 
-	public VLANEndpoint getVLANEnpoint(List<ProtocolEndpoint> protocolEndpoints) throws Exception {
-		for (ProtocolEndpoint protocolEndpoint : protocolEndpoints) {
-			if (protocolEndpoint instanceof VLANEndpoint) {
-				return (VLANEndpoint) protocolEndpoint;
-			}
-		}
-		throw new Exception("VLANEnpoint not found");
+	// private LogicalPort createParams(String interfaceName) throws Exception {
+	//
+	// LogicalPort iface;
+	// if (isPhysicalInterfaceName(interfaceName)) {
+	// // physical interface specified
+	// iface = new LogicalPort();
+	// iface.setName(interfaceName);
+	// } else {
+	// // logical interface specified
+	// String[] interfaceNameAndPortNumber = splitInterfaces(interfaceName);
+	// iface = new NetworkPort();
+	// iface.setName(interfaceNameAndPortNumber[0]);
+	// ((NetworkPort) iface).setPortNumber(Integer.parseInt(interfaceNameAndPortNumber[1]));
+	// }
+	//
+	// // specify encapsulation type in iface
+	// ProtocolIFType type = getEncapsulationType(encapsulationType);
+	// if (!type.equals(ProtocolIFType.UNKNOWN)) {
+	// ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
+	// encapsulationEndpoint.setProtocolIFType(type);
+	// iface.addProtocolEndpoint(encapsulationEndpoint);
+	// }
+	//
+	// return iface;
+	// }
 
+	private boolean isPhysicalInterfaceName(String interfaceName) {
+		return !(interfaceName.contains("."));
+	}
+
+	private void checkArguments() throws Exception {
+		// FIXME It is necessary to setvlans in loopback if we want configure LRs
+		if (isLoopbackInterfaceName(interfaceName)) {
+			throw new UnsupportedOperationException("Encapsulation in loopback interfaces is not supported.");
+		}
+
+		checkEncapsulationType(encapsulationType);
+	}
+
+	private void checkEncapsulationType(String encapsulationType) {
+
+		ProtocolIFType type = getEncapsulationType(encapsulationType);
+
+		if (type.equals(ProtocolIFType.OTHER)) {
+			throw new UnsupportedOperationException("Unsupported encapsulation type.");
+		}
+	}
+
+	private ProtocolIFType getEncapsulationType(String encapsulationType) {
+		if (encapsulationType.equals("tagged-ethernet")) {
+			return ProtocolIFType.LAYER_2_VLAN_USING_802_1Q;
+		} else if (encapsulationType.equals("none")) {
+			return ProtocolIFType.UNKNOWN;
+		} else {
+			return ProtocolIFType.OTHER;
+		}
+	}
+
+	private boolean isLoopbackInterfaceName(String interfaceName) {
+		return (interfaceName.startsWith("lo"));
 	}
 
 }

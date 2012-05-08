@@ -10,6 +10,11 @@ import org.opennaas.extensions.router.model.opticalSwitch.dwdm.IDWDMTransponderC
 
 public class WonesysTransponderCard extends ProteusOpticalSwitchCard implements IDWDMTransponderCard {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6851684948308799291L;
+
 	public WonesysTransponderCard(int chasis, int slot, int type, int subtype) {
 		super(chasis, slot, type, subtype);
 		// TODO Auto-generated constructor stub

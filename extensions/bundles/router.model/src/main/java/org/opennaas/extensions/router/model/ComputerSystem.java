@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ComputerSystem as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ComputerSystemBean Interface. The CIM class ComputerSystem is described as follows:
@@ -17,7 +20,13 @@ import java.util.List;
  * capabilities and MAY serve as an aggregation point to associate one or more of the following elements: FileSystem, OperatingSystem, Processor and
  * Memory (Volatile and/or NonVolatile Storage).
  */
+@XmlRootElement
 public class ComputerSystem extends System implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4611207438563668398L;
 
 	/**
 	 * This constructor creates a ComputerSystemBeanImpl Class which implements the ComputerSystemBean Interface, and encapsulates the CIM class
@@ -33,7 +42,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property NameFormat.
 	 */
-
+	@XmlType(name = "ComputerSystemNameFormatEnum")
 	public enum NameFormat {
 		OTHER,
 		IP,
@@ -291,6 +300,7 @@ public class ComputerSystem extends System implements Serializable {
 	/**
 	 * The following constants are defined for use with the ValueMap/Values qualified property PowerManagementCapabilities.
 	 */
+	@XmlType(name = "ComputerSystemPowerManagementEnum")
 	@Deprecated
 	public enum PowerManagementCapabilities {
 		UNKNOWN,

@@ -236,7 +236,7 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return resource;
 	}
 
-	protected ICapability getCapability(List<ICapability> capabilities, String type) throws Exception {
+	protected ICapability getCapability(List<? extends ICapability> capabilities, String type) throws Exception {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
@@ -269,13 +269,17 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 		return true;
 	}
 
-	protected Object printResponseStatus(Response response) {
+	protected Object printResponseStatus(Response response, String resourceId) {
 		if (response.getStatus().equals(Response.Status.OK)) {
 			return null;
 		} else if (response.getStatus().equals(Response.Status.ERROR)) {
+			printError("Error in " + response.getSentMessage());
 			for (String error : response.getErrors())
 				printError(error);
 			return -1;
+		} else if (response.getStatus().equals(Response.Status.QUEUED)) {
+			printSymbol("Queued " + response.getSentMessage() + " for " + resourceId);
+			return null;
 		} else {
 			printSymbol(response.getStatus().toString());
 			return null;

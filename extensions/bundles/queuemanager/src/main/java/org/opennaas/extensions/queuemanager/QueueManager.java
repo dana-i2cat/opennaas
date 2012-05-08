@@ -22,7 +22,6 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
@@ -38,8 +37,8 @@ import org.osgi.framework.ServiceRegistration;
 
 public class QueueManager extends AbstractCapability implements
 		IQueueManagerService {
-
-	public final static String		QUEUE			= "queue";
+	public final static String		CAPABILITY_TYPE	= "queue";
+	public final static String		QUEUE			= CAPABILITY_TYPE;
 	private final Log				log				= LogFactory.getLog(QueueManager.class);
 	private String					resourceId		= "";
 	private ServiceRegistration		registration	= null;
@@ -62,6 +61,11 @@ public class QueueManager extends AbstractCapability implements
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Queue Capability");
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
 	}
 
 	/*
@@ -121,12 +125,8 @@ public class QueueManager extends AbstractCapability implements
 			boolean errorHappened = false;
 			try {
 				/* execute queued actions */
-				try {
-					queueResponse = executeQueuedActions(queueResponse,
-							protocolSessionManager);
-				} catch (ActionException e) {
-					throw new CapabilityException(e);
-				}
+				queueResponse = executeQueuedActions(queueResponse,
+						protocolSessionManager);
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -148,11 +148,14 @@ public class QueueManager extends AbstractCapability implements
 							errorHappened = true;
 
 					} catch (ActionException e) {
+						queueResponse.setConfirmResponse(ActionResponse.errorResponse(QueueConstants.CONFIRM, e.getLocalizedMessage()));
 						throw new CapabilityException(e);
 					}
 
 				}
 			} catch (Exception e) {
+				log.warn("Failed to execute queue", e);
+
 				// restore action
 				assert protocolSessionManager != null;
 				try {
@@ -279,7 +282,6 @@ public class QueueManager extends AbstractCapability implements
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
 			}
-
 		} catch (CapabilityException e) {
 			throw new CapabilityException(e);
 		}
@@ -287,49 +289,18 @@ public class QueueManager extends AbstractCapability implements
 		return Response.okResponse(idOperation);
 	}
 
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#sendRefreshActions()
-	 */
 	@Override
-	public Response sendRefreshActions() {
-		// there is no need of startup actions, queue is operative just after
-		// activation.
-		return Response.okResponse("");
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#activateCapability()
-	 */
-	@Override
-	protected void activateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivateCapability()
-	 */
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
-	 */
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		log.debug("Registering Queue Capability");
+	public void initialize() throws CapabilityException {
 		registerQueueCapability();
-		log.debug("Registered!");
+		setState(State.INITIALIZED);
 	}
 
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdownCapability()
-	 */
 	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		log.debug("Unregistering Queue Capability");
+	public void shutdown() throws CapabilityException {
+
 		try {
 			unregisterQueueCapability();
+			setState(State.SHUTDOWN);
 		} catch (InvalidSyntaxException e) {
 			log.error(e.getMessage());
 			throw new CapabilityException(e);
@@ -337,7 +308,6 @@ public class QueueManager extends AbstractCapability implements
 			log.error(e.getMessage());
 			throw new CapabilityException(e);
 		}
-		log.debug("Unregistered!");
 	}
 
 	/**
@@ -350,10 +320,11 @@ public class QueueManager extends AbstractCapability implements
 			// abstract capabilities have to be initialized
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab).sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
+				try {
+					((AbstractCapability) capab).sendRefreshActions();
+				} catch (CapabilityException e) {
 					throw new CapabilityException(
-							"model refresh, when calling sendRefreshActions");
+							"error in model refresh, when calling sendRefreshActions", e);
 				}
 			}
 		}
@@ -440,26 +411,31 @@ public class QueueManager extends AbstractCapability implements
 	// Resources.
 
 	/**
+	 * Executes actions in the queue.
+	 * 
+	 * Queue execution stops at the first action to return error. Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
 	 * @param protocolSessionManager
 	 *            to use in actions execution
 	 * @return given queueResponse with executed actions responses.
-	 * @throws ActionException
-	 *             if an Action throws it during its execution
 	 */
 	private QueueResponse executeQueuedActions(QueueResponse queueResponse,
-			IProtocolSessionManager protocolSessionManager)
-			throws ActionException {
+			IProtocolSessionManager protocolSessionManager) {
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			/* use pool for get protocol session */
-			log.debug("getting protocol session...");
+
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
-			ActionResponse actionResponse = action
-					.execute(protocolSessionManager);
+			ActionResponse actionResponse;
+			try {
+				actionResponse = action.execute(protocolSessionManager);
+			} catch (ActionException e) {
+				log.error("Error executing action " + action.getActionID(), e);
+				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
+			}
 			queueResponse.getResponses().set(numAction, actionResponse);
 			numAction++;
 
@@ -601,9 +577,16 @@ public class QueueManager extends AbstractCapability implements
 	 * @return the response of remove the action
 	 */
 	private Object remove(int posAction) {
-		queue.remove(posAction);
-		return Response.okResponse(QueueConstants.MODIFY,
-				"Remove operation in pos: " + posAction);
+
+		try {
+			queue.remove(posAction);
+			return Response.okResponse(QueueConstants.MODIFY,
+					"Remove operation in pos: " + posAction);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Vector<String> errors = new Vector<String>(1);
+			errors.add("Invalid index. Index " + posAction + " does not point to any action in the queue.");
+			return Response.errorResponse(QueueConstants.MODIFY, errors);
+		}
 
 	}
 
@@ -611,11 +594,13 @@ public class QueueManager extends AbstractCapability implements
 	 * Register the capability
 	 */
 	private void registerQueueCapability() {
+		log.debug("Registering Queue Capability");
 		Properties props = new Properties();
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		registration = Activator.getContext().registerService(
 				IQueueManagerService.class.getName(), this, props);
+		log.debug("Registered!");
 	}
 
 	/**
@@ -626,7 +611,9 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	private void unregisterQueueCapability() throws InvalidSyntaxException, BundleException {
 		if (registration != null) {
+			log.debug("Unregistering Queue Capability");
 			registration.unregister();
+			log.debug("Unregistered!");
 		}
 	}
 }

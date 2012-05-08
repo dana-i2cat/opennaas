@@ -25,14 +25,16 @@ import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
@@ -60,8 +62,8 @@ public abstract class GRETunnelIntegrationTest
 	private final Log				log				= LogFactory
 															.getLog(GRETunnelIntegrationTest.class);
 	private static MockResource		mockResource;
-	protected ICapability			queueCapability;
-	protected ICapability			greTunnelCapability;
+	protected IQueueManagerService	queueCapability;
+	protected IGRETunnelCapability		greTunnelCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -136,14 +138,14 @@ public abstract class GRETunnelIntegrationTest
 			ResourceException, CorruptStateException, ProtocolException
 	{
 		log.info("INFO: Before Test, getting queue...");
-		queueCapability = queueManagerFactory.create(mockResource);
-		queueCapability.initialize();
+		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("Creating gretunnel capability");
-		greTunnelCapability = gretunnelFactory.create(mockResource);
-		greTunnelCapability.initialize();
+		greTunnelCapability = (IGRETunnelCapability) gretunnelFactory.create(mockResource);
+		((ICapabilityLifecycle) greTunnelCapability).initialize();
 
 		mockResource.addCapability(queueCapability);
 		mockResource.addCapability(greTunnelCapability);

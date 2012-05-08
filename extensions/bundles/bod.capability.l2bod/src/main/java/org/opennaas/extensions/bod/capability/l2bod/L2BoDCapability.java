@@ -1,8 +1,6 @@
 package org.opennaas.extensions.bod.capability.l2bod;
 
-import java.util.Vector;
-
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,11 +9,12 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
-public class L2BoDCapability extends AbstractCapability {
+public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
 
 	public static String	CAPABILITY_NAME	= "l2bod";
 
@@ -30,45 +29,32 @@ public class L2BoDCapability extends AbstractCapability {
 		log.debug("Built new L2BoD Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#requestConnection(org.opennaas.extensions.bod.capability.l2bod.
+	 * RequestConnectionParameters)
+	 */
 	@Override
-	public Object sendMessage(String idOperation, Object params) {
+	public void requestConnection(RequestConnectionParameters parameters) throws CapabilityException {
+		IAction action = createActionAndCheckParams(L2BoDActionSet.REQUEST_CONNECTION, parameters);
+		queueAction(action);
+	}
 
-		log.debug("Sending message to L2BoD Capability");
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
-
-		return Response.okResponse(idOperation);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(java.util.List)
+	 */
+	@Override
+	public void shutDownConnection(List<Interface> listInterfaces) throws CapabilityException {
+		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, listInterfaces);
+		queueAction(action);
 	}
 
 	@Override
-	protected void initializeCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void activateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-
-	}
-
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
 	}
 
 	@Override
@@ -81,6 +67,25 @@ public class L2BoDCapability extends AbstractCapability {
 			return Activator.getL2BoDActionSetService(name, version);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
+		}
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		getQueueManager(resourceId).queueAction(action);
+	}
+
+	/**
+	 * 
+	 * @return QueuemanagerService this capability is associated to.
+	 * @throws CapabilityException
+	 *             if desired queueManagerService could not be retrieved.
+	 */
+	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+		try {
+			return Activator.getQueueManagerService(resourceId);
+		} catch (ActivatorException e) {
+			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
 	}
 

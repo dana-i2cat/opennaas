@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+    <bean id="protocol-session-factory"
+          class="org.opennaas.extensions.bod.autobahn.protocol.AutobahnProtocolSessionFactory"/>
+    <bean id="bod-action-set"
+          class="org.opennaas.extensions.bod.autobahn.bod.BoDActionSet"/>
+    <bean id="queue-action-set"
+          class="org.opennaas.extensions.bod.autobahn.queue.QueueActionSet"/>
+
+    <service ref="protocol-session-factory"
+             interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+        <service-properties>
+            <entry key="protocol" value="autobahn"/>
+            <entry key="protocol.version" value="1.0.0"/>
+        </service-properties>
+    </service>
+
+    <service ref="bod-action-set"
+             interface="org.opennaas.core.resources.action.IActionSet">
+        <service-properties>
+            <entry key="actionset.name" value="autobahn"/>
+            <entry key="actionset.capability" value="l2bod"/>
+            <entry key="actionset.version" value="1.0"/>
+        </service-properties>
+    </service>
+
+    <service ref="queue-action-set"
+             interface="org.opennaas.core.resources.action.IActionSet">
+        <service-properties>
+            <entry key="actionset.name" value="autobahn"/>
+            <entry key="actionset.capability" value="queue"/>
+            <entry key="actionset.version" value="1.0"/>
+        </service-properties>
+    </service>
+</blueprint>

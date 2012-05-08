@@ -1,19 +1,15 @@
 package org.opennaas.extensions.roadm.capability.connections.shell;
 
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
-import org.opennaas.extensions.roadm.capability.connections.ConnectionsCapability;
+import org.apache.felix.gogo.commands.Argument;
+import org.apache.felix.gogo.commands.Command;
+import org.apache.felix.gogo.commands.Option;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.shell.GenericKarafCommand;
-
-import org.apache.felix.gogo.commands.Argument;
-import org.apache.felix.gogo.commands.Command;
-import org.apache.felix.gogo.commands.Option;
 
 @Command(scope = "connections", name = "makeConnection", description = "Makes a connection between given ports of given resource, and configures which lambda gets in and which gets out of the connection.")
 public class MakeConnectionCommand extends GenericKarafCommand {
@@ -31,8 +27,8 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 	@Argument(index = 4, name = "outputlambda", description = "Output lambda (wavelength in nm)", required = true, multiValued = false)
 	private String	lambdaTarget;
 
-	@Option(name = "--useChannelNumbers", aliases={"-n"}, description="Tells command to read inputLambda and outputLambda as integers representing the channelNumber, instead of their original meaning")
-	private boolean useChannelNum = false;
+	@Option(name = "--useChannelNumbers", aliases = { "-n" }, description = "Tells command to read inputLambda and outputLambda as integers representing the channelNumber, instead of their original meaning")
+	private boolean	useChannelNum	= false;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -49,7 +45,10 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 			if (resource == null)
 				return "";
 
-			ICapability capability = getCapability(resource.getCapabilities(), ConnectionsCapability.CONNECTIONS);
+			// IConnectionsCapability capability = (IConnectionsCapability) getCapability(resource.getCapabilities(),
+			// ConnectionsCapability.CONNECTIONS);
+			IConnectionsCapability capability = (IConnectionsCapability) resource.getCapabilityByInterface(IConnectionsCapability.class);
+
 			if (capability == null) {
 				printError("Error getting the capability");
 				printEndCommand();
@@ -58,15 +57,8 @@ public class MakeConnectionCommand extends GenericKarafCommand {
 
 			FiberConnection connectionRequest = buildConnectionRequest();
 
-			Response response = (Response) capability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-			if (!response.getErrors().isEmpty()) {
-				printError("Errors executing make connection:");
-				for (String errorMsg : response.getErrors()) {
-					printError(errorMsg);
-				}
-				printEndCommand();
-				return "";
-			}
+			IConnectionsCapability connectionsCapability = (IConnectionsCapability) resource.getCapabilityByInterface(IConnectionsCapability.class);
+			connectionsCapability.makeConnection(connectionRequest);
 
 		} catch (Exception e) {
 			printError("Error in make connection");

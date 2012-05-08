@@ -2,19 +2,16 @@ package org.opennaas.extensions.router.capability.chassis.shell;
 
 import java.util.List;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.NetworkPort;
 
 @Command(scope = "chassis", name = "createLogicalRouter", description = "Create a logical router on a given resource.")
 public class CreateLogicalRouterCommand extends GenericKarafCommand {
@@ -53,32 +50,12 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 			}
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
 
-			Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRname);
+			// create call params
+			ComputerSystem logicalRouterModelWithInterfaces = createLRModelWithInterfaces("router:" + LRname, subinterfaces);
 
-			/* add interfaces */
-			// FIXME This kind of logic should go in Capability, not in a karaf command!
-			AddInterfaceToLRCommand addInterfaceCommand = new AddInterfaceToLRCommand();
-			if (subinterfaces != null) {
-				for (String interf : subinterfaces) {
-					try {
-						ComputerSystem addInterfaceParams = addInterfaceCommand.createLRModelWithInterface("router:" + LRname, interf);
-						Response addResp = (Response) chassisCapability.sendMessage(ActionConstants.ADDINTERFACETOLOGICALROUTER, addInterfaceParams);
-						if (addResp.getStatus().equals(Response.Status.ERROR)) {
-							printError("Can not add " + interf);
-							for (String errorMsg : addResp.getErrors()) {
-								printError(errorMsg);
-							}
-						}
-					} catch (Exception e) {
-						printError("Can not add " + interf);
-						printError(e);
-					}
-				}
-			}
-			printResponseStatus(resp);
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.createLogicalRouter(logicalRouterModelWithInterfaces);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -92,6 +69,41 @@ public class CreateLogicalRouterCommand extends GenericKarafCommand {
 		}
 		printEndCommand();
 		return null;
+	}
+
+	private ComputerSystem createLRModelWithInterfaces(String logicalRouterName, List<String> subinterfaces) throws Exception {
+		ComputerSystem lrModel = createLRModel(logicalRouterName);
+
+		if (subinterfaces != null) {
+			for (String interfaceName : subinterfaces) {
+				NetworkPort iface = createInterface(interfaceName);
+				lrModel.addLogicalDevice(iface);
+			}
+		}
+		return lrModel;
+	}
+
+	public ComputerSystem createLRModel(String logicalRouterFriendlyId) throws Exception {
+		// That's a hack for not requiring logicalRouter to be already added in the resource manager when this command is executed.
+		// Instead of getting the resource using resource manager, we take logicalRouter name from the friendly id.
+		ComputerSystem logicalRouterModel = new ComputerSystem();
+		String[] targetResourceName = splitResourceName(logicalRouterFriendlyId);
+		logicalRouterModel.setName(targetResourceName[1]);
+		logicalRouterModel.setElementName(targetResourceName[1]);
+
+		return logicalRouterModel;
+	}
+
+	public NetworkPort createInterface(String interfaceNameWithPort) throws Exception {
+		// That's a hack for not requiring interface to be already created in opennaas model when this command is executed.
+		// Instead of getting it from physical router model, we use only the interface identifier.
+		// Action will fail (in execute) if this interface is not created
+		String[] paramsInterface = splitInterfaces(interfaceNameWithPort);
+		NetworkPort iface = new NetworkPort();
+		iface.setName(paramsInterface[0]);
+		iface.setPortNumber(Integer.parseInt(paramsInterface[1]));
+
+		return iface;
 	}
 
 }

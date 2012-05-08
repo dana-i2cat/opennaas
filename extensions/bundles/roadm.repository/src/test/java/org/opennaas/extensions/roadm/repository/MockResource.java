@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.opennaas.extensions.router.model.ManagedElement;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
@@ -20,9 +20,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.router.model.ManagedElement;
 
 public class MockResource implements IResource {
 	static Log					log				= LogFactory
@@ -159,11 +157,6 @@ public class MockResource implements IResource {
 		return null;
 	}
 
-	public void setCapabilities(List<ICapability> arg0) {
-		log.info("set Capabilities...");
-
-	}
-
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		log.info("set Resource Descriptor...");
 		this.resourceDescriptor = resourceDescriptor;
@@ -208,6 +201,30 @@ public class MockResource implements IResource {
 	public void setModel(IModel arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public ICapability getCapabilityByType(String type) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setCapabilities(List<? extends ICapability> capabilities) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<ICapability> getCapabilitiesByInterface(Class<? extends ICapability> interfaze) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

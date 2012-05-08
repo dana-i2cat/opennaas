@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.core.events</artifactId>
+			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
 	</dependencies>
 </project>

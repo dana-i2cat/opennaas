@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class AreaOfConfiguration as well as methods comparable to
@@ -20,6 +20,11 @@ import java.io.*;
  */
 public class AreaOfConfiguration extends Dependency implements Serializable
 {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5231283973250136195L;
 
 	/**
 	 * This constructor creates a AreaOfConfigurationBeanImpl Class which implements the AreaOfConfigurationBean Interface, and encapsulates the CIM

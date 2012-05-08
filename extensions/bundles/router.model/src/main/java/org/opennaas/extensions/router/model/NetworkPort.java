@@ -16,6 +16,11 @@ import java.io.Serializable;
  */
 public class NetworkPort extends LogicalPort implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5925066949689678969L;
+
 	// TODO IT HAVE TO BE MODIFIED
 	public void merge(NetworkPort networkPort) {
 		if (this.getElementName() == null)

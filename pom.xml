@@ -53,6 +53,7 @@
 		<geronimo.wsmetadata.version>1.1.2</geronimo.wsmetadata.version>
 		<geronimo.servlet.version>1.1.2</geronimo.servlet.version>
 		<guava.version>10.0.1</guava.version>
+		<jodatime.version>2.1</jodatime.version>
 		<hibernate.version>3.6.9.Final</hibernate.version>
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
@@ -78,6 +79,7 @@
 		<servicemix.xerces.version>2.9.1_4</servicemix.xerces.version>
 		<servicemix.cglib.version>2.1_3_6</servicemix.cglib.version>
 		<servicemix.serp.version>1.13.1_4</servicemix.serp.version>
+		<servicemix.javax-inject.version>1_2</servicemix.javax-inject.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
@@ -112,22 +114,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.core.events</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.core.protocols-sessionmanager</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.bod.actionsets.dummy</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.bod.autobahn</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -202,11 +199,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>net.i2cat.mantychore.tests.utils</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -233,11 +225,6 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.repository</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.nexus.alarms.repository</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -350,6 +337,11 @@
 				<groupId>org.osgi</groupId>
 				<artifactId>org.osgi.compendium</artifactId>
 				<version>${osgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.bundles</groupId>
+				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
+				<version>${servicemix.javax-inject.version}</version>
 			</dependency>
 			<!-- Karaf -->
 			<dependency>
@@ -704,6 +696,11 @@
 				<artifactId>guava-osgi</artifactId>
 				<version>${guava.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${jodatime.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -712,6 +709,7 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>tests</module>
+		<module>clients</module>
 	</modules>
 
 	<build>

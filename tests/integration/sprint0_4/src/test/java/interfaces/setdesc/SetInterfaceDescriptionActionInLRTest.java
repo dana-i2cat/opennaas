@@ -1,19 +1,20 @@
 package interfaces.setdesc;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 import helpers.CheckParametersHelper;
+import helpers.ParamCreationHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
-import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +25,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.profile.IProfileManager;
@@ -33,19 +33,23 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
+import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.capability.ip.IIPCapability;
+import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.nexus.tests.helper.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -63,21 +67,21 @@ public class SetInterfaceDescriptionActionInLRTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-    private BlueprintContainer chassisService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
+	private BlueprintContainer	chassisService;
 
 	private boolean				isMock;
 	private ResourceDescriptor	resourceDescriptor;
@@ -94,10 +98,10 @@ public class SetInterfaceDescriptionActionInLRTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public SetInterfaceDescriptionActionInLRTest() {
@@ -107,10 +111,10 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Prepare the resource to do the test
-	 *
+	 * 
 	 * @throws ResourceException
 	 * @throws ProtocolException
-	 *
+	 * 
 	 */
 	@Before
 	public void setUp() throws ResourceException, ProtocolException {
@@ -138,13 +142,13 @@ public class SetInterfaceDescriptionActionInLRTest
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
-		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
+		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 
 		if (!resource.getModel().getChildren().isEmpty()) {
 			LRName = resource.getModel().getChildren().get(0);
 		} else {
 			// create LR
-			chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, LRName);
+			chassisCapability.createLogicalRouter(ParamCreationHelper.getLogicalRouter(LRName));
 			executeQueue(resource);
 		}
 
@@ -153,14 +157,14 @@ public class SetInterfaceDescriptionActionInLRTest
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName(interfaceName);
 		ethernetPort.setPortNumber(2);
-		chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
+		chassisCapability.deleteSubInterface(ethernetPort);
 
 		// put it in child
 		EthernetPort ethernetPort2 = new EthernetPort();
 		ethernetPort2.setName(ethernetPort.getName());
 		ethernetPort2.setPortNumber(ethernetPort.getPortNumber());
 		ethernetPort2.setElementName(LRName);
-		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort2);
+		chassisCapability.createSubInterface(ethernetPort2);
 		executeQueue(resource);
 
 		LRresource = resourceManager.getResource(resourceManager.getIdentifierFromResourceName("router", LRName));
@@ -169,9 +173,9 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Reset info for next tests
-	 *
+	 * 
 	 * @throws ResourceException
-	 *
+	 * 
 	 */
 	@After
 	public void tearDown() throws ResourceException {
@@ -180,11 +184,11 @@ public class SetInterfaceDescriptionActionInLRTest
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
-		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
+		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 
 		if (iface != null) {
 			try {
-				chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, iface);
+				chassisCapability.deleteSubInterface(iface);
 			} catch (CapabilityException e) {
 				Assert.fail("It was impossible to send message " + ActionConstants.DELETESUBINTERFACE + " : " + e.getMessage());
 			}
@@ -193,7 +197,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		// delete LR
 		if (LRresource != null) {
 			try {
-				chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, LRName);
+				chassisCapability.deleteLogicalRouter(ParamCreationHelper.getLogicalRouter(LRName));
 			} catch (CapabilityException e) {
 				Assert.fail("It was impossible to send message " + ActionConstants.DELETELOGICALROUTER + " : " + e.getMessage());
 			}
@@ -215,7 +219,7 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	@Test
 	public void setInterfaceDescriptionActionInLRTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		setSubInterfaceDescriptionTest();
 		setInterfaceDescriptionTest();
@@ -225,18 +229,18 @@ public class SetInterfaceDescriptionActionInLRTest
 	 * Put related task
 	 * */
 	public void setSubInterfaceDescriptionTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
-		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
+		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
-		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
+		IIPCapability ipCapability = (IIPCapability) resource.getCapabilities().get(posIpv4);
 
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName(iface.getName());
@@ -244,13 +248,10 @@ public class SetInterfaceDescriptionActionInLRTest
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 		ethernetPort.setElementName(LRName);
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+		ipCapability.setInterfaceDescription(ethernetPort);
 
 		/* execute action */
 		executeQueue(resource);
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 
 		if (isMock)
 			return;
@@ -269,31 +270,28 @@ public class SetInterfaceDescriptionActionInLRTest
 	 * Test the possibility to configure subinterfaces with an encapsulation
 	 * */
 	public void setInterfaceDescriptionTest()
-		throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
 			Assert.fail("Could not get Chassis capability for given resource");
-		ICapability chassisCapability = resource.getCapabilities().get(posChassis);
+		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 
 		int posIpv4 = InitializerTestHelper.containsCapability(resource, "ipv4");
 		if (posIpv4 == -1)
 			Assert.fail("Could not get ipv4 capability for given resource");
-		ICapability ipCapability = resource.getCapabilities().get(posIpv4);
+		IIPCapability ipCapability = (IIPCapability) resource.getCapabilities().get(posIpv4);
 
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		logicalPort.setElementName(LRName);
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
+		ipCapability.setInterfaceDescription(logicalPort);
 
 		/* execute action */
 		executeQueue(resource);
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 
 		if (isMock)
 			return;
@@ -329,7 +327,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		ICapability queueCapability = resource.getCapabilities().get(posQueue);
+		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
 		return response;
