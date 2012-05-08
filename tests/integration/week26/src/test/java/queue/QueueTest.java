@@ -151,7 +151,7 @@ public class QueueTest
 	@After
 	public void after() {
 		log.info("INFO: After test, cleaning queue...");
-		queueManagerService.empty();
+		queueManagerService.clear();
 	}
 
 	/**

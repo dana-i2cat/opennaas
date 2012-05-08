@@ -7,6 +7,7 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueResponse;
 
 public interface IQueueManagerCapability extends ICapability {
@@ -15,11 +16,13 @@ public interface IQueueManagerCapability extends ICapability {
 	public QueueResponse execute() throws ProtocolException,
 			CapabilityException, ActionException;
 
-	public void empty();
+	public void clear();
 
-	public void queueAction(IAction action);
+	public void queueAction(IAction action) throws CapabilityException;
 
 	public List<IAction> getActions();
+
+	public void modify(ModifyParams modifyParams) throws CapabilityException;
 
 	// TODO REMOVE
 	public Object sendMessage(String idOperation, Object params)

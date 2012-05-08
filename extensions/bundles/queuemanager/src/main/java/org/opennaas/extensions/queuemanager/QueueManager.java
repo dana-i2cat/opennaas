@@ -2,7 +2,6 @@ package org.opennaas.extensions.queuemanager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -72,8 +71,8 @@ public class QueueManager extends AbstractCapability implements
 	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#empty()
 	 */
 	@Override
-	public void empty() {
-		log.debug("Cleaning the queue...");
+	public void clear() {
+		log.debug("Clearing the queue...");
 		queue.clear();
 	}
 
@@ -185,7 +184,7 @@ public class QueueManager extends AbstractCapability implements
 		}
 
 		/* empty queue */
-		empty();
+		clear();
 
 		/* refresh operation */
 		try {
@@ -218,7 +217,7 @@ public class QueueManager extends AbstractCapability implements
 		stopTime = java.lang.System.currentTimeMillis();
 		queueResponse.setTotalTime(stopTime - startTime);
 
-		empty();
+		clear();
 		return queueResponse;
 	}
 
@@ -276,9 +275,13 @@ public class QueueManager extends AbstractCapability implements
 			if (idOperation.equals(QueueConstants.EXECUTE)) {
 				return execute();
 			} else if (idOperation.equals(QueueConstants.GETQUEUE)) {
-				return getQueue();
+				return getActions();
 			} else if (idOperation.equals(QueueConstants.MODIFY)) {
-				return modify(params);
+				if (params instanceof ModifyParams) {
+					modify((ModifyParams) params);
+				} else {
+					throw new CapabilityException("Invalid parameters");
+				}
 			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
 				return dummyExecute(params);
 			}
@@ -527,21 +530,6 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/**
-	 * Get the action list of the queue
-	 * 
-	 * @return a list of IAction
-	 */
-	private List<IAction> getQueue() {
-		log.debug("Getting queue");
-		List<IAction> actions = new ArrayList<IAction>();
-		Iterator<IAction> actionQueue = queue.iterator();
-		while (actionQueue.hasNext()) {
-			actions.add(actionQueue.next());
-		}
-		return actions;
-	}
-
-	/**
 	 * Implementation for the execution of a single action. <br>
 	 * Clean the queue, add an action and send the message
 	 * 
@@ -559,35 +547,31 @@ public class QueueManager extends AbstractCapability implements
 	 * @param params
 	 *            to modify
 	 * @return the response of modify the paramsor remove the action
+	 * @throws CapabilityException
 	 */
-	private Object modify(Object params) {
-		if (params instanceof ModifyParams) {
-			ModifyParams modifyParams = (ModifyParams) params;
-			if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
-				return remove(modifyParams.getPosAction());
-			}
+	@Override
+	public void modify(ModifyParams modifyParams) throws CapabilityException {
+		if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
+			remove(modifyParams.getPosAction());
+		} else {
+			throw new UnsupportedOperationException("Unsupported operation in modify: " + modifyParams.getQueueOper());
 		}
-		// TODO ADD NECESSARY INFORMATION
-		return Response.okResponse(QueueConstants.MODIFY);
 	}
 
 	/**
 	 * @param posAction
 	 *            position in the queue of the action to remove
 	 * @return the response of remove the action
+	 * @throws CapabilityException
+	 *             if invalid position is given
 	 */
-	private Object remove(int posAction) {
-
+	private void remove(int posAction) throws CapabilityException {
 		try {
 			queue.remove(posAction);
-			return Response.okResponse(QueueConstants.MODIFY,
-					"Remove operation in pos: " + posAction);
+			log.debug("Removed action in pos: " + posAction);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			Vector<String> errors = new Vector<String>(1);
-			errors.add("Invalid index. Index " + posAction + " does not point to any action in the queue.");
-			return Response.errorResponse(QueueConstants.MODIFY, errors);
+			throw new CapabilityException("Invalid index. Index " + posAction + " does not point to any action in the queue.");
 		}
-
 	}
 
 	/**

@@ -127,20 +127,20 @@ public class QueuemanagerTest
 	}
 
 	@After
-	public void after() {
+	public void after() throws CapabilityException {
 		log.info("INFO: After test, cleaning queue...");
-		queueManagerCapability.empty();
+		queueManagerCapability.clear();
 	}
 
 	@Test
-	public void removeAction() {
+	public void removeAction() throws CapabilityException {
 		log.info("INFO: Remove actions");
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
 
 		queueManagerCapability.queueAction(action);
 		Assert.assertTrue(queueManagerCapability.getActions().size() == 1);
-		queueManagerCapability.empty();
+		queueManagerCapability.clear();
 		Assert.assertTrue(queueManagerCapability.getActions().size() == 0);
 		log.info("INFO: OK!");
 	}
@@ -179,7 +179,7 @@ public class QueuemanagerTest
 	}
 
 	@Test
-	public void listActions() {
+	public void listActions() throws CapabilityException {
 		log.info("INFO: List actions");
 
 		IAction action = new MockAction();
