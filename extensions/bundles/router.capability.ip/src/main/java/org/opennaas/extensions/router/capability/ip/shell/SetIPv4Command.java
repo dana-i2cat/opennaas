@@ -6,13 +6,9 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.capability.ip.IPCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
 
@@ -41,7 +37,6 @@ public class SetIPv4Command extends GenericKarafCommand {
 				printEndCommand();
 				return null;
 			}
-			// printInfo("Setting " + resourceId + " interface: " + interfaceName + " ip: " + ipv4 + " mask: " + mask);
 
 			String[] argsRouterName = new String[2];
 			try {
@@ -60,16 +55,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 			}
 
 			IResource resource = manager.getResource(resourceIdentifier);
-
 			validateResource(resource);
-			// printInfo("Preparing the message for setting the interface: ");
-			Object params = validateParams(resource);
-
-			if (params == null) {
-				printError("Interface " + interfaceName + " not found in model");
-				printEndCommand();
-				return null;
-			}
 
 			/* check if it uses logical router */
 
@@ -83,11 +69,18 @@ public class SetIPv4Command extends GenericKarafCommand {
 				printEndCommand();
 				return null;
 			}
-			IIPCapability ipCapability = (IIPCapability) getCapability(resource.getCapabilities(), IPCapability.IPv4);
 
-			// printInfo("Sending message to the queue");
-			Response resp = (Response) ipCapability.sendMessage(ActionConstants.SETIPv4, params);
-			printResponseStatus(resp, resourceId);
+			IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+			NetworkPort networkPort = getNetworkPort();
+
+			if (networkPort == null) {
+				printError("Interface " + interfaceName + " not found in model");
+				printEndCommand();
+				return null;
+			}
+
+			IIPCapability ipCapability = (IIPCapability) resource.getCapabilityByInterface(IIPCapability.class);
+			ipCapability.setIPv4(networkPort, ipProtocolEndpoint);
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -103,35 +96,49 @@ public class SetIPv4Command extends GenericKarafCommand {
 		return null;
 	}
 
-	private LogicalDevice validateParams(IResource resource) throws Exception {
-		String argsInterface[] = new String[2];
-		try {
-			argsInterface = splitInterfaces(interfaceName);
-		} catch (Exception e) {
-			return null;
-		}
-
-		String interfaceName = argsInterface[0];
-		int port = Integer.parseInt(argsInterface[1]);
-
-		if (interfaceName.startsWith("lo")) {
-			printError("Configuration for Loopback interface not allowed");
-			return null;
-		}
-
-		NetworkPort param = new NetworkPort();
-		param.setName(interfaceName);
-		param.setPortNumber(port);
-		param.setLinkTechnology(LinkTechnology.OTHER);
-
+	/**
+	 * Get the IPProtocolEndpoint
+	 * 
+	 * @return the IPProtocolEndpoint
+	 */
+	private IPProtocolEndpoint getIPProtocolEndpoint() {
 		IPProtocolEndpoint ip = new IPProtocolEndpoint();
 		ip.setIPv4Address(ipv4);
 		ip.setSubnetMask(mask);
-		param.addProtocolEndpoint(ip);
+		return ip;
+	}
 
-		printInfo("[" + param.getName() + "." + param.getPortNumber() + "]  " + ipv4 + " / " + mask);
+	/**
+	 * Get the NetworkPort
+	 * 
+	 * @return the networkPort
+	 * @throws Exception
+	 */
+	private NetworkPort getNetworkPort() throws Exception {
+		String argsInterface[] = new String[2];
+		NetworkPort networkPort = null;
 
-		return param;
+		if (interfaceName.startsWith("lo")) {
+			printError("Configuration for Loopback interface not allowed");
+			throw new Exception("Configuration for Loopback interface not allowed");
+		} else {
+			try {
+				argsInterface = splitInterfaces(interfaceName);
+				String interfaceName = argsInterface[0];
+				int port = Integer.parseInt(argsInterface[1]);
+
+				networkPort = new NetworkPort();
+				networkPort.setName(interfaceName);
+				networkPort.setPortNumber(port);
+				networkPort.setLinkTechnology(LinkTechnology.OTHER);
+
+				printInfo("[" + networkPort.getName() + "." + networkPort.getPortNumber() + "]  " + ipv4 + " / " + mask);
+			} catch (Exception e) {
+				throw e;
+			}
+
+			return networkPort;
+		}
 	}
 
 	/**

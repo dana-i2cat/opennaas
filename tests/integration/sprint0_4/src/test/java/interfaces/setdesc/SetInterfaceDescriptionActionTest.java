@@ -181,7 +181,8 @@ public class SetInterfaceDescriptionActionTest
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 
 		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+
+		ipCapability.setInterfaceDescription(ethernetPort);
 
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
@@ -229,7 +230,7 @@ public class SetInterfaceDescriptionActionTest
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
+		ipCapability.setInterfaceDescription(logicalPort);
 
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
