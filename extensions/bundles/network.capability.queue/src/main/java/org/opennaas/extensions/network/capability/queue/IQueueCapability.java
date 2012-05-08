@@ -9,7 +9,7 @@ import org.opennaas.core.resources.queue.QueueResponse;
 /**
  * @author Jordi Puig
  */
-public interface IQueueService extends ICapability {
+public interface IQueueCapability extends ICapability {
 
 	/**
 	 * This action will execute each resource queue

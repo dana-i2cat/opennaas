@@ -3,16 +3,16 @@ package org.opennaas.extensions.network.capability.basic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionNames {
+public class NetworkBasicActionSet {
 
 	public static final String	ADD_RESOURCE	= "addResource";
 	public static final String	REMOVE_RESOURCE	= "removeResource";
 	public static final String	LIST_RESOURCES	= "listResources";
-
 	public static final String	IMPORT_MODEL	= "importModel";
 	public static final String	EXPORT_MODEL	= "exportModel";
 
 	private static List<String>	actionNames;
+
 	static {
 		actionNames = new ArrayList<String>();
 

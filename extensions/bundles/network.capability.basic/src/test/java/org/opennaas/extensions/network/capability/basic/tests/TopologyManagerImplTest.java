@@ -1,6 +1,6 @@
 package org.opennaas.extensions.network.capability.basic.tests;
 
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
 import org.opennaas.extensions.network.capability.basic.NetworkBasicCapabilityFactory;
 
@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 
 public class TopologyManagerImplTest extends TestCase {
 
-	ITopologyManager topologyManager;
+	INetworkBasicCapability topologyManager;
 
 	IResource network;
 	IResource router1;
@@ -30,13 +30,12 @@ public class TopologyManagerImplTest extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		// TODO Auto-generated method stub
 		super.tearDown();
 	}
 
 	@Test
 	public void testAddResource() {
-
+		// TODO
 	}
 //
 //	@Test
@@ -89,7 +88,7 @@ public class TopologyManagerImplTest extends TestCase {
 //
 //	}
 
-	private ITopologyManager createNetworkBasicCapability(IResource network) throws CapabilityException {
+	private INetworkBasicCapability createNetworkBasicCapability(IResource network) throws CapabilityException {
 		// NetworkBasicCapability capab = (NetworkBasicCapability) new NetworkBasicCapabilityFactory().create(network);
 
 		// TODO Auto-generated method stub

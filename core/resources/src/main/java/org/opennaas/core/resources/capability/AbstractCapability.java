@@ -117,6 +117,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * 
 	 * @throws ResourceException
 	 */
+	@Override
 	public void initialize() throws CapabilityException {
 		setState(State.INITIALIZED);
 	}
@@ -126,6 +127,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * 
 	 * @throws ResourceException
 	 */
+	@Override
 	public void activate() throws CapabilityException {
 		setState(State.ACTIVE);
 	}
@@ -135,6 +137,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * 
 	 * @throws ResourceException
 	 */
+	@Override
 	public void deactivate() throws CapabilityException {
 		setState(State.INACTIVE);
 	}
