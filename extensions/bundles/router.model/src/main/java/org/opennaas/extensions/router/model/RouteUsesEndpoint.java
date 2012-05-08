@@ -17,6 +17,11 @@ import java.io.*;
 public class RouteUsesEndpoint extends Dependency implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7590142293729346806L;
+
+	/**
 	 * This constructor creates a RouteUsesEndpointBeanImpl Class which implements the RouteUsesEndpointBean Interface, and encapsulates the CIM class
 	 * RouteUsesEndpoint in a Java Bean. The CIM class RouteUsesEndpoint is described as follows:
 	 * 

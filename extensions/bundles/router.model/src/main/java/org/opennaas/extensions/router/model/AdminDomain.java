@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlType;
  */
 public class AdminDomain extends System implements Serializable {
 
+	private static final long	serialVersionUID	= 6527668458787487083L;
+
 	/**
 	 * This constructor creates a AdminDomainBeanImpl Class which implements the AdminDomainBean Interface, and encapsulates the CIM class AdminDomain
 	 * in a Java Bean. The CIM class AdminDomain is described as follows:

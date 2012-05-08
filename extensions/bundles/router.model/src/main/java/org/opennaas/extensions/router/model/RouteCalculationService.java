@@ -24,6 +24,11 @@ public class RouteCalculationService extends NetworkService implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2448471482689758268L;
+
+	/**
 	 * This constructor creates a RouteCalculationServiceBeanImpl Class which implements the RouteCalculationServiceBean Interface, and encapsulates
 	 * the CIM class RouteCalculationService in a Java Bean. The CIM class RouteCalculationService is described as follows:
 	 * 

@@ -18,6 +18,11 @@ import javax.xml.bind.annotation.XmlType;
 public class NextHopIPRoute extends NextHopRoute implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2000690076586761277L;
+
+	/**
 	 * This constructor creates a NextHopIPRouteBeanImpl Class which implements the NextHopIPRouteBean Interface, and encapsulates the CIM class
 	 * NextHopIPRoute in a Java Bean. The CIM class NextHopIPRoute is described as follows:
 	 * 

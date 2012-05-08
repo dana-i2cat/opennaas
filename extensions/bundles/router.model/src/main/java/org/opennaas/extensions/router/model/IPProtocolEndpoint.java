@@ -20,6 +20,11 @@ public class IPProtocolEndpoint extends ProtocolEndpoint implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -3824586239367606633L;
+
+	/**
 	 * This constructor creates a IPProtocolEndpointBeanImpl Class which implements the IPProtocolEndpointBean Interface, and encapsulates the CIM
 	 * class IPProtocolEndpoint in a Java Bean. The CIM class IPProtocolEndpoint is described as follows:
 	 * 

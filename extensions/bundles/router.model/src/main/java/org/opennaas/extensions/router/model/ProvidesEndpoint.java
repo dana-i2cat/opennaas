@@ -18,6 +18,11 @@ public class ProvidesEndpoint extends ServiceAccessBySAP implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -5460258794353189981L;
+
+	/**
 	 * This constructor creates a ProvidesEndpointBeanImpl Class which implements the ProvidesEndpointBean Interface, and encapsulates the CIM class
 	 * ProvidesEndpoint in a Java Bean. The CIM class ProvidesEndpoint is described as follows:
 	 * 
