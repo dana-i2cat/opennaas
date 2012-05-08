@@ -37,7 +37,6 @@ import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -181,7 +180,7 @@ public class SetInterfaceDescriptionActionTest
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 
 		chassisCapability.createSubInterface(ethernetPort);
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+		ipCapability.setInterfaceDescription(ethernetPort);
 
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
