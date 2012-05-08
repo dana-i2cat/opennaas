@@ -230,7 +230,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @throws CapabilityException
 	 *             if an error occurs creating the action or checking it's parameters.
 	 */
-	protected IAction createActionAndCheckParams(String actionId, Object... actionParameters) throws CapabilityException {
+	protected IAction createActionAndCheckParams(String actionId, Object actionParameters) throws CapabilityException {
 
 		IAction action = createAction(actionId);
 		action.setParams(actionParameters);
