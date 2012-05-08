@@ -10,6 +10,11 @@ import java.io.Serializable;
  */
 public class GRETunnelService extends Service implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -3996193388905927248L;
+
 	public GRETunnelService() {
 	};
 

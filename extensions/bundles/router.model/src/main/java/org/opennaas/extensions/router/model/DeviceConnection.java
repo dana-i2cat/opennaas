@@ -5,8 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class DeviceConnection as well as methods comparable to the
@@ -16,6 +15,11 @@ import java.lang.Exception;
  * The DeviceConnection relationship indicates that two or more Devices are connected together.
  */
 public class DeviceConnection extends Dependency implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 1627260301916983811L;
 
 	/**
 	 * This constructor creates a DeviceConnectionBeanImpl Class which implements the DeviceConnectionBean Interface, and encapsulates the CIM class

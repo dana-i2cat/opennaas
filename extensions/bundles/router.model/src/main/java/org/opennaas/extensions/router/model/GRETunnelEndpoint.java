@@ -11,6 +11,11 @@ import java.io.Serializable;
  */
 public class GRETunnelEndpoint extends IPProtocolEndpoint implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7073665813914360765L;
+
 	public GRETunnelEndpoint() {
 	};
 }
