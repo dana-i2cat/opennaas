@@ -23,9 +23,4 @@ public interface IQueueManagerCapability extends ICapability {
 	public List<IAction> getActions();
 
 	public void modify(ModifyParams modifyParams) throws CapabilityException;
-
-	// TODO REMOVE
-	public Object sendMessage(String idOperation, Object params)
-			throws CapabilityException;
-
 }

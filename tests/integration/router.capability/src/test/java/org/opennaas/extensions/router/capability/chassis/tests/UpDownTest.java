@@ -28,8 +28,8 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
@@ -181,9 +181,9 @@ public class UpDownTest
 	}
 
 	@Test
-	public void UpDownActionTest() throws CapabilityException {
+	public void UpDownActionTest() throws CapabilityException, ProtocolException {
 		// Force to refresh the model
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		String str = "";
 		ComputerSystem model = (ComputerSystem) mockResource.getModel();
 		Assert.assertNotNull(model);
@@ -230,10 +230,10 @@ public class UpDownTest
 		/* send to change status */
 		chassisCapability.downPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
 
-		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
-		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
-		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 0);
 
 		if (!isMock) {
 			checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.STOPPED);
@@ -242,10 +242,10 @@ public class UpDownTest
 		/* send to change status */
 		chassisCapability.upPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
 
-		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
-		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
-		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 0);
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 0);
 
 		if (!isMock) {
 			checkOperationalStatus((ComputerSystem) mockResource.getModel(), interfaceName, OperationalStatus.OK);

@@ -29,7 +29,6 @@ import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.roadm.capability.connections.ConnectionsActionSet;
@@ -168,11 +167,11 @@ public class ConnectionsCapabilityIntegrationTest
 		connectionsCapability.makeConnection(connectionRequest);
 
 		/* check queue */
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 1);
 		/* check queue */
 		log.info("exec queue...");
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -190,7 +189,7 @@ public class ConnectionsCapabilityIntegrationTest
 		Assert.assertTrue(foundAndOk);
 
 		/* check queue */
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 0);
 
 		/* ---------------- work flow for remove connections -------------------- */
@@ -200,12 +199,12 @@ public class ConnectionsCapabilityIntegrationTest
 		connectionsCapability.removeConnection(connectionRequest);
 
 		/* check queue */
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 1);
 
 		/* check queue */
 		log.info("exec queue...");
-		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		foundAndOk = false;
@@ -222,7 +221,7 @@ public class ConnectionsCapabilityIntegrationTest
 		Assert.assertTrue(foundAndOk);
 
 		/* check queue */
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 0);
 	}
 

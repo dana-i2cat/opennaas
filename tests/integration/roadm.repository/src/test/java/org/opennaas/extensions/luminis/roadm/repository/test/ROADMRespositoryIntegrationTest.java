@@ -31,7 +31,6 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -249,8 +248,7 @@ public class ROADMRespositoryIntegrationTest
 		/* make connection */
 		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) resource.getModel());
 		connections.makeConnection(connectionRequest);
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE,
-				null);
+		QueueResponse queueResponse = queueCapability.execute();
 
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -267,7 +265,7 @@ public class ROADMRespositoryIntegrationTest
 		}
 		Assert.assertTrue(foundAndOk);
 
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 0);
 
 		/* checking model */
@@ -276,7 +274,7 @@ public class ROADMRespositoryIntegrationTest
 
 		/* remove connection */
 		connections.removeConnection(connectionRequest);
-		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		queueResponse = (QueueResponse) queueCapability.execute();
 
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -293,7 +291,7 @@ public class ROADMRespositoryIntegrationTest
 		}
 		Assert.assertTrue(foundAndOk);
 
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 0);
 
 		/* checking model */

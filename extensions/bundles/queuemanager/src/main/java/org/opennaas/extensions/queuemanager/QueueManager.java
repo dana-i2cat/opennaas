@@ -20,7 +20,6 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
@@ -261,35 +260,6 @@ public class QueueManager extends AbstractCapability implements
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.ICapability#sendMessage(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public Object sendMessage(String idOperation, Object params)
-			throws CapabilityException {
-		log.debug("Sending message to Queue Capability");
-		try {
-
-			if (idOperation.equals(QueueConstants.EXECUTE)) {
-				return execute();
-			} else if (idOperation.equals(QueueConstants.GETQUEUE)) {
-				return getActions();
-			} else if (idOperation.equals(QueueConstants.MODIFY)) {
-				if (params instanceof ModifyParams) {
-					modify((ModifyParams) params);
-				} else {
-					throw new CapabilityException("Invalid parameters");
-				}
-			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
-				return dummyExecute(params);
-			}
-		} catch (CapabilityException e) {
-			throw new CapabilityException(e);
-		}
-		// TODO ADD NECESSARY INFORMATION
-		return Response.okResponse(idOperation);
 	}
 
 	@Override

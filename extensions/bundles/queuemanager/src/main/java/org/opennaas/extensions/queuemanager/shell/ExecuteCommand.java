@@ -10,7 +10,6 @@ import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -70,7 +69,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		try {
 			printSymbolWithoutDoubleLine("Executing queue... ");
-			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
+			QueueResponse queueResponse = queue.execute();
 			if (queueResponse.isOk())
 				printSymbol("OK");
 			else

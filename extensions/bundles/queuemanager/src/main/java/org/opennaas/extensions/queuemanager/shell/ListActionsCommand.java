@@ -8,7 +8,6 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.IAction;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
@@ -54,7 +53,7 @@ public class ListActionsCommand extends GenericKarafCommand {
 				return -1;
 			}
 
-			List<IAction> listActions = (List<IAction>) queue.sendMessage(QueueConstants.GETQUEUE, null);
+			List<IAction> listActions = queue.getActions();
 
 			String[] titles = { "num", "actionID" };
 			String[][] matrix = new String[listActions.size()][2];

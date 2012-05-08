@@ -29,7 +29,6 @@ import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -137,7 +136,7 @@ public class ConfigureSubInterfaceTest
 	}
 
 	@Test
-	public void configureSubInterfaceTest() {
+	public void configureSubInterfaceTest() throws ProtocolException {
 		/* test to configure a simple subinterface */
 		// simpleSubInterfaceConfigurationTest();
 
@@ -148,7 +147,7 @@ public class ConfigureSubInterfaceTest
 		GRESubInterfaceConfigurationTest();
 	}
 
-	private void GRESubInterfaceConfigurationTest() {
+	private void GRESubInterfaceConfigurationTest() throws ProtocolException {
 
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -169,7 +168,7 @@ public class ConfigureSubInterfaceTest
 			Assert.fail("Could not get Queue capability for given resource");
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
-			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			queueCapability.execute();
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -184,8 +183,10 @@ public class ConfigureSubInterfaceTest
 
 	/**
 	 * Put related task
+	 * 
+	 * @throws ProtocolException
 	 * */
-	public void simpleSubInterfaceConfigurationTest() {
+	public void simpleSubInterfaceConfigurationTest() throws ProtocolException {
 
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -205,7 +206,7 @@ public class ConfigureSubInterfaceTest
 			Assert.fail("Could not get Queue capability for given resource");
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
-			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			queueCapability.execute();
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -221,8 +222,10 @@ public class ConfigureSubInterfaceTest
 
 	/**
 	 * Test the possibility to configure subinterfaces with an encapsulation
+	 * 
+	 * @throws ProtocolException
 	 * */
-	public void subInterfaceConfigurationTest() {
+	public void subInterfaceConfigurationTest() throws ProtocolException {
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
@@ -241,7 +244,7 @@ public class ConfigureSubInterfaceTest
 			Assert.fail("Could not get Queue capability for given resource");
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
-			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+			queueCapability.execute();
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}

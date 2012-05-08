@@ -5,7 +5,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
@@ -48,7 +47,7 @@ public class StaticRouteCapabilityIntegrationTest extends StaticRouteIntegration
 		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
 		stopResource();

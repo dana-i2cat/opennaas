@@ -32,7 +32,6 @@ import org.opennaas.core.resources.helpers.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -77,7 +76,7 @@ public class QueueTest
 
 	private final static String		resourceID		= "junosResource";
 	private MockResource			mockResource;
-	private ICapability				queueCapability;
+	private IQueueManagerCapability				queueCapability;
 	private IQueueManagerCapability	queueManagerService;
 
 	@Inject
@@ -136,7 +135,7 @@ public class QueueTest
 	public void before() throws ProtocolException, CapabilityException {
 		initBundles();
 		log.info("INFO: Before test, getting queue...");
-		queueCapability = queueManagerFactory.create(mockResource);
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 
 		/* The queue manager factory registers the new queue manager
 		 * as a service. Hence we cannot obtain this reference through
@@ -174,11 +173,11 @@ public class QueueTest
 		queueManagerService.queueAction(MockActionFactory.newMockActionDiffsCommandOks("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionOK("action3"));
 
-		queueCapability.sendMessage(QueueConstants.MODIFY, newQueueModifyParams());
+		queueCapability.modify(newQueueModifyParams());
 		Assert.assertTrue(queueManagerService.getActions().size() == 2);
 	}
 
-	private Object newQueueModifyParams() {
+	private ModifyParams newQueueModifyParams() {
 		ModifyParams modifyParams = new ModifyParams();
 		modifyParams.setPosAction(1);
 		modifyParams.setQueueOper(ModifyParams.Operations.REMOVE);
@@ -202,7 +201,7 @@ public class QueueTest
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionVariousError("action3"));
 
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = queueCapability.execute();
 
 		/* check prepare action */
 		ActionResponse prepareResponse = queueResponse.getPrepareResponse();

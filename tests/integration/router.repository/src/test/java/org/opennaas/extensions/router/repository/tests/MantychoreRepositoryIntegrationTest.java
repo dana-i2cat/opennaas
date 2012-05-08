@@ -36,7 +36,6 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
@@ -251,7 +250,7 @@ public class MantychoreRepositoryIntegrationTest
 			Assert.fail("Capability not found");
 
 		chassisCapability.createLogicalRouter(getLogicalRouter("cpe1"));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 
 		Assert.assertTrue(queueResponse.getResponses().size() == 1);
 		Assert.assertTrue(queueResponse.getPrepareResponse().getStatus() == ActionResponse.STATUS.OK);
@@ -264,7 +263,7 @@ public class MantychoreRepositoryIntegrationTest
 			Assert.assertTrue(response.getStatus() == Response.Status.OK);
 		}
 
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertTrue(queue.size() == 0);
 
 		resourceManager.stopResource(resource.getResourceIdentifier());
@@ -379,7 +378,7 @@ public class MantychoreRepositoryIntegrationTest
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 		chassisCapability.createLogicalRouter(getLogicalRouter("routerTestRepository"));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 	}
 
 	private void removeLogicalRouterInRouter(IResource resource)
@@ -391,7 +390,7 @@ public class MantychoreRepositoryIntegrationTest
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 		chassisCapability.deleteLogicalRouter(getLogicalRouter("routerTestRepository"));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 	}
 
 	private List<String> getLogicalRoutersFromModel(IResource resource) {
