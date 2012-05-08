@@ -1,15 +1,16 @@
 package org.opennaas.itests.core.shell;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,7 +18,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
@@ -28,24 +28,19 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
-
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ResourceCommandsKarafTest extends AbstractKarafCommandTest
 {
-	static Log log = LogFactory.getLog(ResourceCommandsKarafTest.class);
+	static Log					log	= LogFactory.getLog(ResourceCommandsKarafTest.class);
 
 	@Inject
 	private IResourceManager	resourceManager;
@@ -53,25 +48,25 @@ public class ResourceCommandsKarafTest extends AbstractKarafCommandTest
 	@Inject
 	private IProtocolManager	protocolManager;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer routerRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerRepositoryService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -110,25 +105,25 @@ public class ResourceCommandsKarafTest extends AbstractKarafCommandTest
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory
 				.newResourceDescriptor("junosm20", "router", capabilities);
 		String resourceFriendlyID =
-			resourceDescriptor.getInformation()
-				.getType()
-				+ ":"
-				+ resourceDescriptor.getInformation().getName();
+				resourceDescriptor.getInformation()
+						.getType()
+						+ ":"
+						+ resourceDescriptor.getInformation().getName();
 
 		IResource resource =
-			resourceManager.createResource(resourceDescriptor);
+				resourceManager.createResource(resourceDescriptor);
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 		resourceManager.startResource(resource.getResourceIdentifier());
 
 		List<String> response =
-			executeCommand("resource:info " + resourceFriendlyID);
+				executeCommand("resource:info " + resourceFriendlyID);
 
 		if (!response.get(1).isEmpty()) {
 			Assert.fail(response.get(1));
 		}
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		Assert.assertTrue(response.get(0).contains("Resource ID: junosm20"));
+		Assert.assertTrue(response.get(0).contains("Resource Id: " + resource.getResourceIdentifier().getId()));
 		Assert.assertTrue(response.get(0).contains("Type: ipv4"));
 		Assert.assertTrue(response.get(0).contains("Type: queue"));
 

@@ -15,6 +15,11 @@ import java.io.Serializable;
 public class GRETunnelServiceConfiguration extends Dependency implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8120481814591790508L;
+
+	/**
 	 * This constructor creates a GRETunnelServiceConfigurationBeanImpl Class which implements the GRETunnelServiceConfigurationBean Interface, and
 	 * encapsulates the CIM class OSPFServiceConfiguration in a Java Bean. The OSPFServiceConfiguration class is described as follows:
 	 * 

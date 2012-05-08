@@ -54,7 +54,8 @@
         <module>bod.autobahn</module>
          
 		<module>itests.helpers</module>
-
-
+		
+		<module>webservice</module>
+		<module>webservice-proxy</module>
 	</modules>
 </project>

@@ -4,6 +4,10 @@ import java.io.Serializable;
 
 public class LogicalTunnelPort extends NetworkPort implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8777159572331512197L;
 	private long	peer_unit;
 
 	public void setPeer_unit(long peer_unit) {

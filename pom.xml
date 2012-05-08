@@ -707,8 +707,8 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
+		<module>clients</module>
 	</modules>
-
 	<build>
 		<pluginManagement>
 			<plugins>
