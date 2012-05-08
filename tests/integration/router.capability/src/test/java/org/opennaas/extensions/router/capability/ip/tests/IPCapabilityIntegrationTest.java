@@ -31,6 +31,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.tests.mock.MockBootstrapper;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -146,7 +147,7 @@ public class IPCapabilityIntegrationTest
 
 	@Test
 	public void testSetIPv4() throws CapabilityException, ProtocolException {
-		ipCapability.setIPv4(getLogicalPort());
+		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
 		queueCapability.execute();
 	}
 
@@ -161,6 +162,14 @@ public class IPCapabilityIntegrationTest
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 		return logicalPort;
+	}
+
+	/**
+	 * @return
+	 */
+	private IPProtocolEndpoint getIPProtocolEndPoint() {
+		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		return ipProtocolEndpoint;
 	}
 
 }
