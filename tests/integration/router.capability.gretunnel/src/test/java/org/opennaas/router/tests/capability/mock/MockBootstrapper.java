@@ -13,7 +13,7 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MockBootstrapper implements IResourceBootstrapper {
@@ -49,7 +49,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapability(createQueueInformation());
+		IQueueManagerCapability queueCapab = (IQueueManagerCapability) resource.getCapability(createQueueInformation());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING

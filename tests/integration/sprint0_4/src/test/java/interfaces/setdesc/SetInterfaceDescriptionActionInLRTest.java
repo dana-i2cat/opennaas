@@ -35,7 +35,7 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
@@ -327,7 +327,7 @@ public class SetInterfaceDescriptionActionInLRTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
 		return response;

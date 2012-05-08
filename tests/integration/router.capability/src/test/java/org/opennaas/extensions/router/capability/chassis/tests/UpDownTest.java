@@ -31,7 +31,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.tests.mock.MockBootstrapper;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -60,7 +60,7 @@ public class UpDownTest
 
 	private MockResource			mockResource;
 	private IChassisCapability		chassisCapability;
-	private IQueueManagerService	queueCapability;
+	private IQueueManagerCapability	queueCapability;
 	private boolean					isMock		= false;
 
 	@Inject
@@ -134,7 +134,7 @@ public class UpDownTest
 			log.info("INFO: Before test, getting queue...");
 			Assert.assertNotNull(queueManagerFactory);
 
-			queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+			queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 			((ICapabilityLifecycle) queueCapability).initialize();
 
 			protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());

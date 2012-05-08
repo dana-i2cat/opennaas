@@ -9,7 +9,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 
-public interface IQueueManagerService extends ICapability {
+public interface IQueueManagerCapability extends ICapability {
 
 	// This method is for tests
 	public QueueResponse execute() throws ProtocolException,

@@ -39,7 +39,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -246,7 +246,7 @@ public class MantychoreRepositoryIntegrationTest
 		IChassisCapability chassisCapability = (IChassisCapability) getCapability(resource.getCapabilities(), "chassis");
 		if (chassisCapability == null)
 			Assert.fail("Capability not found");
-		IQueueManagerService queueCapability = (IQueueManagerService) getCapability(resource.getCapabilities(), "queue");
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) getCapability(resource.getCapabilities(), "queue");
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 
@@ -375,7 +375,7 @@ public class MantychoreRepositoryIntegrationTest
 		IChassisCapability chassisCapability = (IChassisCapability) getCapability(resource.getCapabilities(), "chassis");
 		if (chassisCapability == null)
 			Assert.fail("Capability not found");
-		IQueueManagerService queueCapability = (IQueueManagerService) getCapability(resource.getCapabilities(), "queue");
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) getCapability(resource.getCapabilities(), "queue");
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 		chassisCapability.createLogicalRouter(getLogicalRouter("routerTestRepository"));
@@ -387,7 +387,7 @@ public class MantychoreRepositoryIntegrationTest
 		IChassisCapability chassisCapability = (IChassisCapability) getCapability(resource.getCapabilities(), "chassis");
 		if (chassisCapability == null)
 			Assert.fail("Capability not found");
-		IQueueManagerService queueCapability = (IQueueManagerService) getCapability(resource.getCapabilities(), "queue");
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) getCapability(resource.getCapabilities(), "queue");
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 		chassisCapability.deleteLogicalRouter(getLogicalRouter("routerTestRepository"));

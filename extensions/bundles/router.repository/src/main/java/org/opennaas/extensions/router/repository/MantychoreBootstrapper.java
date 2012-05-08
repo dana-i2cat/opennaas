@@ -18,7 +18,7 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
@@ -51,7 +51,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapabilityByType(createQueueInformation().getType());
+		IQueueManagerCapability queueCapab = (IQueueManagerCapability) resource.getCapabilityByType(createQueueInformation().getType());
 		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 		if (!response.isOk()) {
 			// TODO IMPROVE ERROR REPORTING

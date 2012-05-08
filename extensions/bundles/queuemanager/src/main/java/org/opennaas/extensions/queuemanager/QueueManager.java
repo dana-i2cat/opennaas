@@ -36,7 +36,7 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceRegistration;
 
 public class QueueManager extends AbstractCapability implements
-		IQueueManagerService {
+		IQueueManagerCapability {
 	public final static String		CAPABILITY_TYPE	= "queue";
 	public final static String		QUEUE			= CAPABILITY_TYPE;
 	private final Log				log				= LogFactory.getLog(QueueManager.class);
@@ -69,7 +69,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#empty()
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#empty()
 	 */
 	@Override
 	public void empty() {
@@ -78,7 +78,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#execute()
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#execute()
 	 */
 	@Override
 	public QueueResponse execute() throws CapabilityException {
@@ -223,7 +223,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#getActions()
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#getActions()
 	 */
 	@Override
 	public List<IAction> getActions() {
@@ -236,7 +236,7 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#queueAction(org.opennaas.core.resources.action.IAction)
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#queueAction(org.opennaas.core.resources.action.IAction)
 	 */
 	@Override
 	public void queueAction(IAction action) {
@@ -599,7 +599,7 @@ public class QueueManager extends AbstractCapability implements
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		registration = Activator.getContext().registerService(
-				IQueueManagerService.class.getName(), this, props);
+				IQueueManagerCapability.class.getName(), this, props);
 		log.debug("Registered!");
 	}
 

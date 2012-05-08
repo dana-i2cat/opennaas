@@ -12,7 +12,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 
@@ -32,12 +32,12 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 		((ProteusOpticalSwitch) resource.getModel()).setName(resource.getResourceDescriptor().getInformation().getName());
 
 		log.debug("Executing capabilities startup...");
-		IQueueManagerService queueCapab = null;
+		IQueueManagerCapability queueCapab = null;
 		for (ICapability capab : resource.getCapabilities()) {
 			if (capab instanceof AbstractCapability) {
 				// FIXME static access to implementation class QueueManager!!!
 				if (capab.getCapabilityInformation().getType().equalsIgnoreCase(QueueManager.CAPABILITY_TYPE)) {
-					queueCapab = (IQueueManagerService) capab;
+					queueCapab = (IQueueManagerCapability) capab;
 				} else {
 					try {
 						((AbstractCapability) capab).sendRefreshActions();

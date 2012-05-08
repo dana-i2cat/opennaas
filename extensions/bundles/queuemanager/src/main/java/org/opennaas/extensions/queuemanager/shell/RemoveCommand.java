@@ -9,7 +9,7 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
 
 @Command(scope = "queue", name = "remove", description = "Remove an action from the queue")
@@ -50,7 +50,7 @@ public class RemoveCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			IQueueManagerService queue = (IQueueManagerService) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			IQueueManagerCapability queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			// printSymbol("Removing action " + posQueue + "...");
 			ModifyParams params = ModifyParams.newRemoveOperation(posQueue);
 			Response resp = (Response) queue.sendMessage(QueueConstants.MODIFY, params);

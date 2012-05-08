@@ -31,7 +31,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.roadm.capability.connections.ConnectionsActionSet;
 import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
@@ -63,7 +63,7 @@ public class ConnectionsCapabilityIntegrationTest
 
 	private MockResource			mockResource;
 	private IConnectionsCapability	connectionsCapability;
-	private IQueueManagerService	queueCapability;
+	private IQueueManagerCapability	queueCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -123,7 +123,7 @@ public class ConnectionsCapabilityIntegrationTest
 
 		log.info("INFO: Before test, getting queue...");
 
-		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());

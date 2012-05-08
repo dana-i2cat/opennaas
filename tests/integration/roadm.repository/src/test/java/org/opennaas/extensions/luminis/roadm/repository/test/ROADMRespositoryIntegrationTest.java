@@ -34,7 +34,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
@@ -222,7 +222,7 @@ public class ROADMRespositoryIntegrationTest
 		IConnectionsCapability connections = (IConnectionsCapability) resource.getCapabilityByInterface(IConnectionsCapability.class);
 		if (connections == null)
 			Assert.fail("Capability not found");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilityByInterface(IQueueManagerService.class);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilityByInterface(IQueueManagerCapability.class);
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 

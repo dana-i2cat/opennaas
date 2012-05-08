@@ -13,7 +13,7 @@ import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
 
 @Command(scope = "queue", name = "execute", description = "Execute all actions in queue")
@@ -30,7 +30,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		printInitCommand("Execute all actions in queue");
 
-		IQueueManagerService queue;
+		IQueueManagerCapability queue;
 		try {
 			IResourceManager manager = getResourceManager();
 
@@ -55,7 +55,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			queue = (IQueueManagerService) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			if (queue == null) {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
 				return -1;

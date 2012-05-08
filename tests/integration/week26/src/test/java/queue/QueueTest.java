@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
 
@@ -78,7 +78,7 @@ public class QueueTest
 	private final static String		resourceID		= "junosResource";
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
-	private IQueueManagerService	queueManagerService;
+	private IQueueManagerCapability	queueManagerService;
 
 	@Inject
 	private IProtocolManager		protocolManager;
@@ -143,7 +143,7 @@ public class QueueTest
 		 * injection.
 		 */
 		queueManagerService =
-			getService(bundleContext, IQueueManagerService.class, 20000,
+			getService(bundleContext, IQueueManagerCapability.class, 20000,
 					   String.format("(capability=queue)(capability.name=%s)",
 									 resourceID));
 	}

@@ -22,7 +22,7 @@ import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.domain.NetworkDomain;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
  * @author Jordi Puig
@@ -112,7 +112,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		try {
 			IResource iResource = getResource(networkElementName);
 			if (iResource != null) {
-				IQueueManagerService queueCapability = (IQueueManagerService) iResource.getCapability(getInformation(QUEUE_CAPABILITY_NAME));
+				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource.getCapability(getInformation(QUEUE_CAPABILITY_NAME));
 				if (queueCapability != null) {
 					queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 				}

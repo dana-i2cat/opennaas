@@ -15,7 +15,7 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class BoDBootstrapper implements IResourceBootstrapper {
 
@@ -45,7 +45,7 @@ public class BoDBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapability(createQueueInformation());
+		IQueueManagerCapability queueCapab = (IQueueManagerCapability) resource.getCapability(createQueueInformation());
 		if (queueCapab != null) {
 			QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
 			if (!response.isOk()) {

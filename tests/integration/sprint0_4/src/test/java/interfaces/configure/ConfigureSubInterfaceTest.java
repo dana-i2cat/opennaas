@@ -32,7 +32,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -167,7 +167,7 @@ public class ConfigureSubInterfaceTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
@@ -203,7 +203,7 @@ public class ConfigureSubInterfaceTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
@@ -239,7 +239,7 @@ public class ConfigureSubInterfaceTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		} catch (CapabilityException e) {
