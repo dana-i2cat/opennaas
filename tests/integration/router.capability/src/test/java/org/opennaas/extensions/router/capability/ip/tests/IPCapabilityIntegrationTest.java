@@ -17,30 +17,22 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.ResourceIdentifier;
-import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.tests.mock.MockBootstrapper;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -91,7 +83,7 @@ public class IPCapabilityIntegrationTest
 	public void initResource() {
 		/* initialize model */
 		mockResource = new MockResource();
-		mockResource.setModel((IModel) new ComputerSystem());
+		mockResource.setModel(new ComputerSystem());
 		mockResource.setBootstrapper(new MockBootstrapper());
 
 		List<String> capabilities = new ArrayList<String>();
@@ -154,39 +146,30 @@ public class IPCapabilityIntegrationTest
 	}
 
 	@Test
-	public void TestIPAction() throws CapabilityException {
-		log.info("TEST ip ACTION");
-
-		Response resp = (Response) ipCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertEquals(0, resp.getErrors().size());
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertEquals(1, queue.size());
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-
-		Assert.assertEquals(queueResponse.getResponses().size(), 1);
-		Assert.assertEquals(queueResponse.getPrepareResponse().getStatus(), ActionResponse.STATUS.OK);
-		Assert.assertEquals(queueResponse.getConfirmResponse().getStatus(), ActionResponse.STATUS.OK);
-		Assert.assertEquals(queueResponse.getRestoreResponse().getStatus(), ActionResponse.STATUS.PENDING);
-
-		ActionResponse actionResponse = queueResponse.getResponses().get(0);
-		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
-		for (Response response : actionResponse.getResponses()) {
-			Assert.assertEquals(Response.Status.OK, response.getStatus());
-		}
-
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
-		Assert.assertEquals(0, queue.size());
+	public void testSetIPv4() throws CapabilityException, ProtocolException {
+		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
+		queueCapability.execute();
 	}
 
-	public Object newParamsInterfaceEthernet(String name, String ipName, String mask) {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setName(name);
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address(ipName);
-		ip.setSubnetMask(mask);
-		eth.addProtocolEndpoint(ip);
-		return eth;
+	@Test
+	public void testSetInterfaceDescription() throws CapabilityException, ProtocolException {
+		ipCapability.setInterfaceDescription(getLogicalPort());
+		queueCapability.execute();
 	}
+
+	private LogicalPort getLogicalPort() {
+		LogicalPort logicalPort = new LogicalPort();
+		logicalPort.setName("fe-0/3/2");
+		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
+		return logicalPort;
+	}
+
+	/**
+	 * @return
+	 */
+	private IPProtocolEndpoint getIPProtocolEndPoint() {
+		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		return ipProtocolEndpoint;
+	}
+
 }
