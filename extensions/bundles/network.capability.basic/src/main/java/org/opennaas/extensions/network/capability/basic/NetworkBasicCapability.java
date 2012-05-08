@@ -23,7 +23,7 @@ import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor
 import org.opennaas.extensions.router.model.ManagedElement;
 import org.opennaas.extensions.router.model.mappers.Cim2NdlMapper;
 
-public class NetworkBasicCapability extends AbstractCapability implements ITopologyManager {
+public class NetworkBasicCapability extends AbstractCapability implements INetworkBasicCapability {
 
 	public static final String	CAPABILITY_NAME	= "basicNetwork";
 
@@ -36,25 +36,6 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		this.resourceId = resourceId;
 		log.debug("Built new Network Basic Capability");
 	}
-
-	@Override
-	public String getCapabilityName() {
-		return CAPABILITY_NAME;
-	}
-
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		// FIXME obtain actionSet dynamically
-		return new NetActionSet();
-	}
-
-	@Override
-	public void queueAction(IAction action) throws CapabilityException {
-		// TODO Auto-generated method stub
-
-	}
-
-	// ITopologyManager IMPLEMENTATION //
 
 	@Override
 	public NetworkModel addResource(IResource resourceToAdd) throws CapabilityException {
@@ -140,7 +121,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 	}
 
 	@Override
-	public NetworkConnection L2attach(Interface interface1, Interface interface2) throws CapabilityException {
+	public NetworkConnection l2attach(Interface interface1, Interface interface2) throws CapabilityException {
 
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
@@ -196,7 +177,7 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 	}
 
 	@Override
-	public void L2detach(Interface interface1, Interface interface2) throws CapabilityException {
+	public void l2detach(Interface interface1, Interface interface2) throws CapabilityException {
 
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
@@ -223,6 +204,21 @@ public class NetworkBasicCapability extends AbstractCapability implements ITopol
 		} else {
 			log.info("L2detach: Interfaces were not attached.");
 		}
+	}
+
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_NAME;
+	}
+
+	@Override
+	public IActionSet getActionSet() throws CapabilityException {
+		// FIXME obtain actionSet dynamically
+		return new NetworkBasicActionSetImpl();
+	}
+
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
 	}
 
 	private NetworkConnection createConnectionBetweenInterfaces(Interface interface1, Interface interface2, IResource network) {

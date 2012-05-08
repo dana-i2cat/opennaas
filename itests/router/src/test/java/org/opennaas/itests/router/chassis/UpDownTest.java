@@ -24,8 +24,6 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
@@ -35,7 +33,6 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -185,16 +182,8 @@ public class UpDownTest
 
 	@Test
 	public void UpDownActionTest() throws CapabilityException {
-		Response resp;
-		QueueResponse queueResponse;
-
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().size() == 0);
-
-		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		Assert.assertTrue(queueResponse.isOk());
-
+		// Force to refresh the model
+		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		String str = "";
 		ComputerSystem model = (ComputerSystem) mockResource.getModel();
 		Assert.assertNotNull(model);
@@ -215,7 +204,6 @@ public class UpDownTest
 						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
 					}
 				}
-
 			}
 			else {
 				str += "not searched device";
@@ -240,10 +228,7 @@ public class UpDownTest
 		}
 
 		/* send to change status */
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-				newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		chassisCapability.downPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
 
 		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
 		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
@@ -255,10 +240,7 @@ public class UpDownTest
 		}
 
 		/* send to change status */
-		resp = (Response) chassisCapability.sendMessage(ActionConstants.CONFIGURESTATUS,
-				newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		chassisCapability.upPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
 
 		Assert.assertTrue(((List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null)).size() == 1);
 		queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
@@ -284,8 +266,7 @@ public class UpDownTest
 		Assert.assertTrue(port.getOperatingStatus().equals(status));
 	}
 
-	private Object newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
-
+	private LogicalPort newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
 		LogicalPort logicalPort = new LogicalPort();
 		logicalPort.setName(interfaceName);
 		logicalPort.setOperationalStatus(status);

@@ -1,8 +1,10 @@
 package org.opennaas.itests.roadm.connections;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,13 +27,13 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.roadm.capability.connections.ConnectionsActionSet;
 import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
 import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
@@ -149,8 +151,8 @@ public class ConnectionsCapabilityIntegrationTest
 	public void TestConnectionsAction() throws Exception {
 		log.info("Test connections actions");
 		List<String> availableActions = new ArrayList<String>();
-		availableActions.add(ActionConstants.MAKECONNECTION);
-		availableActions.add(ActionConstants.REMOVECONNECTION);
+		availableActions.add(ConnectionsActionSet.MAKE_CONNECTION);
+		availableActions.add(ConnectionsActionSet.REMOVE_CONNECTION);
 		availableActions.add(ActionConstants.REFRESHCONNECTIONS);
 		// availableActions.add(ActionConstants.GETINVENTORY);
 
@@ -165,9 +167,7 @@ public class ConnectionsCapabilityIntegrationTest
 		/* send message */
 		log.info("send message makeConnection...");
 		FiberConnection connectionRequest = newMakeConnectionParams((ProteusOpticalSwitch) mockResource.getModel());
-		Response resp = (Response) connectionsCapability.sendMessage(ActionConstants.MAKECONNECTION, connectionRequest);
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		connectionsCapability.makeConnection(connectionRequest);
 
 		/* check queue */
 		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
@@ -198,10 +198,8 @@ public class ConnectionsCapabilityIntegrationTest
 		/* ---------------- work flow for remove connections -------------------- */
 
 		/* send message */
-		log.info("send message removeConnection...");
-		resp = (Response) connectionsCapability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-		Assert.assertEquals(Status.QUEUED, resp.getStatus());
-		Assert.assertTrue(resp.getErrors().size() == 0);
+		log.info("removeConnection...");
+		connectionsCapability.removeConnection(connectionRequest);
 
 		/* check queue */
 		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);

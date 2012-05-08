@@ -4,11 +4,9 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.roadm.capability.connections.ConnectionsCapability;
 import org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability;
-import org.opennaas.extensions.roadm.wonesys.actionsets.ActionConstants;
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
 import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
@@ -53,8 +51,8 @@ public class RemoveConnectionCommand extends GenericKarafCommand {
 
 			FiberConnection connectionRequest = buildConnectionRequest();
 
-			Response response = (Response) capability.sendMessage(ActionConstants.REMOVECONNECTION, connectionRequest);
-			printResponseStatus(response, resourceId);
+			IConnectionsCapability connectionsCapability = (IConnectionsCapability) resource.getCapabilityByInterface(IConnectionsCapability.class);
+			connectionsCapability.removeConnection(connectionRequest);
 
 		} catch (Exception e) {
 			printError("Error in remove connection");

@@ -250,7 +250,7 @@ public class MantychoreRepositoryIntegrationTest
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
 
-		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.GETCONFIG, null);
+		chassisCapability.createLogicalRouter(getLogicalRouter("cpe1"));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 
 		Assert.assertTrue(queueResponse.getResponses().size() == 1);
@@ -259,7 +259,7 @@ public class MantychoreRepositoryIntegrationTest
 		Assert.assertTrue(queueResponse.getRestoreResponse().getStatus() == ActionResponse.STATUS.PENDING);
 
 		ActionResponse actionResponse = queueResponse.getResponses().get(0);
-		Assert.assertEquals(ActionConstants.GETCONFIG, actionResponse.getActionID());
+		Assert.assertEquals(ActionConstants.CREATELOGICALROUTER, actionResponse.getActionID());
 		for (Response response : actionResponse.getResponses()) {
 			Assert.assertTrue(response.getStatus() == Response.Status.OK);
 		}
@@ -378,9 +378,8 @@ public class MantychoreRepositoryIntegrationTest
 		IQueueManagerService queueCapability = (IQueueManagerService) getCapability(resource.getCapabilities(), "queue");
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
-		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.CREATELOGICALROUTER, "routerTestRepository");
+		chassisCapability.createLogicalRouter(getLogicalRouter("routerTestRepository"));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-
 	}
 
 	private void removeLogicalRouterInRouter(IResource resource)
@@ -391,9 +390,8 @@ public class MantychoreRepositoryIntegrationTest
 		IQueueManagerService queueCapability = (IQueueManagerService) getCapability(resource.getCapabilities(), "queue");
 		if (queueCapability == null)
 			Assert.fail("Capability not found");
-		Response resp = (Response) chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, "routerTestRepository");
+		chassisCapability.deleteLogicalRouter(getLogicalRouter("routerTestRepository"));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-
 	}
 
 	private List<String> getLogicalRoutersFromModel(IResource resource) {
@@ -407,13 +405,20 @@ public class MantychoreRepositoryIntegrationTest
 		return nameRouters;
 	}
 
-	public ICapability getCapability(List<? extends ICapability> list, String type) {
+	private ICapability getCapability(List<? extends ICapability> list, String type) {
 		for (ICapability capability : list) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
 				return capability;
 			}
 		}
 		return null;
+	}
+
+	private ComputerSystem getLogicalRouter(String lrName) {
+		ComputerSystem lrModel = new ComputerSystem();
+		lrModel.setName(lrName);
+		lrModel.setElementName(lrName);
+		return lrModel;
 	}
 
 }

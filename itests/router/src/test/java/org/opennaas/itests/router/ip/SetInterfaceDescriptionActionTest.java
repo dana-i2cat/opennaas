@@ -36,7 +36,6 @@ import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
@@ -180,8 +179,8 @@ public class SetInterfaceDescriptionActionTest
 		ethernetPort.setPortNumber(2);
 		ethernetPort.setDescription("Description for the setSubInterfaceDescription test");
 
-		chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, ethernetPort);
+		chassisCapability.createSubInterface(ethernetPort);
+		ipCapability.setInterfaceDescription(ethernetPort);
 
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
@@ -190,9 +189,6 @@ public class SetInterfaceDescriptionActionTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 
 		if (isMock)
 			return;
@@ -205,7 +201,7 @@ public class SetInterfaceDescriptionActionTest
 		Assert.assertTrue(desc.equals(ethernetPort.getDescription()));
 
 		// delete created sub interface
-		chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, ethernetPort);
+		chassisCapability.deleteSubInterface(ethernetPort);
 		response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
 	}
@@ -229,7 +225,7 @@ public class SetInterfaceDescriptionActionTest
 		logicalPort.setName("fe-0/3/2");
 		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
 
-		ipCapability.sendMessage(ActionConstants.SETINTERFACEDESCRIPTION, logicalPort);
+		ipCapability.setInterfaceDescription(logicalPort);
 
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
@@ -238,9 +234,6 @@ public class SetInterfaceDescriptionActionTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
 		Assert.assertTrue(response.isOk());
-
-		/* refresh model */
-		chassisCapability.sendMessage(ActionConstants.GETCONFIG, logicalPort);
 
 		if (isMock)
 			return;

@@ -32,7 +32,6 @@ import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.itests.router.helpers.CheckParametersHelper;
@@ -159,8 +158,7 @@ public class ConfigureSubInterfaceTest
 		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceGRE();
 		try {
-			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
-
+			chassisCapability.createSubInterface(ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -172,15 +170,6 @@ public class ConfigureSubInterfaceTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		} catch (CapabilityException e) {
-			Assert.fail("Impossible send message: " + e.getMessage());
-		}
-
-		// TODO check queue response is OK
-
-		/* refresh model */
-		try {
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -205,7 +194,7 @@ public class ConfigureSubInterfaceTest
 		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEthernet();
 		try {
-			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
+			chassisCapability.createSubInterface(ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -217,15 +206,6 @@ public class ConfigureSubInterfaceTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		} catch (CapabilityException e) {
-			Assert.fail("Impossible send message: " + e.getMessage());
-		}
-
-		// TODO check queue response is OK
-
-		/* refresh model */
-		try {
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -250,7 +230,7 @@ public class ConfigureSubInterfaceTest
 		IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilities().get(posChassis);
 		EthernetPort ethernetPort = (EthernetPort) ParamCreationHelper.newParamsInterfaceEtherVLAN();
 		try {
-			chassisCapability.sendMessage(ActionConstants.CONFIGURESUBINTERFACE, ethernetPort);
+			chassisCapability.createSubInterface(ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}
@@ -262,15 +242,6 @@ public class ConfigureSubInterfaceTest
 		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
 		try {
 			queueCapability.sendMessage(QueueConstants.EXECUTE, null);
-		} catch (CapabilityException e) {
-			Assert.fail("Impossible send message: " + e.getMessage());
-		}
-
-		// TODO check queue response is OK
-
-		/* refresh model */
-		try {
-			chassisCapability.sendMessage(ActionConstants.GETCONFIG, ethernetPort);
 		} catch (CapabilityException e) {
 			Assert.fail("Impossible send message: " + e.getMessage());
 		}

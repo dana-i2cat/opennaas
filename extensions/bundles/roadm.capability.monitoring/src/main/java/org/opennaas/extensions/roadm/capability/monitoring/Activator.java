@@ -2,16 +2,16 @@ package org.opennaas.extensions.roadm.capability.monitoring;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
+import org.opennaas.core.resources.alarms.IAlarmsRepository;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.opennaas.extensions.queuemanager.IQueueManagerService;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -26,10 +26,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return context;
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		Activator.context = context;
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 	}
@@ -57,6 +59,11 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
+	}
+
+	public static IAlarmsRepository getAlarmsRepositoryService() throws ActivatorException {
+		log.debug("Calling AlarmsManagerService");
+		return (IAlarmsRepository) getServiceFromRegistry(context, IAlarmsRepository.class.getName());
 	}
 
 	/*
