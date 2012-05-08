@@ -157,7 +157,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	 * @throws CapabilityException
 	 */
 	private Response executeProcessAlarmAction(String idOperation, Event params) throws CapabilityException {
-		IAction action = createAction(idOperation);
+		IAction action = createActionAndCheckParams(idOperation, params);
 		action.setParams(params);
 		action.setModelToUpdate(resource.getModel());
 		log.debug("Executing process alarm action");
