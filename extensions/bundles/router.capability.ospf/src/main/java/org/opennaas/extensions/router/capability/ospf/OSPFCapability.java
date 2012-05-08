@@ -29,7 +29,7 @@ import org.opennaas.extensions.router.model.Service;
  */
 public class OSPFCapability extends AbstractCapability implements IOSPFCapability {
 
-	public static String	CAPABILITY_NAME	= "ospf";
+	public static String	CAPABILITY_TYPE	= "ospf";
 
 	Log						log				= LogFactory.getLog(OSPFCapability.class);
 
@@ -49,7 +49,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override

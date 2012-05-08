@@ -22,7 +22,12 @@ the License. -->
 	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
 	">
     
+    <!-- Chassis Capability -->
     <jaxws:client id="chassisCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IChassisCapabilityService" address="http://localhost:8182/cxf/chassisCapabilityService" />
     <service ref="chassisCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IChassisCapabilityService" />
+
+	<!-- OSPF Capability -->
+    <jaxws:client id="ospfCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IOSPFCapabilityService" address="http://localhost:8182/cxf/ospfCapabilityService" />
+    <service ref="ospfCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IOSPFCapabilityService" />
 
 </blueprint>

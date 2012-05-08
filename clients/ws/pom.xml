@@ -16,6 +16,7 @@
 	<name>Web Service Client</name>
 	<description>Web Service Client</description>
 
+
 	<build>
 		<plugins>
 			<plugin>
@@ -26,7 +27,8 @@
 					<execution>
 						<id>generate-sources</id>
 						<configuration>
-							<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot>
+<!-- 						<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot> -->
+							<wsdlRoot>${basedir}/../../extensions/bundles/webservice/target/generated/wsdl</wsdlRoot>
 						  	<includes>
 								<include>*.wsdl</include>
 						  	</includes>
