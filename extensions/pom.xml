@@ -10,7 +10,7 @@
 	<artifactId>org.opennaas.extensions</artifactId>
 
 	<packaging>pom</packaging>
-	<name>Mantychore</name>
+	<name>OpenNaaS :: Extensions</name>
 
 	<licenses>
 		<license>

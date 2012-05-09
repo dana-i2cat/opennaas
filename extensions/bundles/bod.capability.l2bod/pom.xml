@@ -9,7 +9,7 @@
   	<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>BoD :: L2BoD capability</name>
+	<name>OpenNaaS :: BoD :: L2BoD capability</name>
 	<description>L2BoD Capability Implementation</description>
 
 	<dependencies>

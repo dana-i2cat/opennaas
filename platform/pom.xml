@@ -9,7 +9,7 @@
 	</parent>
 
 	<packaging>pom</packaging>
-	<name>OpenNaaS platform</name>
+	<name>OpenNaaS :: Platform</name>
 	<artifactId>platform</artifactId>
 
 	<properties>
