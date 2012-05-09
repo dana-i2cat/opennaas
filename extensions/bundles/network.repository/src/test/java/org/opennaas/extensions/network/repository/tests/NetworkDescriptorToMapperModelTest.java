@@ -1,22 +1,21 @@
 package org.opennaas.extensions.network.repository.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.network.model.MockNetworkModel;
+
+import org.junit.Test;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.network.mock.MockNetworkModel;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.network.repository.NetworkMapperDescriptorToModel;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
-
-import org.junit.Test;
-import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
 public class NetworkDescriptorToMapperModelTest {
 

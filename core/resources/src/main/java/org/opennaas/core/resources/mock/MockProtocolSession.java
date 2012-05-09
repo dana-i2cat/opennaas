@@ -1,13 +1,12 @@
 package org.opennaas.core.resources.mock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 public class MockProtocolSession implements IProtocolSession {
 	static Log						log			= LogFactory.getLog(MockProtocolSession.class);
@@ -15,6 +14,8 @@ public class MockProtocolSession implements IProtocolSession {
 	private ProtocolSessionContext	protocolSessionContext;
 
 	String							sessionId	= "mockEmptyID";
+
+	Status							status		= Status.DISCONNECTED_BY_USER;
 
 	public MockProtocolSession() {
 	}
@@ -24,10 +25,12 @@ public class MockProtocolSession implements IProtocolSession {
 	}
 
 	public void connect() throws ProtocolException {
+		status = Status.CONNECTED;
 		log.info("Connecting...");
 	}
 
 	public void disconnect() throws ProtocolException {
+		status = Status.DISCONNECTED_BY_USER;
 		log.info("Disconnectiong...");
 	}
 
@@ -44,7 +47,7 @@ public class MockProtocolSession implements IProtocolSession {
 	}
 
 	public Status getStatus() {
-		return Status.CONNECTED;
+		return status;
 	}
 
 	public Object sendReceive(Object inputMessage) throws ProtocolException {
