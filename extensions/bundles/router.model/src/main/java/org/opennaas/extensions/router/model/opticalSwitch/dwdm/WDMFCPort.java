@@ -5,6 +5,10 @@ import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
 
 public class WDMFCPort extends FCPort {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 3682744419246233229L;
 	private DWDMChannel	channel;
 
 	public DWDMChannel getDWDMChannel() {

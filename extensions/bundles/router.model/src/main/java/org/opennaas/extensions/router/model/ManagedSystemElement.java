@@ -23,6 +23,11 @@ public class ManagedSystemElement extends ManagedElement implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5124327505572643458L;
+
+	/**
 	 * Add a new SystemComponent association between system and this element
 	 * 
 	 * @param logicalPort

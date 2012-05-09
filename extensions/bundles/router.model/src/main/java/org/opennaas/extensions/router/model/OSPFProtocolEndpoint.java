@@ -21,6 +21,11 @@ public class OSPFProtocolEndpoint extends OSPFProtocolEndpointBase implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7147359643347855489L;
+
+	/**
 	 * This constructor creates a OSPFProtocolEndpointBeanImpl Class which implements the OSPFProtocolEndpointBean Interface, and encapsulates the CIM
 	 * class OSPFProtocolEndpoint in a Java Bean. The CIM class OSPFProtocolEndpoint is described as follows:
 	 * 

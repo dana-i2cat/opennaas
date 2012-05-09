@@ -7,13 +7,16 @@ import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.opennaas.extensions.bod.repository.BoDRepository;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.core.resources.mock.MockCapabilityFactory;
+import org.opennaas.core.resources.mock.MockDescriptorRepository;
+import org.opennaas.core.resources.mock.MockResource;
+import org.opennaas.extensions.bod.repository.BoDRepository;
 
 public class BoDRepositoryTest {
 	BoDRepository	bodRepository;
@@ -107,10 +110,10 @@ public class BoDRepositoryTest {
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		/* factory1 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1"));
+		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1", "go_figure_what_this_does"));
 
 		/* factory2 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory2"));
+		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory2", "go_figure_what_this_does"));
 
 		resourceDescriptor.setProperties(properties);
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
@@ -136,7 +139,7 @@ public class BoDRepositoryTest {
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		/* factory1 descriptor */
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1"));
+		capabilityDescriptors.add(MockResource.createCapabilityDescriptor("factory1", "go_figure_what_this_does"));
 
 		resourceDescriptor.setProperties(properties);
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);

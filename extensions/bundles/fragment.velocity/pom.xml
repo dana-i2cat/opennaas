@@ -4,15 +4,15 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.8</version>
+		<version>0.9</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.fragment.velocity</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore Velocity Fragment</name>
-	<description>Mantychore Velocity Fragment Implementation</description>
+	<name>OpenNaaS :: Router :: Junos ActionSet :: Velocity Fragment</name>
+	<description>OpenNaaS Velocity Fragment Implementation</description>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>

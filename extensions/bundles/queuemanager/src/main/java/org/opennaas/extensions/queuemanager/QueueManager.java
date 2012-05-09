@@ -2,7 +2,6 @@ package org.opennaas.extensions.queuemanager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -21,8 +20,6 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
@@ -37,9 +34,9 @@ import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceRegistration;
 
 public class QueueManager extends AbstractCapability implements
-		IQueueManagerService {
-
-	public final static String		QUEUE			= "queue";
+		IQueueManagerCapability {
+	public final static String		CAPABILITY_TYPE	= "queue";
+	public final static String		QUEUE			= CAPABILITY_TYPE;
 	private final Log				log				= LogFactory.getLog(QueueManager.class);
 	private String					resourceId		= "";
 	private ServiceRegistration		registration	= null;
@@ -64,17 +61,99 @@ public class QueueManager extends AbstractCapability implements
 		log.debug("Built new Queue Capability");
 	}
 
+	@Override
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
+	}
+
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#empty()
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
 	 */
 	@Override
-	public void empty() {
-		log.debug("Cleaning the queue...");
+	public IActionSet getActionSet() throws CapabilityException {
+		String name = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
+		String protocol = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
+		String version = this.descriptor
+				.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
+
+		try {
+			return Activator.getQueueActionSet(name, version, protocol);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
+	@Override
+	public void initialize() throws CapabilityException {
+		registerQueueCapability();
+		setState(State.INITIALIZED);
+	}
+
+	@Override
+	public void shutdown() throws CapabilityException {
+
+		try {
+			unregisterQueueCapability();
+			setState(State.SHUTDOWN);
+		} catch (InvalidSyntaxException e) {
+			log.error(e.getMessage());
+			throw new CapabilityException(e);
+		} catch (BundleException e) {
+			log.error(e.getMessage());
+			throw new CapabilityException(e);
+		}
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#clear()
+	 */
+	@Override
+	public void clear() {
+		log.debug("Clearing the queue...");
 		queue.clear();
 	}
 
 	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#execute()
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#getActions()
+	 */
+	@Override
+	public List<IAction> getActions() {
+		log.debug("Get actions");
+		List<IAction> actions = new ArrayList<IAction>();
+		for (IAction action : queue) {
+			actions.add(action);
+		}
+		return actions;
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
+	@Override
+	public void queueAction(IAction action) {
+		log.debug("Queue new action");
+		queue.add(action);
+	}
+
+	/**
+	 * @param params
+	 *            to modify
+	 * @return the response of modify the paramsor remove the action
+	 * @throws CapabilityException
+	 */
+	@Override
+	public void modify(ModifyParams modifyParams) throws CapabilityException {
+		if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
+			remove(modifyParams.getPosAction());
+		} else {
+			throw new UnsupportedOperationException("Unsupported operation in modify: " + modifyParams.getQueueOper());
+		}
+	}
+
+	/*
+	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerCapability#execute()
 	 */
 	@Override
 	public QueueResponse execute() throws CapabilityException {
@@ -123,7 +202,6 @@ public class QueueManager extends AbstractCapability implements
 				/* execute queued actions */
 				queueResponse = executeQueuedActions(queueResponse,
 						protocolSessionManager);
-			
 
 				/* Look for errors */
 				for (ActionResponse actionResponse : queueResponse.getResponses()) {
@@ -151,6 +229,8 @@ public class QueueManager extends AbstractCapability implements
 
 				}
 			} catch (Exception e) {
+				log.warn("Failed to execute queue", e);
+
 				// restore action
 				assert protocolSessionManager != null;
 				try {
@@ -180,7 +260,7 @@ public class QueueManager extends AbstractCapability implements
 		}
 
 		/* empty queue */
-		empty();
+		clear();
 
 		/* refresh operation */
 		try {
@@ -213,129 +293,8 @@ public class QueueManager extends AbstractCapability implements
 		stopTime = java.lang.System.currentTimeMillis();
 		queueResponse.setTotalTime(stopTime - startTime);
 
-		empty();
+		clear();
 		return queueResponse;
-	}
-
-	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#getActions()
-	 */
-	@Override
-	public List<IAction> getActions() {
-		log.debug("Get actions");
-		List<IAction> actions = new ArrayList<IAction>();
-		for (IAction action : queue) {
-			actions.add(action);
-		}
-		return actions;
-	}
-
-	/*
-	 * @see net.i2cat.mantychore.queuemanager.IQueueManagerService#queueAction(org.opennaas.core.resources.action.IAction)
-	 */
-	@Override
-	public void queueAction(IAction action) {
-		log.debug("Queue new action");
-		queue.add(action);
-
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
-	 */
-	@Override
-	public IActionSet getActionSet() throws CapabilityException {
-		String name = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
-		String protocol = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_PROTOCOL);
-		String version = this.descriptor
-				.getPropertyValue(ResourceDescriptorConstants.ACTION_VERSION);
-
-		try {
-			return Activator.getQueueActionSet(name, version, protocol);
-		} catch (ActivatorException e) {
-			throw new CapabilityException(e);
-		}
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.ICapability#sendMessage(java.lang.String, java.lang.Object)
-	 */
-	@Override
-	public Object sendMessage(String idOperation, Object params)
-			throws CapabilityException {
-		log.debug("Sending message to Queue Capability");
-		try {
-
-			if (idOperation.equals(QueueConstants.EXECUTE)) {
-				return execute();
-			} else if (idOperation.equals(QueueConstants.GETQUEUE)) {
-				return getQueue();
-			} else if (idOperation.equals(QueueConstants.MODIFY)) {
-				return modify(params);
-			} else if (idOperation.equals(QueueConstants.DUMMYEXECUTE)) {
-				return dummyExecute(params);
-			}
-
-		} catch (CapabilityException e) {
-			throw new CapabilityException(e);
-		}
-		// TODO ADD NECESSARY INFORMATION
-		return Response.okResponse(idOperation);
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#sendRefreshActions()
-	 */
-	@Override
-	public Response sendRefreshActions() {
-		// there is no need of startup actions, queue is operative just after
-		// activation.
-		return Response.okResponse("");
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#activateCapability()
-	 */
-	@Override
-	protected void activateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivateCapability()
-	 */
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
-	 */
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-		log.debug("Registering Queue Capability");
-		registerQueueCapability();
-		log.debug("Registered!");
-	}
-
-	/*
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdownCapability()
-	 */
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
-		log.debug("Unregistering Queue Capability");
-		try {
-			unregisterQueueCapability();
-		} catch (InvalidSyntaxException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		} catch (BundleException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		}
-		log.debug("Unregistered!");
 	}
 
 	/**
@@ -348,10 +307,11 @@ public class QueueManager extends AbstractCapability implements
 			// abstract capabilities have to be initialized
 			if (capab instanceof AbstractCapability) {
 				log.debug("Executing capabilities startup...");
-				Response response = ((AbstractCapability) capab).sendRefreshActions();
-				if (!response.getStatus().equals(Status.OK)) {
+				try {
+					((AbstractCapability) capab).sendRefreshActions();
+				} catch (CapabilityException e) {
 					throw new CapabilityException(
-							"model refresh, when calling sendRefreshActions");
+							"error in model refresh, when calling sendRefreshActions", e);
 				}
 			}
 		}
@@ -440,8 +400,7 @@ public class QueueManager extends AbstractCapability implements
 	/**
 	 * Executes actions in the queue.
 	 * 
-	 * Queue execution stops at the first action to return error.
-	 * Both an error ActionResponse an an ActionException are interpreted as an error.
+	 * Queue execution stops at the first action to return error. Both an error ActionResponse an an ActionException are interpreted as an error.
 	 * 
 	 * @param queueResponse
 	 *            to complete with actionResponses
@@ -454,14 +413,14 @@ public class QueueManager extends AbstractCapability implements
 
 		int numAction = 0;
 		for (IAction action : queue) {
-			
+
 			log.debug("Executing action: " + action.getActionID());
 			log.debug("Trying to print params:" + action.getParams());
 			ActionResponse actionResponse;
 			try {
 				actionResponse = action.execute(protocolSessionManager);
 			} catch (ActionException e) {
-				log.error("Error executing action " + action.getActionID(), e);	
+				log.error("Error executing action " + action.getActionID(), e);
 				actionResponse = ActionResponse.errorResponse(action.getActionID(), e.getLocalizedMessage());
 			}
 			queueResponse.getResponses().set(numAction, actionResponse);
@@ -555,78 +514,32 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/**
-	 * Get the action list of the queue
-	 * 
-	 * @return a list of IAction
-	 */
-	private List<IAction> getQueue() {
-		log.debug("Getting queue");
-		List<IAction> actions = new ArrayList<IAction>();
-		Iterator<IAction> actionQueue = queue.iterator();
-		while (actionQueue.hasNext()) {
-			actions.add(actionQueue.next());
-		}
-		return actions;
-	}
-
-	/**
-	 * Implementation for the execution of a single action. <br>
-	 * Clean the queue, add an action and send the message
-	 * 
-	 * @param action
-	 * @return the queue response
-	 * @throws CapabilityException
-	 */
-	private QueueResponse dummyExecute(Object action)
-			throws CapabilityException {
-		queueAction((IAction) action);
-		return execute();
-	}
-
-	/**
-	 * @param params
-	 *            to modify
-	 * @return the response of modify the paramsor remove the action
-	 */
-	private Object modify(Object params) {
-		if (params instanceof ModifyParams) {
-			ModifyParams modifyParams = (ModifyParams) params;
-			if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
-				return remove(modifyParams.getPosAction());
-			}
-		}
-		// TODO ADD NECESSARY INFORMATION
-		return Response.okResponse(QueueConstants.MODIFY);
-	}
-
-	/**
 	 * @param posAction
 	 *            position in the queue of the action to remove
 	 * @return the response of remove the action
+	 * @throws CapabilityException
+	 *             if invalid position is given
 	 */
-	private Object remove(int posAction) {
-
+	private void remove(int posAction) throws CapabilityException {
 		try {
 			queue.remove(posAction);
-			return Response.okResponse(QueueConstants.MODIFY,
-					"Remove operation in pos: " + posAction);
+			log.debug("Removed action in pos: " + posAction);
 		} catch (ArrayIndexOutOfBoundsException e) {
-			Vector<String> errors = new Vector<String>(1);
-			errors.add("Invalid index. Index " + posAction + " does not point to any action in the queue.");
-			return Response.errorResponse(QueueConstants.MODIFY, errors);
+			throw new CapabilityException("Invalid index. Index " + posAction + " does not point to any action in the queue.");
 		}
-
 	}
 
 	/**
 	 * Register the capability
 	 */
 	private void registerQueueCapability() {
+		log.debug("Registering Queue Capability");
 		Properties props = new Properties();
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		props.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
 		registration = Activator.getContext().registerService(
-				IQueueManagerService.class.getName(), this, props);
+				IQueueManagerCapability.class.getName(), this, props);
+		log.debug("Registered!");
 	}
 
 	/**
@@ -637,7 +550,9 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	private void unregisterQueueCapability() throws InvalidSyntaxException, BundleException {
 		if (registration != null) {
+			log.debug("Unregistering Queue Capability");
 			registration.unregister();
+			log.debug("Unregistered!");
 		}
 	}
 }

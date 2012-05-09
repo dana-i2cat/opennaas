@@ -3,19 +3,15 @@ package org.opennaas.extensions.network.capability.basic.shell;
 import java.util.Iterator;
 import java.util.List;
 
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.network.model.topology.NetworkConnection;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.topology.Interface;
 
 @Command(scope = "net", name = "l2detach", description = "Add a resource to the network")
 public class L2DetachCommand extends GenericKarafCommand {
@@ -24,10 +20,10 @@ public class L2DetachCommand extends GenericKarafCommand {
 	private String	networkId;
 
 	@Argument(index = 1, name = "interfaceName", description = "First interface to dettach", required = true, multiValued = false)
-	private String interface1Name;
+	private String	interface1Name;
 
 	@Argument(index = 2, name = "interfaceName", description = "Second interface to dettach", required = true, multiValued = false)
-	private String interface2Name;
+	private String	interface2Name;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -44,7 +40,7 @@ public class L2DetachCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		//get interfaces
+		// get interfaces
 		NetworkModel netModel = (NetworkModel) network.getModel();
 		List<Interface> interfaces = NetworkModelHelper.getInterfaces(netModel.getNetworkElements());
 
@@ -54,15 +50,15 @@ public class L2DetachCommand extends GenericKarafCommand {
 		Interface interface2 = null;
 		while (it.hasNext() && !found) {
 			Interface current = it.next();
-			if (interface1Name.equals(current.getName())){
+			if (interface1Name.equals(current.getName())) {
 				interface1 = current;
 			}
-			if (interface2Name.equals(current.getName())){
+			if (interface2Name.equals(current.getName())) {
 				interface2 = current;
 			}
 			found = (interface1 != null) && (interface2 != null);
 		}
-		if (! found) {
+		if (!found) {
 			if (interface1 == null)
 				printError("Failed to get required interfaces: " + interface1Name + " is not prensent in network model");
 			else
@@ -71,16 +67,12 @@ public class L2DetachCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
-		if (! (networkCapability instanceof ITopologyManager)) {
-			printError("Failed to get required capability.");
-			printEndCommand();
-			return null;
-		}
+		INetworkBasicCapability networkCapability =
+				(INetworkBasicCapability) network.getCapabilityByInterface(INetworkBasicCapability.class);
 
 		try {
-			((ITopologyManager)networkCapability).L2detach(interface1, interface2);
-		} catch (CapabilityException e){
+			networkCapability.l2detach(interface1, interface2);
+		} catch (CapabilityException e) {
 			printError("Error during detach");
 			printError(e);
 			printEndCommand();

@@ -1,0 +1,57 @@
+package org.opennaas.extensions.itests.helpers;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+
+import org.apache.felix.gogo.runtime.CommandNotFoundException;
+import org.apache.felix.service.command.CommandProcessor;
+import org.apache.felix.service.command.CommandSession;
+
+public class KarafCommandHelper {
+
+	public static ArrayList<String> executeCommand(String command, CommandProcessor c) throws Exception {
+		boolean notfound;
+		int notfoundCounter = 0;
+		// Run some commands to make sure they are installed properly
+		CommandProcessor cp = c;
+		ByteArrayOutputStream outputError = new ByteArrayOutputStream();
+		PrintStream psE = new PrintStream(outputError);
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(output);
+		CommandSession cs = cp.createSession(System.in, ps, psE);
+
+		ArrayList<String> outputs = new ArrayList<String>();
+
+		do {
+			try {
+				cs.execute(command);
+				outputs.add(output.toString());
+				outputs.add(outputError.toString());
+				cs.close();
+				notfound = false;
+			} catch (CommandNotFoundException nfe) {
+				notfound = true;
+				notfoundCounter++;
+				if (notfoundCounter > 50) {
+					throw nfe;
+				}
+				Thread.sleep(200);
+			} catch (IllegalArgumentException e) {
+				// throw new IllegalArgumentException("Action should have thrown an exception because: " + e.toString());
+				notfound = true;
+				notfoundCounter++;
+				if (notfoundCounter > 50) {
+					throw e;
+				}
+				Thread.sleep(200);
+			} catch (NoSuchMethodException a) {
+				// log.error("Method for command not found: " + a.getLocalizedMessage());
+				throw new NoSuchMethodException("Method for command not found.");
+			}
+		} while (notfound);
+
+		return outputs;
+	}
+
+}

@@ -3,14 +3,14 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>opennaas</artifactId>
-		<version>0.8</version>
+		<version>0.9</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.extensions</artifactId>
 
 	<packaging>pom</packaging>
-	<name>Mantychore</name>
+	<name>OpenNaaS :: Extensions</name>
 
 	<licenses>
 		<license>
@@ -64,7 +64,6 @@
 	</dependencies>
 
 	<modules>
-		<module>helpers</module>
 		<module>bundles</module>
 	</modules>
 

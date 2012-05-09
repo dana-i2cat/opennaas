@@ -19,6 +19,11 @@ public class PortImplementsEndpoint extends DeviceSAPImplementation implements
 		Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -3763672634375390291L;
+
+	/**
 	 * This constructor creates a PortImplementsEndpointBeanImpl Class which implements the PortImplementsEndpointBean Interface, and encapsulates the
 	 * CIM class PortImplementsEndpoint in a Java Bean. The CIM class PortImplementsEndpoint is described as follows:
 	 * 

@@ -16,6 +16,11 @@ import java.io.Serializable;
 public class SystemDevice extends SystemComponent implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8636472016852175350L;
+
+	/**
 	 * This constructor creates a SystemDeviceBeanImpl Class which implements the SystemDeviceBean Interface, and encapsulates the CIM class
 	 * SystemDevice in a Java Bean. The CIM class SystemDevice is described as follows:
 	 * 

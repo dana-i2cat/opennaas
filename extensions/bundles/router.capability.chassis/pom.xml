@@ -4,15 +4,15 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.8</version>
+		<version>0.9</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore Chassis Capability</name>
-	<description>Mantychore Chassis Capability Implementation</description>
+	<name>OpenNaaS :: Router :: Chassis Capability</name>
+	<description>Routers Chassis Capability Implementation</description>
 	<!--  specify the last version from xerces-impl to work with the digester parser -->
 	<dependencies>
 		<dependency>
