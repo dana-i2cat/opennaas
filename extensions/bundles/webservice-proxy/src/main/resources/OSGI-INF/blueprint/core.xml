@@ -26,5 +26,7 @@ the License. -->
     <service ref="chassisCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IChassisCapabilityService" />
     <jaxws:client id="connectionsCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IConnectionsCapabilityService" address="http://localhost:8182/cxf/connectionsCapabilityService" />
     <service ref="connectionsCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IConnectionsCapabilityService" />
+    <jaxws:client id="monitoringCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IMonitoringCapabilityService" address="http://localhost:8182/cxf/monitoringCapabilityService" />
+    <service ref="monitoringCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IMonitoringCapabilityService" />
 
 </blueprint>

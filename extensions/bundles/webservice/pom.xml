@@ -29,6 +29,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
@@ -65,6 +69,7 @@
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
 							<className>org.opennaas.extensions.ws.services.IConnectionsCapabilityService</className>
+							<className>org.opennaas.extensions.ws.services.IMonitoringCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>
