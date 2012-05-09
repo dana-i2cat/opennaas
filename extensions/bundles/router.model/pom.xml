@@ -11,8 +11,8 @@
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore Model</name>
-	<description>Mantychore Model Implementation</description>
+	<name>OpenNaaS :: CIM Model</name>
+	<description>CIM Model Implementation (used in Routers and ROADMs)</description>
 	<!--  dependencies  -->
 	<dependencies>
 		<dependency>
