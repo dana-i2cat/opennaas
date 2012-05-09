@@ -33,7 +33,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.capability.ospf.INetOSPFCapability;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -166,7 +166,7 @@ public class NetOSPFIntegrationTest {
 
 		for (IResource router : routers) {
 
-			IQueueManagerService queueCapab = (IQueueManagerService) router.getCapability(inf);
+			IQueueManagerCapability queueCapab = (IQueueManagerCapability) router.getCapability(inf);
 			assertEquals(4, queueCapab.getActions().size());
 
 			assertEquals(ActionConstants.OSPF_CONFIGURE, queueCapab.getActions().get(0).getActionID());

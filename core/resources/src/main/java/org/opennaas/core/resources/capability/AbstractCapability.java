@@ -178,7 +178,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	// * @return
 	// * @throws CapabilityException
 	// */
-	// protected abstract IQueueManagerService getQueueManager() throws CapabilityException;
+	// protected abstract IQueueManagerCapability getQueueManager() throws CapabilityException;
 
 	@Override
 	public IAction createAction(String actionId) throws CapabilityException {

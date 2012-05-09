@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.GRETunnelService;
@@ -26,37 +26,37 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 									.getLog(GRETunnelCapabilityIntegrationTest.class);
 
 	@Test
-	public void createGRETunnelTest() throws CapabilityException
+	public void createGRETunnelTest() throws CapabilityException, ProtocolException
 	{
 		log.info("Test createGRETunnel method");
 		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
 		iGRETunnelService
 				.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 	}
 
 	@Test
-	public void deleteGRETunnelTest() throws CapabilityException {
+	public void deleteGRETunnelTest() throws CapabilityException, ProtocolException {
 		log.info("Test createGRETunnel method");
 		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
 		iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 	}
 
 	@Test
-	public void showGRETunnelConfigurationTest() throws CapabilityException {
+	public void showGRETunnelConfigurationTest() throws CapabilityException, ProtocolException {
 		log.info("Test showGRETunnelConfiguration method");
 		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
 		List<GRETunnelService> resp = iGRETunnelService.showGRETunnelConfiguration();
 		Assert.assertTrue(resp.size() > 0);
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 	}
 
 	@Test
-	public void testGRETunnelAction() throws CapabilityException {
+	public void testGRETunnelAction() throws CapabilityException, ProtocolException {
 		log.info("TEST GRE TUNNEL ACTION");
 		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
 		iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
@@ -67,10 +67,10 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 		// Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
 		// Assert.assertTrue(resp.getErrors().size() == 0);
 
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 2);
 
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertEquals(queueResponse.getResponses().size(), 2);
 
 		Assert.assertEquals(queueResponse.getPrepareResponse().getStatus(), ActionResponse.STATUS.OK);
@@ -80,7 +80,7 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 
 		Assert.assertTrue(queueResponse.isOk());
 
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 0);
 	}
 }

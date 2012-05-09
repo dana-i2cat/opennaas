@@ -27,7 +27,7 @@ import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -52,7 +52,7 @@ public class IPCapabilityIntegrationTest
 
 	private MockResource			mockResource;
 	private IIPCapability			ipCapability;
-	private IQueueManagerService	queueCapability;
+	private IQueueManagerCapability	queueCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -121,7 +121,7 @@ public class IPCapabilityIntegrationTest
 		log.info("INFO: Before test, getting queue...");
 		Assert.assertNotNull(queueManagerFactory);
 
-		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 

@@ -12,13 +12,15 @@ import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
+import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.capability.AbstractCapability;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
@@ -51,11 +53,20 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		IQueueManagerService queueCapab = (IQueueManagerService) resource.getCapabilityByType(createQueueInformation().getType());
-		QueueResponse response = (QueueResponse) queueCapab.sendMessage(QueueConstants.EXECUTE, resource.getModel());
-		if (!response.isOk()) {
-			// TODO IMPROVE ERROR REPORTING
-			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
+		IQueueManagerCapability queueCapab = (IQueueManagerCapability) resource.getCapabilityByInterface(IQueueManagerCapability.class);
+		QueueResponse response;
+		try {
+			response = queueCapab.execute();
+			if (!response.isOk()) {
+				// TODO IMPROVE ERROR REPORTING
+				throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.");
+			}
+		} catch (ProtocolException e) {
+			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.", e);
+		} catch (ActionException e) {
+			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.", e);
+		} catch (CapabilityException e) {
+			throw new ResourceException("Error during capabilities startup. Failed to execute startUp actions.", e);
 		}
 
 		if (resource.getProfile() != null) {

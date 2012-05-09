@@ -30,10 +30,9 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -154,15 +153,17 @@ public class SetInterfaceDescriptionActionTest
 	}
 
 	@Test
-	public void configureSubInterfaceDescriptionTest() throws CapabilityException {
+	public void configureSubInterfaceDescriptionTest() throws CapabilityException, ProtocolException {
 		setSubInterfaceDescriptionTest();
 		setInterfaceDescriptionTest();
 	}
 
 	/**
 	 * Put related task
+	 * 
+	 * @throws ProtocolException
 	 * */
-	public void setSubInterfaceDescriptionTest() throws CapabilityException {
+	public void setSubInterfaceDescriptionTest() throws CapabilityException, ProtocolException {
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
@@ -186,8 +187,8 @@ public class SetInterfaceDescriptionActionTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
-		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
+		QueueResponse response = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(response.isOk());
 
 		if (isMock)
@@ -202,14 +203,16 @@ public class SetInterfaceDescriptionActionTest
 
 		// delete created sub interface
 		chassisCapability.deleteSubInterface(ethernetPort);
-		response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		response = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(response.isOk());
 	}
 
 	/**
 	 * Test the possibility to configure subinterfaces with an encapsulation
+	 * 
+	 * @throws ProtocolException
 	 * */
-	public void setInterfaceDescriptionTest() throws CapabilityException {
+	public void setInterfaceDescriptionTest() throws CapabilityException, ProtocolException {
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
 		if (posChassis == -1)
@@ -231,8 +234,8 @@ public class SetInterfaceDescriptionActionTest
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
-		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
+		QueueResponse response = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(response.isOk());
 
 		if (isMock)
@@ -261,14 +264,14 @@ public class SetInterfaceDescriptionActionTest
 		}
 	}
 
-	private QueueResponse executeQueue(IResource resource) throws CapabilityException {
+	private QueueResponse executeQueue(IResource resource) throws CapabilityException, ProtocolException {
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
 		QueueResponse response = null;
-		response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		response = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(response.isOk());
 		return response;
 	}

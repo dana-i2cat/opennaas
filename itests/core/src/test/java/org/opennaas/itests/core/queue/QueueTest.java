@@ -28,9 +28,7 @@ import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -41,9 +39,8 @@ import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.queuemanager.QueueManager;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.ops4j.pax.exam.Option;
@@ -80,8 +77,8 @@ public class QueueTest
 
 	private final static String		resourceID	= "junosResource";
 	private MockResource			mockResource;
-	private ICapability				queueCapability;
-	private IQueueManagerService	queueManagerService;
+	private IQueueManagerCapability	queueCapability;
+	private IQueueManagerCapability	queueManagerService;
 
 	@Inject
 	private IProtocolManager		protocolManager;
@@ -139,14 +136,15 @@ public class QueueTest
 	public void before() throws ProtocolException, IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		initBundles();
 		log.info("INFO: Before test, getting queue...");
-		queueCapability = queueManagerFactory.create(mockResource);
-		((ICapabilityLifecycle) queueCapability).initialize();
+
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 
 		/*
 		 * initialize() registers the new queue manager as a service. Hence we cannot obtain this reference through injection.
 		 */
 		queueManagerService =
-				getService(bundleContext, IQueueManagerService.class, 20000,
+
+				getService(bundleContext, IQueueManagerCapability.class, 20000,
 						String.format("(capability=queue)(capability.name=%s)",
 								resourceID));
 	}
@@ -154,8 +152,7 @@ public class QueueTest
 	@After
 	public void after() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		log.info("INFO: After test, cleaning queue...");
-		((ICapabilityLifecycle) queueCapability).shutdown();
-		queueManagerService.empty();
+		queueManagerService.clear();
 	}
 
 	/**
@@ -177,11 +174,12 @@ public class QueueTest
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action1"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionDiffsCommandOks("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionOK("action3"));
-		((IQueueManagerService) queueCapability).sendMessage(QueueConstants.MODIFY, newQueueModifyParams());
+
+		queueCapability.modify(newQueueModifyParams());
 		Assert.assertTrue(queueManagerService.getActions().size() == 2);
 	}
 
-	private Object newQueueModifyParams() {
+	private ModifyParams newQueueModifyParams() {
 		ModifyParams modifyParams = new ModifyParams();
 		modifyParams.setPosAction(1);
 		modifyParams.setQueueOper(ModifyParams.Operations.REMOVE);
@@ -198,14 +196,16 @@ public class QueueTest
 	 * 1.- Add unitary test
 	 * 
 	 * 2.- Add necessary refactoring to add new information in the queue
+	 * 
+	 * @throws ProtocolException
 	 */
 	@Test
-	public void ResponseReportTest() throws CapabilityException, InterruptedException {
+	public void ResponseReportTest() throws CapabilityException, InterruptedException, ProtocolException {
 		queueManagerService.queueAction(MockActionFactory.newMockActionDiffsCommandOks("action1"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionAnError("action2"));
 		queueManagerService.queueAction(MockActionFactory.newMockActionVariousError("action3"));
 
-		QueueResponse queueResponse = (QueueResponse) ((IQueueManagerService) queueCapability).sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = queueCapability.execute();
 
 		/* check prepare action */
 		ActionResponse prepareResponse = queueResponse.getPrepareResponse();

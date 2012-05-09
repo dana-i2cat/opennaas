@@ -31,10 +31,10 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
 import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
@@ -64,7 +64,7 @@ public class ChassisCapabilityIntegrationTest
 
 	private MockResource			mockResource;
 	private IChassisCapability		chassisCapability;
-	private IQueueManagerService	queueCapability;
+	private IQueueManagerCapability	queueCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -136,7 +136,7 @@ public class ChassisCapabilityIntegrationTest
 		log.info("INFO: Before test, getting queue...");
 		Assert.assertNotNull(queueManagerFactory);
 
-		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
@@ -164,17 +164,17 @@ public class ChassisCapabilityIntegrationTest
 	@Test
 	@Ignore
 	// FIXME this tests fails because of a vlan-tagging limitation describes at OPENNAAS-95 issue.
-	public void testSetEncapsulationAction() throws CapabilityException {
+	public void testSetEncapsulationAction() throws CapabilityException, ProtocolException {
 
 		int actionCount = 0;
 
 		chassisCapability.setEncapsulation(newParamsInterfaceEthernetPort("fe-0/1/0", 13), ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
 		actionCount++;
 
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
 
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		assertEquals(actionCount, queueResponse.getResponses().size());
 
 		for (int i = 0; i < queueResponse.getResponses().size(); i++) {
@@ -193,7 +193,7 @@ public class ChassisCapabilityIntegrationTest
 	}
 
 	@Test
-	public void testChassisAction() throws CapabilityException {
+	public void testChassisAction() throws CapabilityException, ProtocolException {
 		log.info("TEST CHASSIS ACTIONS");
 
 		int actionCount = 0;
@@ -230,10 +230,10 @@ public class ChassisCapabilityIntegrationTest
 		chassisCapability.removeInterfacesFromLogicalRouter(newParamsLRWithInterface("cpe2"), lInterfaces);
 		actionCount++;
 
-		List<IAction> queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
 
-		QueueResponse queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		QueueResponse queueResponse = queueCapability.execute();
 		assertEquals(actionCount, queueResponse.getResponses().size());
 
 		for (int i = 0; i < queueResponse.getResponses().size(); i++) {
@@ -250,7 +250,7 @@ public class ChassisCapabilityIntegrationTest
 
 		assertTrue("Response should be ok", queueResponse.isOk());
 
-		queue = (List<IAction>) queueCapability.sendMessage(QueueConstants.GETQUEUE, null);
+		queue = (List<IAction>) queueCapability.getActions();
 		assertTrue("Queue should be empty", queue.isEmpty());
 	}
 

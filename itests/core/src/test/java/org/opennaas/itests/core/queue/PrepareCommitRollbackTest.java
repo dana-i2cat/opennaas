@@ -44,7 +44,7 @@ import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -65,7 +65,7 @@ public class PrepareCommitRollbackTest
 
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
-	private IQueueManagerService	queueManagerService;
+	private IQueueManagerCapability	queueManagerCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -129,7 +129,7 @@ public class PrepareCommitRollbackTest
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
-		queueManagerService = getService(bundleContext, IQueueManagerService.class, 50000,
+		queueManagerCapability = getService(bundleContext, IQueueManagerCapability.class, 50000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}
 
@@ -164,14 +164,14 @@ public class PrepareCommitRollbackTest
 
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
-		queueManagerService.queueAction(action);
+		queueManagerCapability.queueAction(action);
 		action = new CorruptedAction();
 		action.setActionID("corruptedAction");
-		queueManagerService.queueAction(action);
+		queueManagerCapability.queueAction(action);
 
 		boolean isChecked = false;
 		try {
-			queueManagerService.execute();
+			queueManagerCapability.execute();
 		} catch (Exception e) {
 			if (e instanceof CapabilityException)
 				isChecked = true;
