@@ -38,7 +38,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -58,7 +58,7 @@ public class QueuemanagerTest
 	private final String			resourceID	= "junosResource";
 	private MockResource			mockResource;
 	private ICapability				queueCapability;
-	private IQueueManagerService	queueManagerService;
+	private IQueueManagerCapability	queueManagerCapability;
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -122,26 +122,26 @@ public class QueuemanagerTest
 		log.info("INFO: Before test, getting queue...");
 		queueCapability = queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
-		queueManagerService = getService(bundleContext, IQueueManagerService.class, 20000,
+		queueManagerCapability = getService(bundleContext, IQueueManagerCapability.class, 20000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
 	}
 
 	@After
-	public void after() {
+	public void after() throws CapabilityException {
 		log.info("INFO: After test, cleaning queue...");
-		queueManagerService.empty();
+		queueManagerCapability.clear();
 	}
 
 	@Test
-	public void removeAction() {
+	public void removeAction() throws CapabilityException {
 		log.info("INFO: Remove actions");
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
 
-		queueManagerService.queueAction(action);
-		Assert.assertTrue(queueManagerService.getActions().size() == 1);
-		queueManagerService.empty();
-		Assert.assertTrue(queueManagerService.getActions().size() == 0);
+		queueManagerCapability.queueAction(action);
+		Assert.assertTrue(queueManagerCapability.getActions().size() == 1);
+		queueManagerCapability.clear();
+		Assert.assertTrue(queueManagerCapability.getActions().size() == 0);
 		log.info("INFO: OK!");
 	}
 
@@ -152,10 +152,10 @@ public class QueuemanagerTest
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
 
-		queueManagerService.queueAction(action);
-		Assert.assertTrue(queueManagerService.getActions().size() == 1);
-		queueManagerService.execute();
-		Assert.assertTrue(queueManagerService.getActions().size() == 0);
+		queueManagerCapability.queueAction(action);
+		Assert.assertTrue(queueManagerCapability.getActions().size() == 1);
+		queueManagerCapability.execute();
+		Assert.assertTrue(queueManagerCapability.getActions().size() == 0);
 		log.info("INFO: OK!");
 	}
 
@@ -166,9 +166,9 @@ public class QueuemanagerTest
 		IAction action = new MockActionExceptionOnExecute();
 		action.setActionID("mockAction");
 
-		queueManagerService.queueAction(action);
-		Assert.assertEquals(1, queueManagerService.getActions().size());
-		QueueResponse response = queueManagerService.execute();
+		queueManagerCapability.queueAction(action);
+		Assert.assertEquals(1, queueManagerCapability.getActions().size());
+		QueueResponse response = queueManagerCapability.execute();
 		Assert.assertFalse(response.isOk());
 		Assert.assertFalse(response.getResponses().isEmpty());
 		Assert.assertEquals(STATUS.ERROR, response.getResponses().get(0).getStatus());
@@ -179,16 +179,16 @@ public class QueuemanagerTest
 	}
 
 	@Test
-	public void listActions() {
+	public void listActions() throws CapabilityException {
 		log.info("INFO: List actions");
 
 		IAction action = new MockAction();
 		action.setActionID("mockAction");
 
-		queueManagerService.queueAction(action);
-		Assert.assertTrue(queueManagerService.getActions().size() == 1);
+		queueManagerCapability.queueAction(action);
+		Assert.assertTrue(queueManagerCapability.getActions().size() == 1);
 
-		for (IAction act : queueManagerService.getActions()) {
+		for (IAction act : queueManagerCapability.getActions()) {
 			log.info("INFO: action id=" + act.getActionID());
 		}
 

@@ -31,11 +31,10 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.nexus.tests.helper.InitializerTestHelper;
 import org.opennaas.extensions.nexus.tests.helper.ResourceHelper;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
@@ -175,10 +174,11 @@ public class SetInterfaceDescriptionActionInLRTest
 	 * Reset info for next tests
 	 * 
 	 * @throws ResourceException
+	 * @throws ProtocolException
 	 * 
 	 */
 	@After
-	public void tearDown() throws ResourceException {
+	public void tearDown() throws ResourceException, ProtocolException {
 
 		// delete created sub interface
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -219,7 +219,7 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	@Test
 	public void setInterfaceDescriptionActionInLRTest()
-			throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException, ProtocolException
 	{
 		setSubInterfaceDescriptionTest();
 		setInterfaceDescriptionTest();
@@ -227,9 +227,11 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Put related task
+	 * 
+	 * @throws ProtocolException
 	 * */
 	public void setSubInterfaceDescriptionTest()
-			throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException, ProtocolException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -268,9 +270,11 @@ public class SetInterfaceDescriptionActionInLRTest
 
 	/**
 	 * Test the possibility to configure subinterfaces with an encapsulation
+	 * 
+	 * @throws ProtocolException
 	 * */
 	public void setInterfaceDescriptionTest()
-			throws CapabilityException, ResourceException
+			throws CapabilityException, ResourceException, ProtocolException
 	{
 		/* send action */
 		int posChassis = InitializerTestHelper.containsCapability(resource, "chassis");
@@ -322,13 +326,13 @@ public class SetInterfaceDescriptionActionInLRTest
 		}
 	}
 
-	private QueueResponse executeQueue(IResource resource) throws CapabilityException {
+	private QueueResponse executeQueue(IResource resource) throws CapabilityException, ProtocolException {
 		/* execute action */
 		int posQueue = InitializerTestHelper.containsCapability(resource, "queue");
 		if (posQueue == -1)
 			Assert.fail("Could not get Queue capability for given resource");
-		IQueueManagerService queueCapability = (IQueueManagerService) resource.getCapabilities().get(posQueue);
-		QueueResponse response = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) resource.getCapabilities().get(posQueue);
+		QueueResponse response = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(response.isOk());
 		return response;
 	}

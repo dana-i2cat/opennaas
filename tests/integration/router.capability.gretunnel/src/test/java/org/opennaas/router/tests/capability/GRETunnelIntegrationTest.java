@@ -33,7 +33,7 @@ import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
@@ -62,7 +62,7 @@ public abstract class GRETunnelIntegrationTest
 	private final Log				log				= LogFactory
 															.getLog(GRETunnelIntegrationTest.class);
 	private static MockResource		mockResource;
-	protected IQueueManagerService	queueCapability;
+	protected IQueueManagerCapability	queueCapability;
 	protected IGRETunnelCapability		greTunnelCapability;
 
 	@Inject
@@ -138,7 +138,7 @@ public abstract class GRETunnelIntegrationTest
 			ResourceException, CorruptStateException, ProtocolException
 	{
 		log.info("INFO: Before Test, getting queue...");
-		queueCapability = (IQueueManagerService) queueManagerFactory.create(mockResource);
+		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
