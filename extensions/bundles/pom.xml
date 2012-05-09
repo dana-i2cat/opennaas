@@ -52,6 +52,9 @@
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
         <module>bod.autobahn</module>
+         
+		<module>itests.helpers</module>
+		
 		<module>webservice</module>
 		<module>webservice-proxy</module>
 	</modules>

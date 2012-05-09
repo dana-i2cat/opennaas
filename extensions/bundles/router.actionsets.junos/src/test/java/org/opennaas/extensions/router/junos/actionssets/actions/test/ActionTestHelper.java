@@ -2,19 +2,18 @@ package org.opennaas.extensions.router.junos.actionssets.actions.test;
 
 import java.util.HashMap;
 
-import mock.MockEventManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
+import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
+import org.opennaas.core.resources.mock.MockEventManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.NetworkPort;
-import org.opennaas.extensions.protocols.netconf.NetconfProtocolSessionFactory;
-
-import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
-import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
 public class ActionTestHelper {
 

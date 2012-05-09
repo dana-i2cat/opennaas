@@ -2,7 +2,6 @@ package org.opennaas.core.resources.tests.profile;
 
 import java.util.HashMap;
 
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
@@ -13,13 +12,13 @@ import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.mock.MockActionSet;
+import org.opennaas.core.resources.mock.MockDummyAction;
+import org.opennaas.core.resources.mock.MockProfile;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.profile.ProfileManager;
-import org.opennaas.core.resources.tests.capability.MockActionSet;
-import org.opennaas.core.resources.tests.profile.mock.DummyAction;
-import org.opennaas.core.resources.tests.profile.mock.MockProfile;
 
 public class ProfileManagerTest {
 
@@ -119,7 +118,7 @@ public class ProfileManagerTest {
 		ActionSet actionSet = new MockActionSet();
 
 		actionSet.setActionSetId("chassisProfileActionSet");
-		actionSet.putAction(actionId, DummyAction.class);
+		actionSet.putAction(actionId, MockDummyAction.class);
 
 		HashMap<String, IActionSet> overridenActions = new HashMap<String, IActionSet>();
 		overridenActions.put(capabilityId, actionSet);
