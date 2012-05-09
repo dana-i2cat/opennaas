@@ -25,6 +25,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
@@ -56,7 +60,7 @@
 				<artifactId>cxf-java2ws-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>generate-wsdl</id>
+						<id>generate-wsdl-chassis</id>
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
@@ -67,6 +71,18 @@
 							<goal>java2ws</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>generate-wsdl-staticroute</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IStaticRouteCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>					
 				</executions>
 			</plugin>
 		</plugins>

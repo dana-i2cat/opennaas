@@ -32,5 +32,13 @@ the License. -->
 	</bean>
     <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8182/cxf/chassisCapabilityService"  />
 
+	<!-- Static Route -->
+    <cxf:bus id="staticRouteCapabilityServiceBus"></cxf:bus>
+	
+	<bean id="staticRouteCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.StaticRouteCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#staticRouteCapabilityServiceImpl" address="http://localhost:8182/cxf/staticRouteCapabilityService"  />
+
 
 </blueprint>
