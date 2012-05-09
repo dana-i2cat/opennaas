@@ -11,7 +11,7 @@
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Network Queue Capability</name>
+	<name>OpenNaaS :: Network :: Queue Capability</name>
 	<description>Network Queue Capability Implementation</description>
 	<dependencies>
 		<dependency>

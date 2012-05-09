@@ -11,8 +11,8 @@
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore Queue Manager</name>
-	<description>Mantychore Queue Manager Implementation</description>
+	<name>OpenNaaS :: Queue Manager</name>
+	<description>Queue Manager Implementation</description>
 	<dependencies>
 		<!--  it will be necessary to change the place the  -->
 		<dependency>
