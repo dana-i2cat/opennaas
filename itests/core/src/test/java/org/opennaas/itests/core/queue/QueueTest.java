@@ -29,6 +29,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -142,6 +143,8 @@ public class QueueTest
 		/*
 		 * initialize() registers the new queue manager as a service. Hence we cannot obtain this reference through injection.
 		 */
+		((ICapabilityLifecycle) queueCapability).initialize();
+
 		queueManagerService =
 
 				getService(bundleContext, IQueueManagerCapability.class, 20000,
@@ -152,6 +155,7 @@ public class QueueTest
 	@After
 	public void after() throws IncorrectLifecycleStateException, ResourceException, CorruptStateException {
 		log.info("INFO: After test, cleaning queue...");
+		((ICapabilityLifecycle) queueCapability).shutdown();
 		queueManagerService.clear();
 	}
 
