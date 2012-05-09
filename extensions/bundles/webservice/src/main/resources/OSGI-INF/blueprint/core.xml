@@ -53,4 +53,11 @@ the License. -->
 	</bean>
     <jaxws:endpoint  implementor="#l2bodCapabilityServiceImpl" address="http://localhost:8182/cxf/l2bodCapabilityService"  />
 
+    <!-- IP Capability -->
+    <cxf:bus id="ipCapabilityServiceBus"></cxf:bus>
+	<bean id="ipCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.IPCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#ipCapabilityServiceImpl" address="http://localhost:8182/cxf/ipCapabilityService"  />
+
 </blueprint>

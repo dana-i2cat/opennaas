@@ -37,5 +37,9 @@ the License. -->
 	<!-- L2BoD Capability -->
     <jaxws:client id="l2bodCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" address="http://localhost:8182/cxf/l2bodCapabilityService" />
     <service ref="l2bodCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" />
+    
+    <!-- IP Capability -->
+    <jaxws:client id="ipCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IIPCapabilityService" address="http://localhost:8182/cxf/ipCapabilityService" />
+    <service ref="ipCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IIPCapabilityService" />
 
 </blueprint>
