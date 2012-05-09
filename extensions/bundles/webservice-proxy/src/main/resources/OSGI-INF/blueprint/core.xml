@@ -28,4 +28,10 @@ the License. -->
     <jaxws:client id="staticRouteCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService" address="http://localhost:8182/cxf/staticRouteCapabilityService" />
     <service ref="staticRouteCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService" />
 
+    <jaxws:client id="netOSPFCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" address="http://localhost:8182/cxf/netOSPFCapabilityService" />
+    <service ref="netOSPFCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" />
+
+    <jaxws:client id="netQueueCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetQueueCapabilityService" address="http://localhost:8182/cxf/netQueueCapabilityService" />
+    <service ref="netQueueCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetQueueCapabilityService" />
+
 </blueprint>
