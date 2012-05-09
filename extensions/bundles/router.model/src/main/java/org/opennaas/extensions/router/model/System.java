@@ -24,6 +24,11 @@ import java.util.List;
  */
 public class System extends EnabledLogicalElement implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7882149761777958943L;
+
 	/* HOSTED SERVICES */
 	/**
 	 * 

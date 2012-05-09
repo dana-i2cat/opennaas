@@ -18,6 +18,11 @@ import java.io.*;
 public class ServiceAccessBySAP extends Dependency implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2484086333370614074L;
+
+	/**
 	 * This constructor creates a ServiceAccessBySAPBeanImpl Class which implements the ServiceAccessBySAPBean Interface, and encapsulates the CIM
 	 * class ServiceAccessBySAP in a Java Bean. The CIM class ServiceAccessBySAP is described as follows:
 	 * 

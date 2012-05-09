@@ -21,6 +21,11 @@ public class Service extends EnabledLogicalElement implements Serializable {
 	/* HOSTED SERVICE */
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -6311588824112023164L;
+
+	/**
 	 * @return System associated with this Service through HostedService dependency.
 	 */
 	public System getHostSystem() {

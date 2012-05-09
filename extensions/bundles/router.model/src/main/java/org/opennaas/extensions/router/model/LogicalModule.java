@@ -19,6 +19,11 @@ import java.lang.Exception;
 public class LogicalModule extends LogicalDevice implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8521252533557056661L;
+
+	/**
 	 * MANUALLY ADDED TO CIM (12/04/2011)<br>
 	 * Add given NetworkPort as a ModulePort of this LogicalModule.
 	 * 

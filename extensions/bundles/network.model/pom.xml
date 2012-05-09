@@ -4,15 +4,15 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.8</version>
+		<version>0.9</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.network.model</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore Network Model</name>
-	<description>Mantychore Network Model Implementation</description>
+	<name>OpenNaaS :: Network :: Model</name>
+	<description>Network Model Implementation</description>
 	<!--  dependencies  -->
 	<dependencies>
 		<dependency>

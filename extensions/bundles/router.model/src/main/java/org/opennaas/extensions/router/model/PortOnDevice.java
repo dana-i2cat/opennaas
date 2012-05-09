@@ -16,6 +16,11 @@ import java.io.*;
 public class PortOnDevice extends HostedDependency implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -1797949005308296111L;
+
+	/**
 	 * This constructor creates a PortOnDeviceBeanImpl Class which implements the PortOnDeviceBean Interface, and encapsulates the CIM class
 	 * PortOnDevice in a Java Bean. The CIM class PortOnDevice is described as follows:
 	 * 

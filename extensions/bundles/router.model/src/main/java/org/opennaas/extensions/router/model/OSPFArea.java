@@ -21,6 +21,11 @@ import java.util.List;
 public class OSPFArea extends RoutingProtocolDomain implements Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6346793215393615571L;
+
 	/* AreaOfConfiguration */
 	/**
 	 * 

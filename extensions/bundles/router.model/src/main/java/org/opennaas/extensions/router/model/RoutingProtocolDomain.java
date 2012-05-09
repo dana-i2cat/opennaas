@@ -21,6 +21,11 @@ public class RoutingProtocolDomain extends AdminDomain implements Serializable
 {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -5817826397557968817L;
+
+	/**
 	 * This constructor creates a RoutingProtocolDomainBeanImpl Class which implements the RoutingProtocolDomainBean Interface, and encapsulates the
 	 * CIM class RoutingProtocolDomain in a Java Bean. The CIM class RoutingProtocolDomain is described as follows:
 	 * 

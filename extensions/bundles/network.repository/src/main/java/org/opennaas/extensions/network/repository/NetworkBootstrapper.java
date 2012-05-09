@@ -1,20 +1,13 @@
 package org.opennaas.extensions.network.repository;
 
-import org.opennaas.extensions.network.model.NetworkModel;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.AbstractCapability;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.queue.QueueConstants;
-import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.network.model.NetworkModel;
 
 public class NetworkBootstrapper implements IResourceBootstrapper {
 	Log		log	= LogFactory.getLog(NetworkBootstrapper.class);
@@ -37,7 +30,7 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 		if (resource.getResourceDescriptor().getNetworkTopology() != null) {
 			resource.setModel(NetworkMapperDescriptorToModel.descriptorToModel(resource.getResourceDescriptor()));
 		}
-		
+
 		if (resource.getProfile() != null) {
 			log.debug("Executing initModel from profile...");
 			resource.getProfile().initModel(resource.getModel());

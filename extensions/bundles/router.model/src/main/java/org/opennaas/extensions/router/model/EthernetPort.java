@@ -15,6 +15,11 @@ import java.io.Serializable;
  */
 public class EthernetPort extends NetworkPort implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4276011619593987057L;
+
 	public void merge(EthernetPort hashEthernetPort) {
 		super.merge(hashEthernetPort);
 

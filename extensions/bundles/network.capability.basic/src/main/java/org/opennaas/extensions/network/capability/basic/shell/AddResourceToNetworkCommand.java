@@ -1,22 +1,11 @@
 package org.opennaas.extensions.network.capability.basic.shell;
 
-import org.opennaas.extensions.router.model.ManagedElement;
-import org.opennaas.extensions.router.model.mappers.Cim2NdlMapper;
-import org.opennaas.extensions.network.capability.basic.ITopologyManager;
-import org.opennaas.extensions.network.capability.basic.NetworkBasicCapability;
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-import org.opennaas.core.resources.ILifecycle.State;
-import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 
 @Command(scope = "net", name = "addResource", description = "Add a resource to the network")
 public class AddResourceToNetworkCommand extends GenericKarafCommand {
@@ -44,23 +33,19 @@ public class AddResourceToNetworkCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		ICapability networkCapability = getCapability(network.getCapabilities(), NetworkBasicCapability.CAPABILITY_NAME);
-		if (! (networkCapability instanceof ITopologyManager)) {
-			printError("Failed to get required capability.");
-			printEndCommand();
-			return null;
-		}
+		INetworkBasicCapability networkCapability =
+				(INetworkBasicCapability) network.getCapabilityByInterface(INetworkBasicCapability.class);
 
 		try {
-			((ITopologyManager)networkCapability).addResource(resource);
-		} catch (CapabilityException e){
+			networkCapability.addResource(resource);
+		} catch (CapabilityException e) {
 			printError("Error adding resource.");
 			printError(e);
 			printEndCommand();
 			return null;
 		}
 
-		printInfo("Resource " + resourceId + "added to network " + networkId);
+		printInfo("Resource " + resourceId + " added to network " + networkId);
 		printEndCommand();
 		return null;
 	}

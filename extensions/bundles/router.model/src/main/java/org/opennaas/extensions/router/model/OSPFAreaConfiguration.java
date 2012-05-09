@@ -29,6 +29,11 @@ import java.io.Serializable;
 public class OSPFAreaConfiguration extends LogicalElement implements
 		Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -4060113646984016576L;
+
 	/* OSPFServiceConfiguration */
 	/**
 	 * 

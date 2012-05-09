@@ -51,5 +51,4 @@ public abstract class Action implements IAction {
 	public void setBehaviorParams(Object params) {
 		behaviorParams = params;
 	}
-
 }

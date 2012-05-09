@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-	<!-- Access event management -->
-	<bean id="eventManager" class="org.opennaas.core.events.EventManager"/>
-	<service ref="eventManager" interface="org.opennaas.core.events.IEventManager"/>
-</blueprint>

@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedRoutingServices as well as methods comparable to
@@ -19,6 +19,11 @@ import java.io.*;
 @Deprecated
 public class HostedRoutingServices extends HostedService implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -7921656682978281934L;
 
 	/**
 	 * This constructor creates a HostedRoutingServicesBeanImpl Class which implements the HostedRoutingServicesBean Interface, and encapsulates the
