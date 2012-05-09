@@ -19,6 +19,11 @@ import java.lang.Exception;
 public class NetworkService extends Service implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 8099336563706947925L;
+
+	/**
 	 * This constructor creates a NetworkServiceBeanImpl Class which implements the NetworkServiceBean Interface, and encapsulates the CIM class
 	 * NetworkService in a Java Bean. The CIM class NetworkService is described as follows:
 	 * 

@@ -18,6 +18,11 @@ import java.io.Serializable;
 public class NextHopRoute extends ManagedElement implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8212126209492478140L;
+
+	/**
 	 * This method sets the System into the the Association of the type HostedRoute System will be the "from" and this class will be the "to" If the
 	 * param is null the method will delete the existing Association and don't add a new one.
 	 * 

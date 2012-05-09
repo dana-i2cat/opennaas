@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class EndpointInArea as well as methods comparable to the
@@ -14,6 +14,11 @@ import java.io.*;
  * This relation connects an OSPF endpoint to an area.
  */
 public class EndpointInArea extends Component implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -1988272426988632938L;
 
 	/**
 	 * This constructor creates a EndpointInAreaBeanImpl Class which implements the EndpointInAreaBean Interface, and encapsulates the CIM class

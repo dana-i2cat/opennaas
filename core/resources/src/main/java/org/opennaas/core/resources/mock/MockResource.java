@@ -34,6 +34,12 @@ public class MockResource implements IResource {
 	IResourceBootstrapper		bootstrapper;
 
 	public static CapabilityDescriptor createCapabilityDescriptor(
+			String typeCapability) {
+
+		return createCapabilityDescriptor(typeCapability, "no_idea_was_this_does_but_some_tests_dont_want_to_specify_it");
+	}
+
+	public static CapabilityDescriptor createCapabilityDescriptor(
 			String typeCapability, String actionCapability) {
 
 		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();

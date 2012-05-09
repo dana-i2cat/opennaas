@@ -11,8 +11,8 @@
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Mantychore IP Capability</name>
-	<description>Mantychore IP Capability Implementation</description>
+	<name>OpenNaaS :: Router :: IP Capability</name>
+	<description>Routers IP Capability Implementation</description>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>

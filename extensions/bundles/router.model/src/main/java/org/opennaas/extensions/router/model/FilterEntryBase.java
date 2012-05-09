@@ -20,6 +20,11 @@ import java.io.Serializable;
 public class FilterEntryBase extends LogicalElement implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6676817954259219033L;
+
+	/**
 	 * This constructor creates a FilterEntryBaseBeanImpl Class which implements the FilterEntryBaseBean Interface, and encapsulates the CIM class
 	 * FilterEntryBase in a Java Bean. The CIM class FilterEntryBase is described as follows:
 	 * 

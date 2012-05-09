@@ -7,7 +7,7 @@
 		<groupId>org.opennaas</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<name>Mantychore Bundles</name>
+	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
 	<dependencies>
 		<dependency>
@@ -52,6 +52,9 @@
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
         <module>bod.autobahn</module>
+         
+		<module>itests.helpers</module>
+		
 		<module>webservice</module>
 		<module>webservice-proxy</module>
 	</modules>

@@ -5,8 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class IPHeadersFilter as well as methods comparable to the
@@ -18,6 +17,11 @@ import java.lang.Exception;
  */
 public class IPHeadersFilter extends FilterEntryBase implements Serializable
 {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 7039637990382056571L;
 
 	/**
 	 * This constructor creates a IPHeadersFilterBeanImpl Class which implements the IPHeadersFilterBean Interface, and encapsulates the CIM class
