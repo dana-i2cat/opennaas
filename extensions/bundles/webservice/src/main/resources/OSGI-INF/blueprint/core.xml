@@ -60,4 +60,10 @@ the License. -->
 	</bean>
     <jaxws:endpoint  implementor="#ipCapabilityServiceImpl" address="http://localhost:8182/cxf/ipCapabilityService"  />
 
+    <!-- NetworkBasic Capability -->
+    <cxf:bus id="networkBasicCapabilityServiceBus"></cxf:bus>
+	<bean id="networkBasicCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetworkBasicCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#networkBasicCapabilityServiceImpl" address="http://localhost:8182/cxf/networkBasicCapabilityService"  />
 </blueprint>

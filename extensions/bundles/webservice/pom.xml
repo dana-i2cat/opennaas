@@ -41,6 +41,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.network.capability.basic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
@@ -125,6 +129,18 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IIPCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-basic</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.INetworkBasicCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

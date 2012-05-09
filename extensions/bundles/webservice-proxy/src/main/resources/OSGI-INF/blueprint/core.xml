@@ -42,4 +42,8 @@ the License. -->
     <jaxws:client id="ipCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IIPCapabilityService" address="http://localhost:8182/cxf/ipCapabilityService" />
     <service ref="ipCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IIPCapabilityService" />
 
+    <!-- NetworkBasic Capability -->
+    <jaxws:client id="networkBasicCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService" address="http://localhost:8182/cxf/networkBasicCapabilityService" />
+    <service ref="networkBasicCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService" />
+
 </blueprint>

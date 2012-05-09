@@ -14,8 +14,6 @@ import org.opennaas.extensions.router.model.LogicalPort;
 @WebService(portName = "IPCapabilityPort", serviceName = "IPCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
 public interface IIPCapabilityService {
 
-	public static final String	test	= "";
-
 	/**
 	 * Set the given ip to the logical device
 	 * 
