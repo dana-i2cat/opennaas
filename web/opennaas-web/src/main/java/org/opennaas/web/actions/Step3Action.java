@@ -58,16 +58,19 @@ public class Step3Action extends ActionSupport {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
 		// lola
-		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/3.1", 1));
-		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/0.13", 13));
-		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/0.80", 80));
-		/*
-		 * // myre capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.12", 12)); capabilityService.createSubInterface("",
-		 * getNetworkPort("ge-2/0/0.13", 13)); capabilityService.createSubInterface("", getNetworkPort("ge-2/0/1.81", 81));
-		 * 
-		 * // gsn capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.59", 59)); capabilityService.createSubInterface("",
-		 * getNetworkPort("ge-1/0/7.60", 60));
-		 */
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/3.1", 1));
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.13", 13));
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.80", 80));
+
+		// myre
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.12", 12));
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.13", 13));
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/1.81", 81));
+
+		// gsn
+		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.59", 59));
+		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.60", 60));
+
 	}
 
 	/**
