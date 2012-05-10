@@ -38,6 +38,26 @@ the License. -->
 	</bean>
     <jaxws:endpoint implementor="#chassisCapabilityServiceImpl" address="http://localhost:8182/cxf/chassisCapabilityService"  />
 
+   	<!-- QueueManager Capability -->
+	<bean id="queueManagerCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.QueueManagerCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#queueManagerCapabilityServiceImpl" address="http://localhost:8182/cxf/queueManagerCapabilityService"  />
+
+    <!-- Connections Capability -->
+    <cxf:bus id="connectionsCapabilityServiceBus"></cxf:bus>
+	<bean id="connectionsCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ConnectionsCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#connectionsCapabilityServiceImpl" address="http://localhost:8182/cxf/connectionsCapabilityService"  />
+
+    <!--  Monitoring Capability -->
+    <cxf:bus id="monitoringCapabilityServiceBus"></cxf:bus> 
+	<bean id="monitoringCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.MonitoringCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#monitoringCapabilityServiceImpl" address="http://localhost:8182/cxf/monitoringCapabilityService"  />
+
 	<!-- OSPF Capability -->
     <cxf:bus id="ospfCapabilityServiceBus"></cxf:bus>
 	<bean id="ospfCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.OSPFCapabilityServiceImpl">
@@ -75,7 +95,6 @@ the License. -->
 
 		<!-- Static Route -->
     <cxf:bus id="staticRouteCapabilityServiceBus"></cxf:bus>
-	
 	<bean id="staticRouteCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.StaticRouteCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
@@ -83,7 +102,6 @@ the License. -->
 
 	<!-- Network OSPF -->
     <cxf:bus id="netOSPFCapabilityServiceBus"></cxf:bus>
-	
 	<bean id="netOSPFCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetOSPFCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
@@ -91,7 +109,6 @@ the License. -->
 
 	<!-- Network Queue -->
     <cxf:bus id="netQueueCapabilityServiceBus"></cxf:bus>
-	
 	<bean id="netQueueCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetQueueCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
