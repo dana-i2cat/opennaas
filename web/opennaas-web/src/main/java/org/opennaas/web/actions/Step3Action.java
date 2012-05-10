@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
+import org.opennaas.ws.EthernetPort;
 import org.opennaas.ws.IChassisCapabilityService;
 import org.opennaas.ws.NetworkPort;
 
@@ -53,14 +54,39 @@ public class Step3Action extends ActionSupport {
 	 */
 	private void createSubinterfaces() throws CapabilityException_Exception {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService(null);
-		capabilityService.createSubInterface("", getNetworkPort());
+
+		// lola
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/3.1", 1));
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.13", 13));
+		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.80", 80));
+
+		// myre
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.12", 12));
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.13", 13));
+		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/1.81", 81));
+
+		// gsn
+		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.59", 59));
+		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.60", 60));
+
 	}
 
 	/**
+	 * @param string
 	 * @return
 	 */
-	private NetworkPort getNetworkPort() {
-		NetworkPort networkPort = new NetworkPort();
-		return null;
+	private NetworkPort getNetworkPort(String iface, int VLANId) {
+		EthernetPort ethPort = new EthernetPort();
+		String[] args = iface.split("\\.");
+
+		ethPort.setName(args[0]);
+		ethPort.setPortNumber(Integer.parseInt(args[1]));
+
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(VLANId);
+		ethPort.addProtocolEndpoint(vlanEndpoint);
+
+		return ethPort;
+
 	}
 }
