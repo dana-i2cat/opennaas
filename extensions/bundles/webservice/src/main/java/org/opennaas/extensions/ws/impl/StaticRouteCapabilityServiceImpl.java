@@ -23,7 +23,7 @@ public class StaticRouteCapabilityServiceImpl extends GenericCapabilityServiceIm
 	@Override
 	public void createStaticRoute(String resourceId, String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
 		try {
-			IStaticRouteCapability iStaticRouteCapability = (IStaticRouteCapability) getCapability(resourceId, StaticRouteCapability.CAPABILITY_NAME);
+			IStaticRouteCapability iStaticRouteCapability = (IStaticRouteCapability) getCapability(resourceId, StaticRouteCapability.CAPABILITY_TYPE);
 			iStaticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);
 
 		} catch (CapabilityException e) {

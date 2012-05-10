@@ -22,7 +22,7 @@ public class NetOSPFCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void activateOSPF(String resourceId) throws CapabilityException {
 		try {
-			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, NetOSPFCapability.CAPABILITY_NAME);
+			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, NetOSPFCapability.CAPABILITY_TYPE);
 			iNetOSPFCapability.activateOSPF();
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -34,7 +34,7 @@ public class NetOSPFCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void deactivateOSPF(String resourceId) throws CapabilityException {
 		try {
-			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, NetOSPFCapability.CAPABILITY_NAME);
+			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, NetOSPFCapability.CAPABILITY_TYPE);
 			iNetOSPFCapability.deactivateOSPF();
 		} catch (CapabilityException e) {
 			log.error(e);
