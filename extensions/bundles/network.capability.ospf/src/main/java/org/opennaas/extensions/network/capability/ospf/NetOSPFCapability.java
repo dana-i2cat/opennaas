@@ -35,7 +35,7 @@ import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class NetOSPFCapability extends AbstractCapability implements INetOSPFCapability {
 
-	public static String	CAPABILITY_NAME	= "netospf";
+	public static String	CAPABILITY_TYPE	= "netospf";
 
 	Log						log				= LogFactory.getLog(NetOSPFCapability.class);
 
@@ -55,7 +55,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 	@Override
 	public void deactivateOSPF() throws CapabilityException {
 		Response response = new Response();
-		response.setCommandName(CAPABILITY_NAME + " deactivateOSPF");
+		response.setCommandName(CAPABILITY_TYPE + " deactivateOSPF");
 
 		try {
 			for (IResource router : getRouterResources()) {
@@ -90,7 +90,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		long backboneAreaId = 0l; // 0.0.0.0
 
 		Response response = new Response();
-		response.setCommandName(CAPABILITY_NAME + " activateOSPF");
+		response.setCommandName(CAPABILITY_TYPE + " activateOSPF");
 
 		try {
 			for (IResource router : getRouterResources()) {

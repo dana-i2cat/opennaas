@@ -16,7 +16,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
 
-	public static String	CAPABILITY_NAME	= "l2bod";
+	public static String	CAPABILITY_TYPE	= "l2bod";
 
 	Log						log				= LogFactory.getLog(L2BoDCapability.class);
 
@@ -54,7 +54,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override

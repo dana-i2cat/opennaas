@@ -7,21 +7,18 @@ import javax.jws.WebService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
-
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
-
 import org.opennaas.extensions.ws.services.IChassisCapabilityService;
 
 /**
  * @author Jordi Puig
  */
 @WebService(portName = "ChassisCapabilityPort", serviceName = "ChassisCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
-public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl implements IChassisCapabilityService {
+public class ChassisCapabilityServiceImpl extends GenericCapabilityService implements IChassisCapabilityService {
 
 	Log	log	= LogFactory.getLog(ChassisCapabilityServiceImpl.class);
 
@@ -34,7 +31,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void createLogicalRouter(String resourceId, ComputerSystem logicalRouter) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.createLogicalRouter(logicalRouter);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -51,7 +48,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void deleteLogicalRouter(String resourceId, ComputerSystem logicalRouter) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.deleteLogicalRouter(logicalRouter);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -67,7 +64,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void upPhysicalInterface(String resourceId, LogicalPort iface) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.upPhysicalInterface(iface);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -83,7 +80,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void downPhysicalInterface(String resourceId, LogicalPort iface) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.downPhysicalInterface(iface);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -100,7 +97,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void setEncapsulationLabel(String resourceId, LogicalPort iface, String encapsulationLabel) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.setEncapsulationLabel(iface, encapsulationLabel);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -118,7 +115,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	public void addInterfacesToLogicalRouter(String resourceId, ComputerSystem logicalRouter, List<LogicalPort> interfaces)
 			throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.addInterfacesToLogicalRouter(logicalRouter, interfaces);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -136,7 +133,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	public void removeInterfacesFromLogicalRouter(String resourceId, ComputerSystem logicalRouter, List<LogicalPort> interfaces)
 			throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.removeInterfacesFromLogicalRouter(logicalRouter, interfaces);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -148,7 +145,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.createSubInterface(iface);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -159,7 +156,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.deleteSubInterface(iface);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -170,7 +167,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityServiceImpl i
 	@Override
 	public void setEncapsulation(String resourceId, LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
 		try {
-			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, ChassisCapability.CAPABILITY_TYPE);
+			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.setEncapsulation(iface, encapsulationType);
 		} catch (CapabilityException e) {
 			log.error(e);
