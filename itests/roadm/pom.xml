@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>org.opennaas.itests</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.10-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>org.opennaas.itests.roadm</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>OpenNaaS :: iTests :: ROADM</name>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.wonesys</groupId>
+			<artifactId>org.opennaas.extensions.com.wonesys.emsModule</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+		</dependency>
+		
+		<!-- FIXME OpticalSwitchFactory must be moved to a roadm bundle. -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		
+	</dependencies>
+
+	<!-- FIXME Why is this necessary? -->
+	<build>
+		<plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <configuration>
+                  <excludes>
+                      <exclude>**/WonesysTransportTest.class</exclude>
+                  </excludes>
+              </configuration>
+          </plugin>
+		</plugins>
+	</build>
+
+</project>

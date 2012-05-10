@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Luminis :: Connections Capability</name>
+	<name>OpenNaaS :: ROADM :: Connections Capability</name>
 	<description>Luminis Connections Capability Implementation</description>
 	<dependencies>
 		<!-- mantychore dependencies -->

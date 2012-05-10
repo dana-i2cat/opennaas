@@ -5,11 +5,11 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 
 	<packaging>pom</packaging>
-	<name>OpenNaaS platform</name>
+	<name>OpenNaaS :: Platform</name>
 	<artifactId>platform</artifactId>
 
 	<properties>
@@ -75,7 +75,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.roadm.repository</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.wonesys</groupId>
@@ -127,10 +126,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
@@ -147,12 +142,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
+			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
+			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
@@ -209,7 +205,7 @@
 							<addTransitiveFeatures>true</addTransitiveFeatures>
 							<features>
 								<feature>opennaas</feature>
-								<feature>nexus-tests-helper</feature>
+								<feature>itests-helpers</feature>
 								<feature>nexus-testprofile</feature>
 							</features>
 							<repository>target/system</repository>

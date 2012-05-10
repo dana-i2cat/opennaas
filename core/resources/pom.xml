@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.core</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.core.resources</artifactId>
@@ -16,12 +16,20 @@
 			<artifactId>org.opennaas.core.persistence</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.features</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
 			<artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.karaf.shell</groupId>
 			<artifactId>org.apache.karaf.shell.console</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.gogo.runtime</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -52,6 +60,17 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.exam</groupId>
+			<artifactId>pax-exam-junit4</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openengsb.labs.paxexam.karaf</groupId>
+			<artifactId>paxexam-karaf-container</artifactId>
+			<scope>compile</scope>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<plugins>
@@ -66,7 +85,20 @@
 				<configuration>
 					<instructions>
 						<Bundle-Activator>org.opennaas.core.resources.Activator</Bundle-Activator>
-						<Import-Package>org.hsqldb,*</Import-Package>
+						
+						<!-- Guava and Pax Exam are optional
+						     depedencies because we currently use them
+						     in the context of the JUnitRunner and not
+						     from withing the OSGi based test
+						     container. -->
+						<Import-Package>
+							org.hsqldb,
+							org.ops4j.pax.exam.junit;resolution:=optional,
+							com.google.common.*;resolution:=optional,
+							org.slf4j,
+							org.osgi.framework,
+							*
+						</Import-Package>
 						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
 					</instructions>
 				</configuration>

@@ -23,7 +23,7 @@ public class ClearCommand extends GenericKarafCommand {
 			validateResource(resource);
 
 			QueueManager queue = (QueueManager) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
-			queue.empty();
+			queue.clear();
 
 			printInfo("Removed all actions from the queue");
 

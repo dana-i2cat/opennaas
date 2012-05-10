@@ -76,7 +76,8 @@ public interface IResource extends ILifecycle {
 	 * Get capability by type
 	 * 
 	 * @return the capability
-	 * @Throws ResourceException if this resource does not have any capability of given type
+	 * @throws ResourceException
+	 *             if this resource does not have any capability of given type
 	 */
 	public ICapability getCapabilityByType(String type) throws ResourceException;
 
@@ -93,7 +94,8 @@ public interface IResource extends ILifecycle {
 	 * 
 	 * @param interfaze
 	 * @return Capability of this resource with given interface
-	 * @Throws ResourceException if this resource does not have any capability of given type
+	 * @throws ResourceException
+	 *             if this resource does not have any capability of given type
 	 * 
 	 */
 	public ICapability getCapabilityByInterface(Class<? extends ICapability> interfaze) throws ResourceException;

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.10-SNAPSHOT</version>
 	<name>OpenNaaS (OSGi project)</name>
 	<packaging>pom</packaging>
 
@@ -229,12 +229,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.nexus.tests.helper</artifactId>
-				<version>${project.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.network.capability.ospf</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -258,7 +252,11 @@
 				<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>
@@ -708,10 +706,9 @@
         <module>core</module>
 		<module>extensions</module>
 		<module>platform</module>
-		<module>tests</module>
+		<module>itests</module>
 		<module>clients</module>
 	</modules>
-
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -813,7 +810,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -834,7 +831,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -853,7 +850,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore/>
+										<ignore />
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

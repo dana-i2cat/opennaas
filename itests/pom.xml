@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+        <groupId>org.opennaas</groupId>
+        <artifactId>opennaas</artifactId>
+        <version>0.10-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>org.opennaas.itests</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>OpenNaaS :: iTests</name>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>core</module>
+		<module>router</module>
+		<module>network</module>
+		<module>roadm</module>
+		<module>bod</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ops4j.pax.swissbox</groupId>
+			<artifactId>pax-swissbox-framework</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>platform</artifactId>
+			<version>${project.version}</version>
+			<type>zip</type>
+			<scope>test</scope>
+			<exclusions>
+				<!-- This exclusion is recommended by the Karaf test
+				     container manual to ensure compatibility with
+				     Eclipse. -->
+				<exclusion>
+					<groupId>org.apache.karaf.shell</groupId>
+					<artifactId>org.apache.karaf.shell.dev</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.servicemix.tooling</groupId>
+				<artifactId>depends-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generate-depends-file</id>
+						<goals>
+							<goal>generate-depends-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

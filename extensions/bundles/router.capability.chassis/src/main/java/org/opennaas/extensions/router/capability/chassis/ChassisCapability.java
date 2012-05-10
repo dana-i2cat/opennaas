@@ -12,7 +12,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
@@ -65,7 +65,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 * @throws CapabilityException
 	 *             if desired queueManagerService could not be retrieved.
 	 */
-	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
 		try {
 			return Activator.getQueueManagerService(resourceId);
 		} catch (ActivatorException e) {

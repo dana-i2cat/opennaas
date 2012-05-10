@@ -12,7 +12,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.network.model.topology.Interface;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
 
@@ -81,7 +81,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 * @throws CapabilityException
 	 *             if desired queueManagerService could not be retrieved.
 	 */
-	private IQueueManagerService getQueueManager(String resourceId) throws CapabilityException {
+	private IQueueManagerCapability getQueueManager(String resourceId) throws CapabilityException {
 		try {
 			return Activator.getQueueManagerService(resourceId);
 		} catch (ActivatorException e) {

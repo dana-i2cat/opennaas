@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Luminis :: Monitoring Capability</name>
+	<name>OpenNaaS :: ROADM :: Monitoring Capability</name>
 	<description>Monitoring Capability Implementation</description>
 	<dependencies>
 		<!-- TODO clean pom when final structure of bundle is ready -->
