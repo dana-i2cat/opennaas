@@ -12,7 +12,7 @@ import org.opennaas.core.resources.capability.ICapability;
 /**
  * @author Jordi
  */
-public class GenericCapabilityServiceImpl {
+public class GenericCapabilityService {
 
 	private IResourceManager	resourceManager;
 
@@ -35,10 +35,10 @@ public class GenericCapabilityServiceImpl {
 	 * @return the capability
 	 * @throws ResourceException
 	 */
-	protected ICapability getCapability(String resourceId, String type) throws CapabilityException {
+	protected ICapability getCapability(String resourceId, Class<? extends ICapability> _class) throws CapabilityException {
 		try {
 			IResource resource = getResource(resourceId);
-			return resource.getCapabilityByType(type);
+			return resource.getCapabilityByInterface(_class);
 		} catch (ResourceException e) {
 			throw new CapabilityException("Capability not found", e);
 		}
