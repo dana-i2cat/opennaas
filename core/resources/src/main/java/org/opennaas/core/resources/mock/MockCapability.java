@@ -22,11 +22,14 @@ public class MockCapability extends AbstractCapability {
 
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
-		// TODO Auto-generated method stub
-		return null;
+		return super.actionSet;
 	}
 
-	@Override
+	public void setActionSet(IActionSet actionSet) {
+		super.actionSet = actionSet;
+
+	}
+
 	public void sendRefreshActions() {
 		sentStartUp = true;
 	}
@@ -40,5 +43,6 @@ public class MockCapability extends AbstractCapability {
 	@Override
 	public String getCapabilityName() {
 		return "mockCapability";
+
 	}
 }

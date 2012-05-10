@@ -2,7 +2,7 @@ package org.opennaas.extensions.router.capability.gretunnel;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,10 +34,10 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	public void stop(BundleContext context) throws Exception {
 	}
 
-	public static IQueueManagerService getQueueManagerService(String resourceId) throws ActivatorException {
+	public static IQueueManagerCapability getQueueManagerService(String resourceId) throws ActivatorException {
 		log.debug("Calling QueueManagerService");
 		try {
-			return (IQueueManagerService) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
+			return (IQueueManagerCapability) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
@@ -47,7 +47,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
-		return createServiceFilter(IQueueManagerService.class.getName(), properties);
+		return createServiceFilter(IQueueManagerCapability.class.getName(), properties);
 	}
 
 	/**

@@ -12,11 +12,13 @@ import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.mock.MockAction;
+import org.opennaas.core.resources.mock.MockActionSet;
+import org.opennaas.core.resources.mock.MockActionTwo;
+import org.opennaas.core.resources.mock.MockCapAction;
+import org.opennaas.core.resources.mock.MockCapActionTwo;
+import org.opennaas.core.resources.mock.MockCapability;
 import org.opennaas.core.resources.profile.IProfile;
-import org.opennaas.core.resources.tests.capability.mocks.MockAction;
-import org.opennaas.core.resources.tests.capability.mocks.MockActionTwo;
-import org.opennaas.core.resources.tests.capability.mocks.MockCapAction;
-import org.opennaas.core.resources.tests.capability.mocks.MockCapActionTwo;
 
 public class CapabilityTest {
 	private static Log				log						= LogFactory.getLog(CapabilityTest.class);
@@ -79,7 +81,7 @@ public class CapabilityTest {
 		capability.initialize();
 		Assert.assertEquals(ICapabilityLifecycle.State.INITIALIZED, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "initialize");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.INITIALIZED);
 	}
 
 	@Test
@@ -87,7 +89,7 @@ public class CapabilityTest {
 		capability.activate();
 		Assert.assertEquals(ICapabilityLifecycle.State.ACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "activate");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.ACTIVE);
 	}
 
 	// @Test FIXME need to test with well formed ->IProtocolSessionManager psm
@@ -124,7 +126,7 @@ public class CapabilityTest {
 		capability.deactivate();
 		Assert.assertEquals(ICapabilityLifecycle.State.INACTIVE, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "deactivate");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.INACTIVE);
 	}
 
 	@Test
@@ -132,6 +134,6 @@ public class CapabilityTest {
 		capability.shutdown();
 		Assert.assertEquals(ICapabilityLifecycle.State.SHUTDOWN, capability.getState());
 		MockCapability mockCapability = capability;
-		Assert.assertEquals(mockCapability.getInternalCall(), "shutdown");
+		Assert.assertEquals(mockCapability.getState(), ICapabilityLifecycle.State.SHUTDOWN);
 	}
 }
