@@ -16,7 +16,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
  */
 public class StaticRouteCapability extends AbstractCapability implements IStaticRouteCapability {
 
-	public static String	CAPABILITY_NAME	= "staticroute";
+	public static String	CAPABILITY_TYPE	= "staticroute";
 
 	Log						log				= LogFactory.getLog(StaticRouteCapability.class);
 
@@ -36,7 +36,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
@@ -73,17 +73,17 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	}
 
 	/*
-	 *  IStaticRoute Implementation 
+	 * IStaticRoute Implementation
 	 */
-	
+
 	@Override
 	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
 		String[] aParams = new String[3];
 		aParams[0] = netIdIpAdress;
 		aParams[1] = maskIpAdress;
 		aParams[2] = nextHopIpAddress;
-		
+
 		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
-		queueAction(action);		
+		queueAction(action);
 	}
 }
