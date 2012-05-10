@@ -26,8 +26,16 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>	
+		<dependency>
+			<groupId>org.opennaas</groupId>			
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>		
+
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
@@ -66,6 +74,8 @@
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
 							<className>org.opennaas.extensions.ws.services.IQueueManagerCapabilityService</className>
+							<className>org.opennaas.extensions.ws.services.IConnectionsCapabilityService</className>
+							<className>org.opennaas.extensions.ws.services.IMonitoringCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

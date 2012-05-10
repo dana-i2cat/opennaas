@@ -22,10 +22,12 @@ the License. -->
 	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
 ">
 
-    <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
     
 	<!-- Definition for resourceManager bean -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
+    
+    <!-- Definition for Chassis Capability -->
+    <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
     
 	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ChassisCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
@@ -36,5 +38,22 @@ the License. -->
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
     <jaxws:endpoint  implementor="#queueManagerCapabilityServiceImpl" address="http://localhost:8182/cxf/queueManagerCapabilityService"  />
+
+    <!-- Definition for Connections Capability -->
+    <cxf:bus id="connectionsCapabilityServiceBus"></cxf:bus>
+    
+	<bean id="connectionsCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ConnectionsCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#connectionsCapabilityServiceImpl" address="http://localhost:8182/cxf/connectionsCapabilityService"  />
+
+    <!-- Definition for Monitoring Capability -->
+    <cxf:bus id="monitoringCapabilityServiceBus"></cxf:bus>
+    
+	<bean id="monitoringCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.MonitoringCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#monitoringCapabilityServiceImpl" address="http://localhost:8182/cxf/monitoringCapabilityService"  />
+
 
 </blueprint>
