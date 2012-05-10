@@ -52,7 +52,7 @@ public class Step3Action extends ActionSupport {
 	 * @throws CapabilityException_Exception
 	 */
 	private void createSubinterfaces() throws CapabilityException_Exception {
-		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService(null);
+		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 		capabilityService.createSubInterface("", getNetworkPort());
 	}
 

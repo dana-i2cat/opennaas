@@ -21,6 +21,10 @@ the License. -->
 	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
 	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
 	">
+ 
+    <!-- Resource Manager -->
+    <jaxws:client id="resourceManagerServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IResourceManagerService" address="http://localhost:8182/cxf/resourceManagerService" />
+    <service ref="resourceManagerServiceProxy" interface="org.opennaas.extensions.ws.services.IResourceManagerService" />
     
     <!-- Chassis Capability -->
     <jaxws:client id="chassisCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IChassisCapabilityService" address="http://localhost:8182/cxf/chassisCapabilityService" />
