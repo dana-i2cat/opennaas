@@ -5,6 +5,8 @@ import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.EthernetPort;
 import org.opennaas.ws.IChassisCapabilityService;
 import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.PortImplementsEndpoint;
+import org.opennaas.ws.VlanEndpoint;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -53,22 +55,19 @@ public class Step3Action extends ActionSupport {
 	 * @throws CapabilityException_Exception
 	 */
 	private void createSubinterfaces() throws CapabilityException_Exception {
-		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService(null);
+		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
 		// lola
-		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/3.1", 1));
-		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.13", 13));
-		capabilityService.createSubInterface("", getNetworkPort("fe-0/3/0.80", 80));
-
-		// myre
-		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.12", 12));
-		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.13", 13));
-		capabilityService.createSubInterface("", getNetworkPort("ge-2/0/1.81", 81));
-
-		// gsn
-		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.59", 59));
-		capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.60", 60));
-
+		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/3.1", 1));
+		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/0.13", 13));
+		capabilityService.createSubInterface("be7da248-c16d-4401-890c-6d9235a1ad74", getNetworkPort("fe-0/3/0.80", 80));
+		/*
+		 * // myre capabilityService.createSubInterface("", getNetworkPort("ge-2/0/0.12", 12)); capabilityService.createSubInterface("",
+		 * getNetworkPort("ge-2/0/0.13", 13)); capabilityService.createSubInterface("", getNetworkPort("ge-2/0/1.81", 81));
+		 * 
+		 * // gsn capabilityService.createSubInterface("", getNetworkPort("ge-1/0/7.59", 59)); capabilityService.createSubInterface("",
+		 * getNetworkPort("ge-1/0/7.60", 60));
+		 */
 	}
 
 	/**
@@ -82,9 +81,12 @@ public class Step3Action extends ActionSupport {
 		ethPort.setName(args[0]);
 		ethPort.setPortNumber(Integer.parseInt(args[1]));
 
-		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		VlanEndpoint vlanEndpoint = new VlanEndpoint();
 		vlanEndpoint.setVlanID(VLANId);
-		ethPort.addProtocolEndpoint(vlanEndpoint);
+
+		PortImplementsEndpoint assoc = new PortImplementsEndpoint();
+		assoc.setTo(vlanEndpoint);
+		ethPort.getToAssociations().add(assoc);
 
 		return ethPort;
 

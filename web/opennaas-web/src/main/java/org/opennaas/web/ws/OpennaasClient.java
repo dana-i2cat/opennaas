@@ -30,136 +30,139 @@ import org.opennaas.ws.StaticRouteCapabilityService;
  */
 public class OpennaasClient {
 
+	private static final String	endpoint	= "http://localhost:8182/cxf/";
+
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IChassisCapabilityService getChassisCapabilityService(String URL) {
+	public static IChassisCapabilityService getChassisCapabilityService() {
 		ChassisCapabilityService capabilityService = new ChassisCapabilityService();
 		IChassisCapabilityService proxy = capabilityService.getChassisCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
-		}
+		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "chassisCapabilityService?wsdl");
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IGRETunnelCapabilityService getGRETunnelCapabilityService(String URL) {
+	public static IGRETunnelCapabilityService getGRETunnelCapabilityService(String context) {
 		GRETunnelCapabilityService capabilityService = new GRETunnelCapabilityService();
 		IGRETunnelCapabilityService proxy = capabilityService.getGRETunnelCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext()
+					.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "greTunnelCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IIPCapabilityService getIPCapabilityService(String URL) {
+	public static IIPCapabilityService getIPCapabilityService(String context) {
 		IPCapabilityService capabilityService = new IPCapabilityService();
 		IIPCapabilityService proxy = capabilityService.getIPCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "ipCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IL2BoDCapabilityService getL2BoDCapabilityService(String URL) {
+	public static IL2BoDCapabilityService getL2BoDCapabilityService(String context) {
 		L2BoDCapabilityService capabilityService = new L2BoDCapabilityService();
 		IL2BoDCapabilityService proxy = capabilityService.getL2BoDCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "l2bodCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static INetOSPFCapabilityService getNetOSPFCapabilityService(String URL) {
+	public static INetOSPFCapabilityService getNetOSPFCapabilityService(String context) {
 		NetOSPFCapabilityService capabilityService = new NetOSPFCapabilityService();
 		INetOSPFCapabilityService proxy = capabilityService.getNetOSPFCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, context + "netOSPFCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static INetQueueCapabilityService getNetQueueCapabilityService(String URL) {
+	public static INetQueueCapabilityService getNetQueueCapabilityService(String context) {
 		NetQueueCapabilityService capabilityService = new NetQueueCapabilityService();
 		INetQueueCapabilityService proxy = capabilityService.getNetQueueCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "netQueueCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static INetworkBasicCapabilityService getNetworkBasicCapabilityService(String URL) {
+	public static INetworkBasicCapabilityService getNetworkBasicCapabilityService(String context) {
 		NetworkBasicCapabilityService capabilityService = new NetworkBasicCapabilityService();
 		INetworkBasicCapabilityService proxy = capabilityService.getNetworkBasicCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "networkBasicCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IOSPFCapabilityService getOSPFCapabilityService(String URL) {
+	public static IOSPFCapabilityService getOSPFCapabilityService(String context) {
 		OSPFCapabilityService capabilityService = new OSPFCapabilityService();
 		IOSPFCapabilityService proxy = capabilityService.getOSPFCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "ospfCapabilityService?wsdl");
 		}
 
 		return proxy;
 	}
 
 	/**
-	 * @param URL
+	 * @param context
 	 * @return
 	 */
-	public static IStaticRouteCapabilityService getStaticRouteCapabilityService(String URL) {
+	public static IStaticRouteCapabilityService getStaticRouteCapabilityService(String context) {
 		StaticRouteCapabilityService capabilityService = new StaticRouteCapabilityService();
 		IStaticRouteCapabilityService proxy = capabilityService.getStaticRouteCapabilityPort();
 
-		if (URL != null) {
-			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, URL);
+		if (context != null) {
+			((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "staticRouteCapabilityService?wsdl");
 		}
 
 		return proxy;
