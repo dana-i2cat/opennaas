@@ -169,6 +169,7 @@ public class IPCapabilityIntegrationTest
 	 */
 	private IPProtocolEndpoint getIPProtocolEndPoint() {
 		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+		ipProtocolEndpoint.setIPv4Address("192.168.0.1/24");
 		return ipProtocolEndpoint;
 	}
 
