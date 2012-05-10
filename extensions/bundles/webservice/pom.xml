@@ -25,6 +25,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
 		<dependency>
@@ -60,6 +65,7 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
+							<className>org.opennaas.extensions.ws.services.IQueueManagerCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

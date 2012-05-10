@@ -32,5 +32,9 @@ the License. -->
 	</bean>
     <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8182/cxf/chassisCapabilityService"  />
 
+	<bean id="queueManagerCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.QueueManagerCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#queueManagerCapabilityServiceImpl" address="http://localhost:8182/cxf/queueManagerCapabilityService"  />
 
 </blueprint>
