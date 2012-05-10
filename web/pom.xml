@@ -11,7 +11,7 @@
 	
 	<name>OpenNaaS :: Web</name>
 	<artifactId>org.opennaas.web</artifactId>
-	
+
 	<modules>
         <module>opennaas-web</module>
  	</modules>
