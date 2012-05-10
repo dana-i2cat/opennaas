@@ -16,7 +16,7 @@ public class StaticRouteCapabilityFactory extends AbstractCapabilityFactory {
 	 */
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(StaticRouteCapability.CAPABILITY_NAME),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(StaticRouteCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;

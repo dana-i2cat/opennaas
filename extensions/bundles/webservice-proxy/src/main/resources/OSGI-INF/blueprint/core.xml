@@ -22,7 +22,41 @@ the License. -->
 	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
 	">
     
+    <!-- Chassis Capability -->
     <jaxws:client id="chassisCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IChassisCapabilityService" address="http://localhost:8182/cxf/chassisCapabilityService" />
     <service ref="chassisCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IChassisCapabilityService" />
+
+	<!-- OSPF Capability -->
+    <jaxws:client id="ospfCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IOSPFCapabilityService" address="http://localhost:8182/cxf/ospfCapabilityService" />
+    <service ref="ospfCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IOSPFCapabilityService" />
+
+	<!-- GRETunnel Capability -->
+    <jaxws:client id="greTunnelCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" address="http://localhost:8182/cxf/greTunnelCapabilityService" />
+    <service ref="greTunnelCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" />
+
+	<!-- L2BoD Capability -->
+    <jaxws:client id="l2bodCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" address="http://localhost:8182/cxf/l2bodCapabilityService" />
+    <service ref="l2bodCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" />
+    
+    <!-- IP Capability -->
+    <jaxws:client id="ipCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IIPCapabilityService" address="http://localhost:8182/cxf/ipCapabilityService" />
+    <service ref="ipCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IIPCapabilityService" />
+
+    <!-- NetworkBasic Capability -->
+    <jaxws:client id="networkBasicCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService" address="http://localhost:8182/cxf/networkBasicCapabilityService" />
+    <service ref="networkBasicCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService" />
+
+    <!-- Static Route Capability -->
+    <jaxws:client id="staticRouteCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService" address="http://localhost:8182/cxf/staticRouteCapabilityService" />
+    <service ref="staticRouteCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService" />
+
+    <!-- Net OSPF Capability -->
+    <jaxws:client id="netOSPFCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" address="http://localhost:8182/cxf/netOSPFCapabilityService" />
+    <service ref="netOSPFCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" />
+
+    <!-- Net Queue Capability -->
+    <jaxws:client id="netQueueCapabilityServiceProxy" serviceClass="org.opennaas.extensions.ws.services.INetQueueCapabilityService" address="http://localhost:8182/cxf/netQueueCapabilityService" />
+    <service ref="netQueueCapabilityServiceProxy" interface="org.opennaas.extensions.ws.services.INetQueueCapabilityService" />
+
 
 </blueprint>

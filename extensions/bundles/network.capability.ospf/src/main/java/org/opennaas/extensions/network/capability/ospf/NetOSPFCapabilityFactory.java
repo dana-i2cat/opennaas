@@ -10,7 +10,7 @@ public class NetOSPFCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(NetOSPFCapability.CAPABILITY_NAME),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(NetOSPFCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
