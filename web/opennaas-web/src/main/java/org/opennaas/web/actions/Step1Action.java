@@ -8,7 +8,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class Step1Action extends ActionSupport {
 
 	/**
-	 * 
+	 * Nothing to do
 	 */
 	private static final long	serialVersionUID	= 1L;
 
