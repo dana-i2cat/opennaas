@@ -25,12 +25,18 @@ the License. -->
 	<!-- Definition for resourceManager bean -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
 	
+	<!-- Resource Manager -->
+	<bean id="resourceManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ResourceManagerServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint implementor="#resourceManagerServiceImpl" address="http://localhost:8182/cxf/resourceManagerService"  />
+	
 	<!-- Chassis Capability -->
     <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
 	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ChassisCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#chassisCapabilityServiceImpl" address="http://localhost:8182/cxf/chassisCapabilityService"  />
+    <jaxws:endpoint implementor="#chassisCapabilityServiceImpl" address="http://localhost:8182/cxf/chassisCapabilityService"  />
 
 	<!-- OSPF Capability -->
     <cxf:bus id="ospfCapabilityServiceBus"></cxf:bus>
