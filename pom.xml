@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.9</version>
+	<version>0.10-SNAPSHOT</version>
 	<name>OpenNaaS (OSGi project)</name>
 	<packaging>pom</packaging>
 
