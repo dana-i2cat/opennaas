@@ -14,7 +14,7 @@ public class L2BoDCapabilityFactory extends AbstractCapabilityFactory {
 	@Override
 	public ICapability create(IResource resource) throws CapabilityException {
 
-		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(L2BoDCapability.CAPABILITY_NAME),
+		ICapability capability = this.create(resource.getResourceDescriptor().getCapabilityDescriptor(L2BoDCapability.CAPABILITY_TYPE),
 				resource.getResourceDescriptor().getId());
 		capability.setResource(resource);
 		return capability;
