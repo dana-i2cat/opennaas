@@ -66,4 +66,29 @@ the License. -->
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
     <jaxws:endpoint  implementor="#networkBasicCapabilityServiceImpl" address="http://localhost:8182/cxf/networkBasicCapabilityService"  />
+
+		<!-- Static Route -->
+    <cxf:bus id="staticRouteCapabilityServiceBus"></cxf:bus>
+	
+	<bean id="staticRouteCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.StaticRouteCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#staticRouteCapabilityServiceImpl" address="http://localhost:8182/cxf/staticRouteCapabilityService"  />
+
+	<!-- Network OSPF -->
+    <cxf:bus id="netOSPFCapabilityServiceBus"></cxf:bus>
+	
+	<bean id="netOSPFCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetOSPFCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#netOSPFCapabilityServiceImpl" address="http://localhost:8182/cxf/netOSPFCapabilityService"  />
+
+	<!-- Network Queue -->
+    <cxf:bus id="netQueueCapabilityServiceBus"></cxf:bus>
+	
+	<bean id="netQueueCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetQueueCapabilityServiceImpl">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#netQueueCapabilityServiceImpl" address="http://localhost:8182/cxf/netQueueCapabilityService"  />
+	
 </blueprint>
