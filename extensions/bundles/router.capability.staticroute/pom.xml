@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>0.10-SNAPSHOT</version>
   	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Router :: Static route capability</name>
-	<description>Static Route Implementation</description>
+	<name>OpenNaaS :: Router :: Static route capability</name>
+	<description>Routers Static route Implementation</description>
 	<dependencies>
 		<!-- mantychore dependencies -->
 		<dependency>

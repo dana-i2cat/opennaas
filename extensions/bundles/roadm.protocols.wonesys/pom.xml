@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.roadm.protocols.wonesys</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Luminis :: W-Onesys Protocol</name>
+	<name>OpenNaaS :: ROADM :: W-Onesys Protocol</name>
 	<description>Luminis W-Onesys Protocol Implementation</description>
 	<dependencies>
 		<dependency>

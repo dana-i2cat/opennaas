@@ -4,14 +4,14 @@
 	<parent>
     	<artifactId>org.opennaas.extensions.bundles</artifactId>
     	<groupId>org.opennaas</groupId>
-    	<version>1.0.0-SNAPSHOT</version>
+    	<version>0.10-SNAPSHOT</version>
   	</parent>
   	<!--  POM id -->
   	<artifactId>org.opennaas.extensions.bod.repository</artifactId>
  	<!--  Maven configuration -->
   	<modelVersion>4.0.0</modelVersion>
   	<packaging>bundle</packaging>
-	<name>BoD Repository</name>
+	<name>OpenNaaS :: BoD :: Repository</name>
 	<description>BoD Repository Implementation</description>
  	<dependencies>
 		<dependency>

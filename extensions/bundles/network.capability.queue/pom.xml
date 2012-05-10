@@ -4,14 +4,14 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
 	<!--  Maven configuration -->
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>bundle</packaging>
-	<name>Network Queue Capability</name>
+	<name>OpenNaaS :: Network :: Queue Capability</name>
 	<description>Network Queue Capability Implementation</description>
 	<dependencies>
 		<dependency>
