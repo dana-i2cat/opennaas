@@ -16,8 +16,14 @@ public class UnhandledExceptionHandler extends ActionSupport {
 	@Override()
 	public String execute() {
 		if (exception != null) {
-			addActionError(getText(exception.getMessage()));
-			addActionError(getText(exception.getCause().toString()));
+			if (exception.getLocalizedMessage() != null) {
+				String message = exception.getMessage().toString();
+				addActionError(message);
+			}
+			if (exception.getCause() != null) {
+				String cause = exception.getCause().toString();
+				addActionError(cause);
+			}
 		}
 		return ERROR;
 	}

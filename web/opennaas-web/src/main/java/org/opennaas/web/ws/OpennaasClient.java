@@ -16,6 +16,7 @@ import org.opennaas.ws.INetQueueCapabilityService;
 import org.opennaas.ws.INetworkBasicCapabilityService;
 import org.opennaas.ws.IOSPFCapabilityService;
 import org.opennaas.ws.IPCapabilityService;
+import org.opennaas.ws.IProtocolSessionManagerService;
 import org.opennaas.ws.IResourceManagerService;
 import org.opennaas.ws.IStaticRouteCapabilityService;
 import org.opennaas.ws.L2BoDCapabilityService;
@@ -23,6 +24,7 @@ import org.opennaas.ws.NetOSPFCapabilityService;
 import org.opennaas.ws.NetQueueCapabilityService;
 import org.opennaas.ws.NetworkBasicCapabilityService;
 import org.opennaas.ws.OSPFCapabilityService;
+import org.opennaas.ws.ProtocolSessionManagerService;
 import org.opennaas.ws.ResourceManagerService;
 import org.opennaas.ws.StaticRouteCapabilityService;
 
@@ -145,6 +147,17 @@ public class OpennaasClient {
 		ResourceManagerService resourceManager = new ResourceManagerService();
 		IResourceManagerService proxy = resourceManager.getResourceManagerPort();
 		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "resourceManagerService?wsdl");
+		return proxy;
+	}
+
+	/**
+	 * @param context
+	 * @return
+	 */
+	public static IProtocolSessionManagerService getProtocolSessionManagerService() {
+		ProtocolSessionManagerService protocolSession = new ProtocolSessionManagerService();
+		IProtocolSessionManagerService proxy = protocolSession.getProtocolSessionManagerPort();
+		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "protocolSessionManagerService?wsdl");
 		return proxy;
 	}
 }

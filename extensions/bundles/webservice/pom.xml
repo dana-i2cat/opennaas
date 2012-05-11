@@ -25,6 +25,18 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>	
+		<dependency>
+			<groupId>org.opennaas</groupId>			
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 		</dependency>
 		<dependency>
@@ -63,7 +75,6 @@
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
-		
 	</dependencies>
 
 	<build>
@@ -89,10 +100,58 @@
 				<artifactId>cxf-java2ws-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>generate-wsdl-protocolSessionManager</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IProtocolSessionManagerService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
 						<id>generate-wsdl-chassis</id>
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-qm</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IQueueManagerCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-connections</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IConnectionsCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-monitoring</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IMonitoringCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>

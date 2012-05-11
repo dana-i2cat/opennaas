@@ -37,14 +37,8 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
-	public String execute() {
-		try {
-			createSubinterfaces();
-		} catch (CapabilityException_Exception e) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+	public String execute() throws Exception {
+		createSubinterfaces();
 		return SUCCESS;
 	}
 

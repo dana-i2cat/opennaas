@@ -5,7 +5,7 @@ package org.opennaas.web.utils;
  */
 public class ResourcesDemo {
 
-	/** NETWORK COMPONENTS **/
+	/* NETWORK COMPONENTS */
 
 	public static final String	NETWORK_NAME				= "networkdemo";
 
@@ -18,7 +18,7 @@ public class ResourcesDemo {
 	public static final String	NETWORK_INTERFACE_MYRE_GSN	= "router:logicalmyre1:ge-2/0/1.81";
 	public static final String	NETWORK_INTERFACE_GSN_MYRE	= "router:logicalgsn1:ge-1/0/7.60";
 
-	/** LOLA COMPONENTS **/
+	/* LOLA COMPONENTS */
 
 	// routers
 	public static final String	ROUTER_LOLA_NAME			= "lolaM20";
@@ -45,7 +45,7 @@ public class ResourcesDemo {
 	public static final String	LOLA_GRE_TUNNEL_IP			= "192.168.1.17";
 	public static final String	LOLA_GRE_TUNNEL_DESTINY		= "80.88.40.26";
 
-	/** MYRE COMPONENTS **/
+	/* MYRE COMPONENTS */
 
 	// routers
 	public static final String	ROUTER_MYRE_NAME			= "myreM7i";
@@ -73,7 +73,7 @@ public class ResourcesDemo {
 	public static final String	MYRE_GRE_TUNNEL_IP			= "192.168.1.33";
 	public static final String	MYRE_GRE_TUNNEL_DESTINY		= "134.226.53.108";
 
-	/** GSN COMPONENTS **/
+	/* GSN COMPONENTS */
 
 	// routers
 	public static final String	ROUTER_GSN_NAME				= "gsnMX10";
@@ -90,10 +90,14 @@ public class ResourcesDemo {
 	public static final String	GSN_IFACE1_IP				= "192.168.1.6";
 	public static final String	GSN_IFACE2_IP				= "192.168.1.9";
 
-	/** COMMON COMPONENTS **/
+	/* COMMON COMPONENTS */
 
 	public static final String	IP_NET_MASK					= "255.255.255.252";
 	public static final String	DEFAULT_ROUTE				= "0.0.0.0";
 	public static final String	DEFAULT_ROUTE_MASK			= "0.0.0.0";
+
+	// protocols
+	public static final String	PROTOCOL_URI				= "mock://user:password@hea.net:22/netconf";
+	public static final String	PROTOCOL_NAME				= "netconf";
 
 }
