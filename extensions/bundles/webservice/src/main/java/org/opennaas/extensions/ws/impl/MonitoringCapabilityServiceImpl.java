@@ -13,7 +13,7 @@ import org.opennaas.extensions.ws.services.IMonitoringCapabilityService;
  * 
  */
 @WebService(portName = "MonitoringCapabilityPort", serviceName = "MonitoringCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
-public class MonitoringCapabilityServiceImpl extends GenericCapabilityServiceImpl implements IMonitoringCapabilityService {
+public class MonitoringCapabilityServiceImpl extends GenericCapabilityService implements IMonitoringCapabilityService {
 
 	/*
 	 * (non-Javadoc)
@@ -22,7 +22,7 @@ public class MonitoringCapabilityServiceImpl extends GenericCapabilityServiceImp
 	 */
 	@Override
 	public void clearAlarms(String resourceId) throws CapabilityException {
-		IMonitoringCapability iMonitoringCapability = (IMonitoringCapability) getCapability(resourceId, MonitoringCapability.CAPABILITY_NAME);
+		IMonitoringCapability iMonitoringCapability = (IMonitoringCapability) getCapability(resourceId, MonitoringCapability.class);
 		iMonitoringCapability.clearAlarms();
 	}
 
