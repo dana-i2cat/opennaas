@@ -22,8 +22,16 @@ the License. -->
 	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
 ">
 
-	<!-- Definition for resourceManager bean -->
+	<!-- References for resourceManager and protocolManager beans -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
+	<reference id="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager" />
+	
+	<!-- ProtocolSessionManagerService -->
+    <cxf:bus id="protocolSessionManagerServiceBus"></cxf:bus>
+	<bean id="protocolSessionManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ProtocolSessionManagerService">
+		<property name="protocolManager" ref="protocolManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#protocolSessionManagerServiceImpl" address="http://localhost:8182/cxf/protocolSessionManagerService"  />
 	
 	<!-- Resource Manager -->
 	<bean id="resourceManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ResourceManagerServiceImpl">
