@@ -37,14 +37,8 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
-	public String execute() {
-		try {
-			createSubinterfaces();
-		} catch (CapabilityException_Exception e) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+	public String execute() throws Exception {
+		createSubinterfaces();
 		return SUCCESS;
 	}
 
@@ -80,18 +74,18 @@ public class Step2Action extends ActionSupport implements SessionAware {
 		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
 
 		// lola
-		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/3.1", 1));
-		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.13", 13));
-		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.80", 80));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort(ResourcesDemo.LOLA_IFACE1, ResourcesDemo.LOLA_IFACE1_VLAN));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort(ResourcesDemo.LOLA_IFACE2, ResourcesDemo.LOLA_IFACE2_VLAN));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort(ResourcesDemo.LOLA_IFACE3, ResourcesDemo.LOLA_IFACE3_VLAN));
 
 		// myre
-		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.12", 12));
-		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.13", 13));
-		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/1.81", 81));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort(ResourcesDemo.MYRE_IFACE1, ResourcesDemo.MYRE_IFACE1_VLAN));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort(ResourcesDemo.MYRE_IFACE2, ResourcesDemo.MYRE_IFACE2_VLAN));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort(ResourcesDemo.MYRE_IFACE3, ResourcesDemo.MYRE_IFACE3_VLAN));
 
 		// gsn
-		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.59", 59));
-		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.60", 60));
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort(ResourcesDemo.GSN_IFACE1, ResourcesDemo.GSN_IFACE1_VLAN));
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort(ResourcesDemo.GSN_IFACE2, ResourcesDemo.GSN_IFACE2_VLAN));
 
 	}
 

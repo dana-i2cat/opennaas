@@ -78,28 +78,28 @@ public class Step3Action extends ActionSupport implements SessionAware {
 
 		List<String> ifaces = new ArrayList<String>();
 
-		capabilityService.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.ROUTER_LOLA_NAME));
-		ifaces.add("fe-0/3/3.1");
-		ifaces.add("fe-0/3/0.13");
-		ifaces.add("ge-0/2/0.80");
-		ifaces.add("gr-1/2/0.1");
-		capabilityService.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.ROUTER_LOLA_NAME),
+		capabilityService.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME));
+		ifaces.add(ResourcesDemo.LOLA_IFACE1);
+		ifaces.add(ResourcesDemo.LOLA_IFACE2);
+		ifaces.add(ResourcesDemo.LOLA_IFACE3);
+		ifaces.add(ResourcesDemo.LOLA_IFACE_GRE);
+		capabilityService.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME),
 				getInterfaces(ifaces));
 
-		capabilityService.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.ROUTER_MYRE_NAME));
+		capabilityService.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME));
 		ifaces.clear();
-		ifaces.add("ge-2/0/0.13");
-		ifaces.add("ge-2/0/0.12");
-		ifaces.add("ge-2/0/1.81");
-		ifaces.add("gr-1/1/0.2");
-		capabilityService.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.ROUTER_MYRE_NAME),
+		ifaces.add(ResourcesDemo.MYRE_IFACE1);
+		ifaces.add(ResourcesDemo.MYRE_IFACE2);
+		ifaces.add(ResourcesDemo.MYRE_IFACE3);
+		ifaces.add(ResourcesDemo.MYRE_IFACE_GRE);
+		capabilityService.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME),
 				getInterfaces(ifaces));
 
-		capabilityService.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.ROUTER_GSN_NAME));
+		capabilityService.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME));
 		ifaces.clear();
-		ifaces.add("ge-1/0/7.59");
-		ifaces.add("ge-1/0/7.60");
-		capabilityService.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.ROUTER_GSN_NAME), getInterfaces(ifaces));
+		ifaces.add(ResourcesDemo.GSN_IFACE1);
+		ifaces.add(ResourcesDemo.GSN_IFACE2);
+		capabilityService.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME), getInterfaces(ifaces));
 
 	}
 
