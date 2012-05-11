@@ -75,9 +75,9 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	private void createSubinterfaces() throws CapabilityException_Exception {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER1_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER2_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER3_NAME)).getId();
+		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
 
 		// lola
 		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/3.1", 1));

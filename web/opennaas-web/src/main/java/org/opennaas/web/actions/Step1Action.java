@@ -75,15 +75,15 @@ public class Step1Action extends ActionSupport implements SessionAware {
 		IResourceManagerService resourceManagerService = OpennaasClient.getResourceManagerService();
 		// Router 1
 		ResourceIdentifier identifier1 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER1_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_LOLA_NAME, "router", ""));
 
 		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER2_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_GSN_NAME, "router", ""));
 
 		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER3_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_MYRE_NAME, "router", ""));
 
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
@@ -94,9 +94,9 @@ public class Step1Action extends ActionSupport implements SessionAware {
 		resourceManagerService.startResource(identifier3);
 		resourceManagerService.startResource(identifier4);
 
-		session.put(ResourcesDemo.ROUTER1_NAME, identifier1);
-		session.put(ResourcesDemo.ROUTER2_NAME, identifier2);
-		session.put(ResourcesDemo.ROUTER3_NAME, identifier3);
+		session.put(ResourcesDemo.ROUTER_LOLA_NAME, identifier1);
+		session.put(ResourcesDemo.ROUTER_GSN_NAME, identifier2);
+		session.put(ResourcesDemo.ROUTER_MYRE_NAME, identifier3);
 		session.put(ResourcesDemo.NETWORK_NAME, identifier4);
 	}
 
@@ -148,7 +148,7 @@ public class Step1Action extends ActionSupport implements SessionAware {
 		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		if (!name.equals(ResourcesDemo.ROUTER2_NAME)) {
+		if (!name.equals(ResourcesDemo.ROUTER_GSN_NAME)) {
 			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
 			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 		}

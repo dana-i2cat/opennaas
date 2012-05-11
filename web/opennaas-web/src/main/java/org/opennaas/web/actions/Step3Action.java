@@ -57,10 +57,6 @@ public class Step3Action extends ActionSupport implements SessionAware {
 	 **/
 	private static final long	serialVersionUID	= 1L;
 
-	private static String		logicalLola			= "logicalheanet1";
-	private static String		logicalMyre			= "logicalmyre1";
-	private static String		logicalGSN			= "logicalGSN1";
-
 	@Override
 	public String execute() throws Exception {
 		try {
@@ -76,34 +72,34 @@ public class Step3Action extends ActionSupport implements SessionAware {
 	private void createLogicalRouters() throws CapabilityException_Exception {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER1_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER2_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER3_NAME)).getId();
+		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
 
 		List<String> ifaces = new ArrayList<String>();
 
-		capabilityService.createLogicalRouter(routerIdLola, getComputerSystem(logicalLola));
+		capabilityService.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.ROUTER_LOLA_NAME));
 		ifaces.add("fe-0/3/3.1");
 		ifaces.add("fe-0/3/0.13");
 		ifaces.add("ge-0/2/0.80");
 		ifaces.add("gr-1/2/0.1");
-		capabilityService.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(logicalLola),
+		capabilityService.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.ROUTER_LOLA_NAME),
 				getInterfaces(ifaces));
 
-		capabilityService.createLogicalRouter(routerIdMyre, getComputerSystem(logicalMyre));
+		capabilityService.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.ROUTER_MYRE_NAME));
 		ifaces.clear();
 		ifaces.add("ge-2/0/0.13");
 		ifaces.add("ge-2/0/0.12");
 		ifaces.add("ge-2/0/1.81");
 		ifaces.add("gr-1/1/0.2");
-		capabilityService.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(logicalMyre),
+		capabilityService.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.ROUTER_MYRE_NAME),
 				getInterfaces(ifaces));
 
-		capabilityService.createLogicalRouter(routerIdGSN, getComputerSystem(logicalGSN));
+		capabilityService.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.ROUTER_GSN_NAME));
 		ifaces.clear();
 		ifaces.add("ge-1/0/7.59");
 		ifaces.add("ge-1/0/7.60");
-		capabilityService.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(logicalGSN), getInterfaces(ifaces));
+		capabilityService.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.ROUTER_GSN_NAME), getInterfaces(ifaces));
 
 	}
 
