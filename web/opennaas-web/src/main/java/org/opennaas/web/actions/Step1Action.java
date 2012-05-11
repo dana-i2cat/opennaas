@@ -9,8 +9,12 @@ import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityDescriptor;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.CapabilityProperty;
+import org.opennaas.ws.IProtocolSessionManagerService;
 import org.opennaas.ws.IResourceManagerService;
 import org.opennaas.ws.Information;
+import org.opennaas.ws.ProtocolException_Exception;
+import org.opennaas.ws.ProtocolSessionContext;
+import org.opennaas.ws.ProtocolSessionContext.SessionParameters.Entry;
 import org.opennaas.ws.ResourceDescriptor;
 import org.opennaas.ws.ResourceException_Exception;
 import org.opennaas.ws.ResourceIdentifier;
@@ -22,7 +26,9 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class Step1Action extends ActionSupport implements SessionAware {
 
-	private Map<String, Object>	session;
+	private Map<String, Object>				session;
+	private IResourceManagerService			resourceManagerService;
+	private IProtocolSessionManagerService	protocolSessionManagerService;
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -55,43 +61,36 @@ public class Step1Action extends ActionSupport implements SessionAware {
 
 	@Override
 	public String execute() throws Exception {
-		try {
-			createResources();
-		} catch (CapabilityException_Exception e) {
-			return ERROR;
-		} catch (ResourceException_Exception e) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+		createResources();
 		return SUCCESS;
 	}
 
 	/**
 	 * @throws CapabilityException_Exception
 	 * @throws ResourceException_Exception
+	 * @throws ProtocolException_Exception
 	 */
-	private void createResources() throws CapabilityException_Exception, ResourceException_Exception {
-		IResourceManagerService resourceManagerService = OpennaasClient.getResourceManagerService();
-		// Router 1
+	private void createResources() throws CapabilityException_Exception, ResourceException_Exception, ProtocolException_Exception {
+		resourceManagerService = OpennaasClient.getResourceManagerService();
+		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
+
 		ResourceIdentifier identifier1 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_LOLA_NAME, "router", ""));
+		protocolSessionManagerService.registerContext(identifier1.getId(), getProtocolSessionContext());
+		resourceManagerService.startResource(identifier1);
 
-		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_GSN_NAME, "router", ""));
+		protocolSessionManagerService.registerContext(identifier2.getId(), getProtocolSessionContext());
+		resourceManagerService.startResource(identifier2);
 
-		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_MYRE_NAME, "router", ""));
-
+		protocolSessionManagerService.registerContext(identifier3.getId(), getProtocolSessionContext());
+		resourceManagerService.startResource(identifier3);
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
 				.createResource(getNetworkResourceDescriptor("", ResourcesDemo.NETWORK_NAME, "network", ""));
-
-		resourceManagerService.startResource(identifier1);
-		resourceManagerService.startResource(identifier2);
-		resourceManagerService.startResource(identifier3);
 		resourceManagerService.startResource(identifier4);
 
 		session.put(ResourcesDemo.ROUTER_LOLA_NAME, identifier1);
@@ -193,4 +192,22 @@ public class Step1Action extends ActionSupport implements SessionAware {
 		return information;
 	}
 
+	/**
+	 * @return
+	 */
+	private ProtocolSessionContext getProtocolSessionContext() {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
+		protocolSessionContext.setSessionParameters(sessionParameters);
+		List<Entry> listEntries = sessionParameters.getEntry();
+		Entry entry = new Entry();
+		entry.setKey("protocol");
+		entry.setValue(ResourcesDemo.PROTOCOL_NAME);
+		listEntries.add(entry);
+		entry = new Entry();
+		entry.setKey("protocol.uri");
+		entry.setValue(ResourcesDemo.PROTOCOL_URI);
+		listEntries.add(entry);
+		return protocolSessionContext;
+	}
 }

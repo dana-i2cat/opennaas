@@ -28,7 +28,7 @@ the License. -->
 	
 	<!-- ProtocolSessionManagerService -->
     <cxf:bus id="protocolSessionManagerServiceBus"></cxf:bus>
-	<bean id="protocolSessionManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ProtocolSessionManagerService">
+	<bean id="protocolSessionManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ProtocolSessionManagerServiceImpl">
 		<property name="protocolManager" ref="protocolManager" />
 	</bean>
     <jaxws:endpoint  implementor="#protocolSessionManagerServiceImpl" address="http://localhost:8182/cxf/protocolSessionManagerService"  />

@@ -21,7 +21,7 @@ public interface IProtocolSessionManagerService {
 	 * @throws ProtocolException
 	 *             If trying to register a context for a protocol that is not supported. Or unregistering older context fails.
 	 */
-	void registerContext(String resourceId, ProtocolSessionContext context) throws ProtocolException;
+	public void registerContext(String resourceId, ProtocolSessionContext context) throws ProtocolException;
 
 	/**
 	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
@@ -33,7 +33,7 @@ public interface IProtocolSessionManagerService {
 	 * @throws ProtocolException
 	 *             If there is an error terminating sessions
 	 */
-	void unregisterContext(String resourceId, ProtocolSessionContext context) throws ProtocolException;
+	public void unregisterContext(String resourceId, ProtocolSessionContext context) throws ProtocolException;
 
 	/**
 	 * Unregisters a previously registered context. This context will no longer used to create new sessions. All sessions using this context are
@@ -45,7 +45,7 @@ public interface IProtocolSessionManagerService {
 	 *             If there is an error terminating sessions
 	 */
 	@WebMethod(operationName = "unregisterContextByProtocol")
-	void unregisterContext(String resourceId, String protocol) throws ProtocolException;
+	public void unregisterContext(String resourceId, String protocol) throws ProtocolException;
 
 	/**
 	 * Returns the list of registered contexts.
@@ -53,6 +53,6 @@ public interface IProtocolSessionManagerService {
 	 * @return
 	 * @throws ProtocolException
 	 */
-	List<ProtocolSessionContext> getRegisteredContexts(String resourceId) throws ProtocolException;
+	public List<ProtocolSessionContext> getRegisteredContexts(String resourceId) throws ProtocolException;
 
 }

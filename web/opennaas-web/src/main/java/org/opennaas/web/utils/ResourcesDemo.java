@@ -5,6 +5,9 @@ package org.opennaas.web.utils;
  */
 public class ResourcesDemo {
 
+	public static final String	PROTOCOL_URI		= "mock://user:password@hea.net:22/netconf";
+	public static final String	PROTOCOL_NAME		= "netconf";
+
 	public static final String	ROUTER_LOLA_NAME	= "lolaM20";
 	public static final String	ROUTER_GSN_NAME		= "gsnMX10";
 	public static final String	ROUTER_MYRE_NAME	= "myreM7i";
