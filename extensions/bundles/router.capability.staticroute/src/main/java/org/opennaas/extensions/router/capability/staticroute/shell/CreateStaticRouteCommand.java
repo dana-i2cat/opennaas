@@ -30,16 +30,15 @@ public class CreateStaticRouteCommand extends GenericKarafCommand {
 			false)
 	private String	nextHopIpAddress;
 
-	
 	@Override
 	protected Object doExecute() throws Exception {
 		printInitCommand("Create Static Route");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			
-			IStaticRouteCapability staticRouteCapability=(IStaticRouteCapability) router.getCapabilitiesByInterface(IStaticRouteCapability.class);		
-			staticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);					
-			
+
+			IStaticRouteCapability staticRouteCapability = (IStaticRouteCapability) router.getCapabilityByInterface(IStaticRouteCapability.class);
+			staticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);
+
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
