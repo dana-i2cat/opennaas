@@ -116,8 +116,41 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IChassisCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-qm</id>
+						<phase>process-classes</phase>
+						<configuration>
 							<className>org.opennaas.extensions.ws.services.IQueueManagerCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-connections</id>
+						<phase>process-classes</phase>
+						<configuration>
 							<className>org.opennaas.extensions.ws.services.IConnectionsCapabilityService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-monitoring</id>
+						<phase>process-classes</phase>
+						<configuration>
 							<className>org.opennaas.extensions.ws.services.IMonitoringCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>

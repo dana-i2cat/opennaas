@@ -22,7 +22,7 @@ import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
  * 
  */
 @WebService(portName = "QueueManagerCapabilityPort", serviceName = "QueueManagerCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
-public class QueueManagerCapabilityServiceImpl extends GenericCapabilityServiceImpl
+public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 		implements IQueueManagerCapabilityService {
 
 	Log	log	= LogFactory.getLog(QueueManagerCapabilityServiceImpl.class);
@@ -35,7 +35,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityServiceI
 	@Override
 	public void execute(String resourceId) throws ProtocolException, CapabilityException, ActionException {
 		try {
-			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.CAPABILITY_TYPE);
+			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.execute();
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -51,7 +51,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityServiceI
 	@Override
 	public void clear(String resourceId) throws CapabilityException {
 		try {
-			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.CAPABILITY_TYPE);
+			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.clear();
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -68,7 +68,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityServiceI
 	@Override
 	public List<String> getActions(String resourceId) throws CapabilityException {
 		try {
-			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.CAPABILITY_TYPE);
+			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			List<IAction> queueActions = iQueueManagerCapability.getActions();
 
 			// returns the queue action names
@@ -92,7 +92,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityServiceI
 	@Override
 	public void modify(String resourceId, ModifyParams modifyParams) throws CapabilityException {
 		try {
-			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.CAPABILITY_TYPE);
+			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.modify(modifyParams);
 		} catch (CapabilityException e) {
 			log.error(e);

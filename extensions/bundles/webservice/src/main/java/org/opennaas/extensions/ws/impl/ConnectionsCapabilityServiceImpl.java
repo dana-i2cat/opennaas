@@ -17,7 +17,7 @@ import org.opennaas.extensions.ws.services.IConnectionsCapabilityService;
  */
 
 @WebService(portName = "ConnectionsCapabilityPort", serviceName = "ConnectionsCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
-public class ConnectionsCapabilityServiceImpl extends GenericCapabilityServiceImpl implements IConnectionsCapabilityService {
+public class ConnectionsCapabilityServiceImpl extends GenericCapabilityService implements IConnectionsCapabilityService {
 
 	Log	log	= LogFactory.getLog(ConnectionsCapabilityServiceImpl.class);
 
@@ -30,7 +30,7 @@ public class ConnectionsCapabilityServiceImpl extends GenericCapabilityServiceIm
 	@Override
 	public void makeConnection(String resourceId, FiberConnection connectionRequest) throws CapabilityException {
 		try {
-			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.CAPABILITY_TYPE);
+			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.class);
 			iConnectionsCapability.makeConnection(connectionRequest);
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -47,7 +47,7 @@ public class ConnectionsCapabilityServiceImpl extends GenericCapabilityServiceIm
 	@Override
 	public void removeConnection(String resourceId, FiberConnection connectionRequest) throws CapabilityException {
 		try {
-			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.CAPABILITY_TYPE);
+			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.class);
 			iConnectionsCapability.removeConnection(connectionRequest);
 		} catch (CapabilityException e) {
 			log.error(e);
