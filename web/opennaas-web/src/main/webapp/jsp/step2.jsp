@@ -4,7 +4,7 @@
 <html>
 <body>
 	<h2>Create Subinterfaces</h2>
-	<s:form action="step3">
+	<s:form action="step2">
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>
 </body>

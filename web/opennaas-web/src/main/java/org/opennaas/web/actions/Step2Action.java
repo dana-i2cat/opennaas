@@ -1,19 +1,17 @@
 package org.opennaas.web.actions;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.CapabilityDescriptor;
 import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.CapabilityProperty;
-import org.opennaas.ws.IResourceManagerService;
-import org.opennaas.ws.Information;
-import org.opennaas.ws.ResourceDescriptor;
-import org.opennaas.ws.ResourceException_Exception;
+import org.opennaas.ws.EthernetPort;
+import org.opennaas.ws.IChassisCapabilityService;
+import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.PortImplementsEndpoint;
 import org.opennaas.ws.ResourceIdentifier;
+import org.opennaas.ws.VlanEndpoint;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -34,29 +32,16 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	}
 
 	/**
-	 * Create resources<br>
-	 * <br>
-	 * resource:create /home/adrian/heanetM20.descriptor<br>
-	 * protocols:context router:heanetM20 netconf ssh://user:password@hea.net:22/netconf<br>
-	 * resource:start router:heanetM20<br>
-	 * 
-	 * ##Creating GSN resource resource:create /home/adrian/gsnMX10.descriptor<br>
-	 * protocols:context router:gsnMX10 netconf ssh://user:password@gsn.hea.net:22/netconf<br>
-	 * resource:start router:gsnMX10<br>
-	 * 
-	 * ##Creating UNI-C resource resource:create /home/adrian/unicM7i.descriptor<br>
-	 * protocols:context router:unicM7i netconf ssh://user:password@unic.hea.net:22/netconf<br>
-	 * resource:start router:unicM7i<br>
-	 * 
-	 * ##Create demo network resource (with empty topology) resource:create /home/adrian/network.descriptor<br>
-	 * resource:start network:networkdemo<br>
+	 * Create subinterfaces
 	 */
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
-	public String execute() throws Exception {
+	public String execute() {
 		try {
-			createResources();
+			createSubinterfaces();
+		} catch (CapabilityException_Exception e) {
+			return ERROR;
 		} catch (Exception e) {
 			return ERROR;
 		}
@@ -64,129 +49,71 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	}
 
 	/**
+	 * ##Create interfaces <br>
+	 * <br>
+	 * chassis:createsubinterface --vlanid 1 router:heanetM20 fe-0/3/3.1<br>
+	 * chassis:createsubinterface --vlanid 13 router:heanetM20 fe-0/3/0.13<br>
+	 * chassis:createsubinterface --vlanid 80 router:heanetM20 ge-0/2/0.80<br>
+	 * chassis:createsubinterface router:heanetM20 gr-1/2/0.1 <br>
+	 * queue:listactions router:heanetM20<br>
+	 * queue:execute router:heanetM20<br>
+	 * 
+	 * chassis:createsubinterface --vlanid 59 router:gsnMX10 ge-1/0/7.59<br>
+	 * chassis:createsubinterface --vlanid 60 router:gsnMX10 ge-1/0/7.60<br>
+	 * queue:listactions router:gsnMX10<br>
+	 * queue:execute router:gsnMX10<br>
+	 * 
+	 * chassis:createsubinterface --vlanid 81 router:unicM7i ge-2/0/1.81<br>
+	 * chassis:createsubinterface --vlanid 12 router:unicM7i ge-2/0/0.12<br>
+	 * chassis:createsubinterface --vlanid 13 router:unicM7i ge-2/0/0.13<br>
+	 * chassis:createsubinterface router:unicM7i gr-1/1/0.2<br>
+	 * queue:listactions router:unicM7i<br>
+	 * queue:execute router:unicM7i<br>
+	 * 
 	 * @throws CapabilityException_Exception
-	 * @throws ResourceException_Exception
 	 */
-	private void createResources() throws CapabilityException_Exception, ResourceException_Exception {
-		IResourceManagerService resourceManagerService = OpennaasClient.getResourceManagerService();
-		// Router 1
-		ResourceIdentifier identifier1 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER1_NAME, "router", ""));
+	private void createSubinterfaces() throws CapabilityException_Exception {
+		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
-		// Router 2
-		ResourceIdentifier identifier2 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER2_NAME, "router", ""));
+		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER1_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER2_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER3_NAME)).getId();
 
-		// Router 3
-		ResourceIdentifier identifier3 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER3_NAME, "router", ""));
+		// lola
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/3.1", 1));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.13", 13));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.80", 80));
 
-		// Network
-		ResourceIdentifier identifier4 = resourceManagerService
-				.createResource(getNetworkResourceDescriptor("", ResourcesDemo.NETWORK_NAME, "network", ""));
+		// myre
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.12", 12));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.13", 13));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/1.81", 81));
 
-		resourceManagerService.startResource(identifier1);
-		resourceManagerService.startResource(identifier2);
-		resourceManagerService.startResource(identifier3);
-		resourceManagerService.startResource(identifier4);
+		// gsn
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.59", 59));
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.60", 60));
 
-		session.put(ResourcesDemo.ROUTER1_NAME, identifier1);
-		session.put(ResourcesDemo.ROUTER2_NAME, identifier2);
-		session.put(ResourcesDemo.ROUTER3_NAME, identifier3);
-		session.put(ResourcesDemo.NETWORK_NAME, identifier4);
 	}
 
 	/**
 	 * @param string
-	 * @param networkName
-	 * @param string2
-	 * @param string3
 	 * @return
 	 */
-	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(description, name, type, version));
+	private NetworkPort getNetworkPort(String iface, int VLANId) {
+		EthernetPort ethPort = new EthernetPort();
+		String[] args = iface.split("\\.");
 
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+		ethPort.setName(args[0]);
+		ethPort.setPortNumber(Integer.parseInt(args[1]));
 
-		capabilityDescriptor = getCapabilityDescriptor("Manages the queue of all resources of the network.", "Network Queue capability", "netqueue",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+		VlanEndpoint vlanEndpoint = new VlanEndpoint();
+		vlanEndpoint.setVlanID(VLANId);
 
-		capabilityDescriptor = getCapabilityDescriptor("Network OSPF capability", "Enables OSPF on all resources of the network", "netospf",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+		PortImplementsEndpoint assoc = new PortImplementsEndpoint();
+		assoc.setTo(vlanEndpoint);
+		ethPort.getToAssociations().add(assoc);
 
-		return resourceDescriptor;
+		return ethPort;
+
 	}
-
-	/**
-	 * @return
-	 */
-	private ResourceDescriptor getRouterResourceDescriptor(String description, String name, String type, String version) {
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(description, name, type, version));
-
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("IPv4 capability", "IPv4 capability", "ipv4", "junos", "10.10");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Chassis capability", "Chassis capability", "chassis", "junos", "10.10");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("OSPF capability", "OSPF capability", "ospf", "junos", "10.10");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Static Route capability", "Static Route capability", "ipv4", "junos", "10.10");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		if (!name.equals(ResourcesDemo.ROUTER2_NAME)) {
-			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
-			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-		}
-
-		return resourceDescriptor;
-	}
-
-	/**
-	 * @return
-	 */
-	private CapabilityDescriptor getCapabilityDescriptor(String name, String description, String type, String actionName, String actionVersion) {
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-
-		List<CapabilityProperty> listProperties = capabilityDescriptor.getCapabilityProperty();
-		listProperties.add(getCapabilityPropery("actionset.name", actionName));
-		listProperties.add(getCapabilityPropery("actionset.version", actionVersion));
-
-		capabilityDescriptor.setInformation(getInformation(description, name, type, null));
-
-		return capabilityDescriptor;
-	}
-
-	/**
-	 * @return
-	 */
-	private CapabilityProperty getCapabilityPropery(String name, String value) {
-		CapabilityProperty capabilityProperty = new CapabilityProperty();
-		capabilityProperty.setName(name);
-		capabilityProperty.setValue(value);
-		return capabilityProperty;
-	}
-
-	/**
-	 * @return
-	 */
-	private Information getInformation(String description, String name, String type, String version) {
-		Information information = new Information();
-		information.setDescription(description);
-		information.setName(name);
-		information.setType(type);
-		information.setVersion(version);
-		return information;
-	}
-
 }

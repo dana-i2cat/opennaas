@@ -14,59 +14,96 @@
 	<constant name="struts.labelposition" value="left" />
 	<constant name="struts.date.format" value="dd/MM/yyyy" />
 	<constant name="struts.number.format" value="format.number = {0,number,#0.0##}" />
-	
+
 	<constant name="struts.codebehind.classSuffix" value="Controller" />
-	<constant name="struts.codebehind.action.checkImplementsAction" value="false" />
-	<constant name="struts.codebehind.action.checkAnnotation" value="false" />
-	<constant name="struts.codebehind.action.defaultMethodName" value="index" />
-	<constant name="struts.configuration.classpath.defaultParentPackage" value="rest-default" />
+	<constant name="struts.codebehind.action.checkImplementsAction"
+		value="false" />
+	<constant name="struts.codebehind.action.checkAnnotation"
+		value="false" />
+	<constant name="struts.codebehind.action.defaultMethodName"
+		value="index" />
+	<constant name="struts.configuration.classpath.defaultParentPackage"
+		value="rest-default" />
 
 	<package name="default" extends="struts-default">
+
 		<result-types>
 			<result-type name="customJSON" class="org.opennaas.web.results.JSONResult" />
 		</result-types>
-	
+
 		<interceptors>
-			<interceptor name="redirectMessage" class="org.opennaas.web.interceptors.RedirectMessageInterceptor" />
+			<interceptor name="redirectMessage"
+				class="org.opennaas.web.interceptors.RedirectMessageInterceptor" />
 			<interceptor-stack name="defaultStack">
-	            <interceptor-ref name="exception"/>
-                <interceptor-ref name="alias"/>
-                <interceptor-ref name="servletConfig"/>
-                <interceptor-ref name="i18n"/>
-                <interceptor-ref name="prepare"/>
-                <interceptor-ref name="chain"/>
-                <interceptor-ref name="debugging"/>
-                <interceptor-ref name="profiling"/>
-                <interceptor-ref name="scopedModelDriven"/>
-                <interceptor-ref name="modelDriven"/>
-                <interceptor-ref name="fileUpload"/>
-                <interceptor-ref name="checkbox"/>
-                <interceptor-ref name="staticParams"/>
-                <interceptor-ref name="actionMappingParams"/>
-                <interceptor-ref name="params">
-                	<param name="excludeParams">dojo\..*,^struts\..*,d-\d*-p,d-\d*-s,d-\d*-o</param>
-                </interceptor-ref>
-                <interceptor-ref name="conversionError"/>
-                <interceptor-ref name="validation">
-                    <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref>
-                <interceptor-ref name="workflow">
-                    <param name="excludeMethods">input,back,cancel,browse</param>
-                </interceptor-ref>
+				<interceptor-ref name="exception" />
+				<interceptor-ref name="alias" />
+				<interceptor-ref name="servletConfig" />
+				<interceptor-ref name="i18n" />
+				<interceptor-ref name="prepare" />
+				<interceptor-ref name="chain" />
+				<interceptor-ref name="debugging" />
+				<interceptor-ref name="profiling" />
+				<interceptor-ref name="scopedModelDriven" />
+				<interceptor-ref name="modelDriven" />
+				<interceptor-ref name="fileUpload" />
+				<interceptor-ref name="checkbox" />
+				<interceptor-ref name="staticParams" />
+				<interceptor-ref name="actionMappingParams" />
+				<interceptor-ref name="params">
+					<param name="excludeParams">dojo\..*,^struts\..*,d-\d*-p,d-\d*-s,d-\d*-o</param>
+				</interceptor-ref>
+				<interceptor-ref name="conversionError" />
+				<interceptor-ref name="validation">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
+				<interceptor-ref name="workflow">
+					<param name="excludeMethods">input,back,cancel,browse</param>
+				</interceptor-ref>
 				<interceptor-ref name="redirectMessage" />
 			</interceptor-stack>
 
 		</interceptors>
 
 		<default-interceptor-ref name="defaultStack" />
-		
+	
 		<global-results>
-			<result name="error">jsp/error.jsp</result>
+		    <result name="unhandledExceptionHandler" type="chain">
+		        <param name="actionName">actionUnhandledExceptionHandler</param>
+		        <param name="namespace">/</param>
+		    </result>
 		</global-results>
+					
+		<global-exception-mappings>
+		    <exception-mapping exception="java.lang.Exception" result="unhandledExceptionHandler"/>
+		</global-exception-mappings>
+		
+		<action name="actionUnhandledExceptionHandler" class="org.opennaas.web.actions.UnhandledExceptionHandler">
+		    <result name="error">jsp/error.jsp</result>
+		</action>
 
-		<action name="step*"  class="org.opennaas.web.actions.Step{1}Action" >
-        	<result name="success">jsp/step{1}.jsp</result>
-        </action>
-        	
+		<action name="step0" class="org.opennaas.web.actions.Step0Action">
+			<result name="success">jsp/step1.jsp</result>
+		</action>
+
+		<action name="step1" class="org.opennaas.web.actions.Step1Action">
+			<result name="success">jsp/step2.jsp</result>
+		</action>
+
+		<action name="step2" class="org.opennaas.web.actions.Step2Action">
+			<result name="success">jsp/step3.jsp</result>
+		</action>
+
+		<action name="step3" class="org.opennaas.web.actions.Step3Action">
+			<result name="success">jsp/step4.jsp</result>
+		</action>
+
+		<action name="step4" class="org.opennaas.web.actions.Step4Action">
+			<result name="success">jsp/step5.jsp</result>
+		</action>
+
+		<action name="step5" class="org.opennaas.web.actions.Step5Action">
+			<result name="success">jsp/step6.jsp</result>
+		</action>
+		
 	</package>
 </struts>
