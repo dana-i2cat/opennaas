@@ -49,7 +49,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		ip.setSubnetMask(ipProtocolEndpoint.getSubnetMask());
 		param.addProtocolEndpoint(ipProtocolEndpoint);
 
-		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, iface);
+		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, param);
 		queueAction(action);
 	}
 

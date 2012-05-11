@@ -70,7 +70,7 @@ public class SetIPv4Command extends GenericKarafCommand {
 				return null;
 			}
 
-			IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
+			IPProtocolEndpoint ipProtocolEndpoint = getIPProtocolEndpoint();
 			NetworkPort networkPort = getNetworkPort();
 
 			if (networkPort == null) {
