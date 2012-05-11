@@ -1,16 +1,35 @@
 package org.opennaas.web.actions;
 
+import java.util.Map;
+
+import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
+import org.opennaas.ws.EthernetPort;
 import org.opennaas.ws.IChassisCapabilityService;
 import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.PortImplementsEndpoint;
+import org.opennaas.ws.ResourceIdentifier;
+import org.opennaas.ws.VlanEndpoint;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 /**
  * @author Jordi
  */
-public class Step3Action extends ActionSupport {
+public class Step3Action extends ActionSupport implements SessionAware {
+
+	private Map<String, Object>	session;
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}
+
+	public Map<String, Object> getSession() {
+		return session;
+	}
 
 	/**
 	 * Create subinterfaces
@@ -53,14 +72,46 @@ public class Step3Action extends ActionSupport {
 	 */
 	private void createSubinterfaces() throws CapabilityException_Exception {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
-		capabilityService.createSubInterface("", getNetworkPort());
+
+		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER1_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER2_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER3_NAME)).getId();
+
+		// lola
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/3.1", 1));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.13", 13));
+		capabilityService.createSubInterface(routerIdLola, getNetworkPort("fe-0/3/0.80", 80));
+
+		// myre
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.12", 12));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/0.13", 13));
+		capabilityService.createSubInterface(routerIdMyre, getNetworkPort("ge-2/0/1.81", 81));
+
+		// gsn
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.59", 59));
+		capabilityService.createSubInterface(routerIdGSN, getNetworkPort("ge-1/0/7.60", 60));
+
 	}
 
 	/**
+	 * @param string
 	 * @return
 	 */
-	private NetworkPort getNetworkPort() {
-		NetworkPort networkPort = new NetworkPort();
-		return null;
+	private NetworkPort getNetworkPort(String iface, int VLANId) {
+		EthernetPort ethPort = new EthernetPort();
+		String[] args = iface.split("\\.");
+
+		ethPort.setName(args[0]);
+		ethPort.setPortNumber(Integer.parseInt(args[1]));
+
+		VlanEndpoint vlanEndpoint = new VlanEndpoint();
+		vlanEndpoint.setVlanID(VLANId);
+
+		PortImplementsEndpoint assoc = new PortImplementsEndpoint();
+		assoc.setTo(vlanEndpoint);
+		ethPort.getToAssociations().add(assoc);
+
+		return ethPort;
+
 	}
 }

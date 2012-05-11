@@ -57,7 +57,7 @@ public class Step2Action extends ActionSupport implements SessionAware {
 	public String execute() throws Exception {
 		try {
 			createResources();
-		} catch (CapabilityException_Exception e) {
+		} catch (Exception e) {
 			return ERROR;
 		}
 		return SUCCESS;
@@ -72,19 +72,22 @@ public class Step2Action extends ActionSupport implements SessionAware {
 		// Router 1
 		ResourceIdentifier identifier1 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER1_NAME, "router", ""));
-		resourceManagerService.startResource(identifier1);
+
 		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER2_NAME, "router", ""));
-		resourceManagerService.startResource(identifier2);
+
 		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER3_NAME, "router", ""));
-		resourceManagerService.startResource(identifier3);
 
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
 				.createResource(getNetworkResourceDescriptor("", ResourcesDemo.NETWORK_NAME, "network", ""));
+
+		resourceManagerService.startResource(identifier1);
+		resourceManagerService.startResource(identifier2);
+		resourceManagerService.startResource(identifier3);
 		resourceManagerService.startResource(identifier4);
 
 		session.put(ResourcesDemo.ROUTER1_NAME, identifier1);
