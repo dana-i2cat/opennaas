@@ -63,34 +63,29 @@ public class Step4Action extends ActionSupport implements SessionAware {
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
 
 		// add logicalLola
-
-		capabilitService.addResource(routerIdLola, getLogicalRouterId(ResourcesDemo.LOGICAL_LOLA_NAME));
+		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_LOLA_NAME));
 
 		// add logicalmyre
-		capabilitService.addResource(routerIdMyre, getLogicalRouterId(ResourcesDemo.LOGICAL_MYRE_NAME));
+		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_MYRE_NAME));
 
 		// add logicalGSN
-		capabilitService.addResource(routerIdGSN, getLogicalRouterId(ResourcesDemo.LOGICAL_GSN_NAME));
+		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_GSN_NAME));
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {
+		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
 
-		String iface1 = "router:logicallola1:fe-0/3/0.13";
-		String iface2 = "router:logicalmyre1:ge-2/0/0.13";
-		capabilitService.l2Attach("", getInterface(iface1), getInterface(iface2));
+		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_LOLA_MYRE),
+				getInterface(ResourcesDemo.NETWORK_INTERFACE_MYRE_LOLA));
 
-		iface1 = "router:logicallola1:ge-0/2/0.80";
-		iface2 = "router:logicalgsn1:ge-1/0/7.59";
-		capabilitService.l2Attach("", getInterface(iface1), getInterface(iface2));
+		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_LOLA_GSN),
+				getInterface(ResourcesDemo.NETWORK_INTERFACE_GSN_LOLA));
 
-		iface1 = "router:logicalgsn1:ge-1/0/7.60";
-		iface2 = "router:logicalmyre1:ge-2/0/1.81";
-		capabilitService.l2Attach("", getInterface(iface1), getInterface(iface2));
+		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_MYRE_GSN),
+				getInterface(ResourcesDemo.NETWORK_INTERFACE_GSN_MYRE));
 
 	}
 
