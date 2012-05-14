@@ -36,17 +36,32 @@ import org.opennaas.ws.StaticRouteCapabilityService;
  */
 public class OpennaasClient {
 
-	private static final String	endpoint	= "http://localhost:8182/cxf/";
+	private static final String						endpoint						= "http://localhost:8182/cxf/";
+	private static IChassisCapabilityService		chassisCapabilityService		= null;
+	private static IGRETunnelCapabilityService		greTunnelCapabilityService		= null;
+	private static IIPCapabilityService				ipCapabilityService				= null;
+	private static IL2BoDCapabilityService			l2BoDCapabilityService			= null;
+	private static INetOSPFCapabilityService		netOSPFCapabilityService		= null;
+	private static INetQueueCapabilityService		netQueueCapabilityService		= null;
+	private static INetworkBasicCapabilityService	networkBasicCapabilityService	= null;
+	private static IOSPFCapabilityService			ospCapabilityService			= null;
+	private static IStaticRouteCapabilityService	staticRouteCapabilityService	= null;
+	private static IResourceManagerService			resourceManagerService			= null;
+	private static IProtocolSessionManagerService	protocolSessionManagerService	= null;
+	private static IQueueManagerCapabilityService	queueManagerCapabilityService	= null;
 
 	/**
 	 * @param context
 	 * @return
 	 */
 	public static IChassisCapabilityService getChassisCapabilityService() {
-		ChassisCapabilityService capabilityService = new ChassisCapabilityService();
-		IChassisCapabilityService proxy = capabilityService.getChassisCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "chassisCapabilityService?wsdl");
-		return proxy;
+		if (chassisCapabilityService == null) {
+			ChassisCapabilityService capabilityService = new ChassisCapabilityService();
+			chassisCapabilityService = capabilityService.getChassisCapabilityPort();
+			((BindingProvider) chassisCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "chassisCapabilityService?wsdl");
+		}
+		return chassisCapabilityService;
 	}
 
 	/**
@@ -54,11 +69,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IGRETunnelCapabilityService getGRETunnelCapabilityService() {
-		GRETunnelCapabilityService capabilityService = new GRETunnelCapabilityService();
-		IGRETunnelCapabilityService proxy = capabilityService.getGRETunnelCapabilityPort();
-		((BindingProvider) proxy).getRequestContext()
-				.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "greTunnelCapabilityService?wsdl");
-		return proxy;
+		if (greTunnelCapabilityService == null) {
+			GRETunnelCapabilityService capabilityService = new GRETunnelCapabilityService();
+			greTunnelCapabilityService = capabilityService.getGRETunnelCapabilityPort();
+			((BindingProvider) greTunnelCapabilityService).getRequestContext()
+					.put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "greTunnelCapabilityService?wsdl");
+		}
+		return greTunnelCapabilityService;
 	}
 
 	/**
@@ -66,10 +83,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IIPCapabilityService getIPCapabilityService() {
-		IPCapabilityService capabilityService = new IPCapabilityService();
-		IIPCapabilityService proxy = capabilityService.getIPCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "ipCapabilityService?wsdl");
-		return proxy;
+		if (ipCapabilityService == null) {
+			IPCapabilityService capabilityService = new IPCapabilityService();
+			ipCapabilityService = capabilityService.getIPCapabilityPort();
+			((BindingProvider) ipCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "ipCapabilityService?wsdl");
+		}
+		return ipCapabilityService;
 	}
 
 	/**
@@ -77,10 +97,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IL2BoDCapabilityService getL2BoDCapabilityService() {
-		L2BoDCapabilityService capabilityService = new L2BoDCapabilityService();
-		IL2BoDCapabilityService proxy = capabilityService.getL2BoDCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "l2bodCapabilityService?wsdl");
-		return proxy;
+		if (l2BoDCapabilityService == null) {
+			L2BoDCapabilityService capabilityService = new L2BoDCapabilityService();
+			l2BoDCapabilityService = capabilityService.getL2BoDCapabilityPort();
+			((BindingProvider) l2BoDCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "l2bodCapabilityService?wsdl");
+		}
+		return l2BoDCapabilityService;
 	}
 
 	/**
@@ -88,10 +111,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static INetOSPFCapabilityService getNetOSPFCapabilityService() {
-		NetOSPFCapabilityService capabilityService = new NetOSPFCapabilityService();
-		INetOSPFCapabilityService proxy = capabilityService.getNetOSPFCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "netOSPFCapabilityService?wsdl");
-		return proxy;
+		if (netOSPFCapabilityService == null) {
+			NetOSPFCapabilityService capabilityService = new NetOSPFCapabilityService();
+			netOSPFCapabilityService = capabilityService.getNetOSPFCapabilityPort();
+			((BindingProvider) netOSPFCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "netOSPFCapabilityService?wsdl");
+		}
+		return netOSPFCapabilityService;
 	}
 
 	/**
@@ -99,11 +125,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static INetQueueCapabilityService getNetQueueCapabilityService() {
-		NetQueueCapabilityService capabilityService = new NetQueueCapabilityService();
-		INetQueueCapabilityService proxy = capabilityService.getNetQueueCapabilityPort();
-
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "netQueueCapabilityService?wsdl");
-		return proxy;
+		if (netQueueCapabilityService == null) {
+			NetQueueCapabilityService capabilityService = new NetQueueCapabilityService();
+			netQueueCapabilityService = capabilityService.getNetQueueCapabilityPort();
+			((BindingProvider) netQueueCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "netQueueCapabilityService?wsdl");
+		}
+		return netQueueCapabilityService;
 	}
 
 	/**
@@ -111,11 +139,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static INetworkBasicCapabilityService getNetworkBasicCapabilityService() {
-		NetworkBasicCapabilityService capabilityService = new NetworkBasicCapabilityService();
-		INetworkBasicCapabilityService proxy = capabilityService.getNetworkBasicCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				endpoint + "networkBasicCapabilityService?wsdl");
-		return proxy;
+		if (networkBasicCapabilityService == null) {
+			NetworkBasicCapabilityService capabilityService = new NetworkBasicCapabilityService();
+			networkBasicCapabilityService = capabilityService.getNetworkBasicCapabilityPort();
+			((BindingProvider) networkBasicCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "networkBasicCapabilityService?wsdl");
+		}
+		return networkBasicCapabilityService;
 	}
 
 	/**
@@ -123,10 +153,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IOSPFCapabilityService getOSPFCapabilityService() {
-		OSPFCapabilityService capabilityService = new OSPFCapabilityService();
-		IOSPFCapabilityService proxy = capabilityService.getOSPFCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "ospfCapabilityService?wsdl");
-		return proxy;
+		if (ospCapabilityService == null) {
+			OSPFCapabilityService capabilityService = new OSPFCapabilityService();
+			ospCapabilityService = capabilityService.getOSPFCapabilityPort();
+			((BindingProvider) ospCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "ospfCapabilityService?wsdl");
+		}
+		return ospCapabilityService;
 	}
 
 	/**
@@ -134,11 +167,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IStaticRouteCapabilityService getStaticRouteCapabilityService() {
-		StaticRouteCapabilityService capabilityService = new StaticRouteCapabilityService();
-		IStaticRouteCapabilityService proxy = capabilityService.getStaticRouteCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
-				endpoint + "staticRouteCapabilityService?wsdl");
-		return proxy;
+		if (staticRouteCapabilityService == null) {
+			StaticRouteCapabilityService capabilityService = new StaticRouteCapabilityService();
+			staticRouteCapabilityService = capabilityService.getStaticRouteCapabilityPort();
+			((BindingProvider) staticRouteCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "staticRouteCapabilityService?wsdl");
+		}
+		return staticRouteCapabilityService;
 	}
 
 	/**
@@ -146,10 +181,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IResourceManagerService getResourceManagerService() {
-		ResourceManagerService resourceManager = new ResourceManagerService();
-		IResourceManagerService proxy = resourceManager.getResourceManagerPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "resourceManagerService?wsdl");
-		return proxy;
+		if (resourceManagerService == null) {
+			ResourceManagerService resourceManager = new ResourceManagerService();
+			resourceManagerService = resourceManager.getResourceManagerPort();
+			((BindingProvider) resourceManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "resourceManagerService?wsdl");
+		}
+		return resourceManagerService;
 	}
 
 	/**
@@ -157,10 +195,13 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IProtocolSessionManagerService getProtocolSessionManagerService() {
-		ProtocolSessionManagerService protocolSession = new ProtocolSessionManagerService();
-		IProtocolSessionManagerService proxy = protocolSession.getProtocolSessionManagerPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "protocolSessionManagerService?wsdl");
-		return proxy;
+		if (protocolSessionManagerService == null) {
+			ProtocolSessionManagerService protocolSession = new ProtocolSessionManagerService();
+			protocolSessionManagerService = protocolSession.getProtocolSessionManagerPort();
+			((BindingProvider) protocolSessionManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "protocolSessionManagerService?wsdl");
+		}
+		return protocolSessionManagerService;
 	}
 
 	/**
@@ -168,9 +209,12 @@ public class OpennaasClient {
 	 * @return
 	 */
 	public static IQueueManagerCapabilityService getQueueManagerCapabilityService() {
-		QueueManagerCapabilityService queueManager = new QueueManagerCapabilityService();
-		IQueueManagerCapabilityService proxy = queueManager.getQueueManagerCapabilityPort();
-		((BindingProvider) proxy).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY, endpoint + "queueManagerCapabilityService?wsdl");
-		return proxy;
+		if (queueManagerCapabilityService == null) {
+			QueueManagerCapabilityService queueManager = new QueueManagerCapabilityService();
+			queueManagerCapabilityService = queueManager.getQueueManagerCapabilityPort();
+			((BindingProvider) queueManagerCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
+					endpoint + "queueManagerCapabilityService?wsdl");
+		}
+		return queueManagerCapabilityService;
 	}
 }
