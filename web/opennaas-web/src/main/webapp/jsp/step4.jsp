@@ -3,7 +3,7 @@
 
 <html>
 <body>
-	<h2>Step4</h2>
+	<h2>Add resources to network</h2>
 	<s:form action="step4" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>

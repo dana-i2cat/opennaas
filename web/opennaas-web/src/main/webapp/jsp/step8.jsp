@@ -3,7 +3,7 @@
 
 <html>
 <body>
-	<h2>Step8</h2>
+	<h2>Destroy resources</h2>
 	<s:form action="step8" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>

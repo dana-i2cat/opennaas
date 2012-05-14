@@ -3,7 +3,7 @@
 
 <html>
 <body>
-	<h2>Step5</h2>
+	<h2>Set ip's</h2>
 	<s:form action="step5" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>
