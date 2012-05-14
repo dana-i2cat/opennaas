@@ -9,7 +9,7 @@ import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IIPCapabilityService;
 import org.opennaas.ws.IpProtocolEndpoint;
 import org.opennaas.ws.LogicalDevice;
-import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.LogicalPort;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -97,12 +97,9 @@ public class Step5Action extends ActionSupport implements SessionAware {
 	}
 
 	private LogicalDevice getLogicalDevice(String ifaceName) {
-		NetworkPort eth = new NetworkPort();
-		String[] args = ifaceName.split("\\.");
+		LogicalPort lp = new LogicalPort();
+		lp.setName(ifaceName);
 
-		eth.setName(args[0]);
-		eth.setPortNumber(Integer.valueOf(args[1]));
-
-		return eth;
+		return lp;
 	}
 }
