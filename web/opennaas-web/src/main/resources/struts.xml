@@ -81,39 +81,39 @@
 		    <result name="error">jsp/error.jsp</result>
 		</action>
 
-		<action name="step0" class="org.opennaas.web.actions.Step0Action">
+		<action name="step0" class="org.opennaas.web.actions.InitAction">
 			<result name="success">jsp/step1.jsp</result>
 		</action>
 
-		<action name="step1" class="org.opennaas.web.actions.Step1Action">
+		<action name="step1" class="org.opennaas.web.actions.CreateResourcesAction">
 			<result name="success">jsp/step2.jsp</result>
 		</action>
 
-		<action name="step2" class="org.opennaas.web.actions.Step2Action">
+		<action name="step2" class="org.opennaas.web.actions.CreateSubInterfacesAction">
 			<result name="success">jsp/step3.jsp</result>
 		</action>
 
-		<action name="step3" class="org.opennaas.web.actions.Step3Action">
+		<action name="step3" class="org.opennaas.web.actions.CreateLogicalRoutersAction">
 			<result name="success">jsp/step4.jsp</result>
 		</action>
 
-		<action name="step4" class="org.opennaas.web.actions.Step4Action">
+		<action name="step4" class="org.opennaas.web.actions.AddResourcesAction">
 			<result name="success">jsp/step5.jsp</result>
 		</action>
 
-		<action name="step5" class="org.opennaas.web.actions.Step5Action">
+		<action name="step5" class="org.opennaas.web.actions.SetIpsAction">
 			<result name="success">jsp/step6.jsp</result>
 		</action>
 		
-		<action name="step6" class="org.opennaas.web.actions.Step6Action">
+		<action name="step6" class="org.opennaas.web.actions.SetStaticRouteAction">
 			<result name="success">jsp/step7.jsp</result>
 		</action>
 		
-		<action name="step7" class="org.opennaas.web.actions.Step7Action">
+		<action name="step7" class="org.opennaas.web.actions.ConfigureGRETunnelAction">
 			<result name="success">jsp/step8.jsp</result>
 		</action>
 		
-		<action name="step8" class="org.opennaas.web.actions.Step8Action">
+		<action name="step8" class="org.opennaas.web.actions.DestroyAction">
 			<result name="success">jsp/step9.jsp</result>
 		</action>
 	</package>

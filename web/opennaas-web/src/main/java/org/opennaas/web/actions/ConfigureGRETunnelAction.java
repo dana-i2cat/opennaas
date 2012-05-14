@@ -22,7 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step7Action extends ActionSupport implements SessionAware {
+public class ConfigureGRETunnelAction extends ActionSupport implements SessionAware {
 
 	private Map<String, Object>				session;
 	private IGRETunnelCapabilityService		greTunnelService;

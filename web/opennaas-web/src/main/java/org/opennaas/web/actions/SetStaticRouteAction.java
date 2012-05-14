@@ -19,7 +19,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step6Action extends ActionSupport implements SessionAware {
+public class SetStaticRouteAction extends ActionSupport implements SessionAware {
 
 	private Map<String, Object>				session;
 	private IStaticRouteCapabilityService	staticRouteService;

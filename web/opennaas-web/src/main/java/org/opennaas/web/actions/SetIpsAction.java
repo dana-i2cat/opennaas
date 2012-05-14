@@ -17,7 +17,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step5Action extends ActionSupport implements SessionAware {
+public class SetIpsAction extends ActionSupport implements SessionAware {
 
 	private Map<String, Object>	session;
 

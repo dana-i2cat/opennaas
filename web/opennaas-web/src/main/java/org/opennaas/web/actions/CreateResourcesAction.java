@@ -24,7 +24,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step1Action extends ActionSupport implements SessionAware {
+public class CreateResourcesAction extends ActionSupport implements SessionAware {
 
 	private Map<String, Object>				session;
 	private IResourceManagerService			resourceManagerService;

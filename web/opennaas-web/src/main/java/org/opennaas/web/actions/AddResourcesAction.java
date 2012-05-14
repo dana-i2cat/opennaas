@@ -15,7 +15,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step4Action extends ActionSupport implements SessionAware {
+public class AddResourcesAction extends ActionSupport implements SessionAware {
 
 	private static final long				serialVersionUID	= 1L;
 	private Map<String, Object>				session;
