@@ -76,18 +76,22 @@ public class Step1Action extends ActionSupport implements SessionAware {
 
 		ResourceIdentifier identifier1 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_LOLA_NAME, "router", ""));
-		protocolSessionManagerService.registerContext(identifier1.getId(), getProtocolSessionContext());
+		protocolSessionManagerService.registerContext(identifier1.getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_LOLA));
 		resourceManagerService.startResource(identifier1);
 
 		ResourceIdentifier identifier2 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_GSN_NAME, "router", ""));
-		protocolSessionManagerService.registerContext(identifier2.getId(), getProtocolSessionContext());
+		protocolSessionManagerService.registerContext(identifier2.getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_GSN));
 		resourceManagerService.startResource(identifier2);
 
 		ResourceIdentifier identifier3 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_MYRE_NAME, "router", ""));
-		protocolSessionManagerService.registerContext(identifier3.getId(), getProtocolSessionContext());
+		protocolSessionManagerService.registerContext(identifier3.getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_MYRE));
 		resourceManagerService.startResource(identifier3);
+
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
 				.createResource(getNetworkResourceDescriptor("", ResourcesDemo.NETWORK_NAME, "network", ""));
@@ -100,10 +104,10 @@ public class Step1Action extends ActionSupport implements SessionAware {
 	}
 
 	/**
-	 * @param string
-	 * @param networkName
-	 * @param string2
-	 * @param string3
+	 * @param description
+	 * @param name
+	 * @param type
+	 * @param version
 	 * @return
 	 */
 	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
@@ -195,18 +199,18 @@ public class Step1Action extends ActionSupport implements SessionAware {
 	/**
 	 * @return
 	 */
-	private ProtocolSessionContext getProtocolSessionContext() {
+	private ProtocolSessionContext getProtocolSessionContext(String protocol, String uri) {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
 		protocolSessionContext.setSessionParameters(sessionParameters);
 		List<Entry> listEntries = sessionParameters.getEntry();
 		Entry entry = new Entry();
 		entry.setKey("protocol");
-		entry.setValue(ResourcesDemo.PROTOCOL_NAME);
+		entry.setValue(protocol);
 		listEntries.add(entry);
 		entry = new Entry();
 		entry.setKey("protocol.uri");
-		entry.setValue(ResourcesDemo.PROTOCOL_URI);
+		entry.setValue(uri);
 		listEntries.add(entry);
 		return protocolSessionContext;
 	}

@@ -7,11 +7,19 @@ import java.util.Map;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
+import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.ComputerSystem;
 import org.opennaas.ws.IChassisCapabilityService;
+import org.opennaas.ws.IProtocolSessionManagerService;
+import org.opennaas.ws.IQueueManagerCapabilityService;
+import org.opennaas.ws.IResourceManagerService;
 import org.opennaas.ws.LogicalPort;
 import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.ProtocolException_Exception;
+import org.opennaas.ws.ProtocolSessionContext;
+import org.opennaas.ws.ProtocolSessionContext.SessionParameters.Entry;
+import org.opennaas.ws.ResourceException_Exception;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,7 +29,11 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class Step3Action extends ActionSupport implements SessionAware {
 
-	private Map<String, Object>	session;
+	private Map<String, Object>				session;
+	private IChassisCapabilityService		chassisCapability;
+	private IResourceManagerService			resourceManagerService;
+	private IQueueManagerCapabilityService	queueManager;
+	private IProtocolSessionManagerService	protocolSessionManagerService;
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -59,48 +71,95 @@ public class Step3Action extends ActionSupport implements SessionAware {
 
 	@Override
 	public String execute() throws Exception {
-		try {
-			createLogicalRouters();
-		} catch (CapabilityException_Exception e) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+		createLogicalRouters();
 		return SUCCESS;
 	}
 
-	private void createLogicalRouters() throws CapabilityException_Exception {
-		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
-
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
-
+	private void createLogicalRouters() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception,
+			ProtocolException_Exception {
 		List<String> ifaces = new ArrayList<String>();
 
-		capabilityService.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME));
+		chassisCapability = OpennaasClient.getChassisCapabilityService();
+		resourceManagerService = OpennaasClient.getResourceManagerService();
+		queueManager = OpennaasClient.getQueueManagerCapabilityService();
+		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
+
+		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+
+		chassisCapability.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME));
 		ifaces.add(ResourcesDemo.LOLA_IFACE1);
 		ifaces.add(ResourcesDemo.LOLA_IFACE2);
 		ifaces.add(ResourcesDemo.LOLA_IFACE3);
 		ifaces.add(ResourcesDemo.LOLA_IFACE_GRE);
-		capabilityService.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME),
+		chassisCapability.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME),
 				getInterfaces(ifaces));
+		queueManager.execute(routerIdLola);
 
-		capabilityService.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME));
+		chassisCapability.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME));
 		ifaces.clear();
 		ifaces.add(ResourcesDemo.MYRE_IFACE1);
 		ifaces.add(ResourcesDemo.MYRE_IFACE2);
 		ifaces.add(ResourcesDemo.MYRE_IFACE3);
 		ifaces.add(ResourcesDemo.MYRE_IFACE_GRE);
-		capabilityService.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME),
+		chassisCapability.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME),
 				getInterfaces(ifaces));
+		queueManager.execute(routerIdMyre);
 
-		capabilityService.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME));
+		chassisCapability.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME));
 		ifaces.clear();
 		ifaces.add(ResourcesDemo.GSN_IFACE1);
 		ifaces.add(ResourcesDemo.GSN_IFACE2);
-		capabilityService.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME), getInterfaces(ifaces));
+		chassisCapability.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME), getInterfaces(ifaces));
+		queueManager.execute(routerIdGSN);
 
+		saveLogicalRoutersInSession();
+
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_LOLA));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME));
+
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_MYRE));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME));
+
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId(),
+				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_GSN));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME));
+	}
+
+	/**
+	 * @return
+	 */
+	private ProtocolSessionContext getProtocolSessionContext(String protocol, String uri) {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
+		protocolSessionContext.setSessionParameters(sessionParameters);
+		List<Entry> listEntries = sessionParameters.getEntry();
+		Entry entry = new Entry();
+		entry.setKey("protocol");
+		entry.setValue(protocol);
+		listEntries.add(entry);
+		entry = new Entry();
+		entry.setKey("protocol.uri");
+		entry.setValue(uri);
+		listEntries.add(entry);
+		return protocolSessionContext;
+	}
+
+	/**
+	 * @throws ResourceException_Exception
+	 * 
+	 */
+	private void saveLogicalRoutersInSession() throws ResourceException_Exception {
+		ResourceIdentifier lrLola = getLRResourceId(ResourcesDemo.LOGICAL_LOLA_NAME);
+		ResourceIdentifier lrGSN = getLRResourceId(ResourcesDemo.LOGICAL_GSN_NAME);
+		ResourceIdentifier myreGSN = getLRResourceId(ResourcesDemo.LOGICAL_MYRE_NAME);
+
+		session.put(ResourcesDemo.LOGICAL_LOLA_NAME, lrLola);
+		session.put(ResourcesDemo.LOGICAL_GSN_NAME, lrGSN);
+		session.put(ResourcesDemo.LOGICAL_MYRE_NAME, myreGSN);
 	}
 
 	private List<LogicalPort> getInterfaces(List<String> interfaces) {
@@ -118,5 +177,9 @@ public class Step3Action extends ActionSupport implements SessionAware {
 		router.setName(name);
 		router.setElementName(name);
 		return router;
+	}
+
+	private ResourceIdentifier getLRResourceId(String logicalRouterName) throws ResourceException_Exception {
+		return resourceManagerService.getIdentifierFromResourceName("router", logicalRouterName);
 	}
 }

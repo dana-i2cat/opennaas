@@ -70,8 +70,8 @@ public class Step2Action extends ActionSupport implements SessionAware {
 		IChassisCapabilityService capabilityService = OpennaasClient.getChassisCapabilityService();
 
 		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
 
 		// lola
 		capabilityService.createSubInterface(routerIdLola, getNetworkPort(ResourcesDemo.LOLA_IFACE1, ResourcesDemo.LOLA_IFACE1_VLAN));
@@ -86,7 +86,6 @@ public class Step2Action extends ActionSupport implements SessionAware {
 		// gsn
 		capabilityService.createSubInterface(routerIdGSN, getNetworkPort(ResourcesDemo.GSN_IFACE1, ResourcesDemo.GSN_IFACE1_VLAN));
 		capabilityService.createSubInterface(routerIdGSN, getNetworkPort(ResourcesDemo.GSN_IFACE2, ResourcesDemo.GSN_IFACE2_VLAN));
-
 	}
 
 	/**
@@ -108,6 +107,5 @@ public class Step2Action extends ActionSupport implements SessionAware {
 		ethPort.getToAssociations().add(assoc);
 
 		return ethPort;
-
 	}
 }

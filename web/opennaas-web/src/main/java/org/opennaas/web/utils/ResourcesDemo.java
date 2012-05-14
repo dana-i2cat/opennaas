@@ -97,7 +97,8 @@ public class ResourcesDemo {
 	public static final String	DEFAULT_ROUTE_MASK			= "0.0.0.0";
 
 	// protocols
-	public static final String	PROTOCOL_URI				= "mock://user:password@hea.net:22/netconf";
 	public static final String	PROTOCOL_NAME				= "netconf";
-
+	public static final String	PROTOCOL_LOLA				= "mock://user:password@hea.net:22/netconf";
+	public static final String	PROTOCOL_MYRE				= "mock://user:password@unic.hea.net:22/netconf";
+	public static final String	PROTOCOL_GSN				= "mock://user:password@gsn.hea.net:22/netconf";
 }

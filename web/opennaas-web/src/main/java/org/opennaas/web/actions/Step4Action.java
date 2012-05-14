@@ -7,9 +7,7 @@ import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.INetworkBasicCapabilityService;
-import org.opennaas.ws.IResourceManagerService;
 import org.opennaas.ws.Interface;
-import org.opennaas.ws.ResourceException_Exception;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,7 +19,6 @@ public class Step4Action extends ActionSupport implements SessionAware {
 
 	private static final long				serialVersionUID	= 1L;
 	private Map<String, Object>				session;
-	private IResourceManagerService			resourceManagerService;
 	private INetworkBasicCapabilityService	capabilitService;
 
 	@Override
@@ -48,31 +45,27 @@ public class Step4Action extends ActionSupport implements SessionAware {
 	 */
 	@Override
 	public String execute() throws Exception {
-		try {
-			addNetworkResources();
-			attachNetworkResources();
-			return SUCCESS;
-		} catch (CapabilityException_Exception e) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+		addNetworkResources();
+		attachNetworkResources();
+		return SUCCESS;
 	}
 
-	private void addNetworkResources() throws CapabilityException_Exception, ResourceException_Exception {
-		resourceManagerService = OpennaasClient.getResourceManagerService();
+	private void addNetworkResources() throws CapabilityException_Exception {
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
+		String lolaId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId();
+		String myreId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId();
+		String gsnId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId();
 
 		// add logicalLola
-		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_LOLA_NAME));
+		capabilitService.addResource(networkId, lolaId);
 
 		// add logicalmyre
-		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_MYRE_NAME));
+		capabilitService.addResource(networkId, myreId);
 
 		// add logicalGSN
-		capabilitService.addResource(networkId, getLogicalRouterId(ResourcesDemo.LOGICAL_GSN_NAME));
+		capabilitService.addResource(networkId, gsnId);
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {
@@ -93,11 +86,6 @@ public class Step4Action extends ActionSupport implements SessionAware {
 		Interface iface = new Interface();
 		iface.setName(ifaceName);
 		return null;
-	}
-
-	private String getLogicalRouterId(String logicalRouterName) throws ResourceException_Exception {
-		ResourceIdentifier resourceIdentifier = resourceManagerService.getIdentifierFromResourceName("router", logicalRouterName);
-		return resourceIdentifier.getId();
 	}
 
 }

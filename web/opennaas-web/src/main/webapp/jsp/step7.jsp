@@ -3,8 +3,8 @@
 
 <html>
 <body>
-	<h2>Step6</h2>
-	<s:form action="step6" >	
+	<h2>Step7</h2>
+	<s:form action="step7" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>
 </body>

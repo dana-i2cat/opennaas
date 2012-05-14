@@ -3,9 +3,6 @@
 
 <html>
 <body>
-	<h2>Step6</h2>
-	<s:form action="step6" >	
-		<s:submit type="button" value="Next" theme="simple" />
-	</s:form>
+	<h2>End</h2>
 </body>
 </html>
