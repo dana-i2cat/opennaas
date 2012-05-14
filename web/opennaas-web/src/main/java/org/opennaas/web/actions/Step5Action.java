@@ -56,10 +56,9 @@ public class Step5Action extends ActionSupport implements SessionAware {
 	}
 
 	public void setIPv4() throws CapabilityException_Exception {
-
 		String routerIdLogicalLola = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId();
 		String routerIdLogicalMyre = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId();
-		String routerIdLogicalGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
+		String routerIdLogicalGSN = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId();
 
 		IIPCapabilityService capabilityService = OpennaasClient.getIPCapabilityService();
 
@@ -91,7 +90,6 @@ public class Step5Action extends ActionSupport implements SessionAware {
 	}
 
 	private IpProtocolEndpoint getProtocolEndpoint(String ip, String netmask) {
-		// TODO Auto-generated method stub
 		IpProtocolEndpoint pE = new IpProtocolEndpoint();
 		pE.setIPv4Address(ip);
 		pE.setSubnetMask(netmask);
@@ -99,7 +97,6 @@ public class Step5Action extends ActionSupport implements SessionAware {
 	}
 
 	private LogicalDevice getLogicalDevice(String ifaceName) {
-
 		NetworkPort eth = new NetworkPort();
 		String[] args = ifaceName.split("\\.");
 

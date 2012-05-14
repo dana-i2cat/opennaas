@@ -44,14 +44,9 @@ public class Step7Action extends ActionSupport implements SessionAware {
 	 */
 	@Override
 	public String execute() throws Exception {
-		try {
-			configureGRE();
-			return SUCCESS;
-		} catch (CapabilityException_Exception ce) {
-			return ERROR;
-		} catch (Exception e) {
-			return ERROR;
-		}
+
+		configureGRE();
+		return SUCCESS;
 	}
 
 	private void configureGRE() throws CapabilityException_Exception {

@@ -7,8 +7,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 
 /**
@@ -124,7 +124,7 @@ public interface IChassisCapabilityService {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
+	public void createSubInterface(String resourceId, EthernetPort iface) throws CapabilityException;
 
 	/**
 	 * Deletes given logical interface (iface).
@@ -138,7 +138,7 @@ public interface IChassisCapabilityService {
 	 * @throws CapabilityException
 	 *             if any error occurred. In that case, queue remains untouched.
 	 */
-	public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException;
+	public void deleteSubInterface(String resourceId, EthernetPort iface) throws CapabilityException;
 
 	/**
 	 * Configures the type of encapsulation to use in given iface.

@@ -145,7 +145,7 @@ public class Step1Action extends ActionSupport implements SessionAware {
 		capabilityDescriptor = getCapabilityDescriptor("OSPF capability", "OSPF capability", "ospf", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		capabilityDescriptor = getCapabilityDescriptor("Static Route capability", "Static Route capability", "ipv4", "junos", "10.10");
+		capabilityDescriptor = getCapabilityDescriptor("Static Route capability", "Static Route capability", "staticroute", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
 		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");

@@ -46,19 +46,9 @@ public class Step6Action extends ActionSupport implements SessionAware {
 
 	@Override
 	public String execute() throws Exception {
-		try {
-			configureStaticRoute();
-			configureOSPF();
-
-			return SUCCESS;
-
-		} catch (CapabilityException_Exception ce) {
-			return ERROR;
-
-		} catch (Exception e) {
-			return ERROR;
-		}
-
+		configureStaticRoute();
+		configureOSPF();
+		return SUCCESS;
 	}
 
 	private void configureOSPF() throws CapabilityException_Exception {
