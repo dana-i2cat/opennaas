@@ -228,8 +228,8 @@ public class OpennaasClient {
 		HTTPConduit http = (HTTPConduit) serviceClient.getConduit();
 
 		HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
-		httpClientPolicy.setConnectionTimeout(timeout);
-		httpClientPolicy.setReceiveTimeout(timeout);
+		// httpClientPolicy.setConnectionTimeout(timeout); // stablish connection
+		httpClientPolicy.setReceiveTimeout(timeout); // receive response
 
 		http.setClient(httpClientPolicy);
 	}
