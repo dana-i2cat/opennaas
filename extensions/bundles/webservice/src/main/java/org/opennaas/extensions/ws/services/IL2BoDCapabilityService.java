@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.jws.WebService;
 
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.network.model.topology.Interface;
 
 /**
@@ -17,8 +17,10 @@ public interface IL2BoDCapabilityService {
 
 	/**
 	 * @throws CapabilityException
+	 * @throws ResourceException
 	 */
-	public void requestConnection(String resourceId, RequestConnectionParameters parameters) throws CapabilityException;
+	public void requestConnection(String resourceId, String interfaceName1, String interfaceName2, String vlanid, String capacity,
+			String endTime) throws CapabilityException, ResourceException;
 
 	/**
 	 * @throws CapabilityException
