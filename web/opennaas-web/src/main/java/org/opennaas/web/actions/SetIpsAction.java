@@ -3,7 +3,6 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IIPCapabilityService;
@@ -56,37 +55,38 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 	}
 
 	public void setIPv4() throws CapabilityException_Exception {
-		String routerIdLogicalLola = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId();
-		String routerIdLogicalMyre = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId();
-		String routerIdLogicalGSN = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId();
+		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
+		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
 		IIPCapabilityService capabilityService = OpennaasClient.getIPCapabilityService();
 
 		// logicalLola
-		capabilityService.setIPv4(routerIdLogicalLola, getLogicalDevice(ResourcesDemo.LOLA_IFACE1),
-				getProtocolEndpoint(ResourcesDemo.LOLA_IFACE1_IP, ResourcesDemo.IP_NET_MASK));
+		capabilityService.setIPv4(lrLolaId, getLogicalDevice(getText("lola.iface1")),
+				getProtocolEndpoint(getText("lola.iface1.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(routerIdLogicalLola, getLogicalDevice(ResourcesDemo.LOLA_IFACE2),
-				getProtocolEndpoint(ResourcesDemo.LOLA_IFACE2_IP, ResourcesDemo.IP_NET_MASK));
+		capabilityService.setIPv4(lrLolaId, getLogicalDevice(getText("lola.iface2")),
+				getProtocolEndpoint(getText("lola.iface2.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(routerIdLogicalLola, getLogicalDevice(ResourcesDemo.LOLA_IFACE3),
-				getProtocolEndpoint(ResourcesDemo.LOLA_IFACE3_IP, ResourcesDemo.IP_NET_MASK));
+		capabilityService.setIPv4(lrLolaId, getLogicalDevice(getText("lola.iface3")),
+				getProtocolEndpoint(getText("lola.iface3.ip"), getText("common.ip.mask")));
 
 		// logicalmyre
-		capabilityService.setIPv4(routerIdLogicalMyre, getLogicalDevice(ResourcesDemo.MYRE_IFACE1),
-				getProtocolEndpoint(ResourcesDemo.MYRE_IFACE1_IP, ResourcesDemo.IP_NET_MASK));
-		capabilityService.setIPv4(routerIdLogicalMyre, getLogicalDevice(ResourcesDemo.MYRE_IFACE2),
-				getProtocolEndpoint(ResourcesDemo.MYRE_IFACE2_IP, ResourcesDemo.IP_NET_MASK));
-		capabilityService
-				.setIPv4(routerIdLogicalLola, getLogicalDevice(ResourcesDemo.MYRE_IFACE3),
-						getProtocolEndpoint(ResourcesDemo.MYRE_IFACE3_IP, ResourcesDemo.IP_NET_MASK));
+		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface1")),
+				getProtocolEndpoint(getText("myre.iface1.ip"), getText("common.ip.mask")));
+
+		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface2")),
+				getProtocolEndpoint(getText("myre.iface2.ip"), getText("common.ip.mask")));
+
+		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface3")),
+				getProtocolEndpoint(getText("myre.iface3.ip"), getText("common.ip.mask")));
 
 		// logicalGSN
-		capabilityService.setIPv4(routerIdLogicalGSN, getLogicalDevice(ResourcesDemo.GSN_IFACE1),
-				getProtocolEndpoint(ResourcesDemo.GSN_IFACE1_IP, ResourcesDemo.IP_NET_MASK));
-		capabilityService.setIPv4(routerIdLogicalGSN, getLogicalDevice(ResourcesDemo.GSN_IFACE2),
-				getProtocolEndpoint(ResourcesDemo.GSN_IFACE2_IP, ResourcesDemo.IP_NET_MASK));
+		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface1")),
+				getProtocolEndpoint(getText("gsn.iface1.ip"), getText("common.ip.mask")));
 
+		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface2")),
+				getProtocolEndpoint(getText("gsn.iface2.ip"), getText("common.ip.mask")));
 	}
 
 	private IpProtocolEndpoint getProtocolEndpoint(String ip, String netmask) {

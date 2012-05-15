@@ -3,7 +3,6 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
@@ -76,25 +75,25 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+		String routerIdLola = ((ResourceIdentifier) session.get(getText("lola.router.name"))).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(getText("gsn.router.name"))).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
 
 		// lola
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(ResourcesDemo.LOLA_IFACE1, ResourcesDemo.LOLA_IFACE1_VLAN));
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(ResourcesDemo.LOLA_IFACE2, ResourcesDemo.LOLA_IFACE2_VLAN));
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(ResourcesDemo.LOLA_IFACE3, ResourcesDemo.LOLA_IFACE3_VLAN));
+		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface1"), Integer.valueOf(getText("lola.iface1.vlan"))));
+		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface2"), Integer.valueOf(getText("lola.iface2.vlan"))));
+		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface3"), Integer.valueOf(getText("lola.iface3.vlan"))));
 		queueManager.execute(routerIdLola);
 
 		// myre
-		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(ResourcesDemo.MYRE_IFACE1, ResourcesDemo.MYRE_IFACE1_VLAN));
-		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(ResourcesDemo.MYRE_IFACE2, ResourcesDemo.MYRE_IFACE2_VLAN));
-		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(ResourcesDemo.MYRE_IFACE3, ResourcesDemo.MYRE_IFACE3_VLAN));
+		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface1"), Integer.valueOf(getText("myre.iface1.vlan"))));
+		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface2"), Integer.valueOf(getText("myre.iface2.vlan"))));
+		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface3"), Integer.valueOf(getText("myre.iface3.vlan"))));
 		queueManager.execute(routerIdMyre);
 
 		// gsn
-		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(ResourcesDemo.GSN_IFACE1, ResourcesDemo.GSN_IFACE1_VLAN));
-		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(ResourcesDemo.GSN_IFACE2, ResourcesDemo.GSN_IFACE2_VLAN));
+		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface1"), Integer.valueOf(getText("gsn.iface1.vlan"))));
+		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface2"), Integer.valueOf(getText("gsn.iface2.vlan"))));
 		queueManager.execute(routerIdGSN);
 	}
 

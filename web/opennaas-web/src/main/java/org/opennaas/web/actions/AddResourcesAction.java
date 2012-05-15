@@ -3,7 +3,6 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.INetworkBasicCapabilityService;
@@ -53,32 +52,32 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	private void addNetworkResources() throws CapabilityException_Exception {
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 
-		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
-		String lolaId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId();
-		String myreId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId();
-		String gsnId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId();
+		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
+		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
+		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
 		// add logicalLola
-		capabilitService.addResource(networkId, lolaId);
+		capabilitService.addResource(networkId, lrLolaId);
 
 		// add logicalmyre
-		capabilitService.addResource(networkId, myreId);
+		capabilitService.addResource(networkId, lrMyreId);
 
 		// add logicalGSN
-		capabilitService.addResource(networkId, gsnId);
+		capabilitService.addResource(networkId, lrGSNId);
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {
-		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
+		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 
-		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_LOLA_MYRE),
-				getInterface(ResourcesDemo.NETWORK_INTERFACE_MYRE_LOLA));
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.lolamyre")),
+				getInterface(getText("network.interface.myrelola")));
 
-		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_LOLA_GSN),
-				getInterface(ResourcesDemo.NETWORK_INTERFACE_GSN_LOLA));
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.lolagsn")),
+				getInterface(getText("network.interface.gsnlola")));
 
-		capabilitService.l2Attach(networkId, getInterface(ResourcesDemo.NETWORK_INTERFACE_MYRE_GSN),
-				getInterface(ResourcesDemo.NETWORK_INTERFACE_GSN_MYRE));
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
+				getInterface(getText("network.interface.gsnmyre")));
 
 	}
 

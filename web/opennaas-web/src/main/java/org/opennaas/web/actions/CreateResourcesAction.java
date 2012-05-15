@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityDescriptor;
 import org.opennaas.ws.CapabilityException_Exception;
@@ -75,32 +74,32 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
 		ResourceIdentifier identifier1 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_LOLA_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", getText("lola.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier1.getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_LOLA));
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.lola")));
 		resourceManagerService.startResource(identifier1);
 
 		ResourceIdentifier identifier2 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_GSN_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", getText("gsn.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier2.getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_GSN));
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource(identifier2);
 
 		ResourceIdentifier identifier3 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", ResourcesDemo.ROUTER_MYRE_NAME, "router", ""));
+				.createResource(getRouterResourceDescriptor("", getText("myre.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier3.getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_MYRE));
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
 
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
-				.createResource(getNetworkResourceDescriptor("", ResourcesDemo.NETWORK_NAME, "network", ""));
+				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
 		resourceManagerService.startResource(identifier4);
 
-		session.put(ResourcesDemo.ROUTER_LOLA_NAME, identifier1);
-		session.put(ResourcesDemo.ROUTER_GSN_NAME, identifier2);
-		session.put(ResourcesDemo.ROUTER_MYRE_NAME, identifier3);
-		session.put(ResourcesDemo.NETWORK_NAME, identifier4);
+		session.put(getText("lola.router.name"), identifier1);
+		session.put(getText("gsn.router.name"), identifier2);
+		session.put(getText("myre.router.name"), identifier3);
+		session.put(getText("network.name"), identifier4);
 	}
 
 	/**
@@ -151,7 +150,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		if (!name.equals(ResourcesDemo.ROUTER_GSN_NAME)) {
+		if (!name.equals(getText("gsn.router.name"))) {
 			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
 			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 		}

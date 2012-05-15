@@ -3,7 +3,6 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
@@ -57,17 +56,17 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 		greTunnelService = OpennaasClient.getGRETunnelCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
-		String lrLolaId = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String lrMyreId = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
 		greTunnelService.createGRETunnel(
 				lrLolaId,
-				getGRETunnel(ResourcesDemo.LOLA_IFACE_GRE, ResourcesDemo.LOLA_GRE_TUNNEL_IP, ResourcesDemo.IP_NET_MASK, ResourcesDemo.LOLA_IFACE1_IP,
-						ResourcesDemo.LOLA_GRE_TUNNEL_DESTINY));
+				getGRETunnel(getText("lola.iface.gre"), getText("lola.gretunnel.ip"), getText("common.ip.mask"), getText("lola.iface1.ip"),
+						getText("lola.gretunnel.destiny")));
 		greTunnelService.createGRETunnel(
 				lrMyreId,
-				getGRETunnel(ResourcesDemo.MYRE_IFACE_GRE, ResourcesDemo.MYRE_GRE_TUNNEL_IP, ResourcesDemo.IP_NET_MASK, ResourcesDemo.MYRE_IFACE1_IP,
-						ResourcesDemo.MYRE_GRE_TUNNEL_DESTINY));
+				getGRETunnel(getText("myre.iface.gre"), getText("myre.gretunnel.ip"), getText("common.ip.mask"), getText("myre.iface1.ip"),
+						getText("myre.gretunnel.destiny")));
 
 		queueService.execute(lrLolaId);
 		queueService.execute(lrMyreId);

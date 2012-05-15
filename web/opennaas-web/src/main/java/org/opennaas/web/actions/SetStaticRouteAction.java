@@ -3,7 +3,6 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
@@ -62,13 +61,13 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 		staticRouteService = OpennaasClient.getStaticRouteCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
-		String lrLolaId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId();
-		String lrMyreId = ((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId();
+		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
-		staticRouteService.createStaticRoute(lrLolaId, ResourcesDemo.DEFAULT_ROUTE, ResourcesDemo.DEFAULT_ROUTE_MASK,
-				ResourcesDemo.LOLA_STATIC_ROUTE);
-		staticRouteService.createStaticRoute(lrMyreId, ResourcesDemo.DEFAULT_ROUTE, ResourcesDemo.DEFAULT_ROUTE_MASK,
-				ResourcesDemo.MYRE_STATIC_ROUTE);
+		staticRouteService.createStaticRoute(lrLolaId, getText("common.default.router"), getText("common.default.router"),
+				getText("lola.staticroute.ip"));
+		staticRouteService.createStaticRoute(lrMyreId, getText("common.default.router"), getText("common.default.router"),
+				getText("myre.staticroute.ip"));
 
 		queueService.execute(lrLolaId);
 		queueService.execute(lrMyreId);
@@ -78,7 +77,7 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 		netOSPFService = OpennaasClient.getNetOSPFCapabilityService();
 		netQueueService = OpennaasClient.getNetQueueCapabilityService();
 
-		String networkId = ((ResourceIdentifier) session.get(ResourcesDemo.NETWORK_NAME)).getId();
+		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 		netOSPFService.activateOSPF(networkId);
 		netQueueService.execute(networkId);
 	}

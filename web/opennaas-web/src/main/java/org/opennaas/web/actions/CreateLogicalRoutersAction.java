@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
-import org.opennaas.web.utils.ResourcesDemo;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
@@ -84,49 +83,49 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_LOLA_NAME)).getId();
-		String routerIdGSN = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_GSN_NAME)).getId();
-		String routerIdMyre = ((ResourceIdentifier) session.get(ResourcesDemo.ROUTER_MYRE_NAME)).getId();
+		String routerIdLola = ((ResourceIdentifier) session.get(getText("lola.router.name"))).getId();
+		String routerIdGSN = ((ResourceIdentifier) session.get(getText("gsn.router.name"))).getId();
+		String routerIdMyre = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
 
-		chassisCapability.createLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME));
-		ifaces.add(ResourcesDemo.LOLA_IFACE1);
-		ifaces.add(ResourcesDemo.LOLA_IFACE2);
-		ifaces.add(ResourcesDemo.LOLA_IFACE3);
-		ifaces.add(ResourcesDemo.LOLA_IFACE_GRE);
-		chassisCapability.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(ResourcesDemo.LOGICAL_LOLA_NAME),
+		chassisCapability.createLogicalRouter(routerIdLola, getComputerSystem(getText("lola.lrouter.name")));
+		ifaces.add(getText("lola.iface1"));
+		ifaces.add(getText("lola.iface2"));
+		ifaces.add(getText("lola.iface3"));
+		ifaces.add(getText("lola.iface.gre"));
+		chassisCapability.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(getText("lola.lrouter.name")),
 				getInterfaces(ifaces));
 		queueManager.execute(routerIdLola);
 
-		chassisCapability.createLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME));
+		chassisCapability.createLogicalRouter(routerIdMyre, getComputerSystem(getText("myre.lrouter.name")));
 		ifaces.clear();
-		ifaces.add(ResourcesDemo.MYRE_IFACE1);
-		ifaces.add(ResourcesDemo.MYRE_IFACE2);
-		ifaces.add(ResourcesDemo.MYRE_IFACE3);
-		ifaces.add(ResourcesDemo.MYRE_IFACE_GRE);
-		chassisCapability.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(ResourcesDemo.LOGICAL_MYRE_NAME),
+		ifaces.add(getText("myre.iface1"));
+		ifaces.add(getText("myre.iface2"));
+		ifaces.add(getText("myre.iface3"));
+		ifaces.add(getText("myre.iface.gre"));
+		chassisCapability.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(getText("myre.lrouter.name")),
 				getInterfaces(ifaces));
 		queueManager.execute(routerIdMyre);
 
-		chassisCapability.createLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME));
+		chassisCapability.createLogicalRouter(routerIdGSN, getComputerSystem(getText("gsn.lrouter.name")));
 		ifaces.clear();
-		ifaces.add(ResourcesDemo.GSN_IFACE1);
-		ifaces.add(ResourcesDemo.GSN_IFACE2);
-		chassisCapability.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(ResourcesDemo.LOGICAL_GSN_NAME), getInterfaces(ifaces));
+		ifaces.add(getText("gsn.iface1"));
+		ifaces.add(getText("gsn.iface2"));
+		chassisCapability.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(getText("gsn.lrouter.name")), getInterfaces(ifaces));
 		queueManager.execute(routerIdGSN);
 
 		saveLogicalRoutersInSession();
 
-		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME)).getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_LOLA));
-		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_LOLA_NAME));
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId(),
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.lola")));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("lola.lrouter.name")));
 
-		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME)).getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_MYRE));
-		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_MYRE_NAME));
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId(),
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.myre")));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("myre.lrouter.name")));
 
-		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME)).getId(),
-				getProtocolSessionContext(ResourcesDemo.PROTOCOL_NAME, ResourcesDemo.PROTOCOL_GSN));
-		resourceManagerService.startResource((ResourceIdentifier) session.get(ResourcesDemo.LOGICAL_GSN_NAME));
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId(),
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.gsn")));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("gsn.lrouter.name")));
 	}
 
 	/**
@@ -153,13 +152,13 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 	 * 
 	 */
 	private void saveLogicalRoutersInSession() throws ResourceException_Exception {
-		ResourceIdentifier lrLola = getLRResourceId(ResourcesDemo.LOGICAL_LOLA_NAME);
-		ResourceIdentifier lrGSN = getLRResourceId(ResourcesDemo.LOGICAL_GSN_NAME);
-		ResourceIdentifier myreGSN = getLRResourceId(ResourcesDemo.LOGICAL_MYRE_NAME);
+		ResourceIdentifier lrLola = getLRResourceId(getText("lola.lrouter.name"));
+		ResourceIdentifier lrGSN = getLRResourceId(getText("gsn.lrouter.name"));
+		ResourceIdentifier myreGSN = getLRResourceId(getText("gsn.lrouter.name"));
 
-		session.put(ResourcesDemo.LOGICAL_LOLA_NAME, lrLola);
-		session.put(ResourcesDemo.LOGICAL_GSN_NAME, lrGSN);
-		session.put(ResourcesDemo.LOGICAL_MYRE_NAME, myreGSN);
+		session.put(getText("lola.lrouter.name"), lrLola);
+		session.put(getText("gsn.lrouter.name"), lrGSN);
+		session.put(getText("myre.lrouter.name"), myreGSN);
 	}
 
 	private List<LogicalPort> getInterfaces(List<String> interfaces) {
