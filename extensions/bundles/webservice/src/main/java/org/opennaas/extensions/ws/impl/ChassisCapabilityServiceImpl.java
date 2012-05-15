@@ -9,8 +9,8 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.ws.services.IChassisCapabilityService;
 
@@ -143,7 +143,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityService imple
 	}
 
 	@Override
-	public void createSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
+	public void createSubInterface(String resourceId, EthernetPort iface) throws CapabilityException {
 		try {
 			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.createSubInterface(iface);
@@ -154,7 +154,7 @@ public class ChassisCapabilityServiceImpl extends GenericCapabilityService imple
 	}
 
 	@Override
-	public void deleteSubInterface(String resourceId, NetworkPort iface) throws CapabilityException {
+	public void deleteSubInterface(String resourceId, EthernetPort iface) throws CapabilityException {
 		try {
 			IChassisCapability iChassisCapability = (IChassisCapability) getCapability(resourceId, IChassisCapability.class);
 			iChassisCapability.deleteSubInterface(iface);

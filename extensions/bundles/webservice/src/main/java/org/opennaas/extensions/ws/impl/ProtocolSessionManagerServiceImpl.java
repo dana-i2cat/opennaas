@@ -10,14 +10,20 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.ws.services.IProtocolSessionManagerService;
 
 @WebService
-public class ProtocolSessionManagerService implements IProtocolSessionManagerService {
+public class ProtocolSessionManagerServiceImpl implements IProtocolSessionManagerService {
 
 	private IProtocolManager	protocolManager;
 
+	/**
+	 * @return
+	 */
 	public IProtocolManager getProtocolManager() {
 		return protocolManager;
 	}
 
+	/**
+	 * @param protocolManager
+	 */
 	public void setProtocolManager(IProtocolManager protocolManager) {
 		this.protocolManager = protocolManager;
 	}
