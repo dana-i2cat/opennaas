@@ -5,7 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAccessBySAP as well as methods comparable to
@@ -15,6 +17,9 @@ import java.io.*;
  * CIM_ServiceAccessBySAP is an association that identifies the access points for a Service. For example, a printer might be accessed by NetWare,
  * MacIntosh or Windows ServiceAccessPoints, which might all be hosted on different Systems.
  */
+@XmlSeeAlso({
+		ProvidesEndpoint.class
+})
 public class ServiceAccessBySAP extends Dependency implements Serializable {
 
 	/**
