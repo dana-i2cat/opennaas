@@ -34,7 +34,10 @@
 		<interceptors>
 			<interceptor name="redirectMessage"
 				class="org.opennaas.web.interceptors.RedirectMessageInterceptor" />
-			<interceptor-stack name="defaultStack">
+			<interceptor name="login" 
+				class="org.opennaas.web.interceptors.LoginInterceptor" />
+			<interceptor-stack name="defaultLoginStack">
+				<interceptor-ref name="login" />
 				<interceptor-ref name="exception" />
 				<interceptor-ref name="alias" />
 				<interceptor-ref name="servletConfig" />
@@ -62,24 +65,63 @@
 				<interceptor-ref name="redirectMessage" />
 			</interceptor-stack>
 
+			<interceptor-stack name="defaultInsecureStack">
+			 	<interceptor-ref name="exception"/>
+                <interceptor-ref name="alias"/>
+                <interceptor-ref name="servletConfig"/>
+                <interceptor-ref name="i18n"/>
+                <interceptor-ref name="prepare"/>
+                <interceptor-ref name="chain"/>
+                <interceptor-ref name="debugging"/>
+                <interceptor-ref name="profiling"/>
+                <interceptor-ref name="scopedModelDriven"/>
+                <interceptor-ref name="modelDriven"/>
+                <interceptor-ref name="fileUpload"/>
+                <interceptor-ref name="checkbox"/>
+                <interceptor-ref name="staticParams"/>
+                <interceptor-ref name="actionMappingParams"/>
+                <interceptor-ref name="params">
+                	<param name="excludeParams">dojo\..*,^struts\..*,d-\d*-p,d-\d*-s,d-\d*-o</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+				<interceptor-ref name="redirectMessage" />
+			</interceptor-stack>
 		</interceptors>
 
-		<default-interceptor-ref name="defaultStack" />
+		<default-interceptor-ref name="defaultLoginStack" />
 	
 		<global-results>
 		    <result name="unhandledExceptionHandler" type="chain">
 		        <param name="actionName">actionUnhandledExceptionHandler</param>
 		        <param name="namespace">/</param>
 		    </result>
+		    <result name="login">index.jsp</result>
 		</global-results>
 					
 		<global-exception-mappings>
 		    <exception-mapping exception="java.lang.Exception" result="unhandledExceptionHandler"/>
 		</global-exception-mappings>
-		
+
 		<action name="actionUnhandledExceptionHandler" class="org.opennaas.web.actions.UnhandledExceptionHandler">
 		    <result name="error">jsp/error.jsp</result>
 		</action>
+
+		<action name="login" >
+			 <result name="error">index.jsp</result>
+			 <result name="success" type="redirectAction">
+            	<param name="actionName">step0</param>
+            </result>
+		</action>
+
+		<action name="logout" class="org.opennaas.web.actions.LogoutAction">
+        	<result name="success">index.jsp</result>
+        </action>
 
 		<action name="step0" class="org.opennaas.web.actions.InitAction">
 			<result name="success">jsp/step1.jsp</result>
@@ -105,16 +147,20 @@
 			<result name="success">jsp/step6.jsp</result>
 		</action>
 		
-		<action name="step6" class="org.opennaas.web.actions.SetStaticRouteAction">
+		<action name="step6" class="org.opennaas.web.actions.AutobahnAction">
 			<result name="success">jsp/step7.jsp</result>
 		</action>
 		
-		<action name="step7" class="org.opennaas.web.actions.ConfigureGRETunnelAction">
+		<action name="step7" class="org.opennaas.web.actions.SetStaticRouteAction">
 			<result name="success">jsp/step8.jsp</result>
 		</action>
 		
-		<action name="step8" class="org.opennaas.web.actions.DestroyAction">
+		<action name="step8" class="org.opennaas.web.actions.ConfigureGRETunnelAction">
 			<result name="success">jsp/step9.jsp</result>
+		</action>
+		
+		<action name="step9" class="org.opennaas.web.actions.DestroyAction">
+			<result name="success">jsp/step10.jsp</result>
 		</action>
 	</package>
 </struts>
