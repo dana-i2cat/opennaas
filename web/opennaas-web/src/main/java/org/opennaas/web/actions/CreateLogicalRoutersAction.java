@@ -116,15 +116,15 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		saveLogicalRoutersInSession();
 
 		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.lola")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.lola")));
 		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("lola.lrouter.name")));
 
 		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.myre")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("myre.lrouter.name")));
 
 		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.gsn")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("gsn.lrouter.name")));
 	}
 

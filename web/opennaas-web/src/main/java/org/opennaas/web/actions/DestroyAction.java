@@ -1,5 +1,7 @@
 package org.opennaas.web.actions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
@@ -10,6 +12,7 @@ import org.opennaas.ws.ComputerSystem;
 import org.opennaas.ws.GreTunnelService;
 import org.opennaas.ws.IChassisCapabilityService;
 import org.opennaas.ws.IGRETunnelCapabilityService;
+import org.opennaas.ws.IL2BoDCapabilityService;
 import org.opennaas.ws.INetOSPFCapabilityService;
 import org.opennaas.ws.INetQueueCapabilityService;
 import org.opennaas.ws.IQueueManagerCapabilityService;
@@ -45,6 +48,8 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	@Override
 	public String execute() throws Exception {
 		deactivateOSPF();
+		if (getText("autobahn.enabled").equals("true"))
+			shutDownAutobahn();
 		removeGRE();
 		removeLR();
 		removeResources();
@@ -133,6 +138,31 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 
 		INetQueueCapabilityService queueService = OpennaasClient.getNetQueueCapabilityService();
 		queueService.execute(networkId);
+	}
+
+	/**
+	 * Shutdown autobahn connections
+	 * 
+	 * @throws CapabilityException_Exception
+	 */
+	private void shutDownAutobahn() throws CapabilityException_Exception, ResourceException_Exception {
+		IL2BoDCapabilityService l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
+		String autbahnId = ((ResourceIdentifier) session.get(getText("autobahn.bod.name"))).getId();
+
+		List<String> list1 = new ArrayList<String>();
+		list1.add(getText("autobahn.connection1.interface1"));
+		list1.add(getText("autobahn.connection1.interface2"));
+		l2BoDCapabilityService.shutDownConnection(autbahnId, list1);
+
+		List<String> list2 = new ArrayList<String>();
+		list2.add(getText("autobahn.connection2.interface1"));
+		list2.add(getText("autobahn.connection2.interface2"));
+		l2BoDCapabilityService.shutDownConnection(autbahnId, list2);
+
+		List<String> list3 = new ArrayList<String>();
+		list3.add(getText("autobahn.connection3.interface1"));
+		list3.add(getText("autobahn.connection3.interface2"));
+		l2BoDCapabilityService.shutDownConnection(autbahnId, list3);
 	}
 
 	/**
