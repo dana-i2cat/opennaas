@@ -39,9 +39,9 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 
 	/**
 	 * #Set static route <br>
-	 * staticroute:create router:logicallola1 0.0.0.0 0.0.0.0 193.1.190.249 <br>
+	 * staticroute:create router:logicalunic1 0.0.0.0 0.0.0.0 193.1.190.249 <br>
 	 * staticroute:create router:logicalmyre1 0.0.0.0 0.0.0.0 193.1.190.2 <br>
-	 * queue:execute router:logicallola1 <br>
+	 * queue:execute router:logicalunic1 <br>
 	 * queue:execute router:logicalmyre1 <br>
 	 * 
 	 * shell:echo "CONFIGURE OSPF" <br>
@@ -61,16 +61,20 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 		staticRouteService = OpennaasClient.getStaticRouteCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
-		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
+		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
-		staticRouteService.createStaticRoute(lrLolaId, getText("common.default.router"), getText("common.default.router"),
-				getText("lola.staticroute.ip"));
+		staticRouteService.createStaticRoute(lrUnicId, getText("common.default.router"), getText("common.default.router"),
+				getText("unic.staticroute.ip"));
 		staticRouteService.createStaticRoute(lrMyreId, getText("common.default.router"), getText("common.default.router"),
 				getText("myre.staticroute.ip"));
+		staticRouteService.createStaticRoute(lrGSNId, getText("common.default.router"), getText("common.default.router"),
+				getText("gsn.staticroute.ip"));
 
-		queueService.execute(lrLolaId);
+		queueService.execute(lrUnicId);
 		queueService.execute(lrMyreId);
+		queueService.execute(lrGSNId);
 	}
 
 	private void configureOSPF() throws CapabilityException_Exception {
