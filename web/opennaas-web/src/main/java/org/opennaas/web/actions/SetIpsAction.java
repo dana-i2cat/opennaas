@@ -78,6 +78,8 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface2")),
 				getProtocolEndpoint(getText("myre.iface2.ip"), getText("common.ip.mask")));
 
+		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface3")),
+				getProtocolEndpoint(getText("myre.iface3.ip"), getText("common.ip.mask")));
 		// logicalGSN
 		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface1")),
 				getProtocolEndpoint(getText("gsn.iface1.ip"), getText("common.ip.mask")));

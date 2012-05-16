@@ -99,6 +99,7 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		ifaces.clear();
 		ifaces.add(getText("myre.iface1"));
 		ifaces.add(getText("myre.iface2"));
+		ifaces.add(getText("myre.iface3"));
 		ifaces.add(getText("myre.iface.gre"));
 		chassisCapability.addInterfacesToLogicalRouter(routerIdMyre, getComputerSystem(getText("myre.lrouter.name")),
 				getInterfaces(ifaces));

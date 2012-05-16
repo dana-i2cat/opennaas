@@ -88,6 +88,8 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 		// myre
 		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface1"), Integer.valueOf(getText("myre.iface1.vlan"))));
 		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface2"), Integer.valueOf(getText("myre.iface2.vlan"))));
+		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface3"), Integer.valueOf(getText("myre.iface3.vlan"))));
+
 		queueManager.execute(routerIdMyre);
 
 		// gsn
