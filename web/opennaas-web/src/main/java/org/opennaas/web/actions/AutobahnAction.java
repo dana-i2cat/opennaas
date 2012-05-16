@@ -40,7 +40,8 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 
 	@Override
 	public String execute() throws Exception {
-		autobahn();
+		if (getText("autobahn.enabled").equals("true"))
+			autobahn();
 		return SUCCESS;
 	}
 
@@ -48,7 +49,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
-		String autbahnId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String autbahnId = ((ResourceIdentifier) session.get(getText("autobahn.bod.name"))).getId();
 
 		// Connection 1
 		String interfaceName1 = getText("autobahn.connection1.interface1");

@@ -1,5 +1,6 @@
 package org.opennaas.extensions.ws.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -55,14 +56,31 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	 * @see org.opennaas.extensions.ws.services.IL2BoDCapabilityService#shutDownConnection(java.lang.String, java.util.List)
 	 */
 	@Override
-	public void shutDownConnection(String resourceId, List<Interface> listInterfaces) throws CapabilityException {
+	public void shutDownConnection(String resourceId, List<String> listInterfaces) throws ResourceException {
 		try {
 			IL2BoDCapability iL2BoDCapability = (IL2BoDCapability) getCapability(resourceId, IL2BoDCapability.class);
-			iL2BoDCapability.shutDownConnection(listInterfaces);
+			iL2BoDCapability.shutDownConnection(getListInterfaces(resourceId, listInterfaces));
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
+		} catch (ResourceException e) {
+			log.error(e);
+			throw e;
 		}
+	}
+
+	/**
+	 * @param resourceId
+	 * @param listInterfaces
+	 * @return list of Interfaces
+	 * @throws ResourceException
+	 */
+	private List<Interface> getListInterfaces(String resourceId, List<String> listInterfaces) throws ResourceException {
+		List<Interface> list = new ArrayList<Interface>();
+		for (String name : listInterfaces) {
+			list.add(getInterfaceByName(resourceId, name));
+		}
+		return list;
 	}
 
 	/**
