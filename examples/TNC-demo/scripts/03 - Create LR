@@ -1,7 +1,7 @@
 shell:echo "CREATE LOGICAL ROUTERS"
 ##Creating logical routers
 
-chassis:createlogicalrouter router:myre dub ge-2/0/1.2048 ge-2/0/1.2017 gr-1/1/0.1
+chassis:createlogicalrouter router:myre dub ge-2/0/1.2048 ge-2/0/1.2017 ge-2/0/0.14 gr-1/1/0.1
 resource:list
 queue:listactions router:myre
 queue:execute router:myre

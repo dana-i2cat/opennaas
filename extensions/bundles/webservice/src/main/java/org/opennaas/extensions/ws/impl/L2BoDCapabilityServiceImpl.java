@@ -39,8 +39,10 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	public void requestConnection(String resourceId, String interfaceName1, String interfaceName2, String vlanid, String capacity,
 			String endTime) throws ResourceException {
 		try {
+			log.info("Start of requestConnection call");
 			IL2BoDCapability iL2BoDCapability = (IL2BoDCapability) getCapability(resourceId, IL2BoDCapability.class);
 			iL2BoDCapability.requestConnection(getParameters(resourceId, interfaceName1, interfaceName2, vlanid, capacity, endTime));
+			log.info("End of requestConnection call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -58,8 +60,10 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	@Override
 	public void shutDownConnection(String resourceId, List<String> listInterfaces) throws ResourceException {
 		try {
+			log.info("Start of shutDownConnection call");
 			IL2BoDCapability iL2BoDCapability = (IL2BoDCapability) getCapability(resourceId, IL2BoDCapability.class);
 			iL2BoDCapability.shutDownConnection(getListInterfaces(resourceId, listInterfaces));
+			log.info("End of shutDownConnection call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;

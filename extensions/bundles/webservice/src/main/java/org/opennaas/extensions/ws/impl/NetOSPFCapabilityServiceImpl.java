@@ -21,8 +21,10 @@ public class NetOSPFCapabilityServiceImpl extends GenericCapabilityService imple
 	@Override
 	public void activateOSPF(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of activateOSPF call");
 			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, INetOSPFCapability.class);
 			iNetOSPFCapability.activateOSPF();
+			log.info("End of activateOSPF call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -33,8 +35,10 @@ public class NetOSPFCapabilityServiceImpl extends GenericCapabilityService imple
 	@Override
 	public void deactivateOSPF(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of deactivateOSPF call");
 			INetOSPFCapability iNetOSPFCapability = (INetOSPFCapability) getCapability(resourceId, INetOSPFCapability.class);
 			iNetOSPFCapability.deactivateOSPF();
+			log.info("End of deactivateOSPF call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
