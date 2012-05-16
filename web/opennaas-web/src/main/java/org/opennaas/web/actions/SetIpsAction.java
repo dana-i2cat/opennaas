@@ -7,8 +7,7 @@ import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IIPCapabilityService;
 import org.opennaas.ws.IpProtocolEndpoint;
-import org.opennaas.ws.LogicalDevice;
-import org.opennaas.ws.LogicalPort;
+import org.opennaas.ws.NetworkPort;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -18,7 +17,8 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SetIpsAction extends ActionSupport implements SessionAware {
 
-	private Map<String, Object>	session;
+	private Map<String, Object>		session;
+	private IIPCapabilityService	ipCapabilityService;
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -30,26 +30,12 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 	}
 
 	/**
-	 * shell:echo "SET IP ADDRESSES" <br>
-	 * ##Set ip addresses on router interfaces <br>
-	 * ipv4:setip router:logicalunic1 ge-0/2/0.80 192.168.1.5 255.255.255.252 <br>
-	 * ipv4:setip router:logicalgsn1 ge-1/0/7.59 192.168.1.6 255.255.255.252 <br>
-	 * ipv4:setip router:logicalgsn1 ge-1/0/7.60 192.168.1.9 255.255.255.252 <br>
-	 * ipv4:setip router:logicalmyre1 ge-2/0/1.81 192.168.1.10 255.255.255.252 <br>
-	 * ipv4:setip router:logicalmyre1 ge-2/0/0.13 192.168.1.13 255.255.255.252 <br>
-	 * ipv4:setip router:logicalunic1 fe-0/3/0.13 192.168.1.14 255.255.255.252 <br>
-	 * ipv4:setip router:logicalunic1 fe-0/3/3.1 193.1.190.250 255.255.255.252 <br>
-	 * ipv4:setip router:logicalmyre1 ge-2/0/0.12 193.1.190.1 255.255.255.252 <br>
-	 * queue:execute router:logicalunic1 <br>
-	 * queue:execute router:logicalmyre1 <br>
-	 * queue:execute router:logicalgsn1 <br>
+	 * Set Ip Addresses
 	 */
-
 	private static final long	serialVersionUID	= 1L;
 
 	@Override
 	public String execute() throws Exception {
-
 		setIPv4();
 		return SUCCESS;
 	}
@@ -59,36 +45,41 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
-		IIPCapabilityService capabilityService = OpennaasClient.getIPCapabilityService();
+		ipCapabilityService = OpennaasClient.getIPCapabilityService();
 
 		// logicalUnic
-		capabilityService.setIPv4(lrUnicId, getLogicalDevice(getText("unic.iface1")),
+		ipCapabilityService.setIPv4(lrUnicId, getNetworkPort(getText("unic.iface1")),
 				getProtocolEndpoint(getText("unic.iface1.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrUnicId, getLogicalDevice(getText("unic.iface2")),
+		ipCapabilityService.setIPv4(lrUnicId, getNetworkPort(getText("unic.iface2")),
 				getProtocolEndpoint(getText("unic.iface2.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrUnicId, getLogicalDevice(getText("unic.iface3")),
+		ipCapabilityService.setIPv4(lrUnicId, getNetworkPort(getText("unic.iface3")),
 				getProtocolEndpoint(getText("unic.iface3.ip"), getText("common.ip.mask")));
 
 		// logicalmyre
-		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface1")),
+		ipCapabilityService.setIPv4(lrMyreId, getNetworkPort(getText("myre.iface1")),
 				getProtocolEndpoint(getText("myre.iface1.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface2")),
+		ipCapabilityService.setIPv4(lrMyreId, getNetworkPort(getText("myre.iface2")),
 				getProtocolEndpoint(getText("myre.iface2.ip"), getText("common.ip.mask")));
 
 		// logicalGSN
-		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface1")),
+		ipCapabilityService.setIPv4(lrGSNId, getNetworkPort(getText("gsn.iface1")),
 				getProtocolEndpoint(getText("gsn.iface1.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface2")),
+		ipCapabilityService.setIPv4(lrGSNId, getNetworkPort(getText("gsn.iface2")),
 				getProtocolEndpoint(getText("gsn.iface2.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrGSNId, getLogicalDevice(getText("gsn.iface3")),
+		ipCapabilityService.setIPv4(lrGSNId, getNetworkPort(getText("gsn.iface3")),
 				getProtocolEndpoint(getText("gsn.iface3.ip"), getText("common.ip.mask")));
 	}
 
+	/**
+	 * @param ip
+	 * @param netmask
+	 * @return
+	 */
 	private IpProtocolEndpoint getProtocolEndpoint(String ip, String netmask) {
 		IpProtocolEndpoint pE = new IpProtocolEndpoint();
 		pE.setIPv4Address(ip);
@@ -96,10 +87,17 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		return pE;
 	}
 
-	private LogicalDevice getLogicalDevice(String ifaceName) {
-		LogicalPort lp = new LogicalPort();
-		lp.setName(ifaceName);
+	/**
+	 * @param ifaceName
+	 * @return
+	 */
+	private NetworkPort getNetworkPort(String ifaceName) {
+		NetworkPort eth = new NetworkPort();
+		String[] args = ifaceName.split("\\.");
 
-		return lp;
+		eth.setName(args[0]);
+		eth.setPortNumber(Integer.valueOf(args[1]));
+
+		return eth;
 	}
 }
