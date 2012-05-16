@@ -60,9 +60,9 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 
 		// Router 1
 		ResourceIdentifier identifier1 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", getText("lola.router.name"), "router", ""));
+				.createResource(getRouterResourceDescriptor("", getText("unic.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier1.getId(),
-				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.lola")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.unic")));
 		resourceManagerService.startResource(identifier1);
 
 		// Router 2
@@ -87,9 +87,11 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		// BoD
 		ResourceIdentifier identifier5 = resourceManagerService
 				.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
-		resourceManagerService.startResource(identifier4);
+		protocolSessionManagerService.registerContext(identifier5.getId(),
+				getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
+		resourceManagerService.startResource(identifier5);
 
-		session.put(getText("lola.router.name"), identifier1);
+		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 		session.put(getText("network.name"), identifier4);
@@ -144,7 +146,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		if (!name.equals(getText("gsn.router.name"))) {
+		if (name.equals(getText("myre.router.name"))) {
 			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
 			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 		}
@@ -159,7 +161,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	 * @param version
 	 * @return
 	 */
-	private ResourceDescriptor getBoDResourceDescriptor(String name, String description, String type, String version) {
+	private ResourceDescriptor getBoDResourceDescriptor(String description, String name, String type, String version) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 		resourceDescriptor.setInformation(getInformation(name, description, type, version));
 
