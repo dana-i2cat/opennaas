@@ -3,8 +3,8 @@
 
 <html>
 <body>
-	<h2>Add resources to network</h2>
-	<s:form action="step4" >	
+	<h2>Destroy resources</h2>
+	<s:form action="step8" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>
 </body>
