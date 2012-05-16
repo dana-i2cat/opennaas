@@ -43,12 +43,12 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
-		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
+		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
-		// add logicalLola
-		capabilitService.addResource(networkId, lrLolaId);
+		// add logicalUnic
+		capabilitService.addResource(networkId, lrUnicId);
 
 		// add logicalmyre
 		capabilitService.addResource(networkId, lrMyreId);
@@ -60,11 +60,11 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	private void attachNetworkResources() throws CapabilityException_Exception {
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.lolamyre")),
-				getInterface(getText("network.interface.myrelola")));
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
+				getInterface(getText("network.interface.myreunic")));
 
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.lolagsn")),
-				getInterface(getText("network.interface.gsnlola")));
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
+				getInterface(getText("network.interface.gsnunic")));
 
 		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
 				getInterface(getText("network.interface.gsnmyre")));
