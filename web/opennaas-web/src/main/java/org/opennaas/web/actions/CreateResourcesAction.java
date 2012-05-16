@@ -74,9 +74,9 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
 		ResourceIdentifier identifier1 = resourceManagerService
-				.createResource(getRouterResourceDescriptor("", getText("lola.router.name"), "router", ""));
+				.createResource(getRouterResourceDescriptor("", getText("unic.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier1.getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.lola")));
+				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.unic")));
 		resourceManagerService.startResource(identifier1);
 
 		ResourceIdentifier identifier2 = resourceManagerService
@@ -96,7 +96,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
 		resourceManagerService.startResource(identifier4);
 
-		session.put(getText("lola.router.name"), identifier1);
+		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 		session.put(getText("network.name"), identifier4);
@@ -150,7 +150,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		if (!name.equals(getText("gsn.router.name"))) {
+		if (name.equals(getText("myre.router.name"))) {
 			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
 			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 		}
