@@ -74,7 +74,7 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	private Interface getInterface(String ifaceName) {
 		Interface iface = new Interface();
 		iface.setName(ifaceName);
-		return null;
+		return iface;
 	}
 
 }
