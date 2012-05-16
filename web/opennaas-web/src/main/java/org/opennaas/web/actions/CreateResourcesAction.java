@@ -39,22 +39,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	}
 
 	/**
-	 * Create resources<br>
-	 * <br>
-	 * resource:create /home/adrian/heanetM20.descriptor<br>
-	 * protocols:context router:heanetM20 netconf ssh://user:password@hea.net:22/netconf<br>
-	 * resource:start router:heanetM20<br>
-	 * 
-	 * ##Creating GSN resource resource:create /home/adrian/gsnMX10.descriptor<br>
-	 * protocols:context router:gsnMX10 netconf ssh://user:password@gsn.hea.net:22/netconf<br>
-	 * resource:start router:gsnMX10<br>
-	 * 
-	 * ##Creating UNI-C resource resource:create /home/adrian/unicM7i.descriptor<br>
-	 * protocols:context router:unicM7i netconf ssh://user:password@unic.hea.net:22/netconf<br>
-	 * resource:start router:unicM7i<br>
-	 * 
-	 * ##Create demo network resource (with empty topology) resource:create /home/adrian/network.descriptor<br>
-	 * resource:start network:networkdemo<br>
+	 * Create resources
 	 */
 	private static final long	serialVersionUID	= 1L;
 
@@ -73,22 +58,25 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
+		// Router 1
 		ResourceIdentifier identifier1 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", getText("lola.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier1.getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.lola")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.lola")));
 		resourceManagerService.startResource(identifier1);
 
+		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", getText("gsn.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier2.getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.gsn")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource(identifier2);
 
+		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
 				.createResource(getRouterResourceDescriptor("", getText("myre.router.name"), "router", ""));
 		protocolSessionManagerService.registerContext(identifier3.getId(),
-				getProtocolSessionContext(getText("protocol.name"), getText("protocol.uri.myre")));
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
 
 		// Network
@@ -96,10 +84,16 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
 		resourceManagerService.startResource(identifier4);
 
+		// BoD
+		ResourceIdentifier identifier5 = resourceManagerService
+				.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
+		resourceManagerService.startResource(identifier4);
+
 		session.put(getText("lola.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 		session.put(getText("network.name"), identifier4);
+		session.put(getText("autobahn.bod.name"), identifier5);
 	}
 
 	/**
@@ -111,13 +105,13 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	 */
 	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(description, name, type, version));
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
 
 		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork",
 				"network", "1.0");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		capabilityDescriptor = getCapabilityDescriptor("Manages the queue of all resources of the network.", "Network Queue capability", "netqueue",
+		capabilityDescriptor = getCapabilityDescriptor("Network Queue capability", "Manages the queue of all resources of the network.", "netqueue",
 				"network", "1.0");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
@@ -133,7 +127,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	 */
 	private ResourceDescriptor getRouterResourceDescriptor(String description, String name, String type, String version) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(description, name, type, version));
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
 
 		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("IPv4 capability", "IPv4 capability", "ipv4", "junos", "10.10");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
@@ -159,6 +153,26 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	}
 
 	/**
+	 * @param description
+	 * @param name
+	 * @param type
+	 * @param version
+	 * @return
+	 */
+	private ResourceDescriptor getBoDResourceDescriptor(String name, String description, String type, String version) {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+
+		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("l2bod capability", "l2bod capability", "l2bod", "autobahn", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "autobahn", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		return resourceDescriptor;
+	}
+
+	/**
 	 * @return
 	 */
 	private CapabilityDescriptor getCapabilityDescriptor(String name, String description, String type, String actionName, String actionVersion) {
@@ -168,7 +182,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		listProperties.add(getCapabilityPropery("actionset.name", actionName));
 		listProperties.add(getCapabilityPropery("actionset.version", actionVersion));
 
-		capabilityDescriptor.setInformation(getInformation(description, name, type, null));
+		capabilityDescriptor.setInformation(getInformation(name, description, type, null));
 
 		return capabilityDescriptor;
 	}
@@ -186,7 +200,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	/**
 	 * @return
 	 */
-	private Information getInformation(String description, String name, String type, String version) {
+	private Information getInformation(String name, String description, String type, String version) {
 		Information information = new Information();
 		information.setDescription(description);
 		information.setName(name);

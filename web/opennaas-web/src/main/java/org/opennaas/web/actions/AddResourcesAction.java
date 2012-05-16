@@ -30,17 +30,7 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	}
 
 	/**
-	 * shell:echo "ADD RESOURCES TO NETWORK" <br>
-	 * ##Add resources to network <br>
-	 * net:addResource network:networkdemo router:logicallola1 <br>
-	 * net:addResource network:networkdemo router:logicalmyre1 <br>
-	 * net:addresource network:networkdemo router:logicalgsn1 <br>
-	 * 
-	 * shell:echo "UPDATE NETWORK TOPOLOGY WITH EXISTENT LINKS" <br>
-	 * ##Tell network who is connected with who unsing only static vlans <br>
-	 * net:l2attach network:networkdemo router:logicallola1:fe-0/3/0.13 router:logicalmyre1:ge-2/0/0.13 <br>
-	 * net:l2attach network:networkdemo router:logicallola1:ge-0/2/0.80 router:logicalgsn1:ge-1/0/7.59 <br>
-	 * net:l2attach network:networkdemo router:logicalgsn1:ge-1/0/7.60 router:logicalmyre1:ge-2/0/1.81 <br>
+	 * Add resources to network
 	 */
 	@Override
 	public String execute() throws Exception {
