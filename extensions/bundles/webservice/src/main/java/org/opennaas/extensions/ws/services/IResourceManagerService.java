@@ -11,7 +11,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 /**
  * @author Isart Canyameres
  */
-@WebService
+@WebService(portName = "ResourceManagerPort", serviceName = "ResourceManagerService", targetNamespace = "http:/www.opennaas.org/ws")
 public interface IResourceManagerService {
 
 	/**

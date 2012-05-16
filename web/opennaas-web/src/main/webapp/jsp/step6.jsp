@@ -3,6 +3,9 @@
 
 <html>
 <body>
-	<h2>End</h2>
+	<h2>Set static route</h2>
+	<s:form action="step6" >	
+		<s:submit type="button" value="Next" theme="simple" />
+	</s:form>
 </body>
 </html>
