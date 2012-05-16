@@ -1,0 +1,19 @@
+<resourceDescriptor>
+    <!--  Basic capability information. It specifies device model and version. IT IS OBLIGATORY -->
+    <capabilityDescriptors>
+        <capabilityProperty value="autobahn" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information><type>l2bod</type></information>
+    </capabilityDescriptors>
+    <capabilityDescriptors>
+        <capabilityProperty value="autobahn" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information><type>queue</type></information>
+    </capabilityDescriptors>
+    <!-- Resource information. It specify type and name-->
+    <information>
+        <type>bod</type>
+        <name>autobahn</name>
+    </information>
+    <properties/> 
+</resourceDescriptor>
