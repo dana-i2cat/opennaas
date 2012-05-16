@@ -14,7 +14,7 @@ import org.opennaas.extensions.ws.services.IProtocolSessionManagerService;
 @WebService
 public class ProtocolSessionManagerServiceImpl implements IProtocolSessionManagerService {
 
-	Log							log	= LogFactory.getLog(ProtocolSessionManagerService.class);
+	Log							log	= LogFactory.getLog(ProtocolSessionManagerServiceImpl.class);
 	private IProtocolManager	protocolManager;
 
 	/**
