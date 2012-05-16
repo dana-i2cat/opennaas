@@ -22,8 +22,10 @@ public class StaticRouteCapabilityServiceImpl extends GenericCapabilityService i
 	@Override
 	public void createStaticRoute(String resourceId, String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
 		try {
+			log.info("Start of createStaticRoute call");
 			IStaticRouteCapability iStaticRouteCapability = (IStaticRouteCapability) getCapability(resourceId, IStaticRouteCapability.class);
 			iStaticRouteCapability.createStaticRoute(netIdIpAdress, maskIpAdress, nextHopIpAddress);
+			log.info("End of createStaticRoute call");
 
 		} catch (CapabilityException e) {
 			log.error(e);
