@@ -30,8 +30,10 @@ public class ConnectionsCapabilityServiceImpl extends GenericCapabilityService i
 	@Override
 	public void makeConnection(String resourceId, FiberConnection connectionRequest) throws CapabilityException {
 		try {
+			log.info("Start of makeConnection call");
 			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.class);
 			iConnectionsCapability.makeConnection(connectionRequest);
+			log.info("End of makeConnection call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -47,8 +49,10 @@ public class ConnectionsCapabilityServiceImpl extends GenericCapabilityService i
 	@Override
 	public void removeConnection(String resourceId, FiberConnection connectionRequest) throws CapabilityException {
 		try {
+			log.info("Start of removeConnection call");
 			IConnectionsCapability iConnectionsCapability = (IConnectionsCapability) getCapability(resourceId, ConnectionsCapability.class);
 			iConnectionsCapability.removeConnection(connectionRequest);
+			log.info("End of removeConnection call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;

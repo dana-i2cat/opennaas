@@ -28,8 +28,10 @@ public class IPCapabilityServiceImpl extends GenericCapabilityService implements
 	@Override
 	public void setIPv4(String resourceId, LogicalDevice logicalDevice, IPProtocolEndpoint ip) throws CapabilityException {
 		try {
+			log.info("Start of setIPv4 call");
 			IIPCapability iIPCapability = (IIPCapability) getCapability(resourceId, IIPCapability.class);
 			iIPCapability.setIPv4(logicalDevice, ip);
+			log.info("End of setIPv4 call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -45,8 +47,10 @@ public class IPCapabilityServiceImpl extends GenericCapabilityService implements
 	@Override
 	public void setInterfaceDescription(String resourceId, LogicalPort iface) throws CapabilityException {
 		try {
+			log.info("Start of setInterfaceDescription call");
 			IIPCapability iIPCapability = (IIPCapability) getCapability(resourceId, IIPCapability.class);
 			iIPCapability.setInterfaceDescription(iface);
+			log.info("End of setInterfaceDescription call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;

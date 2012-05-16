@@ -2,6 +2,8 @@ package org.opennaas.extensions.ws.impl;
 
 import javax.jws.WebService;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.extensions.roadm.capability.monitoring.IMonitoringCapability;
 import org.opennaas.extensions.roadm.capability.monitoring.MonitoringCapability;
@@ -15,6 +17,8 @@ import org.opennaas.extensions.ws.services.IMonitoringCapabilityService;
 @WebService(portName = "MonitoringCapabilityPort", serviceName = "MonitoringCapabilityService", targetNamespace = "http:/www.opennaas.org/ws")
 public class MonitoringCapabilityServiceImpl extends GenericCapabilityService implements IMonitoringCapabilityService {
 
+	Log	log	= LogFactory.getLog(MonitoringCapabilityServiceImpl.class);
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -22,8 +26,12 @@ public class MonitoringCapabilityServiceImpl extends GenericCapabilityService im
 	 */
 	@Override
 	public void clearAlarms(String resourceId) throws CapabilityException {
+
+		log.info("Start of clearAlarms call");
 		IMonitoringCapability iMonitoringCapability = (IMonitoringCapability) getCapability(resourceId, MonitoringCapability.class);
 		iMonitoringCapability.clearAlarms();
+		log.info("End of clearAlarms call");
+
 	}
 
 	/*
