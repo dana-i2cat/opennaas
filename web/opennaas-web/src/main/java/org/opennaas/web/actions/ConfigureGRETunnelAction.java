@@ -41,9 +41,9 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 	/**
 	 * shell:echo "CONFIGURE GRE TUNNELS" <br>
 	 * ##configure vpn access using given interface through each router <br>
-	 * gretunnel:create router:logicallola1 gr-1/2/0.1 192.168.1.17 255.255.255.252 193.1.190.250 84.88.40.26 <br>
+	 * gretunnel:create router:logicalunic1 gr-1/2/0.1 192.168.1.17 255.255.255.252 193.1.190.250 84.88.40.26 <br>
 	 * gretunnel:create router:logicalmyre1 gr-1/1/0.2 192.168.1.33 255.255.255.252 193.1.190.1 134.226.53.108 <br>
-	 * queue:execute router:logicallola1 <br>
+	 * queue:execute router:logicalunic1 <br>
 	 * queue:execute router:logicalmyre1 <br>
 	 */
 	@Override
@@ -56,19 +56,13 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 		greTunnelService = OpennaasClient.getGRETunnelCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
-		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
-		greTunnelService.createGRETunnel(
-				lrLolaId,
-				getGRETunnel(getText("lola.iface.gre"), getText("lola.gretunnel.ip"), getText("common.ip.mask"), getText("lola.iface1.ip"),
-						getText("lola.gretunnel.destiny")));
 		greTunnelService.createGRETunnel(
 				lrMyreId,
 				getGRETunnel(getText("myre.iface.gre"), getText("myre.gretunnel.ip"), getText("common.ip.mask"), getText("myre.iface1.ip"),
 						getText("myre.gretunnel.destiny")));
 
-		queueService.execute(lrLolaId);
 		queueService.execute(lrMyreId);
 	}
 
