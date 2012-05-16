@@ -35,8 +35,10 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 	@Override
 	public void execute(String resourceId) throws ProtocolException, CapabilityException, ActionException {
 		try {
+			log.info("Start of execute  call");
 			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.execute();
+			log.info("End of execute call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -51,8 +53,10 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 	@Override
 	public void clear(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of clear call");
 			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.clear();
+			log.info("End of clear call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -68,6 +72,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 	@Override
 	public List<String> getActions(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of getActions call");
 			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			List<IAction> queueActions = iQueueManagerCapability.getActions();
 
@@ -76,6 +81,7 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 			for (IAction action : queueActions) {
 				qActionNames.add(action.getActionID());
 			}
+			log.info("End of getActions call");
 			return qActionNames;
 		} catch (CapabilityException e) {
 			log.error(e);
@@ -92,8 +98,10 @@ public class QueueManagerCapabilityServiceImpl extends GenericCapabilityService
 	@Override
 	public void modify(String resourceId, ModifyParams modifyParams) throws CapabilityException {
 		try {
+			log.info("Start of modify call");
 			IQueueManagerCapability iQueueManagerCapability = (IQueueManagerCapability) getCapability(resourceId, QueueManager.class);
 			iQueueManagerCapability.modify(modifyParams);
+			log.info("End of modify call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
