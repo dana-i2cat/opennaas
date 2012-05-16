@@ -1,8 +1,5 @@
 package org.opennaas.web.interceptors;
 
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -104,52 +101,6 @@ public class LoginInterceptor extends AbstractInterceptor implements StrutsStati
 			}
 		}
 		return res;
-	}
-
-	public static void main(String[] args) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		String string1 = "@opennaas2012";
-		String string2 = "f0bf4a4fe3c0807d9d181bb933b40a18d3cf2dec";
-
-		System.out.println(new LoginInterceptor().compareDigestValues(string1, string2));
-	}
-
-	/**
-	 * @param value1
-	 *            , string
-	 * @param value2
-	 *            , digest
-	 * @return true if digest of value1 is equals to value2
-	 * @throws UnsupportedEncodingException
-	 * @throws NoSuchAlgorithmException
-	 */
-	private boolean compareDigestValues(String value1, String value2)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		byte[] aValue = getHash(value1.getBytes("UTF8"));
-		System.out.println(convertByteToHex(aValue) + " = " + value2);
-		return convertByteToHex(aValue).equals(value2);
-	}
-
-	/**
-	 * @param content
-	 * @return
-	 * @throws NoSuchAlgorithmException
-	 */
-	private byte[] getHash(byte[] content) throws NoSuchAlgorithmException {
-		MessageDigest md = MessageDigest.getInstance("SHA1");
-		return md.digest(content);
-	}
-
-	/**
-	 * @param byteData
-	 * @return
-	 */
-	private String convertByteToHex(byte[] byteData) {
-		// convert the byte to hex format method 1
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < byteData.length; i++) {
-			sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-		}
-		return sb.toString();
 	}
 
 }
