@@ -16,9 +16,6 @@
 			<s:text name="Disconnected"/>
 		</s:else>
 	</div>
-	<h2>Configure GRE tunnel</h2>
-	<s:form action="step7" >	
-		<s:submit type="button" value="Next" theme="simple" />
-	</s:form>
+	<h2>End</h2>
 </body>
 </html>

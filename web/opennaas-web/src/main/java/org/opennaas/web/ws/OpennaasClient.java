@@ -5,6 +5,10 @@ package org.opennaas.web.ws;
 
 import javax.xml.ws.BindingProvider;
 
+import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.frontend.ClientProxy;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.opennaas.ws.ChassisCapabilityService;
 import org.opennaas.ws.GRETunnelCapabilityService;
 import org.opennaas.ws.IChassisCapabilityService;
@@ -184,6 +188,7 @@ public class OpennaasClient {
 		if (resourceManagerService == null) {
 			ResourceManagerService resourceManager = new ResourceManagerService();
 			resourceManagerService = resourceManager.getResourceManagerPort();
+			changeTimeout(ClientProxy.getClient(resourceManagerService), 5 * 60 * 1000);
 			((BindingProvider) resourceManagerService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
 					endpoint + "resourceManagerService?wsdl");
 		}
@@ -212,9 +217,20 @@ public class OpennaasClient {
 		if (queueManagerCapabilityService == null) {
 			QueueManagerCapabilityService queueManager = new QueueManagerCapabilityService();
 			queueManagerCapabilityService = queueManager.getQueueManagerCapabilityPort();
+			changeTimeout(ClientProxy.getClient(queueManagerCapabilityService), 20 * 60 * 1000); // Autobahn queue execution can last 20mins or more
 			((BindingProvider) queueManagerCapabilityService).getRequestContext().put(BindingProvider.ENDPOINT_ADDRESS_PROPERTY,
 					endpoint + "queueManagerCapabilityService?wsdl");
 		}
 		return queueManagerCapabilityService;
+	}
+
+	private static void changeTimeout(Client serviceClient, long timeout) {
+		HTTPConduit http = (HTTPConduit) serviceClient.getConduit();
+
+		HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+		// httpClientPolicy.setConnectionTimeout(timeout); // stablish connection
+		httpClientPolicy.setReceiveTimeout(timeout); // receive response
+
+		http.setClient(httpClientPolicy);
 	}
 }

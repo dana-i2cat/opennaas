@@ -16,6 +16,9 @@
 			<s:text name="Disconnected"/>
 		</s:else>
 	</div>
-	<h2>End</h2>
+	<h2>Destroy resources</h2>
+	<s:form action="step8" >	
+		<s:submit type="button" value="Next" theme="simple" />
+	</s:form>
 </body>
 </html>
