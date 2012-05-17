@@ -162,5 +162,6 @@
 		<action name="step9" class="org.opennaas.web.actions.DestroyAction">
 			<result name="success">jsp/step10.jsp</result>
 		</action>
+		
 	</package>
 </struts>

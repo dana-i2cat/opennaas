@@ -2,6 +2,9 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <html>
+<head>
+	<link type="text/css" rel="stylesheet" href="css/styles.css" />
+</head>
 <body>
 	<div id="logout">
 		<s:if test="%{#session.OPENNAAS_USER != null}">
@@ -16,9 +19,13 @@
 			<s:text name="Disconnected"/>
 		</s:else>
 	</div>
-	<h2>Create Resources</h2>
-	<s:form action="step1">
-		<s:submit type="button" value="Next" theme="simple" />
-	</s:form>
+	<div id="image">
+		<img src='images/img1.png'>
+	</div>
+	<div id="buttons">
+		<s:form action="step1">
+			<s:submit type="button" value="Do It >>" theme="simple" />
+		</s:form>
+	</div>
 </body>
 </html>

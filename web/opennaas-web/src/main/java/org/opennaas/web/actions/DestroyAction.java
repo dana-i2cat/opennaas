@@ -73,34 +73,34 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	private void removeLR() throws ResourceException_Exception, CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 
-		ResourceIdentifier lrLola = (ResourceIdentifier) session.get(getText("lola.lrouter.name"));
+		ResourceIdentifier lrUnic = (ResourceIdentifier) session.get(getText("unic.lrouter.name"));
 		ResourceIdentifier lrGSN = (ResourceIdentifier) session.get(getText("myre.lrouter.name"));
 		ResourceIdentifier lrMyre = (ResourceIdentifier) session.get(getText("gsn.lrouter.name"));
 
-		resourceManagerService.stopResource(lrLola);
+		resourceManagerService.stopResource(lrUnic);
 		resourceManagerService.stopResource(lrMyre);
 		resourceManagerService.stopResource(lrGSN);
 
-		resourceManagerService.removeResource(lrLola);
+		resourceManagerService.removeResource(lrUnic);
 		resourceManagerService.removeResource(lrMyre);
 		resourceManagerService.removeResource(lrGSN);
 
-		String routerLolaId = ((ResourceIdentifier) session.get(getText("lola.router.name"))).getId();
+		String routerUnicId = ((ResourceIdentifier) session.get(getText("unic.router.name"))).getId();
 		String routerMyreId = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
 		String routerGSNId = ((ResourceIdentifier) session.get(getText("gsn.router.name"))).getId();
 
 		IChassisCapabilityService chassisCapab = OpennaasClient.getChassisCapabilityService();
 
 		ComputerSystem router = new ComputerSystem();
-		router.setName(getText("lola.lrouter.name"));
-		chassisCapab.deleteLogicalRouter(routerLolaId, router);
+		router.setName(getText("unic.lrouter.name"));
+		chassisCapab.deleteLogicalRouter(routerUnicId, router);
 		router.setName(getText("myre.lrouter.name"));
 		chassisCapab.deleteLogicalRouter(routerMyreId, router);
 		router.setName(getText("gsn.lrouter.name"));
 		chassisCapab.deleteLogicalRouter(routerGSNId, router);
 
 		IQueueManagerCapabilityService queueCapab = OpennaasClient.getQueueManagerCapabilityService();
-		queueCapab.execute(routerLolaId);
+		queueCapab.execute(routerUnicId);
 		queueCapab.execute(routerMyreId);
 		queueCapab.execute(routerGSNId);
 	}
@@ -111,20 +111,16 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * @throws ProtocolException_Exception
 	 */
 	private void removeGRE() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
-		String lrLolaId = ((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
 		GreTunnelService greTunnelService = new GreTunnelService();
 
 		IGRETunnelCapabilityService greCapab = OpennaasClient.getGRETunnelCapabilityService();
-		greTunnelService.setName(getText("lola.iface.gre"));
-		greCapab.deleteGRETunnel(lrLolaId, greTunnelService);
 
 		greTunnelService.setName(getText("myre.iface.gre"));
 		greCapab.deleteGRETunnel(lrMyreId, greTunnelService);
 
 		IQueueManagerCapabilityService queueCapab = OpennaasClient.getQueueManagerCapabilityService();
-		queueCapab.execute(lrLolaId);
 		queueCapab.execute(lrMyreId);
 	}
 
@@ -173,17 +169,17 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	private void removeResources() throws CapabilityException_Exception, ResourceException_Exception, ProtocolException_Exception {
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 
-		ResourceIdentifier routerLola = (ResourceIdentifier) session.get(getText("lola.router.name"));
+		ResourceIdentifier routerUnic = (ResourceIdentifier) session.get(getText("unic.router.name"));
 		ResourceIdentifier routerGSN = (ResourceIdentifier) session.get(getText("gsn.router.name"));
 		ResourceIdentifier routerMyre = (ResourceIdentifier) session.get(getText("myre.router.name"));
 		ResourceIdentifier networkDemo = (ResourceIdentifier) session.get(getText("network.name"));
 
-		resourceManagerService.stopResource(routerLola);
+		resourceManagerService.stopResource(routerUnic);
 		resourceManagerService.stopResource(routerGSN);
 		resourceManagerService.stopResource(routerMyre);
 		resourceManagerService.stopResource(networkDemo);
 
-		resourceManagerService.removeResource(routerLola);
+		resourceManagerService.removeResource(routerUnic);
 		resourceManagerService.removeResource(routerGSN);
 		resourceManagerService.removeResource(routerMyre);
 		resourceManagerService.removeResource(networkDemo);

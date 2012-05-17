@@ -75,25 +75,28 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(getText("lola.router.name"))).getId();
+		String routerIdunic = ((ResourceIdentifier) session.get(getText("unic.router.name"))).getId();
 		String routerIdGSN = ((ResourceIdentifier) session.get(getText("gsn.router.name"))).getId();
 		String routerIdMyre = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
 
-		// lola
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface1"), Integer.valueOf(getText("lola.iface1.vlan"))));
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface2"), Integer.valueOf(getText("lola.iface2.vlan"))));
-		chassisCapability.createSubInterface(routerIdLola, getEthernetPort(getText("lola.iface3"), Integer.valueOf(getText("lola.iface3.vlan"))));
-		queueManager.execute(routerIdLola);
+		// unic
+		chassisCapability.createSubInterface(routerIdunic, getEthernetPort(getText("unic.iface1"), Integer.valueOf(getText("unic.iface1.vlan"))));
+		chassisCapability.createSubInterface(routerIdunic, getEthernetPort(getText("unic.iface2"), Integer.valueOf(getText("unic.iface2.vlan"))));
+		chassisCapability.createSubInterface(routerIdunic, getEthernetPort(getText("unic.iface3"), Integer.valueOf(getText("unic.iface3.vlan"))));
+		queueManager.execute(routerIdunic);
 
 		// myre
 		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface1"), Integer.valueOf(getText("myre.iface1.vlan"))));
 		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface2"), Integer.valueOf(getText("myre.iface2.vlan"))));
 		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface3"), Integer.valueOf(getText("myre.iface3.vlan"))));
+		chassisCapability.createSubInterface(routerIdMyre, getEthernetPort(getText("myre.iface.gre"), Integer.valueOf(getText("myre.iface3.vlan"))));
+
 		queueManager.execute(routerIdMyre);
 
 		// gsn
 		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface1"), Integer.valueOf(getText("gsn.iface1.vlan"))));
 		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface2"), Integer.valueOf(getText("gsn.iface2.vlan"))));
+		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface3"), Integer.valueOf(getText("gsn.iface3.vlan"))));
 		queueManager.execute(routerIdGSN);
 	}
 

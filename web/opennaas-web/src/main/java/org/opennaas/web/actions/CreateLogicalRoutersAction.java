@@ -83,18 +83,17 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
-		String routerIdLola = ((ResourceIdentifier) session.get(getText("lola.router.name"))).getId();
+		String routerIdUnic = ((ResourceIdentifier) session.get(getText("unic.router.name"))).getId();
 		String routerIdGSN = ((ResourceIdentifier) session.get(getText("gsn.router.name"))).getId();
 		String routerIdMyre = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
 
-		chassisCapability.createLogicalRouter(routerIdLola, getComputerSystem(getText("lola.lrouter.name")));
-		ifaces.add(getText("lola.iface1"));
-		ifaces.add(getText("lola.iface2"));
-		ifaces.add(getText("lola.iface3"));
-		ifaces.add(getText("lola.iface.gre"));
-		chassisCapability.addInterfacesToLogicalRouter(routerIdLola, getComputerSystem(getText("lola.lrouter.name")),
+		chassisCapability.createLogicalRouter(routerIdUnic, getComputerSystem(getText("unic.lrouter.name")));
+		ifaces.add(getText("unic.iface1"));
+		ifaces.add(getText("unic.iface2"));
+		ifaces.add(getText("unic.iface3"));
+		chassisCapability.addInterfacesToLogicalRouter(routerIdUnic, getComputerSystem(getText("unic.lrouter.name")),
 				getInterfaces(ifaces));
-		queueManager.execute(routerIdLola);
+		queueManager.execute(routerIdUnic);
 
 		chassisCapability.createLogicalRouter(routerIdMyre, getComputerSystem(getText("myre.lrouter.name")));
 		ifaces.clear();
@@ -110,14 +109,15 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		ifaces.clear();
 		ifaces.add(getText("gsn.iface1"));
 		ifaces.add(getText("gsn.iface2"));
+		ifaces.add(getText("gsn.iface3"));
 		chassisCapability.addInterfacesToLogicalRouter(routerIdGSN, getComputerSystem(getText("gsn.lrouter.name")), getInterfaces(ifaces));
 		queueManager.execute(routerIdGSN);
 
 		saveLogicalRoutersInSession();
 
-		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("lola.lrouter.name"))).getId(),
-				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.lola")));
-		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("lola.lrouter.name")));
+		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId(),
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.unic")));
+		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("unic.lrouter.name")));
 
 		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
@@ -152,20 +152,22 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 	 * 
 	 */
 	private void saveLogicalRoutersInSession() throws ResourceException_Exception {
-		ResourceIdentifier lrLola = getLRResourceId(getText("lola.lrouter.name"));
+		ResourceIdentifier lrUnic = getLRResourceId(getText("unic.lrouter.name"));
 		ResourceIdentifier lrGSN = getLRResourceId(getText("gsn.lrouter.name"));
-		ResourceIdentifier myreGSN = getLRResourceId(getText("gsn.lrouter.name"));
+		ResourceIdentifier lrMyre = getLRResourceId(getText("myre.lrouter.name"));
 
-		session.put(getText("lola.lrouter.name"), lrLola);
+		session.put(getText("unic.lrouter.name"), lrUnic);
 		session.put(getText("gsn.lrouter.name"), lrGSN);
-		session.put(getText("myre.lrouter.name"), myreGSN);
+		session.put(getText("myre.lrouter.name"), lrMyre);
 	}
 
 	private List<LogicalPort> getInterfaces(List<String> interfaces) {
 		List<LogicalPort> lpList = new ArrayList<LogicalPort>();
 		for (String iface : interfaces) {
 			NetworkPort np = new NetworkPort();
-			np.setName(iface);
+			String[] argument = iface.split("\\.");
+			np.setName(argument[0]);
+			np.setPortNumber(Integer.valueOf(argument[1]));
 			lpList.add(np);
 		}
 		return lpList;
