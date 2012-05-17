@@ -38,6 +38,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	 */
 	@Override
 	public void setIPv4(LogicalDevice iface, IPProtocolEndpoint ipProtocolEndpoint) throws CapabilityException {
+		log.info("Start of setIPv4 call");
 		NetworkPort param = new NetworkPort();
 		param.setName(iface.getName());
 		if (iface instanceof NetworkPort) {
@@ -51,6 +52,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 		IAction action = createActionAndCheckParams(IPActionSet.SET_IPv4, param);
 		queueAction(action);
+		log.info("End of setIPv4 call");
 	}
 
 	/*
@@ -60,8 +62,10 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	 */
 	@Override
 	public void setInterfaceDescription(LogicalPort iface) throws CapabilityException {
+		log.info("Start of setInterfaceDescription call");
 		IAction action = createActionAndCheckParams(IPActionSet.SET_INTERFACE_DESCRIPTION, iface);
 		queueAction(action);
+		log.info("End of setInterfaceDescription call");
 	}
 
 	/**
