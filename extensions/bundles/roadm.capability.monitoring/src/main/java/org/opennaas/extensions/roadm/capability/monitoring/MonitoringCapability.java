@@ -1,4 +1,4 @@
-q package org.opennaas.extensions.roadm.capability.monitoring;
+package org.opennaas.extensions.roadm.capability.monitoring;
 
 import java.util.ArrayList;
 import java.util.List;

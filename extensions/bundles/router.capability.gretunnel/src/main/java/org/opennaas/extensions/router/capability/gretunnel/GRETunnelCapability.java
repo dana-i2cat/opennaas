@@ -87,7 +87,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 			}
 		}
 		log.info("End of showGRETunnelConfiguration call");
-
+		
 		return listGreTunnelServices;
 	}
 
