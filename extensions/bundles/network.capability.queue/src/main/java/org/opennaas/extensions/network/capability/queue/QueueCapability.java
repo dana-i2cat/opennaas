@@ -112,7 +112,9 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		try {
 			IResource iResource = getResource(networkElementName);
 			if (iResource != null) {
-				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource.getCapability(getInformation(QUEUE_CAPABILITY_NAME));
+
+				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource
+						.getCapabilityByInterface(IQueueManagerCapability.class);
 				if (queueCapability != null) {
 					queueResponse = (QueueResponse) queueCapability.execute();
 				}

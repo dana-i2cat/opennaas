@@ -19,7 +19,8 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * A communication point from which data can be sent or received. ProtocolEndpoints link system or computer interfaces to LogicalNetworks.
  */
 @XmlSeeAlso({
-		VLANEndpoint.class
+		VLANEndpoint.class,
+		IPProtocolEndpoint.class
 })
 public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {

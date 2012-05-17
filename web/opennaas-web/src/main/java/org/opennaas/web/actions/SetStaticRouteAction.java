@@ -65,11 +65,11 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
-		staticRouteService.createStaticRoute(lrUnicId, getText("common.default.router"), getText("common.default.router"),
+		staticRouteService.createStaticRoute(lrUnicId, getText("common.default.route"), getText("common.default.route"),
 				getText("unic.staticroute.ip"));
-		staticRouteService.createStaticRoute(lrMyreId, getText("common.default.router"), getText("common.default.router"),
+		staticRouteService.createStaticRoute(lrMyreId, getText("common.default.route"), getText("common.default.route"),
 				getText("myre.staticroute.ip"));
-		staticRouteService.createStaticRoute(lrGSNId, getText("common.default.router"), getText("common.default.router"),
+		staticRouteService.createStaticRoute(lrGSNId, getText("common.default.route"), getText("common.default.route"),
 				getText("gsn.staticroute.ip"));
 
 		queueService.execute(lrUnicId);

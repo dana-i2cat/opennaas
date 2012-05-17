@@ -111,20 +111,16 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * @throws ProtocolException_Exception
 	 */
 	private void removeGRE() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
-		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
 		GreTunnelService greTunnelService = new GreTunnelService();
 
 		IGRETunnelCapabilityService greCapab = OpennaasClient.getGRETunnelCapabilityService();
-		greTunnelService.setName(getText("unic.iface.gre"));
-		greCapab.deleteGRETunnel(lrUnicId, greTunnelService);
 
 		greTunnelService.setName(getText("myre.iface.gre"));
 		greCapab.deleteGRETunnel(lrMyreId, greTunnelService);
 
 		IQueueManagerCapabilityService queueCapab = OpennaasClient.getQueueManagerCapabilityService();
-		queueCapab.execute(lrUnicId);
 		queueCapab.execute(lrMyreId);
 	}
 

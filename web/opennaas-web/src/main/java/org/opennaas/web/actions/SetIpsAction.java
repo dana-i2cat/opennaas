@@ -4,10 +4,13 @@ import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
+import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IIPCapabilityService;
+import org.opennaas.ws.IQueueManagerCapabilityService;
 import org.opennaas.ws.IpProtocolEndpoint;
 import org.opennaas.ws.NetworkPort;
+import org.opennaas.ws.ProtocolException_Exception;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -40,12 +43,13 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	public void setIPv4() throws CapabilityException_Exception {
+	public void setIPv4() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
 		ipCapabilityService = OpennaasClient.getIPCapabilityService();
+		IQueueManagerCapabilityService queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
 		// logicalUnic
 		ipCapabilityService.setIPv4(lrUnicId, getNetworkPort(getText("unic.iface1")),
@@ -64,7 +68,7 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		ipCapabilityService.setIPv4(lrMyreId, getNetworkPort(getText("myre.iface2")),
 				getProtocolEndpoint(getText("myre.iface2.ip"), getText("common.ip.mask")));
 
-		capabilityService.setIPv4(lrMyreId, getLogicalDevice(getText("myre.iface3")),
+		ipCapabilityService.setIPv4(lrMyreId, getNetworkPort(getText("myre.iface3")),
 				getProtocolEndpoint(getText("myre.iface3.ip"), getText("common.ip.mask")));
 		// logicalGSN
 		ipCapabilityService.setIPv4(lrGSNId, getNetworkPort(getText("gsn.iface1")),
@@ -75,6 +79,11 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 
 		ipCapabilityService.setIPv4(lrGSNId, getNetworkPort(getText("gsn.iface3")),
 				getProtocolEndpoint(getText("gsn.iface3.ip"), getText("common.ip.mask")));
+
+		queueManager.execute(lrGSNId);
+		queueManager.execute(lrMyreId);
+		queueManager.execute(lrUnicId);
+
 	}
 
 	/**

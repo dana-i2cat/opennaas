@@ -17,7 +17,7 @@
 		</s:else>
 	</div>
 	<h2>Set static route</h2>
-	<s:form action="step6" >	
+	<s:form action="step7" >	
 		<s:submit type="button" value="Next" theme="simple" />
 	</s:form>
 </body>

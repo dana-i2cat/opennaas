@@ -7,11 +7,11 @@ import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.GreTunnelConfiguration;
+import org.opennaas.ws.GreTunnelEndpoint;
 import org.opennaas.ws.GreTunnelService;
 import org.opennaas.ws.GreTunnelServiceConfiguration;
 import org.opennaas.ws.IGRETunnelCapabilityService;
 import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.IpProtocolEndpoint;
 import org.opennaas.ws.ProtocolException_Exception;
 import org.opennaas.ws.ProvidesEndpoint;
 import org.opennaas.ws.ResourceIdentifier;
@@ -74,9 +74,9 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 		greConfig.setSourceAddress(ipSource);
 		greConfig.setDestinationAddress(ipDestiny);
 
-		IpProtocolEndpoint ipEndPoint = new IpProtocolEndpoint();
-		ipEndPoint.setIPv4Address(tunnelIP);
-		ipEndPoint.setSubnetMask(tunnelMask);
+		GreTunnelEndpoint greTunnelEndpoint = new GreTunnelEndpoint();
+		greTunnelEndpoint.setIPv4Address(tunnelIP);
+		greTunnelEndpoint.setSubnetMask(tunnelMask);
 
 		// associate GRETunnelService and GRETunnelConfiguration
 		GreTunnelServiceConfiguration assoc = new GreTunnelServiceConfiguration();
@@ -85,7 +85,7 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 
 		// associate GRETunnelService and GRETunnelEndpoint
 		ProvidesEndpoint assoc2 = new ProvidesEndpoint();
-		assoc2.setTo(ipEndPoint);
+		assoc2.setTo(greTunnelEndpoint);
 		greService.getToAssociations().add(assoc2);
 
 		return greService;

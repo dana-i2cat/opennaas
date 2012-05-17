@@ -6,7 +6,6 @@ import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.INetworkBasicCapabilityService;
-import org.opennaas.ws.Interface;
 import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,7 +34,6 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	@Override
 	public String execute() throws Exception {
 		addNetworkResources();
-		attachNetworkResources();
 		return SUCCESS;
 	}
 
@@ -55,26 +53,6 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 
 		// add logicalGSN
 		capabilitService.addResource(networkId, lrGSNId);
-	}
-
-	private void attachNetworkResources() throws CapabilityException_Exception {
-		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
-
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
-				getInterface(getText("network.interface.myreunic")));
-
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
-				getInterface(getText("network.interface.gsnunic")));
-
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
-				getInterface(getText("network.interface.gsnmyre")));
-
-	}
-
-	private Interface getInterface(String ifaceName) {
-		Interface iface = new Interface();
-		iface.setName(ifaceName);
-		return iface;
 	}
 
 }

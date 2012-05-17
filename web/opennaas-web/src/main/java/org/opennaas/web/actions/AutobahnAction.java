@@ -7,7 +7,9 @@ import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IL2BoDCapabilityService;
+import org.opennaas.ws.INetworkBasicCapabilityService;
 import org.opennaas.ws.IQueueManagerCapabilityService;
+import org.opennaas.ws.Interface;
 import org.opennaas.ws.ProtocolException_Exception;
 import org.opennaas.ws.ResourceException_Exception;
 import org.opennaas.ws.ResourceIdentifier;
@@ -42,6 +44,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	public String execute() throws Exception {
 		if (getText("autobahn.enabled").equals("true"))
 			autobahn();
+		attachNetworkResources();
 		return SUCCESS;
 	}
 
@@ -80,5 +83,27 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
 
 		queueManager.execute(autbahnId);
+	}
+
+	private void attachNetworkResources() throws CapabilityException_Exception {
+		INetworkBasicCapabilityService capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
+
+		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
+
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
+				getInterface(getText("network.interface.myreunic")));
+
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
+				getInterface(getText("network.interface.gsnunic")));
+
+		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
+				getInterface(getText("network.interface.gsnmyre")));
+
+	}
+
+	private Interface getInterface(String ifaceName) {
+		Interface iface = new Interface();
+		iface.setName(ifaceName);
+		return iface;
 	}
 }
