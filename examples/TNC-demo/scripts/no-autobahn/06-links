@@ -1,0 +1,5 @@
+shell:echo "UPDATE NETWORK TOPOLOGY WITH EXISTENT LINKS"
+##Tell network who is connected with who unsing only static vlans
+net:l2attach network:networkdemo router:dub:ge-2/0/1.2045 router:pw:ge-1/0/7.2045
+net:l2attach network:networkdemo router:dub:ge-2/0/1.2019 router:cph:ge-1/1/1.2019
+net:l2attach network:networkdemo router:pw:ge-1/0/7.2018 router:cph:ge-1/1/1.2018
