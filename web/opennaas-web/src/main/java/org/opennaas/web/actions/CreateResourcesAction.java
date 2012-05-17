@@ -85,17 +85,21 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		resourceManagerService.startResource(identifier4);
 
 		// BoD
-		ResourceIdentifier identifier5 = resourceManagerService
-				.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
-		protocolSessionManagerService.registerContext(identifier5.getId(),
-				getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
-		resourceManagerService.startResource(identifier5);
+		ResourceIdentifier identifier5 = null;
+		if (getText("autobahn.enabled").equals("true")) {
+			identifier5 = resourceManagerService
+					.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
+			protocolSessionManagerService.registerContext(identifier5.getId(),
+					getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
+			resourceManagerService.startResource(identifier5);
+		}
 
 		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 		session.put(getText("network.name"), identifier4);
-		session.put(getText("autobahn.bod.name"), identifier5);
+		if (getText("autobahn.enabled").equals("true"))
+			session.put(getText("autobahn.bod.name"), identifier5);
 	}
 
 	/**

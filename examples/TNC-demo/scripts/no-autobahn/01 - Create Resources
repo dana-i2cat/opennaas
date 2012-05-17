@@ -1,0 +1,22 @@
+shell:echo "INITIALIZE RESOURCES"
+
+##Creating GSN resource
+resource:create /home/adrian/Escritorio/script/gsn.descriptor
+protocols:context router:gsn netconf mock://username:password@cpe1-gsn.hea.net:22/netconf
+resource:start router:gsn
+
+##Creating heanet resource
+resource:create /home/adrian/Escritorio/script/myre.descriptor
+protocols:context router:myre netconf mock://username:password@myre.hea.net:22/netconf
+resource:start router:myre
+
+##Creating unic resource
+resource:create /home/adrian/Escritorio/script/unic.descriptor
+protocols:context router:unic netconf mock://username:password@130.225.242.82:22/netconf
+resource:start router:unic
+
+##Create demo network resource (with empty topology)
+resource:create /home/adrian/Escritorio/script/network.descriptor
+resource:start network:networkdemo
+
+
