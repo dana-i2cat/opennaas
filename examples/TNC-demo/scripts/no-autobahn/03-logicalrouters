@@ -16,7 +16,6 @@ protocols:context router:pw netconf mock://username:password@cpe1-gsn.hea.net:22
 resource:start router:pw
 
 chassis:createlogicalrouter router:unic cph ge-1/1/1.2019 ge-1/1/1.2018 ge-1/1/2.2101
-#ge-1/1/2.0
 resource:list
 queue:listactions router:unic
 queue:execute router:unic
