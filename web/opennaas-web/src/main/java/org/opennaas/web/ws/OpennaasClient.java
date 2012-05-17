@@ -3,6 +3,8 @@
  */
 package org.opennaas.web.ws;
 
+import java.util.ResourceBundle;
+
 import javax.xml.ws.BindingProvider;
 
 import org.apache.cxf.endpoint.Client;
@@ -40,7 +42,8 @@ import org.opennaas.ws.StaticRouteCapabilityService;
  */
 public class OpennaasClient {
 
-	private static final String						endpoint						= "http://localhost:8182/cxf/";
+	private static final String						endpoint						= ResourceBundle.getBundle("ApplicationResources").getString(
+																							"ws.url");
 	private static IChassisCapabilityService		chassisCapabilityService		= null;
 	private static IGRETunnelCapabilityService		greTunnelCapabilityService		= null;
 	private static IIPCapabilityService				ipCapabilityService				= null;
