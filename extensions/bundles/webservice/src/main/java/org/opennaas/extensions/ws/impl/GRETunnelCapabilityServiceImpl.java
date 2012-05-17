@@ -28,8 +28,10 @@ public class GRETunnelCapabilityServiceImpl extends GenericCapabilityService imp
 	@Override
 	public void createGRETunnel(String resourceId, GRETunnelService greTunnelService) throws CapabilityException {
 		try {
+			log.info("Start of createGRETunnel call");
 			IGRETunnelCapability iOSPFCapability = (IGRETunnelCapability) getCapability(resourceId, IGRETunnelCapability.class);
 			iOSPFCapability.createGRETunnel(greTunnelService);
+			log.info("End of createGRETunnel call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -45,8 +47,10 @@ public class GRETunnelCapabilityServiceImpl extends GenericCapabilityService imp
 	@Override
 	public void deleteGRETunnel(String resourceId, GRETunnelService greTunnelService) throws CapabilityException {
 		try {
+			log.info("Start of deleteGRETunnel call");
 			IGRETunnelCapability iOSPFCapability = (IGRETunnelCapability) getCapability(resourceId, IGRETunnelCapability.class);
 			iOSPFCapability.deleteGRETunnel(greTunnelService);
+			log.info("End of deleteGRETunnel call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -62,12 +66,14 @@ public class GRETunnelCapabilityServiceImpl extends GenericCapabilityService imp
 	@Override
 	public List<GRETunnelService> showGRETunnelConfiguration(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of showGRETunnelConfiguration call");
 			IGRETunnelCapability iOSPFCapability = (IGRETunnelCapability) getCapability(resourceId, IGRETunnelCapability.class);
-			return iOSPFCapability.showGRETunnelConfiguration();
+			List<GRETunnelService> greTunnelServices = iOSPFCapability.showGRETunnelConfiguration();
+			log.info("End of showGRETunnelConfiguration call");
+			return greTunnelServices;
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
 		}
 	}
-
 }

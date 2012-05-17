@@ -21,8 +21,11 @@ public class NetQueueCapabilityServiceImpl extends GenericCapabilityService impl
 	@Override
 	public void execute(String resourceId) throws CapabilityException {
 		try {
+			log.info("Start of execute call");
 			IQueueCapability iQueueCapability = (IQueueCapability) getCapability(resourceId, IQueueCapability.class);
 			iQueueCapability.execute();
+			log.info("End of execute call");
+
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
