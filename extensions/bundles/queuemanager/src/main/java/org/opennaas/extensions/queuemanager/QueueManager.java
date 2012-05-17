@@ -111,8 +111,10 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	@Override
 	public void clear() {
+		log.info("Start of clear call");
 		log.debug("Clearing the queue...");
 		queue.clear();
+		log.info("End of clear call");
 	}
 
 	/*
@@ -120,11 +122,13 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	@Override
 	public List<IAction> getActions() {
+		log.info("Start of getActions call");
 		log.debug("Get actions");
 		List<IAction> actions = new ArrayList<IAction>();
 		for (IAction action : queue) {
 			actions.add(action);
 		}
+		log.info("End of getActions call");
 		return actions;
 	}
 
@@ -133,8 +137,10 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	@Override
 	public void queueAction(IAction action) {
+		log.info("Start of queueAction call");
 		log.debug("Queue new action");
 		queue.add(action);
+		log.info("End of queueAction call");
 	}
 
 	/**
@@ -145,11 +151,13 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	@Override
 	public void modify(ModifyParams modifyParams) throws CapabilityException {
+		log.info("Start of modify call");
 		if (modifyParams.getQueueOper() == ModifyParams.Operations.REMOVE) {
 			remove(modifyParams.getPosAction());
 		} else {
 			throw new UnsupportedOperationException("Unsupported operation in modify: " + modifyParams.getQueueOper());
 		}
+		log.info("End of modify call");
 	}
 
 	/*
@@ -157,6 +165,7 @@ public class QueueManager extends AbstractCapability implements
 	 */
 	@Override
 	public QueueResponse execute() throws CapabilityException {
+		log.info("Start of execute call");
 		// initialize queue response
 		long startTime = 0;
 		long stopTime = 0;
@@ -294,6 +303,7 @@ public class QueueManager extends AbstractCapability implements
 		queueResponse.setTotalTime(stopTime - startTime);
 
 		clear();
+		log.info("End of execute call");
 		return queueResponse;
 	}
 
@@ -340,7 +350,7 @@ public class QueueManager extends AbstractCapability implements
 					manager.getIdentifierFromResourceName(typeResource,
 							nameResource);
 				} catch (ResourceNotFoundException e) {
-					// TODO WHO IS IT THE RESPONSIBLE TO CREATE A CHILD VIRTUAL RESOURCE
+					// TODO WHO IS RESPONSIBLE FOR CREATING A CHILD VIRTUAL RESOURCE?
 					log.error(e.getMessage());
 					log.info("Since this resource didn't exist, it has to be created.");
 					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(

@@ -1,4 +1,4 @@
-package org.opennaas.extensions.roadm.capability.monitoring;
+q package org.opennaas.extensions.roadm.capability.monitoring;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,12 +48,14 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	 */
 	@Override
 	public void clearAlarms() throws CapabilityException {
+		log.info("Start of clearAlarms call");
 		try {
 			IAlarmsRepository alarmsRepo = Activator.getAlarmsRepositoryService();
 			alarmsRepo.clearResourceAlarms(resourceId);
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
+		log.info("End of clearAlarms call");
 	}
 
 	/*
@@ -63,6 +65,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	 */
 	@Override
 	public List<ResourceAlarm> getAlarms() throws CapabilityException {
+		log.info("Start of getAlarms call");
 		List<ResourceAlarm> alarms = new ArrayList<ResourceAlarm>();
 		try {
 			IAlarmsRepository alarmsRepo = Activator.getAlarmsRepositoryService();
@@ -72,6 +75,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		} catch (ResourceNotFoundException e) {
 			throw new CapabilityException(e);
 		}
+		log.info("End of getAlarms call");
 		return alarms;
 	}
 
