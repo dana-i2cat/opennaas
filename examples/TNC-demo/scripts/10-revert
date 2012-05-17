@@ -42,5 +42,3 @@ resource:remove router:unic
 
 resource:stop router:gsn
 resource:remove router:gsn
-
-shutdown -f
