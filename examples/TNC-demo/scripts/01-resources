@@ -4,7 +4,6 @@ shell:echo "INITIALIZE RESOURCES"
 resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/gsn.descriptor
 resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/myre.descriptor
 resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/unic.descriptor
-resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/network.descriptor
 resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/autobahn.descriptor
 
 ##Adding contexts for resources
@@ -14,5 +13,4 @@ shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/0
 resource:start router:gsn
 resource:start router:myre
 resource:start router:unic
-resource:start network:networkdemo
 resource:start bod:autobahn

@@ -1,4 +1,9 @@
 shell:echo "ADD RESOURCES TO NETWORK"
+
+##Create network
+resource:create /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/descriptors/network.descriptor
+resource:start network:networkdemo
+
 ##Add resources to network
 net:addResource network:networkdemo router:dub
 net:addResource network:networkdemo router:pw
