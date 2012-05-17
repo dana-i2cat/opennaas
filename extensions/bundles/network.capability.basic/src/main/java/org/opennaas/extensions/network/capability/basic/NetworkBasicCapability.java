@@ -40,6 +40,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	@Override
 	public NetworkModel addResource(IResource resourceToAdd) throws CapabilityException {
 
+		log.info("Start of addResource call");
 		if (resourceToAdd == null) {
 			throw new CapabilityException("Invalid null resourceToAdd");
 		}
@@ -81,12 +82,14 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 			}
 		}
 
+		log.info("End of addResource call");
 		return networkModel;
 	}
 
 	@Override
 	public NetworkModel removeResource(IResource resourceToRemove) throws CapabilityException {
 
+		log.info("Start of removeResource call");
 		if (resourceToRemove == null) {
 			throw new CapabilityException("Invalid null resourceToRemove");
 		}
@@ -117,12 +120,14 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		resource.getResourceDescriptor().setNetworkTopology(topology);
 		resource.getResourceDescriptor().setResourceReferences(networkModel.getResourceReferences());
 
+		log.info("End of removeResource call");
 		return networkModel;
 	}
 
 	@Override
 	public NetworkConnection l2attach(Interface interface1, Interface interface2) throws CapabilityException {
 
+		log.info("Start of l2attach call");
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
 		}
@@ -173,12 +178,14 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		// create connection
 		NetworkConnection connection = createConnectionBetweenInterfaces(realInterface1, realInterface2, resource);
 
+		log.info("End of l2attach call");
 		return connection;
 	}
 
 	@Override
 	public void l2detach(Interface interface1, Interface interface2) throws CapabilityException {
 
+		log.info("Start of l2detach call");
 		if (interface1 == null || interface2 == null) {
 			throw new CapabilityException("Invalid null interface");
 		}
@@ -204,6 +211,8 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		} else {
 			log.info("L2detach: Interfaces were not attached.");
 		}
+		log.info("End of l2detach call");
+
 	}
 
 	@Override

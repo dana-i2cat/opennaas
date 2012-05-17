@@ -28,8 +28,6 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		log.debug("Built new Connections Capability");
 	}
 
-	
-	
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
@@ -66,23 +64,26 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		}
 	}
 
-   //IConncectionsCapability implementation
+	// IConnectionsCapability implementation
 	@Override
 	public void makeConnection(FiberConnection connectionRequest)
 			throws CapabilityException {
-		
+
+		log.info("Start of makeConnection call");
 		IAction action = createActionAndCheckParams(ConnectionsActionSet.MAKE_CONNECTION, connectionRequest);
 		queueAction(action);
-		
-	}
+		log.info("End of makeConnection call");
 
+	}
 
 	@Override
 	public void removeConnection(FiberConnection connectionRequest)
 			throws CapabilityException {
+		log.info("Start of removeConnection call");
 		IAction action = createActionAndCheckParams(ConnectionsActionSet.REMOVE_CONNECTION, connectionRequest);
 		queueAction(action);
-				
+		log.info("End of removeConnection call");
+
 	}
 
 }

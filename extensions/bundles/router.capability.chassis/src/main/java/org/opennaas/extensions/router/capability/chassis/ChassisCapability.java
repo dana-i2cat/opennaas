@@ -79,39 +79,48 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 	@Override
 	public void upPhysicalInterface(LogicalPort iface) throws CapabilityException {
-
+		log.info("Start of upPhysicalInterface call");
 		iface.setOperationalStatus(OperationalStatus.OK);
 
 		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESTATUS, iface);
 		queueAction(action);
+		log.info("End of upPhysicalInterface call");
+
 	}
 
 	@Override
 	public void downPhysicalInterface(LogicalPort iface) throws CapabilityException {
 
+		log.info("Start of downPhysicalInterface call");
 		iface.setOperationalStatus(OperationalStatus.STOPPED);
 
 		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESTATUS, iface);
 		queueAction(action);
+		log.info("End of downPhysicalInterface call");
 	}
 
 	@Override
 	public void createSubInterface(NetworkPort iface) throws CapabilityException {
 
+		log.info("Start of createSubInterface call");
 		IAction action = createActionAndCheckParams(ChassisActionSet.CONFIGURESUBINTERFACE, iface);
 		queueAction(action);
+		log.info("End of createSubInterface call");
 	}
 
 	@Override
 	public void deleteSubInterface(NetworkPort iface) throws CapabilityException {
 
+		log.info("Start of deleteSubInterface call");
 		IAction action = createActionAndCheckParams(ChassisActionSet.DELETESUBINTERFACE, iface);
 		queueAction(action);
+		log.info("End of deleteSubInterface call");
 	}
 
 	@Override
 	public void setEncapsulation(LogicalPort iface, ProtocolIFType encapsulationType) throws CapabilityException {
 
+		log.info("Start of setEncapsulation call");
 		if (!encapsulationType.equals(ProtocolIFType.UNKNOWN)) {
 			ProtocolEndpoint encapsulationEndpoint = new ProtocolEndpoint();
 			encapsulationEndpoint.setProtocolIFType(encapsulationType);
@@ -120,11 +129,13 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 		removeCurrentEncapsulation(iface);
 		setDesiredEncapsulation(iface);
+		log.info("End of setEncapsulation call");
 	}
 
 	@Override
 	public void setEncapsulationLabel(LogicalPort iface, String encapsulationLabel) throws CapabilityException {
 
+		log.info("Start of setEncapsulationLabel call");
 		// specify label in iface
 		// we use the name of the endpoint to store the encapsulation label
 		// and mark protocolType as unknown (it will be discovered by opennaas)
@@ -136,22 +147,26 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 		// FIXME it assumes there is only TAGGED_ETHERNET and NO encapsulation
 		IAction action = createActionAndCheckParams(ChassisActionSet.SET_VLANID, iface);
 		queueAction(action);
+		log.info("End of setEncapsulationLabel call");
 	}
 
 	@Override
 	public void createLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
 
+		log.info("Start of createLogicalRouter call");
 		IAction action = createActionAndCheckParams(ChassisActionSet.CREATELOGICALROUTER, logicalRouter);
 		queueAction(action);
 
 		List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
 		interfaces.addAll(ModelHelper.getInterfaces(logicalRouter));
 		addInterfacesToLogicalRouter(logicalRouter, interfaces);
+		log.info("End of createLogicalRouter call");
 	}
 
 	@Override
 	public void deleteLogicalRouter(ComputerSystem logicalRouter) throws CapabilityException {
 
+		log.info("Start of deleteLogicalRouter call");
 		// By default, interfaces are not transfered back to the physical router.
 		// Instead, their configuration is lost. If the user wants to maintain them,
 		// it can be done launching removeInterfacesFromLogicalRouter(desiredInterfaces) before deleting it.
@@ -162,10 +177,13 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 
 		IAction action = createActionAndCheckParams(ChassisActionSet.DELETELOGICALROUTER, logicalRouter);
 		queueAction(action);
+		log.info("E of deleteLogicalRouter call");
 	}
 
 	@Override
 	public void addInterfacesToLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
+
+		log.info("Start of addInterfacesToLogicalRouter call");
 		IAction action;
 		ComputerSystem logicalRouterStub;
 		for (LogicalPort interfaceToAdd : interfaces) {
@@ -178,11 +196,14 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 			action = createActionAndCheckParams(ChassisActionSet.ADDINTERFACETOLOGICALROUTER, logicalRouterStub);
 			queueAction(action);
 		}
+		log.info("End of addInterfacesToLogicalRouter call");
+
 	}
 
 	@Override
 	public void removeInterfacesFromLogicalRouter(ComputerSystem logicalRouter, List<LogicalPort> interfaces) throws CapabilityException {
 
+		log.info("Start of removeInterfacesFromLogicalRouter call");
 		IAction action;
 		ComputerSystem logicalRouterStub;
 		for (LogicalPort interfaceToAdd : interfaces) {
@@ -195,6 +216,8 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 			action = createActionAndCheckParams(ChassisActionSet.REMOVEINTERFACEFROMLOGICALROUTER, logicalRouterStub);
 			queueAction(action);
 		}
+		log.info("End of removeInterfacesFromLogicalRouter call");
+
 	}
 
 	private boolean requiresTaggedEthernetEncapsulation(LogicalPort port) {

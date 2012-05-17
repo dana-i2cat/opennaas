@@ -70,6 +70,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 
 	@Override
 	public void deactivateOSPF() throws CapabilityException {
+		log.info("Start of deactivateOSPF call");
 		Response response = new Response();
 		response.setCommandName(CAPABILITY_TYPE + " deactivateOSPF");
 
@@ -83,10 +84,12 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
+		log.info("End of deactivateOSPF call");
 	}
 
 	@Override
 	public void activateOSPF() throws CapabilityException {
+		log.info("Start of activateOSPF call ");
 		long backboneAreaId = 0l; // 0.0.0.0
 
 		Response response = new Response();
@@ -121,6 +124,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		} catch (ActivatorException e) {
 			throw new CapabilityException(e);
 		}
+		log.info("End of activateOSPF call ");
 	}
 
 	private ICapability getCapability(List<? extends ICapability> capabilities, String type) throws CapabilityException {
