@@ -1,0 +1,8 @@
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/01-resources
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/02-subinterfaces
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/03-logicalrouters
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/04-network
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/05-ips
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/06-links
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/07-ospf
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/08-gre
