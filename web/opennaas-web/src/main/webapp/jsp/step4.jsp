@@ -2,10 +2,30 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <html>
+<head>
+	<link type="text/css" rel="stylesheet" href="css/styles.css" />
+</head>
 <body>
-	<h2>Step4</h2>
-	<s:form action="step5" >	
-		<s:submit type="button" value="Next" theme="simple" />
-	</s:form>
+	<div id="logout">
+		<s:if test="%{#session.OPENNAAS_USER != null}">
+			<s:label value="%{#session.OPENNAAS_USER.userName}" theme="simple" />&nbsp;|
+			<s:url action="logout" id="logout"/>
+			<s:a href="%{logout}">
+				<s:text name="Logout"/>
+			</s:a>
+			<img title="Logout" alt="Logout" src="images/login/logout.gif"/>
+		</s:if>
+		<s:else>
+			<s:text name="Disconnected"/>
+		</s:else>
+	</div>
+	<div id="image">
+		<img src='images/Slide08.png'>
+	</div>
+	<div id="buttons">
+		<s:form action="step4" >	
+			<s:submit type="button" value="Do It >>" theme="simple" />
+		</s:form>
+	</div>
 </body>
 </html>

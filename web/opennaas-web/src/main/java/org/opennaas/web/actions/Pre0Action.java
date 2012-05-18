@@ -5,10 +5,10 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class Step1Action extends ActionSupport {
+public class Pre0Action extends ActionSupport {
 
 	/**
-	 * 
+	 * Welcome Action
 	 */
 	private static final long	serialVersionUID	= 1L;
 

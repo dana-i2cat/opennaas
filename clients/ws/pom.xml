@@ -13,8 +13,8 @@
 
 	<!-- Maven configuration -->
 	<packaging>jar</packaging>
-	<name>Web Service Client</name>
-	<description>Web Service Client</description>
+	<name>OpenNaaS :: Web Service Client</name>
+	<description>OpenNaaS :: Web Service Client</description>
 
 
 	<build>

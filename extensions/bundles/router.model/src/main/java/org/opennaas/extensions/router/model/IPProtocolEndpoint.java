@@ -7,6 +7,7 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 /**
@@ -16,6 +17,9 @@ import javax.xml.bind.annotation.XmlType;
  * 
  * A ProtocolEndpoint that is dedicated to running IP.
  */
+@XmlSeeAlso({
+		GRETunnelEndpoint.class
+})
 public class IPProtocolEndpoint extends ProtocolEndpoint implements
 		Serializable {
 
