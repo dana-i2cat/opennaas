@@ -79,6 +79,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 */
 	@Override
 	public Map<String, QueueResponse> execute() throws CapabilityException {
+		log.info("Start of execute call");
 		Map<String, QueueResponse> response = new Hashtable<String, QueueResponse>();
 		NetworkModel model = (NetworkModel) resource.getModel();
 		if (model.getNetworkElements() != null && !model.getNetworkElements().isEmpty()) {
@@ -96,6 +97,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 				}
 			}
 		}
+		log.info("End of execute call");
 		return response;
 	}
 
@@ -112,7 +114,9 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		try {
 			IResource iResource = getResource(networkElementName);
 			if (iResource != null) {
-				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource.getCapability(getInformation(QUEUE_CAPABILITY_NAME));
+
+				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource
+						.getCapabilityByInterface(IQueueManagerCapability.class);
 				if (queueCapability != null) {
 					queueResponse = (QueueResponse) queueCapability.execute();
 				}

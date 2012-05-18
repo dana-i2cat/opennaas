@@ -1,9 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<parent>
 		<artifactId>org.opennaas.clients</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.9</version>
+		<version>0.10-SNAPSHOT</version>
 	</parent>
 
 	<!-- POM id -->
@@ -12,8 +13,9 @@
 
 	<!-- Maven configuration -->
 	<packaging>jar</packaging>
-	<name>OpenNaaS :: Client :: Web Service</name>
-	<description>Web Service Client</description>
+	<name>OpenNaaS :: Web Service Client</name>
+	<description>OpenNaaS :: Web Service Client</description>
+
 
 	<build>
 		<plugins>
@@ -25,7 +27,8 @@
 					<execution>
 						<id>generate-sources</id>
 						<configuration>
-							<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot>
+<!-- 						<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot> -->
+							<wsdlRoot>${basedir}/../../extensions/bundles/webservice/target/generated/wsdl</wsdlRoot>
 						  	<includes>
 								<include>*.wsdl</include>
 						  	</includes>
@@ -64,7 +67,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore></ignore>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

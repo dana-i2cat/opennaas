@@ -1,0 +1,16 @@
+shell:echo "DYNAMIC LINKS"
+##Tell network who is connected with who 
+
+l2bod:requestconnection --vlanid=2017 --endtime=2012-05-30T12:55:00+02 --capacity=10 bod:autobahn HEANET.pc.7235713c GEANT.pc.2b04174c
+
+queue:execute bod:autobahn
+
+
+l2bod:requestconnection --vlanid=2016 --endtime=2012-05-30T13:00:00+02 --capacity=10 bod:autobahn HEANET.pc.5ddac8a4 GEANT.pc.2b04174c
+
+queue:execute bod:autobahn
+
+
+l2bod:requestconnection --vlanid=2048 --endtime=2012-05-30T12:50:00+02 --capacity=10 bod:autobahn HEANET.pc.7235713c HEANET.pc.5ddac8a4
+
+queue:execute bod:autobahn

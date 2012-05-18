@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * This class provides a simple resource identifier implementation
- *
+ * 
  * @author root
- *
+ * 
  */
 @Entity
 @XmlAccessorType(XmlAccessType.PROPERTY)
@@ -27,21 +27,21 @@ public class ResourceIdentifier implements IResourceIdentifier {
 
 	/** The type of the resource **/
 	@Basic
-	private String type;
+	private String	type;
 
 	/** The id of the resource **/
 	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
-	private String id = null;
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	private String	id	= null;
 
 	public ResourceIdentifier() {
-		this.id = UUID.randomUUID().toString();
+		this.id = generateId();
 		type = "Default String";
 	}
 
 	public ResourceIdentifier(String type) {
 		this.type = type;
-		this.id = UUID.randomUUID().toString();
+		this.id = generateId();
 	}
 
 	public ResourceIdentifier(String type, String id) {
@@ -49,7 +49,6 @@ public class ResourceIdentifier implements IResourceIdentifier {
 		this.id = id;
 	}
 
-	@XmlTransient
 	public String getId() {
 		return id;
 	}
@@ -64,12 +63,10 @@ public class ResourceIdentifier implements IResourceIdentifier {
 			String textUri = "http://" + InetAddress.getLocalHost().getHostName() + "/resources/"
 					+ type + "/" + id.toString();
 			return new URI(textUri);
-		}
-		catch (UnknownHostException e) {
+		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		catch (URISyntaxException e) {
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -78,16 +75,34 @@ public class ResourceIdentifier implements IResourceIdentifier {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		if (!(obj instanceof ResourceIdentifier)) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		return ((ResourceIdentifier) obj).getId().equals(this.id);
+		ResourceIdentifier other = (ResourceIdentifier) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -96,17 +111,23 @@ public class ResourceIdentifier implements IResourceIdentifier {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * @param type the type to set
+	 * @param type
+	 *            the type to set
 	 */
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	private String generateId() {
+		return UUID.randomUUID().toString();
 	}
 
 }

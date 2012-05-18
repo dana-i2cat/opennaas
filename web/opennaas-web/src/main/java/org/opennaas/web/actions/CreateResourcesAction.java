@@ -1,0 +1,246 @@
+package org.opennaas.web.actions;
+
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.web.ws.OpennaasClient;
+import org.opennaas.ws.CapabilityDescriptor;
+import org.opennaas.ws.CapabilityException_Exception;
+import org.opennaas.ws.CapabilityProperty;
+import org.opennaas.ws.IProtocolSessionManagerService;
+import org.opennaas.ws.IResourceManagerService;
+import org.opennaas.ws.Information;
+import org.opennaas.ws.ProtocolException_Exception;
+import org.opennaas.ws.ProtocolSessionContext;
+import org.opennaas.ws.ProtocolSessionContext.SessionParameters.Entry;
+import org.opennaas.ws.ResourceDescriptor;
+import org.opennaas.ws.ResourceException_Exception;
+import org.opennaas.ws.ResourceIdentifier;
+
+import com.opensymphony.xwork2.ActionSupport;
+
+/**
+ * @author Jordi
+ */
+public class CreateResourcesAction extends ActionSupport implements SessionAware {
+
+	private Map<String, Object>				session;
+	private IResourceManagerService			resourceManagerService;
+	private IProtocolSessionManagerService	protocolSessionManagerService;
+	private static final Logger				log	= Logger.getLogger(CreateResourcesAction.class);
+
+	@Override
+	public void setSession(Map<String, Object> session) {
+		this.session = session;
+	}
+
+	public Map<String, Object> getSession() {
+		return session;
+	}
+
+	/**
+	 * Create resources
+	 */
+	private static final long	serialVersionUID	= 1L;
+
+	@Override
+	public String execute() throws Exception {
+		createResources();
+		return SUCCESS;
+	}
+
+	/**
+	 * @throws CapabilityException_Exception
+	 * @throws ResourceException_Exception
+	 * @throws ProtocolException_Exception
+	 */
+	private void createResources() throws CapabilityException_Exception, ResourceException_Exception, ProtocolException_Exception {
+		log.info("createResources ...");
+		resourceManagerService = OpennaasClient.getResourceManagerService();
+		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
+
+		// Router 1
+		ResourceIdentifier identifier1 = resourceManagerService
+				.createResource(getRouterResourceDescriptor("", getText("unic.router.name"), "router", ""));
+		protocolSessionManagerService.registerContext(identifier1.getId(),
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.unic")));
+		resourceManagerService.startResource(identifier1);
+		log.info(" resource 1 created!");
+
+		// Router 2
+		ResourceIdentifier identifier2 = resourceManagerService
+				.createResource(getRouterResourceDescriptor("", getText("gsn.router.name"), "router", ""));
+		protocolSessionManagerService.registerContext(identifier2.getId(),
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
+		resourceManagerService.startResource(identifier2);
+		log.info(" resource 2 created!");
+
+		// Router 3
+		ResourceIdentifier identifier3 = resourceManagerService
+				.createResource(getRouterResourceDescriptor("", getText("myre.router.name"), "router", ""));
+		protocolSessionManagerService.registerContext(identifier3.getId(),
+				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
+		resourceManagerService.startResource(identifier3);
+		log.info(" resource 3 created!");
+
+		// Network
+		ResourceIdentifier identifier4 = resourceManagerService
+				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
+		resourceManagerService.startResource(identifier4);
+		log.info(" resource 4 created!");
+
+		// BoD
+		ResourceIdentifier identifier5 = null;
+		if (getText("autobahn.enabled").equals("true")) {
+			identifier5 = resourceManagerService
+					.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
+			protocolSessionManagerService.registerContext(identifier5.getId(),
+					getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
+			resourceManagerService.startResource(identifier5);
+		}
+		log.info(" resource 5 created!");
+
+		session.put(getText("unic.router.name"), identifier1);
+		session.put(getText("gsn.router.name"), identifier2);
+		session.put(getText("myre.router.name"), identifier3);
+		session.put(getText("network.name"), identifier4);
+		if (getText("autobahn.enabled").equals("true"))
+			session.put(getText("autobahn.bod.name"), identifier5);
+
+		log.info("createResources done.");
+	}
+
+	/**
+	 * @param description
+	 * @param name
+	 * @param type
+	 * @param version
+	 * @return
+	 */
+	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+
+		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork",
+				"network", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Network Queue capability", "Manages the queue of all resources of the network.", "netqueue",
+				"network", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Network OSPF capability", "Enables OSPF on all resources of the network", "netospf",
+				"network", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		return resourceDescriptor;
+	}
+
+	/**
+	 * @return
+	 */
+	private ResourceDescriptor getRouterResourceDescriptor(String description, String name, String type, String version) {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+
+		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("IPv4 capability", "IPv4 capability", "ipv4", "junos", "10.10");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Chassis capability", "Chassis capability", "chassis", "junos", "10.10");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("OSPF capability", "OSPF capability", "ospf", "junos", "10.10");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Static Route capability", "Static Route capability", "staticroute", "junos", "10.10");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "junos", "10.10");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		if (name.equals(getText("myre.router.name"))) {
+			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
+			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+		}
+
+		return resourceDescriptor;
+	}
+
+	/**
+	 * @param description
+	 * @param name
+	 * @param type
+	 * @param version
+	 * @return
+	 */
+	private ResourceDescriptor getBoDResourceDescriptor(String description, String name, String type, String version) {
+		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+
+		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("l2bod capability", "l2bod capability", "l2bod", "autobahn", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "autobahn", "1.0");
+		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
+
+		return resourceDescriptor;
+	}
+
+	/**
+	 * @return
+	 */
+	private CapabilityDescriptor getCapabilityDescriptor(String name, String description, String type, String actionName, String actionVersion) {
+		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
+
+		List<CapabilityProperty> listProperties = capabilityDescriptor.getCapabilityProperty();
+		listProperties.add(getCapabilityPropery("actionset.name", actionName));
+		listProperties.add(getCapabilityPropery("actionset.version", actionVersion));
+
+		capabilityDescriptor.setInformation(getInformation(name, description, type, null));
+
+		return capabilityDescriptor;
+	}
+
+	/**
+	 * @return
+	 */
+	private CapabilityProperty getCapabilityPropery(String name, String value) {
+		CapabilityProperty capabilityProperty = new CapabilityProperty();
+		capabilityProperty.setName(name);
+		capabilityProperty.setValue(value);
+		return capabilityProperty;
+	}
+
+	/**
+	 * @return
+	 */
+	private Information getInformation(String name, String description, String type, String version) {
+		Information information = new Information();
+		information.setDescription(description);
+		information.setName(name);
+		information.setType(type);
+		information.setVersion(version);
+		return information;
+	}
+
+	/**
+	 * @return
+	 */
+	private ProtocolSessionContext getProtocolSessionContext(String protocol, String uri) {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
+		protocolSessionContext.setSessionParameters(sessionParameters);
+		List<Entry> listEntries = sessionParameters.getEntry();
+		Entry entry = new Entry();
+		entry.setKey("protocol");
+		entry.setValue(protocol);
+		listEntries.add(entry);
+		entry = new Entry();
+		entry.setKey("protocol.uri");
+		entry.setValue(uri);
+		listEntries.add(entry);
+		return protocolSessionContext;
+	}
+}
