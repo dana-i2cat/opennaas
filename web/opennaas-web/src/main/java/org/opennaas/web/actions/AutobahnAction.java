@@ -76,14 +76,14 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		queueManager.execute(autbahnId);
 
 		// Connection 3
-		interfaceName1 = getText("autobahn.connection3.interface1");
-		interfaceName2 = getText("autobahn.connection3.interface2");
-		vlanid = getText("autobahn.connection3.vlanid");
-		endtime = getText("autobahn.connection3.endtime");
-		capacity = getText("autobahn.connection3.capacity");
-		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
-
-		queueManager.execute(autbahnId);
+//		interfaceName1 = getText("autobahn.connection3.interface1");
+//		interfaceName2 = getText("autobahn.connection3.interface2");
+//		vlanid = getText("autobahn.connection3.vlanid");
+//		endtime = getText("autobahn.connection3.endtime");
+//		capacity = getText("autobahn.connection3.capacity");
+//		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
+//
+//		queueManager.execute(autbahnId);
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {

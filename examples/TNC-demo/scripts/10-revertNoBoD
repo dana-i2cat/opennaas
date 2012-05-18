@@ -30,6 +30,9 @@ resource:remove router:unic
 resource:stop router:gsn
 resource:remove router:gsn
 
+resource:stop bod:autobahn
+resource:remove bod:autobahn
+
 protocol.url.myre=""
 protocol.url.gsn=""
 protocol.url.unic=""
