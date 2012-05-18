@@ -2,22 +2,25 @@ shell:echo "CREATE LOGICAL ROUTERS"
 ##Creating logical routers
 
 chassis:createlogicalrouter router:myre dub ge-2/0/1.2045 ge-2/0/1.2019 ge-2/0/0.14 gr-1/1/0.1
-resource:list
+chassis:createlogicalrouter router:gsn pw ge-1/0/7.2045 ge-1/0/7.2018 ge-1/0/7.25
+chassis:createlogicalrouter router:unic cph ge-1/1/1.2019 ge-1/1/1.2018 ge-1/1/2.2101
+
 queue:listactions router:myre
 queue:execute router:myre
-protocols:context router:dub netconf mock://username:password@myre.hea.net:22/netconf
-resource:start router:dub
 
-chassis:createlogicalrouter router:gsn pw ge-1/0/7.2045 ge-1/0/7.2018 ge-1/0/7.25
-resource:list
 queue:listactions router:gsn
-queue:execute router:gsn
-protocols:context router:pw netconf mock://username:password@cpe1-gsn.hea.net:22/netconf
-resource:start router:pw
+queue:execute router:myre
 
-chassis:createlogicalrouter router:unic cph ge-1/1/1.2019 ge-1/1/1.2018 ge-1/1/2.2101
-resource:list
 queue:listactions router:unic
 queue:execute router:unic
-protocols:context router:cph netconf mock://username:password@130.225.242.82:22/netconf
+
+resource:list
+
+##Adding contexts for resources
+shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/no-autobahn/03a-contexts
+
+resource:start router:dub
+resource:start router:pw
 resource:start router:cph
+
+resource:list

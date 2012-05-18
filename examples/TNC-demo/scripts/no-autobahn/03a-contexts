@@ -1,0 +1,3 @@
+protocols:context router:dub netconf mock://username:password@myre.hea.net:22/netconf
+protocols:context router:pw netconf mock://username:password@cpe1-gsn.hea.net:22/netconf
+protocols:context router:cph netconf mock://username:password@130.225.242.82:22/netconf
