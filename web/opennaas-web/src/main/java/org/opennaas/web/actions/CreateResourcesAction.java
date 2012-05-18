@@ -79,22 +79,10 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
 
-		// BoD
-		ResourceIdentifier identifier5 = null;
-		if (getText("autobahn.enabled").equals("true")) {
-			identifier5 = resourceManagerService
-					.createResource(getBoDResourceDescriptor("", getText("autobahn.bod.name"), "bod", ""));
-			protocolSessionManagerService.registerContext(identifier5.getId(),
-					getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
-			resourceManagerService.startResource(identifier5);
-		}
-
 		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 
-		if (getText("autobahn.enabled").equals("true"))
-			session.put(getText("autobahn.bod.name"), identifier5);
 	}
 
 	/**
@@ -123,26 +111,6 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 			capabilityDescriptor = getCapabilityDescriptor("GRE capability", "GRE capability", "gretunnel", "junos", "10.10");
 			resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 		}
-
-		return resourceDescriptor;
-	}
-
-	/**
-	 * @param description
-	 * @param name
-	 * @param type
-	 * @param version
-	 * @return
-	 */
-	private ResourceDescriptor getBoDResourceDescriptor(String description, String name, String type, String version) {
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(name, description, type, version));
-
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("l2bod capability", "l2bod capability", "l2bod", "autobahn", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "autobahn", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
 		return resourceDescriptor;
 	}
