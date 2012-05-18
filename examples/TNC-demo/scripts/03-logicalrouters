@@ -9,7 +9,7 @@ queue:listactions router:myre
 queue:execute router:myre
 
 queue:listactions router:gsn
-queue:execute router:myre
+queue:execute router:gsn
 
 queue:listactions router:unic
 queue:execute router:unic
@@ -17,7 +17,7 @@ queue:execute router:unic
 resource:list
 
 ##Adding contexts for resources
-shell:source /home/isart/workspace/opennaas/opennaas/examples/TNC-demo/scripts/03a-contexts
+shell:source $scripts.path/03a-contexts
 
 resource:start router:dub
 resource:start router:pw

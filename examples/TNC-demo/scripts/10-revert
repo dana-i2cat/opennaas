@@ -42,3 +42,10 @@ resource:remove router:unic
 
 resource:stop router:gsn
 resource:remove router:gsn
+
+protocol.url.myre=""
+protocol.url.gsn=""
+protocol.url.unic=""
+protocol.url.dub=""
+protocol.url.pw=""
+protocol.url.cph=""

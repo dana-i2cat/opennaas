@@ -1,4 +1,4 @@
 ##Adding contexts for resources
-protocols:context router:gsn netconf mock://username:password@cpe1-gsn.hea.net:22/netconf
-protocols:context router:myre netconf mock://username:password@myre.hea.net:22/netconf
-protocols:context router:unic netconf mock://username:password@130.225.242.82:22/netconf
+protocols:context router:gsn netconf $protocol.url.gsn
+protocols:context router:myre netconf $protocol.url.myre
+protocols:context router:unic netconf $protocol.url.unic
