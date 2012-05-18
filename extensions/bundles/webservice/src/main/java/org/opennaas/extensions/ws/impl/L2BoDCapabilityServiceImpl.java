@@ -103,7 +103,7 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 		params.interface2 = getInterfaceByName(resourceId, interfaceName2);
 		params.vlanid = Integer.valueOf(vlanid);
 		params.capacity = Long.valueOf(capacity);
-		params.startTime = parseISO8601Date(null);
+		params.startTime = new DateTime();
 		params.endTime = parseISO8601Date(endTime);
 		return params;
 	}
@@ -131,11 +131,6 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	 * @return
 	 */
 	private DateTime parseISO8601Date(String s) {
-		if (s == null) {
-			return new DateTime();
-		} else {
-			DateTime time = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(s);
-			return time;
-		}
+		return (s == null) ? new DateTime() : ISODateTimeFormat.dateTimeNoMillis().parseDateTime(s);
 	}
 }
