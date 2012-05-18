@@ -1,6 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-
 <html>
 <head>
 	<link type="text/css" rel="stylesheet" href="css/styles.css" />
@@ -20,12 +19,21 @@
 		</s:else>
 	</div>
 	<div id="image">
-		<img src='images/img7.png'>
+		<img src='images/Slide11.png'>
 	</div>
 	<div id="buttons">
-		<s:form action="step7" >	
-			<s:submit type="button" value="Do It >>" theme="simple" />
-		</s:form>
+		<div>
+			<div>
+			<s:form action="step7" >
+				<s:hidden name="skip" value="false" />
+				<s:submit type="button" value="Do It >>" theme="simple" />	
+			</s:form>
+			<s:form action="step7" >
+				<s:hidden name="skip" value="true" />	
+				<s:submit type="button" value="Skip It >>" theme="simple" />
+			</s:form>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

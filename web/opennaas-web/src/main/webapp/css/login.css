@@ -27,14 +27,14 @@ p {
 
 table.moduletable td {
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 14px;
 	font-weight: normal;
 }
 
 td,tr,p,div {
 	color: #004488;
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 20px;
 	background-color: rgb(203,203,203);
 }
 
@@ -106,7 +106,7 @@ a.title:hover {
 
 input,textarea,select {
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 14px !important;
 	float: inherit;
 }
 
@@ -122,4 +122,5 @@ input,textarea,select {
 	text-align: center;
 	font-size: 18px !important;
 	margin-top: 10px;
+	background-color: #ffffff
 }

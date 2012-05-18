@@ -1,5 +1,8 @@
 package org.opennaas.web.actions;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import org.apache.log4j.Logger;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,6 +32,7 @@ public class UnhandledExceptionHandler extends ActionSupport {
 				log.error(cause);
 				addActionError(cause);
 			}
+			logStackTrace(exception);
 		}
 		return ERROR;
 	}
@@ -46,6 +50,13 @@ public class UnhandledExceptionHandler extends ActionSupport {
 	 */
 	public void setException(Exception exception) {
 		this.exception = exception;
+	}
+
+	private void logStackTrace(Throwable ex) {
+		StringWriter sw = new StringWriter();
+		ex.printStackTrace(new PrintWriter(sw));
+		String stacktrace = sw.toString();
+		log.error(stacktrace);
 	}
 
 }
