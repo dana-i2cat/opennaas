@@ -78,6 +78,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 
 	@Override
 	public void createStaticRoute(String netIdIpAdress, String maskIpAdress, String nextHopIpAddress) throws CapabilityException {
+		log.info("Start of createStaticRoute call");
 		String[] aParams = new String[3];
 		aParams[0] = netIdIpAdress;
 		aParams[1] = maskIpAdress;
@@ -85,5 +86,6 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 
 		IAction action = createActionAndCheckParams(StaticRouteActionSet.STATIC_ROUTE_CREATE, aParams);
 		queueAction(action);
+		log.info("End of createStaticRoute call");
 	}
 }

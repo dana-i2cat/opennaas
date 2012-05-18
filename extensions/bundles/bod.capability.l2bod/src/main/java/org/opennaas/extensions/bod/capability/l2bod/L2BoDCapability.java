@@ -37,8 +37,10 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void requestConnection(RequestConnectionParameters parameters) throws CapabilityException {
+		log.info("Start of requestConnection call");
 		IAction action = createActionAndCheckParams(L2BoDActionSet.REQUEST_CONNECTION, parameters);
 		queueAction(action);
+		log.info("End of requestConnection call");
 	}
 
 	/*
@@ -48,8 +50,10 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void shutDownConnection(List<Interface> listInterfaces) throws CapabilityException {
+		log.info("Start of shutDownConnection call");
 		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, listInterfaces);
 		queueAction(action);
+		log.info("End of shutDownConnection call");
 	}
 
 	@Override

@@ -1,0 +1,58 @@
+<resourceDescriptor>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information>
+		<description>IPv4 capability</description>
+		<name>IPv4 capability</name>
+		<type>ipv4</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version"/>
+        <information>
+		<description>Chassis capability</description>
+		<name>Chassis capability</name>
+		<type>chassis</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>OSPF capability</description>
+		<name>OSPF capability</name>
+		<type>ospf</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+		<description>Queue capability</description>
+		<type>queue</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="junos" name="actionset.name"/>
+        <capabilityProperty value="10.10" name="actionset.version" />
+        <information>
+                <description>Static Route capability</description>
+                <name>Static Route capability</name>
+                <type>staticroute</type>
+        </information>
+    </capabilityDescriptors>
+
+    <information>
+        <type>router</type>
+        <name>unic</name>
+    </information>
+    <properties/>
+
+</resourceDescriptor>
