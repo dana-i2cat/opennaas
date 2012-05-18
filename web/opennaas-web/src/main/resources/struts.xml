@@ -112,18 +112,30 @@
 		    <result name="error">jsp/error.jsp</result>
 		</action>
 
-		<action name="login" >
-			 <result name="error">index.jsp</result>
-			 <result name="success" type="redirectAction">
-            	<param name="actionName">step0</param>
-            </result>
-		</action>
-
 		<action name="logout" class="org.opennaas.web.actions.LogoutAction">
         	<result name="success">index.jsp</result>
         </action>
 
-		<action name="step0" class="org.opennaas.web.actions.InitAction">
+		<action name="login" >
+			 <result name="error">index.jsp</result>
+			 <result name="success" type="redirectAction">
+            	<param name="actionName">step00</param>
+            </result>
+		</action>
+
+		<action name="step00" class="org.opennaas.web.actions.Pre0Action">
+			<result name="success">jsp/step01.jsp</result>
+		</action>
+		
+		<action name="step01" class="org.opennaas.web.actions.Pre1Action">
+			<result name="success">jsp/step02.jsp</result>
+		</action>
+		
+		<action name="step02" class="org.opennaas.web.actions.Pre2Action">
+			<result name="success">jsp/step03.jsp</result>
+		</action>	
+		
+		<action name="step03" class="org.opennaas.web.actions.Pre3Action">
 			<result name="success">jsp/step1.jsp</result>
 		</action>
 
@@ -151,7 +163,7 @@
 			<result name="success">jsp/step7.jsp</result>
 		</action>
 		
-		<action name="step7" class="org.opennaas.web.actions.SetStaticRouteAction">
+		<action name="step7" class="org.opennaas.web.actions.SetOSPFAction">
 			<result name="success">jsp/step8.jsp</result>
 		</action>
 		

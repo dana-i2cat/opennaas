@@ -24,6 +24,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	private Map<String, Object>				session;
 	private IL2BoDCapabilityService			l2BoDCapabilityService;
 	private IQueueManagerCapabilityService	queueManager;
+	private INetworkBasicCapabilityService	networkBasicCapabilityService;
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -48,7 +49,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	public void autobahn() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void autobahn() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception, ProtocolException_Exception {
 		l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -86,17 +87,17 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {
-		INetworkBasicCapabilityService capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
+		networkBasicCapabilityService = OpennaasClient.getNetworkBasicCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
+		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
 				getInterface(getText("network.interface.myreunic")));
 
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
+		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
 				getInterface(getText("network.interface.gsnunic")));
 
-		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
+		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
 				getInterface(getText("network.interface.gsnmyre")));
 
 	}

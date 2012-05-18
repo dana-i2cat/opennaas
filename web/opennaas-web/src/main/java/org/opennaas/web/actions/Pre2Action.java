@@ -5,7 +5,7 @@ import com.opensymphony.xwork2.ActionSupport;
 /**
  * @author Jordi
  */
-public class InitAction extends ActionSupport {
+public class Pre2Action extends ActionSupport {
 
 	/**
 	 * Welcome Action
