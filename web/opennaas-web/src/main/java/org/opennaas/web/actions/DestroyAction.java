@@ -81,9 +81,9 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 		resourceManagerService.stopResource(lrMyre);
 		resourceManagerService.stopResource(lrGSN);
 
-		resourceManagerService.removeResource(lrUnic);
-		resourceManagerService.removeResource(lrMyre);
-		resourceManagerService.removeResource(lrGSN);
+		resourceManagerService.removeResourceById(lrUnic.getId());
+		resourceManagerService.removeResourceById(lrMyre.getId());
+		resourceManagerService.removeResourceById(lrGSN.getId());
 
 		String routerUnicId = ((ResourceIdentifier) session.get(getText("unic.router.name"))).getId();
 		String routerMyreId = ((ResourceIdentifier) session.get(getText("myre.router.name"))).getId();
@@ -179,10 +179,10 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 		resourceManagerService.stopResource(routerMyre);
 		resourceManagerService.stopResource(networkDemo);
 
-		resourceManagerService.removeResource(routerUnic);
-		resourceManagerService.removeResource(routerGSN);
-		resourceManagerService.removeResource(routerMyre);
-		resourceManagerService.removeResource(networkDemo);
+		resourceManagerService.removeResourceById(routerUnic.getId());
+		resourceManagerService.removeResourceById(routerGSN.getId());
+		resourceManagerService.removeResourceById(routerMyre.getId());
+		resourceManagerService.removeResourceById(networkDemo.getId());
 	}
 
 }

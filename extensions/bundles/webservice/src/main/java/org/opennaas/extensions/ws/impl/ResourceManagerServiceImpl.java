@@ -55,6 +55,16 @@ public class ResourceManagerServiceImpl implements IResourceManagerService {
 	}
 
 	@Override
+	public void removeResourceById(String resourceId) throws ResourceException {
+		log.info("Start of removeResource call");
+		IResource resource = resourceManager.getResourceById(resourceId);
+		if (resource != null) {
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+		log.info("Start of removeResource call");
+	}
+
+	@Override
 	public List<ResourceIdentifier> listResourcesByType(String type) {
 		log.info("Start of listResourcesByType call");
 		List<IResource> resources = resourceManager.listResourcesByType(type);
