@@ -1,0 +1,10 @@
+shell:echo "ADD RESOURCES TO NETWORK"
+
+##Create network
+resource:create $descriptors.path/network.descriptor
+resource:start network:networkdemo
+
+##Add resources to network
+net:addResource network:networkdemo router:dub
+net:addResource network:networkdemo router:pw
+net:addResource network:networkdemo router:cph

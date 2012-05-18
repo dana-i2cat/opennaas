@@ -1,0 +1,5 @@
+##Adding contexts for resources
+protocols:context router:gsn netconf $protocol.url.gsn
+protocols:context router:myre netconf $protocol.url.myre
+protocols:context router:unic netconf $protocol.url.unic
+protocols:context bod:autobahn autobahn $protocol.url.autobahn
