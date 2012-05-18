@@ -20,7 +20,7 @@
 		</s:else>
 	</div>
 	<div id="image">
-		<img src='images/img10.png'>
+		<img src='images/Slide14.png'>
 	</div>
 </body>
 </html>

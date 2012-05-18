@@ -20,7 +20,7 @@
 		</s:else>
 	</div>
 	<div id="image">
-		<img src='images/img6.png'>
+		<img src='images/Slide10.png'>
 	</div>
 	<div id="buttons">
 		<s:form action="step6" >	
