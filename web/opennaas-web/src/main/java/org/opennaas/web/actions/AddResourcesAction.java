@@ -50,7 +50,6 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 
-		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
@@ -63,13 +62,13 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 		session.put(getText("network.name"), identifier4);
 
 		// add logicalUnic
-		capabilitService.addResource(networkId, lrUnicId);
+		capabilitService.addResource(identifier4.getId(), lrUnicId);
 
 		// add logicalmyre
-		capabilitService.addResource(networkId, lrMyreId);
+		capabilitService.addResource(identifier4.getId(), lrMyreId);
 
 		// add logicalGSN
-		capabilitService.addResource(networkId, lrGSNId);
+		capabilitService.addResource(identifier4.getId(), lrGSNId);
 	}
 
 	/**
