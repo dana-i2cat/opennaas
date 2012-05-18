@@ -24,7 +24,7 @@
 	</div>
 	<div id="buttons">
 		<s:form action="step9" >	
-			<s:submit type="button" value="Do It >>" theme="simple" />
+			<s:submit type="button" value="Tear Down" theme="simple" />
 		</s:form>
 	</div>
 </body>
