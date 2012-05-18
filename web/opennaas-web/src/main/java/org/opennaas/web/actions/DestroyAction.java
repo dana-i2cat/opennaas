@@ -220,16 +220,16 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 							+ getText("autobahn.connection2.interface2"));
 				}
 
-				try {
-					List<String> list3 = new ArrayList<String>();
-					list3.add(getText("autobahn.connection3.interface1"));
-					list3.add(getText("autobahn.connection3.interface2"));
-					l2BoDCapabilityService.shutDownConnection(autbahnId, list3);
-				} catch (Exception e) {
-					LOGGER.error("Can't shut down autobahn connection 3 - "
-							+ getText("autobahn.connection3.interface1") + " - "
-							+ getText("autobahn.connection3.interface2"));
-				}
+				// try {
+				// List<String> list3 = new ArrayList<String>();
+				// list3.add(getText("autobahn.connection3.interface1"));
+				// list3.add(getText("autobahn.connection3.interface2"));
+				// l2BoDCapabilityService.shutDownConnection(autbahnId, list3);
+				// } catch (Exception e) {
+				// LOGGER.error("Can't shut down autobahn connection 3 - "
+				// + getText("autobahn.connection3.interface1") + " - "
+				// + getText("autobahn.connection3.interface2"));
+				// }
 			}
 		} catch (Exception e) {
 			LOGGER.error("Can't shut down autobahn.");
