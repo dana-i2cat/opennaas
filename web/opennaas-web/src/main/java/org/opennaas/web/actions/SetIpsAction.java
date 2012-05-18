@@ -8,6 +8,7 @@ import org.opennaas.ws.ActionException_Exception;
 import org.opennaas.ws.CapabilityException_Exception;
 import org.opennaas.ws.IIPCapabilityService;
 import org.opennaas.ws.IQueueManagerCapabilityService;
+import org.opennaas.ws.IStaticRouteCapabilityService;
 import org.opennaas.ws.IpProtocolEndpoint;
 import org.opennaas.ws.NetworkPort;
 import org.opennaas.ws.ProtocolException_Exception;
@@ -20,8 +21,10 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SetIpsAction extends ActionSupport implements SessionAware {
 
-	private Map<String, Object>		session;
-	private IIPCapabilityService	ipCapabilityService;
+	private Map<String, Object>				session;
+	private IIPCapabilityService			ipCapabilityService;
+	private IQueueManagerCapabilityService	queueService;
+	private IStaticRouteCapabilityService	staticRouteService;
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -40,10 +43,31 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 	@Override
 	public String execute() throws Exception {
 		setIPv4();
+		configureStaticRoute();
 		return SUCCESS;
 	}
 
-	public void setIPv4() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void configureStaticRoute() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+		staticRouteService = OpennaasClient.getStaticRouteCapabilityService();
+		queueService = OpennaasClient.getQueueManagerCapabilityService();
+
+		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
+		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
+		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
+
+		staticRouteService.createStaticRoute(lrUnicId, getText("common.default.route"), getText("common.default.route"),
+				getText("unic.staticroute.ip"));
+		staticRouteService.createStaticRoute(lrMyreId, getText("common.default.route"), getText("common.default.route"),
+				getText("myre.staticroute.ip"));
+		staticRouteService.createStaticRoute(lrGSNId, getText("common.default.route"), getText("common.default.route"),
+				getText("gsn.staticroute.ip"));
+
+		queueService.execute(lrUnicId);
+		queueService.execute(lrMyreId);
+		queueService.execute(lrGSNId);
+	}
+
+	private void setIPv4() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();

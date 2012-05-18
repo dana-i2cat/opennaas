@@ -6,7 +6,7 @@
 <head>
 	<title>OpenNaaS TNC Demo</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
+	<link type="text/css" rel="stylesheet" href="css/login.css" />
 </head>
 <body>
 <div id="logout">

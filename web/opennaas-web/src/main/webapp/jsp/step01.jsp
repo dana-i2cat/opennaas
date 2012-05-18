@@ -20,11 +20,11 @@
 		</s:else>
 	</div>
 	<div id="image">
-		<img src='images/Slide08.png'>
+		<img src='images/Slide02.png'>
 	</div>
 	<div id="buttons">
-		<s:form action="step4" >	
-			<s:submit type="button" value="Do It >>" theme="simple" />
+		<s:form action="step01">
+			<s:submit type="button" value="Next >>" theme="simple" />
 		</s:form>
 	</div>
 </body>

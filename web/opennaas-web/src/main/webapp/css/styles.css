@@ -57,6 +57,21 @@ button {
 	margin-left: 5px;
 }
 
+#buttons {
+	text-align: center;
+}
+
+#buttons2 {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 38px;
+	width: 723px;
+	height: 75px;
+	margin-top: 0px;
+	margin-bottom: 10px;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+
 #logout {
     font-size: 18px;
     margin-top: 10px;
