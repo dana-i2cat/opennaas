@@ -129,8 +129,9 @@ public class GetTopologyAction extends AutobahnAction
 		}
 
 		String userName = System.getProperty("user.name");
+		String justification = "Submitted by OpenNaaS";
 		for (ServiceType service: services) {
-			if (userName.equals(service.getUser().getName())) {
+			if(justification.equals(service.getJustification())){
 				for (ReservationType reservation: service.getReservations()) {
 					if (!isFinalState(reservation.getState())) {
 						updateLinkTo(interfaces, service, reservation);
