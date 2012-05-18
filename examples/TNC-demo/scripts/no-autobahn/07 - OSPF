@@ -1,0 +1,4 @@
+shell:echo "CONFIGURE OSPF"
+## Enable ospf in all devices of the network
+netospf:activate network:networkdemo
+netqueue:execute network:networkdemo

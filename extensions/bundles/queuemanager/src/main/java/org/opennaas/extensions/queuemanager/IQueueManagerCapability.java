@@ -12,7 +12,6 @@ import org.opennaas.core.resources.queue.QueueResponse;
 
 public interface IQueueManagerCapability extends ICapability {
 
-	// This method is for tests
 	public QueueResponse execute() throws ProtocolException,
 			CapabilityException, ActionException;
 

@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlElement;
 /**
  * This class is used to define a capability. The ICapabilityFactory will use this class to get the information it needs to instantiate the new
  * capability.
- *
+ * 
  * @author Mathieu Lemay (ITI)
- *
+ * 
  */
 @Entity
 public class CapabilityDescriptor {
@@ -79,7 +79,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Get the CapabilityProperty who's name field matches the given name
-	 *
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -95,7 +95,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Get the value of the property who's name field matches the given name
-	 *
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -109,7 +109,7 @@ public class CapabilityDescriptor {
 
 	/**
 	 * Convert the capability properties list into a String
-	 *
+	 * 
 	 * @return
 	 */
 	public String capabilityPropertiesToString() {
@@ -138,4 +138,46 @@ public class CapabilityDescriptor {
 
 		return capabilityDescriptor;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((capabilityInformation == null) ? 0 : capabilityInformation.hashCode());
+		result = prime * result + ((capabilityProperties == null) ? 0 : capabilityProperties.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CapabilityDescriptor other = (CapabilityDescriptor) obj;
+		if (capabilityInformation == null) {
+			if (other.capabilityInformation != null)
+				return false;
+		} else if (!capabilityInformation.equals(other.capabilityInformation))
+			return false;
+
+		if (capabilityProperties == null) {
+			if (other.capabilityProperties != null)
+				return false;
+		} else {
+			if (other.capabilityProperties == null)
+				return false;
+			if (capabilityProperties.size() != other.capabilityProperties.size())
+				return false;
+			for (CapabilityProperty prop : capabilityProperties) {
+				if (!other.capabilityProperties.contains(prop))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 }

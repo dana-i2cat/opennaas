@@ -26,8 +26,10 @@ public class NetworkBasicCapabilityServiceImpl extends GenericCapabilityService 
 	@Override
 	public void addResource(String resourceId, String resourceToAdd) throws CapabilityException {
 		try {
+			log.info("Start of addResource call");
 			INetworkBasicCapability iNetworkBasicCapability = (INetworkBasicCapability) getCapability(resourceId, INetworkBasicCapability.class);
 			iNetworkBasicCapability.addResource(getResource(resourceToAdd));
+			log.info("End of addResource call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -45,8 +47,10 @@ public class NetworkBasicCapabilityServiceImpl extends GenericCapabilityService 
 	@Override
 	public void removeResource(String resourceId, String resourceToRemove) throws CapabilityException {
 		try {
+			log.info("Start of removeResource call");
 			INetworkBasicCapability iNetworkBasicCapability = (INetworkBasicCapability) getCapability(resourceId, INetworkBasicCapability.class);
 			iNetworkBasicCapability.removeResource(getResource(resourceToRemove));
+			log.info("End of removeResource call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -65,8 +69,10 @@ public class NetworkBasicCapabilityServiceImpl extends GenericCapabilityService 
 	@Override
 	public void l2attach(String resourceId, Interface interface1, Interface interface2) throws CapabilityException {
 		try {
+			log.info("Start of l2attach call");
 			INetworkBasicCapability iNetworkBasicCapability = (INetworkBasicCapability) getCapability(resourceId, INetworkBasicCapability.class);
 			iNetworkBasicCapability.l2attach(interface1, interface2);
+			log.info("End of l2attach call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
@@ -82,8 +88,10 @@ public class NetworkBasicCapabilityServiceImpl extends GenericCapabilityService 
 	@Override
 	public void l2detach(String resourceId, Interface interface1, Interface interface2) throws CapabilityException {
 		try {
+			log.info("Start of l2detach call");
 			INetworkBasicCapability iNetworkBasicCapability = (INetworkBasicCapability) getCapability(resourceId, INetworkBasicCapability.class);
 			iNetworkBasicCapability.l2detach(interface1, interface2);
+			log.info("End of l2detach call");
 		} catch (CapabilityException e) {
 			log.error(e);
 			throw e;
