@@ -25,7 +25,6 @@ public class DigestUtils {
 	public static boolean compareDigestValues(String value1, String value2)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		byte[] aValue = getHash(value1.getBytes("UTF8"));
-		System.out.println(convertByteToHex(aValue) + " = " + value2);
 		return convertByteToHex(aValue).equals(value2);
 	}
 

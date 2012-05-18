@@ -2,6 +2,9 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 
 <html>
+<head>
+	<link type="text/css" rel="stylesheet" href="css/styles.css" />
+</head>
 <body>
 	<div id="logout">
 		<s:if test="%{#session.OPENNAAS_USER != null}">
@@ -16,6 +19,8 @@
 			<s:text name="Disconnected"/>
 		</s:else>
 	</div>
-	<h2>End</h2>
+	<div id="image">
+		<img src='images/img10.png'>
+	</div>
 </body>
 </html>
