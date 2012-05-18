@@ -79,11 +79,6 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
 
-		// Network
-		ResourceIdentifier identifier4 = resourceManagerService
-				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
-		resourceManagerService.startResource(identifier4);
-
 		// BoD
 		ResourceIdentifier identifier5 = null;
 		if (getText("autobahn.enabled").equals("true")) {
@@ -97,35 +92,9 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
-		session.put(getText("network.name"), identifier4);
+
 		if (getText("autobahn.enabled").equals("true"))
 			session.put(getText("autobahn.bod.name"), identifier5);
-	}
-
-	/**
-	 * @param description
-	 * @param name
-	 * @param type
-	 * @param version
-	 * @return
-	 */
-	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(name, description, type, version));
-
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Network Queue capability", "Manages the queue of all resources of the network.", "netqueue",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		capabilityDescriptor = getCapabilityDescriptor("Network OSPF capability", "Enables OSPF on all resources of the network", "netospf",
-				"network", "1.0");
-		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
-
-		return resourceDescriptor;
 	}
 
 	/**
