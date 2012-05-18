@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
@@ -26,6 +27,7 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 	private Map<String, Object>				session;
 	private IGRETunnelCapabilityService		greTunnelService;
 	private IQueueManagerCapabilityService	queueService;
+	private static final Logger				log	= Logger.getLogger(ConfigureGRETunnelAction.class);
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -53,6 +55,7 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 	}
 
 	private void configureGRE() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+		log.info("configureGRE ...");
 		greTunnelService = OpennaasClient.getGRETunnelCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -64,9 +67,11 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 						getText("myre.gretunnel.destiny")));
 
 		queueService.execute(lrMyreId);
+		log.info("configureGRE done.");
 	}
 
 	private GreTunnelService getGRETunnel(String interfaceName, String tunnelIP, String tunnelMask, String ipSource, String ipDestiny) {
+		log.info("getGRETunnel ...");
 		GreTunnelService greService = new GreTunnelService();
 		greService.setName(interfaceName);
 
@@ -88,6 +93,7 @@ public class ConfigureGRETunnelAction extends ActionSupport implements SessionAw
 		assoc2.setTo(greTunnelEndpoint);
 		greService.getToAssociations().add(assoc2);
 
+		log.info("getGRETunnel done.");
 		return greService;
 	}
 }

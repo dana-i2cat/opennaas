@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
@@ -24,6 +25,7 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 	private Map<String, Object>				session;
 	private IQueueManagerCapabilityService	queueManager;
 	private IChassisCapabilityService		chassisCapability;
+	private static final Logger				log	= Logger.getLogger("CreateSubInterfacesAction.class");
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -72,6 +74,7 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 	 * @throws ActionException_Exception
 	 */
 	private void createSubinterfaces() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+		log.info("createSubinterfaces ...");
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -98,6 +101,7 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface2"), Integer.valueOf(getText("gsn.iface2.vlan"))));
 		chassisCapability.createSubInterface(routerIdGSN, getEthernetPort(getText("gsn.iface3"), Integer.valueOf(getText("gsn.iface3.vlan"))));
 		queueManager.execute(routerIdGSN);
+		log.info("createSubinterfaces done.");
 	}
 
 	/**

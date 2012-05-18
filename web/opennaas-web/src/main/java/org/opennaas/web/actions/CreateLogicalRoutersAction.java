@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
@@ -33,6 +34,7 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 	private IResourceManagerService			resourceManagerService;
 	private IQueueManagerCapabilityService	queueManager;
 	private IProtocolSessionManagerService	protocolSessionManagerService;
+	private static final Logger				log	= Logger.getLogger("CreateLogicalRoutersAction.class");
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -76,6 +78,7 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 
 	private void createLogicalRouters() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception,
 			ProtocolException_Exception {
+		log.info("createLogicalRouters ...");
 		List<String> ifaces = new ArrayList<String>();
 
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
@@ -126,6 +129,8 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		protocolSessionManagerService.registerContext(((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource((ResourceIdentifier) session.get(getText("gsn.lrouter.name")));
+		log.info("createLogicalRouters done.");
+
 	}
 
 	/**

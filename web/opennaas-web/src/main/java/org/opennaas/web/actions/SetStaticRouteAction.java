@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
@@ -25,6 +26,7 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 	private INetOSPFCapabilityService		netOSPFService;
 	private INetQueueCapabilityService		netQueueService;
 	private IQueueManagerCapabilityService	queueService;
+	private static final Logger				log	= Logger.getLogger(SetStaticRouteAction.class);
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -52,12 +54,15 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 
 	@Override
 	public String execute() throws Exception {
+		log.info("execute ...");
 		configureStaticRoute();
 		configureOSPF();
+		log.info("execute done.");
 		return SUCCESS;
 	}
 
 	private void configureStaticRoute() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+		log.info("configureStaticRoute ...");
 		staticRouteService = OpennaasClient.getStaticRouteCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -75,15 +80,20 @@ public class SetStaticRouteAction extends ActionSupport implements SessionAware 
 		queueService.execute(lrUnicId);
 		queueService.execute(lrMyreId);
 		queueService.execute(lrGSNId);
+		log.info("configureStaticRoute done.");
+
 	}
 
 	private void configureOSPF() throws CapabilityException_Exception {
+		log.info("configureOSPF ...");
 		netOSPFService = OpennaasClient.getNetOSPFCapabilityService();
 		netQueueService = OpennaasClient.getNetQueueCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 		netOSPFService.activateOSPF(networkId);
 		netQueueService.execute(networkId);
+		log.info("configureOSPF done.");
+
 	}
 
 }

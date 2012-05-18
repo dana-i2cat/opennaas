@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.ActionException_Exception;
@@ -24,6 +25,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	private Map<String, Object>				session;
 	private IL2BoDCapabilityService			l2BoDCapabilityService;
 	private IQueueManagerCapabilityService	queueManager;
+	private static final Logger				log	= Logger.getLogger(AutobahnAction.class);
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -42,13 +44,16 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 
 	@Override
 	public String execute() throws Exception {
+		log.info("execute ...");
 		if (getText("autobahn.enabled").equals("true"))
 			autobahn();
 		attachNetworkResources();
+		log.info("execute done.");
 		return SUCCESS;
 	}
 
 	public void autobahn() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception, ProtocolException_Exception {
+		log.info("autobahn ...");
 		l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -63,6 +68,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
 
 		queueManager.execute(autbahnId);
+		log.info("  connection 1 done.");
 
 		// Connection 2
 		interfaceName1 = getText("autobahn.connection2.interface1");
@@ -73,6 +79,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
 
 		queueManager.execute(autbahnId);
+		log.info("  connection 2 done.");
 
 		// Connection 3
 		interfaceName1 = getText("autobahn.connection3.interface1");
@@ -83,9 +90,12 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
 
 		queueManager.execute(autbahnId);
+		log.info("  connection 3 done.");
+		log.info("autobahn done.");
 	}
 
 	private void attachNetworkResources() throws CapabilityException_Exception {
+		log.info("attachNetworkResources ...");
 		INetworkBasicCapabilityService capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
@@ -99,6 +109,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		capabilitService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
 				getInterface(getText("network.interface.gsnmyre")));
 
+		log.info("attachNetworkResources done.");
 	}
 
 	private Interface getInterface(String ifaceName) {

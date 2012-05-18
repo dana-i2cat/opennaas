@@ -3,6 +3,7 @@ package org.opennaas.web.actions;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.web.ws.OpennaasClient;
 import org.opennaas.ws.CapabilityDescriptor;
@@ -28,6 +29,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	private Map<String, Object>				session;
 	private IResourceManagerService			resourceManagerService;
 	private IProtocolSessionManagerService	protocolSessionManagerService;
+	private static final Logger				log	= Logger.getLogger(CreateResourcesAction.class);
 
 	@Override
 	public void setSession(Map<String, Object> session) {
@@ -55,6 +57,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	 * @throws ProtocolException_Exception
 	 */
 	private void createResources() throws CapabilityException_Exception, ResourceException_Exception, ProtocolException_Exception {
+		log.info("createResources ...");
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
@@ -64,6 +67,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier1.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.unic")));
 		resourceManagerService.startResource(identifier1);
+		log.info(" resource 1 created!");
 
 		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
@@ -71,6 +75,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier2.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource(identifier2);
+		log.info(" resource 2 created!");
 
 		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
@@ -78,11 +83,13 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier3.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
+		log.info(" resource 3 created!");
 
 		// Network
 		ResourceIdentifier identifier4 = resourceManagerService
 				.createResource(getNetworkResourceDescriptor("", getText("network.name"), "network", ""));
 		resourceManagerService.startResource(identifier4);
+		log.info(" resource 4 created!");
 
 		// BoD
 		ResourceIdentifier identifier5 = null;
@@ -93,6 +100,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 					getProtocolSessionContext(getText("protocol.bod.name"), getText("protocol.uri.autobahn")));
 			resourceManagerService.startResource(identifier5);
 		}
+		log.info(" resource 5 created!");
 
 		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
@@ -100,6 +108,8 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		session.put(getText("network.name"), identifier4);
 		if (getText("autobahn.enabled").equals("true"))
 			session.put(getText("autobahn.bod.name"), identifier5);
+
+		log.info("createResources done.");
 	}
 
 	/**
