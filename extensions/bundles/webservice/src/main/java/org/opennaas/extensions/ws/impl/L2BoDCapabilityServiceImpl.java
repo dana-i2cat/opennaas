@@ -131,7 +131,11 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	 * @return
 	 */
 	private DateTime parseISO8601Date(String s) {
-		DateTime time = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(s);
-		return ((s == null) ? new DateTime() : time);
+		if (s == null) {
+			return new DateTime();
+		} else {
+			DateTime time = ISODateTimeFormat.dateTimeNoMillis().parseDateTime(s);
+			return time;
+		}
 	}
 }
