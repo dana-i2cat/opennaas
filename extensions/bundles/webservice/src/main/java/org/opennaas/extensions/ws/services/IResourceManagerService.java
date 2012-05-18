@@ -43,6 +43,14 @@ public interface IResourceManagerService {
 	public void removeResource(ResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
+	 * Remove the existing resource that matches the id
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
+	public void removeResourceById(String resourceId) throws ResourceException;
+
+	/**
 	 * List all the existing resources of a given type. If type is null, list all resources whatever its type is.
 	 * 
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
