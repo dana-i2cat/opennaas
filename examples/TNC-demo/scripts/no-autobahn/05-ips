@@ -1,0 +1,33 @@
+shell:echo "SET IP ADDRESSES"
+##Set ip addresses on router interfaces
+
+ipv4:setip router:dub ge-2/0/1.2045 193.1.190.133 255.255.255.252
+ipv4:setip router:pw ge-1/0/7.2045 193.1.190.134 255.255.255.252
+
+ipv4:setip router:dub ge-2/0/1.2019 193.1.190.137 255.255.255.252
+ipv4:setip router:cph ge-1/1/1.2019 193.1.190.138 255.255.255.252
+
+ipv4:setip router:pw ge-1/0/7.2018 193.1.190.141 255.255.255.252
+ipv4:setip router:cph ge-1/1/1.2018 193.1.190.142 255.255.255.252
+
+##toCamera1
+ipv4:setip router:cph ge-1/1/2.2101 193.1.190.149 255.255.255.252
+##toCamera2
+ipv4:setip router:dub ge-2/0/0.14 193.1.190.153 255.255.255.252
+#toInternet
+ipv4:setip router:pw ge-1/0/7.25 193.1.190.129 255.255.255.252
+
+
+queue:execute router:dub
+queue:execute router:pw
+queue:execute router:cph
+
+
+#set static route
+
+staticroute:create router:pw 0.0.0.0 0.0.0.0 193.1.190.130
+staticroute:create router:dub 0.0.0.0 0.0.0.0 193.1.190.134
+staticroute:create router:cph 0.0.0.0 0.0.0.0 193.1.190.141
+queue:execute router:pw
+queue:execute router:dub
+queue:execute router:cph

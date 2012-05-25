@@ -1,0 +1,26 @@
+shell:echo "CREATE LOGICAL ROUTERS"
+##Creating logical routers
+
+chassis:createlogicalrouter router:myre dub ge-2/0/1.2048 ge-2/0/1.2017 ge-2/0/0.14 gr-1/1/0.1
+chassis:createlogicalrouter router:gsn pw ge-1/0/7.2048 ge-1/0/7.2016 ge-1/0/7.25
+chassis:createlogicalrouter router:unic cph ge-1/1/1.2017 ge-1/1/1.2016 ge-1/1/2.2101
+
+queue:listactions router:myre
+queue:execute router:myre
+
+queue:listactions router:gsn
+queue:execute router:gsn
+
+queue:listactions router:unic
+queue:execute router:unic
+
+resource:list
+
+##Adding contexts for resources
+shell:source $scripts.path/03a-contexts
+
+resource:start router:dub
+resource:start router:pw
+resource:start router:cph
+
+resource:list
