@@ -16,7 +16,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
 
-	public static String	CAPABILITY_NAME	= "l2bod";
+	public static String	CAPABILITY_TYPE	= "l2bod";
 
 	Log						log				= LogFactory.getLog(L2BoDCapability.class);
 
@@ -37,8 +37,10 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void requestConnection(RequestConnectionParameters parameters) throws CapabilityException {
+		log.info("Start of requestConnection call");
 		IAction action = createActionAndCheckParams(L2BoDActionSet.REQUEST_CONNECTION, parameters);
 		queueAction(action);
+		log.info("End of requestConnection call");
 	}
 
 	/*
@@ -48,13 +50,15 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void shutDownConnection(List<Interface> listInterfaces) throws CapabilityException {
+		log.info("Start of shutDownConnection call");
 		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, listInterfaces);
 		queueAction(action);
+		log.info("End of shutDownConnection call");
 	}
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override

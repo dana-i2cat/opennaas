@@ -1,0 +1,4 @@
+shell:echo "CONFIGURE GRE TUNNELS"
+
+gretunnel:create router:dub gr-1/1/0.1 193.1.190.145 255.255.255.252 193.1.190.133 193.1.248.63
+queue:execute router:dub

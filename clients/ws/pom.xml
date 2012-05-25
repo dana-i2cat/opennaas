@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.clients</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.9</version>
+		<version>0.10</version>
 	</parent>
 
 	<!-- POM id -->
@@ -12,8 +12,9 @@
 
 	<!-- Maven configuration -->
 	<packaging>jar</packaging>
-	<name>OpenNaaS :: Client :: Web Service</name>
-	<description>Web Service Client</description>
+	<name>OpenNaaS :: Web Service Client</name>
+	<description>OpenNaaS :: Web Service Client</description>
+
 
 	<build>
 		<plugins>
@@ -25,7 +26,8 @@
 					<execution>
 						<id>generate-sources</id>
 						<configuration>
-							<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot>
+<!-- 						<wsdlRoot>${basedir}/src/main/resources/wsdl</wsdlRoot> -->
+							<wsdlRoot>${basedir}/../../extensions/bundles/webservice/target/generated/wsdl</wsdlRoot>
 						  	<includes>
 								<include>*.wsdl</include>
 						  	</includes>

@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ProtocolEndpoint as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ProtocolEndpointBean Interface. The CIM class ProtocolEndpoint is described as
@@ -16,6 +18,10 @@ import java.util.List;
  * 
  * A communication point from which data can be sent or received. ProtocolEndpoints link system or computer interfaces to LogicalNetworks.
  */
+@XmlSeeAlso({
+		VLANEndpoint.class,
+		IPProtocolEndpoint.class
+})
 public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {
 

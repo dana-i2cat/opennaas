@@ -1,0 +1,16 @@
+shell:echo "INITIALIZE RESOURCES"
+
+##Creating resources
+resource:create $descriptors.path/gsn.descriptor
+resource:create $descriptors.path/myre.descriptor
+resource:create $descriptors.path/unic.descriptor
+resource:create $descriptors.path/autobahn.descriptor
+
+##Adding contexts for resources
+shell:source $scripts.path/01a-contexts
+
+##Starting resources
+resource:start router:gsn
+resource:start router:myre
+resource:start router:unic
+resource:start bod:autobahn

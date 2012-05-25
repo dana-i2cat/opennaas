@@ -29,7 +29,7 @@ import org.opennaas.extensions.router.model.Service;
  */
 public class OSPFCapability extends AbstractCapability implements IOSPFCapability {
 
-	public static String	CAPABILITY_NAME	= "ospf";
+	public static String	CAPABILITY_TYPE	= "ospf";
 
 	Log						log				= LogFactory.getLog(OSPFCapability.class);
 
@@ -49,7 +49,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
 	@Override
@@ -79,9 +79,11 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void configureOSPF(OSPFService ospfService) throws CapabilityException {
+		log.info("Start of configureOSPF call");
 		ospfService.setEnabledState(EnabledState.DISABLED); // mark OSPF as disabled, we are configuring only
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE, ospfService);
 		queueAction(action);
+		log.info("End of configureOSPF call");
 	}
 
 	/*
@@ -91,8 +93,10 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void getOSPFConfiguration() throws CapabilityException {
+		log.info("Start of getOSPFConfiguration call");
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_GET_CONFIGURATION, null);
 		queueAction(action);
+		log.info("End of getOSPFConfiguration call");
 	}
 
 	/*
@@ -102,10 +106,12 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void activateOSPF() throws CapabilityException {
+		log.info("Start of activateOSPF call");
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.ENABLED);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_ACTIVATE, service);
 		queueAction(action);
+		log.info("End of activateOSPF call");
 	}
 
 	/*
@@ -115,10 +121,12 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void deactivateOSPF() throws CapabilityException {
+		log.info("Start of deactivateOSPF call");
 		OSPFService service = new OSPFService();
 		service.setEnabledState(EnabledState.DISABLED);
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_DEACTIVATE, service);
 		queueAction(action);
+		log.info("End of deactivateOSPF call");
 	}
 
 	/*
@@ -128,8 +136,10 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void clearOSPFconfiguration(OSPFService ospfService) throws CapabilityException {
+		log.info("Start of clearOSPFconfiguration call");
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CLEAR, ospfService);
 		queueAction(action);
+		log.info("End of clearOSPFconfiguration call");
 	}
 
 	/*
@@ -139,8 +149,10 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void configureOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+		log.info("Start of configureOSPFArea call");
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_CONFIGURE_AREA, ospfAreaConfiguration);
 		queueAction(action);
+		log.info("End of configureOSPFArea call");
 	}
 
 	/*
@@ -150,8 +162,10 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void removeOSPFArea(OSPFAreaConfiguration ospfAreaConfiguration) throws CapabilityException {
+		log.info("Start removeOSPFArea call");
 		IAction action = createActionAndCheckParams(OSPFActionSet.OSPF_REMOVE_AREA, ospfAreaConfiguration);
 		queueAction(action);
+		log.info("End removeOSPFArea call");
 	}
 
 	/*
@@ -162,6 +176,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void addInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
+		log.info("Start of addInterfacesInOSPFArea call");
 		IAction action = null;
 
 		// create a copy of ospfArea with only the interfaces to add
@@ -183,6 +198,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_ADD_INTERFACE_IN_AREA, area);
 		queueAction(action);
+		log.info("End of addInterfacesInOSPFArea call");
 	}
 
 	/*
@@ -193,6 +209,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void removeInterfacesInOSPFArea(List<LogicalPort> interfaces, OSPFArea ospfArea) throws CapabilityException {
+		log.info("Start of removeInterfacesInOSPFArea call");
 		IAction action = null;
 
 		// create a copy of ospfArea with only the interfaces to remove
@@ -214,6 +231,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_REMOVE_INTERFACE_IN_AREA, area);
 		queueAction(action);
+		log.info("End of removeInterfacesInOSPFArea call");
 	}
 
 	/*
@@ -223,6 +241,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void enableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
+		log.info("Start of enableOSPFInterfaces call");
 		IAction action = null;
 
 		// mark OSPFProtocolEndpoints to enable
@@ -240,6 +259,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_ENABLE_INTERFACE, toEnable);
 		queueAction(action);
+		log.info("End of enableOSPFInterfaces call");
 	}
 
 	/*
@@ -249,6 +269,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void disableOSPFInterfaces(List<OSPFProtocolEndpoint> interfaces) throws CapabilityException {
+		log.info("Start of disableOSPFInterfaces call");
 		IAction action = null;
 
 		// mark OSPFProtocolEndpoints to disable
@@ -266,6 +287,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_DISABLE_INTERFACE, toDisable);
 		queueAction(action);
+		log.info("End of disableOSPFInterfaces call");
 	}
 
 	/*
@@ -275,6 +297,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public OSPFService showOSPFConfiguration() throws CapabilityException {
+		log.info("Start of showOSPFConfiguration call");
 		OSPFService ospfService = null;
 		List<Service> lServices = ((ComputerSystem) resource.getModel()).getHostedService();
 		if (lServices == null || lServices.isEmpty()) {
@@ -288,6 +311,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 				break;
 			}
 		}
+		log.info("End of showOSPFConfiguration call");
 		return ospfService;
 	}
 

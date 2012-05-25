@@ -1,0 +1,24 @@
+shell:echo "DYNAMIC LINKS"
+
+##Request connections 
+
+l2bod:requestconnection --vlanid=2017 --endtime=2012-05-30T12:55:00+02 --capacity=10 bod:autobahn HEANET.pc.7235713c GEANT.pc.2b04174c
+
+queue:execute bod:autobahn
+
+
+l2bod:requestconnection --vlanid=2016 --endtime=2012-05-30T13:00:00+02 --capacity=10 bod:autobahn HEANET.pc.5ddac8a4 GEANT.pc.2b04174c
+
+queue:execute bod:autobahn
+
+
+#l2bod:requestconnection --vlanid=2048 --endtime=2012-05-30T12:50:00+02 --capacity=10 bod:autobahn HEANET.pc.7235713c HEANET.pc.5ddac8a4
+
+#queue:execute bod:autobahn
+
+
+shell:echo "UPDATE NETWORK TOPOLOGY WITH EXISTENT LINKS"
+##Tell network who is connected with who unsing only static vlans
+net:l2attach network:networkdemo router:dub:ge-2/0/1.2048 router:pw:ge-1/0/7.2048
+net:l2attach network:networkdemo router:dub:ge-2/0/1.2017 router:cph:ge-1/1/1.2017
+net:l2attach network:networkdemo router:pw:ge-1/0/7.2016 router:cph:ge-1/1/1.2016
