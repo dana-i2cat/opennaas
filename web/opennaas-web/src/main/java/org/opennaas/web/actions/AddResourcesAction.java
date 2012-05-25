@@ -1,20 +1,17 @@
 package org.opennaas.web.actions;
 
-import java.net.MalformedURLException;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.extensions.ws.services.INetworkBasicCapabilityService;
+import org.opennaas.extensions.ws.services.IResourceManagerService;
+import org.opennaas.web.utils.DescriptorUtils;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.CapabilityDescriptor;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.CapabilityProperty;
-import org.opennaas.ws.INetworkBasicCapabilityService;
-import org.opennaas.ws.IResourceManagerService;
-import org.opennaas.ws.Information;
-import org.opennaas.ws.ResourceDescriptor;
-import org.opennaas.ws.ResourceException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -46,7 +43,7 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	private void addNetworkResources() throws CapabilityException_Exception, ResourceException_Exception, MalformedURLException {
+	private void addNetworkResources() throws ResourceException {
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 
@@ -80,58 +77,24 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	 */
 	private ResourceDescriptor getNetworkResourceDescriptor(String description, String name, String type, String version) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+		resourceDescriptor.setInformation(DescriptorUtils.getInformation(name, description, type, version));
 
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork",
-				"network", "1.0");
+		CapabilityDescriptor capabilityDescriptor = DescriptorUtils
+				.getCapabilityDescriptor("Basic Network", "Manages the topology of the Network.", "basicNetwork", "network", "1.0");
+
+		resourceDescriptor.setCapabilityDescriptors(new ArrayList<CapabilityDescriptor>());
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		capabilityDescriptor = getCapabilityDescriptor("Network Queue capability", "Manages the queue of all resources of the network.", "netqueue",
-				"network", "1.0");
+		capabilityDescriptor = DescriptorUtils
+				.getCapabilityDescriptor("Network Queue capability", "Manages the queue of all resources of the network.", "netqueue", "network",
+						"1.0");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		capabilityDescriptor = getCapabilityDescriptor("Network OSPF capability", "Enables OSPF on all resources of the network", "netospf",
-				"network", "1.0");
+		capabilityDescriptor = DescriptorUtils
+				.getCapabilityDescriptor("Network OSPF capability", "Enables OSPF on all resources of the network", "netospf", "network", "1.0");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
 		return resourceDescriptor;
-	}
-
-	/**
-	 * @return
-	 */
-	private CapabilityDescriptor getCapabilityDescriptor(String name, String description, String type, String actionName, String actionVersion) {
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-
-		List<CapabilityProperty> listProperties = capabilityDescriptor.getCapabilityProperty();
-		listProperties.add(getCapabilityPropery("actionset.name", actionName));
-		listProperties.add(getCapabilityPropery("actionset.version", actionVersion));
-
-		capabilityDescriptor.setInformation(getInformation(name, description, type, null));
-
-		return capabilityDescriptor;
-	}
-
-	/**
-	 * @return
-	 */
-	private Information getInformation(String name, String description, String type, String version) {
-		Information information = new Information();
-		information.setDescription(description);
-		information.setName(name);
-		information.setType(type);
-		information.setVersion(version);
-		return information;
-	}
-
-	/**
-	 * @return
-	 */
-	private CapabilityProperty getCapabilityPropery(String name, String value) {
-		CapabilityProperty capabilityProperty = new CapabilityProperty();
-		capabilityProperty.setName(name);
-		capabilityProperty.setValue(value);
-		return capabilityProperty;
 	}
 
 }
