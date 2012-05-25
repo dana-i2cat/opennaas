@@ -1042,9 +1042,9 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>i2cat</id>
-			<name>i2cat maven repository</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+			<id>maven.i2cat.net</id>
+			<name>>maven.i2cat.net-releases</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>
