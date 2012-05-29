@@ -6,21 +6,17 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.extensions.ws.services.IChassisCapabilityService;
+import org.opennaas.extensions.ws.services.IGRETunnelCapabilityService;
+import org.opennaas.extensions.ws.services.IL2BoDCapabilityService;
+import org.opennaas.extensions.ws.services.INetOSPFCapabilityService;
+import org.opennaas.extensions.ws.services.INetQueueCapabilityService;
+import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
+import org.opennaas.extensions.ws.services.IResourceManagerService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.ActionException_Exception;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.ComputerSystem;
-import org.opennaas.ws.GreTunnelService;
-import org.opennaas.ws.IChassisCapabilityService;
-import org.opennaas.ws.IGRETunnelCapabilityService;
-import org.opennaas.ws.IL2BoDCapabilityService;
-import org.opennaas.ws.INetOSPFCapabilityService;
-import org.opennaas.ws.INetQueueCapabilityService;
-import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.IResourceManagerService;
-import org.opennaas.ws.ProtocolException_Exception;
-import org.opennaas.ws.ResourceException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -74,7 +70,7 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	/**
 	 * @throws CapabilityException_Exception
 	 */
-	private void deactivateOSPF() throws CapabilityException_Exception {
+	private void deactivateOSPF() {
 		queueService = OpennaasClient.getNetQueueCapabilityService();
 		try {
 			if (session.get(getText("network.name")) != null) {
@@ -96,7 +92,7 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * @throws ActionException_Exception
 	 * @throws ProtocolException_Exception
 	 */
-	private void removeLR() throws ResourceException_Exception, CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void removeLR() {
 		try {
 			chassisCapab = OpennaasClient.getChassisCapabilityService();
 			resourceManagerService = OpennaasClient.getResourceManagerService();
@@ -168,12 +164,12 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * @throws ActionException_Exception
 	 * @throws ProtocolException_Exception
 	 */
-	private void removeGRE() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void removeGRE() {
 		try {
 			queueCapab = OpennaasClient.getQueueManagerCapabilityService();
-			greCapab = OpennaasClient.getGRETunnelCapabilityService();
+			greCapab = OpennaasClient.getGreTunnelCapabilityService();
 			if (session.get(getText("myre.lrouter.name")) != null) {
-				GreTunnelService greTunnelService = new GreTunnelService();
+				GRETunnelService greTunnelService = new GRETunnelService();
 				String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 
 				greTunnelService.setName(getText("myre.iface.gre"));
@@ -184,7 +180,6 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 		} catch (Exception e) {
 			LOGGER.error("Can't delete GRE.");
 		}
-
 	}
 
 	/**
@@ -192,7 +187,7 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * 
 	 * @throws CapabilityException_Exception
 	 */
-	private void shutDownAutobahn() throws CapabilityException_Exception, ResourceException_Exception {
+	private void shutDownAutobahn() {
 		try {
 			l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
 			if (session.get(getText("autobahn.bod.name")) != null) {
@@ -220,16 +215,16 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 							+ getText("autobahn.connection2.interface2"));
 				}
 
-				try {
-					List<String> list3 = new ArrayList<String>();
-					list3.add(getText("autobahn.connection3.interface1"));
-					list3.add(getText("autobahn.connection3.interface2"));
-					l2BoDCapabilityService.shutDownConnection(autbahnId, list3);
-				} catch (Exception e) {
-					LOGGER.error("Can't shut down autobahn connection 3 - "
-							+ getText("autobahn.connection3.interface1") + " - "
-							+ getText("autobahn.connection3.interface2"));
-				}
+				// try {
+				// List<String> list3 = new ArrayList<String>();
+				// list3.add(getText("autobahn.connection3.interface1"));
+				// list3.add(getText("autobahn.connection3.interface2"));
+				// l2BoDCapabilityService.shutDownConnection(autbahnId, list3);
+				// } catch (Exception e) {
+				// LOGGER.error("Can't shut down autobahn connection 3 - "
+				// + getText("autobahn.connection3.interface1") + " - "
+				// + getText("autobahn.connection3.interface2"));
+				// }
 			}
 		} catch (Exception e) {
 			LOGGER.error("Can't shut down autobahn.");
@@ -241,7 +236,7 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 	 * @throws ResourceException_Exception
 	 * @throws ProtocolException_Exception
 	 */
-	private void removeResources() throws CapabilityException_Exception, ResourceException_Exception, ProtocolException_Exception {
+	private void removeResources() {
 		try {
 			resourceManagerService = OpennaasClient.getResourceManagerService();
 

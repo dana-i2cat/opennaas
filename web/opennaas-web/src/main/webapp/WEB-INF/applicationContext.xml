@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd
+           http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<context:annotation-config />
+
+	<!-- This bean is the client Web Service. Apache CXF generate a client that 
+		meets the specified interface and accessing the Web Service specified in 
+		the attribute "address". This bean then can be injected and used normally 
+		as any other object. -->
+	<jaxws:client id="resourceManagerService"
+		serviceClass="org.opennaas.extensions.ws.services.IResourceManagerService"
+		address="http://dev.opennaas.org:8182/cxf/resourceManagerService" />
+
+	<jaxws:client id="protocolSessionManagerService"
+		serviceClass="org.opennaas.extensions.ws.services.IProtocolSessionManagerService"
+		address="http://dev.opennaas.org:8182/cxf/protocolSessionManagerService" />
+
+	<jaxws:client id="chassisCapabilityService"
+		serviceClass="org.opennaas.extensions.ws.services.IChassisCapabilityService"
+		address="http://dev.opennaas.org:8182/cxf/chassisCapabilityService" />
+
+	<jaxws:client id="queueManagerCapabilityService"
+		serviceClass="org.opennaas.extensions.ws.services.IQueueManagerCapabilityService"
+		address="http://dev.opennaas.org:8182/cxf/queueManagerCapabilityService" />
+
+	<jaxws:client id="networkBasicCapabilityService"
+		serviceClass="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService"
+		address="http://dev.opennaas.org:8182/cxf/networkBasicCapabilityService" />
+
+	<jaxws:client id="ipCapabilityService"
+		serviceClass="org.opennaas.extensions.ws.services.IIPCapabilityService"
+		address="http://dev.opennaas.org:8182/cxf/ipCapabilityService" />
+
+	<jaxws:client id="staticRouteCapabilityService"
+		serviceClass="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService"
+		address="http://dev.opennaas.org:8182/cxf/staticRouteCapabilityService" />
+		
+    <jaxws:client id="l2bodCapabilityService" 
+    	serviceClass="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" 
+    	address="http://dev.opennaas.org:8182/cxf/l2bodCapabilityService" />
+
+    <jaxws:client id="greTunnelCapabilityService" 
+    	serviceClass="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" 
+    	address="http://dev.opennaas.org:8182/cxf/greTunnelCapabilityService" />
+
+    <jaxws:client id="netOSPFCapabilityService" 
+    	serviceClass="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" 
+    	address="http://dev.opennaas.org:8182/cxf/netOSPFCapabilityService" />
+
+    <jaxws:client id="netQueueCapabilityService" 
+    	serviceClass="org.opennaas.extensions.ws.services.INetQueueCapabilityService" 
+    	address="http://dev.opennaas.org:8182/cxf/netQueueCapabilityService" />
+
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setProtocolSessionManagerService" />
+		<property name="arguments">
+			<list>
+				<ref bean="protocolSessionManagerService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setResourceManagerService" />
+		<property name="arguments">
+			<list>
+				<ref bean="resourceManagerService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setChassisCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="chassisCapabilityService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setQueueManagerCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="queueManagerCapabilityService" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setNetworkBasicCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="networkBasicCapabilityService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setIpCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="ipCapabilityService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setStaticRouteCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="staticRouteCapabilityService" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setL2BoDCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="l2bodCapabilityService" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setGreTunnelCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="greTunnelCapabilityService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setNetOSPFCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="netOSPFCapabilityService" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.opennaas.web.ws.OpennaasClient.setNetQueueCapabilityService" />
+		<property name="arguments">
+			<list>
+				<ref bean="netQueueCapabilityService" />
+			</list>
+		</property>
+	</bean>	
+	
+	
+
+</beans>
