@@ -1,27 +1,24 @@
 package org.opennaas.web.actions;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.ws.services.IL2BoDCapabilityService;
+import org.opennaas.extensions.ws.services.INetworkBasicCapabilityService;
+import org.opennaas.extensions.ws.services.IProtocolSessionManagerService;
+import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
+import org.opennaas.extensions.ws.services.IResourceManagerService;
+import org.opennaas.web.utils.DescriptorUtils;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.ActionException_Exception;
-import org.opennaas.ws.CapabilityDescriptor;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.CapabilityProperty;
-import org.opennaas.ws.IL2BoDCapabilityService;
-import org.opennaas.ws.INetworkBasicCapabilityService;
-import org.opennaas.ws.IProtocolSessionManagerService;
-import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.IResourceManagerService;
-import org.opennaas.ws.Information;
-import org.opennaas.ws.Interface;
-import org.opennaas.ws.ProtocolException_Exception;
-import org.opennaas.ws.ProtocolSessionContext;
-import org.opennaas.ws.ProtocolSessionContext.SessionParameters.Entry;
-import org.opennaas.ws.ResourceDescriptor;
-import org.opennaas.ws.ResourceException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -60,7 +57,7 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	private void autobahn() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void autobahn() throws ResourceException, ProtocolException {
 		l2BoDCapabilityService = OpennaasClient.getL2BoDCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 		resourceManagerService = OpennaasClient.getResourceManagerService();
@@ -97,33 +94,27 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 
 		queueManager.execute(identifier5.getId());
 
-		// Connection 3
-		// interfaceName1 = getText("autobahn.connection3.interface1");
-		// interfaceName2 = getText("autobahn.connection3.interface2");
-		// vlanid = getText("autobahn.connection3.vlanid");
-		// endtime = getText("autobahn.connection3.endtime");
-		// capacity = getText("autobahn.connection3.capacity");
-		// l2BoDCapabilityService.requestConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
-		//
-		// queueManager.execute(autbahnId);
 	}
 
-	private void attachNetworkResources() throws CapabilityException_Exception {
+	private void attachNetworkResources() throws CapabilityException {
 		networkBasicCapabilityService = OpennaasClient.getNetworkBasicCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 
-		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.unicmyre")),
+		networkBasicCapabilityService.l2attach(networkId, getInterface(getText("network.interface.unicmyre")),
 				getInterface(getText("network.interface.myreunic")));
 
-		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.unicgsn")),
+		networkBasicCapabilityService.l2attach(networkId, getInterface(getText("network.interface.unicgsn")),
 				getInterface(getText("network.interface.gsnunic")));
 
-		networkBasicCapabilityService.l2Attach(networkId, getInterface(getText("network.interface.myregsn")),
+		networkBasicCapabilityService.l2attach(networkId, getInterface(getText("network.interface.myregsn")),
 				getInterface(getText("network.interface.gsnmyre")));
 
 	}
 
+	/**
+	 * @return
+	 */
 	private Interface getInterface(String ifaceName) {
 		Interface iface = new Interface();
 		iface.setName(ifaceName);
@@ -139,12 +130,16 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	 */
 	private ResourceDescriptor getBoDResourceDescriptor(String description, String name, String type, String version) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
-		resourceDescriptor.setInformation(getInformation(name, description, type, version));
+		resourceDescriptor.setInformation(DescriptorUtils.getInformation(name, description, type, version));
 
-		CapabilityDescriptor capabilityDescriptor = getCapabilityDescriptor("l2bod capability", "l2bod capability", "l2bod", "autobahn", "1.0");
+		CapabilityDescriptor capabilityDescriptor = DescriptorUtils
+				.getCapabilityDescriptor("l2bod capability", "l2bod capability", "l2bod", "autobahn", "1.0");
+
+		resourceDescriptor.setCapabilityDescriptors(new ArrayList<CapabilityDescriptor>());
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
-		capabilityDescriptor = getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "autobahn", "1.0");
+		capabilityDescriptor = DescriptorUtils
+				.getCapabilityDescriptor("Queue capability", "Queue capability", "queue", "autobahn", "1.0");
 		resourceDescriptor.getCapabilityDescriptors().add(capabilityDescriptor);
 
 		return resourceDescriptor;
@@ -153,56 +148,10 @@ public class AutobahnAction extends ActionSupport implements SessionAware {
 	/**
 	 * @return
 	 */
-	private CapabilityDescriptor getCapabilityDescriptor(String name, String description, String type, String actionName, String actionVersion) {
-		CapabilityDescriptor capabilityDescriptor = new CapabilityDescriptor();
-
-		List<CapabilityProperty> listProperties = capabilityDescriptor.getCapabilityProperty();
-		listProperties.add(getCapabilityPropery("actionset.name", actionName));
-		listProperties.add(getCapabilityPropery("actionset.version", actionVersion));
-
-		capabilityDescriptor.setInformation(getInformation(name, description, type, null));
-
-		return capabilityDescriptor;
-	}
-
-	/**
-	 * @return
-	 */
-	private CapabilityProperty getCapabilityPropery(String name, String value) {
-		CapabilityProperty capabilityProperty = new CapabilityProperty();
-		capabilityProperty.setName(name);
-		capabilityProperty.setValue(value);
-		return capabilityProperty;
-	}
-
-	/**
-	 * @return
-	 */
-	private Information getInformation(String name, String description, String type, String version) {
-		Information information = new Information();
-		information.setDescription(description);
-		information.setName(name);
-		information.setType(type);
-		information.setVersion(version);
-		return information;
-	}
-
-	/**
-	 * @return
-	 */
 	private ProtocolSessionContext getProtocolSessionContext(String protocol, String uri) {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
-		protocolSessionContext.setSessionParameters(sessionParameters);
-		List<Entry> listEntries = sessionParameters.getEntry();
-		Entry entry = new Entry();
-		entry.setKey("protocol");
-		entry.setValue(protocol);
-		listEntries.add(entry);
-		entry = new Entry();
-		entry.setKey("protocol.uri");
-		entry.setValue(uri);
-		listEntries.add(entry);
+		protocolSessionContext.addParameter("protocol", protocol);
+		protocolSessionContext.addParameter("protocol.uri", uri);
 		return protocolSessionContext;
 	}
 }

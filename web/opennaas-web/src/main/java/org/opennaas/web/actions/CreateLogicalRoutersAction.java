@@ -5,21 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.ws.services.IChassisCapabilityService;
+import org.opennaas.extensions.ws.services.IProtocolSessionManagerService;
+import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
+import org.opennaas.extensions.ws.services.IResourceManagerService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.ActionException_Exception;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.ComputerSystem;
-import org.opennaas.ws.IChassisCapabilityService;
-import org.opennaas.ws.IProtocolSessionManagerService;
-import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.IResourceManagerService;
-import org.opennaas.ws.LogicalPort;
-import org.opennaas.ws.NetworkPort;
-import org.opennaas.ws.ProtocolException_Exception;
-import org.opennaas.ws.ProtocolSessionContext;
-import org.opennaas.ws.ProtocolSessionContext.SessionParameters.Entry;
-import org.opennaas.ws.ResourceException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -44,38 +41,27 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 	}
 
 	/**
-	 * shell:echo "CREATE LOGICAL ROUTERS"<br>
-	 * ##Creating logical routers<br>
-	 * chassis:createlogicalrouter router:heanetM20 logicalheanet1 fe-0/3/3.1 fe-0/3/0.13 ge-0/2/0.80 gr-1/2/0.1 <br>
-	 * resource:list <br>
-	 * queue:listactions router:heanetM20 <br>
-	 * queue:execute router:heanetM20 <br>
-	 * protocols:context router:logicalheanet1 netconf ssh://user:password@hea.net:22/netconf <br>
-	 * resource:start router:logicalheanet1 <br>
+	 * Create Logical Routers
 	 * 
-	 * chassis:createlogicalrouter router:unicM7i logicalunic1 ge-2/0/0.13 ge-2/0/0.12 ge-2/0/1.81 gr-1/1/0.2 <br>
-	 * resource:list <br>
-	 * queue:listactions router:unicM7i <br>
-	 * queue:execute router:unicM7i <br>
-	 * protocols:context router:logicalunic1 netconf ssh://user:password@unic.hea.net:22/netconf <br>
-	 * resource:start router:logicalunic1 <br>
-	 * 
-	 * chassis:createlogicalrouter router:gsnMX10 logicalgsn1 ge-1/0/7.60 ge-1/0/7.59 <br>
-	 * queue:listactions router:gsnMX10 <br>
-	 * queue:execute router:gsnMX10 <br>
-	 * protocols:context router:logicalgsn1 netconf ssh://user:password@gsn.hea.net:22/netconf <br>
-	 * resource:start router:logicalgsn1 <br>
-	 **/
+	 */
 	private static final long	serialVersionUID	= 1L;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.opensymphony.xwork2.ActionSupport#execute()
+	 */
 	@Override
 	public String execute() throws Exception {
 		createLogicalRouters();
 		return SUCCESS;
 	}
 
-	private void createLogicalRouters() throws CapabilityException_Exception, ResourceException_Exception, ActionException_Exception,
-			ProtocolException_Exception {
+	/**
+	 * @throws ProtocolException
+	 * @throws ResourceException
+	 */
+	private void createLogicalRouters() throws ProtocolException, ResourceException {
 		List<String> ifaces = new ArrayList<String>();
 
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
@@ -129,29 +115,21 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 	}
 
 	/**
+	 * @param protocol
+	 * @param uri
 	 * @return
 	 */
 	private ProtocolSessionContext getProtocolSessionContext(String protocol, String uri) {
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		ProtocolSessionContext.SessionParameters sessionParameters = new ProtocolSessionContext.SessionParameters();
-		protocolSessionContext.setSessionParameters(sessionParameters);
-		List<Entry> listEntries = sessionParameters.getEntry();
-		Entry entry = new Entry();
-		entry.setKey("protocol");
-		entry.setValue(protocol);
-		listEntries.add(entry);
-		entry = new Entry();
-		entry.setKey("protocol.uri");
-		entry.setValue(uri);
-		listEntries.add(entry);
+		protocolSessionContext.addParameter("protocol", protocol);
+		protocolSessionContext.addParameter("protocol.uri", uri);
 		return protocolSessionContext;
 	}
 
 	/**
-	 * @throws ResourceException_Exception
-	 * 
+	 * @throws ResourceException
 	 */
-	private void saveLogicalRoutersInSession() throws ResourceException_Exception {
+	private void saveLogicalRoutersInSession() throws ResourceException {
 		ResourceIdentifier lrUnic = getLRResourceId(getText("unic.lrouter.name"));
 		ResourceIdentifier lrGSN = getLRResourceId(getText("gsn.lrouter.name"));
 		ResourceIdentifier lrMyre = getLRResourceId(getText("myre.lrouter.name"));
@@ -180,7 +158,7 @@ public class CreateLogicalRoutersAction extends ActionSupport implements Session
 		return router;
 	}
 
-	private ResourceIdentifier getLRResourceId(String logicalRouterName) throws ResourceException_Exception {
+	private ResourceIdentifier getLRResourceId(String logicalRouterName) throws ResourceException {
 		return resourceManagerService.getIdentifierFromResourceName("router", logicalRouterName);
 	}
 }

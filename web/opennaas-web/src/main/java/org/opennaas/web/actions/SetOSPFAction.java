@@ -3,11 +3,11 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.ws.services.INetOSPFCapabilityService;
+import org.opennaas.extensions.ws.services.INetQueueCapabilityService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.INetOSPFCapabilityService;
-import org.opennaas.ws.INetQueueCapabilityService;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -60,7 +60,7 @@ public class SetOSPFAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	private void configureOSPF() throws CapabilityException_Exception {
+	private void configureOSPF() throws CapabilityException {
 		netOSPFService = OpennaasClient.getNetOSPFCapabilityService();
 		netQueueService = OpennaasClient.getNetQueueCapabilityService();
 
