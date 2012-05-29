@@ -3,16 +3,15 @@ package org.opennaas.web.actions;
 import java.util.Map;
 
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.PortImplementsEndpoint;
+import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.extensions.ws.services.IChassisCapabilityService;
+import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.ActionException_Exception;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.EthernetPort;
-import org.opennaas.ws.IChassisCapabilityService;
-import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.PortImplementsEndpoint;
-import org.opennaas.ws.ProtocolException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
-import org.opennaas.ws.VlanEndpoint;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -46,32 +45,13 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 	}
 
 	/**
-	 * ##Create interfaces <br>
-	 * <br>
-	 * chassis:createsubinterface --vlanid 1 router:heanetM20 fe-0/3/3.1<br>
-	 * chassis:createsubinterface --vlanid 13 router:heanetM20 fe-0/3/0.13<br>
-	 * chassis:createsubinterface --vlanid 80 router:heanetM20 ge-0/2/0.80<br>
-	 * chassis:createsubinterface router:heanetM20 gr-1/2/0.1 <br>
-	 * queue:listactions router:heanetM20<br>
-	 * queue:execute router:heanetM20<br>
+	 * Create interfaces
 	 * 
-	 * chassis:createsubinterface --vlanid 59 router:gsnMX10 ge-1/0/7.59<br>
-	 * chassis:createsubinterface --vlanid 60 router:gsnMX10 ge-1/0/7.60<br>
-	 * queue:listactions router:gsnMX10<br>
-	 * queue:execute router:gsnMX10<br>
-	 * 
-	 * chassis:createsubinterface --vlanid 81 router:unicM7i ge-2/0/1.81<br>
-	 * chassis:createsubinterface --vlanid 12 router:unicM7i ge-2/0/0.12<br>
-	 * chassis:createsubinterface --vlanid 13 router:unicM7i ge-2/0/0.13<br>
-	 * chassis:createsubinterface router:unicM7i gr-1/1/0.2<br>
-	 * queue:listactions router:unicM7i<br>
-	 * queue:execute router:unicM7i<br>
-	 * 
-	 * @throws CapabilityException_Exception
-	 * @throws ProtocolException_Exception
-	 * @throws ActionException_Exception
+	 * @throws CapabilityException
+	 * @throws NumberFormatException
+	 * @throws ProtocolException
 	 */
-	private void createSubinterfaces() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void createSubinterfaces() throws NumberFormatException, CapabilityException, ProtocolException {
 		chassisCapability = OpennaasClient.getChassisCapabilityService();
 		queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -111,7 +91,7 @@ public class CreateSubInterfacesAction extends ActionSupport implements SessionA
 		ethPort.setName(args[0]);
 		ethPort.setPortNumber(Integer.parseInt(args[1]));
 
-		VlanEndpoint vlanEndpoint = new VlanEndpoint();
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
 		vlanEndpoint.setVlanID(VLANId);
 
 		PortImplementsEndpoint assoc = new PortImplementsEndpoint();
