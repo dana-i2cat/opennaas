@@ -1,5 +1,12 @@
 package org.opennaas.extensions.router.model;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.bind.annotation.XmlTransient;
+
+@XmlSeeAlso({
+		Component.class,
+		Dependency.class
+})
 public class Association {
 
 	private ManagedElement	from, to;
@@ -8,6 +15,7 @@ public class Association {
 		this.from = from;
 	}
 
+	@XmlTransient
 	public ManagedElement getFrom() {
 		return from;
 	}

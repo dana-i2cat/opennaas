@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class Component as well as methods comparable to the
@@ -15,6 +15,11 @@ import java.io.*;
  * the components or parts of a System.
  */
 public class Component extends Association implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 8099874308217780129L;
 
 	/**
 	 * This constructor creates a ComponentBeanImpl Class which implements the ComponentBean Interface, and encapsulates the CIM class Component in a

@@ -1,17 +1,14 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-import org.opennaas.extensions.router.model.EthernetPort;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.EthernetPort;
 
 @Command(scope = "chassis", name = "deleteSubInterface", description = "Delete a subinterface on a given resource.")
 public class DeleteSubInterfaceCommand extends GenericKarafCommand {
@@ -52,9 +49,8 @@ public class DeleteSubInterfaceCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.DELETESUBINTERFACE, prepareParams());
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.deleteSubInterface(prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);

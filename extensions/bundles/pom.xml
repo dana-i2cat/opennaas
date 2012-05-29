@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>1.0.0-SNAPSHOT</version>
+		<version>0.11-SNAPSHOT</version>
 	</parent>
-	<name>Mantychore Bundles</name>
+	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
 	<dependencies>
 		<dependency>
@@ -42,9 +42,6 @@
 		<module>roadm.capability.connections</module>
 		<module>roadm.capability.monitoring</module>
 
-		<module>nexus.alarms.repository</module>
-		<module>nexus.tests.helper</module>
-
 		<module>network.model</module>
 		<module>network.repository</module>
 		<module>network.capability.basic</module>
@@ -54,5 +51,11 @@
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
+        <module>bod.autobahn</module>
+         
+		<module>itests.helpers</module>
+		
+		<module>webservice</module>
+		<module>webservice-proxy</module>
 	</modules>
 </project>

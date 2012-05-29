@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ProtocolEndpoint as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the ProtocolEndpointBean Interface. The CIM class ProtocolEndpoint is described as
@@ -16,8 +18,17 @@ import java.util.List;
  * 
  * A communication point from which data can be sent or received. ProtocolEndpoints link system or computer interfaces to LogicalNetworks.
  */
+@XmlSeeAlso({
+		VLANEndpoint.class,
+		IPProtocolEndpoint.class
+})
 public class ProtocolEndpoint extends ServiceAccessPoint implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4635898523052855454L;
 
 	/**
 	 * Sets the ProvidesEndpoint association between a given Service and this element.
@@ -48,7 +59,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	 * @return
 	 */
 	public Service getService() {
-		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
+		return (Service) this.getFirstFromAssociatedElementByType(ProvidesEndpoint.class);
 	}
 
 	/* BindsTo */
@@ -258,11 +269,6 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	} // setTimeOfLastStateChange
 
 	/**
-	 * The following constants are defined for use with the ValueMap/Values qualified property name.
-	 */
-	private String	name;
-
-	/**
 	 * This method returns the ProtocolEndpoint.name property value. This property is described as follows:
 	 * 
 	 * A string that identifies this ProtocolEndpoint with either a port or an interface on a device. To ensure uniqueness, the Name property should
@@ -275,7 +281,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	@Override
 	public String getName() {
 
-		return this.name;
+		return super.getName();
 	} // getName
 
 	/**
@@ -292,7 +298,7 @@ public class ProtocolEndpoint extends ServiceAccessPoint implements
 	@Override
 	public void setName(String name) {
 
-		this.name = name;
+		super.setName(name);
 	} // setName
 
 	/**

@@ -29,6 +29,9 @@ public class NetworkTopology {
 	private List<Device>		devices;
 
 	@OneToMany(cascade = CascadeType.ALL)
+	private List<Layer>			layers;
+
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Interface>		interfaces;
 
 	public String getLocation() {
@@ -51,6 +54,15 @@ public class NetworkTopology {
 	@XmlElement(name = "Device", namespace = "http://www.science.uva.nl/research/sne/ndl#")
 	public List<Device> getDevices() {
 		return devices;
+	}
+
+	@XmlElement(name = "Layer", namespace = "http://www.science.uva.nl/research/sne/ndl#")
+	public List<Layer> getLayers() {
+		return layers;
+	}
+
+	public void setLayers(List<Layer> layers) {
+		this.layers = layers;
 	}
 
 	public void setDevices(List<Device> devices) {

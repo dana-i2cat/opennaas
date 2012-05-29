@@ -9,6 +9,10 @@ import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
 
 public class ProteusOpticalSwitch extends org.opennaas.extensions.router.model.System {
 
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6737244447225380204L;
 	private List<FiberConnection>	fiberConnections	= new ArrayList<FiberConnection>();
 
 	public List<FiberConnection> getFiberConnections() {

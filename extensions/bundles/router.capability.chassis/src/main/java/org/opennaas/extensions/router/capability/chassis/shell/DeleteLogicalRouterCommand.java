@@ -1,16 +1,14 @@
 package org.opennaas.extensions.router.capability.chassis.shell;
 
-import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
-import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.model.ComputerSystem;
 
 @Command(scope = "chassis", name = "deleteLogicalRouter", description = "Delete a logical router on a given resource.")
 public class DeleteLogicalRouterCommand extends GenericKarafCommand {
@@ -51,9 +49,8 @@ public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			ICapability chassisCapability = getCapability(resource.getCapabilities(), ChassisCapability.CHASSIS);
-			// printInfo("Sending message to the queue");
-			chassisCapability.sendMessage(ActionConstants.DELETELOGICALROUTER, prepareParams());
+			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
+			chassisCapability.deleteLogicalRouter(prepareParams());
 
 		} catch (ResourceException e) {
 			printError(e);
@@ -69,7 +66,11 @@ public class DeleteLogicalRouterCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	private String prepareParams() {
-		return logicalRouterName;
+	private ComputerSystem prepareParams() {
+		ComputerSystem lr = new ComputerSystem();
+		lr.setName(logicalRouterName);
+		lr.setElementName(logicalRouterName);
+
+		return lr;
 	}
 }

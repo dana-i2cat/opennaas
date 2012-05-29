@@ -2,13 +2,6 @@ package org.opennaas.extensions.network.capability.queue;
 
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
-
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
-import org.opennaas.extensions.network.model.topology.Device;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -21,19 +14,24 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapability;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.queue.QueueConstants;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.domain.NetworkDomain;
+import org.opennaas.extensions.network.model.topology.Device;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
  * @author Jordi Puig
  */
-public class QueueCapability extends AbstractCapability implements IQueueService {
+public class QueueCapability extends AbstractCapability implements IQueueCapability {
 
-	public final static String	NETQUEUE_CAPABILITY_NAME	= "netqueue";
+	public final static String	CAPABILITY_TYPE				= "netqueue";
+
+	public final static String	NETQUEUE_CAPABILITY_NAME	= CAPABILITY_TYPE;
 
 	public final static String	QUEUE_CAPABILITY_NAME		= "queue";
 
@@ -53,28 +51,15 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 		log.debug("Built new queue capability");
 	}
 
-	/*
-	 * Execute the action defined in the idOperation param (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.ICapability#sendMessage(java.lang.String, java.lang.Object)
-	 */
 	@Override
-	public Object sendMessage(String idOperation, Object params) {
-		log.debug("Sending message to queue capability");
-		try {
-			IQueueManagerService queueManager = Activator.getQueueManagerService(resourceId);
-			IAction action = createAction(idOperation);
-			action.setParams(params);
-			action.setModelToUpdate(resource.getModel());
-			queueManager.queueAction(action);
-		} catch (Exception e) {
-			Vector<String> errorMsgs = new Vector<String>();
-			errorMsgs
-					.add(e.getMessage() + ":" + '\n' + e.getLocalizedMessage());
-			return Response.errorResponse(idOperation, errorMsgs);
-		}
+	public String getCapabilityName() {
+		return CAPABILITY_TYPE;
+	}
 
-		return Response.queuedResponse(idOperation);
+	@Override
+	public void queueAction(IAction action) throws CapabilityException {
+		// TODO Auto-generated method stub
+
 	}
 
 	/*
@@ -94,6 +79,7 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	 */
 	@Override
 	public Map<String, QueueResponse> execute() throws CapabilityException {
+		log.info("Start of execute call");
 		Map<String, QueueResponse> response = new Hashtable<String, QueueResponse>();
 		NetworkModel model = (NetworkModel) resource.getModel();
 		if (model.getNetworkElements() != null && !model.getNetworkElements().isEmpty()) {
@@ -111,43 +97,8 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 				}
 			}
 		}
+		log.info("End of execute call");
 		return response;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#activateCapability()
-	 */
-	@Override
-	protected void activateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivateCapability()
-	 */
-	@Override
-	protected void deactivateCapability() throws CapabilityException {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#initializeCapability()
-	 */
-	@Override
-	protected void initializeCapability() throws CapabilityException {
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdownCapability()
-	 */
-	@Override
-	protected void shutdownCapability() throws CapabilityException {
 	}
 
 	/**
@@ -163,14 +114,18 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 		try {
 			IResource iResource = getResource(networkElementName);
 			if (iResource != null) {
-				ICapability queueCapability = iResource.getCapability(getInformation(QUEUE_CAPABILITY_NAME));
+
+				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource
+						.getCapabilityByInterface(IQueueManagerCapability.class);
 				if (queueCapability != null) {
-					queueResponse = (QueueResponse) queueCapability.sendMessage(QueueConstants.EXECUTE, null);
+					queueResponse = (QueueResponse) queueCapability.execute();
 				}
 			}
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		} catch (ProtocolException e) {
 			throw new CapabilityException(e);
 		}
 		return queueResponse;
@@ -221,5 +176,4 @@ public class QueueCapability extends AbstractCapability implements IQueueService
 	private String[] getResourceTypeAndName(String name) {
 		return name.split(":");
 	}
-
 }

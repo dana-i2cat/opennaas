@@ -5,9 +5,10 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.util.*;
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class EnabledLogicalElement as well as methods comparable to
@@ -17,8 +18,16 @@ import java.lang.Exception;
  * This class extends LogicalElement to abstract the concept of an element that is enabled and disabled, such as a LogicalDevice or a
  * ServiceAccessPoint.
  */
+@XmlSeeAlso({
+		ServiceAccessPoint.class
+})
 public class EnabledLogicalElement extends LogicalElement implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 6626174356716679399L;
 
 	/**
 	 * This constructor creates a EnabledLogicalElementBeanImpl Class which implements the EnabledLogicalElementBean Interface, and encapsulates the

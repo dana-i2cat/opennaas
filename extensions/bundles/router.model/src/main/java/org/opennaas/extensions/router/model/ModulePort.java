@@ -16,6 +16,11 @@ import java.io.*;
 public class ModulePort extends Component implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 1720940709086473360L;
+
+	/**
 	 * This constructor creates a ModulePortBeanImpl Class which implements the ModulePortBean Interface, and encapsulates the CIM class ModulePort in
 	 * a Java Bean. The CIM class ModulePort is described as follows:
 	 * 

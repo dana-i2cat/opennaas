@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class BindsTo as well as methods comparable to the
@@ -16,6 +16,11 @@ import java.io.*;
  * layering of two protocols, with the upper layer represented by the Dependent and the lower layer represented by the Antecedent.
  */
 public class BindsTo extends SAPSAPDependency implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5163470205028155003L;
 
 	/**
 	 * This constructor creates a BindsToBeanImpl Class which implements the BindsToBean Interface, and encapsulates the CIM class BindsTo in a Java

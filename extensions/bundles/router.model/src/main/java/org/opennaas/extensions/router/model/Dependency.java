@@ -5,7 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class Dependency as well as methods comparable to the
@@ -13,7 +15,17 @@ import java.io.*;
  * 
  * CIM_Dependency is a generic association used to establish dependency relationships between ManagedElements.
  */
+@XmlSeeAlso({
+		DeviceSAPImplementation.class,
+		GRETunnelServiceConfiguration.class,
+		ServiceAccessBySAP.class
+})
 public class Dependency extends Association implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 2256082086015662908L;
 
 	/**
 	 * This constructor creates a DependencyBeanImpl Class which implements the DependencyBean Interface, and encapsulates the CIM class Dependency in

@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedRoute as well as methods comparable to the
@@ -14,6 +14,11 @@ import java.io.*;
  * HostedRoute describes the relationship between the route and the system in whose context it is defined.
  */
 public class HostedRoute extends HostedDependency implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4788133373049051060L;
 
 	/**
 	 * This constructor creates a HostedRouteBeanImpl Class which implements the HostedRouteBean Interface, and encapsulates the CIM class HostedRoute

@@ -5,7 +5,7 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
+import java.io.Serializable;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class HostedDependency as well as methods comparable to the
@@ -15,6 +15,11 @@ import java.io.*;
  * HostedDependency defines a ManagedElement in the context of another ManagedElement in which it resides.
  */
 public class HostedDependency extends Dependency implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= -8909679667743463771L;
 
 	/**
 	 * This constructor creates a HostedDependencyBeanImpl Class which implements the HostedDependencyBean Interface, and encapsulates the CIM class

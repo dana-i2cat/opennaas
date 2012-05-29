@@ -2,8 +2,6 @@ package org.opennaas.extensions.queuemanager.shell;
 
 import java.util.List;
 
-import org.opennaas.extensions.queuemanager.QueueManager;
-
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -11,11 +9,11 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.action.ActionResponse;
-import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.command.Response;
-import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.queuemanager.QueueManager;
 
 @Command(scope = "queue", name = "execute", description = "Execute all actions in queue")
 public class ExecuteCommand extends GenericKarafCommand {
@@ -31,7 +29,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		printInitCommand("Execute all actions in queue");
 
-		ICapability queue;
+		IQueueManagerCapability queue;
 		try {
 			IResourceManager manager = getResourceManager();
 
@@ -56,7 +54,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 			IResource resource = manager.getResource(resourceIdentifier);
 			validateResource(resource);
-			queue = getCapability(resource.getCapabilities(), QueueManager.QUEUE);
+			queue = (IQueueManagerCapability) getCapability(resource.getCapabilities(), QueueManager.QUEUE);
 			if (queue == null) {
 				printError("Could not found capability " + QueueManager.QUEUE + " in resource " + resourceId);
 				return -1;
@@ -71,7 +69,7 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 		try {
 			printSymbolWithoutDoubleLine("Executing queue... ");
-			QueueResponse queueResponse = (QueueResponse) queue.sendMessage(QueueConstants.EXECUTE, null);
+			QueueResponse queueResponse = queue.execute();
 			if (queueResponse.isOk())
 				printSymbol("OK");
 			else
@@ -136,6 +134,9 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 	private void printActionResponseBrief(ActionResponse actionResponse) {
 		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
+		if (actionResponse.getInformation() != null) {
+			printSymbol("Information: " + actionResponse.getInformation());
+		}
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		String[] titles = { "Command Name", "Status" };
@@ -152,6 +153,9 @@ public class ExecuteCommand extends GenericKarafCommand {
 
 	private void printActionResponseExtended(ActionResponse actionResponse) {
 		printSymbol("--- actionid: " + actionResponse.getActionID() + ", status: " + actionResponse.getStatus() + " ---");
+		if (actionResponse.getInformation() != null) {
+			printSymbol("Information: " + actionResponse.getInformation());
+		}
 		List<Response> responses = actionResponse.getResponses();
 		/* create new action */
 		for (Response response : responses) {

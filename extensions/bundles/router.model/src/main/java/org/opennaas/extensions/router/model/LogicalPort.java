@@ -18,6 +18,11 @@ import java.util.List;
 public class LogicalPort extends LogicalDevice implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 5621013572754510029L;
+
+	/**
 	 * Add a new PortImplementsEndpoint association between protocolEndpoint and this element
 	 * 
 	 * @param protocolEndpoint

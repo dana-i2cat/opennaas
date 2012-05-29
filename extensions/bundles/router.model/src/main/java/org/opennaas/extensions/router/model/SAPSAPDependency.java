@@ -19,6 +19,11 @@ import java.io.*;
 public class SAPSAPDependency extends Dependency implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 1187256438166392002L;
+
+	/**
 	 * This constructor creates a SAPSAPDependencyBeanImpl Class which implements the SAPSAPDependencyBean Interface, and encapsulates the CIM class
 	 * SAPSAPDependency in a Java Bean. The CIM class SAPSAPDependency is described as follows:
 	 * 

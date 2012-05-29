@@ -4,9 +4,8 @@ import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import org.opennaas.extensions.router.capability.gretunnel.GRETunnelCapability;
+import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GREService;
 import org.opennaas.extensions.router.model.GRETunnelConfiguration;
@@ -48,9 +47,8 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 		printInitCommand("Shows GRE tunnels");
 		try {
 			IResource router = getResourceFromFriendlyName(resourceId);
-			GRETunnelCapability tunnelCapability = (GRETunnelCapability) getCapability(router.getCapabilities(), GRETunnelCapability.CAPABILITY_NAME);
-			Response response = tunnelCapability.createGRETunnel(getTunnelService());
-			return printResponseStatus(response);
+			IGRETunnelCapability tunnelCapability = (IGRETunnelCapability) router.getCapabilityByInterface(IGRETunnelCapability.class);
+			tunnelCapability.createGRETunnel(getTunnelService());
 		} catch (ResourceException e) {
 			printError(e);
 			printEndCommand();
@@ -61,6 +59,8 @@ public class CreateTunnelCommand extends GenericKarafCommand {
 			printEndCommand();
 			return -1;
 		}
+		printEndCommand();
+		return null;
 	}
 
 	// TODO change this function when we fix the showconfiguration command.

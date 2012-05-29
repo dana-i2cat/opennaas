@@ -2,14 +2,13 @@ package org.opennaas.extensions.bod.capability.l2bod;
 
 import java.util.Properties;
 
-import org.opennaas.extensions.queuemanager.IQueueManagerService;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.AbstractActivator;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
@@ -23,7 +22,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Get the Bunble Context
-	 *
+	 * 
 	 * @return BundleContext
 	 */
 	public static BundleContext getContext() {
@@ -46,16 +45,16 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Get the Queue Manager Service
-	 *
+	 * 
 	 * @param resourceId
-	 * @return IQueueManagerService
+	 * @return IQueueManagerCapability
 	 * @throws ActivatorException
 	 */
-	public static IQueueManagerService getQueueManagerService(String resourceId) throws ActivatorException {
+	public static IQueueManagerCapability getQueueManagerService(String resourceId) throws ActivatorException {
 
 		try {
 			log.debug("Calling QueueManagerService");
-			return (IQueueManagerService) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
+			return (IQueueManagerCapability) getServiceFromRegistry(context, createFilterQueueManager(resourceId));
 		} catch (InvalidSyntaxException e) {
 			throw new ActivatorException(e);
 		}
@@ -63,7 +62,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Necessary to get some capability type
-	 *
+	 * 
 	 * @param resourceId
 	 * @return Filter
 	 * @throws InvalidSyntaxException
@@ -73,12 +72,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		Properties properties = new Properties();
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
 		properties.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
-		return createServiceFilter(IQueueManagerService.class.getName(), properties);
+		return createServiceFilter(IQueueManagerCapability.class.getName(), properties);
 	}
 
 	/**
 	 * Get the connections action set service
-	 *
+	 * 
 	 * @param name
 	 * @param version
 	 * @return IActionSet
@@ -96,7 +95,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 
 	/**
 	 * Necessary to get some capability type
-	 *
+	 * 
 	 * @param name
 	 * @param version
 	 * @return Filter

@@ -8,6 +8,8 @@ package org.opennaas.extensions.router.model;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class ServiceAccessPoint as well as methods comparable to
  * the invokeMethods defined for this class. This Class implements the ServiceAccessPointBean Interface. The CIM class ServiceAccessPoint is described
@@ -16,8 +18,16 @@ import java.util.List;
  * CIM_ServiceAccessPoint represents the ability to utilize or invoke a Service. Access points represent that a Service is made available for other
  * entities to use.
  */
+@XmlSeeAlso({
+		ProtocolEndpoint.class
+})
 public class ServiceAccessPoint extends EnabledLogicalElement implements
 		Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long	serialVersionUID	= 4477790607710638709L;
 
 	/* BindsTo */
 	/**
@@ -202,37 +212,5 @@ public class ServiceAccessPoint extends EnabledLogicalElement implements
 	public void setName(String name) {
 		super.setName(name);
 	} // setName
-
-	/**
-	 * Adds a new ProvidesEndpoint association between a given service and this element.
-	 * 
-	 * @param greTunnelConfiguration
-	 */
-	public void setService(Service service) {
-		if (service != null)
-			ProvidesEndpoint.link(this, service);
-	}
-
-	/**
-	 * Removes the ProvidesEndpoint association between the given service and this element.
-	 * 
-	 * @param greTunnelConfiguration
-	 */
-	public void unsetService(Service service) {
-		if (service != null) {
-			Association a = this.getFirstFromAssociationByTypeAndElement(ProvidesEndpoint.class, service);
-			if (a != null)
-				a.unlink();
-		}
-	}
-
-	/**
-	 * Returns the Service associated to this element.
-	 * 
-	 * @return
-	 */
-	public Service getService() {
-		return (Service) this.getFromAssociatedElementsByType(ProvidesEndpoint.class);
-	}
 
 } // Class ServiceAccessPoint

@@ -25,7 +25,7 @@
 		</service-properties>
 	</service>
 	
-	<bean id="resourceNameCompleter" class="org.opennaas.extensions.network.capability.ospf.shell.completers.ResourceNameCompleter"/>
+	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
 	<service ref="NetOSPFCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<entry key="capability" value="netospf"/>
