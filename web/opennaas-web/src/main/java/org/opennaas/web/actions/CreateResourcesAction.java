@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
@@ -26,6 +27,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class CreateResourcesAction extends ActionSupport implements SessionAware {
 
+	private static final Logger				LOGGER				= Logger.getLogger(CreateResourcesAction.class);
 	private static final long				serialVersionUID	= 1L;
 	private Map<String, Object>				session;
 	private IProtocolSessionManagerService	protocolSessionManagerService;
@@ -51,6 +53,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 	 * @throws ProtocolException
 	 */
 	private void createResources() throws ResourceException, ProtocolException {
+		LOGGER.info("createResources ...");
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 		protocolSessionManagerService = OpennaasClient.getProtocolSessionManagerService();
 
@@ -61,6 +64,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier1.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.unic")));
 		resourceManagerService.startResource(identifier1);
+		LOGGER.info(" resource 1 created!");
 
 		// Router 2
 		ResourceIdentifier identifier2 = resourceManagerService
@@ -68,6 +72,7 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier2.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.gsn")));
 		resourceManagerService.startResource(identifier2);
+		LOGGER.info(" resource 2 created!");
 
 		// Router 3
 		ResourceIdentifier identifier3 = resourceManagerService
@@ -75,11 +80,13 @@ public class CreateResourcesAction extends ActionSupport implements SessionAware
 		protocolSessionManagerService.registerContext(identifier3.getId(),
 				getProtocolSessionContext(getText("protocol.router.name"), getText("protocol.uri.myre")));
 		resourceManagerService.startResource(identifier3);
+		LOGGER.info(" resource 3 created!");
 
 		session.put(getText("unic.router.name"), identifier1);
 		session.put(getText("gsn.router.name"), identifier2);
 		session.put(getText("myre.router.name"), identifier3);
 
+		LOGGER.info("createResources done.");
 	}
 
 	/**
