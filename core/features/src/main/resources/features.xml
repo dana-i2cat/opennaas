@@ -159,6 +159,7 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">bundle-empty-skeleton</feature>  
 	</feature>
 
    <feature name="itests-helpers" version="${project.version}">	  	
@@ -170,4 +171,9 @@
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
+	
+ 	<feature name="bundle-empty-skeleton" version="${project.version}">
+    	<feature version="${opennaas.version}">org.opennaas.core</feature>
+    	<bundle>mvn:org.opennaas/org.opennaas.extensions.bundle-empty-skeleton/${project.version}</bundle>
+  </feature>
 </features>

@@ -57,5 +57,7 @@
 		
 		<module>webservice</module>
 		<module>webservice-proxy</module>
-	</modules>
+		
+        <module>bundle-empty-skeleton</module>
+  </modules>
 </project>
