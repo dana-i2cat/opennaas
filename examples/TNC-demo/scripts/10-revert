@@ -2,19 +2,14 @@
 netospf:deactivate network:networkdemo
 netqueue:execute network:networkdemo 
 
-
-l2bod:shutdownconnection bod:autobahn HEANET.pc.7235713c GEANT.pc.2b04174c
-
-queue:execute bod:autobahn
-
-l2bod:shutdownconnection bod:autobahn HEANET.pc.5ddac8a4 GEANT.pc.2b04174c
-
-queue:execute bod:autobahn
-
 #l2bod:shutdownconnection bod:autobahn HEANET.pc.7235713c HEANET.pc.5ddac8a4
-
 #queue:execute bod:autobahn
 
+l2bod:shutdownconnection bod:autobahn HEANET.pc.5ddac8a4 GEANT.pc.2b04174c
+queue:execute bod:autobahn
+
+l2bod:shutdownconnection bod:autobahn HEANET.pc.7235713c GEANT.pc.2b04174c
+queue:execute bod:autobahn
 
 resource:stop router:dub
 resource:remove router:dub
