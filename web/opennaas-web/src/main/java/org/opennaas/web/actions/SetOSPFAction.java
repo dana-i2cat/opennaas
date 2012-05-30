@@ -2,12 +2,13 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.extensions.ws.services.INetOSPFCapabilityService;
+import org.opennaas.extensions.ws.services.INetQueueCapabilityService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.INetOSPFCapabilityService;
-import org.opennaas.ws.INetQueueCapabilityService;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -16,6 +17,8 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SetOSPFAction extends ActionSupport implements SessionAware {
 
+	private static final Logger			LOGGER				= Logger.getLogger(SetIpsAction.class);
+	private static final long			serialVersionUID	= 1L;
 	private Map<String, Object>			session;
 
 	private INetOSPFCapabilityService	netOSPFService;
@@ -47,8 +50,6 @@ public class SetOSPFAction extends ActionSupport implements SessionAware {
 		this.skip = skip;
 	}
 
-	private static final long	serialVersionUID	= 1L;
-
 	/**
 	 * Set static route and activte OSPF<br>
 	 **/
@@ -60,13 +61,15 @@ public class SetOSPFAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	private void configureOSPF() throws CapabilityException_Exception {
+	private void configureOSPF() throws CapabilityException {
+		LOGGER.info("configureOSPF...");
 		netOSPFService = OpennaasClient.getNetOSPFCapabilityService();
 		netQueueService = OpennaasClient.getNetQueueCapabilityService();
 
 		String networkId = ((ResourceIdentifier) session.get(getText("network.name"))).getId();
 		netOSPFService.activateOSPF(networkId);
 		netQueueService.execute(networkId);
+		LOGGER.info("configureOSPF done.");
 	}
 
 }
