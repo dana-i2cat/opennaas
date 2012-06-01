@@ -30,19 +30,11 @@
 				-->
 				<configuration>
 					<instructions>
-						<Bundle-Activator>org.opennaas.extensions.network.capability.ospf.Activator</Bundle-Activator>
-						<!--
-							| assume public classes are in the top package, and private
-							classes are under ".internal"
-						-->
 						<Import-Package>
   							org.slf4j,
 							org.apache.felix.service.command,
 							*
 							</Import-Package>
-						<Export-Package>
-							org.opennaas.bundle.empty.skeleton;version="${project.version}"
-						</Export-Package>
 					</instructions>
 				</configuration>
 			</plugin>
