@@ -262,7 +262,16 @@
 				<artifactId>org.opennaas.extensions.bundle-empty-skeleton</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sampleresource.repository</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sampleresource.capability.example</artifactId>
+				<version>${project.version}</version>
+			</dependency>		
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>

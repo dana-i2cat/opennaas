@@ -35,6 +35,7 @@
 							org.apache.felix.service.command,
 							*
 							</Import-Package>
+
 					</instructions>
 				</configuration>
 			</plugin>
