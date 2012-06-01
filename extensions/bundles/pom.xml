@@ -59,7 +59,7 @@
 		<module>webservice-proxy</module>
 		
         <module>bundle-empty-skeleton</module>
-        <module>sampleResource.repository</module>
+        <module>sampleresource.repository</module>
         <module>sampleresource.capability.example</module>
 	</modules>
 </project>
