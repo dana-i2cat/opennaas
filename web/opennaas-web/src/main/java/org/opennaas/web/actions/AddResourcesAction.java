@@ -3,6 +3,7 @@ package org.opennaas.web.actions;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
@@ -20,7 +21,11 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class AddResourcesAction extends ActionSupport implements SessionAware {
 
+	/**
+	 * 
+	 */
 	private static final long				serialVersionUID	= 1L;
+	private static final Logger				LOGGER				= Logger.getLogger(AddResourcesAction.class);
 	private Map<String, Object>				session;
 	private INetworkBasicCapabilityService	capabilitService;
 	private IResourceManagerService			resourceManagerService;
@@ -44,6 +49,7 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 	}
 
 	private void addNetworkResources() throws ResourceException {
+		LOGGER.info("addNetworkResources ...");
 		capabilitService = OpennaasClient.getNetworkBasicCapabilityService();
 		resourceManagerService = OpennaasClient.getResourceManagerService();
 
@@ -66,6 +72,8 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 
 		// add logicalGSN
 		capabilitService.addResource(identifier4.getId(), lrGSNId);
+
+		LOGGER.info("addNetworkResources done.");
 	}
 
 	/**
@@ -96,5 +104,4 @@ public class AddResourcesAction extends ActionSupport implements SessionAware {
 
 		return resourceDescriptor;
 	}
-
 }

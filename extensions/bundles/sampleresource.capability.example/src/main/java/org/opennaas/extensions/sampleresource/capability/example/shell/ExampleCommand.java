@@ -3,7 +3,6 @@ package org.opennaas.extensions.sampleresource.capability.example.shell;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.opennaas.core.resources.IResource;
-import org.opennaas.core.resources.ResourceManager;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.sampleresource.capability.example.ExampleCapability;
 
@@ -11,7 +10,7 @@ import org.opennaas.extensions.sampleresource.capability.example.ExampleCapabili
 public class ExampleCommand extends GenericKarafCommand {
 
 	@Argument(index = 0, name = "resourceType:resourceName", description = "The resource id", required = true, multiValued = false)
-	private String	resourceId;
+	private String	resourceName;
 
 	@Argument(index = 1, name = "userName", description = "The name of the person we will greet.", required = true, multiValued = false)
 	private String	username;
@@ -20,14 +19,11 @@ public class ExampleCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("sayHello");
 		try {
-
-			ResourceManager rm = (ResourceManager) getResourceManager();
-			IResource resource = rm.getResourceById(resourceId);
-			// IResource resource = getResourceFromFriendlyName(resourceId);
+			
+			IResource resource = getResourceFromFriendlyName(resourceName);
 			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType("example");
 			String greeting = capab.sayHello(username);
-			String resourceName = resource.getResourceDescriptor().getInformation().getName();
-			printInfo(greeting + "from the resource" + resourceName);
+			printInfo(resourceId + "says : " + greeting);
 		} catch (Exception e) {
 			printError("Error greeting from resource " + resourceId);
 			printError(e);
