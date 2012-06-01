@@ -10,6 +10,7 @@ import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.domain.NetworkDomain;
+import org.opennaas.extensions.sampleresource.model.SampleModel;
 
 public class sampleResourceBootstrapper implements IResourceBootstrapper {
 
@@ -20,7 +21,7 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 	public void bootstrap(IResource resource) throws ResourceException {
 
 		log.info("Loading bootstrap to start resource...");
-		resource.setModel(new NetworkModel());
+		resource.setModel(new SampleModel());
 		// Add here all the necessary methods to populate resource model
 		//
 	}

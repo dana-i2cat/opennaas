@@ -19,13 +19,13 @@ public class ExampleCommand extends GenericKarafCommand {
 	protected Object doExecute() throws Exception {
 		printInitCommand("sayHello");
 		try {
-			
+
 			IResource resource = getResourceFromFriendlyName(resourceName);
 			ExampleCapability capab = (ExampleCapability) resource.getCapabilityByType("example");
 			String greeting = capab.sayHello(username);
-			printInfo(resourceId + "says : " + greeting);
+			printInfo(resourceName + " says : " + greeting);
 		} catch (Exception e) {
-			printError("Error greeting from resource " + resourceId);
+			printError("Error greeting from resource " + resourceName);
 			printError(e);
 		} finally {
 			printEndCommand();
