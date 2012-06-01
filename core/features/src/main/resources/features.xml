@@ -135,8 +135,7 @@
 		<feature name="opennaas-sampleresource" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource.repository/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource.capability.example/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>
 		
 	</feature>
 
@@ -167,7 +166,6 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
-		<feature version="${project.version}">bundle-empty-skeleton</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
 		  
 	</feature>
@@ -182,8 +180,4 @@
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
 	
- 	<feature name="bundle-empty-skeleton" version="${project.version}">
-    	<feature version="${opennaas.version}">org.opennaas.core</feature>
-    	<bundle>mvn:org.opennaas/org.opennaas.extensions.bundle-empty-skeleton/${project.version}</bundle>
-  </feature>
 </features>
