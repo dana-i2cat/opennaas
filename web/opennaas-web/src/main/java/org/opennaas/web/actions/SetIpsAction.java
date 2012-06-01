@@ -2,6 +2,7 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.action.ActionException;
@@ -21,6 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SetIpsAction extends ActionSupport implements SessionAware {
 
+	private static final Logger				LOGGER	= Logger.getLogger(SetIpsAction.class);
 	private Map<String, Object>				session;
 	private IIPCapabilityService			ipCapabilityService;
 	private IQueueManagerCapabilityService	queueService;
@@ -68,6 +70,7 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 	}
 
 	private void setIPv4() throws ActionException, CapabilityException, ProtocolException {
+		LOGGER.info("setIPv4 ...");
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
@@ -107,6 +110,7 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		queueManager.execute(lrGSNId);
 		queueManager.execute(lrMyreId);
 		queueManager.execute(lrUnicId);
+		LOGGER.info("setIPv4 done.");
 
 	}
 

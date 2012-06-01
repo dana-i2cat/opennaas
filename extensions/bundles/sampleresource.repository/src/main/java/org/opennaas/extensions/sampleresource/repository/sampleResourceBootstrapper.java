@@ -20,7 +20,7 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 	public void bootstrap(IResource resource) throws ResourceException {
 
 		log.info("Loading bootstrap to start resource...");
-
+		resource.setModel(new NetworkModel());
 		// Add here all the necessary methods to populate resource model
 		//
 	}
