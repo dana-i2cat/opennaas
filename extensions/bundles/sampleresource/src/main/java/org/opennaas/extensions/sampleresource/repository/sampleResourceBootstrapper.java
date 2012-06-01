@@ -6,10 +6,6 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
-import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.domain.NetworkDomain;
 import org.opennaas.extensions.sampleresource.model.SampleModel;
 
 public class sampleResourceBootstrapper implements IResourceBootstrapper {
@@ -29,16 +25,7 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 	@Override
 	public void resetModel(IResource resource) throws ResourceException {
 
-		NetworkDomain networkDomain = new NetworkDomain();
-		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
-		Information information = resourceDescriptor.getInformation();
-
-		networkDomain.setName(information.getName());
-
-		NetworkModel networkModel = new NetworkModel();
-		networkModel.getNetworkElements().add(networkDomain);
-
-		resource.setModel(new NetworkModel());
+		resource.setModel(new SampleModel());
 	}
 
 	@Override
