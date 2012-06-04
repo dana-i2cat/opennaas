@@ -35,6 +35,7 @@ import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
+import org.opennaas.itests.router.helpers.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -50,14 +51,8 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  */
 @RunWith(JUnit4TestRunner.class)
 public class StaticRouteIntegrationTest {
-	protected static final String	ACTION_NAME						= "junos";
-	protected static final String	CAPABILITY_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
-	protected static final String	QUEUE_CAPABILIY_TYPE			= "queue";
-	protected static final String	STATIC_ROUTE_CAPABILITY_TYPE	= "staticroute";
-	protected static final String	STATIC_ROUTE_CAPABILIY_VERSION	= "10.10";
-	protected static final String	RESOURCE_TYPE					= "router";
-	protected static final String	RESOURCE_INFO_NAME				= "Static Route Test";
-	protected static final String	RESOURCE_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
+
+	protected static final String	RESOURCE_INFO_NAME	= "Static Route Test";
 
 	protected ICapability			iStaticRouteCapability;
 	protected IResource				routerResource;
@@ -79,8 +74,8 @@ public class StaticRouteIntegrationTest {
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer		routerRepoService;
 
-	private static final Log		log								= LogFactory
-																			.getLog(StaticRouteIntegrationTest.class);
+	private static final Log		log					= LogFactory
+																.getLog(StaticRouteIntegrationTest.class);
 
 	@Configuration
 	public static Option[] configuration() {
@@ -100,8 +95,8 @@ public class StaticRouteIntegrationTest {
 	{
 		startResource();
 		Assert.assertFalse(routerResource.getCapabilities().isEmpty());
-		Assert.assertNotNull(routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE)));
-		Assert.assertNotNull(routerResource.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE)));
+		Assert.assertNotNull(routerResource.getCapability(getInformation(TestsConstants.QUEUE_CAPABILIY_TYPE)));
+		Assert.assertNotNull(routerResource.getCapability(getInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE)));
 		stopResource();
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
@@ -115,10 +110,11 @@ public class StaticRouteIntegrationTest {
 		startResource();
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
-				.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE));
+				.getCapability(getInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
 		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
 
-		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -133,24 +129,6 @@ public class StaticRouteIntegrationTest {
 	}
 
 	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
-	}
-
-	/**
 	 * Start router resource with 2 capabilities -> staticroute & queue
 	 * 
 	 * @throws ResourceException
@@ -161,10 +139,10 @@ public class StaticRouteIntegrationTest {
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
 		CapabilityDescriptor staticrouteCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(
-				ACTION_NAME,
-				STATIC_ROUTE_CAPABILIY_VERSION,
-				STATIC_ROUTE_CAPABILITY_TYPE,
-				CAPABILITY_URI);
+				TestsConstants.ACTION_NAME,
+				TestsConstants.CAPABILIY_VERSION,
+				TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
 		lCapabilityDescriptors.add(staticrouteCapabilityDescriptor);
 
 		// Add Queue Capability Descriptor
@@ -172,7 +150,8 @@ public class StaticRouteIntegrationTest {
 		lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
 		// Router Resource Descriptor
-		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+				TestsConstants.RESOURCE_URI,
 				RESOURCE_INFO_NAME);
 
 		// Create resource
@@ -200,6 +179,24 @@ public class StaticRouteIntegrationTest {
 	}
 
 	/**
+	 * At the end of the tests, we empty the repository
+	 */
+	protected void clearRepository() throws ResourceException {
+		log.info("Clearing resource repo");
+
+		List<IResource> toRemove = resourceManager.listResources();
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
+	/**
 	 * If not exists the protocol session manager, it's created and add the session context
 	 * 
 	 * @param resourceId
@@ -210,7 +207,7 @@ public class StaticRouteIntegrationTest {
 		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
 
 		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, RESOURCE_URI);
+				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
 
