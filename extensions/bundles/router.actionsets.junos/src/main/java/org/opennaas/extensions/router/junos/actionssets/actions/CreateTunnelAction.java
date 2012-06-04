@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ManagedElement;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

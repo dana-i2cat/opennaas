@@ -20,10 +20,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
 		</dependency>
 		<dependency>

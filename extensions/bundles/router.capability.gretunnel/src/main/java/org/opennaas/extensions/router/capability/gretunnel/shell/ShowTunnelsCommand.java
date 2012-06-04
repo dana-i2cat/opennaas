@@ -9,10 +9,10 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 /**
  * @author Jordi Puig
