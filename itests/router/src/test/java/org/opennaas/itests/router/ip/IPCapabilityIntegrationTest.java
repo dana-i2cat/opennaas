@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,6 +83,29 @@ public class IPCapabilityIntegrationTest
 				keepRuntimeFolder());
 	}
 
+	@Test
+	public void testSetIPv4() throws ProtocolException, ResourceException {
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+		// queueCapability.execute();
+	}
+
+	@Test
+	public void testSetInterfaceDescription() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setInterfaceDescription(getLogicalPort());
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+	}
+
 	public void startResource() throws ResourceException, ProtocolException {
 		/* initialize model */
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -119,27 +143,10 @@ public class IPCapabilityIntegrationTest
 
 	}
 
-	@Test
-	public void testSetIPv4() throws ProtocolException, ResourceException {
-
-		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
-		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
-		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
-		Assert.assertTrue(queueResponse.isOk());
-		// queueCapability.execute();
-	}
-
-	@Test
-	public void testSetInterfaceDescription() throws ProtocolException, ResourceException {
-		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
-		ipCapability.setInterfaceDescription(getLogicalPort());
-		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
-		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
-		Assert.assertTrue(queueResponse.isOk());
-
+	@After
+	public void stopBundle() throws Exception {
+		clearRepository();
+		log.info("INFO: Stopped!");
 	}
 
 	private LogicalPort getLogicalPort() {

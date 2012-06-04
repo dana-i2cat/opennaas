@@ -15,22 +15,25 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Assert;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.mock.MockResource;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
@@ -43,7 +46,7 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.itests.router.mock.MockBootstrapper;
+import org.opennaas.itests.router.helpers.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -57,36 +60,30 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ChassisCapabilityIntegrationTest
 {
-	private final static Log		log			= LogFactory.getLog(ChassisCapabilityIntegrationTest.class);
+	private final static Log	log					= LogFactory.getLog(ChassisCapabilityIntegrationTest.class);
 
-	private final String			deviceID	= "junos";
-	private final String			queueID		= "queue";
+	private final static String	RESOURCE_INFO_NAME	= "Chassis Test";
 
-	private MockResource			mockResource;
-	private IChassisCapability		chassisCapability;
-	private IQueueManagerCapability	queueCapability;
+	private IChassisCapability	chassisCapability;
 
-	@Inject
-	private BundleContext			bundleContext;
+	protected IResource			routerResource;
 
 	@Inject
-	@Filter("(capability=queue)")
-	private ICapabilityFactory		queueManagerFactory;
+	private BundleContext		bundleContext;
 
 	@Inject
-	private IProtocolManager		protocolManager;
+	protected IResourceManager	resourceManager;
 
 	@Inject
-	@Filter("(capability=chassis)")
-	private ICapabilityFactory		chassisFactory;
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
+	private BlueprintContainer	netconfService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer		routerService;
-
-	@Inject
-	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.actionsets.junos)")
-	private BlueprintContainer		junosActionsetService;
+	private BlueprintContainer	routerRepoService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -96,71 +93,6 @@ public class ChassisCapabilityIntegrationTest
 				keepRuntimeFolder());
 	}
 
-	public void initResource() {
-
-		/* initialize model */
-		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
-		mockResource.setBootstrapper(new MockBootstrapper());
-
-		List<String> capabilities = new ArrayList<String>();
-
-		capabilities.add("chassis");
-		capabilities.add("queue");
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor(deviceID, "router", capabilities);
-		mockResource.setResourceDescriptor(resourceDescriptor);
-		mockResource.setResourceIdentifier(new ResourceIdentifier(resourceDescriptor.getInformation().getType(), resourceDescriptor.getId()));
-	}
-
-	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
-		log.debug("FFFF test setup uri: " + uri + "Length: " + uri.length());
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
-
-	}
-
-	public void initCapability() throws Exception {
-
-		log.info("INFO: Before test, getting queue...");
-		Assert.assertNotNull(queueManagerFactory);
-
-		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
-		((ICapabilityLifecycle) queueCapability).initialize();
-
-		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
-
-		// Test elements not null
-		log.info("Checking chassis factory");
-		Assert.assertNotNull(chassisFactory);
-		log.info("Checking capability descriptor");
-		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("chassis"));
-		log.info("Creating chassis capability");
-		chassisCapability = (IChassisCapability) chassisFactory.create(mockResource);
-		Assert.assertNotNull(chassisCapability);
-		((ICapabilityLifecycle) chassisCapability).initialize();
-
-		mockResource.addCapability(chassisCapability);
-		mockResource.addCapability(queueCapability);
-	}
-
-	@Before
-	public void setup() throws Exception {
-		initResource();
-		initCapability();
-	}
-
 	@Test
 	@Ignore
 	// FIXME this tests fails because of a vlan-tagging limitation describes at OPENNAAS-95 issue.
@@ -168,8 +100,14 @@ public class ChassisCapabilityIntegrationTest
 
 		int actionCount = 0;
 
+		IChassisCapability chassisCapability = (IChassisCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+
 		chassisCapability.setEncapsulation(newParamsInterfaceEthernetPort("fe-0/1/0", 13), ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
 		actionCount++;
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
@@ -198,10 +136,13 @@ public class ChassisCapabilityIntegrationTest
 
 		int actionCount = 0;
 
+		IChassisCapability chassisCapability = (IChassisCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+
 		chassisCapability.createSubInterface(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 		actionCount++;
 
-		chassisCapability.deleteSubInterface(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		chassisCapability.deleteSubInterface(newParamsInterfaceEthernetPort("fe-0/0/3", 13));
 		actionCount++;
 
 		// // FIXME disabled as it fails (it is tested in testSetEncapsulationAction, now ignored)
@@ -230,10 +171,12 @@ public class ChassisCapabilityIntegrationTest
 		chassisCapability.removeInterfacesFromLogicalRouter(newParamsLRWithInterface("cpe2"), lInterfaces);
 		actionCount++;
 
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
 
-		QueueResponse queueResponse = queueCapability.execute();
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		assertEquals(actionCount, queueResponse.getResponses().size());
 
 		for (int i = 0; i < queueResponse.getResponses().size(); i++) {
@@ -252,6 +195,53 @@ public class ChassisCapabilityIntegrationTest
 
 		queue = (List<IAction>) queueCapability.getActions();
 		assertTrue("Queue should be empty", queue.isEmpty());
+	}
+
+	public void startResource() throws ResourceException, ProtocolException {
+
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+
+		CapabilityDescriptor chassisCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
+				TestsConstants.CAPABILIY_VERSION,
+				TestsConstants.CHASSIS_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(chassisCapabilityDescriptor);
+
+		// Add Queue Capability Descriptor
+		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor();
+		lCapabilityDescriptors.add(queueCapabilityDescriptor);
+
+		// Router Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+				TestsConstants.RESOURCE_URI,
+				RESOURCE_INFO_NAME);
+
+		routerResource = resourceManager.createResource(resourceDescriptor);
+
+		// If not exists the protocol session manager, it's created and add the session context
+		addSessionContext(routerResource.getResourceIdentifier().getId());
+
+		// Start resource
+		resourceManager.startResource(routerResource.getResourceIdentifier());
+	}
+
+	@Before
+	public void initBundle() throws Exception {
+		clearRepository();
+		log.info("INFO: Initialized!");
+		startResource();
+	}
+
+	@After
+	public void stopBundle() throws Exception {
+		clearRepository();
+		log.info("INFO: Stopped!");
+	}
+
+	private Information getChassisInformation(String type) {
+		Information information = new Information();
+		information.setType(type);
+		return information;
 	}
 
 	private EthernetPort newParamsInterfaceEthernet(String name, String ipName, String mask) {
@@ -301,6 +291,38 @@ public class ChassisCapabilityIntegrationTest
 		lrModel.setName(lrName);
 		lrModel.setElementName(lrName);
 		return lrModel;
+	}
+
+	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+
+		protocolSessionManager.registerContext(protocolSessionContext);
+
+		return protocolSessionManager;
+	}
+
+	/**
+	 * At the end of the tests, we empty the repository
+	 */
+	protected void clearRepository() throws ResourceException {
+		log.info("Clearing resource repo");
+
+		List<IResource> toRemove = resourceManager.listResources();
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 }
