@@ -46,7 +46,7 @@ import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
-import org.opennaas.itests.router.helpers.TestsConstants;
+import org.opennaas.itests.router.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;

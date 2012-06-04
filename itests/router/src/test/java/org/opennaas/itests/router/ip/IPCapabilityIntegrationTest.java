@@ -17,22 +17,25 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ResourceIdentifier;
-import org.opennaas.core.resources.capability.CapabilityException;
-import org.opennaas.core.resources.capability.ICapabilityFactory;
-import org.opennaas.core.resources.capability.ICapabilityLifecycle;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
-import org.opennaas.core.resources.mock.MockResource;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.itests.router.mock.MockBootstrapper;
+import org.opennaas.itests.router.TestsConstants;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -46,31 +49,30 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class IPCapabilityIntegrationTest
 {
-	private final static Log		log			= LogFactory.getLog(IPCapabilityIntegrationTest.class);
-	private final String			deviceID	= "junos";
-	private final String			queueID		= "queue";
+	private final static Log	log					= LogFactory.getLog(IPCapabilityIntegrationTest.class);
 
-	private MockResource			mockResource;
-	private IIPCapability			ipCapability;
-	private IQueueManagerCapability	queueCapability;
+	private final static String	RESOURCE_INFO_NAME	= "IPv4 test";
 
-	@Inject
-	private BundleContext			bundleContext;
+	protected ICapability		iIPCapability;
+
+	protected IResource			routerResource;
 
 	@Inject
-	@Filter("(capability=queue)")
-	private ICapabilityFactory		queueManagerFactory;
+	private BundleContext		bundleContext;
 
 	@Inject
-	private IProtocolManager		protocolManager;
+	protected IResourceManager	resourceManager;
 
 	@Inject
-	@Filter("(capability=ipv4)")
-	private ICapabilityFactory		ipFactory;
+	private IProtocolManager	protocolManager;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
+	private BlueprintContainer	netconfService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer		routerService;
+	private BlueprintContainer	routerRepoService;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -80,81 +82,64 @@ public class IPCapabilityIntegrationTest
 				keepRuntimeFolder());
 	}
 
-	public void initResource() {
+	public void startResource() throws ResourceException, ProtocolException {
 		/* initialize model */
-		mockResource = new MockResource();
-		mockResource.setModel(new ComputerSystem());
-		mockResource.setBootstrapper(new MockBootstrapper());
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
 
-		List<String> capabilities = new ArrayList<String>();
+		CapabilityDescriptor ipCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
+				TestsConstants.CAPABILIY_VERSION,
+				TestsConstants.IP_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(ipCapabilityDescriptor);
 
-		capabilities.add("ipv4");
-		capabilities.add("queue");
-		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
+		// Add Queue Capability Descriptor
+		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor();
+		lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
-		mockResource.setResourceDescriptor(resourceDescriptor);
-		mockResource.setResourceIdentifier(new ResourceIdentifier(resourceDescriptor.getInformation().getType(), resourceDescriptor.getId()));
-	}
+		// Router Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+				TestsConstants.RESOURCE_URI,
+				RESOURCE_INFO_NAME);
 
-	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
-		}
+		routerResource = resourceManager.createResource(resourceDescriptor);
 
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		// If not exists the protocol session manager, it's created and add the session context
+		addSessionContext(routerResource.getResourceIdentifier().getId());
 
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
-		return protocolSessionContext;
-
-	}
-
-	public void initCapability() throws Exception {
-
-		log.info("INFO: Before test, getting queue...");
-		Assert.assertNotNull(queueManagerFactory);
-
-		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
-		((ICapabilityLifecycle) queueCapability).initialize();
-		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
-
-		// Test elements not null
-		log.info("Checking ip factory");
-		Assert.assertNotNull(ipFactory);
-		log.info("Checking capability descriptor");
-		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("ipv4"));
-		log.info("Creating ip capability");
-		ipCapability = (IIPCapability) ipFactory.create(mockResource);
-		Assert.assertNotNull(ipCapability);
-		((ICapabilityLifecycle) ipCapability).initialize();
-
-		mockResource.addCapability(ipCapability);
-		mockResource.addCapability(queueCapability);
+		// Start resource
+		resourceManager.startResource(routerResource.getResourceIdentifier());
 	}
 
 	@Before
-	public void setup() throws Exception {
-		initResource();
-		initCapability();
+	public void initBundles() throws ResourceException, ProtocolException {
+
+		clearRepository();
+		log.info("INFO: Initialized!");
+		startResource();
+
 	}
 
 	@Test
-	public void testSetIPv4() throws CapabilityException, ProtocolException {
+	public void testSetIPv4() throws ProtocolException, ResourceException {
+
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
-		queueCapability.execute();
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+		// queueCapability.execute();
 	}
 
 	@Test
-	public void testSetInterfaceDescription() throws CapabilityException, ProtocolException {
+	public void testSetInterfaceDescription() throws ProtocolException, ResourceException {
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		ipCapability.setInterfaceDescription(getLogicalPort());
-		queueCapability.execute();
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
 	}
 
 	private LogicalPort getLogicalPort() {
@@ -169,8 +154,47 @@ public class IPCapabilityIntegrationTest
 	 */
 	private IPProtocolEndpoint getIPProtocolEndPoint() {
 		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
-		ipProtocolEndpoint.setIPv4Address("192.168.0.1/24");
+		ipProtocolEndpoint.setIPv4Address("192.168.0.1");
+		ipProtocolEndpoint.setSubnetMask("255.255.255.0");
 		return ipProtocolEndpoint;
+	}
+
+	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+
+		protocolSessionManager.registerContext(protocolSessionContext);
+
+		return protocolSessionManager;
+	}
+
+	/**
+	 * At the end of the tests, we empty the repository
+	 */
+	protected void clearRepository() throws ResourceException {
+		log.info("Clearing resource repo");
+
+		List<IResource> toRemove = resourceManager.listResources();
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
+	protected Information getIPInformation(String type) {
+		Information information = new Information();
+		information.setType(type);
+		return information;
 	}
 
 }
