@@ -1,6 +1,3 @@
-/**
- *
- */
 package org.opennaas.itests.router.staticroute;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
@@ -15,9 +12,12 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import junit.framework.Assert;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
@@ -32,6 +32,9 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
+import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -40,11 +43,13 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
- * @author Jordi
+ * 
+ * @author Jordi Puig
+ * @author Adrian Rosello
+ * 
  */
 @RunWith(JUnit4TestRunner.class)
-public abstract class StaticRouteIntegrationTest
-{
+public class StaticRouteIntegrationTest {
 	protected static final String	ACTION_NAME						= "junos";
 	protected static final String	CAPABILITY_URI					= "mock://user:pass@host.net:2212/mocksubsystem";
 	protected static final String	QUEUE_CAPABILIY_TYPE			= "queue";
@@ -86,11 +91,63 @@ public abstract class StaticRouteIntegrationTest
 				keepRuntimeFolder());
 	}
 
+	@Test
+	/**
+	 * Test to check if capability is available from OSGi.
+	 */
+	public void isCapabilityAccessibleFromResource()
+			throws ResourceException, ProtocolException
+	{
+		startResource();
+		Assert.assertFalse(routerResource.getCapabilities().isEmpty());
+		Assert.assertNotNull(routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE)));
+		Assert.assertNotNull(routerResource.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE)));
+		stopResource();
+		Assert.assertTrue(resourceManager.listResources().isEmpty());
+	}
+
+	/**
+	 * Test to check create static route method
+	 */
+	@Test
+	public void createStaticRouteTest()
+			throws ProtocolException, ResourceException {
+		startResource();
+
+		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
+				.getCapability(getInformation(STATIC_ROUTE_CAPABILITY_TYPE));
+		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource.getCapability(getInformation(QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+
+		stopResource();
+	}
+
 	@Before
 	public void initBundles() throws ResourceException {
 		clearRepository();
 
 		log.info("INFO: Initialized!");
+	}
+
+	/**
+	 * At the end of the tests, we empty the repository
+	 */
+	protected void clearRepository() throws ResourceException {
+		log.info("Clearing resource repo");
+
+		List<IResource> toRemove = resourceManager.listResources();
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+
+		log.info("Resource repo cleared!");
 	}
 
 	/**
@@ -143,24 +200,6 @@ public abstract class StaticRouteIntegrationTest
 	}
 
 	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
-	}
-
-	/**
 	 * If not exists the protocol session manager, it's created and add the session context
 	 * 
 	 * @param resourceId
@@ -185,4 +224,5 @@ public abstract class StaticRouteIntegrationTest
 		information.setType(type);
 		return information;
 	}
+
 }
