@@ -124,7 +124,6 @@ public class StaticRouteIntegrationTest {
 	@Before
 	public void initBundles() throws ResourceException {
 		clearRepository();
-
 		log.info("INFO: Initialized!");
 	}
 

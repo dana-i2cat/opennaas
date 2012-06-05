@@ -1,37 +1,121 @@
 package org.opennaas.itests.router.gre;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.opennaas.core.resources.ILifecycle.State;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.gretunnel.IGRETunnelCapability;
+import org.opennaas.extensions.router.model.GRETunnelConfiguration;
+import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
+import org.opennaas.itests.router.helpers.TestsConstants;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
+@RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest {
+public class GRETunnelCapabilityIntegrationTest {
 
 	/**
 	 *
 	 */
-	private static Log	log	= LogFactory
-									.getLog(GRETunnelCapabilityIntegrationTest.class);
+	private static Log					log					= LogFactory
+																	.getLog(GRETunnelCapabilityIntegrationTest.class);
+
+	protected static final String		TUNNEL_NAME			= "gr-1/0/3.1";
+	protected static final String		IPV4_ADDRESS		= "192.168.32.1";
+	protected static final String		SUBNET_MASK			= "255.255.255.0";
+	protected static final String		IP_SOURCE			= "147.56.89.62";
+	protected static final String		IP_DESTINY			= "193.45.23.1";
+
+	protected IQueueManagerCapability	queueCapability;
+	protected IGRETunnelCapability		greTunnelCapability;
+	private static final String			RESOURCE_INFO_NAME	= "GRE Integration Test";
+
+	private IResource					routerResource;
+
+	@Inject
+	protected IResourceManager			resourceManager;
+
+	@Inject
+	private IProtocolManager			protocolManager;
+
+	@Inject
+	@Filter("(capability=gretunnel)")
+	private ICapabilityFactory			gretunnelFactory;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer			routerRepositoryService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer			queueService;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.gretunnel)")
+	private BlueprintContainer			gretunnelService;
+
+	@Configuration
+	public static Option[] configuration() {
+		return options(opennaasDistributionConfiguration(),
+				includeFeatures("opennaas-router"),
+				noConsole(),
+				keepRuntimeFolder());
+	}
 
 	@Test
 	public void createGRETunnelTest() throws CapabilityException, ProtocolException
 	{
 		log.info("Test createGRETunnel method");
-		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
-		iGRETunnelService
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		greCapability
 				.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 	}
@@ -39,33 +123,44 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 	@Test
 	public void deleteGRETunnelTest() throws CapabilityException, ProtocolException {
 		log.info("Test createGRETunnel method");
-		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
-		iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		greCapability.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+
 		Assert.assertTrue(queueResponse.isOk());
 	}
 
 	@Test
+	@Ignore
 	public void showGRETunnelConfigurationTest() throws CapabilityException, ProtocolException {
 		log.info("Test showGRETunnelConfiguration method");
-		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
-		List<GRETunnelService> resp = iGRETunnelService.showGRETunnelConfiguration();
+
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.GRE_CAPABILITY_TYPE));
+
+		List<GRETunnelService> resp = greCapability.showGRETunnelConfiguration();
 		Assert.assertTrue(resp.size() > 0);
-		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
-		Assert.assertTrue(queueResponse.isOk());
+
 	}
 
 	@Test
 	public void testGRETunnelAction() throws CapabilityException, ProtocolException {
 		log.info("TEST GRE TUNNEL ACTION");
-		IGRETunnelCapability iGRETunnelService = greTunnelCapability;
-		iGRETunnelService.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-		iGRETunnelService.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+		IGRETunnelCapability greCapability = (IGRETunnelCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.GRE_CAPABILITY_TYPE));
 
-		// resp = (Response) greTunnelCapability.sendMessage(ActionConstants.GETTUNNELCONFIG,
-		// getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
-		// Assert.assertTrue(resp.getStatus() == Response.Status.QUEUED);
-		// Assert.assertTrue(resp.getErrors().size() == 0);
+		greCapability.createGRETunnel(getGRETunnelService(TUNNEL_NAME, IPV4_ADDRESS, SUBNET_MASK, IP_SOURCE, IP_DESTINY));
+		greCapability.deleteGRETunnel(getGRETunnelService(TUNNEL_NAME, null, null, null, null));
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getGREInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 2);
@@ -83,4 +178,110 @@ public class GRETunnelCapabilityIntegrationTest extends GRETunnelIntegrationTest
 		queue = (List<IAction>) queueCapability.getActions();
 		Assert.assertEquals(queue.size(), 0);
 	}
+
+	@Before
+	public void initBundle() throws ResourceException, ProtocolException {
+
+		clearRepository();
+		log.info("INFO: Initialized!");
+		startResource();
+	}
+
+	@After
+	public void stopBundle() throws ResourceException {
+		clearRepository();
+		log.info("INFO: Stopped!");
+	}
+
+	public void startResource() throws ResourceException, ProtocolException {
+		/* initialize model */
+		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
+
+		CapabilityDescriptor greCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(TestsConstants.ACTION_NAME,
+				TestsConstants.CAPABILIY_VERSION,
+				TestsConstants.GRE_CAPABILITY_TYPE,
+				TestsConstants.CAPABILITY_URI);
+		lCapabilityDescriptors.add(greCapabilityDescriptor);
+
+		// Add Queue Capability Descriptor
+		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor();
+		lCapabilityDescriptors.add(queueCapabilityDescriptor);
+
+		// Router Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
+				TestsConstants.RESOURCE_URI,
+				RESOURCE_INFO_NAME);
+
+		routerResource = resourceManager.createResource(resourceDescriptor);
+
+		// If not exists the protocol session manager, it's created and add the session context
+		addSessionContext(routerResource.getResourceIdentifier().getId());
+
+		// Start resource
+		resourceManager.startResource(routerResource.getResourceIdentifier());
+	}
+
+	/**
+	 * At the end of the tests, we empty the repository
+	 */
+	protected void clearRepository() throws ResourceException {
+		log.info("Clearing resource repo");
+
+		List<IResource> toRemove = resourceManager.listResources();
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				resourceManager.stopResource(resource.getResourceIdentifier());
+			}
+			resourceManager.removeResource(resource.getResourceIdentifier());
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
+	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+
+		protocolSessionManager.registerContext(protocolSessionContext);
+
+		return protocolSessionManager;
+	}
+
+	/**
+	 * Get the GRETunnelService
+	 * 
+	 * @return GRETunnelService
+	 * @throws IOException
+	 */
+	protected GRETunnelService getGRETunnelService(String tunnelName, String ipv4Address, String subnetMask, String ipSource, String ipDestiny) {
+		GRETunnelService greService = new GRETunnelService();
+		greService.setElementName("");
+		greService.setName(tunnelName);
+
+		GRETunnelConfiguration greConfig = new GRETunnelConfiguration();
+		greConfig.setSourceAddress(ipSource);
+		greConfig.setDestinationAddress(ipDestiny);
+
+		GRETunnelEndpoint gE = new GRETunnelEndpoint();
+		gE.setIPv4Address(ipv4Address);
+		gE.setSubnetMask(subnetMask);
+
+		greService.setGRETunnelConfiguration(greConfig);
+		greService.addProtocolEndpoint(gE);
+
+		return greService;
+	}
+
+	protected Information getGREInformation(String type) {
+		Information information = new Information();
+		information.setType(type);
+		return information;
+	}
+
 }

@@ -9,6 +9,7 @@ import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaa
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -42,8 +44,11 @@ import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.itests.router.helpers.TestsConstants;
@@ -67,6 +72,8 @@ public class ChassisCapabilityIntegrationTest
 	private IChassisCapability	chassisCapability;
 
 	protected IResource			routerResource;
+
+	private boolean				isMock				= true;
 
 	@Inject
 	private BundleContext		bundleContext;
@@ -197,6 +204,81 @@ public class ChassisCapabilityIntegrationTest
 		assertTrue("Queue should be empty", queue.isEmpty());
 	}
 
+	@Test
+	public void UpDownActionTest() throws CapabilityException, ProtocolException {
+		// Force to refresh the model
+
+		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
+		String str = "";
+		ComputerSystem model = (ComputerSystem) routerResource.getModel();
+		Assert.assertNotNull(model);
+		for (LogicalDevice device : model.getLogicalDevices()) {
+			if (device instanceof EthernetPort) {
+				EthernetPort port = (EthernetPort) device;
+				Assert.assertNotNull("OperationalStatus must be set", port.getOperationalStatus());
+
+				str += "- EthernetPort: " + '\n';
+				str += port.getName() + '.' + port.getPortNumber() + '\n';
+				str += port.getOperationalStatus();
+				str += '\n';
+				for (ProtocolEndpoint protocolEndpoint : port.getProtocolEndpoint()) {
+					if (protocolEndpoint instanceof IPProtocolEndpoint) {
+						IPProtocolEndpoint ipProtocol = (IPProtocolEndpoint)
+								protocolEndpoint;
+						str += "ipv4: " + ipProtocol.getIPv4Address() + '\n';
+						str += "ipv6: " + ipProtocol.getIPv6Address() + '\n';
+					}
+				}
+			}
+			else {
+				str += "not searched device";
+			}
+
+		}
+		log.info(str);
+		String interfaceName = "fe-0/1/3";
+
+		/* check model */
+		LogicalDevice logicalDevice = null;
+		try {
+			logicalDevice = getLogicalDevice(interfaceName, (ComputerSystem) routerResource.getModel());
+		} catch (Exception ex) {
+			Assert.fail("LogicalDevice not found");
+		}
+
+		if (logicalDevice.getOperationalStatus() != OperationalStatus.OK) {
+			Assert.fail("The test can't be executed because the needed interface is down");
+		}
+
+		/* send to change status */
+		IChassisCapability chassisCapability = (IChassisCapability) routerResource
+				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+		chassisCapability.downPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
+
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 0);
+
+		if (!isMock) {
+			checkOperationalStatus((ComputerSystem) routerResource.getModel(), interfaceName, OperationalStatus.STOPPED);
+		}
+
+		/* send to change status */
+		chassisCapability.upPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
+
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
+		queueResponse = (QueueResponse) queueCapability.execute();
+		Assert.assertTrue(queueResponse.isOk());
+		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 0);
+
+		if (!isMock) {
+			checkOperationalStatus((ComputerSystem) routerResource.getModel(), interfaceName, OperationalStatus.OK);
+		}
+	}
+
 	public void startResource() throws ResourceException, ProtocolException {
 
 		List<CapabilityDescriptor> lCapabilityDescriptors = new ArrayList<CapabilityDescriptor>();
@@ -325,4 +407,37 @@ public class ChassisCapabilityIntegrationTest
 		log.info("Resource repo cleared!");
 	}
 
+	private void checkOperationalStatus(ComputerSystem model, String interfaceName, OperationalStatus status) {
+		LogicalPort port = null;
+		try {
+			LogicalDevice port1 = getLogicalDevice(interfaceName, model);
+			if (port1 instanceof LogicalPort)
+				port = (LogicalPort) port1;
+		} catch (Exception e) {
+		}
+
+		if (port == null)
+			Assert.fail("Interface not found in model");
+		Assert.assertTrue(port.getOperatingStatus().equals(status));
+	}
+
+	private LogicalPort newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
+		LogicalPort logicalPort = new LogicalPort();
+		logicalPort.setName(interfaceName);
+		logicalPort.setOperationalStatus(status);
+		return logicalPort;
+	}
+
+	private LogicalDevice getLogicalDevice(String nameInterface, ComputerSystem router) throws Exception {
+		Iterator<LogicalDevice> iterator = router.getLogicalDevices().iterator();
+
+		while (iterator.hasNext()) {
+			LogicalDevice logicalDevice = iterator.next();
+			if (logicalDevice.getName().equals(nameInterface))
+				return logicalDevice;
+		}
+
+		throw new Exception("Not found logical device");
+
+	}
 }
