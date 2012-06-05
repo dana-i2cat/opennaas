@@ -1,53 +1,48 @@
 package org.opennaas.itests.roadm.connections;
 
-import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.commands.LockNodeCommand;
-import org.opennaas.extensions.roadm.wonesys.commandsets.commands.UnlockNodeCommand;
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
-import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
-
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import java.io.File;
-import javax.inject.Inject;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
+import org.opennaas.extensions.roadm.wonesys.commandsets.WonesysCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.LockNodeCommand;
+import org.opennaas.extensions.roadm.wonesys.commandsets.commands.UnlockNodeCommand;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSession;
+import org.opennaas.extensions.roadm.wonesys.protocols.WonesysProtocolSessionFactory;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-
 @RunWith(JUnit4TestRunner.class)
 public class LockUnlockCommandsTest {
 
-	Log	log	= LogFactory.getLog(LockUnlockCommandsTest.class);
+	Log				log				= LogFactory.getLog(LockUnlockCommandsTest.class);
 
-	private String	resourceId			= "pedrosa";
-	private String	hostIpAddress		= "10.10.80.11";
-	private String	hostPort				= "27773";
-	private int			sessionCounter	= 0;
+	private String	resourceId		= "pedrosa";
+	private String	hostIpAddress	= "10.10.80.11";
+	private String	hostPort		= "27773";
+	private int		sessionCounter	= 0;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -55,7 +50,7 @@ public class LockUnlockCommandsTest {
 	 */
 	@Test
 	public void testLockUnlockFunctionality() {
-		//initBundles();
+		// initBundles();
 		testLockUnlock();
 		testLockMultipleTimes();
 		testUnlockWithoutLock();

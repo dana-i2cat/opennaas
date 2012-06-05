@@ -88,7 +88,7 @@ public class ConfigureSubInterfaceTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router"),
+				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
