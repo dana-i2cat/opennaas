@@ -707,7 +707,6 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
-		<module>clients</module>
 <!-- 		<module>web</module> -->
 	</modules>
 	<build>
