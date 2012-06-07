@@ -6,6 +6,11 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
 import org.opennaas.extensions.sampleresource.capability.example.ExampleCapability;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 @Command(scope = "example", name = "sayHello", description = "It will say hello.")
 public class ExampleCommand extends GenericKarafCommand {
 
