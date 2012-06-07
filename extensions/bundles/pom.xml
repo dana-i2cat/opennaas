@@ -57,5 +57,7 @@
 		
 		<module>webservice</module>
 		<module>webservice-proxy</module>
+		
+        <module>sampleresource</module>
 	</modules>
 </project>
