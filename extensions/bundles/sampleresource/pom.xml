@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <groupId>org.opennaas</groupId>
+    <version>0.11-SNAPSHOT</version>
+  </parent>
+  <artifactId>org.opennaas.extensions.sampleresource</artifactId>
+  	<!--  Maven configuration -->
+  	<modelVersion>4.0.0</modelVersion>
+  	<packaging>bundle</packaging>
+	<name>OpenNaaS :: Sample Resource </name>
+	<description>Sample Resource  Implementation</description>
+ 	<dependencies>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.karaf.shell</groupId>
+			<artifactId>org.apache.karaf.shell.console</artifactId>
+		</dependency>
+
+ 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<Bundle-Activator>org.opennaas.extensions.sampleresource.capability.example.Activator</Bundle-Activator>
+						<Import-Package>org.slf4j,*</Import-Package>
+						<Export-Package>
+							org.opennaas.extensions.sampleresource.capability.example;version="${project.version}"
+						</Export-Package>
+						</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

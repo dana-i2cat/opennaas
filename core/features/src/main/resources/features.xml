@@ -131,6 +131,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
 	</feature>
+	
+		<feature name="opennaas-sampleresource" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>
+		
+	</feature>
 
 	<feature name="opennaas-autobahn" version="${project.version}">
 		<feature>cxf</feature>
@@ -159,6 +166,8 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">opennaas-sampleresource</feature>
+		  
 	</feature>
 
    <feature name="itests-helpers" version="${project.version}">	  	
@@ -170,4 +179,5 @@
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
+	
 </features>

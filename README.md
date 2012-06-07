@@ -7,15 +7,15 @@ OpenNaaS was born with the aim to create an open source software project communi
 
 In that sense, each network domain would be able to use their own OpenNaaS instance to:
 
-    - Get resources from the network infrastructure: routers, switches, links or provisioning systems.
-    - Abstract them to service resources, independently of vendor and model details.
-    - Embed instantiation of virtualized resources in the regular BSS workflows.
-    - Delegate management permissions over the infrastructure resources they own so that “Infrastructure integrators” can control them during a period of time.
+ * Get resources from the network infrastructure: routers, switches, links or provisioning systems.
+ * Abstract them to service resources, independently of vendor and model details.
+ * Embed instantiation of virtualized resources in the regular BSS workflows.
+ * Delegate management permissions over the infrastructure resources they own so that “Infrastructure integrators” can control them during a period of time.
 
 With an eye on versatility and smooth integration, OpenNaaS offers a powerful remote command line, as well as web-service interfaces. This web-service interface will offer the possibility to both build a GUI and integrate it with existing middleware applications already deployed in the virtual research organisations.
 
 Get the software
-================
+----------------
 
 For instructions on building the software go to:
 
@@ -30,18 +30,18 @@ You can find documentation pointers here:
 http://www.opennaas.org/documentation/
 
 Authors
-=======
+-------
 
 Join us here:
 
 http://www.opennaas.org/community/
 
-Adrian Rossello
-Carlos Baez
-Elisabeth Rigol
-Gerd Behrmann
-Isart Canyameres
-Jordi Puig
-Natalia Koroleva
-Pau Minoves
-Santiago Pimentel
+* Adrian Rossello
+* Carlos Baez
+* Elisabeth Rigol
+* Gerd Behrmann
+* Isart Canyameres
+* Jordi Puig
+* Natalia Koroleva
+* Pau Minoves
+* Santiago Pimentel

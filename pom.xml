@@ -257,6 +257,11 @@
 				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>
@@ -707,7 +712,6 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
-		<module>clients</module>
 <!-- 		<module>web</module> -->
 	</modules>
 	<build>
