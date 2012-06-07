@@ -5,6 +5,11 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ResourceRepository;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class sampleResourceRepository extends ResourceRepository {
 
 	/**
