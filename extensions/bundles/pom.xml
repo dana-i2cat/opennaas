@@ -56,7 +56,6 @@
 		<module>itests.helpers</module>
 		
 		<module>webservice</module>
-		<module>webservice-proxy</module>
 		
         <module>sampleresource</module>
 	</modules>
