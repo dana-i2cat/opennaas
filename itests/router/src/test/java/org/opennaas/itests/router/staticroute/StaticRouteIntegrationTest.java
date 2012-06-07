@@ -19,20 +19,17 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.staticroute.StaticRouteCapability;
 import org.opennaas.itests.router.TestsConstants;
@@ -95,8 +92,8 @@ public class StaticRouteIntegrationTest {
 	{
 		startResource();
 		Assert.assertFalse(routerResource.getCapabilities().isEmpty());
-		Assert.assertNotNull(routerResource.getCapability(getInformation(TestsConstants.QUEUE_CAPABILIY_TYPE)));
-		Assert.assertNotNull(routerResource.getCapability(getInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE)));
+		Assert.assertNotNull(routerResource.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE)));
+		Assert.assertNotNull(routerResource.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE)));
 		stopResource();
 		Assert.assertTrue(resourceManager.listResources().isEmpty());
 	}
@@ -110,11 +107,11 @@ public class StaticRouteIntegrationTest {
 		startResource();
 
 		StaticRouteCapability staticRouteCapability = (StaticRouteCapability) routerResource
-				.getCapability(getInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.STATIC_ROUTE_CAPABILITY_TYPE));
 		staticRouteCapability.createStaticRoute("0.0.0.0", "0.0.0.0", "192.168.1.1");
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -123,7 +120,7 @@ public class StaticRouteIntegrationTest {
 
 	@Before
 	public void initBundles() throws ResourceException {
-		clearRepository();
+		InitializerTestHelper.removeResources(resourceManager);
 		log.info("INFO: Initialized!");
 	}
 
@@ -157,7 +154,7 @@ public class StaticRouteIntegrationTest {
 		routerResource = resourceManager.createResource(resourceDescriptor);
 
 		// If not exists the protocol session manager, it's created and add the session context
-		addSessionContext(routerResource.getResourceIdentifier().getId());
+		InitializerTestHelper.addSessionContext(protocolManager, routerResource.getResourceIdentifier().getId(), TestsConstants.RESOURCE_URI);
 
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
@@ -175,50 +172,6 @@ public class StaticRouteIntegrationTest {
 
 		// Remove resource
 		resourceManager.removeResource(routerResource.getResourceIdentifier());
-	}
-
-	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
-	}
-
-	/**
-	 * If not exists the protocol session manager, it's created and add the session context
-	 * 
-	 * @param resourceId
-	 * @throws ProtocolException
-	 */
-	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-
-		protocolSessionManager.registerContext(protocolSessionContext);
-
-		return protocolSessionManager;
-	}
-
-	protected Information getInformation(String type) {
-		Information information = new Information();
-		information.setType(type);
-		return information;
 	}
 
 }

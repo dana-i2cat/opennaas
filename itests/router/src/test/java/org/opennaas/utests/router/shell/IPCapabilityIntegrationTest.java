@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.ip;
+package org.opennaas.utests.router.shell;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
@@ -18,25 +18,27 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
+<<<<<<< HEAD
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.itests.router.TestsConstants;
+=======
+import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.router.helpers.ParamCreationHelper;
+>>>>>>> Rest of tests collapsed, unused methods removed and repeated methods merged.
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -83,13 +85,29 @@ public class IPCapabilityIntegrationTest
 				keepRuntimeFolder());
 	}
 
+	@Before
+	public void initBundles() throws ResourceException, ProtocolException {
+
+		InitializerTestHelper.removeResources(resourceManager);
+		log.info("INFO: Initialized!");
+		startResource();
+
+	}
+
+	@After
+	public void stopBundle() throws Exception {
+		InitializerTestHelper.removeResources(resourceManager);
+		log.info("INFO: Stopped!");
+	}
+
 	@Test
 	public void testSetIPv4() throws ProtocolException, ResourceException {
 
-		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
-		ipCapability.setIPv4(getLogicalPort(), getIPProtocolEndPoint());
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setIPv4(ParamCreationHelper.getLogicalPort(), ParamCreationHelper.getIPProtocolEndPoint());
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 		// queueCapability.execute();
@@ -97,10 +115,11 @@ public class IPCapabilityIntegrationTest
 
 	@Test
 	public void testSetInterfaceDescription() throws ProtocolException, ResourceException {
-		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(getIPInformation(TestsConstants.IP_CAPABILITY_TYPE));
-		ipCapability.setInterfaceDescription(getLogicalPort());
+		IIPCapability ipCapability = (IIPCapability) routerResource.getCapability(InitializerTestHelper
+				.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
+		ipCapability.setInterfaceDescription(ParamCreationHelper.getLogicalPort());
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getIPInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
 
@@ -128,80 +147,10 @@ public class IPCapabilityIntegrationTest
 		routerResource = resourceManager.createResource(resourceDescriptor);
 
 		// If not exists the protocol session manager, it's created and add the session context
-		addSessionContext(routerResource.getResourceIdentifier().getId());
+		InitializerTestHelper.addSessionContext(protocolManager, routerResource.getResourceIdentifier().getId(), TestsConstants.RESOURCE_URI);
 
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
-	}
-
-	@Before
-	public void initBundles() throws ResourceException, ProtocolException {
-
-		clearRepository();
-		log.info("INFO: Initialized!");
-		startResource();
-
-	}
-
-	@After
-	public void stopBundle() throws Exception {
-		clearRepository();
-		log.info("INFO: Stopped!");
-	}
-
-	private LogicalPort getLogicalPort() {
-		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setName("fe-0/3/2");
-		logicalPort.setDescription("Description for the setSubInterfaceDescription test");
-		return logicalPort;
-	}
-
-	/**
-	 * @return
-	 */
-	private IPProtocolEndpoint getIPProtocolEndPoint() {
-		IPProtocolEndpoint ipProtocolEndpoint = new IPProtocolEndpoint();
-		ipProtocolEndpoint.setIPv4Address("192.168.0.1");
-		ipProtocolEndpoint.setSubnetMask("255.255.255.0");
-		return ipProtocolEndpoint;
-	}
-
-	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-
-		protocolSessionManager.registerContext(protocolSessionContext);
-
-		return protocolSessionManager;
-	}
-
-	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
-	}
-
-	protected Information getIPInformation(String type) {
-		Information information = new Information();
-		information.setType(type);
-		return information;
 	}
 
 }

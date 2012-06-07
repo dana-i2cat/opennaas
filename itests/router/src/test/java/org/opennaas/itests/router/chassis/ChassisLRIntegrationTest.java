@@ -20,30 +20,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.itests.router.helpers.CheckParametersHelper;
+import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
-import org.opennaas.itests.router.helpers.TestsConstants;
+import org.opennaas.itests.router.helpers.ExistanceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -80,10 +77,7 @@ public class ChassisLRIntegrationTest
 	private IProtocolManager	protocolManager;
 
 	private boolean				isMock;
-	private ResourceDescriptor	resourceDescriptor;
 	private IResource			resource;
-	private String				deviceID;
-	private String				type;
 	private EthernetPort		iface;
 	private IResource			LRresource;
 	private String				LRName				= "cpe2";
@@ -111,22 +105,18 @@ public class ChassisLRIntegrationTest
 	}
 
 	public ChassisLRIntegrationTest() {
-		this.type = "router";
-		this.deviceID = "junos";
 		this.isMock = true;
-
 		EthernetPort ethernetPort = new EthernetPort();
 		ethernetPort.setName(interfaceName);
 		ethernetPort.setPortNumber(1);
 		iface = ethernetPort;
-
 	}
 
 	@Test
 	public void GRESubInterfaceConfigurationTest() throws CapabilityException, ProtocolException {
 
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
 		Assert.assertNotNull(chassisCapability);
 
@@ -134,7 +124,7 @@ public class ChassisLRIntegrationTest
 		chassisCapability.createSubInterface(ethernetPort);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		Assert.assertNotNull(queueCapability);
 
@@ -145,7 +135,7 @@ public class ChassisLRIntegrationTest
 			return;
 
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
+		int pos = ExistanceHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
 	}
 
@@ -159,7 +149,7 @@ public class ChassisLRIntegrationTest
 	public void subInterfaceConfigurationTest() throws ProtocolException, CapabilityException {
 
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
 		Assert.assertNotNull(chassisCapability);
 
@@ -168,7 +158,7 @@ public class ChassisLRIntegrationTest
 		chassisCapability.createSubInterface(ethernetPort);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		Assert.assertNotNull(queueCapability);
 
@@ -179,7 +169,7 @@ public class ChassisLRIntegrationTest
 			return;
 
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
+		int pos = ExistanceHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
 
 	}
@@ -196,7 +186,7 @@ public class ChassisLRIntegrationTest
 		/* send action */
 
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
 		Assert.assertNotNull(chassisCapability);
 
@@ -205,7 +195,7 @@ public class ChassisLRIntegrationTest
 		chassisCapability.createSubInterface(ethernetPort);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		Assert.assertNotNull(queueCapability);
 
 		/* execute action */
@@ -216,7 +206,7 @@ public class ChassisLRIntegrationTest
 			return;
 
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
+		int pos = ExistanceHelper.containsInterface((ComputerSystem) resource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
 
 	}
@@ -227,11 +217,11 @@ public class ChassisLRIntegrationTest
 	{
 		/* send action */
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 		Assert.assertNotNull(chassisCapability);
 
 		IIPCapability ipCapability = (IIPCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.IP_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		Assert.assertNotNull(ipCapability);
 
 		EthernetPort ethernetPort = new EthernetPort();
@@ -243,7 +233,7 @@ public class ChassisLRIntegrationTest
 		ipCapability.setInterfaceDescription(ethernetPort);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		Assert.assertNotNull(queueCapability);
 
 		/* execute action */
@@ -256,7 +246,7 @@ public class ChassisLRIntegrationTest
 		resourceManager.startResource(LRresource.getResourceIdentifier());
 
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
+		int pos = ExistanceHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
 
 		String desc = ((EthernetPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
@@ -274,11 +264,11 @@ public class ChassisLRIntegrationTest
 	{
 		/* send action */
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 		Assert.assertNotNull(chassisCapability);
 
 		IIPCapability ipCapability = (IIPCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.IP_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		Assert.assertNotNull(ipCapability);
 
 		LogicalPort logicalPort = new LogicalPort();
@@ -290,7 +280,7 @@ public class ChassisLRIntegrationTest
 
 		/* execute action */
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		Assert.assertNotNull(queueCapability);
 
@@ -304,7 +294,7 @@ public class ChassisLRIntegrationTest
 
 		/* check the update model, it is only possible to check it with a real router */
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
+		int pos = ExistanceHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
 		Assert.assertTrue(pos != -1);
 
 		String desc = ((LogicalPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
@@ -322,11 +312,11 @@ public class ChassisLRIntegrationTest
 	{
 		/* send action */
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 		Assert.assertNotNull(chassisCapability);
 
 		IIPCapability ipCapability = (IIPCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.IP_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		Assert.assertNotNull(ipCapability);
 
 		EthernetPort ethernetPort = new EthernetPort();
@@ -339,7 +329,7 @@ public class ChassisLRIntegrationTest
 
 		/* execute action */
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		QueueResponse queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
@@ -350,7 +340,7 @@ public class ChassisLRIntegrationTest
 		resourceManager.startResource(LRresource.getResourceIdentifier());
 
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
+		int pos = ExistanceHelper.containsSubInterface((ComputerSystem) LRresource.getModel(), ethernetPort);
 		Assert.assertTrue(pos != -1);
 
 		String desc = ((EthernetPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
@@ -368,11 +358,11 @@ public class ChassisLRIntegrationTest
 	{
 		/* send action */
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 		Assert.assertNotNull(chassisCapability);
 
 		IIPCapability ipCapability = (IIPCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.IP_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.IP_CAPABILITY_TYPE));
 		Assert.assertNotNull(ipCapability);
 
 		LogicalPort logicalPort = new LogicalPort();
@@ -383,7 +373,7 @@ public class ChassisLRIntegrationTest
 		ipCapability.setInterfaceDescription(logicalPort);
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		QueueResponse queueResponse = queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
@@ -395,49 +385,11 @@ public class ChassisLRIntegrationTest
 
 		/* check the update model, it is only possible to check it with a real router */
 		/* check the update model, it is only possible to check it with a real router */
-		int pos = CheckParametersHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
+		int pos = ExistanceHelper.containsInterface((ComputerSystem) LRresource.getModel(), logicalPort);
 		Assert.assertTrue(pos != -1);
 
 		String desc = ((LogicalPort) ((ComputerSystem) LRresource.getModel()).getLogicalDevices().get(pos)).getDescription();
 		Assert.assertTrue(desc.equals(logicalPort.getDescription()));
-	}
-
-	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
-	}
-
-	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-
-		protocolSessionManager.registerContext(protocolSessionContext);
-
-		return protocolSessionManager;
-	}
-
-	private Information getChassisInformation(String type) {
-		Information information = new Information();
-		information.setType(type);
-		return information;
 	}
 
 	public void startResource() throws ResourceException, ProtocolException {
@@ -470,7 +422,7 @@ public class ChassisLRIntegrationTest
 		routerResource = resourceManager.createResource(resourceDescriptor);
 
 		// If not exists the protocol session manager, it's created and add the session context
-		addSessionContext(routerResource.getResourceIdentifier().getId());
+		InitializerTestHelper.addSessionContext(protocolManager, routerResource.getResourceIdentifier().getId(), TestsConstants.RESOURCE_URI);
 
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
@@ -478,14 +430,14 @@ public class ChassisLRIntegrationTest
 
 	@Before
 	public void initBundle() throws ResourceException, ProtocolException {
-		clearRepository();
+		InitializerTestHelper.removeResources(resourceManager);
 		log.info("Initialized!");
 		startResource();
 	}
 
 	@After
 	public void stopBundle() throws ResourceException {
-		clearRepository();
+		InitializerTestHelper.removeResources(resourceManager);
 		log.info("Stopped!");
 
 	}

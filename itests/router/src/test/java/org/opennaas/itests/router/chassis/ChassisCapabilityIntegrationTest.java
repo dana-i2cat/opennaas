@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -22,7 +22,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -31,14 +30,12 @@ import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -47,11 +44,10 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
-import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
-import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.itests.router.helpers.TestsConstants;
+import org.opennaas.itests.router.TestsConstants;
+import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -96,6 +92,7 @@ public class ChassisCapabilityIntegrationTest
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
 				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -108,13 +105,14 @@ public class ChassisCapabilityIntegrationTest
 		int actionCount = 0;
 
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
-		chassisCapability.setEncapsulation(newParamsInterfaceEthernetPort("fe-0/1/0", 13), ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
+		chassisCapability.setEncapsulation(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13),
+				ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
 		actionCount++;
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
@@ -144,12 +142,12 @@ public class ChassisCapabilityIntegrationTest
 		int actionCount = 0;
 
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
-		chassisCapability.createSubInterface(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		chassisCapability.createSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13));
 		actionCount++;
 
-		chassisCapability.deleteSubInterface(newParamsInterfaceEthernetPort("fe-0/0/3", 13));
+		chassisCapability.deleteSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13));
 		actionCount++;
 
 		// // FIXME disabled as it fails (it is tested in testSetEncapsulationAction, now ignored)
@@ -169,17 +167,17 @@ public class ChassisCapabilityIntegrationTest
 		// Assert.assertTrue(resp.getErrors().size() == 0);
 
 		List<LogicalPort> lInterfaces = new ArrayList<LogicalPort>();
-		lInterfaces.add(newParamsInterfaceEthernetPort("fe-0/1/0", 13));
-		chassisCapability.addInterfacesToLogicalRouter(newParamsLRWithInterface("cpe1"), lInterfaces);
+		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		chassisCapability.addInterfacesToLogicalRouter(ParamCreationHelper.newParamsLRWithInterface("cpe1"), lInterfaces);
 		actionCount++;
 
 		lInterfaces = new ArrayList<LogicalPort>();
-		lInterfaces.add(newParamsInterfaceEthernetPort("fe-0/0/3", 13));
-		chassisCapability.removeInterfacesFromLogicalRouter(newParamsLRWithInterface("cpe2"), lInterfaces);
+		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13));
+		chassisCapability.removeInterfacesFromLogicalRouter(ParamCreationHelper.newParamsLRWithInterface("cpe2"), lInterfaces);
 		actionCount++;
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		List<IAction> queue = (List<IAction>) queueCapability.getActions();
 		assertEquals(actionCount, queue.size());
 
@@ -209,7 +207,7 @@ public class ChassisCapabilityIntegrationTest
 		// Force to refresh the model
 
 		IQueueManagerCapability queueCapability = (IQueueManagerCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		String str = "";
 		ComputerSystem model = (ComputerSystem) routerResource.getModel();
@@ -243,7 +241,7 @@ public class ChassisCapabilityIntegrationTest
 		/* check model */
 		LogicalDevice logicalDevice = null;
 		try {
-			logicalDevice = getLogicalDevice(interfaceName, (ComputerSystem) routerResource.getModel());
+			logicalDevice = ParamCreationHelper.getLogicalDevice(interfaceName, (ComputerSystem) routerResource.getModel());
 		} catch (Exception ex) {
 			Assert.fail("LogicalDevice not found");
 		}
@@ -254,8 +252,8 @@ public class ChassisCapabilityIntegrationTest
 
 		/* send to change status */
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
-				.getCapability(getChassisInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
-		chassisCapability.downPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
+				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
+		chassisCapability.downPhysicalInterface(ParamCreationHelper.newParamsConfigureStatus(interfaceName, OperationalStatus.STOPPED));
 
 		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
 		queueResponse = (QueueResponse) queueCapability.execute();
@@ -267,7 +265,7 @@ public class ChassisCapabilityIntegrationTest
 		}
 
 		/* send to change status */
-		chassisCapability.upPhysicalInterface(newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
+		chassisCapability.upPhysicalInterface(ParamCreationHelper.newParamsConfigureStatus(interfaceName, OperationalStatus.OK));
 
 		Assert.assertTrue(((List<IAction>) queueCapability.getActions()).size() == 1);
 		queueResponse = (QueueResponse) queueCapability.execute();
@@ -301,7 +299,7 @@ public class ChassisCapabilityIntegrationTest
 		routerResource = resourceManager.createResource(resourceDescriptor);
 
 		// If not exists the protocol session manager, it's created and add the session context
-		addSessionContext(routerResource.getResourceIdentifier().getId());
+		InitializerTestHelper.addSessionContext(protocolManager, routerResource.getResourceIdentifier().getId(), TestsConstants.RESOURCE_URI);
 
 		// Start resource
 		resourceManager.startResource(routerResource.getResourceIdentifier());
@@ -309,108 +307,21 @@ public class ChassisCapabilityIntegrationTest
 
 	@Before
 	public void initBundle() throws Exception {
-		clearRepository();
+		InitializerTestHelper.removeResources(resourceManager);
 		log.info("INFO: Initialized!");
 		startResource();
 	}
 
 	@After
 	public void stopBundle() throws Exception {
-		clearRepository();
+		InitializerTestHelper.removeResources(resourceManager);
 		log.info("INFO: Stopped!");
-	}
-
-	private Information getChassisInformation(String type) {
-		Information information = new Information();
-		information.setType(type);
-		return information;
-	}
-
-	private EthernetPort newParamsInterfaceEthernet(String name, String ipName, String mask) {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setName(name);
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address(ipName);
-		ip.setSubnetMask(mask);
-		eth.addProtocolEndpoint(ip);
-		return eth;
-	}
-
-	private EthernetPort newParamsInterfaceEthernetPort(String name, int port) {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setName(name);
-		eth.setPortNumber(port);
-		eth.setDescription("capability test");
-		return eth;
-	}
-
-	private LogicalPort newParamsInterfaceLogicalPort(String name) {
-		LogicalPort eth = new LogicalPort();
-		// eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setName(name);
-		// eth.setPortNumber(port);
-		eth.setDescription("capability test description phy");
-		return eth;
-	}
-
-	private EthernetPort newParamsInterfaceEthernetPortVLAN(String name, int port, int vlanID) {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.OTHER);
-		eth.setName(name);
-		eth.setPortNumber(port);
-		// vlan specific
-		VLANEndpoint vlan = new VLANEndpoint();
-		vlan.setVlanID(vlanID);
-		eth.addProtocolEndpoint(vlan);
-		eth.setDescription("capability test vlan");
-		return eth;
-	}
-
-	private ComputerSystem newParamsLRWithInterface(String lrName) {
-		ComputerSystem lrModel = new ComputerSystem();
-		lrModel.setName(lrName);
-		lrModel.setElementName(lrName);
-		return lrModel;
-	}
-
-	protected IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, TestsConstants.RESOURCE_URI);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-
-		protocolSessionManager.registerContext(protocolSessionContext);
-
-		return protocolSessionManager;
-	}
-
-	/**
-	 * At the end of the tests, we empty the repository
-	 */
-	protected void clearRepository() throws ResourceException {
-		log.info("Clearing resource repo");
-
-		List<IResource> toRemove = resourceManager.listResources();
-
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				resourceManager.stopResource(resource.getResourceIdentifier());
-			}
-			resourceManager.removeResource(resource.getResourceIdentifier());
-		}
-
-		log.info("Resource repo cleared!");
 	}
 
 	private void checkOperationalStatus(ComputerSystem model, String interfaceName, OperationalStatus status) {
 		LogicalPort port = null;
 		try {
-			LogicalDevice port1 = getLogicalDevice(interfaceName, model);
+			LogicalDevice port1 = ParamCreationHelper.getLogicalDevice(interfaceName, model);
 			if (port1 instanceof LogicalPort)
 				port = (LogicalPort) port1;
 		} catch (Exception e) {
@@ -421,23 +332,4 @@ public class ChassisCapabilityIntegrationTest
 		Assert.assertTrue(port.getOperatingStatus().equals(status));
 	}
 
-	private LogicalPort newParamsConfigureStatus(String interfaceName, OperationalStatus status) {
-		LogicalPort logicalPort = new LogicalPort();
-		logicalPort.setName(interfaceName);
-		logicalPort.setOperationalStatus(status);
-		return logicalPort;
-	}
-
-	private LogicalDevice getLogicalDevice(String nameInterface, ComputerSystem router) throws Exception {
-		Iterator<LogicalDevice> iterator = router.getLogicalDevices().iterator();
-
-		while (iterator.hasNext()) {
-			LogicalDevice logicalDevice = iterator.next();
-			if (logicalDevice.getName().equals(nameInterface))
-				return logicalDevice;
-		}
-
-		throw new Exception("Not found logical device");
-
-	}
 }
