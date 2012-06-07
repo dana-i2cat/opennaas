@@ -22,6 +22,7 @@ import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
@@ -53,6 +54,10 @@ public class BoDIntegrationTest
 	private IResourceManager		resourceManager;
 
 	@Inject
+	@Filter("(type=bod)")
+	private IResourceRepository		repository;
+
+	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.bod.repository)")
 	private BlueprintContainer		repositoryService;
 
@@ -72,6 +77,50 @@ public class BoDIntegrationTest
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
+	}
+
+	/**
+	 * Test to check if repostitory is accessible from Resource Manager
+	 */
+	@Test
+	public void isResourceAccessibleFromRM() throws Exception {
+
+		/* init services */
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
+
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+
+		Assert.assertTrue(repository.listResources().contains(resource));
+
+		resourceManager.removeResource(resource.getResourceIdentifier());
+
+		Assert.assertFalse(repository.listResources().contains(resource));
+	}
+
+	/**
+	 * Test to create start, stop and remove the resource.
+	 */
+	@Test
+	public void BoDResourceLifeCycleTest() throws Exception {
+
+		// BoD Resource Descriptor
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor("bod");
+
+		// Create resource
+		IResource resource = repository.createResource(resourceDescriptor);
+		Assert.assertFalse(repository.listResources().isEmpty());
+
+		// Start resource
+		resource.start();
+		Assert.assertTrue(resource.getState().equals(State.ACTIVE));
+
+		// Stop resource
+		resource.stop();
+		Assert.assertTrue(resource.getState().equals(State.INITIALIZED));
+
+		// Remove resource
+		repository.removeResource(resource.getResourceIdentifier().getId());
+		Assert.assertTrue(repository.listResources().isEmpty());
 	}
 
 	@Test
