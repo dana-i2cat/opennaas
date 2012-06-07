@@ -36,12 +36,12 @@ Join us here:
 
 http://www.opennaas.org/community/
 
-Adrian Rossello
-Carlos Baez
-Elisabeth Rigol
-Gerd Behrmann
-Isart Canyameres
-Jordi Puig
-Natalia Koroleva
-Pau Minoves
-Santiago Pimentel
+* Adrian Rossello
+* Carlos Baez
+* Elisabeth Rigol
+* Gerd Behrmann
+* Isart Canyameres
+* Jordi Puig
+* Natalia Koroleva
+* Pau Minoves
+* Santiago Pimentel
