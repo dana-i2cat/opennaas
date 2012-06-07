@@ -21,6 +21,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
@@ -41,6 +43,11 @@ import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfi
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEvent;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEventFilter;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransport;
+import org.opennaas.extensions.roadm.wonesys.transports.ITransportListener;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransport;
+import org.opennaas.extensions.roadm.wonesys.transports.WonesysTransportException;
+import org.opennaas.extensions.roadm.wonesys.transports.rawsocket.RawSocketTransport;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -63,13 +70,9 @@ import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
 @RunWith(JUnit4TestRunner.class)
-public class WonesysProtocolTest implements EventHandler
+public class WonesysProtocolTest implements EventHandler, ITransportListener
 {
 	private static Log					log				= LogFactory.getLog(WonesysProtocolTest.class);
-
-	// private String resourceId = "Proteus-Pedrosa";
-	// private String hostIpAddress = "10.10.80.11";
-	// private String hostPort = "27773";
 
 	private String						alarmsPort		= "32162";										// SNMP traps port (162). if different,
 																										// 162 needs to be redirected to this port
@@ -80,6 +83,9 @@ public class WonesysProtocolTest implements EventHandler
 	private long						alarmWaittime	= 5 * 1000;									// 5sec
 
 	private final CountDownLatch		alarmReceived	= new CountDownLatch(1);
+
+	boolean								eventReceived	= false;
+	String								receivedMessage;
 
 	// Required services
 	@Inject
@@ -104,6 +110,75 @@ public class WonesysProtocolTest implements EventHandler
 				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				noConsole(),
 				keepRuntimeFolder());
+	}
+
+	// FIXME Uncomment to test transport works ok
+	//
+	@Test
+	// uses real connection
+	@Ignore
+	public void sendReceiveTest() {
+
+		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
+		try {
+
+			ITransport transport = new WonesysTransport(sessionContext);
+
+			int regNum = registerAsListener(transport);
+
+			eventReceived = false;
+
+			transport.connect();
+
+			String message = "5910ffffffffff01ffffffff0000b700"; // get inv command
+
+			transport.sendAsync(message);
+			log.debug("Message sent: " + message);
+			Thread.sleep(5000);
+
+			Assert.assertTrue(eventReceived);
+			log.debug("Message received: " + receivedMessage);
+			Assert.assertTrue(receivedMessage.startsWith("5910ffffffffff01ffffffff"));
+
+			unregisterAsListener(regNum);
+			transport.disconnect();
+
+		} catch (ProtocolException e) {
+			Assert.fail(e.getLocalizedMessage());
+		} catch (Exception e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
+
+	}
+
+	// FIXME Uncomment to test transport works ok
+	@Test
+	// uses real connection
+	@Ignore
+	public void sendAsyncTest() {
+
+		ProtocolSessionContext sessionContext = newWonesysProtocolSessionContext(hostIpAddress, hostPort);
+		try {
+
+			WonesysTransport transport = new WonesysTransport(sessionContext);
+
+			transport.connect();
+
+			String message = "5910ffffffffff01ffffffff0000b700"; // get inv command
+
+			transport.sendAsync(message);
+			// if socket is not connected will throw an exception
+
+			// TODO check message reached device
+
+			transport.disconnect();
+
+		} catch (ProtocolException e) {
+			Assert.fail(e.getLocalizedMessage());
+		} catch (WonesysTransportException e) {
+			Assert.fail(e.getLocalizedMessage());
+		}
+
 	}
 
 	/**
@@ -263,11 +338,9 @@ public class WonesysProtocolTest implements EventHandler
 			}
 
 		} catch (ProtocolException e) {
-			e.printStackTrace();
-			throw e;
+			Assert.fail(e.getMessage());
 		} catch (CommandException e) {
-			e.printStackTrace();
-			throw e;
+			Assert.fail(e.getMessage());
 		}
 	}
 
@@ -461,6 +534,32 @@ public class WonesysProtocolTest implements EventHandler
 			hxor = "0" + hxor;
 		}
 		return hxor;
+	}
+
+	private ProtocolSessionContext newWonesysProtocolSessionContext(String ip,
+			String port) {
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + ip + ":" + port);
+		return protocolSessionContext;
+	}
+
+	private int registerAsListener(ITransport transport) {
+		// register as a transport listener
+		// this will receive all events from its wonesysTransport
+
+		String topic = RawSocketTransport.ALL_EVENTS_TOPIC;
+		Properties properties = new Properties();
+		properties.setProperty(RawSocketTransport.TRANSPORT_ID_PROPERTY_NAME, transport.getTransportID());
+		EventFilter filter = new EventFilter(new String[] { topic }, properties);
+
+		return eventManager.registerEventHandler(this, filter);
+	}
+
+	private void unregisterAsListener(int regNum) {
+		eventManager.unregisterHandler(regNum);
 	}
 
 }
