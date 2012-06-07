@@ -11,6 +11,11 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class ExampleCapability extends AbstractCapability implements IExampleCapability {
 
 	public static String	CAPABILITY_TYPE	= "example";
@@ -63,6 +68,12 @@ public class ExampleCapability extends AbstractCapability implements IExampleCap
 		}
 	}
 
+	/**
+	 * @param the
+	 *            user name
+	 * @return the greeting message
+	 * 
+	 */
 	@Override
 	public String sayHello(String userName) throws CapabilityException {
 		return "Hello " + userName;

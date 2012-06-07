@@ -4,7 +4,7 @@
 package org.opennaas.extensions.sampleresource.capability.example;
 
 /**
- * @author Eli
+ * @author Elisabeth Rigol
  * 
  */
 public class ExampleActionSet {

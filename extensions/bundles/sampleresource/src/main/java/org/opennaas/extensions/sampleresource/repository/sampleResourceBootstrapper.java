@@ -8,6 +8,11 @@ import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.sampleresource.model.SampleModel;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class sampleResourceBootstrapper implements IResourceBootstrapper {
 
 	Log				log	= LogFactory.getLog(sampleResourceBootstrapper.class);

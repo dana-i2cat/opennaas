@@ -6,6 +6,11 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class ExampleCapabilityFactory extends AbstractCapabilityFactory {
 
 	/**

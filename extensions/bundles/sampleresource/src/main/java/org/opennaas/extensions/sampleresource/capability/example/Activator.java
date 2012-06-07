@@ -14,6 +14,11 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Filter;
 import org.osgi.framework.InvalidSyntaxException;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class Activator extends AbstractActivator implements BundleActivator {
 
 	private static BundleContext	context;
@@ -21,7 +26,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	static Log						log	= LogFactory.getLog(Activator.class);
 
 	/**
-	 * Get the Bunble Context
+	 * Get the Bundle Context
 	 * 
 	 * @return BundleContext
 	 */
@@ -30,7 +35,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	}
 
 	/**
-	 *
+	 * Initialise the context
 	 */
 	public void start(BundleContext context) throws Exception {
 		Activator.context = context;

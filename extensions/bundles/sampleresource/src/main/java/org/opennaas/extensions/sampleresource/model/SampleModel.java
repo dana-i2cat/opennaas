@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.opennaas.core.resources.IModel;
 
+/**
+ * 
+ * @author Elisabeth Rigol
+ * 
+ */
 public class SampleModel implements IModel {
 
 	/**
@@ -16,4 +21,5 @@ public class SampleModel implements IModel {
 	public List<String> getChildren() {
 		return new ArrayList<String>();
 	}
+
 }
