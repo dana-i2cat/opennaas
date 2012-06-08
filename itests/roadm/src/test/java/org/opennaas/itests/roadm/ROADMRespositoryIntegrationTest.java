@@ -83,7 +83,7 @@ public class ROADMRespositoryIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis"),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());

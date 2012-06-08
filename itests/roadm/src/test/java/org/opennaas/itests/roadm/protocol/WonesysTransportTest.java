@@ -1,8 +1,10 @@
 package org.opennaas.itests.roadm.protocol;
 
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.Properties;
 
@@ -27,8 +29,6 @@ import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 
-
-
 @RunWith(JUnit4TestRunner.class)
 public class WonesysTransportTest implements ITransportListener
 {
@@ -49,7 +49,7 @@ public class WonesysTransportTest implements ITransportListener
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis"),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

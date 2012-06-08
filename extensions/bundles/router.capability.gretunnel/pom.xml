@@ -28,11 +28,6 @@
 	  <artifactId>org.opennaas.extensions.network.model</artifactId>
 	</dependency>
 	<dependency>
-	  <groupId>org.opennaas</groupId>
-	  <artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-	</dependency>
-	<!--  auxiliar methods to use with commands -->
-	<dependency>
 		<groupId>org.apache.karaf.shell</groupId>
 	  <artifactId>org.apache.karaf.shell.console</artifactId>
 	</dependency>
