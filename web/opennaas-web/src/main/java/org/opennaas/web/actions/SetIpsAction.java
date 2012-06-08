@@ -2,17 +2,18 @@ package org.opennaas.web.actions;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.SessionAware;
+import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.action.ActionException;
+import org.opennaas.core.resources.capability.CapabilityException;
+import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.ws.services.IIPCapabilityService;
+import org.opennaas.extensions.ws.services.IQueueManagerCapabilityService;
+import org.opennaas.extensions.ws.services.IStaticRouteCapabilityService;
 import org.opennaas.web.ws.OpennaasClient;
-import org.opennaas.ws.ActionException_Exception;
-import org.opennaas.ws.CapabilityException_Exception;
-import org.opennaas.ws.IIPCapabilityService;
-import org.opennaas.ws.IQueueManagerCapabilityService;
-import org.opennaas.ws.IStaticRouteCapabilityService;
-import org.opennaas.ws.IpProtocolEndpoint;
-import org.opennaas.ws.NetworkPort;
-import org.opennaas.ws.ProtocolException_Exception;
-import org.opennaas.ws.ResourceIdentifier;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -21,6 +22,7 @@ import com.opensymphony.xwork2.ActionSupport;
  */
 public class SetIpsAction extends ActionSupport implements SessionAware {
 
+	private static final Logger				LOGGER	= Logger.getLogger(SetIpsAction.class);
 	private Map<String, Object>				session;
 	private IIPCapabilityService			ipCapabilityService;
 	private IQueueManagerCapabilityService	queueService;
@@ -47,7 +49,7 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		return SUCCESS;
 	}
 
-	private void configureStaticRoute() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void configureStaticRoute() throws CapabilityException, ProtocolException {
 		staticRouteService = OpennaasClient.getStaticRouteCapabilityService();
 		queueService = OpennaasClient.getQueueManagerCapabilityService();
 
@@ -67,12 +69,13 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		queueService.execute(lrGSNId);
 	}
 
-	private void setIPv4() throws CapabilityException_Exception, ActionException_Exception, ProtocolException_Exception {
+	private void setIPv4() throws ActionException, CapabilityException, ProtocolException {
+		LOGGER.info("setIPv4 ...");
 		String lrUnicId = ((ResourceIdentifier) session.get(getText("unic.lrouter.name"))).getId();
 		String lrMyreId = ((ResourceIdentifier) session.get(getText("myre.lrouter.name"))).getId();
 		String lrGSNId = ((ResourceIdentifier) session.get(getText("gsn.lrouter.name"))).getId();
 
-		ipCapabilityService = OpennaasClient.getIPCapabilityService();
+		ipCapabilityService = OpennaasClient.getIpCapabilityService();
 		IQueueManagerCapabilityService queueManager = OpennaasClient.getQueueManagerCapabilityService();
 
 		// logicalUnic
@@ -107,6 +110,7 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 		queueManager.execute(lrGSNId);
 		queueManager.execute(lrMyreId);
 		queueManager.execute(lrUnicId);
+		LOGGER.info("setIPv4 done.");
 
 	}
 
@@ -115,8 +119,8 @@ public class SetIpsAction extends ActionSupport implements SessionAware {
 	 * @param netmask
 	 * @return
 	 */
-	private IpProtocolEndpoint getProtocolEndpoint(String ip, String netmask) {
-		IpProtocolEndpoint pE = new IpProtocolEndpoint();
+	private IPProtocolEndpoint getProtocolEndpoint(String ip, String netmask) {
+		IPProtocolEndpoint pE = new IPProtocolEndpoint();
 		pE.setIPv4Address(ip);
 		pE.setSubnetMask(netmask);
 		return pE;

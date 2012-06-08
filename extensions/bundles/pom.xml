@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.10</version>
+		<version>0.11-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -56,6 +56,7 @@
 		<module>itests.helpers</module>
 		
 		<module>webservice</module>
-		<module>webservice-proxy</module>
+		
+        <module>sampleresource</module>
 	</modules>
 </project>

@@ -6,6 +6,7 @@ import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.System;
@@ -14,7 +15,7 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if a logical router exists.
-	 *
+	 * 
 	 * @param physicalRouter
 	 *            physical router that contains it.
 	 * @param logicalRouterName
@@ -32,7 +33,7 @@ public class ExistanceHelper {
 
 	/**
 	 * Checks if an interface exists.
-	 *
+	 * 
 	 * @param inter
 	 * @param port
 	 * @param Ip
@@ -83,5 +84,32 @@ public class ExistanceHelper {
 		}
 		// true if interface exists
 		return found;
+	}
+
+	/* check if it exists the Interface in the ComputerSystem */
+	public static int containsSubInterface(ComputerSystem model, EthernetPort ethernetPort) {
+		int pos = 0;
+		for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
+			if (logicalDevice instanceof EthernetPort
+					&& ((EthernetPort) logicalDevice).getName().equals(ethernetPort.getName())
+					&& ((EthernetPort) logicalDevice).getPortNumber() == ethernetPort.getPortNumber()) {
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
+	}
+
+	/* check if it exists the Interface in the ComputerSystem */
+	public static int containsInterface(ComputerSystem model, LogicalPort logicalPort) {
+		int pos = 0;
+		for (LogicalDevice logicalDevice : model.getLogicalDevices()) {
+			if (logicalDevice instanceof LogicalPort
+					&& ((LogicalPort) logicalDevice).getName().equals(logicalPort.getName())) {
+				return pos;
+			}
+			pos++;
+		}
+		return -1;
 	}
 }

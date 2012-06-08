@@ -1,6 +1,5 @@
 package org.opennaas.extensions.router.junos.commandsets.digester;
 
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPHeadersFilter;
 import org.opennaas.extensions.router.model.IPHeadersFilter.HdrIPVersion;
@@ -8,6 +7,7 @@ import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.NetworkPort.LinkTechnology;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;

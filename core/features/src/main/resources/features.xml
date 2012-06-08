@@ -77,19 +77,19 @@
 		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-ws" version="${project.version}">		
+	<feature name="opennaas-ws" version="${project.version}">
 		<feature>http</feature>
 		<feature>cxf</feature>
 		
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws.proxy/${project.version}</bundle>	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>	
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 		<feature version="${project.version}">opennaas-netconf</feature>
+		<feature version="${project.version}">opennaas-router</feature>
 
 		<bundle dependency="true">mvn:com.googlecode.guava-osgi/guava-osgi/${guava.version}</bundle>
 
@@ -98,10 +98,6 @@
 
 	<feature name="opennaas-router" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
-
-		<!-- The following dependency should be reversed, but as the
-		     code is structured now things are upside down. -->
-		<feature version="${project.version}">opennaas-junos</feature>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.repository/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.router.capability.chassis/${project.version}</bundle>
@@ -131,6 +127,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
 	</feature>
+	
+		<feature name="opennaas-sampleresource" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>
+		
+	</feature>
 
 	<feature name="opennaas-autobahn" version="${project.version}">
 		<feature>cxf</feature>
@@ -142,13 +145,18 @@
 	<feature name="opennaas-luminis" version="${project.version}">
 		<feature version="${project.version}">opennaas-cim</feature>
 
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.connections/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.monitoring/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.repository/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-roadm-proteus" version="${project.version}">
+		<feature version="${project.version}">opennaas-luminis</feature>
+
 		<bundle dependency="true">mvn:com.wonesys/org.opennaas.extensions.com.wonesys.emsModule/${project.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.protocols.wonesys/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.actionsets.wonesys/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.connections/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.capability.monitoring/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.repository/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
@@ -159,15 +167,19 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">opennaas-junos</feature>
+		<feature version="${project.version}">opennaas-roadm-proteus</feature>
+		<feature version="${project.version}">opennaas-sampleresource</feature>
 	</feature>
 
-   <feature name="itests-helpers" version="${project.version}">	  	
-     <feature version="${opennaas.version}">org.opennaas.core</feature>	  	
-     <bundle>mvn:org.opennaas/org.opennaas.extensions.itests.helpers/${project.version}</bundle>  	
-  </feature>
+	<feature name="itests-helpers" version="${project.version}">
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.itests.helpers/${project.version}</bundle>
+	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
+	
 </features>
