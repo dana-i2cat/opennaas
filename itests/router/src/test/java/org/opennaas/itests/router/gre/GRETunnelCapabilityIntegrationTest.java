@@ -48,6 +48,7 @@ import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
+import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
@@ -73,6 +74,9 @@ public class GRETunnelCapabilityIntegrationTest {
 	private IResource					routerResource;
 
 	@Inject
+	private BundleContext				bundleContext;
+
+	@Inject
 	protected IResourceManager			resourceManager;
 
 	@Inject
@@ -94,10 +98,14 @@ public class GRETunnelCapabilityIntegrationTest {
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.gretunnel)")
 	private BlueprintContainer			gretunnelService;
 
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
+	private BlueprintContainer			netconfService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router"),
+				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());

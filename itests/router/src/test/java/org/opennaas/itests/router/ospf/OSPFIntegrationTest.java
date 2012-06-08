@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -393,6 +394,12 @@ public abstract class OSPFIntegrationTest
 
 		// Remove resource
 		resourceManager.removeResource(routerResource.getResourceIdentifier());
+	}
+
+	@After
+	public void stopBundle() throws ResourceException {
+		InitializerTestHelper.removeResources(resourceManager);
+		log.info("INFO: Stopped!");
 	}
 
 }

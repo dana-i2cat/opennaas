@@ -16,6 +16,7 @@ import junit.framework.Assert;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -172,6 +173,12 @@ public class StaticRouteIntegrationTest {
 
 		// Remove resource
 		resourceManager.removeResource(routerResource.getResourceIdentifier());
+	}
+
+	@After
+	public void stopBundle() throws ResourceException {
+		InitializerTestHelper.removeResources(resourceManager);
+		log.info("INFO: Stopped!");
 	}
 
 }
