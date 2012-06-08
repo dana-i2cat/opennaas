@@ -1,7 +1,8 @@
-package org.opennaas.utests.router.shell;
+package org.opennaas.itests.router.ip;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
@@ -31,14 +32,8 @@ import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.ip.IIPCapability;
-<<<<<<< HEAD
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.itests.router.TestsConstants;
-=======
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
->>>>>>> Rest of tests collapsed, unused methods removed and repeated methods merged.
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -80,7 +75,9 @@ public class IPCapabilityIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
+
 				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -110,7 +107,6 @@ public class IPCapabilityIntegrationTest
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.QUEUE_CAPABILIY_TYPE));
 		QueueResponse queueResponse = (QueueResponse) queueCapability.execute();
 		Assert.assertTrue(queueResponse.isOk());
-		// queueCapability.execute();
 	}
 
 	@Test
@@ -138,7 +134,6 @@ public class IPCapabilityIntegrationTest
 		// Add Queue Capability Descriptor
 		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newQueueCapabilityDescriptor();
 		lCapabilityDescriptors.add(queueCapabilityDescriptor);
-
 		// Router Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, TestsConstants.RESOURCE_TYPE,
 				TestsConstants.RESOURCE_URI,
