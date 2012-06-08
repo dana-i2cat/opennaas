@@ -83,8 +83,7 @@
 		
 		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
 		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws.proxy/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>	
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
@@ -128,6 +127,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.capability.l2bod/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.bod.actionsets.dummy/${project.version}</bundle>
 	</feature>
+	
+		<feature name="opennaas-sampleresource" version="${project.version}">
+		<feature version="${project.version}">opennaas-cim</feature>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.sampleresource/${project.version}</bundle>
+		
+	</feature>
 
 	<feature name="opennaas-autobahn" version="${project.version}">
 		<feature>cxf</feature>
@@ -163,15 +169,17 @@
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
+		<feature version="${project.version}">opennaas-sampleresource</feature>
 	</feature>
 
-   <feature name="itests-helpers" version="${project.version}">
-     <feature version="${opennaas.version}">org.opennaas.core</feature>
-     <bundle>mvn:org.opennaas/org.opennaas.extensions.itests.helpers/${project.version}</bundle>
-  </feature>
+	<feature name="itests-helpers" version="${project.version}">
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.itests.helpers/${project.version}</bundle>
+	</feature>
 
 	<feature name="nexus-testprofile" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.core.tests-mockprofile/${project.version}</bundle>
 	</feature>
+	
 </features>
