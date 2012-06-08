@@ -75,7 +75,7 @@ public class IPCapabilityIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router"),
+				includeFeatures("opennaas-router", "opennaas-junos"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

@@ -94,7 +94,7 @@ public class QueueTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-cim", "opennaas-netconf", "opennaas-router"),
+				includeFeatures("opennaas-cim", "opennaas-netconf", "opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				includeSwissboxFramework(),
 				noConsole(),

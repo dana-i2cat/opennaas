@@ -9,19 +9,20 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 
-import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
 import org.opennaas.extensions.bod.autobahn.commands.CancelServiceCommand;
 import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDActionSet;
+
 
 import org.opennaas.extensions.network.model.topology.Interface;
 
 public class ShutdownConnectionAction extends AutobahnAction
 {
-	public final static String ACTIONID = ActionConstants.SHUTDOWNCONNECTION;
+	public final static String ACTIONID = L2BoDActionSet.SHUTDOWN_CONNECTION;
 
 	public ShutdownConnectionAction()
 	{

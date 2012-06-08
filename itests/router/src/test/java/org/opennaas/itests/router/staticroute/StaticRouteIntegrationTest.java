@@ -3,19 +3,17 @@
  */
 package org.opennaas.itests.router.staticroute;
 
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import org.opennaas.core.resources.helpers.ResourceHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,6 +27,7 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
@@ -70,7 +69,7 @@ public abstract class StaticRouteIntegrationTest
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.protocols.netconf)")
 	private BlueprintContainer		netconfService;
-	
+
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
 	private BlueprintContainer		routerRepoService;
@@ -81,7 +80,7 @@ public abstract class StaticRouteIntegrationTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router"),
+				includeFeatures("opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());

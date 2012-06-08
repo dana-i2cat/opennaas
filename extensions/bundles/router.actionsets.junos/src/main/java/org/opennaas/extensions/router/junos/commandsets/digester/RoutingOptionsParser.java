@@ -2,7 +2,6 @@ package org.opennaas.extensions.router.junos.commandsets.digester;
 
 import java.util.HashMap;
 
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.GRETunnelEndpoint;
 import org.opennaas.extensions.router.model.GRETunnelService;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
@@ -14,6 +13,7 @@ import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.RouteCalculationService;
 import org.opennaas.extensions.router.model.Service;
 import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.digester.Digester;
 import org.apache.commons.digester.RuleSetBase;

@@ -3,7 +3,6 @@ package org.opennaas.extensions.router.junos.commandsets.digester;
 import java.io.IOException;
 import java.util.HashMap;
 
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.OSPFArea;
@@ -11,6 +10,7 @@ import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.System;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 import org.apache.commons.digester.Digester;
