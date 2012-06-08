@@ -10,16 +10,29 @@ the License. -->
 <!-- xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0" -->
 
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" xmlns:cxf="http://cxf.apache.org/blueprint/core"
-    xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs" xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
-    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd http://www.osgi.org/xmlns/blueprint/v1.0.0
-	http://www.osgi.org/xmlns/blueprint-ext/v1.1.0 https://svn.apache.org/repos/asf/aries/tags/blueprint-0.3.1/blueprint-core/src/main/resources/org/apache/aries/blueprint/ext/blueprint-ext.xsd
-	http://cxf.apache.org/blueprint/jaxws http://cxf.apache.org/schemas/blueprint/jaxws.xsd
-	http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
-	http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
-	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
-	http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd
-	">
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+    xmlns:cxf="http://cxf.apache.org/blueprint/core"
+    xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs" 
+    xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+    xmlns:bp="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+    default-activation="lazy"
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+    					http://www.osgi.org/xmlns/blueprint/v1.0.0
+						http://www.osgi.org/xmlns/blueprint-ext/v1.1.0 
+						https://svn.apache.org/repos/asf/aries/tags/blueprint-0.3.1/blueprint-core/src/main/resources/org/apache/aries/blueprint/ext/blueprint-ext.xsd
+						http://cxf.apache.org/blueprint/jaxws 
+						http://cxf.apache.org/schemas/blueprint/jaxws.xsd
+						http://cxf.apache.org/blueprint/jaxrs 
+						http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+						http://cxf.apache.org/blueprint/core 
+						http://cxf.apache.org/schemas/blueprint/core.xsd
+						http://camel.apache.org/schema/blueprint 
+						http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
+	
+    <cm:property-placeholder persistent-id="org.opennaas" update-strategy="reload" />
 
 	<!-- References for resourceManager and protocolManager beans -->
 	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
@@ -30,95 +43,95 @@ the License. -->
 	<bean id="protocolSessionManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ProtocolSessionManagerServiceImpl">
 		<property name="protocolManager" ref="protocolManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#protocolSessionManagerServiceImpl" address="http://0.0.0.0:8182/cxf/protocolSessionManagerService"  />
+    <jaxws:endpoint  implementor="#protocolSessionManagerServiceImpl" address="${ws.url}/protocolSessionManagerService"  />
 	
 	<!-- Resource Manager -->
 	<bean id="resourceManagerServiceImpl" class="org.opennaas.extensions.ws.impl.ResourceManagerServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint implementor="#resourceManagerServiceImpl" address="http://0.0.0.0:8182/cxf/resourceManagerService"  />
+    <jaxws:endpoint implementor="#resourceManagerServiceImpl" address="${ws.url}/resourceManagerService"  />
 	
 	<!-- Chassis Capability -->
     <cxf:bus id="chassisCapabilityServiceBus"></cxf:bus>
 	<bean id="chassisCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ChassisCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint implementor="#chassisCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/chassisCapabilityService"  />
+    <jaxws:endpoint implementor="#chassisCapabilityServiceImpl" address="${ws.url}/chassisCapabilityService"  />
 
    	<!-- QueueManager Capability -->
 	<bean id="queueManagerCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.QueueManagerCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#queueManagerCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/queueManagerCapabilityService"  />
+    <jaxws:endpoint  implementor="#queueManagerCapabilityServiceImpl" address="${ws.url}/queueManagerCapabilityService"  />
 
     <!-- Connections Capability -->
     <cxf:bus id="connectionsCapabilityServiceBus"></cxf:bus>
 	<bean id="connectionsCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.ConnectionsCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#connectionsCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/connectionsCapabilityService"  />
+    <jaxws:endpoint  implementor="#connectionsCapabilityServiceImpl" address="${ws.url}/connectionsCapabilityService"  />
 
     <!--  Monitoring Capability -->
     <cxf:bus id="monitoringCapabilityServiceBus"></cxf:bus> 
 	<bean id="monitoringCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.MonitoringCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#monitoringCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/monitoringCapabilityService"  />
+    <jaxws:endpoint  implementor="#monitoringCapabilityServiceImpl" address="${ws.url}/monitoringCapabilityService"  />
 
 	<!-- OSPF Capability -->
     <cxf:bus id="ospfCapabilityServiceBus"></cxf:bus>
 	<bean id="ospfCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.OSPFCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#ospfCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/ospfCapabilityService"  />
+    <jaxws:endpoint  implementor="#ospfCapabilityServiceImpl" address="${ws.url}/ospfCapabilityService"  />
 
 	<!-- GRETunnel Capability -->
     <cxf:bus id="greTunnelCapabilityServiceBus"></cxf:bus>
 	<bean id="greTunnelCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.GRETunnelCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#greTunnelCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/greTunnelCapabilityService"  />
+    <jaxws:endpoint  implementor="#greTunnelCapabilityServiceImpl" address="${ws.url}/greTunnelCapabilityService"  />
     
     <!-- L2BoDTunnel Capability -->
     <cxf:bus id="l2bodCapabilityServiceBus"></cxf:bus>
 	<bean id="l2bodCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.L2BoDCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#l2bodCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/l2bodCapabilityService"  />
+    <jaxws:endpoint  implementor="#l2bodCapabilityServiceImpl" address="${ws.url}/l2bodCapabilityService"  />
 
     <!-- IP Capability -->
     <cxf:bus id="ipCapabilityServiceBus"></cxf:bus>
 	<bean id="ipCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.IPCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#ipCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/ipCapabilityService"  />
+    <jaxws:endpoint  implementor="#ipCapabilityServiceImpl" address="${ws.url}/ipCapabilityService"  />
 
     <!-- NetworkBasic Capability -->
     <cxf:bus id="networkBasicCapabilityServiceBus"></cxf:bus>
 	<bean id="networkBasicCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetworkBasicCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#networkBasicCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/networkBasicCapabilityService"  />
+    <jaxws:endpoint  implementor="#networkBasicCapabilityServiceImpl" address="${ws.url}/networkBasicCapabilityService"  />
 
 		<!-- Static Route -->
     <cxf:bus id="staticRouteCapabilityServiceBus"></cxf:bus>
 	<bean id="staticRouteCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.StaticRouteCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#staticRouteCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/staticRouteCapabilityService"  />
+    <jaxws:endpoint  implementor="#staticRouteCapabilityServiceImpl" address="${ws.url}/staticRouteCapabilityService"  />
 
 	<!-- Network OSPF -->
     <cxf:bus id="netOSPFCapabilityServiceBus"></cxf:bus>
 	<bean id="netOSPFCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetOSPFCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#netOSPFCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/netOSPFCapabilityService"  />
+    <jaxws:endpoint  implementor="#netOSPFCapabilityServiceImpl" address="${ws.url}/netOSPFCapabilityService"  />
 
 	<!-- Network Queue -->
     <cxf:bus id="netQueueCapabilityServiceBus"></cxf:bus>
 	<bean id="netQueueCapabilityServiceImpl" class="org.opennaas.extensions.ws.impl.NetQueueCapabilityServiceImpl">
 		<property name="resourceManager" ref="resourceManager" />
 	</bean>
-    <jaxws:endpoint  implementor="#netQueueCapabilityServiceImpl" address="http://0.0.0.0:8182/cxf/netQueueCapabilityService"  />
+    <jaxws:endpoint  implementor="#netQueueCapabilityServiceImpl" address="${ws.url}/netQueueCapabilityService"  />
 	
 </blueprint>
