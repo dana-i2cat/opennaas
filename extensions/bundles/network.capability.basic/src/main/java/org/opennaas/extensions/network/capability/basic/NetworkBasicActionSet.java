@@ -3,7 +3,9 @@ package org.opennaas.extensions.network.capability.basic;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NetworkBasicActionSet {
+import org.opennaas.core.resources.action.IActionSetDefinition;
+
+public class NetworkBasicActionSet implements IActionSetDefinition {
 
 	public static final String	ADD_RESOURCE	= "addResource";
 	public static final String	REMOVE_RESOURCE	= "removeResource";
