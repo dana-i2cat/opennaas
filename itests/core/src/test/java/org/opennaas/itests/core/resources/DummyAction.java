@@ -6,10 +6,17 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class DummyAction extends Action {
+
+	static Log	log	= LogFactory.getLog(DummyAction.class);
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager) throws ActionException {
+
+		log.info("Executing DUMMY ACTION");
 		ActionResponse actionResponse = new ActionResponse();
 		actionResponse.setActionID(getActionID());
 

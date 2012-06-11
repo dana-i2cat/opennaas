@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.ip;
+package org.opennaas.itests.router.shell;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;

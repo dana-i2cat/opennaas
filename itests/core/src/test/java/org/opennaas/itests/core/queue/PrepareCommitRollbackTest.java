@@ -46,9 +46,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.NetworkPort;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
@@ -131,22 +128,6 @@ public class PrepareCommitRollbackTest
 		((ICapabilityLifecycle) queueCapability).initialize();
 		queueManagerCapability = getService(bundleContext, IQueueManagerCapability.class, 50000,
 				"(capability=queue)(capability.name=" + mockResource.getResourceId() + ")");
-	}
-
-	/*
-	 * test of an interface ethernet without vlan encapsulation
-	 */
-	private Object newParamsInterfaceEthernet() {
-		EthernetPort eth = new EthernetPort();
-		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
-		eth.setName("fe-0/1/2");
-		IPProtocolEndpoint ip = new IPProtocolEndpoint();
-		ip.setIPv4Address("192.168.32.1");
-		ip.setSubnetMask("255.255.255.0");
-		eth.addProtocolEndpoint(ip);
-		System.out.println(eth.getLinkTechnology().toString());
-
-		return eth;
 	}
 
 	@Test
