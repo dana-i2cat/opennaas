@@ -151,6 +151,12 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.repository/${project.version}</bundle>
 	</feature>
 
+	<feature name="opennaas-cisco" version="${project.version}">
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.sockets/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.cli/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.tl1/${project.version}</bundle>
+	</feature>
+
 	<feature name="opennaas" version="${project.version}">
 		<feature version="${project.version}">opennaas-ws</feature>
 		<feature version="${project.version}">opennaas-router</feature>
@@ -159,6 +165,7 @@
 		<feature version="${project.version}">opennaas-luminis</feature>
 		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
+		<feature version="${project.version}">opennaas-cisco</feature>
 	</feature>
 
    <feature name="itests-helpers" version="${project.version}">	  	
