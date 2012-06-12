@@ -56,7 +56,7 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 	private BundleContext		bundleContext;
 
 	private List<Event>			receivedEvents	= new ArrayList<Event>();
-	private final Object		lock			= new Object();
+	private Object				lock			= new Object();
 
 	@Inject
 	private IEventManager		eventManager;
@@ -93,6 +93,8 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 	 */
 	@Test
 	public void checkTransportAlarmTriggersResourceAlarmTest() throws Exception {
+
+		lock = new Object();
 
 		InitializerTestHelper.removeResources(resourceManager);
 

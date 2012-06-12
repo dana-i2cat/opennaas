@@ -1,4 +1,4 @@
-package org.opennaas.itests.router.chassis;
+package org.opennaas.itests.router.shell;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
@@ -18,9 +18,11 @@ import org.apache.felix.service.command.CommandProcessor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -38,7 +40,9 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
+import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.itests.router.helpers.ExistanceHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -60,13 +64,14 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
  * @author Carlos Báez Ruiz
  * 
  */
-@SuppressWarnings("unused")
+// @SuppressWarnings("unused")
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ChassisKarafCommandsTests
 {
 	private final static Log	log	= LogFactory.getLog(ChassisKarafCommandsTests.class);
 
+	private String				logicalRouterName;
 	private String				resourceFriendlyID;
 	private IResource			resource;
 	private Boolean				isMock;
@@ -126,6 +131,7 @@ public class ChassisKarafCommandsTests
 		List<String> capabilities = new ArrayList<String>();
 		capabilities.add("chassis");
 		capabilities.add("queue");
+		capabilities.add("ipv4");
 
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("junosm20", "router", capabilities);
 
@@ -538,6 +544,278 @@ public class ChassisKarafCommandsTests
 
 	}
 
+	@Test
+	public void RemoveLogicalRouterfromPhysicalRouter() throws Exception {
+		String logicalRouterName;
+
+		if (isMock) {
+			logicalRouterName = "cpe1";
+		} else {
+			logicalRouterName = "pepito";
+		}
+
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
+				commandprocessor);
+		Assert.assertTrue(response2.get(0).contains(logicalRouterName));
+
+		// chassis:deleteLogicalRoute
+
+		List<String> response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
+				commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		// assert command output no contains ERROR tagInitializerTestHelper
+		Assert.assertTrue(response1.get(1).isEmpty());
+
+		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
+				commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response2.get(1).isEmpty());
+
+		// check chassis:listLogicalRouters from R1 does not includes L1
+		if (!isMock) {
+			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
+			boolean exist = checkExistLogicalRouter(physicalRouter, logicalRouterName);
+			Assert.assertFalse(exist);
+			Assert.assertFalse(response2.get(0).contains(logicalRouterName));
+
+		}
+	}
+
+	@Test
+	public void listLogicalRoutersOnResourceTest() throws Exception {
+
+		List<String> response;
+		if (isMock) {
+			logicalRouterName = "cpe1";
+		} else {
+			logicalRouterName = "pepito";
+		}
+		// chassis:listLogicalRouters
+		response =
+				KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
+						commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		Assert.assertTrue(response.get(0).contains(logicalRouterName));
+
+		if (!isMock) {
+			Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), logicalRouterName));
+		}
+	}
+
+	@Test
+	public void discoveryOnBootstrapLogicalRoutersTest() throws Exception {
+		if (isMock) {
+			logicalRouterName = "cpe1";
+		} else {
+			logicalRouterName = "pepito";
+		}
+
+		// resource:list
+		List<String> response =
+				KarafCommandHelper.executeCommand("resource:list ", commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		// check that the logical router is on the list
+		Assert.assertTrue(response.get(0).contains(logicalRouterName));
+
+		response =
+				KarafCommandHelper.executeCommand("resource:info " + "router:" + logicalRouterName,
+						commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		// check resource initialized
+		if (!isMock) {
+			Assert.assertTrue(response.get(0).contains("INITIALIZED"));
+		}
+	}
+
+	@Test
+	public void createLogicalRouterOnRealRouterTest() throws Exception {
+
+		List<String> response;
+		List<String> response1;
+
+		if (isMock) {
+			logicalRouterName = "cpe1";
+		} else {
+			logicalRouterName = "pepito";
+		}
+
+		// creating LogicalRouter
+		response =
+				KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
+						commandprocessor);
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response.get(1).isEmpty());
+		response =
+				KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
+						commandprocessor);
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		response1 = KarafCommandHelper.executeCommand("resource:list ",
+				commandprocessor);
+		Assert.assertTrue(response1.get(1).isEmpty());
+		if (!isMock) {
+			Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), logicalRouterName));
+			Assert.assertTrue(response1.get(0).contains(logicalRouterName));
+		}
+	}
+
+	@Test
+	@Ignore
+	public void ConfigureInterfaceInterfaceTest() throws Exception {
+
+		List<String> response;
+		List<String> response1;
+
+		if (isMock) {
+			logicalRouterName = "cpe1";
+		} else {
+			logicalRouterName = "pepito";
+		}
+
+		// chassis:createlogicalrouter
+
+		String interfId2 = "fe-0/1/3.1";
+		String interfId1 = "lt-0/1/2.12";
+		String interfId3 = "lo0.1";
+
+		String interfId4 = "fe-0/1/3.4";
+
+		// When you create a logical router, do you want to have created a resource which represents this resource!!! I think this idea is not
+		// correct
+		// You should have a different command o extra flag to create this resource (in the resource:create??). Also, you have to specify its
+		// capabilities
+		response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
+				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3,
+				commandprocessor);
+
+		response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+
+		// check logical router creation
+		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID, commandprocessor);
+		log.info(response2.get(0));
+
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response2.get(1).isEmpty());
+
+		if (!isMock) {
+			Assert.assertFalse(resource.getModel().getChildren().isEmpty());
+
+			ComputerSystem physicalRouter = (ComputerSystem) resource.getModel();
+			boolean exist = ExistanceHelper.checkExistLogicalRouter(physicalRouter, logicalRouterName);
+			Assert.assertTrue(exist);
+		}
+
+		// HOW GET WE A VIRTUAL RESOURCE, WE DON'T HAVE ANY METHOD TO SEARCH????
+		IResourceIdentifier resourceIdentifier = resourceManager.getIdentifierFromResourceName("router", logicalRouterName);
+
+		createProtocolForResource(resourceIdentifier.getId());
+		IResource logicalResource = resourceManager.getResource(resourceIdentifier);
+
+		// check logical router creation
+		List<String> response8 = KarafCommandHelper.executeCommand("resource:start router:" + logicalRouterName, commandprocessor);
+		log.info(response8.get(0));
+
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response8.get(1).isEmpty());
+
+		/* test for ethernet interfaces */
+		// FIXME THESE INTERFACES HAVE TO EXIST
+		boolean result = testLogicalRouterConfigureCheckInterface(commandprocessor, "fe-0/1/3", "1", "192.168.13.2", "255.255.255.0",
+				"router:" + logicalRouterName);
+		Assert.assertTrue(result);
+
+		/* test for ethernet interfaces */
+		result = testLogicalRouterConfigureCheckInterface(commandprocessor, "lt-0/1/2", "12", "192.168.12.2", "255.255.255.0",
+				"router:" + logicalRouterName);
+		Assert.assertTrue(result);
+
+		/* test for ethernet interfaces */
+		result = testLogicalRouterConfigureCheckInterface(commandprocessor, "lo0", "1", "192.168.1.3", "255.255.255.0", "router:" + logicalRouterName);
+		Assert.assertFalse(result);
+
+		boolean isSent = true;
+		try {
+			testLogicalRouterConfigureCheckInterface(commandprocessor, "fe-0/1/3", "4", null, null, "router:" + logicalRouterName);
+
+		} catch (Exception e) {
+			isSent = false;
+		}
+
+		// assert command output contains ERROR tag
+		Assert.assertFalse(isSent);
+
+		/* test to check add and remove interface */
+		resourceManager.stopResource(logicalResource.getResourceIdentifier());
+
+		// chassis:addInterfaceToLR R1 L1 fe-0/0/1.1
+		// check interface is included in the L1
+		List<String> response4 = KarafCommandHelper.executeCommand(
+				"chassis:addInterfaceToLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
+				commandprocessor);
+		log.info(response4.get(0));
+
+		// chassis:removeInterfaceFromLR R1 L1 fe-0/0/1.1
+		// check interface is not included in the L1
+		List<String> response5 = KarafCommandHelper.executeCommand(
+				"chassis:removeInterfaceFromLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
+				commandprocessor);
+		log.info(response5.get(0));
+
+		resourceManager.startResource(logicalResource.getResourceIdentifier());
+		isSent = true;
+		try {
+			result = testLogicalRouterConfigureCheckInterface(commandprocessor, "fe-0/1/3", "4", null, null, "router:" + logicalRouterName);
+
+		} catch (Exception e) {
+			isSent = false;
+		}
+
+		List<String> response6 = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
+				commandprocessor);
+		log.info(response6.get(0));
+
+		// assert command output no contains ERROR tag
+		Assert.assertTrue(response6.get(1).isEmpty());
+
+		// try {
+		// InitializerTestHelper.stopResources(resourceManager);
+		// InitializerTestHelper.removeResources(resourceManager);
+		// } catch (ResourceException e) {
+		// Assert.fail(e.getMessage());
+		// }
+
+	}
+
+	public boolean testLogicalRouterConfigureCheckInterface(CommandProcessor commandprocessor, String inter, String port, String Ip, String mask,
+			String resourceFriendlyID) throws Exception {
+		// ipv4:setIP fe-0/0/1.1 192.168.1.2 255.255.255.0
+		List<String> response = KarafCommandHelper.executeCommand(
+				"ipv4:setIP " + resourceFriendlyID + " " + inter + "." + port + " " + Ip + " " + mask,
+				commandprocessor);
+
+		if (inter.startsWith("lo"))
+			Assert.assertTrue(response.get(1).contains("[ERROR] Configuration for Loopback interface not allowed"));
+
+		return response.get(1).isEmpty() || !response.get(1).contains("ERROR");
+
+		// check that command fails if interface doesn't exist
+		// check updated interface if exists
+		// if (!isMock)
+		// return CheckHelper.checkInterface(inter, port, Ip, mask, model);
+		// else
+		// return true;
+		// restore configuration
+	}
+
 	public void checkModel(String inter, String port, int vlanid, IResource resource) {
 
 		Boolean found = false;
@@ -686,5 +964,14 @@ public class ChassisKarafCommandsTests
 		// CHECK THe ROLLBACK IS DONE
 		checkModel(inter, subport, OldVLAN, resource);
 
+	}
+
+	public static boolean checkExistLogicalRouter(ComputerSystem physicalRouter, String logicalRouterName) {
+		List<System> logicalRouters = physicalRouter.getSystems();
+		for (System logicalRouter : logicalRouters) {
+			if (logicalRouter.getName().equals(logicalRouterName))
+				return true;
+		}
+		return false;
 	}
 }

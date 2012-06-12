@@ -25,10 +25,13 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
+import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceHelper;
+import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
@@ -57,7 +60,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ROADMRespositoryIntegrationTest
 {
-	private final static Log	log	= LogFactory.getLog(ROADMRespositoryIntegrationTest.class);
+	private final static Log	log				= LogFactory.getLog(ROADMRespositoryIntegrationTest.class);
 
 	@Inject
 	@Filter("(type=roadm)")
@@ -71,6 +74,14 @@ public class ROADMRespositoryIntegrationTest
 
 	@Inject
 	private IResourceManager	resourceManger;
+
+	private IResource			mockResource	= new MockResource();
+	private List<String>		startupActionNames;
+	private AbstractCapability	connectionsCapability;
+
+	@Inject
+	@Filter("(capability=connections)")
+	private ICapabilityFactory	connectionFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
@@ -101,21 +112,6 @@ public class ROADMRespositoryIntegrationTest
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
 		return protocolSessionContext;
-	}
-
-	/**
-	 * Configure the protocol to connect
-	 */
-	private ProtocolSessionContext newSessionContextWonesys() {
-		String hostIpAddress = "10.10.80.11";
-		String hostPort = "27773";
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"wonesys");
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + hostIpAddress + ":" + hostPort);
-		return protocolSessionContext;
-
 	}
 
 	public void createProtocolForResource(String resourceId) throws ProtocolException {
@@ -316,6 +312,28 @@ public class ROADMRespositoryIntegrationTest
 		Assert.assertNull(resource.getModel());
 		Assert.assertNull(resource.getProfile());
 		// Assert.assertTrue(repository.listResources().isEmpty());
+	}
+
+	/**
+	 * tests ConnectionsCapability.getActionSet().getStartupRefreshAction() != null
+	 */
+	@Test
+	public void getStartUpRefreshActionTest() throws Exception {
+
+		mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
+
+		// Test elements not null
+		log.info("Checking connections factory");
+		Assert.assertNotNull(connectionFactory);
+		log.info("Checking capability descriptor");
+		Assert.assertNotNull(mockResource.getResourceDescriptor().getCapabilityDescriptor("connections"));
+		log.info("Creating connection capability");
+		connectionsCapability = (AbstractCapability) connectionFactory.create(mockResource);
+		Assert.assertNotNull(connectionsCapability);
+		connectionsCapability.initialize();
+
+		Assert.assertFalse(connectionsCapability.getActionSet().getRefreshActionName().isEmpty());
+		startupActionNames = connectionsCapability.getActionSet().getRefreshActionName();
 	}
 
 	@After
