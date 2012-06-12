@@ -3,10 +3,6 @@
  */
 package org.opennaas.itests.router.gre;
 
-
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
@@ -58,47 +54,47 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 public abstract class GRETunnelIntegrationTest
 {
 	// import static org.ops4j.pax.exam.container.def.PaxRunnerOptions.vmOption;
-	protected static final String	TUNNEL_NAME		= "gr-1/0/3.1";
-	protected static final String	IPV4_ADDRESS	= "192.168.32.1";
-	protected static final String	SUBNET_MASK		= "255.255.255.0";
-	protected static final String	IP_SOURCE		= "147.56.89.62";
-	protected static final String	IP_DESTINY		= "193.45.23.1";
-	private final Log				log				= LogFactory
-															.getLog(GRETunnelIntegrationTest.class);
-	private static MockResource		mockResource;
+	protected static final String		TUNNEL_NAME		= "gr-1/0/3.1";
+	protected static final String		IPV4_ADDRESS	= "192.168.32.1";
+	protected static final String		SUBNET_MASK		= "255.255.255.0";
+	protected static final String		IP_SOURCE		= "147.56.89.62";
+	protected static final String		IP_DESTINY		= "193.45.23.1";
+	private final Log					log				= LogFactory
+																.getLog(GRETunnelIntegrationTest.class);
+	private static MockResource			mockResource;
 	protected IQueueManagerCapability	queueCapability;
 	protected IGRETunnelCapability		greTunnelCapability;
 
 	@Inject
-	private BundleContext			bundleContext;
+	private BundleContext				bundleContext;
 
 	@Inject
 	@Filter("(capability=queue)")
-	private ICapabilityFactory		queueManagerFactory;
+	private ICapabilityFactory			queueManagerFactory;
 
 	@Inject
-	private IProtocolManager		protocolManager;
+	private IProtocolManager			protocolManager;
 
 	@Inject
 	@Filter("(capability=gretunnel)")
-	private ICapabilityFactory		gretunnelFactory;
+	private ICapabilityFactory			gretunnelFactory;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer		routerRepositoryService;
+	private BlueprintContainer			routerRepositoryService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-	private BlueprintContainer		queueService;
+	private BlueprintContainer			queueService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.gretunnel)")
-	private BlueprintContainer		gretunnelService;
+	private BlueprintContainer			gretunnelService;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router"),
+				includeFeatures("opennaas-router", "opennaas-junos"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

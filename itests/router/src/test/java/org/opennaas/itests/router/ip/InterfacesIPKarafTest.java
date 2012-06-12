@@ -1,19 +1,16 @@
 package org.opennaas.itests.router.ip;
 
-import java.io.File;
-import java.io.InputStream;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.List;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.itests.helpers.KarafCommandHelper;
-import org.opennaas.extensions.router.model.ComputerSystem;
-import org.opennaas.extensions.router.model.EthernetPort;
-import org.opennaas.extensions.router.model.IPProtocolEndpoint;
-import org.opennaas.extensions.router.model.LogicalDevice;
-import org.opennaas.extensions.router.model.LogicalTunnelPort;
-import org.opennaas.extensions.router.model.ProtocolEndpoint;
-import org.opennaas.core.resources.helpers.ResourceHelper;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,11 +25,18 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.ops4j.pax.exam.Customizer;
+import org.opennaas.extensions.itests.helpers.KarafCommandHelper;
+import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalDevice;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -45,18 +49,14 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class InterfacesIPKarafTest
 {
-	private final static Log	log				= LogFactory.getLog(InterfacesIPKarafTest.class);
+	private final static Log	log		= LogFactory.getLog(InterfacesIPKarafTest.class);
 	private String				resourceFriendlyID;
 	private IResource			resource;
-	private boolean				isMock			= false;
+	private boolean				isMock	= false;
 
 	@Inject
 	private IProtocolManager	protocolManager;
@@ -70,31 +70,31 @@ public class InterfacesIPKarafTest
 	@Inject
 	private BundleContext		bundleContext;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-    private BlueprintContainer routerService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
+	private BlueprintContainer	routerService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
-    private BlueprintContainer queueService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
+	private BlueprintContainer	queueService;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-    private BlueprintContainer ipService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
+	private BlueprintContainer	ipService;
 
-    @ProbeBuilder
-    public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-        probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-        return probe;
-    }
+	@ProbeBuilder
+	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
+		probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
+		return probe;
+	}
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-router"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	public Boolean createProtocolForResource(String resourceId) throws ProtocolException {
@@ -163,7 +163,7 @@ public class InterfacesIPKarafTest
 		// LO
 
 		List<String> response = KarafCommandHelper.executeCommand("ipv4:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
-																  commandprocessor);
+				commandprocessor);
 		//
 		// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
 		// Assert.assertTrue(response.contains("[ERROR] Configuration for Loopback interface not allowed"));
@@ -172,7 +172,7 @@ public class InterfacesIPKarafTest
 
 	/**
 	 * Configure a IP in a lt interface
-	 *
+	 * 
 	 */
 
 	public void setIPlt() throws Exception {
@@ -185,7 +185,7 @@ public class InterfacesIPKarafTest
 
 		// SET LO
 		List<String> response = KarafCommandHelper.executeCommand("ipv4:setIP " + resourceFriendlyID + " lo0.1 192.168.1.1 255.255.255.0",
-																  commandprocessor);
+				commandprocessor);
 		//
 		// assert command output contains "[ERROR] Configuration for Loopback interface not allowed"
 		Assert.assertTrue(response.get(1).contains("[ERROR] Configuration for Loopback interface not allowed"));
@@ -193,7 +193,7 @@ public class InterfacesIPKarafTest
 
 	/**
 	 * Configure a IP in a ETh interface
-	 *
+	 * 
 	 */
 
 	public void setIPETH() throws Exception {

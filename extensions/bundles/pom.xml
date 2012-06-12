@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.10</version>
+		<version>0.11-SNAPSHOT</version>
 	</parent>
 	<name>OpenNaaS :: Extensions :: Bundles</name>
 	<artifactId>org.opennaas.extensions.bundles</artifactId>
@@ -51,7 +51,7 @@
 		<module>bod.repository</module>
 		<module>bod.capability.l2bod</module>
 		<module>bod.actionsets.dummy</module>
-        <module>bod.autobahn</module>
+        	<module>bod.autobahn</module>
          
 		<module>itests.helpers</module>
 		
@@ -63,5 +63,7 @@
 		<module>transports.virtual</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
+		
+        	<module>sampleresource</module>
 	</modules>
 </project>

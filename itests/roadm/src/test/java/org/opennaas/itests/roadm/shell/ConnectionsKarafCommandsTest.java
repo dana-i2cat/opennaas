@@ -1,39 +1,25 @@
 package org.opennaas.itests.roadm.shell;
 
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.service.blueprint.container.BlueprintContainer;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.io.PrintStream;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
-
-import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
-import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
-import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
-import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
-import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
-import org.opennaas.itests.roadm.helpers.RepositoryHelper;
-
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.felix.service.command.CommandSession;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
@@ -42,59 +28,71 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
+import org.opennaas.extensions.router.model.opticalSwitch.DWDMChannel;
+import org.opennaas.extensions.router.model.opticalSwitch.FiberConnection;
+import org.opennaas.extensions.router.model.opticalSwitch.WDMChannelPlan;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.ProteusOpticalSwitch;
+import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
+import org.opennaas.itests.roadm.helpers.RepositoryHelper;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.ExamReactorStrategy;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
+import org.osgi.framework.BundleContext;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
  * Spring week 26 <br/>
  * http://jira.i2cat.net:8080/browse/MANTYCHORE-156
- *
+ * 
  * @author isart
  */
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 {
-	static Log log =
-		LogFactory.getLog(ConnectionsKarafCommandsTest.class);
+	static Log					log				=
+														LogFactory.getLog(ConnectionsKarafCommandsTest.class);
 
 	@Inject
 	private BundleContext		bundleContext;
 
-	@Inject @Filter("(type=roadm)")
+	@Inject
+	@Filter("(type=roadm)")
 	private IResourceRepository	repository;
 
 	@Inject
 	private IProfileManager		profileManager;
 
 	@Inject
-	private IProtocolManager    protocolManager;
+	private IProtocolManager	protocolManager;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.capability.connections)")
-	private BlueprintContainer connectionService;
+	private BlueprintContainer	connectionService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	private BlueprintContainer	wonesysProtocolService;
 
-	String				resourceName	= "pedrosa";
-	String				chassisNum		= "0";
-	String				srcCardNum		= "1";
-	String				dstCardNum		= "17";
-	String				srcPortNum		= "0";
-	String				dstPortNum		= "129";
-	int					channelNum		= 32;
+	String						resourceName	= "pedrosa";
+	String						chassisNum		= "0";
+	String						srcCardNum		= "1";
+	String						dstCardNum		= "17";
+	String						srcPortNum		= "0";
+	String						dstPortNum		= "129";
+	int							channelNum		= 32;
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   includeTestHelper(),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
+				includeTestHelper(),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	@Test
@@ -199,7 +197,7 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
 			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+					Integer.parseInt(srcCardNum)).getChannelPlan();
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 
@@ -222,11 +220,11 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 			boolean found = false;
 			for (FiberConnection connection : proteus.getFiberConnections()) {
 				if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
-					connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
-					connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
-					connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
-					connection.getSrcFiberChannel().getLambda() == lambda &&
-					connection.getDstFiberChannel().getLambda() == lambda) {
+						connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
+						connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
+						connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
+						connection.getSrcFiberChannel().getLambda() == lambda &&
+						connection.getDstFiberChannel().getLambda() == lambda) {
 					found = true;
 					break;
 				}
@@ -277,7 +275,7 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
 			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+					Integer.parseInt(srcCardNum)).getChannelPlan();
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 
@@ -313,11 +311,11 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 			boolean found = false;
 			for (FiberConnection connection : proteus.getFiberConnections()) {
 				if (connection.getSrcCard().getModuleNumber() == Integer.parseInt(srcCardNum) &&
-					connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
-					connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
-					connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
-					connection.getSrcFiberChannel().getLambda() == lambda &&
-					connection.getDstFiberChannel().getLambda() == lambda) {
+						connection.getDstCard().getModuleNumber() == Integer.parseInt(dstCardNum) &&
+						connection.getSrcPort().getPortNumber() == Integer.parseInt(srcPortNum) &&
+						connection.getDstPort().getPortNumber() == Integer.parseInt(dstPortNum) &&
+						connection.getSrcFiberChannel().getLambda() == lambda &&
+						connection.getDstFiberChannel().getLambda() == lambda) {
 					found = true;
 					break;
 				}
@@ -399,7 +397,7 @@ public class ConnectionsKarafCommandsTest extends AbstractKarafCommandTest
 			String dstPortId = chassisNum + "-" + dstCardNum + "-" + dstPortNum;
 
 			WDMChannelPlan channelPlan = (WDMChannelPlan) ((ProteusOpticalSwitch) resource.getModel()).getCard(Integer.parseInt(chassisNum),
-																											   Integer.parseInt(srcCardNum)).getChannelPlan();
+					Integer.parseInt(srcCardNum)).getChannelPlan();
 			DWDMChannel channel = (DWDMChannel) channelPlan.getChannel(32);
 			double lambda = channel.getLambda();
 

@@ -1,15 +1,18 @@
 package org.opennaas.itests.roadm.alarms;
 
-import java.io.File;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
-import javax.inject.Inject;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +27,6 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.alarms.ResourceAlarm;
-import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.helpers.ResourceDescriptorFactory;
@@ -33,27 +35,23 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.util.Filter;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
+import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class MonitoringCapabilityTest implements EventHandler
 {
-	private final static Log		log				= LogFactory.getLog(MonitoringCapabilityTest.class);
+	private final static Log		log		= LogFactory.getLog(MonitoringCapabilityTest.class);
 
 	@Inject
 	private BundleContext			bundleContext;
@@ -75,25 +73,25 @@ public class MonitoringCapabilityTest implements EventHandler
 	@Filter("(&(actionset.name=proteus)(actionset.capability=monitoring)(actionset.version=1.0))")
 	private IActionSet				actionSet;
 
-    @Inject
-    @Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
-    private BlueprintContainer		roadmRepositoryService;
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.repository)")
+	private BlueprintContainer		roadmRepositoryService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
-	private BlueprintContainer      wonesysProtocolService;
+	private BlueprintContainer		wonesysProtocolService;
 
 	private IProtocolSessionManager	sessionManager;
 
 	private boolean					alarmReceived;
-	private final Object			lock			= new Object();
+	private final Object			lock	= new Object();
 
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	private IResource initResource() throws ResourceException, ProtocolException {
@@ -186,7 +184,7 @@ public class MonitoringCapabilityTest implements EventHandler
 
 	/**
 	 * Generates a WonesysAlarm
-	 *
+	 * 
 	 * @param session
 	 */
 	private void generateWonesysAlarm(IProtocolSession session) {

@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.10</version>
+	<version>0.11-SNAPSHOT</version>
 	<name>OpenNaaS (OSGi project)</name>
 	<packaging>pom</packaging>
 
@@ -271,6 +271,11 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- Netconf4j -->
@@ -728,7 +733,6 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
-		<module>clients</module>
 <!-- 		<module>web</module> -->
 	</modules>
 	<build>
@@ -1063,9 +1067,9 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>i2cat</id>
-			<name>i2cat maven repository</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+			<id>maven.i2cat.net</id>
+			<name>>maven.i2cat.net-releases</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>

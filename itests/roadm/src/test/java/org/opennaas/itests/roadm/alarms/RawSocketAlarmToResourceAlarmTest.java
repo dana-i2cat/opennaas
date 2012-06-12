@@ -82,7 +82,7 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis"),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());

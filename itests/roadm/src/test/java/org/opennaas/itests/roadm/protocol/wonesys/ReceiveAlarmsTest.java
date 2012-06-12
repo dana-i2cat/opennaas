@@ -1,36 +1,40 @@
 package org.opennaas.itests.roadm.protocol.wonesys;
 
-import java.io.File;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
+
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
-import javax.inject.Inject;
 
-import org.junit.Test;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.runner.RunWith;
+import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
-
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfigurator;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEvent;
+import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEventFilter;
+import org.ops4j.pax.exam.Option;
+import org.ops4j.pax.exam.junit.Configuration;
+import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
-
-import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.junit.Configuration;
-import org.ops4j.pax.exam.junit.ExamReactorStrategy;
-import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
-import org.ops4j.pax.exam.util.Filter;
 
 import uk.co.westhawk.snmp.pdu.OneTrapPduv2;
 import uk.co.westhawk.snmp.stack.AsnInteger;
@@ -44,43 +48,32 @@ import uk.co.westhawk.snmp.stack.SnmpContextv2c;
 import uk.co.westhawk.snmp.stack.TrapPduv2;
 import uk.co.westhawk.snmp.stack.varbind;
 
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.IWonesysAlarmConfigurator;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEvent;
-import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarmEventFilter;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.junit.Assert.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
-
 @RunWith(JUnit4TestRunner.class)
 public class ReceiveAlarmsTest implements EventHandler
 {
-	private static Log log = LogFactory.getLog(ReceiveAlarmsTest.class);
+	private static Log					log				= LogFactory.getLog(ReceiveAlarmsTest.class);
 
 	@Inject
-	private BundleContext	bundleContext;
+	private BundleContext				bundleContext;
 
 	// private String resourceId = "Proteus-Pedrosa";
 	// private String hostIpAddress = "10.10.80.11";
 	// private String hostPort = "27773";
 
-	private String alarmsPort		= "32162";						// SNMP traps port (162). if different,
+	private String						alarmsPort		= "32162";										// SNMP traps port (162). if different,
 																										// 162 needs to be redirected to this port
 																										// in order to receive traps.
 
-	private long alarmWaittime	= 5 * 1000;						// 5sec
+	private long						alarmWaittime	= 5 * 1000;									// 5sec
 
-	private final CountDownLatch alarmReceived = new CountDownLatch(1);
+	private final CountDownLatch		alarmReceived	= new CountDownLatch(1);
 
 	// Required services
 	@Inject
-	private IProtocolManager protocolManager;
+	private IProtocolManager			protocolManager;
 
 	@Inject
-	private IEventManager	eventManager;
+	private IEventManager				eventManager;
 
 	@Inject
 	private IWonesysAlarmConfigurator	alarmConfig;
@@ -88,9 +81,9 @@ public class ReceiveAlarmsTest implements EventHandler
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-					   includeFeatures("opennaas-luminis"),
-					   noConsole(),
-					   keepRuntimeFolder());
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
+				noConsole(),
+				keepRuntimeFolder());
 	}
 
 	/**
@@ -102,12 +95,12 @@ public class ReceiveAlarmsTest implements EventHandler
 	 * 5. Wait for alarm reception <br>
 	 * 6. Receive the alarm and checks <br>
 	 * 7. Unregister Handlers and disable alarms <br>
-	 *
+	 * 
 	 * @throws PduException
-	 *
+	 * 
 	 * @throws CommandException
 	 * @throws ProtocolException
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	@Test
@@ -197,7 +190,7 @@ public class ReceiveAlarmsTest implements EventHandler
 
 	/**
 	 * Simulates an alarm has been received.
-	 *
+	 * 
 	 * @throws IOException
 	 * @throws PduException
 	 */
