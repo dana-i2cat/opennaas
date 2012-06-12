@@ -153,6 +153,9 @@
 
 	<feature name="opennaas-cisco" version="${project.version}">
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.sockets/${project.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-net/${commons.net.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.telnet/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.virtual/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.cli/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.tl1/${project.version}</bundle>
 	</feature>

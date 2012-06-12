@@ -43,6 +43,7 @@
 		<commons.io.version>1.4</commons.io.version>
 		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
+		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
 		<easymock.version>3.1</easymock.version>
@@ -339,6 +340,11 @@
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
 				<version>${commons.dbcp.version}</version>
+			</dependency>
+			<dependency>
+  				<groupId>org.apache.servicemix.bundles</groupId>
+  				<artifactId>org.apache.servicemix.bundles.commons-net</artifactId>
+ 				<version>${commons.net.version}</version>
 			</dependency>
 			<!-- OSGI API -->
 			<dependency>

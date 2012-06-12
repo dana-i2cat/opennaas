@@ -57,7 +57,10 @@
 		
 		<module>webservice</module>
 		<module>webservice-proxy</module>
+
 		<module>transports.sockets</module>
+		<module>transports.telnet</module>
+		<module>transports.virtual</module>
 		<module>protocols.cli</module>
 		<module>protocols.tl1</module>
 	</modules>
