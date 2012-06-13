@@ -1,6 +1,8 @@
 package org.opennaas.extensions.network.capability.ospf;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -51,6 +53,13 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new netospf capability");
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		props.put("osgi.remote.interfaces", "*");
+		props.put("osgi.remote.configuration.type", "pojo");
+		props.put("osgi.remote.configuration.pojo.address",
+				"http://localhost:9000/netospf/" + resourceId);
+		Activator.getContext().registerService(INetOSPFCapability.class.getName(),
+				this, props);
 	}
 
 	@Override

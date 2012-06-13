@@ -45,6 +45,7 @@
 		<commons.lang.version>2.4_4</commons.lang.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
+		<cxf.dosgi.version>1.0</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -610,6 +611,11 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf.dosgi</groupId>
+				<artifactId>cxf-dosgi-ri-singlebundle-distribution</artifactId>
+				<version>${cxf.dosgi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>

@@ -81,9 +81,9 @@
 		<feature>http</feature>
 		<feature>cxf</feature>
 		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-singlebundle-distribution/${cxf.dosgi.version}</bundle>
+
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>		
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
