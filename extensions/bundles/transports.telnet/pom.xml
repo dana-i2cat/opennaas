@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.10</version>
+		<version>0.11-SNAPSHOT</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.transports.telnet</artifactId>
@@ -25,7 +25,6 @@
 		<dependency>
   			<groupId>org.apache.servicemix.bundles</groupId>
   			<artifactId>org.apache.servicemix.bundles.commons-net</artifactId>
- 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
