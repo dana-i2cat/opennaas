@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.Assert;
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

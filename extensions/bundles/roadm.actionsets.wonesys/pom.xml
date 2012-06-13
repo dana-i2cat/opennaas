@@ -30,6 +30,14 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

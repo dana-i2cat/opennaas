@@ -1,9 +1,8 @@
-package org.opennaas.extensions.router.junos.commandsets.commons;
+package org.opennaas.extensions.router.model.utils;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 /**
  * It is used to parse different messages

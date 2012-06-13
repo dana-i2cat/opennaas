@@ -19,19 +19,19 @@ import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 
-import org.opennaas.extensions.bod.actionsets.dummy.ActionConstants;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
 import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
 import org.opennaas.extensions.bod.autobahn.commands.SubmitServiceCommand;
 import org.opennaas.extensions.bod.autobahn.commands.Transaction;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
+import org.opennaas.extensions.bod.capability.l2bod.L2BoDActionSet;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 
 import org.opennaas.extensions.network.model.topology.Interface;
 
 public class RequestConnectionAction extends AutobahnAction
 {
-	public final static String ACTIONID = ActionConstants.REQUESTCONNECTION;
+	public final static String ACTIONID = L2BoDActionSet.REQUEST_CONNECTION;
 
 	public RequestConnectionAction()
 	{

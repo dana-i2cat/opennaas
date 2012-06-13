@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChassisActionSet {
+import org.opennaas.core.resources.action.IActionSetDefinition;
+
+public class ChassisActionSet implements IActionSetDefinition {
 
 	// Interfaces
 	public static final String			CONFIGURESTATUS						= "configureInterfaceStatus";
