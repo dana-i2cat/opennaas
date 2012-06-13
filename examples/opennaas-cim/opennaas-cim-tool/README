@@ -1,0 +1,79 @@
+
+This is the README file for translatecim.  It describes the details
+of getting the code working.  You'll find a lot more information
+in the translatecim.html file.
+
+This file describes how to get the distribution and get it working
+in a subdirectory of your home directory.
+
+My development system is MAC OS X Leopard.  I haven't tried to
+build this on other systems, but it ought to be fairly easy
+under other UNix-based systems.  If you have Windows, I'm sorry.
+
+Before you can run TranslateCIM, Java and maven must be installed
+on your system.
+
+1. (get the distribution)
+It's assumed that you've downloaded the tarball into your home
+directory, and that this file is in
+~/translatecim-0.9.1/README.
+
+2. (set up convenience commands)
+Add the following to your .bashrc file.  These are the
+shorthand alias commands I use to run TranslateCIM, compile
+the resulting Java and generate javadoc.  The commands
+should work, except that for the "jd" command you'll want
+to replace the directory specified by the "-d" option with
+a directory you've created that can be accessed by your
+web server.
+
+	alias catt='cat ~/translatecim-0.9.1/target/surefire-reports/com.kyben.translatecim.TestUndefinedClass.txt'
+    alias cdtt='cd ~/translatecim-0.9.1/src/test/java/com/kyben/translatecim'
+    alias cim='cd ~/translatecim-0.9.1/src/test/data/cim/cimv2201Experimental-MOFs'
+    alias jc='cat /tmp/org/dmtf/cim/testGroup/testClass.java'
+    alias jd='javadoc -quiet -private -d /usr/web/nets/intro/staff/siemsen/internal/projects/kyben/TranslateCIM/javadoc -sourcepath /tmp -subpackages org.dmtf.cim'
+    alias jp='. /tmp/org/dmtf/cim/compile.sh'
+    alias jrm='rm -rf /tmp/org/dmtf/cim/*'
+    alias mp='cd ~/translatecim-0.9.1/; mvn package'
+    alias mpo='cd ~/translatecim-0.9.1/; mvn -o package'
+#       alias mt='cd ~/translatecim-0.9.1/; mvn -Dtest=TestUndefinedQualifier test'
+    alias mt='cd ~/translatecim-0.9.1/; mvn -Dtest=TestUndefinedClass test'
+    alias mto='cd ~/translatecim-0.9.1/; mvn -o -Dtest=TestUndefinedClass test'
+    function rp {
+        java -jar ~/translatecim-0.9.1/target/TranslateCIM-1.0-SNAPSHOT-jar-with-dependencies.jar \
+            -noenums \
+            ~/cimv2201Experimental-MOFs/cim_schema_2.20.1.mof \
+            ~/translatecim-0.9.1/TranslateCIM-java.stg \
+            /tmp/org/dmtf/cim
+        if [[ -e /tmp/org/dmtf/cim ]]; then
+            cp ~/translatecim-0.9.1/package-info.java /tmp/org/dmtf/cim
+        fi
+    }
+
+Start a new shell to make the new aliases take effect.
+
+3. (get the CIM source files)
+We've set up the TranslateCIM program, but we don't have the CIM input files.
+Web to the DMTF website.
+Under "Technology Updates", click on the latest "CIM Schema" (as of this writing, it was "v2.20.1".
+Click on the "Zip archive of all Experimental MOF files".
+On my Mac OS X system, I did the following to put the CIM
+files into my home directory:
+
+mv ~/Downloads/cim_schema_2 ~/cimv2201Experimental-MOFs
+
+
+4. (run TranslateCIM)
+See the translatecim.html file.
+The section titled "Building and running the translator" shows the commands
+that you need.
+
+
+5. (get the CIM API documentation)
+This step is optional.  If you want to compare the javadoc produced by TranslateCIM to
+the similar API documentation distributed by the DMTF, here's how to get it.
+Web to the DMTF website.  You'll want to change the paths in the commands that follow.
+Under "Schema Documentation", click on the latest "CIM_V2.21.0Experimental-Doc.zip" (as of this writing, it was "CIM_V2.21.0Experimental-Doc.zip".
+mv ~/Downloads/cim_schema_2 /usr/web/nets/intro/staff/siemsen/tmp
+chmod -R +r /usr/web/nets/intro/staff/siemsen/tmp/cim_schema_2
+chmod -R +x /usr/web/nets/intro/staff/siemsen/tmp/cim_schema_2
