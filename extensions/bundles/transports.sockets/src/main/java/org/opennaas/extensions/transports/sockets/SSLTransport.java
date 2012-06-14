@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  */
 public class SSLTransport implements IStreamTransport{
     
-	public static final String SSL = "SSL";
+	public static final String SSL = "ssl";
 	
 	static private Logger logger = LoggerFactory.getLogger(SSLTransport.class);
 

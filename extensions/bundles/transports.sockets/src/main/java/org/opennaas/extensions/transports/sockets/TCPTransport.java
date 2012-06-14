@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TCPTransport implements IStreamTransport{
 	
-	public static final String TCP = "TCP";
+	public static final String TCP = "tcp";
 	
 	/** TCPTransport Logger */
 	static private Logger logger = LoggerFactory.getLogger(TCPTransport.class);    

@@ -4,7 +4,7 @@
 	
 	<service ref="telnetTransportFactory" interface="org.opennaas.core.resources.transport.ITransportFactory">
 		<service-properties>
-			<entry key="transport" value="Telnet"/>
+			<entry key="transport" value="telnet"/>
 			<entry key="transport.version" value="1.0.0"/>
 		</service-properties>
 	</service>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<!-- Maven parent  -->
+	<parent>
+		<artifactId>org.opennaas.extensions.bundles</artifactId>
+		<groupId>org.opennaas</groupId>
+		<version>0.11-SNAPSHOT</version>
+	</parent>
+	<!--  POM id -->
+	<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
+	<!--  Maven configuration -->
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>bundle</packaging>
+	<name>OpenNaaS :: MAC Bridge :: IOS Resource </name>
+	<description>MACBridge IOS Implementation</description>
+	<dependencies>
+		<!-- Internal Mantychore dependencies -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.core.resources</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
+			<version>0.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
+		</dependency>
+		<!-- Implemented capabilities -->
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
+			<version>0.11-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.ops4j</groupId>
+				<artifactId>maven-pax-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<!--
+					| the following instructions build a simple set of public/private
+					classes into an OSGi bundle
+				-->
+				<configuration>
+					<instructions>
+						<!--  TODO Is it necessary to check the org.opennaas.extensions.router.junos.actionssets.actions -->
+						<Export-Package>
+							   org.opennaas.extensions.macbridge.ios.resource.commandsets.*;version="${project.version}",
+             				   org.opennaas.extensions.macbridge.ios.resource.actionsets.*;version="${project.version}",
+             				   org.opennaas.extensions.macbridge.ios.resource.repository.*;version="${project.version}"
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

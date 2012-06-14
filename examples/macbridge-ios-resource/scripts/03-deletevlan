@@ -1,0 +1,6 @@
+shell:echo "Delete VLAN"
+##Delete static access VLAN 704
+
+vlanawarebridge:deletestaticvlanconfiguration MACBridgeIOS:catalyst 704
+vlanawarebridge:deletevlanconfig MACBridgeIOS:catalyst 704
+queue:execute MACBridgeIOS:catalyst

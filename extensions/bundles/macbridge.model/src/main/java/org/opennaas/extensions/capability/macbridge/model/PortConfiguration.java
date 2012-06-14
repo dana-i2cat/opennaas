@@ -7,7 +7,7 @@ public class PortConfiguration {
 	/**
 	 * The number of the port to whom this configuration applies
 	 */
-	private int portInterfaceNumber = 0;
+	private String portInterfaceId = null;
 	
 	/**
 	 * The Registrar Administrative Control values for the GVRP protocol (Clause 11) for the VLAN. 
@@ -26,17 +26,17 @@ public class PortConfiguration {
 	public PortConfiguration(){
 	}
 	
-	public PortConfiguration(int portInterfaceNumber, boolean tagged){
-		this.portInterfaceNumber = portInterfaceNumber;
+	public PortConfiguration(String portInterfaceId, boolean tagged){
+		this.portInterfaceId = portInterfaceId;
 		this.tagged = tagged;
 	}
 
-	public int getPortInterfaceNumber() {
-		return portInterfaceNumber;
+	public String getPortInterfaceId() {
+		return portInterfaceId;
 	}
 
-	public void setPortInterfaceNumber(int portInterfaceNumber) {
-		this.portInterfaceNumber = portInterfaceNumber;
+	public void setPortInterfaceId(String portInterfaceId) {
+		this.portInterfaceId = portInterfaceId;
 	}
 
 	public RegistrationType getRegistrationType() {

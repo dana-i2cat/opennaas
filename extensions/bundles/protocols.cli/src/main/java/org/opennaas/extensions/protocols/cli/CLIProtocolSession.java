@@ -91,6 +91,10 @@ public class CLIProtocolSession implements IProtocolSession{
     
     private void initializePromptsAndErrorPatterns(){
     	prompts = new ArrayList<String>();
+    	//TODO hardcoded since some of these parameters are not allowed in a URL
+    	prompts.add("#");
+    	prompts.add(":");
+    	prompts.add(">");
         intermediatePrompts = new Hashtable<String, String>();
         errorMessagePatterns = new ArrayList<String>();
     }
@@ -102,7 +106,10 @@ public class CLIProtocolSession implements IProtocolSession{
     	while(sessionParametersIterator.hasNext()){
     		currentEntry = sessionParametersIterator.next();
     		if (currentEntry.getKey().equals(PROMPT)){
-        		prompts.add((String)currentEntry.getValue());
+    			String[] aux = ((String)currentEntry.getValue()).split("");
+    			for(int i=1; i<aux.length; i++){
+    				prompts.add(aux[i]);
+    			}
         	}else if (currentEntry.getKey().equals(INTERMEDIATE_PROMPT)){
         		currentEntry2 = sessionParametersIterator.next();
         		if (currentEntry2.getKey().equals(INTERMEDIATE_PROMPT_COMMAND)){
@@ -119,11 +126,6 @@ public class CLIProtocolSession implements IProtocolSession{
         if (prompts.size() == 0){
         	throw new ProtocolException("No prompts received. CLI Session needs to know the prompt strings in order to " +
         			"segment the response messages.");
-        }
-        
-        if (errorMessagePatterns.size() == 0){
-        	throw new ProtocolException("No error message patterns received. CLI Session needs to know the error messages strings " +
-        			"in order to identify failed request messages.");
         }
         
         if (intermediatePrompts.isEmpty()){

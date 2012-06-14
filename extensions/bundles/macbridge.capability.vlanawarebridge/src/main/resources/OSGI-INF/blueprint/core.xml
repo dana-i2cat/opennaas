@@ -17,7 +17,7 @@
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
 	<!-- Factory that creates  capabilities -->
 	<bean id="vlanAwareBridgeCapabilityFactory" class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.VLANAwareBridgeCapabilityFactory">
-		<property name="type" value="VLAN aware bridge"/>
+		<property name="type" value="VLANAwareBridge"/>
 	</bean>
 	<!-- Command completers -->
 	<reference id="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer" filter="(completer.name=resourceNameCompleter)"/>
@@ -25,29 +25,49 @@
 	<service ref="vlanAwareBridgeCapabilityFactory" interface="org.opennaas.core.resources.capability.ICapabilityFactory">
 		<service-properties>
 			<!--  TODO it is necessary to use two parameters to get capability -->
-			<entry key="capability" value="VLAN aware bridge"/>
-			<entry key="capability.model" value="ios"/>
+			<entry key="capability" value="VLANAwareBridge"/>
 			<entry key="capability.version" value="1.0.0"/>
 		</service-properties>
 	</service>
 	<!-- Provide commands to the Karaf shell -->
 	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
 		<command name="vlanawarebridge/createvlanconfig">
-			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.CreateVLANConfigurationCommand"/>
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.CreateVLANConfigurationCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="vlanawarebridge/deletevlanconfig">
-			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.DeleteVLANConfigurationCommand"/>
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.DeleteVLANConfigurationCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>
 			</completers>
 		</command>
 		<command name="vlanawarebridge/showvlanconfig">
-			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.ShowVLANConfigurationCommand"/>
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.ShowVLANConfigurationCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vlanawarebridge/addstaticvlanconfiguration">
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.AddStaticVLANConfigurationEntryToFilteringDatabaseCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vlanawarebridge/deletestaticvlanconfiguration">
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.DeleteStaticVLANConfigurationEntryFromFilteringDatabaseCommand"/>
+			<completers>
+				<ref component-id="resourceNameCompleter"/>
+				<null/>
+			</completers>
+		</command>
+		<command name="vlanawarebridge/showstaticvlanconfiguration">
+			<action class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.shell.ShowStaticVLANConfigurationEntriesInFilteringDatabaseCommand"/>
 			<completers>
 				<ref component-id="resourceNameCompleter"/>
 				<null/>

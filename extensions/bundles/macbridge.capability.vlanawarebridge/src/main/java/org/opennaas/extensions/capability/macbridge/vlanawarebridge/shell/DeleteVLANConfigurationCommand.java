@@ -25,7 +25,7 @@ public class DeleteVLANConfigurationCommand extends GenericKarafCommand {
 		try {
 			IResource macBridge = getResourceFromFriendlyName(resourceId);
 			IVLANAwareBridgeCapability vlanAwareBridgeCapability = 
-				(IVLANAwareBridgeCapability) macBridge.getCapabilitiesByInterface(IVLANAwareBridgeCapability.class);
+				(IVLANAwareBridgeCapability) macBridge.getCapabilityByInterface(IVLANAwareBridgeCapability.class);
 			vlanAwareBridgeCapability.deleteVLANConfiguration(vlanID);
 		} catch (ResourceException e) {
 			printError(e);

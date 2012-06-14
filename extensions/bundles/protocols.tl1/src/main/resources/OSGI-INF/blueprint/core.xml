@@ -12,7 +12,7 @@
 	<service ref="tl1ProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
 		<service-properties>
 			<!--  identify the model router. It is generic for any router -->
-			<entry key="protocol" value="TL1"/>
+			<entry key="protocol" value="tl1"/>
 			<entry key="protocol.version" value="1.0.0"/>
 		</service-properties>
 	</service>

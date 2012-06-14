@@ -20,7 +20,7 @@ import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
  */
 public class VLANAwareBridgeCapability extends AbstractCapability implements IVLANAwareBridgeCapability {
 
-	public static String	CAPABILITY_TYPE	= "VLAN aware bridge";
+	public static String	CAPABILITY_TYPE	= "VLANAwareBridge";
 
 	Log						log				= LogFactory.getLog(VLANAwareBridgeCapability.class);
 

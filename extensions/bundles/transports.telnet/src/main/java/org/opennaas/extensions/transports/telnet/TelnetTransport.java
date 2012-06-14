@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TelnetTransport implements IStreamTransport {
 	
-	public static final String TELNET = "Telnet";
+	public static final String TELNET = "telnet";
 	
 	/** TelnetTransport Logger */
 	static private Logger logger = LoggerFactory.getLogger(TelnetTransport.class);
@@ -40,7 +40,6 @@ public class TelnetTransport implements IStreamTransport {
 	
 	/** The read time out **/
 	private static final int READ_TIMEOUT= 300000;
-	
 	
 	public TelnetTransport(String host, String port){
 		this.host = host;

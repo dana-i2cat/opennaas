@@ -64,6 +64,7 @@
 		<module>protocols.tl1</module>
 		<module>macbridge.model</module>
 		<module>macbridge.capability.vlanawarebridge</module>
+		<module>macbridge.ios.resource</module>
 		
         	<module>sampleresource</module>
 	</modules>

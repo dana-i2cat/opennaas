@@ -42,6 +42,11 @@ public class CLIResponseMessage implements Serializable {
 		return rawMessage;
 	}
 	
+	public void setRawMessage(String rawMessage){
+		logger.debug("Received message: "+rawMessage);
+		this.rawMessage = rawMessage;
+	}
+	
 	 /**
      * Parses the respone message (removes the echos, prompts, look for errors)
      * @param rawMessage
@@ -65,14 +70,11 @@ public class CLIResponseMessage implements Serializable {
     	for(int i=0; i<errorPatterns.size(); i++){
     		if (processedMessage.indexOf(errorPatterns.get(i)) != -1){
     			response.hasErrors = true;
-    			logger.debug("********* CLIResponseMessage parse4 - hasErrors: "+processedMessage);
     		}
     	}
     	
-    	response.rawMessage = rawMessage;
+    	response.setRawMessage(rawMessage);
     	response.processedMessage = processedMessage;
-    	
-		logger.debug("********* CLIResponseMessage parse3: "+processedMessage);
 
     	return response;
     }
