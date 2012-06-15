@@ -14,7 +14,28 @@
 		the specific language governing permissions and limitations under the
 		License.
 	-->
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" 
+    xmlns:cxf="http://cxf.apache.org/blueprint/core"
+    xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs" 
+    xmlns:jaxws="http://cxf.apache.org/blueprint/jaxws"
+    xmlns:bp="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+    xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"
+    default-activation="lazy"
+    xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd 
+    					http://www.osgi.org/xmlns/blueprint/v1.0.0
+						http://www.osgi.org/xmlns/blueprint-ext/v1.1.0 
+						https://svn.apache.org/repos/asf/aries/tags/blueprint-0.3.1/blueprint-core/src/main/resources/org/apache/aries/blueprint/ext/blueprint-ext.xsd
+						http://cxf.apache.org/blueprint/jaxws 
+						http://cxf.apache.org/schemas/blueprint/jaxws.xsd
+						http://cxf.apache.org/blueprint/jaxrs 
+						http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+						http://cxf.apache.org/blueprint/core 
+						http://cxf.apache.org/schemas/blueprint/core.xsd
+						http://camel.apache.org/schema/blueprint 
+						http://camel.apache.org/schema/blueprint/camel-blueprint.xsd
+						http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0 
+						http://aries.apache.org/schemas/blueprint-cm/blueprint-cm-1.1.0.xsd">
 	<!-- Factory that creates  capabilities -->
 	<bean id="vlanAwareBridgeCapabilityFactory" class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.VLANAwareBridgeCapabilityFactory">
 		<property name="type" value="VLANAwareBridge"/>
@@ -74,4 +95,11 @@
 			</completers>
 		</command>
 	</command-bundle>
+	<!-- Web service creation and export -->
+	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
+    <cxf:bus id="vlanAwareBridgeCapabilityServiceBus"></cxf:bus>
+	<bean id="vlanAwareBridgeCapabilityServiceImpl" class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws.VLANAwareBridgeCapabilityService">
+		<property name="resourceManager" ref="resourceManager" />
+	</bean>
+    <jaxws:endpoint  implementor="#vlanAwareBridgeCapabilityServiceImpl" address="${ws.url}/vlanAwareBridgeCapabilityService"  />
 </blueprint>
