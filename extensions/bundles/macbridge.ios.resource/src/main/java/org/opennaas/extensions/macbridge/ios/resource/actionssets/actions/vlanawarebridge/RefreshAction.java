@@ -11,6 +11,7 @@ import org.opennaas.extensions.capability.macbridge.model.MACBridge;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.EnableCommand;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.IOSCommand;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.ShowInterfacesStatusCommand;
+import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.ShowVLANCommand;
 import org.opennaas.extensions.macbridge.ios.resource.commandsets.commands.TerminalLengthCommand;
 import org.opennaas.extensions.protocols.cli.message.CLIResponseMessage;
 import org.slf4j.Logger;
@@ -59,8 +60,9 @@ public class RefreshAction extends Action {
 			command = new ShowInterfacesStatusCommand();
 			CLIResponseMessage message = (CLIResponseMessage) protocol.sendReceive(command.getCommand());
 			command.updateModel(message, macBridgeModel);
-			//TODO add show vlan command
-			//TODO add show interfaces trunk command
+			command = new ShowVLANCommand();
+			message = (CLIResponseMessage) protocol.sendReceive(command.getCommand());
+			command.updateModel(message, macBridgeModel);
 			
 			protocol.disconnect();
 		}catch(ProtocolException ex){

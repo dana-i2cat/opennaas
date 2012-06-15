@@ -31,11 +31,16 @@ public class ShowStaticVLANConfigurationEntriesInFilteringDatabaseCommand extend
 			String result = null;
 			while (iterator.hasNext()){
 				currentEntry = iterator.next();
-				result = result + "VLAN id: "+currentEntry.getVlanID()+ "; Ports: ";
+				result = "VLAN id: "+currentEntry.getVlanID()+ "; Ports: ";
 				for(int i=0; i<currentEntry.getPortConfigurations().size(); i++){
-					result = result + currentEntry.getPortConfigurations().get(i).getPortInterfaceId()+"="+currentEntry.getPortConfigurations().get(i).isTagged();
+					result = result + currentEntry.getPortConfigurations().get(i).getPortInterfaceId()+"=";
+					if(currentEntry.getPortConfigurations().get(i).isTagged()){
+						result = result + "tagged";
+					}else{
+						result = result + "untagged";
+					}
 					if (i+1<currentEntry.getPortConfigurations().size()){
-						result = result+"&";
+						result = result+" ";
 					}
 				}
 				this.printSymbolWithoutDoubleLine(result + "\n");

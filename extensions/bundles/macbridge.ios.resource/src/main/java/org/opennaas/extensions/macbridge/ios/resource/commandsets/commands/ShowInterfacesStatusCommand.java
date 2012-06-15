@@ -85,8 +85,11 @@ public class ShowInterfacesStatusCommand extends IOSCommand {
 				
 				// look for the vlan trunk flag
 				if (blocks[3].trim().equals("trunk")) {
-					//TODO find a better place for this
-					ethernetPort.setCaption("trunk");
+					if (blocks[3].indexOf("trunk") != -1){
+						ethernetPort.setOtherPortType("trunk");
+					}else{
+						ethernetPort.setOtherPortType("access");
+					}
 				}
 			}catch (Exception e) {
 				// Skip the card if it can't be parsed

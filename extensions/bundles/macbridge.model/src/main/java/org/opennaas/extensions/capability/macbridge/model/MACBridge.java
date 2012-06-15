@@ -1,9 +1,12 @@
 package org.opennaas.extensions.capability.macbridge.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalDevice;
 
 /**
  * A class that represents a managed MAC Bridge as specified by the IEEE 802.1d 
@@ -49,5 +52,19 @@ public class MACBridge extends ComputerSystem{
 	
 	public FilteringDatabase getFilteringDatabase(){
 		return this.filteringDatabase;
+	}
+	
+	public EthernetPort getPort(String portName){
+		List<LogicalDevice> ports = this.getLogicalDevices();
+		EthernetPort currentPort = null;
+		
+		for(int i=0; i<ports.size(); i++){
+			currentPort = (EthernetPort) ports.get(i);
+			if (currentPort.getName().equals(portName)){
+				return currentPort;
+			}
+		}
+		
+		return null;
 	}
 }
