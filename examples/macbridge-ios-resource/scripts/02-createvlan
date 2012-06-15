@@ -1,0 +1,6 @@
+shell:echo "CREATE VLAN"
+##Create static access VLAN between ports Gi1/0/10 and ports Gi1/0/11
+
+vlanawarebridge:createvlanconfig MACBridgeIOS:catalyst geysers_licl 704
+vlanawarebridge:addstaticvlanconfiguration MACBridgeIOS:catalyst 704 Gi1/0/10=untagged&Gi1/0/11=untagged
+queue:execute MACBridgeIOS:catalyst

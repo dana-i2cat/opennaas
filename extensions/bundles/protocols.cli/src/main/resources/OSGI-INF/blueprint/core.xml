@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<bean id="cliProtocolSessionFactory" class="org.opennaas.extensions.protocols.cli.CLIProtocolSessionFactory"/>
+	
+	<!-- Listen for Transport Factories -->
+	<reference-list interface="org.opennaas.core.resources.transport.ITransportFactory"
+		availability="optional">
+		<reference-listener ref="cliProtocolSessionFactory"
+			bind-method="transportFactoryAdded" unbind-method="transportFactoryRemoved" />
+	</reference-list>
+	
+	<service ref="cliProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<entry key="protocol" value="cli"/>
+			<entry key="protocol.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>
