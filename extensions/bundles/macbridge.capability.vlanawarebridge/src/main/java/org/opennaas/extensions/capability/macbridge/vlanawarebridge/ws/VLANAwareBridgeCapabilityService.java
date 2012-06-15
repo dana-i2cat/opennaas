@@ -1,5 +1,8 @@
 package org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jws.WebService;
 
 import org.opennaas.core.resources.IResource;
@@ -7,6 +10,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
+import org.opennaas.extensions.capability.macbridge.model.MACBridge;
 import org.opennaas.extensions.capability.macbridge.model.StaticVLANRegistrationEntry;
 import org.opennaas.extensions.capability.macbridge.model.VLANConfiguration;
 import org.opennaas.extensions.capability.macbridge.vlanawarebridge.IVLANAwareBridgeCapability;
@@ -27,6 +31,16 @@ public class VLANAwareBridgeCapabilityService implements IVLANAwareBridgeCapabil
 		IVLANAwareBridgeCapability capability = (IVLANAwareBridgeCapability) getCapability(resourceId, IVLANAwareBridgeCapability.class);
 		capability.deleteVLANConfiguration(vlanId);
 	}
+	
+	@Override
+	public List<VLANConfiguration> readVLANConfigurationsInVLANDatabase(String resourceId) throws CapabilityException {
+		try{
+			MACBridge macBridge = (MACBridge) getResource(resourceId).getModel();
+			return new ArrayList<VLANConfiguration>(macBridge.getVLANDatabase().values());
+		}catch(Exception ex){
+			throw new CapabilityException(ex);
+		}
+	}
 
 	@Override
 	public void addStaticVLANRegistrationEntryToFilteringDatabase(String resourceId, StaticVLANRegistrationEntry entry) throws CapabilityException {
@@ -38,6 +52,21 @@ public class VLANAwareBridgeCapabilityService implements IVLANAwareBridgeCapabil
 	public void deleteStaticVLANRegistrationEntryFromFilteringDatabase(String resourceId, int vlanID) throws CapabilityException {
 		IVLANAwareBridgeCapability capability = (IVLANAwareBridgeCapability) getCapability(resourceId, IVLANAwareBridgeCapability.class);
 		capability.deleteStaticVLANRegistrationEntryFromFilteringDatabase(vlanID);
+	}
+	
+	/**
+	 * Show the static VLAN configuration entries in the filtering database
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public List<StaticVLANRegistrationEntry> readStaticVLANRegistrationEntriesInFilteringDatabase(String resourceId) throws CapabilityException{
+		try{
+			MACBridge macBridge = (MACBridge) getResource(resourceId).getModel();
+			return new ArrayList<StaticVLANRegistrationEntry>(macBridge.getFilteringDatabase().getStaticVLANRegistrations().values());
+		}catch(Exception ex){
+			throw new CapabilityException(ex);
+		}
 	}
 	
 	/**

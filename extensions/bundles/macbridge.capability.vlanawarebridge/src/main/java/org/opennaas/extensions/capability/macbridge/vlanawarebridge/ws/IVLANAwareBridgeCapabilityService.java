@@ -1,5 +1,7 @@
 package org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws;
 
+import java.util.List;
+
 import javax.jws.WebService;
 
 import org.opennaas.core.resources.capability.CapabilityException;
@@ -32,6 +34,14 @@ public interface IVLANAwareBridgeCapabilityService {
 	public void deleteVLANConfiguration(String resourceId, int vlanId) throws CapabilityException;
 	
 	/**
+	 * Show the VLAN Configurations in the VLAN database
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public List<VLANConfiguration> readVLANConfigurationsInVLANDatabase(String resourceId) throws CapabilityException;
+	
+	/**
 	 * @param resourceId
 	 * @param entry
 	 * @throws CapabilityException
@@ -44,4 +54,12 @@ public interface IVLANAwareBridgeCapabilityService {
 	 * @throws CapabilityException
 	 */
 	public void deleteStaticVLANRegistrationEntryFromFilteringDatabase(String resourceId, int vlanID) throws CapabilityException;
+	
+	/**
+	 * Show the static VLAN configuration entries in the filtering database
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	public List<StaticVLANRegistrationEntry> readStaticVLANRegistrationEntriesInFilteringDatabase(String resourceId) throws CapabilityException;
 }
