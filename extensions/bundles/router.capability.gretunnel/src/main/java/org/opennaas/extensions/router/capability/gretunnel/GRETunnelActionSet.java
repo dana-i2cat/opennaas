@@ -1,6 +1,8 @@
 package org.opennaas.extensions.router.capability.gretunnel;
 
-public class GRETunnelActionSet {
+import org.opennaas.core.resources.action.IActionSetDefinition;
+
+public class GRETunnelActionSet implements IActionSetDefinition {
 
 	public static final String	CREATETUNNEL	= "createTunnel";
 	public static final String	DELETETUNNEL	= "deleteTunnel";

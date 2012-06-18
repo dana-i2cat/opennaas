@@ -47,6 +47,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 import org.osgi.service.event.Event;
 
+@SuppressWarnings("unused")
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class CompleteAlarmsWorkflowTest
@@ -86,7 +87,7 @@ public class CompleteAlarmsWorkflowTest
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-luminis"),
+				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				noConsole(),
 				keepRuntimeFolder());
 	}

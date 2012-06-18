@@ -24,10 +24,6 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.actionsets.junos</artifactId>
-		</dependency>
 		<!--  auxiliar methods  -->
 		<dependency>
 			<groupId>net.i2cat.netconf</groupId>
