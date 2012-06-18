@@ -1,0 +1,29 @@
+<resourceDescriptor>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="ios" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version"/>
+        <information>
+		<description>VLAN Aware Bridge capability</description>
+		<name>VLAN Aware Bridge capability</name>
+		<type>VLANAwareBridge</type>
+	</information>
+    </capabilityDescriptors>
+
+    <capabilityDescriptors>
+        <capabilityProperty value="ios" name="actionset.name"/>
+        <capabilityProperty value="1.0" name="actionset.version" />
+        <information>
+		<description>Queue capability</description>
+		<name>Queue capability</name>
+		<type>queue</type>
+	</information>
+    </capabilityDescriptors>
+
+    <information>
+        <type>MACBridgeIOS</type>
+        <name>catalyst</name>
+    </information>
+    <properties/>
+
+</resourceDescriptor>

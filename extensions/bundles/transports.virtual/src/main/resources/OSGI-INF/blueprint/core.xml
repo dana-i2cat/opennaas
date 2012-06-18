@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	<bean id="virtualTransportFactory" class="org.opennaas.extensions.transports.virtual.VirtualTransportFactory"/>
+	
+	<!-- Listen for Virtual Transport Providers -->
+	<reference-list interface="org.opennaas.extensions.transports.virtual.IVirtualTransportProvider"
+		availability="optional">
+		<reference-listener ref="virtualTransportFactory"
+			bind-method="virtualTransportProviderAdded" unbind-method="virtualTransportProviderRemoved" />
+	</reference-list>
+	
+	<service ref="virtualTransportFactory" interface="org.opennaas.core.resources.transport.ITransportFactory">
+		<service-properties>
+			<entry key="transport" value="Virtual"/>
+			<entry key="transport.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>
