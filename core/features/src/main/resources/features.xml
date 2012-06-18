@@ -23,13 +23,6 @@
 		<bundle>mvn:org.opennaas/org.opennaas.core.persistence/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-platformmanager" version="${project.version}">
-		<feature>jetty</feature>
-		<feature>cxf</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.core.platformmanager/${project.version}</bundle>
-	</feature>
-
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
@@ -165,7 +158,6 @@
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
-		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
