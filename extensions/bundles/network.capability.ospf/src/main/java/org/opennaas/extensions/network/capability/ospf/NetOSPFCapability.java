@@ -1,8 +1,6 @@
 package org.opennaas.extensions.network.capability.ospf;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -53,30 +51,65 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new netospf capability");
-		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put("osgi.remote.interfaces", "*");
-		props.put("osgi.remote.configuration.type", "pojo");
-		props.put("osgi.remote.configuration.pojo.address",
-				"http://localhost:9000/netospf/" + resourceId);
-		Activator.getContext().registerService(INetOSPFCapability.class.getName(),
-				this, props);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), INetOSPFCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		throw new UnsupportedOperationException();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		throw new UnsupportedOperationException();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.ospf.INetOSPFCapability#deactivateOSPF()
+	 */
 	@Override
 	public void deactivateOSPF() throws CapabilityException {
 		log.info("Start of deactivateOSPF call");
@@ -96,6 +129,11 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		log.info("End of deactivateOSPF call");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.ospf.INetOSPFCapability#activateOSPF()
+	 */
 	@Override
 	public void activateOSPF() throws CapabilityException {
 		log.info("Start of activateOSPF call ");
@@ -136,6 +174,12 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		log.info("End of activateOSPF call ");
 	}
 
+	/**
+	 * @param capabilities
+	 * @param type
+	 * @return
+	 * @throws CapabilityException
+	 */
 	private ICapability getCapability(List<? extends ICapability> capabilities, String type) throws CapabilityException {
 		for (ICapability capability : capabilities) {
 			if (capability.getCapabilityInformation().getType().equals(type)) {
@@ -145,6 +189,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		throw new CapabilityException("Error getting capability " + type);
 	}
 
+	/**
+	 * @return
+	 * @throws ActivatorException
+	 */
 	private List<IResource> getRouterResources() throws ActivatorException {
 
 		NetworkModel netModel = (NetworkModel) this.resource.getModel();
@@ -198,6 +246,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		return name.split(":");
 	}
 
+	/**
+	 * @param router
+	 * @return
+	 */
 	private List<? extends LogicalPort> getAllInterfaces(IResource router) {
 		List<LogicalPort> interfaces = new ArrayList<LogicalPort>();
 		interfaces.addAll(ModelHelper.getInterfaces((System) router.getModel()));
@@ -205,6 +257,10 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 		return interfaces;
 	}
 
+	/**
+	 * @param router
+	 * @return
+	 */
 	private List<NetworkPort> getAllGREInterfaces(IResource router) {
 		// TODO Auto-generated method stub
 		List<NetworkPort> endpointList = new ArrayList<NetworkPort>();

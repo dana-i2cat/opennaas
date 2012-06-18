@@ -6,7 +6,13 @@
 	  -->
 	
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
-	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
+	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
+		<service-properties>
+			<entry key="osgi.remote.interfaces" value="*"/>
+			<entry key="osgi.remote.configuration.type" value="pojo"/>
+			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/resourceManager"/>
+		</service-properties>
+	</service>
 	
 	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
 	<service ref="profileManager" interface="org.opennaas.core.resources.profile.IProfileManager"/>
@@ -18,7 +24,13 @@
 	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository"/>
 	
 	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
-	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager"/>
+	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager">
+		<service-properties>
+			<entry key="osgi.remote.interfaces" value="*"/>
+			<entry key="osgi.remote.configuration.type" value="pojo"/>
+			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/protocolManager"/>
+		</service-properties>
+	</service>
 	
 	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
 	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">

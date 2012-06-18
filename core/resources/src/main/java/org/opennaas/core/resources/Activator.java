@@ -15,10 +15,12 @@ public class Activator extends AbstractActivator implements BundleActivator {
 		return context;
 	}
 
+	@Override
 	public void start(BundleContext context) throws Exception {
 		Activator.context = context;
 	}
 
+	@Override
 	public void stop(BundleContext context) throws Exception {
 
 	}
