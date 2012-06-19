@@ -303,9 +303,9 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @param resourceId
 	 * @return
 	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceId, String ifaceName) {
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName) {
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		return registration = registerService(bundleContext, capabilityName, resourceId, ifaceName, props);
+		return registration = registerService(bundleContext, capabilityName, resourceName, ifaceName, props);
 	}
 
 	/**
@@ -315,11 +315,18 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @param resourceId
 	 * @return
 	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceId, String ifaceName,
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName,
 			Dictionary<String, String> props) {
-		props.put("osgi.remote.interfaces", "*");
-		props.put("osgi.remote.configuration.type", "pojo");
-		props.put("osgi.remote.configuration.pojo.address", "http://localhost:9000/opennaas/" + resourceId + "/" + capabilityName);
+		// Soap
+		// props.put("osgi.remote.interfaces", "*");
+		// props.put("osgi.remote.configuration.type", "pojo");
+		// props.put("osgi.remote.configuration.pojo.address", "http://localhost:9000/opennaas/" + resourceId + "/" + capabilityName);
+
+		// Rest
+		props.put("service.exported.interfaces", "*");
+		props.put("service.exported.configs", "org.apache.cxf.rs");
+		props.put("org.apache.cxf.ws.address", "http://localhost:9000/opennaas/" + resourceName);
+
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
 

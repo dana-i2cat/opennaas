@@ -8,9 +8,14 @@
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
 		<service-properties>
-			<entry key="osgi.remote.interfaces" value="*"/>
-			<entry key="osgi.remote.configuration.type" value="pojo"/>
-			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/resourceManager"/>
+<!-- 			SOAP	 -->
+<!-- 			<entry key="osgi.remote.interfaces" value="*"/> -->
+<!-- 			<entry key="osgi.remote.configuration.type" value="pojo"/> -->
+<!-- 			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/resourceManager"/> -->
+<!-- 			REST	 -->
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="org.apache.cxf.ws.address" value="http://localhost:9000/opennaas"/>
 		</service-properties>
 	</service>
 	
@@ -26,9 +31,13 @@
 	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
 	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager">
 		<service-properties>
-			<entry key="osgi.remote.interfaces" value="*"/>
-			<entry key="osgi.remote.configuration.type" value="pojo"/>
-			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/protocolManager"/>
+<!-- 			SOAP	 -->
+<!-- 			<entry key="osgi.remote.interfaces" value="*"/> -->
+<!-- 			<entry key="osgi.remote.configuration.type" value="pojo"/> -->
+<!-- 			<entry key="osgi.remote.configuration.pojo.address" value="http://localhost:9000/opennaas/protocolManager"/> -->
+			<entry key="service.exported.interfaces" value="*"/>
+			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
+			<entry key="org.apache.cxf.ws.address" value="http://localhost:9000/opennaas"/>
 		</service-properties>
 	</service>
 	
