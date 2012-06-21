@@ -318,14 +318,9 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName,
 			Dictionary<String, String> props) {
 		// Soap
-		// props.put("osgi.remote.interfaces", "*");
-		// props.put("osgi.remote.configuration.type", "pojo");
-		// props.put("osgi.remote.configuration.pojo.address", "http://localhost:9000/opennaas/" + resourceId + "/" + capabilityName);
-
-		// Rest
 		props.put("service.exported.interfaces", "*");
-		props.put("service.exported.configs", "org.apache.cxf.rs");
-		props.put("org.apache.cxf.ws.address", "http://localhost:9000/opennaas/" + resourceName);
+		props.put("service.exported.configs", "org.apache.cxf.ws");
+		props.put("org.apache.cxf.ws.address", "http://localhost:9001/opennaas/" + resourceName + "/" + capabilityName);
 
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}

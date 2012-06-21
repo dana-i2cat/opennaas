@@ -475,16 +475,12 @@ public class Resource implements IResource {
 	 */
 	private void registerService() {
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		// Soap
-		// props.put("osgi.remote.interfaces", "*");
-		// props.put("osgi.remote.configuration.type", "pojo");
-		// props.put("osgi.remote.configuration.pojo.address", "http://localhost:9000/opennaas/" +
-		// getResourceDescriptor().getInformation().getName());
 
-		// Rest
+		// Soap
 		props.put("service.exported.interfaces", "*");
-		props.put("service.exported.configs", "org.apache.cxf.rs");
-		props.put("org.apache.cxf.ws.address", "http://localhost:9000/opennaas");
+		props.put("service.exported.configs", "org.apache.cxf.ws");
+		props.put("org.apache.cxf.ws.address", "http://localhost:9001/opennaas/" +
+				getResourceDescriptor().getInformation().getName());
 
 		Activator.getBundleContext().registerService(IResource.class.getName(), this, props);
 	}
