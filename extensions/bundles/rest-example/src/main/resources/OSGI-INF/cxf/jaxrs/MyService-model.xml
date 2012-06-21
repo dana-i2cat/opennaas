@@ -1,0 +1,7 @@
+<model xmlns="http://cxf.apache.org/jaxrs">
+	<resource name="bundle.MyService" path="myService">
+		<operation name="sayHello" verb="GET" path="sayHello/{name}">
+			<param name="name" type="PATH" />
+		</operation>
+	</resource>
+</model>

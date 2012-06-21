@@ -475,12 +475,11 @@ public class Resource implements IResource {
 	 */
 	private void registerService() {
 		Dictionary<String, String> props = new Hashtable<String, String>();
-
-		// Soap
+		// Rest
 		props.put("service.exported.interfaces", "*");
-		props.put("service.exported.configs", "org.apache.cxf.ws");
-		props.put("org.apache.cxf.ws.address", "http://localhost:9001/opennaas/" +
-				getResourceDescriptor().getInformation().getName());
+		props.put("service.exported.configs", "org.apache.cxf.rs");
+		props.put("service.exported.intents", "HTTP");
+		props.put("org.apache.cxf.rs.httpservice.context", getResourceDescriptor().getInformation().getName());
 
 		Activator.getBundleContext().registerService(IResource.class.getName(), this, props);
 	}

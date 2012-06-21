@@ -1,4 +1,4 @@
-package test.bundle.internal;
+package bundle.internal;
 
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -6,7 +6,7 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import test.bundle.MyService;
+import bundle.MyService;
 
 public class Activator implements BundleActivator {
 
@@ -17,7 +17,8 @@ public class Activator implements BundleActivator {
 		restProps.put("service.exported.interfaces", "*");
 		restProps.put("service.exported.configs", "org.apache.cxf.rs");
 		restProps.put("service.exported.intents", "HTTP");
-		restProps.put("org.apache.cxf.rs.address", "http://localhost:8080/");
+		restProps.put("org.apache.cxf.rs.address", "http://localhost:8888/");
+
 		context.registerService(MyService.class.getName(), new MyServiceImpl(), restProps);
 	}
 

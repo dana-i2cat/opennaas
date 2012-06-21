@@ -72,10 +72,11 @@
 
 	<feature name="opennaas-ws" version="${project.version}">
 		<feature>http</feature>
+		<feature>cxf</feature>
 		
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-singlebundle-distribution/${cxf.dosgi.version}</bundle>
-
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>		
+		
+		<bundle>mvn:org.opennaas/rest.example/${project.version}</bundle>		
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
