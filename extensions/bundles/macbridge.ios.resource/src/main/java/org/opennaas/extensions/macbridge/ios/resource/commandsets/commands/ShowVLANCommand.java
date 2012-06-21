@@ -10,7 +10,6 @@ import org.opennaas.extensions.router.model.EthernetPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sun.tools.example.debug.gui.SourceModel.Line;
 
 public class ShowVLANCommand extends IOSCommand {
 	
