@@ -1,4 +1,4 @@
-package org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws;
+package org.opennaas.extensions.ws.services;
 
 import java.util.List;
 
