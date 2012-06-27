@@ -1,8 +1,6 @@
 package org.opennaas.core.resources;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
@@ -13,7 +11,6 @@ import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * Main resource class
@@ -45,9 +42,6 @@ public class Resource implements IResource {
 	private IModel						model;
 
 	private IProfile					profile				= null;
-
-	/** The service registration of this resource **/
-	private ServiceRegistration			registration;
 
 	public Resource() {
 		capabilities = new ArrayList<ICapabilityLifecycle>();
@@ -102,7 +96,6 @@ public class Resource implements IResource {
 			}
 			throw e;
 		}
-		registerService();
 		setState(State.ACTIVE);
 	}
 
@@ -470,17 +463,4 @@ public class Resource implements IResource {
 		throw new CorruptStateException(errorMessage + " Resource is in a corrupt state.", cause);
 	}
 
-	/**
-	 * 
-	 */
-	private void registerService() {
-		Dictionary<String, String> props = new Hashtable<String, String>();
-		// Rest
-		props.put("service.exported.interfaces", "*");
-		props.put("service.exported.configs", "org.apache.cxf.rs");
-		props.put("service.exported.intents", "HTTP");
-		props.put("org.apache.cxf.rs.httpservice.context", getResourceDescriptor().getInformation().getName());
-
-		Activator.getBundleContext().registerService(IResource.class.getName(), this, props);
-	}
 }

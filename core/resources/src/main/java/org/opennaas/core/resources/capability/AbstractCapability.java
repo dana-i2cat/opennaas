@@ -302,8 +302,10 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @param name
 	 * @param resourceId
 	 * @return
+	 * @throws CapabilityException
 	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName) {
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName)
+			throws CapabilityException {
 		Dictionary<String, String> props = new Hashtable<String, String>();
 		return registration = registerService(bundleContext, capabilityName, resourceName, ifaceName, props);
 	}
@@ -314,15 +316,17 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @param name
 	 * @param resourceId
 	 * @return
+	 * @throws CapabilityException
 	 */
 	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName,
-			Dictionary<String, String> props) {
+			Dictionary<String, String> props) throws CapabilityException {
 		// Rest
-		props.put("service.exported.interfaces", "*");
-		props.put("service.exported.configs", "org.apache.cxf.rs");
-		props.put("service.exported.intents", "HTTP");
-		props.put("org.apache.cxf.rs.httpservice.context", resourceName + "/" + capabilityName);
-
+		if (capabilityName.equals("ospf")) {
+			props.put("service.exported.interfaces", "*");
+			props.put("service.exported.configs", "org.apache.cxf.rs");
+			props.put("service.exported.intents", "HTTP");
+			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceName);
+		}
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
 

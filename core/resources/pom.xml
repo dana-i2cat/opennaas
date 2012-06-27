@@ -70,7 +70,10 @@
 			<artifactId>paxexam-karaf-container</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.apache.cxf.dosgi</groupId>
+	 	 	<artifactId>cxf-dosgi-ri-singlebundle-distribution</artifactId>
+	  	</dependency>
 	</dependencies>
 	<build>
 		<plugins>

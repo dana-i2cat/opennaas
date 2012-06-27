@@ -3,6 +3,8 @@ package org.opennaas.extensions.router.capability.ospf;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.JAXBElement;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -358,5 +360,56 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testpost(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost(JAXBElement<Test> test) {
+		Test t = test.getValue();
+		System.out.println("A:" + t.getA() + " B:" + t.getB());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost2(Test test) {
+		System.out.println("A:" + test.getA() + " B:" + test.getB());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost3(String test) {
+		System.out.println("A:" + test);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost4(Test test) {
+		System.out.println("A:" + test.getA() + " B:" + test.getB());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost5(Object test) {
+		test.toString();
 	}
 }

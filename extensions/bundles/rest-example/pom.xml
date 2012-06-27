@@ -17,34 +17,22 @@
 	<dependencies>
 		<!-- Client Test -->
 		<dependency>
-		    <groupId>com.sun.jersey</groupId>
-		    <artifactId>jersey-core</artifactId>
-		    <version>1.12</version>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.12</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-bundle</artifactId>
 			<version>1.10-b01</version>
 		</dependency>
-		
-		<!-- for CXF's JAX-RS implementation -->
+
 		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-bundle-jaxrs</artifactId>
-			<version>${cxf.version}</version>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
 		</dependency>
-		<!-- special OSGI friendly version of jsr311-api -->
-		<dependency>
-			<groupId>org.apache.servicemix.specs</groupId>
-			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1.1</artifactId>
-			<version>${servicemix.specs.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.cxf</groupId>
-			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
-			<version>2.5.0</version>
-		</dependency>
-		
+
+
 	</dependencies>
 
 	<build>
@@ -65,7 +53,7 @@
 						<Bundle-Activator>bundle.internal.Activator</Bundle-Activator>
 						<Export-Package>bundle</Export-Package>
 						<Import-Package>javax.ws.rs.*,*</Import-Package>
-						<DynamicImport-Package>org.apache.cxf.dosgi.dsw.qos,org.apache.cxf</DynamicImport-Package>	
+						<DynamicImport-Package>org.apache.cxf.dosgi.dsw.qos,org.apache.cxf</DynamicImport-Package>
 					</instructions>
 				</configuration>
 			</plugin>
