@@ -4,7 +4,7 @@
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
 	<version>0.11-SNAPSHOT</version>
-	<name>OpenNaaS (OSGi project)</name>
+	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
 	<url>http://www.mantychore.eu/</url>
