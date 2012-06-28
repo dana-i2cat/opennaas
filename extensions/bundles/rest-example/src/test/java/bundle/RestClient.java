@@ -6,7 +6,7 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 import org.apache.cxf.jaxrs.ext.form.Form;
-import org.opennaas.extensions.router.capability.ospf.Test;
+import org.opennaas.core.resources.Test;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
