@@ -7,9 +7,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBElement;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -25,31 +23,6 @@ import org.opennaas.extensions.router.model.OSPFService;
  */
 @Path("/ospf")
 public interface IOSPFCapability extends ICapability {
-
-	@Path("/testpost")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost(JAXBElement<Test> test);
-
-	@Path("/testpost2")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost2(Test test);
-
-	@Path("/testpost3")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost3(String test);
-
-	@Path("/testpost4")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost4(@QueryParam("test") Test test);
-
-	@Path("/testpost5")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost5(Object test);
 
 	/**
 	 * Enable OSPF on the router.

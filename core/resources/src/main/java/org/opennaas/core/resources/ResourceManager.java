@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,6 +33,37 @@ public class ResourceManager implements IResourceManager {
 	public ResourceManager() {
 		logger.debug("Resource Manager started, waiting for Resource repositories");
 		resourceRepositories = new HashMap<String, IResourceRepository>();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testpost(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost(JAXBElement<Test> test) {
+		Test t = test.getValue();
+		System.out.println("A:" + t.getA() + " B:" + t.getB());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost2(Test test) {
+		System.out.println("A:" + test.getA() + " B:" + test.getB());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
+	 */
+	@Override
+	public void testpost3(String test) {
+		System.out.println("A:" + test);
 	}
 
 	/**

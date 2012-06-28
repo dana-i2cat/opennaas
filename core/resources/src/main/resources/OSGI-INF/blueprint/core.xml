@@ -4,7 +4,24 @@
 	<!--
 	    Register OpenNaaS OSGi Services & Beans
 	  -->
-
+	<bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.JSONProvider"> 
+		<property name="singleJaxbContext" value="true" /> 
+		<property name="extraClass"> 
+		        <list> 
+					<value>org.opennaas.core.resources.Test</value> 
+		        </list> 
+		</property> 
+	</bean>
+	
+	<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"> 
+        <property name="singleJaxbContext" value="true" /> 
+        <property name="extraClass"> 
+            <list> 
+                <value>org.opennaas.core.resources.Test</value> 
+            </list> 
+        </property> 
+	</bean> 	
+	
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
 		<service-properties>
@@ -12,7 +29,14 @@
 			<entry key="service.exported.interfaces" value="*"/>
 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/>
 			<entry key="service.exported.intents" value="HTTP"/>		
-			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas/resource"/>
+            <entry key="org.apache.cxf.rs.provider" > 
+                <array> 
+                    <ref bean="jsonProvider" /> 
+					<ref bean="jaxbProvider" /> 
+                </array> 
+            </entry> 
+			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas"/>  
+            <entry key="org.apache.cxf.rs.databinding" value="jaxb" /> 
 		</service-properties>
 	</service>
 	

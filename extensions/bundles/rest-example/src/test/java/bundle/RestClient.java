@@ -18,7 +18,6 @@ public class RestClient {
 		testpost();
 		testpost2();
 		testpost3();
-		testpost4();
 	}
 
 	/**
@@ -30,7 +29,7 @@ public class RestClient {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://localhost:8888/opennaas/lolaM20/ospf/testpost");
+					.resource("http://localhost:8888/opennaas/lolaM20/resource/testpost");
 
 			String inputJSON = "{\"A\":\"Metallica\",\"B\":\"Fade To Black\"}";
 			String inputXML = "<xml><test></test>";
@@ -61,9 +60,7 @@ public class RestClient {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://localhost:8888/opennaas/lolaM20/ospf/testpost2");
-
-			String input = "{\"A\":\"Metallica\",\"B\":\"Fade To Black\"}";
+					.resource("http://localhost:8888/opennaas/lolaM20/resource/testpost2");
 
 			ClientResponse response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, new Test());
 
@@ -90,7 +87,7 @@ public class RestClient {
 			Client client = Client.create();
 
 			WebResource webResource = client
-					.resource("http://localhost:8888/opennaas/lolaM20/ospf/testpost3");
+					.resource("http://localhost:8888/opennaas/lolaM20/resource/testpost3");
 
 			String input = "{\"A\":\"Metallica\",\"B\":\"Fade To Black\"}";
 
@@ -117,6 +114,35 @@ public class RestClient {
 	 * 
 	 */
 	private static void testpost4() {
+		try {
+
+			Client client = Client.create();
+
+			WebResource webResource = client
+					.resource("http://localhost:8888/opennaas/lolaM20/ospf/testpost4");
+
+			String input = "{\"A\":\"Metallica\",\"B\":\"Fade To Black\"}";
+
+			ClientResponse response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, new Test());
+
+			if (response.getStatus() != 201) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ response.getStatus());
+			}
+
+			System.out.println("Output from Server .... \n");
+			String output = response.getEntity(String.class);
+			System.out.println(output);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private static void testpost5() {
 		try {
 
 			Client client = Client.create();

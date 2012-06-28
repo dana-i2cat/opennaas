@@ -2,6 +2,12 @@ package org.opennaas.core.resources;
 
 import java.util.List;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBElement;
+
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
 /**
@@ -12,6 +18,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
+@Path("/resource")
 public interface IResourceManager {
 
 	public static final String	NOTIFICATIONS_TOPIC	= "com/iaasframework/resources/core/ResourceManager";
@@ -22,6 +29,21 @@ public interface IResourceManager {
 	public static final String	RESOURCE_REMOVED	= "resourceRemoved";
 	public static final String	RESOURCE_STARTED	= "resourceStarted";
 	public static final String	RESOURCE_STOPED		= "resourceStoped";
+
+	@Path("/testpost")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void testpost(JAXBElement<Test> test);
+
+	@Path("/testpost2")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void testpost2(Test test);
+
+	@Path("/testpost3")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void testpost3(String test);
 
 	/**
 	 * Create a new resource with a given resourceDescriptor
