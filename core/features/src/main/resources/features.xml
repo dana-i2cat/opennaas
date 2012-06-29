@@ -71,10 +71,25 @@
 	</feature>
 
 	<feature name="opennaas-ws" version="${project.version}">
+<!-- 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-singlebundle-distribution/${cxf.dosgi.version}</bundle> -->
+				
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>	
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/1.3.1</bundle>
+		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/4.2.0</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/1.3.1</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/1.3.1</bundle>
 		
-		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-singlebundle-distribution/${cxf.dosgi.version}</bundle>
-		
-		<bundle>mvn:org.opennaas/rest.example/${project.version}</bundle>		
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/1.2.1</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/1.2.1</bundle>							
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/1.2.1</bundle>							
+
+		<bundle dependency="true">mvn:com.sun.jersey/jersey-bundle/1.3</bundle>	
+		<bundle dependency="true">mvn:com.sun.jersey/jersey-client/1.3</bundle>	
+
+		<bundle dependency="true">mvn:org.eclipse.jetty.aggregate/jetty-all-server/7.4.2.v20110526</bundle>	
+  
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-jaxrs/2.5.2</bundle>
+		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/1.4.7</bundle>	
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">

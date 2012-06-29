@@ -6,7 +6,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBElement;
 
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 
@@ -32,18 +31,8 @@ public interface IResourceManager {
 
 	@Path("/testpost")
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void testpost(JAXBElement<Test> test);
-
-	@Path("/testpost2")
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void testpost2(Test test);
-
-	@Path("/testpost3")
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void testpost3(String test);
+	@Consumes(MediaType.APPLICATION_XML)
+	public void testpost(Test test);
 
 	/**
 	 * Create a new resource with a given resourceDescriptor
