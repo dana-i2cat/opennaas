@@ -41,6 +41,9 @@ public interface IResourceManager {
 	 * @returns the new resource
 	 * @throws ResourceException
 	 */
+	@Path("/create")
+	@POST
+	@Consumes(MediaType.APPLICATION_XML)
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
 
 	/**
