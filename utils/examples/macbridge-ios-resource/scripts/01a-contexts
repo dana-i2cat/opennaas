@@ -1,0 +1,2 @@
+##Adding contexts for resources
+protocols:context MACBridgeIOS:catalyst cli $protocol.url.catalyst
