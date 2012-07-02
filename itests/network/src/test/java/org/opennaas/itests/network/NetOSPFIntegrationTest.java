@@ -1,13 +1,9 @@
 package org.opennaas.itests.network;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.junit.Assert.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +29,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.network.capability.basic.INetworkBasicCapability;
 import org.opennaas.extensions.network.capability.ospf.INetOSPFCapability;
+import org.opennaas.extensions.network.capability.queue.QueueCapability;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.ops4j.pax.exam.Option;
@@ -114,11 +111,10 @@ public class NetOSPFIntegrationTest {
 				CAPABILITY_URI);
 		lCapabilityDescriptors.add(ospfCapabilityDescriptor);
 
-		// // Add Queue Capability Descriptor
-		// CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, CAPABILIY_VERSION,
-		// QUEUE_CAPABILIY_TYPE,
-		// CAPABILITY_URI);
-		// lCapabilityDescriptors.add(queueCapabilityDescriptor);
+		// Add Queue Capability Descriptor
+		CapabilityDescriptor queueCapabilityDescriptor = ResourceHelper.newCapabilityDescriptor(ACTION_NAME, CAPABILIY_VERSION, QUEUE_CAPABILIY_TYPE,
+				CAPABILITY_URI);
+		lCapabilityDescriptors.add(queueCapabilityDescriptor);
 
 		// Network Resource Descriptor
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptor(lCapabilityDescriptors, RESOURCE_TYPE, RESOURCE_URI,
@@ -141,7 +137,7 @@ public class NetOSPFIntegrationTest {
 	{
 		clearRepository();
 		startResource();
-		assertEquals(2, networkResource.getCapabilities().size());
+		assertEquals(3, networkResource.getCapabilities().size());
 
 		stopResource();
 	}
@@ -157,6 +153,25 @@ public class NetOSPFIntegrationTest {
 		callActivateOSPF();
 
 		checkRoutersQueueContainsOSPFConfigActions(routers);
+		stopResource();
+	}
+
+	/**
+	 * Test to check netqueue method
+	 * 
+	 * @throws ProtocolException
+	 * @throws ResourceException
+	 */
+	@Test
+	public void executeQueueTest() throws ResourceException, ProtocolException {
+		startResource();
+
+		Information information = new Information();
+		information.setType(QUEUE_CAPABILIY_TYPE);
+
+		QueueCapability queueCapability = (QueueCapability) networkResource.getCapability(information);
+		queueCapability.execute();
+		stopResource();
 	}
 
 	private void checkRoutersQueueContainsOSPFConfigActions(List<IResource> routers) {
@@ -241,10 +256,7 @@ public class NetOSPFIntegrationTest {
 	 * @throws ProtocolException
 	 */
 	private void stopResource() throws ResourceException, ProtocolException {
-		// Stop resource
 		resourceManager.stopResource(networkResource.getResourceIdentifier());
-
-		// Remove resource
 		resourceManager.removeResource(networkResource.getResourceIdentifier());
 	}
 
@@ -255,17 +267,15 @@ public class NetOSPFIntegrationTest {
 	 * @throws ProtocolException
 	 */
 	private IProtocolSessionManager addSessionContext(String resourceId) throws ProtocolException {
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-		IProtocolSessionManager protocolSessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		ProtocolSessionContext psc = new ProtocolSessionContext();
+		IProtocolSessionManager psm = protocolManager.getProtocolSessionManager(resourceId);
 
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, RESOURCE_URI);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
+		psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, RESOURCE_URI);
+		psc.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
 
-		protocolSessionManager.registerContext(protocolSessionContext);
+		psm.registerContext(psc);
 
-		return protocolSessionManager;
+		return psm;
 	}
 
 }
