@@ -1,10 +1,8 @@
 package org.opennaas.itests.core.resources;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -74,10 +72,14 @@ public class ResourcesWithProfileTest
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
 	private BlueprintContainer	ipService;
 
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.tests-mockprofile)")
+	private BlueprintContainer	mockProfileService;
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-router", "opennaas-junos"),
+				includeFeatures("opennaas-router", "opennaas-junos", "nexus-testprofile"),
 				noConsole(),
 				keepRuntimeFolder());
 	}
@@ -114,7 +116,7 @@ public class ResourcesWithProfileTest
 	 * original ones.
 	 */
 	@Test
-	public void createResourceWithProfile() {
+	public void createResourceWithProfileManager() {
 
 		try {
 
@@ -160,6 +162,63 @@ public class ResourcesWithProfileTest
 
 	}
 
+	/**
+	 * Creates a resource indicating a profileId in its descriptor. Checks profile is loaded correctly and profile actions are called instead of
+	 * original ones.
+	 */
+	@Test
+	public void createResourceWithProfileEmtpy() {
+
+		try {
+
+			List<String> capabilities = new ArrayList<String>();
+			capabilities.add("chassis");
+			capabilities.add("queue");
+
+			// put profile in profileManager
+			List<ProfileDescriptor> profileDescriptors = profileManager.listProfiles();
+			Assert.assertFalse(profileDescriptors.isEmpty());
+			Assert.assertTrue("TestProfile".equals(profileDescriptors.get(0).getProfileName()));
+
+			log.info("Found profile with name: " + profileDescriptors.get(0).getProfileName());
+			IProfile profile = profileManager.getProfile(profileDescriptors.get(0).getProfileName());
+
+			// create resourceDescriptor with profile id
+
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
+			resourceDescriptor.setProfileId(profile.getProfileName());
+
+			// call createResource(resourceDescriptor)
+			IResource resource = resourceManager.createResource(resourceDescriptor);
+			createProtocolForResource(resourceDescriptor.getId());
+			// log.info("UseProfileBundleTest: resource. getResourceIdentifier.getId gives us: " + resource.getResourceIdentifier().getId());
+			resourceManager.startResource(resource.getResourceIdentifier());
+
+			// assert profile loading has been correct
+			Assert.assertNotNull(resource.getProfile());
+			Assert.assertNotNull(profile);
+			// FIXME there are problems with CGLIB used by hibernate and equals()
+			// Assert.assertTrue(resource.getProfile().equals(profile));
+			Assert.assertTrue(resource.getProfile().getProfileName().equals(profile.getProfileName()));
+			Assert.assertTrue(resource.getProfile().getProfileDescriptor().equals(profile.getProfileDescriptor()));
+
+			// TODO launch setInterface Action and assert DummyAction is executed instead of original one
+
+		} catch (ResourceException e) {
+			log.error("Error ocurred!!!", e);
+			Assert.fail(e.getMessage());
+		} catch (ProtocolException e) {
+			log.error("Error ocurred!!!", e);
+			Assert.fail(e.getMessage());
+		} finally {
+			clearRepo();
+		}
+		// catch (ProtocolException e) {
+		// log.error("Error ocurred!!!", e);
+		// Assert.fail(e.getMessage());
+		// }
+	}
+
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 
@@ -170,7 +229,7 @@ public class ResourcesWithProfileTest
 	 */
 	private ProtocolSessionContext newSessionContextNetconf() {
 		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}")) {
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
 			uri = "mock://user:pass@host.net:2212/mocksubsystem";
 		}
 
