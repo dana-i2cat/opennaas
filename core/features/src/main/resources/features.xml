@@ -23,13 +23,6 @@
 		<bundle>mvn:org.opennaas/org.opennaas.core.persistence/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-platformmanager" version="${project.version}">
-		<feature>jetty</feature>
-		<feature>cxf</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.core.platformmanager/${project.version}</bundle>
-	</feature>
-
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
@@ -78,12 +71,18 @@
 	</feature>
 
 	<feature name="opennaas-ws" version="${project.version}">
-		<feature>http</feature>
-		<feature>cxf</feature>
+		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>							
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>							
+		<bundle dependency="true">mvn:org.eclipse.jetty.aggregate/jetty-all-server/${jetty.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>	
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
@@ -177,7 +176,6 @@
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
-		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
