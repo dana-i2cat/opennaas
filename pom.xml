@@ -278,6 +278,21 @@
 				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>
