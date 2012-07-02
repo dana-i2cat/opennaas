@@ -29,11 +29,6 @@ public interface IResourceManager {
 	public static final String	RESOURCE_STARTED	= "resourceStarted";
 	public static final String	RESOURCE_STOPED		= "resourceStoped";
 
-	@Path("/testpost")
-	@POST
-	@Consumes(MediaType.APPLICATION_XML)
-	public void testpost(Test test);
-
 	/**
 	 * Create a new resource with a given resourceDescriptor
 	 * 

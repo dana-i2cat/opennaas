@@ -34,16 +34,6 @@ public class ResourceManager implements IResourceManager {
 		resourceRepositories = new HashMap<String, IResourceRepository>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#testget(javax.xml.bind.JAXBElement)
-	 */
-	@Override
-	public void testpost(Test test) {
-		System.out.println("A:" + test.getA() + " B:" + test.getB());
-	}
-
 	/**
 	 * Called by blueprint every time a resource repository is registered
 	 * 
