@@ -95,11 +95,4 @@
 			</completers>
 		</command>
 	</command-bundle>
-	<!-- Web service creation and export -->
-	<reference id="resourceManager" interface="org.opennaas.core.resources.IResourceManager" />
-    <cxf:bus id="vlanAwareBridgeCapabilityServiceBus"></cxf:bus>
-	<bean id="vlanAwareBridgeCapabilityServiceImpl" class="org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws.VLANAwareBridgeCapabilityService">
-		<property name="resourceManager" ref="resourceManager" />
-	</bean>
-    <jaxws:endpoint  implementor="#vlanAwareBridgeCapabilityServiceImpl" address="${ws.url}/vlanAwareBridgeCapabilityService"  />
 </blueprint>
