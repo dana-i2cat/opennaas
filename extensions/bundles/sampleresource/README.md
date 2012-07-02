@@ -36,3 +36,6 @@ utils/examples/descriptors/sampleresource.descriptor
 In order for all pieces to communicate with each other, some of them should export or consume OSGi services.
 It is the case of capabilities and drivers, but also resource repository and bootstrapper.
 src/main/resources/OSGI-INF/blueprint/core.xml file is used to achieve this goal. 
+
+More information about service OSGi publication can be find here:
+http://fusesource.com/docs/esb/4.2/deploy_osgi/index.html 
