@@ -7,10 +7,6 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 /**
  * This interface must be implemented by all the classes that want to manage resources. They must listen to all the IResourceRepositories, and react
  * to their events creating, modifying and removing resources
- *
- * @author Eduard Grasa
- * @author Roc Vallès <roc.valles@i2cat.net>
- *
  */
 public interface IResourceManager {
 
@@ -25,7 +21,7 @@ public interface IResourceManager {
 
 	/**
 	 * Create a new resource with a given resourceDescriptor
-	 *
+	 * 
 	 * @param resourceDescriptor
 	 * @returns the new resource
 	 * @throws ResourceException
@@ -34,7 +30,7 @@ public interface IResourceManager {
 
 	/**
 	 * Modify the existing resource that matches the id (inside resourceDescriptor)
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @param resourceDescriptor
 	 * @return the modified resource
@@ -45,7 +41,7 @@ public interface IResourceManager {
 
 	/**
 	 * Remove the existing resource that matches the id
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -53,7 +49,7 @@ public interface IResourceManager {
 
 	/**
 	 * List all the existing resources of a given type. If type is null, list all resources whatever its type is.
-	 *
+	 * 
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
 	 *         value.
 	 */
@@ -61,7 +57,7 @@ public interface IResourceManager {
 
 	/**
 	 * List all resources in container.
-	 *
+	 * 
 	 * @return
 	 */
 	public List<IResource> listResources();
@@ -73,7 +69,7 @@ public interface IResourceManager {
 
 	/**
 	 * Get an existing resource
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 *            the id of the resource to get
 	 * @return the resource
@@ -84,7 +80,7 @@ public interface IResourceManager {
 
 	/**
 	 * Get an existing resource
-	 *
+	 * 
 	 * @param resourceId
 	 *            resource's resourceId
 	 * @return the resource
@@ -94,7 +90,7 @@ public interface IResourceManager {
 
 	/**
 	 * Start an existing resource
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -102,7 +98,7 @@ public interface IResourceManager {
 
 	/**
 	 * Stop an existing resource
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
@@ -110,7 +106,7 @@ public interface IResourceManager {
 
 	/**
 	 * Export a resource descriptor to an XML file
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @param fileName
 	 * @throws ResourceException
@@ -118,7 +114,7 @@ public interface IResourceManager {
 	public void exportResourceDescriptor(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException;
 
 	/**
-	 *
+	 * 
 	 * @param resourceType
 	 * @param resourceName
 	 * @return
@@ -127,7 +123,7 @@ public interface IResourceManager {
 	public IResourceIdentifier getIdentifierFromResourceName(String resourceType, String resourceName) throws ResourceException;
 
 	/**
-	 *
+	 * 
 	 * @param ID
 	 * @return
 	 * @throws ResourceException
@@ -135,10 +131,17 @@ public interface IResourceManager {
 	public String getNameFromResourceID(String ID) throws ResourceException;
 
 	/**
-	 *
+	 * 
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
 	public void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
+
+	/**
+	 * 
+	 * @param resourceIdentifier
+	 * @throws ResourceException
+	 */
+	public void destroyAllResources() throws ResourceException;
 
 }
