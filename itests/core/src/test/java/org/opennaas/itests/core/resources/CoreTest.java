@@ -44,9 +44,9 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class ResourcesWithProfileTest
+public class CoreTest
 {
-	static Log					log	= LogFactory.getLog(ResourcesWithProfileTest.class);
+	static Log					log	= LogFactory.getLog(CoreTest.class);
 
 	@Inject
 	private IResourceManager	resourceManager;
@@ -219,9 +219,12 @@ public class ResourcesWithProfileTest
 		// }
 	}
 
+	/*
+	 * HELPERS
+	 */
+
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
-
 	}
 
 	/**
@@ -235,11 +238,10 @@ public class ResourcesWithProfileTest
 
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		// ADDED
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
+
 		return protocolSessionContext;
 	}
+
 }

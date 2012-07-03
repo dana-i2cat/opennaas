@@ -1,11 +1,8 @@
 package org.opennaas.itests.core.shell;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +11,13 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;
@@ -36,25 +36,28 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.spi.reactors.AllConfinedStagedReactorFactory;
+import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
-@ExamReactorStrategy(AllConfinedStagedReactorFactory.class)
-public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
+@ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
+public class CommandsKarafTest extends AbstractKarafCommandTest
 {
-	static Log					log	= LogFactory.getLog(ProfileCommandsKarafTest.class);
+	static Log					log	= LogFactory.getLog(CommandsKarafTest.class);
 
 	@Inject
-	@Filter("(type=router)")
-	private IResourceRepository	repository;
+	private IResourceManager	resourceManager;
+
+	@Inject
+	private IProtocolManager	protocolManager;
 
 	@Inject
 	private IProfileManager		profileManager;
 
 	@Inject
-	private IProtocolManager	protocolManager;
+	@Filter("(type=router)")
+	private IResourceRepository	repository;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
@@ -68,6 +71,10 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.queuemanager)")
 	private BlueprintContainer	queueService;
 
+	/*
+	 * CONFIGURATION, BEFORE and AFTER
+	 */
+
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
@@ -77,27 +84,118 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 				keepRuntimeFolder());
 	}
 
+	@After
+	public void clearRepo() {
+
+		log.info("Clearing resource repo");
+
+		IResource[] toRemove = new IResource[resourceManager.listResources()
+				.size()];
+		toRemove = resourceManager.listResources().toArray(toRemove);
+
+		for (IResource resource : toRemove) {
+			if (resource.getState().equals(State.ACTIVE)) {
+				try {
+					resourceManager.stopResource(resource
+							.getResourceIdentifier());
+				} catch (ResourceException e) {
+					log.error("Failed to remove resource "
+							+ resource.getResourceIdentifier().getId()
+							+ " from repository.");
+				}
+			}
+			try {
+				resourceManager
+						.removeResource(resource.getResourceIdentifier());
+			} catch (ResourceException e) {
+				log.error("Failed to remove resource "
+						+ resource.getResourceIdentifier().getId()
+						+ " from repository.");
+			}
+
+		}
+
+		log.info("Resource repo cleared!");
+	}
+
+	/*
+	 * KARAF COMMAND TESTS
+	 */
+
+	@Test
+	public void InfoCommandTest() throws Exception {
+		List<String> capabilities = new ArrayList<String>();
+
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory
+				.newResourceDescriptor("junosm20", "router", capabilities);
+		String resourceFriendlyID =
+				resourceDescriptor.getInformation()
+						.getType()
+						+ ":"
+						+ resourceDescriptor.getInformation().getName();
+
+		IResource resource =
+				resourceManager.createResource(resourceDescriptor);
+		createProtocolForResource(resource.getResourceIdentifier().getId());
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		List<String> response =
+				executeCommand("resource:info " + resourceFriendlyID);
+
+		if (!response.get(1).isEmpty()) {
+			Assert.fail(response.get(1));
+		}
+		Assert.assertTrue(response.get(1).isEmpty());
+
+		Assert.assertTrue(response.get(0).contains("Resource Id: " + resource.getResourceIdentifier().getId()));
+		Assert.assertTrue(response.get(0).contains("Type: ipv4"));
+		Assert.assertTrue(response.get(0).contains("Type: queue"));
+
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		resourceManager.removeResource(resource.getResourceIdentifier());
+	}
+
 	/**
 	 * Configure the protocol to connect
 	 */
-	private ProtocolSessionContext newSessionContextNetconf() {
-		String uri = System.getProperty("protocol.uri");
-		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
-			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+	@Test
+	public void SetAndGetInterfacesCommandTest() {
+		List<String> capabilities = new ArrayList<String>();
+
+		capabilities.add("ipv4");
+		capabilities.add("queue");
+
+		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("resource1", "router", capabilities);
+		String resourceFriendlyID = resourceDescriptor.getInformation().getType() + ":" + resourceDescriptor.getInformation().getName();
+
+		try {
+			IResource resource = repository.createResource(resourceDescriptor);
+			createProtocolForResource(resource.getResourceIdentifier().getId());
+			repository.startResource(resource.getResourceDescriptor().getId());
+
+			List<String> response = executeCommand(
+					"ipv4:setIP  " + resourceFriendlyID + " fe-0/1/2.0 192.168.1.1 255.255.255.0");
+			// assert command output does not contain ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			response = executeCommand("queue:listActions  " + resourceFriendlyID);
+			// assert command output does not contain ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			response = executeCommand("queue:execute  " + resourceFriendlyID);
+			// assert command output does not contain ERROR tag
+			Assert.assertTrue(response.get(1).isEmpty());
+
+			repository.stopResource(resource.getResourceIdentifier().getId());
+			repository.removeResource(resource.getResourceIdentifier().getId());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail(e.getLocalizedMessage());
 		}
-
-		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
-
-		protocolSessionContext.addParameter(
-				ProtocolSessionContext.PROTOCOL_URI, uri);
-		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
-				"netconf");
-		return protocolSessionContext;
-	}
-
-	public void createProtocolForResource(String resourceId) throws ProtocolException {
-		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
-
 	}
 
 	@Test
@@ -201,15 +299,40 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 		Assert.assertTrue(response.get(1).isEmpty());
 	}
 
+	/*
+	 * HELPERS
+	 */
+
+	/**
+	 * Configure the protocol to connect
+	 */
+	private ProtocolSessionContext newSessionContextNetconf() {
+		String uri = System.getProperty("protocol.uri");
+		if (uri == null || uri.equals("${protocol.uri}") || uri.isEmpty()) {
+			uri = "mock://user:pass@host.net:2212/mocksubsystem";
+		}
+
+		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
+
+		protocolSessionContext.addParameter(
+				ProtocolSessionContext.PROTOCOL_URI, uri);
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"netconf");
+		// ADDED
+		return protocolSessionContext;
+	}
+
+	public void createProtocolForResource(String resourceId) throws ProtocolException {
+		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
+
+	}
+
 	private IProfile createProfile(String profileName, String actionId, String capabilityId, String resourceType) {
 
 		ActionSet actionSet = new ActionSet();
 
 		actionSet.setActionSetId("aProfileActionSet");
 		actionSet.putAction(actionId, DummyAction.class);
-
-		// HashMap<String, IActionSet> overridenActions = new HashMap<String, IActionSet>();
-		// overridenActions.put(capabilityId, actionSet);
 
 		ProfileDescriptor profileDesc = new ProfileDescriptor();
 		profileDesc.setProfileName(profileName);
@@ -220,4 +343,5 @@ public class ProfileCommandsKarafTest extends AbstractKarafCommandTest
 
 		return profile;
 	}
+
 }
