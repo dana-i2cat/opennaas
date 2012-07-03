@@ -71,6 +71,8 @@
 	</feature>
 
 	<feature name="opennaas-ws" version="${project.version}">
+		<feature>jetty</feature>
+		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
@@ -78,10 +80,11 @@
 		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>							
-		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>							
-		<bundle dependency="true">mvn:org.eclipse.jetty.aggregate/jetty-all-server/${jetty.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/1.8.0</bundle>		
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 		
+		<!-- old ws, tnc demo  -->
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
 	</feature>
 
