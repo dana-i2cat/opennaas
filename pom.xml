@@ -3,8 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.10</version>
-	<name>OpenNaaS (OSGi project)</name>
+	<version>0.11</version>
+	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
 	<url>http://www.mantychore.eu/</url>
@@ -43,6 +43,7 @@
 		<commons.io.version>1.4</commons.io.version>
 		<commons.jxpath.version>1.2_1-fuse</commons.jxpath.version>
 		<commons.lang.version>2.4_4</commons.lang.version>
+		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
 		<easymock.version>3.1</easymock.version>
@@ -140,6 +141,21 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.core.features</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.transports.sockets</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.protocols.tl1</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
@@ -257,6 +273,26 @@
 				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- Netconf4j -->
 			<dependency>
 				<groupId>net.i2cat.netconf</groupId>
@@ -324,6 +360,11 @@
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.commons-dbcp</artifactId>
 				<version>${commons.dbcp.version}</version>
+			</dependency>
+			<dependency>
+  				<groupId>org.apache.servicemix.bundles</groupId>
+  				<artifactId>org.apache.servicemix.bundles.commons-net</artifactId>
+ 				<version>${commons.net.version}</version>
 			</dependency>
 			<!-- OSGI API -->
 			<dependency>
@@ -707,7 +748,6 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
-		<module>clients</module>
 <!-- 		<module>web</module> -->
 	</modules>
 	<build>
@@ -1042,9 +1082,9 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>i2cat</id>
-			<name>i2cat maven repository</name>
-			<url>http://maven.i2cat.net:8081/artifactory/libs-release</url>
+			<id>maven.i2cat.net</id>
+			<name>&gt;maven.i2cat.net-releases</name>
+			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>

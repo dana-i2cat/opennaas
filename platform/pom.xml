@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opennaas</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.10</version>
+		<version>0.11</version>
 	</parent>
 
 	<packaging>pom</packaging>
@@ -55,6 +55,18 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.features</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.transports.sockets</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.cli</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.protocols.tl1</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -146,6 +158,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.sampleresource</artifactId>
+		</dependency>				
+		<dependency>
+			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
 		</dependency>
 		
@@ -153,6 +169,7 @@
 			<groupId>org.apache.servicemix</groupId>
 			<artifactId>apache-servicemix</artifactId>
 		</dependency>
+		
 	</dependencies>
 
 	<build>

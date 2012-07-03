@@ -1,0 +1,6 @@
+## Configures rest of scripts
+## NOTE: unified_script must be changed if scripts.path is, to keep in sync!!!
+scripts.path="/Users/eduardgrasa/Development/projectes/opennaas/examples/macbridge-ios-resource/scripts"
+descriptors.path="/Users/eduardgrasa/Development/projectes/opennaas/examples/macbridge-ios-resource/descriptors"
+
+shell:source $scripts.path/00a-urls

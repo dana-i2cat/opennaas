@@ -75,7 +75,7 @@ public class NetOSPFIntegrationTest {
 	@Configuration
 	public static Option[] configuration() {
 		return options(opennaasDistributionConfiguration(),
-				includeFeatures("opennaas-network, opennaas-router"),
+				includeFeatures("opennaas-network, opennaas-router", "opennaas-junos"),
 				includeTestHelper(),
 				noConsole(),
 				keepRuntimeFolder());

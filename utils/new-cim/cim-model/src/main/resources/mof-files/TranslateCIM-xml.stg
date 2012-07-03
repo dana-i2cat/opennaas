@@ -1,0 +1,95 @@
+group TranslateCIM;
+
+classFileTemplate(majorCimVersion, minorCimVersion, subPackage, classComment, abstract, cimClassName, mofSuperClass, features) ::= <<
+\<?xml version="1.0"?\>
+\<CIM CIMVERSION="<majorCimVersion>.<minorCimVersion>" DTDVERSION="2.2"\>
+	\<DECLARATION\>
+		\<DECLGROUP\>
+			\<VALUE.OBJECT\>
+				\<CLASS NAME="<cimClassName>"\>
+					\<QUALIFIER TRANSLATABLE="true" NAME="Description" TYPE="string"\>
+						\<VALUE\><classComment>\</VALUE\>
+					\</QUALIFIER\>
+					<features; separator="\n\n">
+				\</CLASS\>
+			\</VALUE.OBJECT\>
+		\</DECLGROUP\>
+	\</DECLARATION\>
+\</CIM\>
+>>
+
+classPropertyTemplate(comment, type, isArray, name, enumconstants) ::= <<
+\<PROPERTY CLASSORIGIN="CIM_ManagedElement" PROPAGATED="false" NAME="<name>" TYPE="string"\>
+	\<QUALIFIER TRANSLATABLE="true" NAME="Description" TYPE="string"\>
+		\<VALUE\><comment>\</VALUE\>
+	\</QUALIFIER\>
+	\<QUALIFIER NAME="MaxLen" TYPE="uint32"\>
+		\<VALUE\>64\</VALUE\>
+	\</QUALIFIER\>
+	<if(enumconstants)>
+	public enum <name>_enum {
+	<enumconstants; separator=",\n">
+	}
+	<name>_enum
+	<else>
+	<type>
+	<endif>
+	<if(isArray)>[]<endif> <name>;
+\</PROPERTY\>
+>>
+
+classMethodTemplate(comment, type, name, parameters, bogusReturnValue) ::= <<
+/* <comment> */
+public <type> <name> (
+<parameters; separator=",\n">) {
+    System.out.println("method <name> has been created, but has no body yet!");
+    return <bogusReturnValue>;
+};
+>>
+
+methodParameterTemplate(comment, type, isArray, name) ::= <<
+/* <comment> */
+<type><if(isArray)>[]<endif> <name>
+>>
+
+methodParameterListTemplate(parms) ::= <<
+<parms; separator=",\n">
+>>
+
+methodReferenceTemplate(comment, className, isArray, referenceName) ::= <<
+/* <comment> */
+<className><if(isArray)>[]<endif> <referenceName>
+>>
+
+uint8Template()    ::= "byte"
+sint8Template()    ::= "byte"
+uint16Template()   ::= "short"
+sint16Template()   ::= "short"
+uint32Template()   ::= "int"
+sint32Template()   ::= "int"
+uint64Template()   ::= "long"
+sint64Template()   ::= "long"
+real32Template()   ::= "float"
+real64Template()   ::= "double"
+char16Template()   ::= "char"
+strTemplate()      ::= "String"
+booleanTemplate()  ::= "boolean"
+datetimeTemplate() ::= "String"
+
+uint8DefaultValueTemplate()    ::= "0"
+sint8DefaultValueTemplate()    ::= "0"
+uint16DefaultValueTemplate()   ::= "0"
+sint16DefaultValueTemplate()   ::= "0"
+uint32DefaultValueTemplate()   ::= "0"
+sint32DefaultValueTemplate()   ::= "0"
+uint64DefaultValueTemplate()   ::= "0L"
+sint64DefaultValueTemplate()   ::= "0L"
+real32DefaultValueTemplate()   ::= "0.0f"
+real64DefaultValueTemplate()   ::= "0.0d"
+char16DefaultValueTemplate()   ::= "'\u0000'"
+strDefaultValueTemplate()      ::= "null"
+booleanDefaultValueTemplate()  ::= "false"
+datetimeDefaultValueTemplate() ::= "null"
+
+
+
