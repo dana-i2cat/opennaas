@@ -1,5 +1,6 @@
 package org.opennaas.itests.core.resources;
 
+import static org.junit.Assert.*;
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
@@ -15,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.ILifecycle.State;
@@ -31,6 +33,8 @@ import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSession;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.ops4j.pax.exam.Option;
@@ -46,35 +50,38 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
 public class CoreTest
 {
-	static Log					log	= LogFactory.getLog(CoreTest.class);
+	static Log						log	= LogFactory.getLog(CoreTest.class);
 
 	@Inject
-	private IResourceManager	resourceManager;
+	private IResourceManager		resourceManager;
 
 	@Inject
-	private IProfileManager		profileManager;
+	private IProfileManager			profileManager;
 
 	@Inject
-	private BundleContext		bundleContext;
+	private BundleContext			bundleContext;
 
 	@Inject
-	IProtocolManager			protocolManager;
+	IProtocolManager				protocolManager;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.repository)")
-	private BlueprintContainer	routerRepositoryService;
+	private BlueprintContainer		routerRepositoryService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
-	private BlueprintContainer	chasisService;
+	private BlueprintContainer		chasisService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.ip)")
-	private BlueprintContainer	ipService;
+	private BlueprintContainer		ipService;
 
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.core.tests-mockprofile)")
-	private BlueprintContainer	mockProfileService;
+	private BlueprintContainer		mockProfileService;
+
+	private ResourceDescriptor		resourceDescriptor;
+	private ProtocolSessionContext	sessionContext;
 
 	@Configuration
 	public static Option[] configuration() {
@@ -84,8 +91,22 @@ public class CoreTest
 				keepRuntimeFolder());
 	}
 
+	// from protocolsessionmanagertest
+	@Before
+	public void init() {
+
+		List<String> capabilities = new ArrayList<String>();
+		capabilities.add("chassis");
+		capabilities.add("queue");
+		resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
+
+		sessionContext = newSessionContextNetconf();
+	}
+
 	@After
 	public void clearRepo() {
+
+		resourceManager.destroyAllResources();
 
 		log.info("Clearing resource repo");
 
@@ -217,6 +238,50 @@ public class CoreTest
 		// log.error("Error ocurred!!!", e);
 		// Assert.fail(e.getMessage());
 		// }
+	}
+
+	/*
+	 * PROTOCOL SESSION MANAGER TESTS
+	 */
+	@Test
+	public void testSessionManagerLifecycleIsSyncWithResourceLifecycle() throws Exception {
+
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		String resourceId = resource.getResourceIdentifier().getId();
+
+		assertTrue("New resource should be registered in ProtocolManager",
+				protocolManager.getAllResourceIds().contains(resourceId));
+
+		// FIXME this will create a protocolSessionManager if it does not exists
+		// use a true getter method (not modifying state) to test!
+		IProtocolSessionManager sessionManager = protocolManager.getProtocolSessionManager(resourceId);
+		assertEquals(resourceId, sessionManager.getResourceID());
+		assertTrue("No context registered yet", sessionManager.getRegisteredContexts().isEmpty());
+		assertTrue("No sessions are created", sessionManager.getAllProtocolSessionIds().isEmpty());
+
+		protocolManager.getProtocolSessionManager(resourceId).registerContext(sessionContext);
+		assertTrue("Context is registered", sessionManager.getRegisteredContexts().contains(sessionContext));
+		assertTrue("No sessions are created", sessionManager.getAllProtocolSessionIds().isEmpty());
+
+		resourceManager.startResource(resource.getResourceIdentifier());
+
+		assertEquals(1, sessionManager.getAllProtocolSessionIds().size());
+		for (String sessionId : sessionManager.getAllProtocolSessionIds()) {
+			IProtocolSession session = sessionManager.getSessionById(sessionId, false);
+			assertEquals(sessionContext, session.getSessionContext());
+			assertEquals(IProtocolSession.Status.CONNECTED, session.getStatus());
+		}
+
+		resourceManager.stopResource(resource.getResourceIdentifier());
+		assertFalse("Context should be still registered ", sessionManager.getRegisteredContexts().isEmpty());
+		assertTrue("No active sessions", sessionManager.getAllProtocolSessionIds().isEmpty());
+
+		resourceManager.removeResource(resource.getResourceIdentifier());
+		assertTrue("Contexts should be unregistered", sessionManager.getRegisteredContexts().isEmpty());
+		assertTrue("Sessions should be destroyed", sessionManager.getAllProtocolSessionIds().isEmpty());
+
+		assertFalse("Removed resource should not be registered in ProtocolManager",
+				protocolManager.getAllResourceIds().contains(resourceId));
 	}
 
 	/*
