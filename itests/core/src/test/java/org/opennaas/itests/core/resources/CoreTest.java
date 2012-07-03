@@ -19,7 +19,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.ResourceException;
@@ -104,32 +103,8 @@ public class CoreTest
 	}
 
 	@After
-	public void clearRepo() {
-
+	public void clearRepo() throws ResourceException {
 		resourceManager.destroyAllResources();
-
-		log.info("Clearing resource repo");
-
-		IResource[] toRemove = new IResource[resourceManager.listResources().size()];
-		toRemove = resourceManager.listResources().toArray(toRemove);
-		int count = 0;
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				try {
-					resourceManager.stopResource(resource.getResourceIdentifier());
-				} catch (ResourceException e) {
-					log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
-				}
-			}
-			try {
-				resourceManager.removeResource(resource.getResourceIdentifier());
-				count++;
-			} catch (ResourceException e) {
-				log.error("Failed to remove resource " + resource.getResourceIdentifier().getId() + " from repository.");
-			}
-		}
-
-		log.info("Resource repo cleared! Removed " + count + " resources.");
 	}
 
 	/**
@@ -146,7 +121,7 @@ public class CoreTest
 			capabilities.add("queue");
 
 			ProfileDescriptor profileDescriptor = ResourceDescriptorFactory.newProfileDescriptor("profile", "router");
-			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("TestResource", "router", capabilities);
+			ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("ProfileTestResource", "router", capabilities);
 			/* specify profiles */
 			Map<String, IActionSet> actionSets = new HashMap<String, IActionSet>();
 			ActionSet actionSet = new ActionSet();
@@ -177,10 +152,7 @@ public class CoreTest
 		} catch (ProtocolException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
 		}
-
 	}
 
 	/**
@@ -231,8 +203,6 @@ public class CoreTest
 		} catch (ProtocolException e) {
 			log.error("Error ocurred!!!", e);
 			Assert.fail(e.getMessage());
-		} finally {
-			clearRepo();
 		}
 		// catch (ProtocolException e) {
 		// log.error("Error ocurred!!!", e);

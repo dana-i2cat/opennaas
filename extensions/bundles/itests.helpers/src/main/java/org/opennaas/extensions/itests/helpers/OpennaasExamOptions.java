@@ -13,8 +13,7 @@ import com.google.common.base.Joiner;
 
 public abstract class OpennaasExamOptions
 {
-	public final static KarafDistributionBaseConfigurationOption
-			opennaasDistributionConfiguration()
+	public final static KarafDistributionBaseConfigurationOption opennaasDistributionConfiguration()
 	{
 		return karafDistributionConfiguration()
 				.frameworkUrl(maven()
@@ -33,7 +32,8 @@ public abstract class OpennaasExamOptions
 				.groupId("org.opennaas")
 				// .artifactId("org.opennaas.extensions.nexus.tests.helper")
 				.artifactId("org.opennaas.extensions.itests.helpers")
-				.versionAsInProject());
+				.versionAsInProject(),
+				compendiumProfile());
 	}
 
 	public final static Option includeTestMockProfile()
