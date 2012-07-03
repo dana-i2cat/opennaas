@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+	
+	<bean id="tl1ProtocolSessionFactory" class="org.opennaas.extensions.protocols.tl1.TL1ProtocolSessionFactory"/>
+	<!-- Listen for Transport Factories -->
+	<reference-list interface="org.opennaas.core.resources.transport.ITransportFactory"
+		availability="optional">
+		<reference-listener ref="tl1ProtocolSessionFactory"
+			bind-method="transportFactoryAdded" unbind-method="transportFactoryRemoved" />
+	</reference-list>
+	
+	<service ref="tl1ProtocolSessionFactory" interface="org.opennaas.core.resources.protocol.IProtocolSessionFactory">
+		<service-properties>
+			<!--  identify the model router. It is generic for any router -->
+			<entry key="protocol" value="tl1"/>
+			<entry key="protocol.version" value="1.0.0"/>
+		</service-properties>
+	</service>
+</blueprint>

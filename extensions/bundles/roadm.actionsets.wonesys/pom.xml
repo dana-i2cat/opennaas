@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.10</version>
+		<version>0.11</version>
 	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.roadm.actionsets.wonesys</artifactId>
@@ -29,6 +29,14 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.connections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.roadm.capability.monitoring</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

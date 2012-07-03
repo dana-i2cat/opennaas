@@ -11,11 +11,11 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedElement;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 
 public class SetIPv4Action extends JunosAction {
 	Log	log	= LogFactory.getLog(SetIPv4Action.class);

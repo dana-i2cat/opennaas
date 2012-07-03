@@ -1,0 +1,12 @@
+<resourceDescriptor>
+	<!-- Capability information -->
+	<capabilityDescriptors>
+		<information><type>example</type></information>
+	</capabilityDescriptors>
+	<!-- Resource information. It specify type and name-->
+	<information>
+		<type>sampleresource</type>
+		<name>resource1</name>
+	</information>
+	<properties/>
+</resourceDescriptor>

@@ -7,9 +7,9 @@ import org.opennaas.extensions.router.junos.actionssets.ActionConstants;
 import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.CommandNetconfConstants;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
-import org.opennaas.extensions.router.junos.commandsets.commons.IPUtilsHelper;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EnabledLogicalElement.EnabledState;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.router.model.OSPFArea;
 
 import org.opennaas.core.resources.action.ActionException;

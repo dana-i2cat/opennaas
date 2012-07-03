@@ -72,8 +72,13 @@ public class SubmitServiceCommand extends AutobahnCommand
 	private void waitUntilOrFailure(State state)
 		throws ActionException, UserAccessPointException_Exception
 	{
+		State lastState = State.ACCEPTED;
 		while (true) {
 			ReservationResponse reservation = getReservation();
+			if (! (reservation.getState().equals(lastState))) {
+				lastState = reservation.getState();
+				log.debug("Service " + serviceId + " state updated to " + lastState);
+			}
 			switch (reservation.getState()) {
 			case CANCELLED:
 				throw new ActionException("Reservation cancelled: " +

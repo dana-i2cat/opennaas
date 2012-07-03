@@ -1,0 +1,204 @@
+group TranslateCIM;
+
+classFileTemplate(TranslateCimVersion,
+                  currentDateTime,
+				  majorCimVersion,
+				  minorCimVersion,
+				  subPackage,
+				  deprecated,
+				  classComment,
+				  abstract,
+				  cimClassName,
+				  mofSuperClass,
+				  features,
+				  imports) ::= <<
+package org.dmtf.cim.<subPackage>;
+
+<imports; separator="\n">
+
+/**
+ * <classComment; separator="\n * ">
+ *
+ *  @version <majorCimVersion>.<minorCimVersion>
+<if(deprecated)> *  @deprecated - Replaced by <deprecated; separator=", "><endif>
+ */
+<!
+See http://jcp.org/aboutJava/communityprocess/final/jsr250/index.html
+I expected the compiler to ignore @Generated, but it gave warnings, so I commented it out for now.
+In the generated code, I need to import javax.annotation in order to use @Generated,
+and I don't know where/how to get javax.annotation.  Sigh.
+!>
+/*
+@Generated(value="org.dmtf.cim.TranslateCIM",
+           comments="TranslateCIM version <TranslateCIMVersion>",
+           date="<currentDateTime>")
+*/
+<if(deprecated)>@Deprecated<endif>
+public <if(abstract)>abstract <endif>class <cimClassName> <if(mofSuperClass)>extends <mofSuperClass> <endif>{
+  <features; separator="\n">
+}
+
+>>
+
+
+importTemplate(subDirectory) ::= <<
+import org.dmtf.cim.<subDirectory>.*;
+>>
+
+
+classFeatureTemplate(comment, deprecated, featureBody) ::= <<
+
+<if(comment)>/**
+ * <comment; separator="\n * ">
+<if(deprecated)> *
+ * @deprecated - Replaced by <deprecated; separator=", "><endif>
+ */
+<endif>
+<featureBody>
+>>
+
+
+classDataProperty(enumerable, deprecated, type, isArray, name, initializerFrag, valuesLineList, valuesComments) ::= <<
+<if(enumerable)>
+
+public enum <name>_enum {
+
+<valuesLineList>;
+<valuesComments; separator="\n">
+
+  private final <type> localValue;
+  <name>_enum(<type> enumValue) { this.localValue = enumValue; }
+}
+<endif>
+<if(deprecated)>@Deprecated <endif>
+<if(enumerable)>
+<name>_enum
+<else>
+<type>
+<endif>
+<if(isArray)>[]<endif> <name><initializerFrag>;
+>>
+
+
+initializerFragment(enumerable, isArray, name, initializerPieces) ::= <<
+<if(initializerPieces)>
+ = <if(isArray)>{ <endif><initializerPieces:enumIt(en=enumerable,nam=name); separator=", "><if(isArray)> }<endif>
+<endif>
+>>
+
+
+enumIt(en, nam) ::= <<
+<if(en)>
+<nam>_enum.<it>
+<else>
+<it>
+<endif>
+>>
+
+
+classPropertyValuesLine(enumerable, type, constantName, constantValue) ::= <<
+<if(enumerable)>
+  <constantName>(<constantValue>)
+<else>
+public static final <type> <constantName> = <constantValue>;
+<endif>
+>>
+
+
+classPropertyValuesLineList(enumerable, valuesLines) ::= <<
+<if(enumerable)>
+<valuesLines; separator=",\n">
+<else>
+<valuesLines; separator="\n">
+<endif>
+>>
+
+
+classPropertyValuesComment(enumerable, constantName, constantValue) ::= <<
+<if(enumerable)>
+  
+<endif>
+/* values <constantValue> are "<constantName>" */
+>>
+
+
+classReferencePropertyTemplate(deprecated,
+							   type,
+					           isArray,
+					           name) ::= <<
+<if(deprecated)>@Deprecated <endif><type><if(isArray)>[]<endif> <name>;
+>>
+
+
+classMethodTemplate(deprecated,
+					type,
+					name,
+					parameters,
+					bogusReturnValue) ::= <<
+
+<if(deprecated)>@Deprecated <endif>public <type> <name> (
+<parameters; separator=",\n">) {
+    System.out.println("method <name> has been created, but has no body yet!");
+    return <bogusReturnValue>;
+}
+>>
+
+
+methodParameterTemplate(comment,
+						type,
+						isArray,
+						name) ::= <<
+/**
+ * <comment; separator="\n * ">
+ */
+<type><if(isArray)>[]<endif> <name>
+>>
+
+
+methodParameterListTemplate(parms) ::= <<
+<parms; separator=",\n">
+>>
+
+
+methodReferenceTemplate(comment,
+						className,
+						isArray,
+						referenceName) ::= <<
+/**
+ * <comment; separator="\n * ">
+ */
+<className><if(isArray)>[]<endif> <referenceName>
+>>
+
+uint8Template()    ::= "int"
+sint8Template()    ::= "int"
+uint16Template()   ::= "int"
+sint16Template()   ::= "short"
+uint32Template()   ::= "long"
+sint32Template()   ::= "int"
+uint64Template()   ::= "long"
+sint64Template()   ::= "long"
+real32Template()   ::= "float"
+real64Template()   ::= "double"
+char16Template()   ::= "char"
+strTemplate()      ::= "String"
+booleanTemplate()  ::= "boolean"
+datetimeTemplate() ::= "String"
+
+uint8DefaultValueTemplate()    ::= "0"
+sint8DefaultValueTemplate()    ::= "0"
+uint16DefaultValueTemplate()   ::= "0"
+sint16DefaultValueTemplate()   ::= "0"
+uint32DefaultValueTemplate()   ::= "0"
+sint32DefaultValueTemplate()   ::= "0"
+uint64DefaultValueTemplate()   ::= "0L"
+sint64DefaultValueTemplate()   ::= "0L"
+real32DefaultValueTemplate()   ::= "0.0f"
+real64DefaultValueTemplate()   ::= "0.0d"
+char16DefaultValueTemplate()   ::= "'\u0000'"
+strDefaultValueTemplate()      ::= "null"
+booleanDefaultValueTemplate()  ::= "false"
+datetimeDefaultValueTemplate() ::= "null"
+
+
+

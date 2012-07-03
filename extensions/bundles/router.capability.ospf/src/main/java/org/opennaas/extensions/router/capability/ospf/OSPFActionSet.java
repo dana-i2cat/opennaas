@@ -1,7 +1,8 @@
 package org.opennaas.extensions.router.capability.ospf;
 
+import org.opennaas.core.resources.action.IActionSetDefinition;
 
-public class OSPFActionSet {
+public class OSPFActionSet implements IActionSetDefinition {
 
 	public static final String	OSPF_CONFIGURE					= "configureOSPF";
 	public static final String	OSPF_CLEAR						= "clearOSPF";
