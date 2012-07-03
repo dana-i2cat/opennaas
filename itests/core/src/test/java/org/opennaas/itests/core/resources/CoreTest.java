@@ -293,8 +293,33 @@ public class CoreTest
 		EventFilter filter2 = new EventFilter(
 				new String[] { eventTopic }, "(" + filterPropertyName + "=" + filterPropertyValue + ")");
 
-		EventHandler handler1 = createHandler1();
-		EventHandler handler2 = createHandler2();
+		EventHandler handler1 = new EventHandler() {
+			@Override
+			public void handleEvent(Event event) {
+
+				log.info("Handler1 Received event");
+				log.info("Topic: " + event.getTopic());
+				log.info("Properties: ");
+				for (String propName : event.getPropertyNames())
+					log.info(propName + " : " + event.getProperty(propName));
+
+				h1Received.add(event);
+			}
+		};
+
+		EventHandler handler2 = new EventHandler() {
+			@Override
+			public void handleEvent(Event event) {
+
+				log.info("Handler2 Received event");
+				log.info("Topic: " + event.getTopic());
+				log.info("Properties: ");
+				for (String propName : event.getPropertyNames())
+					log.info(propName + " : " + event.getProperty(propName));
+
+				h2Received.add(event);
+			}
+		};
 
 		log.info("Registering Handlers...");
 		int handler1Id = eventManager.registerEventHandler(handler1, filter1);
@@ -328,59 +353,9 @@ public class CoreTest
 
 	}
 
-	private EventHandler createHandler1() {
-
-		EventHandler handler = new EventHandler() {
-
-			@Override
-			public void handleEvent(Event event) {
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("Handler1 Received event");
-				log.info("Topic: " + event.getTopic());
-				log.info("Properties: ");
-				for (String propName : event.getPropertyNames())
-					log.info(propName + " : " + event.getProperty(propName));
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-
-				h1Received.add(event);
-			}
-		};
-		return handler;
-	}
-
-	private EventHandler createHandler2() {
-
-		EventHandler handler = new EventHandler() {
-
-			@Override
-			public void handleEvent(Event event) {
-
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("Handler2 Received event");
-				log.info("Topic: " + event.getTopic());
-				log.info("Properties: ");
-				for (String propName : event.getPropertyNames())
-					log.info(propName + " : " + event.getProperty(propName));
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-				log.info("------------------------------------");
-
-				h2Received.add(event);
-			}
-		};
-		return handler;
-	}
-
 	/*
 	 * HELPERS
 	 */
-
 	private void createProtocolForResource(String resourceId) throws ProtocolException {
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, newSessionContextNetconf());
 	}
