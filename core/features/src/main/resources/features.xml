@@ -70,7 +70,14 @@
 		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-ws" version="${project.version}">
+	<feature name="opennaas-ws-soap" version="${project.version}">
+		<feature>jetty</feature>
+		
+		<!-- old ws, tnc demo  -->
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-ws-rest" version="${project.version}">
 		<feature>jetty</feature>
 		
 		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
@@ -83,9 +90,6 @@
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/1.8.0</bundle>		
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
-		
-		<!-- old ws, tnc demo  -->
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
@@ -174,7 +178,8 @@
 	</feature>
 
 	<feature name="opennaas" version="${project.version}">
-		<feature version="${project.version}">opennaas-ws</feature>
+		<feature version="${project.version}">opennaas-ws-soap</feature>
+		<feature version="${project.version}">opennaas-ws-rest</feature>
 		<feature version="${project.version}">opennaas-router</feature>
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
