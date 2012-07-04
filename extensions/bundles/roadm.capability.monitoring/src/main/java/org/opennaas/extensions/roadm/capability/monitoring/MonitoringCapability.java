@@ -124,7 +124,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	@Override
 	public void activate() throws CapabilityException {
 		registerAsCapabilityAlarmListener();
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IMonitoringCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IMonitoringCapability.class.getName());
 		super.activate();
 	}
 
@@ -136,7 +136,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 	@Override
 	public void deactivate() throws CapabilityException {
 		unregisterAsCapabilityAlarmListener();
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 

@@ -54,7 +54,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IOSPFCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IOSPFCapability.class.getName());
 		super.activate();
 	}
 
@@ -65,7 +65,7 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 

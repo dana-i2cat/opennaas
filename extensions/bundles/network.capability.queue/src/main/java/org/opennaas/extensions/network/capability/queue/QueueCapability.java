@@ -57,7 +57,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueCapability.class.getName());
 		super.activate();
 	}
 
@@ -68,7 +68,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 

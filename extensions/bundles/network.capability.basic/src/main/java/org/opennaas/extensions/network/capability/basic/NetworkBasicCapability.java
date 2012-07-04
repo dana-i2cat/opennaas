@@ -246,7 +246,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), INetworkBasicCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), INetworkBasicCapability.class.getName());
 		super.activate();
 	}
 
@@ -257,7 +257,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 

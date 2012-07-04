@@ -46,7 +46,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IChassisCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IChassisCapability.class.getName());
 		super.activate();
 	}
 
@@ -57,7 +57,7 @@ public class ChassisCapability extends AbstractCapability implements IChassisCap
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 

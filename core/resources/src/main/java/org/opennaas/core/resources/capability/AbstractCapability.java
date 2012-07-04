@@ -77,6 +77,13 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		return resource.getResourceDescriptor().getInformation().getName();
 	}
 
+	/**
+	 * @return the resource name through the resource descriptor
+	 */
+	public String getResourceType() {
+		return resource.getResourceDescriptor().getInformation().getType();
+	}
+
 	// IQueueingCapability methods
 
 	/*
@@ -304,10 +311,10 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @return
 	 * @throws CapabilityException
 	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName)
-			throws CapabilityException {
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName) throws CapabilityException {
 		Dictionary<String, String> props = new Hashtable<String, String>();
-		return registration = registerService(bundleContext, capabilityName, resourceName, ifaceName, props);
+		return registration = registerService(bundleContext, capabilityName, resourceType, resourceName, ifaceName, props);
 	}
 
 	/**
@@ -318,14 +325,14 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @return
 	 * @throws CapabilityException
 	 */
-	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceName, String ifaceName,
-			Dictionary<String, String> props) throws CapabilityException {
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
 		// Rest
-		if (capabilityName.equals("ospf")) {
+		if (props != null) {
 			props.put("service.exported.interfaces", "*");
 			props.put("service.exported.configs", "org.apache.cxf.rs");
 			props.put("service.exported.intents", "HTTP");
-			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceName);
+			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName);
 		}
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}

@@ -67,7 +67,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IL2BoDCapability.class.getName());
+//		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IL2BoDCapability.class.getName());
 		super.activate();
 	}
 
@@ -78,7 +78,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+//		registration.unregister();
 		super.deactivate();
 	}
 

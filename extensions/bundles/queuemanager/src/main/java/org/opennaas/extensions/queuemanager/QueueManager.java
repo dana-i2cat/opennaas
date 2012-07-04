@@ -97,7 +97,9 @@ public class QueueManager extends AbstractCapability implements
 		Dictionary<String, String> props = new Hashtable<String, String>();
 		props.put(ResourceDescriptorConstants.CAPABILITY, "queue");
 		props.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueManagerCapability.class.getName(), props);
+		registration = Activator.getContext().registerService(
+				IQueueManagerCapability.class.getName(), this, props);
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueManagerCapability.class.getName());
 		super.initialize();
 	}
 

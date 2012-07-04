@@ -45,7 +45,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IGRETunnelCapability.class.getName());
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IGRETunnelCapability.class.getName());
 		super.activate();
 	}
 
@@ -56,7 +56,7 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		registration.unregister();
+		// registration.unregister();
 		super.deactivate();
 	}
 
