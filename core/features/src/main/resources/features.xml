@@ -71,6 +71,7 @@
 	</feature>
 
 	<feature name="opennaas-ws-soap" version="${project.version}">
+		<feature>jetty</feature>
 		<!-- old ws, tnc demo  -->
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
 	</feature>
