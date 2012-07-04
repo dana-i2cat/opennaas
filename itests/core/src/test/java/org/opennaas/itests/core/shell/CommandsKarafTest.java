@@ -15,7 +15,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
@@ -85,37 +84,16 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 	}
 
 	@After
-	public void clearRepo() {
+	public void clearRepo() throws ResourceException {
 
 		log.info("Clearing resource repo");
 
-		IResource[] toRemove = new IResource[resourceManager.listResources()
-				.size()];
-		toRemove = resourceManager.listResources().toArray(toRemove);
+		resourceManager.destroyAllResources();
 
-		for (IResource resource : toRemove) {
-			if (resource.getState().equals(State.ACTIVE)) {
-				try {
-					resourceManager.stopResource(resource
-							.getResourceIdentifier());
-				} catch (ResourceException e) {
-					log.error("Failed to remove resource "
-							+ resource.getResourceIdentifier().getId()
-							+ " from repository.");
-				}
-			}
-			try {
-				resourceManager
-						.removeResource(resource.getResourceIdentifier());
-			} catch (ResourceException e) {
-				log.error("Failed to remove resource "
-						+ resource.getResourceIdentifier().getId()
-						+ " from repository.");
-			}
+		log.info("Clearing profiles");
 
-		}
-
-		log.info("Resource repo cleared!");
+		for (ProfileDescriptor profile : profileManager.listProfiles())
+			profileManager.removeProfile(profile.getProfileName());
 	}
 
 	/*
