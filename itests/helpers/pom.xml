@@ -1,14 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>org.opennaas.extensions.bundles</artifactId>
+    <artifactId>org.opennaas.itests</artifactId>
     <groupId>org.opennaas</groupId>
     <version>0.11-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
-  <artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+
+  <name>OpenNaaS :: iTests :: Helpers</name>
+  <artifactId>org.opennaas.itests.helpers</artifactId>
+  <modelVersion>4.0.0</modelVersion>
   <packaging>bundle</packaging>
-  <name>OpenNaaS :: Itests :: Helpers</name>
   
    <dependencies>
    <dependency>

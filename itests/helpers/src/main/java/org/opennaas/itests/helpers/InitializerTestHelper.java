@@ -1,4 +1,4 @@
-package org.opennaas.extensions.itests.helpers;
+package org.opennaas.itests.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
