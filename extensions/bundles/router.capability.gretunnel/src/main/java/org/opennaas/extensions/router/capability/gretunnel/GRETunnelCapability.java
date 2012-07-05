@@ -41,6 +41,28 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IGRETunnelCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		// registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * org.opennaas.extensions.router.capability.gretunnel.IGRETunnelService#createGRETunnel(org.opennaas.extensions.router.model.GRETunnelService)
 	 */
@@ -87,15 +109,25 @@ public class GRETunnelCapability extends AbstractCapability implements IGRETunne
 			}
 		}
 		log.info("End of showGRETunnelConfiguration call");
-		
+
 		return listGreTunnelServices;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceID).queueAction(action);

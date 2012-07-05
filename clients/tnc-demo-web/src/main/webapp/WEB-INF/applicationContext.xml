@@ -16,47 +16,47 @@
 		as any other object. -->
 	<jaxws:client id="resourceManagerService"
 		serviceClass="org.opennaas.extensions.ws.services.IResourceManagerService"
-		address="http://localhost:8182/opennaas-cxf/resourceManagerService" />
+		address="http://localhost:8182/opennaas/resourceManagerService" />
 
 	<jaxws:client id="protocolSessionManagerService"
 		serviceClass="org.opennaas.extensions.ws.services.IProtocolSessionManagerService"
-		address="http://localhost:8182/opennaas-cxf/protocolSessionManagerService" />
+		address="http://localhost:8182/opennaas/protocolSessionManagerService" />
 
 	<jaxws:client id="chassisCapabilityService"
 		serviceClass="org.opennaas.extensions.ws.services.IChassisCapabilityService"
-		address="http://localhost:8182/opennaas-cxf/chassisCapabilityService" />
+		address="http://localhost:8182/opennaas/chassisCapabilityService" />
 
 	<jaxws:client id="queueManagerCapabilityService"
 		serviceClass="org.opennaas.extensions.ws.services.IQueueManagerCapabilityService"
-		address="http://localhost:8182/opennaas-cxf/queueManagerCapabilityService" />
+		address="http://localhost:8182/opennaas/queueManagerCapabilityService" />
 
 	<jaxws:client id="networkBasicCapabilityService"
 		serviceClass="org.opennaas.extensions.ws.services.INetworkBasicCapabilityService"
-		address="http://localhost:8182/opennaas-cxf/networkBasicCapabilityService" />
+		address="http://localhost:8182/opennaas/networkBasicCapabilityService" />
 
 	<jaxws:client id="ipCapabilityService"
 		serviceClass="org.opennaas.extensions.ws.services.IIPCapabilityService"
-		address="http://localhost:8182/opennaas-cxf/ipCapabilityService" />
+		address="http://localhost:8182/opennaas/ipCapabilityService" />
 
 	<jaxws:client id="staticRouteCapabilityService"
 		serviceClass="org.opennaas.extensions.ws.services.IStaticRouteCapabilityService"
-		address="http://localhost:8182/opennaas-cxf/staticRouteCapabilityService" />
+		address="http://localhost:8182/opennaas/staticRouteCapabilityService" />
 		
     <jaxws:client id="l2bodCapabilityService" 
     	serviceClass="org.opennaas.extensions.ws.services.IL2BoDCapabilityService" 
-    	address="http://localhost:8182/opennaas-cxf/l2bodCapabilityService" />
+    	address="http://localhost:8182/opennaas/l2bodCapabilityService" />
 
     <jaxws:client id="greTunnelCapabilityService" 
     	serviceClass="org.opennaas.extensions.ws.services.IGRETunnelCapabilityService" 
-    	address="http://localhost:8182/opennaas-cxf/greTunnelCapabilityService" />
+    	address="http://localhost:8182/opennaas/greTunnelCapabilityService" />
 
     <jaxws:client id="netOSPFCapabilityService" 
     	serviceClass="org.opennaas.extensions.ws.services.INetOSPFCapabilityService" 
-    	address="http://localhost:8182/opennaas-cxf/netOSPFCapabilityService" />
+    	address="http://localhost:8182/opennaas/netOSPFCapabilityService" />
 
     <jaxws:client id="netQueueCapabilityService" 
     	serviceClass="org.opennaas.extensions.ws.services.INetQueueCapabilityService" 
-    	address="http://localhost:8182/opennaas-cxf/netQueueCapabilityService" />
+    	address="http://localhost:8182/opennaas/netQueueCapabilityService" />
 
 
 	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

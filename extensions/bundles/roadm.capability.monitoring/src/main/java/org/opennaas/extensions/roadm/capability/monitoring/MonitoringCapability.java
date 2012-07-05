@@ -31,7 +31,7 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 
 	static Log					log				= LogFactory.getLog(MonitoringCapability.class);
 
-	public static final String	CAPABILITY_NAME	= "monitoring";
+	public static final String	CAPABILITY_TYPE	= "monitoring";
 	private String				resourceId		= "";
 	private int					registrationNumber;
 
@@ -79,16 +79,31 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		return alarms;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
-		return CAPABILITY_NAME;
+		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
@@ -101,18 +116,35 @@ public class MonitoringCapability extends AbstractCapability implements EventHan
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
 	@Override
 	public void activate() throws CapabilityException {
 		registerAsCapabilityAlarmListener();
-		setState(State.ACTIVE);
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IMonitoringCapability.class.getName());
+		super.activate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
 	@Override
 	public void deactivate() throws CapabilityException {
 		unregisterAsCapabilityAlarmListener();
-		setState(State.INACTIVE);
+		// registration.unregister();
+		super.deactivate();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.osgi.service.event.EventHandler#handleEvent(org.osgi.service.event.Event)
+	 */
 	@Override
 	public void handleEvent(Event event) {
 		log.debug("Monitoring capability received an alarm!");

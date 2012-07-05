@@ -1,8 +1,12 @@
 package org.opennaas.extensions.network.capability.ospf;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 
+@Path("/netospf")
 public interface INetOSPFCapability extends ICapability {
 
 	/**
@@ -13,6 +17,8 @@ public interface INetOSPFCapability extends ICapability {
 	 * 
 	 * @throws CapabilityException
 	 */
+	@POST
+	@Path("/activate")
 	public void activateOSPF() throws CapabilityException;
 
 	/**
@@ -21,5 +27,7 @@ public interface INetOSPFCapability extends ICapability {
 	 * @return
 	 * @throws CapabilityException
 	 */
+	@POST
+	@Path("/deactivate")
 	public void deactivateOSPF() throws CapabilityException;
 }

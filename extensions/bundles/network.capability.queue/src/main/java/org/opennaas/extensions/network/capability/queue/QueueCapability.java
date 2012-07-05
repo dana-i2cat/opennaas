@@ -15,7 +15,6 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
-import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.network.model.NetworkModel;
@@ -51,15 +50,45 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 		log.debug("Built new queue capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		// registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
-		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -118,7 +147,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 				IQueueManagerCapability queueCapability = (IQueueManagerCapability) iResource
 						.getCapabilityByInterface(IQueueManagerCapability.class);
 				if (queueCapability != null) {
-					queueResponse = (QueueResponse) queueCapability.execute();
+					queueResponse = queueCapability.execute();
 				}
 			}
 		} catch (ResourceException e) {
@@ -151,19 +180,6 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 			iResource = resourceManager.getResource(iResourceIdentifier);
 		}
 		return iResource;
-	}
-
-	/**
-	 * Get the information class with the type = _type
-	 * 
-	 * @param type
-	 *            to set
-	 * @return information
-	 */
-	private Information getInformation(String _type) {
-		Information information = new Information();
-		information.setType(_type);
-		return information;
 	}
 
 	/**

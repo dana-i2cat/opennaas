@@ -46,6 +46,7 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
+		<cxf.dosgi.version>1.3.1</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -60,6 +61,7 @@
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
 		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
+		<jetty.version>7.4.2.v20110526</jetty.version>
 		<junit.version>4.10</junit.version>
 		<karaf.version>2.2.2-fuse-04-06</karaf.version>
 		<mantychore.version>${project.version}</mantychore.version>
@@ -86,7 +88,7 @@
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
 		<xbean.version>3.9</xbean.version>
-		<xmlschema.version>1.4.5</xmlschema.version>
+		<xmlschema.version>1.4.7</xmlschema.version>
 	</properties>
 
 	<dependencyManagement>
@@ -378,6 +380,11 @@
 				<version>${osgi.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>org.osgi.enterprise</artifactId>
+				<version>${osgi.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
 				<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 				<version>${servicemix.javax-inject.version}</version>
@@ -646,6 +653,21 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
+			</dependency>	
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-bundle-minimal</artifactId>
+				<version>${cxf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf.dosgi</groupId>
+				<artifactId>cxf-dosgi-ri-discovery-local</artifactId>
+				<version>${cxf.dosgi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf.dosgi</groupId>
+				<artifactId>cxf-dosgi-ri-dsw-cxf</artifactId>
+				<version>${cxf.dosgi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.plexus</groupId>
@@ -739,6 +761,11 @@
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${jodatime.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.jetty.aggregate</groupId>
+				<artifactId>jetty-all-server</artifactId>
+				<version>${jetty.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

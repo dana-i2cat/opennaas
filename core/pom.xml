@@ -14,7 +14,6 @@
 		<module>karafbranding</module>
 		<module>persistence</module>
 		<module>hsqldb</module>
-		<module>platformmanager</module>
 		<module>resources</module>
 		<!-- Bundles past this point do depend on the resources bundle -->
 		<!--<module>org.opennaas.core.resourcemanager-soapendpoint</module>-->
