@@ -1,6 +1,8 @@
 package org.opennaas.core.resources.capability;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -15,6 +17,8 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.profile.IProfile;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * This class provides an abstract implementation for the ICapabilityLifecycle and IQueueingCapability interface.
@@ -36,14 +40,29 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	Log								log				= LogFactory.getLog(AbstractCapability.class);
 
 	/** The descriptor for this capability **/
-	protected CapabilityDescriptor	descriptor;
 	private State					state			= null;
+	protected CapabilityDescriptor	descriptor;
 	protected String				capabilityId	= null;
 	protected IResource				resource		= null;
-
 	protected IActionSet			actionSet		= null;
-
 	protected IProfile				profile			= null;
+	protected ServiceRegistration	registration;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.IQueueingCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
+	@Override
+	public abstract void queueAction(IAction action) throws CapabilityException;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.IQueueingCapability#getActionSet()
+	 */
+	@Override
+	public abstract IActionSet getActionSet() throws CapabilityException;
 
 	public AbstractCapability(CapabilityDescriptor descriptor) {
 		this.descriptor = descriptor;
@@ -51,25 +70,57 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		setState(State.INSTANTIATED);
 	}
 
-	/*
-	 * ICapability methods
+	/**
+	 * @return the resource name through the resource descriptor
 	 */
+	public String getResourceName() {
+		return resource.getResourceDescriptor().getInformation().getName();
+	}
 
+	/**
+	 * @return the resource name through the resource descriptor
+	 */
+	public String getResourceType() {
+		return resource.getResourceDescriptor().getInformation().getType();
+	}
+
+	// IQueueingCapability methods
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityDescriptor()
+	 */
 	@Override
 	public CapabilityDescriptor getCapabilityDescriptor() {
 		return descriptor;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#setCapabilityDescriptor(org.opennaas.core.resources.descriptor.CapabilityDescriptor)
+	 */
 	@Override
 	public void setCapabilityDescriptor(CapabilityDescriptor descriptor) {
 		this.descriptor = descriptor;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityInformation()
+	 */
 	@Override
 	public Information getCapabilityInformation() {
 		return descriptor.getCapabilityInformation();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -91,9 +142,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		this.resource = resource;
 	}
 
-	/*
-	 * ICapabilityLifecycle methods
-	 */
+	// ICapabilityLifecycle methods
 
 	/**
 	 * Returns the current capability state
@@ -108,7 +157,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	/**
 	 * Sets the current capability state
 	 */
-	protected void setState(State state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 
@@ -152,26 +201,23 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		setState(State.SHUTDOWN);
 	}
 
+	// IQueueingCapability methods
+
 	/*
-	 * IQueueingCapability methods
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.IQueueingCapability#sendRefreshActions()
 	 */
-
-	@Override
-	public abstract IActionSet getActionSet() throws CapabilityException;
-
 	@Override
 	public void sendRefreshActions() throws CapabilityException {
 		sendRefreshActions(new ArrayList<Object>());
 	}
 
-	@Override
-	public abstract void queueAction(IAction action) throws CapabilityException;
-
 	// TODO use when queue is in opennaas.core
 	// @Override
 	// public void queueuAction(IAction action) throws CapabilityException {
 	// getQueuemanager().queueAction(action);
-	// }
+	// }uie
 	//
 	// /**
 	// *
@@ -180,6 +226,11 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	// */
 	// protected abstract IQueueManagerCapability getQueueManager() throws CapabilityException;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.IQueueingCapability#createAction(java.lang.String)
+	 */
 	@Override
 	public IAction createAction(String actionId) throws CapabilityException {
 
@@ -198,51 +249,6 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		} catch (ActionException e) {
 			throw new CapabilityException(e);
 		}
-	}
-
-	/**
-	 * 
-	 * @return Action for this capability with given id stored in profile, or null if there is no such action in profile.
-	 * @throws ActionException
-	 *             if there is a problem instantiating the action
-	 */
-	private Action loadActionFromProfile(String actionId) throws ActionException {
-		IProfile profile = resource.getProfile();
-
-		ActionSet actionSet = null;
-		Action action = null;
-
-		if (profile != null) {
-			actionSet = (ActionSet) profile.getActionSetForCapability(capabilityId);
-			if (actionSet != null) {
-				// try to load the actionId from profile ActionSet
-				action = actionSet.obtainAction(actionId);
-			}
-		}
-		return action;
-	}
-
-	/**
-	 * 
-	 * @param actionId
-	 * @param actionParameters
-	 * @return created action with given parameters
-	 * @throws CapabilityException
-	 *             if an error occurs creating the action or checking it's parameters.
-	 */
-	protected IAction createActionAndCheckParams(String actionId, Object actionParameters) throws CapabilityException {
-
-		IAction action = createAction(actionId);
-		action.setParams(actionParameters);
-		action.setModelToUpdate(resource.getModel());
-		// FIXME define checkParams signature. Should it return exception if fails or return false???
-		// now both Exception and return false have same meaning
-		boolean isOk = action.checkParams(action.getParams());
-		if (!isOk) {
-			throw new CapabilityException("Invalid parameters for action " + actionId);
-		}
-
-		return action;
 	}
 
 	/**
@@ -274,36 +280,83 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		}
 	}
 
-	// private Response prepareResponse(List<Response> responses) {
-	// Response responseRefresh = Response.okResponse(REFRESH);
-	// Vector<String> errors = new Vector<String>();
-	// for (Response response : responses) {
-	// if (response.getStatus() == Response.Status.ERROR) {
-	// errors.add(concatenateList(response.getErrors(), "\n"));
-	// }
-	// }
-	// if (!errors.isEmpty()) {
-	// responseRefresh = Response.errorResponse(REFRESH, errors);
-	// }
-	//
-	// return responseRefresh;
-	// }
-	//
-	// private Response prepareErrorMessage(String nameError, String message) {
-	// Vector<String> errorMsgs = new Vector<String>();
-	// errorMsgs.add(message);
-	// return Response.errorResponse(nameError, errorMsgs);
-	//
-	// }
-	//
-	// private static String concatenateList(List<String> listStrings, String separator) {
-	// String modifiedString = "";
-	// String lastElement = listStrings.remove(listStrings.size() - 1);
-	// for (String str : listStrings) {
-	// modifiedString.concat(str + separator);
-	// }
-	// modifiedString.concat(lastElement);
-	// return modifiedString;
-	// }
+	/**
+	 * 
+	 * @param actionId
+	 * @param actionParameters
+	 * @return created action with given parameters
+	 * @throws CapabilityException
+	 *             if an error occurs creating the action or checking it's parameters.
+	 */
+	protected IAction createActionAndCheckParams(String actionId, Object actionParameters) throws CapabilityException {
+
+		IAction action = createAction(actionId);
+		action.setParams(actionParameters);
+		action.setModelToUpdate(resource.getModel());
+		// FIXME define checkParams signature. Should it return exception if fails or return false???
+		// now both Exception and return false have same meaning
+		boolean isOk = action.checkParams(action.getParams());
+		if (!isOk) {
+			throw new CapabilityException("Invalid parameters for action " + actionId);
+		}
+
+		return action;
+	}
+
+	/**
+	 * Register the capability like a web service through DOSGi
+	 * 
+	 * @param name
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName) throws CapabilityException {
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		return registration = registerService(bundleContext, capabilityName, resourceType, resourceName, ifaceName, props);
+	}
+
+	/**
+	 * Register the capability like a web service through DOSGi
+	 * 
+	 * @param name
+	 * @param resourceId
+	 * @return
+	 * @throws CapabilityException
+	 */
+	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
+			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
+		// Rest
+		if (props != null) {
+			props.put("service.exported.interfaces", "*");
+			props.put("service.exported.configs", "org.apache.cxf.rs");
+			props.put("service.exported.intents", "HTTP");
+			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName);
+		}
+		return registration = bundleContext.registerService(ifaceName, this, props);
+	}
+
+	/**
+	 * 
+	 * @return Action for this capability with given id stored in profile, or null if there is no such action in profile.
+	 * @throws ActionException
+	 *             if there is a problem instantiating the action
+	 */
+	private Action loadActionFromProfile(String actionId) throws ActionException {
+		IProfile profile = resource.getProfile();
+
+		ActionSet actionSet = null;
+		Action action = null;
+
+		if (profile != null) {
+			actionSet = (ActionSet) profile.getActionSetForCapability(capabilityId);
+			if (actionSet != null) {
+				// try to load the actionId from profile ActionSet
+				action = actionSet.obtainAction(actionId);
+			}
+		}
+		return action;
+	}
 
 }

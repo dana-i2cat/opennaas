@@ -1,9 +1,13 @@
 package org.opennaas.itests.network;
 
-import static org.junit.Assert.*;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +53,7 @@ public class NetOSPFIntegrationTest {
 	protected static final String	CAPABILITY_URI			= "mock://user:pass@host.net:2212/mocksubsystem";
 	protected static final String	QUEUE_CAPABILIY_TYPE	= QueueCapability.CAPABILITY_TYPE;
 	protected static final String	OSPF_CAPABILIY_TYPE		= NetOSPFCapability.CAPABILITY_TYPE;
-	protected static final String	BASIC_CAPABILIY_TYPE	= NetworkBasicCapability.CAPABILITY_NAME;
+	protected static final String	BASIC_CAPABILIY_TYPE	= NetworkBasicCapability.CAPABILITY_TYPE;
 	protected static final String	CAPABILIY_VERSION		= null;
 	protected static final String	RESOURCE_TYPE			= "network";
 	protected static final String	RESOURCE_INFO_NAME		= "OSPF Test";

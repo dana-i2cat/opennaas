@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-	
+		
 	<!--
 	    Register OpenNaaS OSGi Services & Beans
-	  -->
-	
+	  -->		
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
-	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager"/>
+	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
+<!-- 		<service-properties> -->
+			<!-- 	Rest	 -->
+<!-- 			<entry key="service.exported.interfaces" value="*"/> -->
+<!-- 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/> -->
+<!-- 			<entry key="service.exported.intents" value="HTTP"/>		 -->
+<!-- 			<entry key="org.apache.cxf.ws.address" value="http://localhost:8888/opennaas"/>   -->
+<!-- 		</service-properties> -->
+	</service>
 	
+	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
+	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager"/>
+		
 	<bean id="profileManager" class="org.opennaas.core.resources.profile.ProfileManager"/>
 	<service ref="profileManager" interface="org.opennaas.core.resources.profile.IProfileManager"/>
 	
@@ -16,10 +26,7 @@
 	
 	<bean id="alarmsRepository" class="org.opennaas.core.resources.alarms.AlarmsRepository"/>
 	<service ref="alarmsRepository" interface="org.opennaas.core.resources.alarms.IAlarmsRepository"/>
-	
-	<bean id="protocolManager" class="org.opennaas.core.protocols.sessionmanager.ProtocolManager"/>
-	<service ref="protocolManager" interface="org.opennaas.core.resources.protocol.IProtocolManager"/>
-	
+		
 	<bean id="resourceNameCompleter" class="org.opennaas.core.resources.shell.completers.ResourceNameCompleter"/>
 	<service ref="resourceNameCompleter" interface="org.apache.karaf.shell.console.Completer">
 		<service-properties>

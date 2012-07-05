@@ -22,6 +22,10 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 
 	private String			resourceId		= "";
 
+	/**
+	 * @param descriptor
+	 * @param resourceId
+	 */
 	public L2BoDCapability(CapabilityDescriptor descriptor, String resourceId) {
 
 		super(descriptor);
@@ -56,11 +60,43 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		log.info("End of shutDownConnection call");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+//		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IL2BoDCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+//		registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 
@@ -74,6 +110,11 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);
