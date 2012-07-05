@@ -60,7 +60,7 @@ public class NetOSPFCapability extends AbstractCapability implements INetOSPFCap
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), INetOSPFCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), INetOSPFCapability.class.getName());
 		super.activate();
 	}
 
