@@ -1,13 +1,9 @@
 package org.opennaas.itests.core.queue;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
-import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.ops4j.pax.swissbox.framework.ServiceLookup.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,8 +114,7 @@ public class QueueTest
 				"user:pass@host.net:2212");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				QueueManager.QUEUE, "queue"));
+		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(QueueManager.QUEUE, "queue"));
 
 		resourceDescriptor.setProperties(properties);
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
@@ -130,7 +125,6 @@ public class QueueTest
 		protocolManager.getProtocolSessionManagerWithContext(resourceID, ResourceHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
-
 	}
 
 	@Before
