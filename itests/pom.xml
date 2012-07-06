@@ -12,6 +12,8 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>helpers</module>
+
 		<module>core</module>
 		<module>router</module>
 		<module>network</module>
