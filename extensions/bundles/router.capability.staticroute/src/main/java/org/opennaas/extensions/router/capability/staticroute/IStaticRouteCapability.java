@@ -2,7 +2,7 @@ package org.opennaas.extensions.router.capability.staticroute;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
@@ -22,8 +22,8 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@GET
-	@Path("/create/{netIdIpAdress}/{maskIpAdress}/{nextHopIpAddress}")
-	public void createStaticRoute(@PathParam("netIdIpAdress") String netIdIpAdress, @PathParam("maskIpAdress") String maskIpAdress,
-			@PathParam("nextHopIpAddress") String nextHopIpAddress) throws CapabilityException;
+	@Path("/create")
+	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
+			@QueryParam("nextHopIpAddress") String nextHopIpAddress) throws CapabilityException;
 
 }
