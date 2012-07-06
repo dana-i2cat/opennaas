@@ -12,9 +12,9 @@ import org.opennaas.core.resources.shell.GenericKarafCommand;
 
 /**
  * List the device ids registered to the protocol manager
- *
+ * 
  * @author Pau Minoves
- *
+ * 
  */
 @Command(scope = "protocols", name = "Context", description = "Manipulates protocol contexts for used to create new sessions. Call without protocol to list.")
 public class ContextCommand extends GenericKarafCommand {
@@ -67,7 +67,7 @@ public class ContextCommand extends GenericKarafCommand {
 			printError("You must specify a [protocol] and [uri] to register.");
 			for (ProtocolSessionContext context : sessionManager.getRegisteredProtocolSessionContexts().values()) {
 				printInfo("protocol = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL)
-							+ ", uri = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
+						+ ", uri = " + context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI));
 			}
 
 			printEndCommand();
@@ -83,10 +83,11 @@ public class ContextCommand extends GenericKarafCommand {
 		ProtocolSessionContext context = new ProtocolSessionContext();
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
+		context.addParameter(ProtocolSessionContext.KEY_URI, keyURI);
+		context.addParameter(ProtocolSessionContext.KEY_PASSWORD, keyPassword);
 		sessionManager.registerContext(context);
 		printInfo("Context registered for resource " + resourceId);
 		printEndCommand();
 		return null;
 	}
-
 }
