@@ -134,14 +134,4 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#test(org.opennaas.extensions.bod.capability.l2bod.Test)
-	 */
-	@Override
-	public void test(Test test) {
-		System.out.println(test.getA());
-	}
-
 }
