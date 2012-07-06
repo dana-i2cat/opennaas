@@ -29,6 +29,7 @@
 
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
 	</feature>
@@ -86,7 +87,7 @@
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>							
 		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>		
-		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/1.8.0</bundle>		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
 		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 	</feature>
 
