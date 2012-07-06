@@ -16,6 +16,14 @@ import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
+import net.i2cat.netconf.NetconfSession;
+import net.i2cat.netconf.SessionContext;
+import net.i2cat.netconf.errors.NetconfProtocolException;
+import net.i2cat.netconf.errors.TransportException;
+import net.i2cat.netconf.errors.TransportNotImplementedException;
+import net.i2cat.netconf.rpc.Query;
+import net.i2cat.netconf.rpc.RPCElement;
+
 public class NetconfProtocolSession implements IProtocolSession {
 
 	/** The logger **/
