@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.11-SNAPSHOT</version>
+	<version>0.12-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
-		<cxf.dosgi.version>1.3.1</cxf.dosgi.version>
+		<cxf.dosgi.version>1.3</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -560,13 +560,18 @@
 			<!-- Web services support -->
 			<dependency>
 				<groupId>org.apache.servicemix.specs</groupId>
+				<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
+				<version>${servicemix.specs.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.servicemix.specs</groupId>
 				<artifactId>org.apache.servicemix.specs.jaxb-api-2.1</artifactId>
 				<version>${servicemix.specs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.specs</groupId>
 				<artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
-				<version>1.8.0</version>
+				<version>${servicemix.specs.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.servicemix.bundles</groupId>
@@ -639,6 +644,7 @@
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-transports-http</artifactId>
@@ -1110,7 +1116,7 @@
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.i2cat.net</id>
-			<name>>maven.i2cat.net-releases</name>
+			<name>&gt;maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>

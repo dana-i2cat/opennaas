@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-    	<version>0.11-SNAPSHOT</version>
+    	<version>0.12-SNAPSHOT</version>
   	</parent>
 	<!--  POM id -->
 	<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
@@ -53,12 +53,8 @@
 							classes are under ".internal"
 						-->
 						<Import-Package>
-  							org.slf4j,
-  							javax.ws.rs.*,
+							org.slf4j,
 							org.apache.felix.service.command,
-							javax.xml.bind,
-							javax.xml.bind.annotation,
-							com.sun.xml.bind.v2.runtime.reflect,
 							*
 							</Import-Package>
 						<Export-Package>

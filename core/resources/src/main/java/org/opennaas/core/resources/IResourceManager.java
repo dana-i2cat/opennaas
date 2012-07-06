@@ -199,4 +199,11 @@ public interface IResourceManager {
 	@Consumes(MediaType.APPLICATION_XML)
 	public void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	/**
+	 * 
+	 * @param resourceIdentifier
+	 * @throws ResourceException
+	 */
+	public void destroyAllResources() throws ResourceException;
+
 }

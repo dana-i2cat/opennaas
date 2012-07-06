@@ -1,11 +1,7 @@
 package org.opennaas.extensions.itests.helpers;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.configureConsole;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.editConfigurationFilePut;
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.karafDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.composite;
-import static org.ops4j.pax.exam.CoreOptions.maven;
-import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.io.File;
 
@@ -17,8 +13,7 @@ import com.google.common.base.Joiner;
 
 public abstract class OpennaasExamOptions
 {
-	public final static KarafDistributionBaseConfigurationOption
-			opennaasDistributionConfiguration()
+	public final static KarafDistributionBaseConfigurationOption opennaasDistributionConfiguration()
 	{
 		return karafDistributionConfiguration()
 				.frameworkUrl(maven()
@@ -37,7 +32,8 @@ public abstract class OpennaasExamOptions
 				.groupId("org.opennaas")
 				// .artifactId("org.opennaas.extensions.nexus.tests.helper")
 				.artifactId("org.opennaas.extensions.itests.helpers")
-				.versionAsInProject());
+				.versionAsInProject(),
+				compendiumProfile());
 	}
 
 	public final static Option includeTestMockProfile()

@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.core</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.12-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.opennaas.core.resources</artifactId>
@@ -70,18 +70,10 @@
 			<artifactId>paxexam-karaf-container</artifactId>
 			<scope>compile</scope>
 		</dependency>
-		<!-- DOSGi -->
+		<!-- REST annotations -->
 		<dependency>
-			<groupId>org.apache.cxf</groupId>
-		  	<artifactId>cxf-bundle-minimal</artifactId>
-		</dependency>
-		<dependency>
-		  	<groupId>org.apache.cxf.dosgi</groupId>
-		  	<artifactId>cxf-dosgi-ri-discovery-local</artifactId>
-		</dependency>
-		<dependency>
-		  	<groupId>org.apache.cxf.dosgi</groupId>
-		  	<artifactId>cxf-dosgi-ri-dsw-cxf</artifactId>
+			<groupId>org.apache.servicemix.specs</groupId>
+			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
 		</dependency>
 	</dependencies>
 	
@@ -110,9 +102,6 @@
 							com.google.common.*;resolution:=optional,
 							org.slf4j,
 							org.osgi.framework,
-							org.apache.ws.commons.schema.*,
-							org.apache.cxf.*,
-							org.apache.cxf.jaxrs.provider.*,
 							*
 						</Import-Package>
 						<Meta-Persistence>META-INF/persistence.xml</Meta-Persistence>
