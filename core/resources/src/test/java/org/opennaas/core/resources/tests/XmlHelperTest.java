@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.opennaas.core.resources.helpers.XmlHelper;
 
 public class XmlHelperTest {
-	private final static String	FORMATTED_TEST	= "<!-- Document comment -->"
+	private final static String	FORMATTED_TEST	= "<!-- Document comment -->" + System.getProperty("line.separator")
 														+ "<aaa>" + System.getProperty("line.separator")
 														+ "  <bbb/>" + System.getProperty("line.separator")
 														+ "  <ccc/>" + System.getProperty("line.separator")
