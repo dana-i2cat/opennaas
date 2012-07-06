@@ -5,13 +5,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.i2cat.netconf.NetconfSession;
-import net.i2cat.netconf.SessionContext;
-import net.i2cat.netconf.errors.NetconfProtocolException;
-import net.i2cat.netconf.errors.TransportException;
-import net.i2cat.netconf.errors.TransportNotImplementedException;
-import net.i2cat.netconf.rpc.Query;
-import net.i2cat.netconf.rpc.RPCElement;
+import javax.management.Query;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.logging.Log;
@@ -49,13 +43,26 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 		try {
 			String uri = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
+			String keyURI = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_URI);
+
 			if ((uri == null) || (uri.length() == 0)) {
 				throw new ProtocolException(
 						"Mantychore protocols NETCONF: Couldn't get " + ProtocolSessionContext.PROTOCOL_URI + " from protocolSessionContext.");
 			}
+
 			SessionContext context = new SessionContext();
 			context.setURI(new URI(uri));
 			netconfSession = new NetconfSession(context);
+
+			if ((keyURI != null) && (keyURI.length() > 0)) {
+
+				context.setAuthenticationType(AuthType.PUBLICKEY);
+				context.setKeyLocation(keyURI);
+
+			} else {
+				context.setAuthenticationType(AuthType.PASSWORD);
+
+			}
 
 		} catch (URISyntaxException e) {
 			log.error("Error with the syntaxis");

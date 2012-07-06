@@ -28,6 +28,9 @@ public class ContextCommand extends GenericKarafCommand {
 	@Argument(name = "uri", index = 2, required = false, description = "The URI passed to the protocol implementation of the context")
 	String	uri;			// user and password are inside PROTOCOL_URI
 
+	@Argument(name = "keyPath", index = 3, required = false, description = "The path where the private key is stored.")
+	String	keyPath;
+
 	@Option(name = "--remove", aliases = { "-r" }, required = false, description = "Instead of adding a context, remove it for the named protocol. ")
 	boolean	optionRemove;
 
@@ -83,8 +86,8 @@ public class ContextCommand extends GenericKarafCommand {
 		ProtocolSessionContext context = new ProtocolSessionContext();
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		context.addParameter(ProtocolSessionContext.KEY_URI, keyURI);
-		context.addParameter(ProtocolSessionContext.KEY_PASSWORD, keyPassword);
+		if (keyPath != null)
+			context.addParameter(ProtocolSessionContext.KEY_URI, keyPath);
 		sessionManager.registerContext(context);
 		printInfo("Context registered for resource " + resourceId);
 		printEndCommand();
