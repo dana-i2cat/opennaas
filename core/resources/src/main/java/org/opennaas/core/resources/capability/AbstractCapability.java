@@ -217,7 +217,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	// @Override
 	// public void queueuAction(IAction action) throws CapabilityException {
 	// getQueuemanager().queueAction(action);
-	// }uie
+	// }
 	//
 	// /**
 	// *

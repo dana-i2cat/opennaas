@@ -1,4 +1,4 @@
-package org.opennaas.extensions.itests.helpers;
+package org.opennaas.itests.helpers;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
 import static org.ops4j.pax.exam.CoreOptions.*;

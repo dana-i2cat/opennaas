@@ -41,7 +41,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IStaticRouteCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IStaticRouteCapability.class.getName());
 		super.activate();
 	}
 
@@ -52,7 +52,7 @@ public class StaticRouteCapability extends AbstractCapability implements IStatic
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		// registration.unregister();
+		registration.unregister();
 		super.deactivate();
 	}
 
