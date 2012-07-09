@@ -15,12 +15,14 @@ import java.util.Map.Entry;
 public class ProtocolSessionContext {
 
 	public static final String	PROTOCOL			= "protocol";
+	public static final String	AUTH_TYPE			= "protocol.authType";
 	public static final String	PROTOCOL_URI		= "protocol.uri";
 	public static final String	PROTOCOL_VERSION	= "protocol.version";
 	public static final String	KEEP_ALIVE			= "protocol.keepAlive";
 	public static final String	USERNAME			= "protocol.username";
 	public static final String	PASSWORD			= "protocol.password";
-	public static final String	KEY_URI				= "protocol.keyURI";
+	public static final String  KEY_USERNAME		= "protocol.keyUsername";
+	public static final String	KEY_PATH			= "protocol.keyPath";
 	public static final String	KEY_PASSWORD		= "protocol.keyPassword";
 
 	private Map<String, Object>	sessionParameters	= null;
