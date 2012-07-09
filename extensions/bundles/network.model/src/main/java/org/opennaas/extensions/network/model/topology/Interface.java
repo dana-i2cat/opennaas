@@ -1,5 +1,7 @@
 package org.opennaas.extensions.network.model.topology;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 
 /**
  * A configured interface. Thus an entity that can transport data at a given layer.
@@ -7,6 +9,7 @@ package org.opennaas.extensions.network.model.topology;
  * @author isart
  *
  */
+@XmlRootElement
 public class Interface extends ConnectionPoint {
 
 	Device			device;

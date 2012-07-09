@@ -1,5 +1,7 @@
 package org.opennaas.extensions.bod.capability.l2bod;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.joda.time.DateTime;
 import org.opennaas.extensions.network.model.topology.Interface;
 
@@ -8,6 +10,7 @@ import com.google.common.base.Objects;
 /**
  * Immutable parameters class for RequestConnectionAction.
  */
+@XmlRootElement
 public class RequestConnectionParameters
 {
 	public Interface	interface1;
