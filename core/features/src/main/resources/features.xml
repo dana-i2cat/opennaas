@@ -187,7 +187,7 @@
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
-		<feature version="${project.version}">opennaas-ws-soap</feature>
+		<!-- <feature version="${project.version}">opennaas-ws-soap</feature> -->
 	</feature>
 
 	<feature name="itests-helpers" version="${project.version}">
