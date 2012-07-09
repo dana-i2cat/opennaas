@@ -1,10 +1,8 @@
 <resourceDescriptor>
-    <!-- Capability information. It specifies device model and version -->
     <capabilityDescriptors>
-        <capabilityProperty value="port" name="9999"/>
+        <capabilityProperty name="port" value="9999"/>
         <information><type>idb</type></information>
     </capabilityDescriptors>
-    <!-- Resource information. It specify type and name-->
     <information>
         <type>IDB</type>
         <name>idb1</name>
