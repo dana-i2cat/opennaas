@@ -5,7 +5,13 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.management.Query;
+import net.i2cat.netconf.NetconfSession;
+import net.i2cat.netconf.SessionContext;
+import net.i2cat.netconf.errors.NetconfProtocolException;
+import net.i2cat.netconf.errors.TransportException;
+import net.i2cat.netconf.errors.TransportNotImplementedException;
+import net.i2cat.netconf.rpc.Query;
+import net.i2cat.netconf.rpc.RPCElement;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.logging.Log;
@@ -15,14 +21,6 @@ import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-
-import net.i2cat.netconf.NetconfSession;
-import net.i2cat.netconf.SessionContext;
-import net.i2cat.netconf.errors.NetconfProtocolException;
-import net.i2cat.netconf.errors.TransportException;
-import net.i2cat.netconf.errors.TransportNotImplementedException;
-import net.i2cat.netconf.rpc.Query;
-import net.i2cat.netconf.rpc.RPCElement;
 
 public class NetconfProtocolSession implements IProtocolSession {
 
@@ -50,27 +48,44 @@ public class NetconfProtocolSession implements IProtocolSession {
 		this.status = Status.DISCONNECTED_BY_USER;
 
 		try {
-			String uri = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
-			String keyURI = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_URI);
-
-			if ((uri == null) || (uri.length() == 0)) {
-				throw new ProtocolException(
-						"Mantychore protocols NETCONF: Couldn't get " + ProtocolSessionContext.PROTOCOL_URI + " from protocolSessionContext.");
-			}
 
 			SessionContext context = new SessionContext();
-			context.setURI(new URI(uri));
-			netconfSession = new NetconfSession(context);
 
-			if ((keyURI != null) && (keyURI.length() > 0)) {
+			String authType = (String) protocolSessionContext.getSessionParameters().get(
+					ProtocolSessionContext.AUTH_TYPE);
 
-				context.setAuthenticationType(AuthType.PUBLICKEY);
-				context.setKeyLocation(keyURI);
+			SessionContext.AuthType authentication = SessionContext.AuthType.getByValue(authType);
 
-			} else {
-				context.setAuthenticationType(AuthType.PASSWORD);
+			if (authentication.equals(SessionContext.AuthType.PASSWORD)) {
+
+				String uri = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.PROTOCOL_URI);
+				if ((uri == null) || (uri.length() == 0)) {
+					throw new ProtocolException(
+							"Mantychore protocols NETCONF: Couldn't get " + ProtocolSessionContext.PROTOCOL_URI + " from protocolSessionContext.");
+				}
+
+				context.setURI(new URI(uri));
+				context.setAuthenticationType(SessionContext.AuthType.PASSWORD);
 
 			}
+
+			else if (authentication.equals(SessionContext.AuthType.PUBLICKEY)) {
+
+				String keyURI = (String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_PATH);
+				if ((keyURI == null) || (keyURI.length() == 0)) {
+					throw new ProtocolException(
+							"Mantychore protocols NETCONF: Couldn't get " + ProtocolSessionContext.AUTH_TYPE + "from protocolSessionContext.");
+				}
+
+				context.setKeyUsername((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_USERNAME));
+				context.setKeyPassword((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_PASSWORD));
+				context.setAuthenticationType(SessionContext.AuthType.PUBLICKEY);
+
+			} else {
+				throw new ProtocolException("Authentication Error: Invalid authentication type.");
+			}
+
+			netconfSession = new NetconfSession(context);
 
 		} catch (URISyntaxException e) {
 			log.error("Error with the syntaxis");

@@ -70,6 +70,10 @@
 			<artifactId>paxexam-karaf-container</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>		
 		
 	</dependencies>
 	<build>
