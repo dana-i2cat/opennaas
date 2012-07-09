@@ -7,6 +7,12 @@
 	<bean id="resourceManager" class="org.opennaas.core.resources.ResourceManager"/>
 	<service ref="resourceManager" interface="org.opennaas.core.resources.IResourceManager">
 <!-- 		<service-properties> -->
+<!-- 			<entry key="service.exported.interfaces" value="*"/> -->
+<!-- 			<entry key="service.exported.configs" value="org.apache.cxf.ws"/> -->
+<!-- 			<entry key="org.apache.cxf.ws.address" value="http://localhost:9000/opennaas/resourceManager"/> -->
+<!-- 		</service-properties> -->
+
+<!-- 		<service-properties> -->
 			<!-- 	Rest	 -->
 <!-- 			<entry key="service.exported.interfaces" value="*"/> -->
 <!-- 			<entry key="service.exported.configs" value="org.apache.cxf.rs"/> -->

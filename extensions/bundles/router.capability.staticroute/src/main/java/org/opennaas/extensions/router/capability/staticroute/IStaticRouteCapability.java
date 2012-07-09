@@ -10,7 +10,7 @@ import org.opennaas.core.resources.capability.ICapability;
 /**
  * @author Jordi Puig
  */
-@Path("/staticRoute")
+@Path("/")
 public interface IStaticRouteCapability extends ICapability {
 
 	/**
