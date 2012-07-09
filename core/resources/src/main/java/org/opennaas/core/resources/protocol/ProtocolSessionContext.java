@@ -18,9 +18,8 @@ public class ProtocolSessionContext {
 	public static final String	PROTOCOL_URI		= "protocol.uri";
 	public static final String	PROTOCOL_VERSION	= "protocol.version";
 	public static final String	KEEP_ALIVE			= "protocol.keepAlive";
-	// user and password are inside PROTOCOL_URI
-	// public static final String USERNAME = "protocol.username";
-	// public static final String PASSWORD = "protocol.password";
+	public static final String USERNAME = "protocol.username";
+	public static final String PASSWORD = "protocol.password";
 
 	private Map<String, Object>	sessionParameters	= null;
 

@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.11-SNAPSHOT</version>
+        <version>0.12-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -12,6 +12,8 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>helpers</module>
+
 		<module>core</module>
 		<module>router</module>
 		<module>network</module>
@@ -28,7 +30,10 @@
 			<groupId>org.ops4j.pax.swissbox</groupId>
 			<artifactId>pax-swissbox-framework</artifactId>
 		</dependency>
-
+		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>platform</artifactId>

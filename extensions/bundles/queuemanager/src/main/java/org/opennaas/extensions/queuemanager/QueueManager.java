@@ -1,10 +1,11 @@
 package org.opennaas.extensions.queuemanager;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.commons.logging.Log;
@@ -29,9 +30,6 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueConstants;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.osgi.framework.BundleException;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceRegistration;
 
 public class QueueManager extends AbstractCapability implements
 		IQueueManagerCapability {
@@ -39,7 +37,6 @@ public class QueueManager extends AbstractCapability implements
 	public final static String		QUEUE			= CAPABILITY_TYPE;
 	private final Log				log				= LogFactory.getLog(QueueManager.class);
 	private String					resourceId		= "";
-	private ServiceRegistration		registration	= null;
 	private final Vector<IAction>	queue			= new Vector<IAction>();
 
 	/**
@@ -61,6 +58,11 @@ public class QueueManager extends AbstractCapability implements
 		log.debug("Built new Queue Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
@@ -85,25 +87,31 @@ public class QueueManager extends AbstractCapability implements
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#initialize()
+	 */
 	@Override
 	public void initialize() throws CapabilityException {
-		registerQueueCapability();
-		setState(State.INITIALIZED);
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		props.put(ResourceDescriptorConstants.CAPABILITY, "queue");
+		props.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
+		registration = Activator.getContext().registerService(
+				IQueueManagerCapability.class.getName(), this, props);
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueManagerCapability.class.getName());
+		super.initialize();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#shutdown()
+	 */
 	@Override
 	public void shutdown() throws CapabilityException {
-
-		try {
-			unregisterQueueCapability();
-			setState(State.SHUTDOWN);
-		} catch (InvalidSyntaxException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		} catch (BundleException e) {
-			log.error(e.getMessage());
-			throw new CapabilityException(e);
-		}
+		registration.unregister();
+		super.shutdown();
 	}
 
 	/*
@@ -539,30 +547,4 @@ public class QueueManager extends AbstractCapability implements
 		}
 	}
 
-	/**
-	 * Register the capability
-	 */
-	private void registerQueueCapability() {
-		log.debug("Registering Queue Capability");
-		Properties props = new Properties();
-		props.setProperty(ResourceDescriptorConstants.CAPABILITY, "queue");
-		props.setProperty(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
-		registration = Activator.getContext().registerService(
-				IQueueManagerCapability.class.getName(), this, props);
-		log.debug("Registered!");
-	}
-
-	/**
-	 * Unregister the capability
-	 * 
-	 * @throws InvalidSyntaxException
-	 * @throws BundleException
-	 */
-	private void unregisterQueueCapability() throws InvalidSyntaxException, BundleException {
-		if (registration != null) {
-			log.debug("Unregistering Queue Capability");
-			registration.unregister();
-			log.debug("Unregistered!");
-		}
-	}
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+ <bean id="tcpTransportFactory" class="org.opennaas.extensions.transports.sockets.TCPTransportFactory"/>	
+<bean id="sslTransportFactory" class="org.opennaas.extensions.transports.sockets.SSLTransportFactory"/>
+<service ref="tcpTransportFactory" interface="org.opennaas.core.resources.transport.ITransportFactory">
+<service-properties>	
+ <entry key="transport" value="tcp"/>	
+ <entry key="transport.version" value="1.0.0"/>
+</service-properties>
+ </service>
+<service ref="sslTransportFactory" interface="org.opennaas.core.resources.transport.ITransportFactory"><service-properties>
+<entry key="transport" value="ssl"/>
+<entry key="transport.version" value="1.0.0"/>
+</service-properties>
+</service>
+</blueprint>

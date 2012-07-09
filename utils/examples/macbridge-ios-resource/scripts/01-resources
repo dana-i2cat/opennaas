@@ -1,0 +1,10 @@
+shell:echo "INITIALIZE RESOURCES"
+
+##Creating resources
+resource:create $descriptors.path/catalyst.descriptor
+
+##Adding contexts for resources
+shell:source $scripts.path/01a-contexts
+
+##Starting resources
+resource:start MACBridgeIOS:catalyst

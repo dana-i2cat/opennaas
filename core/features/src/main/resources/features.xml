@@ -23,19 +23,13 @@
 		<bundle>mvn:org.opennaas/org.opennaas.core.persistence/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-platformmanager" version="${project.version}">
-		<feature>jetty</feature>
-		<feature>cxf</feature>
-
-		<bundle>mvn:org.opennaas/org.opennaas.core.platformmanager/${project.version}</bundle>
-	</feature>
-
 	<feature name="org.opennaas.core" version="${project.version}">
 		<feature>xml-specs</feature>
 		<feature version="${project.version}">opennaas-persistence</feature>
 
 		<bundle dependency="true">mvn:org.osgi/org.osgi.compendium/${osgi.version}</bundle>
 		<bundle dependency="true">mvn:org.apache.felix/org.apache.felix.eventadmin/1.2.14</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>
 
 		<bundle>mvn:org.opennaas/org.opennaas.core.resources/${project.version}</bundle>
 	</feature>
@@ -77,13 +71,24 @@
 		<bundle start="false">mvn:org.opennaas/org.opennaas.extensions.fragment.velocity/${project.version}</bundle>
 	</feature>
 
-	<feature name="opennaas-ws" version="${project.version}">
-		<feature>http</feature>
-		<feature>cxf</feature>
+	<feature name="opennaas-ws-soap" version="${project.version}">
+		<!-- old ws, tnc demo  -->
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>
+	</feature>
+
+	<feature name="opennaas-ws-rest" version="${project.version}">
+		<feature>jetty</feature>
 		
-		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.javax-inject/${servicemix.javax-inject.version}</bundle>
-		
-		<bundle>mvn:org.opennaas/org.opennaas.extensions.ws/${project.version}</bundle>	
+		<bundle dependency="true">mvn:org.osgi/org.osgi.enterprise/${osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf/cxf-bundle-minimal/2.5.2</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-discovery-local/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-dsw-cxf/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.cxf.dosgi/cxf-dosgi-ri-topology-manager/${cxf.dosgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-core/${spring.osgi.version}</bundle>
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-io/${spring.osgi.version}</bundle>							
+		<bundle dependency="true">mvn:org.springframework.osgi/spring-osgi-extender/${spring.osgi.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.servicemix.specs/org.apache.servicemix.specs.jsr311-api-1.1/${servicemix.specs.version}</bundle>		
+		<bundle dependency="true">mvn:org.apache.ws.commons.schema/XmlSchema/${xmlschema.version}</bundle>
 	</feature>
 
 	<feature name="opennaas-junos" version="${project.version}">
@@ -159,17 +164,30 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.roadm.actionsets.wonesys/${project.version}</bundle>
 	</feature>
 
+	<feature name="opennaas-cisco" version="${project.version}">
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.sockets/${project.version}</bundle>
+		<bundle dependency="true">mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-net/${commons.net.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.telnet/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.transports.virtual/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.cli/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.protocols.tl1/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.model/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.capability.vlanawarebridge/${project.version}</bundle>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.ios.resource/${project.version}</bundle>
+	</feature>
+
 	<feature name="opennaas" version="${project.version}">
-		<feature version="${project.version}">opennaas-ws</feature>
 		<feature version="${project.version}">opennaas-router</feature>
 		<feature version="${project.version}">opennaas-network</feature>
 		<feature version="${project.version}">opennaas-bod</feature>
 		<feature version="${project.version}">opennaas-luminis</feature>
-		<feature version="${project.version}">opennaas-platformmanager</feature>
 		<feature version="${project.version}">opennaas-autobahn</feature>
 		<feature version="${project.version}">opennaas-junos</feature>
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
+		<feature version="${project.version}">opennaas-cisco</feature>
+		<feature version="${project.version}">opennaas-ws-rest</feature>
+<!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 	</feature>
 
 	<feature name="itests-helpers" version="${project.version}">

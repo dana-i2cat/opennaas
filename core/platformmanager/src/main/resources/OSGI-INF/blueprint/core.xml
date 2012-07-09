@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
-	<!-- Provide commands to the Karaf shell -->
-	<command-bundle xmlns="http://karaf.apache.org/xmlns/shell/v1.0.0">
-		<command name="nexus/platform">
-			<action class="org.opennaas.core.platformmanager.shell.GetPlatformDetailsCommand"/>
-		</command>
-	</command-bundle>
-</blueprint>

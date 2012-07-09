@@ -28,11 +28,43 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		log.debug("Built new Connections Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IConnectionsCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		// registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);
@@ -52,6 +84,11 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
@@ -65,6 +102,14 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 	}
 
 	// IConnectionsCapability implementation
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability#makeConnection(org.opennaas.extensions.router.model.opticalSwitch
+	 * .FiberConnection)
+	 */
 	@Override
 	public void makeConnection(FiberConnection connectionRequest)
 			throws CapabilityException {
@@ -76,6 +121,13 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.opennaas.extensions.roadm.capability.connections.IConnectionsCapability#removeConnection(org.opennaas.extensions.router.model.opticalSwitch
+	 * .FiberConnection)
+	 */
 	@Override
 	public void removeConnection(FiberConnection connectionRequest)
 			throws CapabilityException {

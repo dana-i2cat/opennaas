@@ -38,6 +38,7 @@ http://www.opennaas.org/community/
 
 * Adrian Rossello
 * Carlos Baez
+* Eduard Grasa
 * Elisabeth Rigol
 * Gerd Behrmann
 * Isart Canyameres

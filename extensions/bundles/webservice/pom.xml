@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.11-SNAPSHOT</version>
+		<version>0.12-SNAPSHOT</version>
 	</parent>
 	<!-- POM id -->
 	<artifactId>org.opennaas.extensions.ws</artifactId>
@@ -65,17 +65,20 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.network.capability.queue</artifactId>
-		</dependency>					
+		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.macbridge.capability.vlanawarebridge</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.servicemix.bundles</groupId>
 			<artifactId>org.apache.servicemix.bundles.javax-inject</artifactId>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -259,6 +262,18 @@
 						<phase>process-classes</phase>
 						<configuration>
 							<className>org.opennaas.extensions.ws.services.IResourceManagerService</className>
+							<genWsdl>true</genWsdl>
+							<verbose>true</verbose>
+						</configuration>
+						<goals>
+							<goal>java2ws</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generate-wsdl-vlanAwareBridge</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<className>org.opennaas.extensions.ws.services.IVLANAwareBridgeCapabilityService</className>
 							<genWsdl>true</genWsdl>
 							<verbose>true</verbose>
 						</configuration>
