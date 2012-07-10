@@ -9,7 +9,6 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
-import org.opennaas.extensions.bod.capability.l2bod.Test;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Interface;
 
@@ -24,23 +23,6 @@ public class L2BoDTest {
 	public static void main(String[] args) {
 		requestConnection();
 		shutdownConnection();
-		test();
-	}
-
-	/**
-	 * 
-	 */
-	private static void test() {
-		ClientResponse response = null;
-		String url = "http://localhost:8888/opennaas/bod/l2bod_test/l2bod/test";
-		try {
-			Client client = Client.create();
-			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, new Test());
-			LOGGER.info("Response code: " + response.getStatus());
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
 	}
 
 	/**

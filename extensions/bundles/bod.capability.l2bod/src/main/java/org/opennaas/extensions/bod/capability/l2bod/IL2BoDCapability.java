@@ -11,7 +11,7 @@ import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.network.model.topology.Interface;
 
-@Path("/l2bod")
+@Path("/")
 public interface IL2BoDCapability extends ICapability {
 
 	/**

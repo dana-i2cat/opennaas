@@ -1,18 +1,21 @@
 package org.opennaas.core.resources.alarms;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.osgi.service.event.Event;
 
 /**
  * Defines a ResourceAlarm.
- *
+ * 
  * Define which properties are common to ResourceAlarms, although any other property may be added.
- *
+ * 
  * @author isart
- *
+ * 
  */
+@XmlRootElement
 public class ResourceAlarm extends Event {
 
 	public static final String	TOPIC					= "org/opennaas/core/resources/resource/alarms/RECEIVED";
