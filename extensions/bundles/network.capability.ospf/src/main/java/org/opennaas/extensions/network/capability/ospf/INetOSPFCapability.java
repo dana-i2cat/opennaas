@@ -6,7 +6,7 @@ import javax.ws.rs.Path;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 
-@Path("/netospf")
+@Path("/")
 public interface INetOSPFCapability extends ICapability {
 
 	/**
