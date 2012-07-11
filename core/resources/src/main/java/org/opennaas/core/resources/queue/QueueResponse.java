@@ -3,6 +3,8 @@ package org.opennaas.core.resources.queue;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.core.resources.action.ActionResponse;
@@ -10,6 +12,7 @@ import org.opennaas.core.resources.action.ActionResponse.STATUS;
 import org.opennaas.core.resources.action.IAction;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class QueueResponse {
 
 	public ActionResponse	prepareResponse	= new ActionResponse();
