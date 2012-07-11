@@ -7,6 +7,8 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
+
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class NetworkPort as well as methods comparable to the
  * invokeMethods defined for this class. This Class implements the NetworkPortBean Interface. The CIM class NetworkPort is described as follows:
@@ -14,6 +16,7 @@ import java.io.Serializable;
  * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the network
  * chips, at the lowest layers of a network stack.
  */
+@XmlSeeAlso({ EthernetPort.class, FCPort.class, LogicalTunnelPort.class })
 public class NetworkPort extends LogicalPort implements Serializable {
 
 	/**
