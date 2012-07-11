@@ -31,18 +31,18 @@ import org.xml.sax.SAXException;
 
 /**
  * Create a new resource from the URL or file given on the karaf shell
- *
+ * 
  * @author Scott Campbell (CRC)
- *
+ * 
  */
 @Command(scope = "resource", name = "create", description = "Create one or more resources from a given descriptor")
 public class CreateResourceCommand extends GenericKarafCommand {
-	private final String	NAME_SCHEMA	= "/descriptor.xsd";
+	private final String NAME_SCHEMA = "/descriptor.xsd";
 
 	@Argument(index = 0, name = "paths or urls", description = "A space delimited list of file paths or urls to resource descriptors ", required = true, multiValued = true)
-	private List<String>	paths;
+	private List<String> paths;
 	@Option(name = "--profile", aliases = { "-p" }, description = "Allows explicit declaration of profile to be used")
-	String					profileName;
+	String profileName;
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -60,7 +60,9 @@ public class CreateResourceCommand extends GenericKarafCommand {
 				counter++;
 				// printSymbol(underLine);
 			} catch (NullPointerException f) {
-				printError("Error creating Resource " + descriptor.getInformation().getType() + ":" + descriptor.getInformation().getName());
+				printError("Error creating Resource "
+						+ descriptor.getInformation().getType() + ":"
+						+ descriptor.getInformation().getName());
 				printError(f);
 			}
 		}
@@ -75,7 +77,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 	}
 
-	public int createResource(IResourceManager manager, ResourceDescriptor descriptor) {
+	public int createResource(IResourceManager manager,
+			ResourceDescriptor descriptor) {
 
 		// check if profile option is active
 		if (profileName != null && profileName != "") {
@@ -85,9 +88,10 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		try {
 			// printInfo("Creating Resource ...... ");
 			IResource resource = manager.createResource(descriptor);
-			Information information = resource.getResourceDescriptor().getInformation();
-			printInfo("Created resource " + information.getType() +
-					  ":" + information.getName());
+			Information information = resource.getResourceDescriptor()
+					.getInformation();
+			printInfo("Created resource " + information.getType() + ":"
+					+ information.getName());
 			return 0;
 		} catch (ResourceException e) {
 			printError(e.getLocalizedMessage());
@@ -101,7 +105,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		}
 	}
 
-	public ResourceDescriptor getResourceDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
+	public ResourceDescriptor getResourceDescriptor(String filename)
+			throws JAXBException, IOException, ResourceException, SAXException {
 		InputStream stream = null;
 		// First try a URL
 		try {
@@ -116,51 +121,67 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 		ResourceDescriptor resourceDescriptor = getDescriptor(stream);
 
-		if (resourceDescriptor.getInformation().getType() == null || resourceDescriptor.getInformation().getType() == "") {
-			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource type.");
+		if (resourceDescriptor.getInformation().getType() == null
+				|| resourceDescriptor.getInformation().getType() == "") {
+			throw new ResourceException(
+					"Invalid ResourceDescriptor: Must specify a resource type.");
 		}
-		if (resourceDescriptor.getInformation().getName().equals("") || resourceDescriptor.getInformation().getName() == null) {
-			throw new ResourceException("Invalid ResourceDescriptor: Must specify a resource name.");
+		if (resourceDescriptor.getInformation().getName().equals("")
+				|| resourceDescriptor.getInformation().getName() == null) {
+			throw new ResourceException(
+					"Invalid ResourceDescriptor: Must specify a resource name.");
 		}
 
 		/* try to load network topology */
 		String networkTopologyFilePath = resourceDescriptor.getFileTopology();
-		if (networkTopologyFilePath != null && !networkTopologyFilePath.equals("")) {
+		if (networkTopologyFilePath != null
+				&& !networkTopologyFilePath.trim().equals("")) {
 			/* checks */
 
 			// TODO Improve to get descriptors from relative paths
-			if (!networkTopologyFilePath.startsWith("/"))
-				throw new ResourceException("The network file decriptor has to be absolute path");
+			if (!networkTopologyFilePath.startsWith("/")) {
+				log.info(networkTopologyFilePath + " doesnt start with /");
+				throw new ResourceException(
+						"The network file decriptor has to be absolute path");
+			}
 
 			try {
-				printInfo("Loading network file descriptor: " + networkTopologyFilePath);
+				printInfo("Loading network file descriptor: "
+						+ networkTopologyFilePath);
 				NetworkTopology networkTopology = getNetworkDescriptor(networkTopologyFilePath);
 				resourceDescriptor.setNetworkTopology(networkTopology);
 			} catch (FileNotFoundException e) {
-				throw new FileNotFoundException("Could not found file " + networkTopologyFilePath);
+				throw new FileNotFoundException("Could not found file "
+						+ networkTopologyFilePath);
 			}
 		}
 
-		printInfo("Descriptor loaded for resource " + resourceDescriptor.getInformation().getType()
-				+ ":" + resourceDescriptor.getInformation().getName());
+		printInfo("Descriptor loaded for resource "
+				+ resourceDescriptor.getInformation().getType() + ":"
+				+ resourceDescriptor.getInformation().getName());
 		return resourceDescriptor;
 
 	}
 
-	public ResourceDescriptor getDescriptor(InputStream stream) throws JAXBException, SAXException {
+	public ResourceDescriptor getDescriptor(InputStream stream)
+			throws JAXBException, SAXException {
 
 		ResourceDescriptor descriptor = null;
 		try {
-			JAXBContext context = JAXBContext.newInstance(ResourceDescriptor.class);
+			JAXBContext context = JAXBContext
+					.newInstance(ResourceDescriptor.class);
 
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
 			/* check wellformat xml with xsd */
-			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A COMMAND
+			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A
+			// COMMAND
 			// SchemaFactory sf = SchemaFactory.newInstance(
 			// javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			// ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			// Schema schema = sf.newSchema(new StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
+			// ClassLoader loader =
+			// Thread.currentThread().getContextClassLoader();
+			// Schema schema = sf.newSchema(new
+			// StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
 			// unmarshaller.setSchema(schema);
 
 			descriptor = (ResourceDescriptor) unmarshaller.unmarshal(stream);
@@ -207,7 +228,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			} catch (IOException e) {
 				printError("Error reading descriptor: " + url.toString(), e);
 			} catch (SAXException f) {
-				printError("Given file is not a valid descriptor. Check it complies with descriptor schema. Invalid file: " + url.toString());
+				printError("Given file is not a valid descriptor. Check it complies with descriptor schema. Invalid file: "
+						+ url.toString());
 				printError(f);
 			}
 		}
@@ -233,7 +255,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 							try {
 								urls.add(fileInDirectory.toURI().toURL());
 							} catch (MalformedURLException e) {
-								printError("Could not read file. Malformed path: " + fileInDirectory.toURI().toString());
+								printError("Could not read file. Malformed path: "
+										+ fileInDirectory.toURI().toString());
 							}
 						}
 					}
@@ -241,7 +264,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 					if (file.getName().endsWith(".descriptor")) {
 						urls.add(url);
 					} else {
-						printError("The file type is not a valid for " + file.getName());
+						printError("The file type is not a valid for "
+								+ file.getName());
 					}
 				}
 			} else {
@@ -274,7 +298,7 @@ public class CreateResourceCommand extends GenericKarafCommand {
 
 	/**
 	 * Helper methods to test these functionality...
-	 *
+	 * 
 	 * @param filename
 	 * @return
 	 * @throws JAXBException
@@ -282,7 +306,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 	 * @throws ResourceException
 	 * @throws SAXException
 	 */
-	private NetworkTopology getNetworkDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
+	private NetworkTopology getNetworkDescriptor(String filename)
+			throws JAXBException, IOException, ResourceException, SAXException {
 		InputStream stream = null;
 		// First try a URL
 		try {
@@ -294,7 +319,8 @@ public class CreateResourceCommand extends GenericKarafCommand {
 			// Added class loader to read files
 
 			// TODO check to read topologies with relative paths
-			// stream = this.getClass().getClassLoader().getResourceAsStream(filename);
+			// stream =
+			// this.getClass().getClassLoader().getResourceAsStream(filename);
 			log.error("file: " + filename);
 			stream = new FileInputStream(filename);
 		}
@@ -303,20 +329,25 @@ public class CreateResourceCommand extends GenericKarafCommand {
 		return rd;
 	}
 
-	private NetworkTopology loadNetworkDescriptor(InputStream stream) throws JAXBException, SAXException {
+	private NetworkTopology loadNetworkDescriptor(InputStream stream)
+			throws JAXBException, SAXException {
 
 		NetworkTopology descriptor = null;
 		try {
-			JAXBContext context = JAXBContext.newInstance(NetworkTopology.class);
+			JAXBContext context = JAXBContext
+					.newInstance(NetworkTopology.class);
 
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
 			/* check wellformat xml with xsd */
-			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A COMMAND
+			// TODO I CAN NOT UNDERSTAND WHY WE CAN GET THE LOADER FROM A
+			// COMMAND
 			// SchemaFactory sf = SchemaFactory.newInstance(
 			// javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI);
-			// ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			// Schema schema = sf.newSchema(new StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
+			// ClassLoader loader =
+			// Thread.currentThread().getContextClassLoader();
+			// Schema schema = sf.newSchema(new
+			// StreamSource(loader.getResourceAsStream(NAME_SCHEMA)));
 			// unmarshaller.setSchema(schema);
 
 			descriptor = (NetworkTopology) unmarshaller.unmarshal(stream);
