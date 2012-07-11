@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 public class Response {
 
-	@XmlType(name = "_STATUS")
+	@XmlType(name = "ResponseStatus")
 	public enum Status {
 		OK {
 			@Override
