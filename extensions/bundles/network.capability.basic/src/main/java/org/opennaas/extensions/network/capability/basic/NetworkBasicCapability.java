@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.ILifecycle;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
 import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -17,6 +20,7 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.extensions.network.model.topology.NetworkConnection;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
@@ -35,6 +39,42 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new Network Basic Capability");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#addResource(java.lang.String)
+	 */
+	@Override
+	public void addResource(String resourceId) throws CapabilityException {
+		try {
+			IResourceManager resourceManager = Activator.getResourceManagerService();
+			IResource iResource = resourceManager.getResourceById(resourceId);
+			addResource(iResource);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#removeResource(java.lang.String)
+	 */
+	@Override
+	public void removeResource(String resourceId) throws CapabilityException {
+		try {
+			IResourceManager resourceManager = Activator.getResourceManagerService();
+			IResource iResource = resourceManager.getResourceById(resourceId);
+			removeResource(iResource);
+		} catch (ActivatorException e) {
+			throw new CapabilityException(e);
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
 	}
 
 	/*
@@ -137,6 +177,16 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.network.model.topology.Link)
+	 */
+	@Override
+	public void l2attach(Link link) throws CapabilityException {
+		l2attach(link.getSource(), link.getSink());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2attach(org.opennaas.extensions.network.model.topology.Interface,
 	 * org.opennaas.extensions.network.model.topology.Interface)
@@ -203,6 +253,17 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2detach(org.opennaas.extensions.network.model.wrappers.Interfaces)
+	 */
+	@Override
+	public void l2detach(Link link) throws CapabilityException {
+		l2detach(link.getSource(), link.getSink());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
 	 * org.opennaas.extensions.network.capability.basic.INetworkBasicCapability#l2detach(org.opennaas.extensions.network.model.topology.Interface,
 	 * org.opennaas.extensions.network.model.topology.Interface)
 	 */
@@ -246,7 +307,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), INetworkBasicCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), INetworkBasicCapability.class.getName());
 		super.activate();
 	}
 
@@ -257,7 +318,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		// registration.unregister();
+		registration.unregister();
 		super.deactivate();
 	}
 

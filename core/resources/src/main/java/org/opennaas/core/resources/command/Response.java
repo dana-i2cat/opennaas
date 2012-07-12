@@ -3,8 +3,11 @@ package org.opennaas.core.resources.command;
 import java.util.List;
 import java.util.Vector;
 
+import javax.xml.bind.annotation.XmlType;
+
 public class Response {
 
+	@XmlType(name = "ResponseStatus")
 	public enum Status {
 		OK {
 			@Override
