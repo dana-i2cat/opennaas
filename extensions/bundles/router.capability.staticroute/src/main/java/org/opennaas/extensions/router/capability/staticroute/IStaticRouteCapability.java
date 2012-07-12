@@ -10,7 +10,7 @@ import org.opennaas.core.resources.capability.ICapability;
 /**
  * @author Jordi Puig
  */
-@Path("/staticRoute")
+@Path("/")
 public interface IStaticRouteCapability extends ICapability {
 
 	/**
@@ -22,7 +22,7 @@ public interface IStaticRouteCapability extends ICapability {
 	 * @throws CapabilityException
 	 */
 	@GET
-	@Path("/create")
+	@Path("/createStaticRoute")
 	public void createStaticRoute(@QueryParam("netIdIpAdress") String netIdIpAdress, @QueryParam("maskIpAdress") String maskIpAdress,
 			@QueryParam("nextHopIpAddress") String nextHopIpAddress) throws CapabilityException;
 
