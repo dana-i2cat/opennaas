@@ -30,8 +30,7 @@ public abstract class OpennaasExamOptions
 	{
 		return composite(mavenBundle()
 				.groupId("org.opennaas")
-				// .artifactId("org.opennaas.extensions.nexus.tests.helper")
-				.artifactId("org.opennaas.extensions.itests.helpers")
+				.artifactId("org.opennaas.itests.helpers")
 				.versionAsInProject(),
 				compendiumProfile());
 	}

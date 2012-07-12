@@ -61,7 +61,7 @@
 							classes are under ".internal"
 						-->
 						<Export-Package>
-							   org.opennaas.extensions.itests.helpers;version="${project.version}",
+							   org.opennaas.itests.helpers;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>
