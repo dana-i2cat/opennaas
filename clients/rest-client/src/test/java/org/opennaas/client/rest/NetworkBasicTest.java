@@ -8,7 +8,6 @@ import javax.xml.bind.JAXBException;
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkConnection;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -20,9 +19,27 @@ public class NetworkBasicTest {
 
 	public static void main(String[] args) throws FileNotFoundException, JAXBException {
 		addResource();
-		removeResource();
 		l2attach();
 		l2detach();
+		removeResource();
+	}
+
+	/**
+	 *
+	 */
+	private static void l2attach() {
+		ClientResponse response = null;
+		String url = "http://localhost:8888/opennaas/network/networkdemo/basicNetwork/l2attach";
+
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML)
+					.type(MediaType.APPLICATION_XML).post(ClientResponse.class, getInterfaces());
+			LOGGER.info("OK!: " + response.toString());
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
 	}
 
 	/**
@@ -35,7 +52,7 @@ public class NetworkBasicTest {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML)
-					.post(ClientResponse.class, "f90b386c-87be-40bd-bfa6-45d9f10a69ac");
+					.post(ClientResponse.class, "05a00fe3-be5c-4d32-8557-c65eb30be595");
 			LOGGER.info("OK!: " + response.toString());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -51,7 +68,7 @@ public class NetworkBasicTest {
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, "f90b386c-87be-40bd-bfa6-45d9f10a69ac");
+			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, "05a00fe3-be5c-4d32-8557-c65eb30be595");
 			LOGGER.info("OK!: " + response.toString());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -61,16 +78,15 @@ public class NetworkBasicTest {
 	/**
 	 *
 	 */
-	private static void l2attach() {
-		NetworkConnection response = null;
-		String url = "http://localhost:8888/opennaas/network/networkdemo/basicNetwork/l2attach";
-
+	private static void l2detach() {
+		ClientResponse response = null;
+		String url = "http://localhost:8888/opennaas/network/networkdemo/basicNetwork/l2detach";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML)
-					.type(MediaType.APPLICATION_XML).post(NetworkConnection.class, getInterfaces());
-			LOGGER.info("Network Connection: " + response.getName());
+					.type(MediaType.APPLICATION_XML).post(ClientResponse.class, getInterfaces());
+			LOGGER.info("OK!: " + response.toString());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -88,23 +104,6 @@ public class NetworkBasicTest {
 		link.setSource(interface1);
 		link.setSink(interface1);
 		return link;
-	}
-
-	/**
-	 *
-	 */
-	private static void l2detach() {
-		NetworkConnection response = null;
-		String url = "http://localhost:8888/opennaas/network/networkdemo/basicNetwork/l2detach";
-		try {
-			Client client = Client.create();
-			WebResource webResource = client.resource(url);
-			response = webResource.accept(MediaType.APPLICATION_XML)
-					.type(MediaType.APPLICATION_XML).post(NetworkConnection.class, getInterfaces());
-			LOGGER.info("Network Connection: " + response.getName());
-		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-		}
 	}
 
 }
