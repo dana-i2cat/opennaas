@@ -1,12 +1,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>org.opennaas.itests</artifactId>
+    <!-- Skip /itests/pom.xml and use root's as parent to avoid cyclic dependency on platform -->
+    <artifactId>opennaas</artifactId>
     <groupId>org.opennaas</groupId>
     <version>0.12-SNAPSHOT</version>
-    <relativePath>..</relativePath>
+    <relativePath>../..</relativePath>
   </parent>
 
   <name>OpenNaaS :: iTests :: Helpers</name>
+  <groupId>org.opennaas.itests</groupId>
   <artifactId>org.opennaas.itests.helpers</artifactId>
   <modelVersion>4.0.0</modelVersion>
   <packaging>bundle</packaging>
@@ -61,7 +63,7 @@
 							classes are under ".internal"
 						-->
 						<Export-Package>
-							   org.opennaas.extensions.itests.helpers;version="${project.version}",
+							   org.opennaas.itests.helpers;version="${project.version}",
 						</Export-Package>
 					</instructions>
 				</configuration>

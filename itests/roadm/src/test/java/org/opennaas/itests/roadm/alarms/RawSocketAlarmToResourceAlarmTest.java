@@ -1,10 +1,10 @@
 package org.opennaas.itests.roadm.alarms;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.itests.helpers.InitializerTestHelper;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
