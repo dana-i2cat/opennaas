@@ -23,7 +23,7 @@ public class ProtocolSessionContext {
 	public static final String	PASSWORD			= "protocol.password";
 	public static final String	KEY_USERNAME		= "protocol.keyUsername";
 	public static final String	KEY_PATH			= "protocol.keyPath";
-	public static final String	KEY_PASSWORD		= "protocol.keyPassword";
+	public static final String	KEY_PASSPHRASE		= "protocol.keyPassphrase";
 
 	private Map<String, Object>	sessionParameters	= null;
 
