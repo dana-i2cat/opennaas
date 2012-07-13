@@ -1,6 +1,5 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
-import net.i2cat.netconf.SessionContext;
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -10,6 +9,7 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
+import net.i2cat.netconf.SessionContext;
 
 /**
  * List the device ids registered to the protocol manager
@@ -32,11 +32,11 @@ public class ContextCommand extends GenericKarafCommand {
 	@Argument(name = "uri", index = 3, required = false, description = "The URI passed to the protocol implementation of the context")
 	String	uri;			// user and password are inside PROTOCOL_URI
 
-	@Argument(name = "keyPath", index = 4, required = false, description = "The path where the private key is stored.")
+	@Argument(name = "privateKeyPath", index = 4, required = false, description = "The path where the private key is stored.")
 	String	keyPath;
 
-	@Argument(name = "keyPassword", index = 5, required = false, description = "Passphrase to unlock the private key.")
-	String	keyPassword;
+	@Argument(name = "keyPassphrase", index = 5, required = false, description = "Passphrase to unlock the private key.")
+	String	keyPassphrase;
 
 	@Option(name = "--remove", aliases = { "-r" }, required = false, description = "Instead of adding a context, remove it for the named protocol. ")
 	boolean	optionRemove;
@@ -84,22 +84,17 @@ public class ContextCommand extends GenericKarafCommand {
 			return null;
 		}
 
+		if (uri == null || uri.contentEquals("")) {
+			printError("You must specify a [uri] to register.");
+			printEndCommand();
+			return null;
+		}
 		SessionContext.AuthType authentication = SessionContext.AuthType.getByValue(authType);
 
 		if (authentication.equals(SessionContext.AuthType.PUBLICKEY)) {
 
-			if ((keyPath == null) || (keyPath.contentEquals("")) || (keyPassword == null) || keyPassword.contentEquals("")) {
+			if ((keyPath == null) || (keyPath.contentEquals("")) || (keyPassphrase == null) || keyPassphrase.contentEquals("")) {
 				printError("You must specify a [file path] and [password] if you want to use key authentication");
-				printEndCommand();
-				return null;
-			}
-
-		}
-
-		if (authentication.equals(SessionContext.AuthType.PASSWORD)) {
-
-			if (uri == null || uri.contentEquals("")) {
-				printError("You must specify a [uri] to register.");
 				printEndCommand();
 				return null;
 			}
@@ -118,13 +113,25 @@ public class ContextCommand extends GenericKarafCommand {
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
 		context.addParameter(ProtocolSessionContext.AUTH_TYPE, authType);
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		context.addParameter(ProtocolSessionContext.KEY_USERNAME, uri.split("@")[0]);
 		context.addParameter(ProtocolSessionContext.KEY_PATH, keyPath);
-		context.addParameter(ProtocolSessionContext.KEY_PASSWORD, keyPassword);
+		context.addParameter(ProtocolSessionContext.KEY_PASSPHRASE, keyPassphrase);
+		if (authentication.equals(SessionContext.AuthType.PUBLICKEY)) {
+			String username = getKeyUsername(uri);
+			context.addParameter(ProtocolSessionContext.KEY_USERNAME, username);
+		}
 
 		sessionManager.registerContext(context);
 		printInfo("Context registered for resource " + resourceId);
 		printEndCommand();
 		return null;
+
+	}
+
+	private String getKeyUsername(String uri) {
+
+		String subUri = uri.split("//")[1];
+		String username = subUri.split("@")[0];
+
+		return username;
 	}
 }
