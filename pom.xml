@@ -272,11 +272,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.opennaas</groupId>
-				<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.sampleresource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -293,6 +288,12 @@
 			<dependency>
 				<groupId>org.opennaas</groupId>
 				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- iTests -->
+			<dependency>
+				<groupId>org.opennaas.itests</groupId>
+				<artifactId>org.opennaas.itests.helpers</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- Netconf4j -->
