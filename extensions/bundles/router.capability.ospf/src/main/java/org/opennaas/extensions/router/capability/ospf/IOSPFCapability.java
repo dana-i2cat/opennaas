@@ -174,9 +174,7 @@ public interface IOSPFCapability extends ICapability {
 	 * @return ospfService
 	 * @throws CapabilityException
 	 */
-	@Path("/showOSPFConfiguration")
-	@POST
-	@Produces(MediaType.APPLICATION_XML)
+	// TODO: export this method using rest too
 	public OSPFService showOSPFConfiguration() throws CapabilityException;
 
 }
