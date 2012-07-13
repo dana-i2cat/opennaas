@@ -10,9 +10,16 @@ import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
+import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
-@Path("/ip")
+@Path("/")
 public interface IIPCapability extends ICapability {
+
+	@POST
+	@Path("/setIPv4")
+	@Consumes(MediaType.APPLICATION_XML)
+	public void setIPv4(SetIpAddressRequest request)
+			throws CapabilityException;
 
 	/**
 	 * Set the given ip to the logical device
@@ -20,12 +27,8 @@ public interface IIPCapability extends ICapability {
 	 * @param params
 	 * @throws CapabilityException
 	 */
-	@POST
-	@Path("/setIPv4")
-	@Consumes(MediaType.APPLICATION_XML)
-	// FIXME cannot have a POST method with two params.
-	// only a single object can go in a POST body
-	// Consider changing the interface :(
+	// cannot have a POST method with two params
+	// only a single object can go in a POST body (using setIPv4(SetIpAddressRequest) instead) :)
 	public void setIPv4(LogicalDevice logicalDevice, IPProtocolEndpoint ip)
 			throws CapabilityException;
 
