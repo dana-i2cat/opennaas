@@ -78,6 +78,7 @@ public class NetconfProtocolSession implements IProtocolSession {
 
 				context.setKeyUsername((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_USERNAME));
 				context.setKeyPassword((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_PASSPHRASE));
+				context.setKeyLocation((String) protocolSessionContext.getSessionParameters().get(ProtocolSessionContext.KEY_PATH));
 				context.setAuthenticationType(SessionContext.AuthType.PUBLICKEY);
 
 			} else {
