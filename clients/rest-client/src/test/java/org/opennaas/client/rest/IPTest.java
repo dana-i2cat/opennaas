@@ -27,7 +27,7 @@ public class IPTest {
 
 	public static void setIPv4(SetIpAddressRequest request) {
 		ClientResponse response = null;
-		String url = "http://localhost:8888/opennaas/router/junos20/ip/setIPv4";
+		String url = "http://localhost:8888/opennaas/router/lolaM20/ipv4/setIPv4";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
@@ -41,7 +41,7 @@ public class IPTest {
 
 	public static void setInterfaceDescription(LogicalPort iface) {
 		ClientResponse response = null;
-		String url = "http://localhost:8888/opennaas/router/junos20/ip/setInterfaceDescription";
+		String url = "http://localhost:8888/opennaas/router/lolaM20/ipv4/setInterfaceDescription";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
