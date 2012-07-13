@@ -29,7 +29,7 @@ public abstract class OpennaasExamOptions
 	public final static Option includeTestHelper()
 	{
 		return composite(mavenBundle()
-				.groupId("org.opennaas")
+				.groupId("org.opennaas.itests")
 				.artifactId("org.opennaas.itests.helpers")
 				.versionAsInProject(),
 				compendiumProfile());
