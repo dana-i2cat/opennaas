@@ -1,7 +1,7 @@
 package org.opennaas.itests.bod;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
 import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
-import org.opennaas.extensions.itests.helpers.AbstractKarafCommandTest;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.ops4j.pax.exam.Option;

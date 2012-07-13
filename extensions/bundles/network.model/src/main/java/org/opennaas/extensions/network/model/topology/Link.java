@@ -1,22 +1,22 @@
 package org.opennaas.extensions.network.model.topology;
 
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * A (collection of) network element(s) that can be represented as a link connection (ITU-T G.805 terminology) or as an edge on a vertex (in Graph theory).
- * Typically a single (non-concatenated) link on a certain network layer (not necessarily the physical layer).
- * A Link can be unidirectional or bidirectional and is a special case of a Broadcast Segment.
- *
+ * A (collection of) network element(s) that can be represented as a link connection (ITU-T G.805 terminology) or as an edge on a vertex (in Graph
+ * theory). Typically a single (non-concatenated) link on a certain network layer (not necessarily the physical layer). A Link can be unidirectional
+ * or bidirectional and is a special case of a Broadcast Segment.
+ * 
  * @author isart
- *
+ * 
  */
+@XmlRootElement
 public class Link extends BroadcastSegment {
 
-	Interface source;
-	Interface sink;
+	Interface	source;
+	Interface	sink;
 
-	boolean isBidirectional = false;
-
+	boolean		isBidirectional	= false;
 
 	public Interface getSource() {
 		return source;

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.opennaas.core.resources.command.Response;
 
-
 public class ActionResponse {
+
 	public enum STATUS {
 		ERROR, OK, PENDING
 	};

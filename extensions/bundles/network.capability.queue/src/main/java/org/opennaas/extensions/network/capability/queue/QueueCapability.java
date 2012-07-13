@@ -57,7 +57,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IQueueCapability.class.getName());
 		super.activate();
 	}
 
@@ -68,7 +68,7 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		// registration.unregister();
+		registration.unregister();
 		super.deactivate();
 	}
 
@@ -104,12 +104,13 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.network.capability.queue.IQueueService#execute()
+	 * @see org.opennaas.extensions.network.capability.queue.IQueueCapability#execute()
 	 */
 	@Override
-	public Map<String, QueueResponse> execute() throws CapabilityException {
+	public Response execute() throws CapabilityException {
 		log.info("Start of execute call");
-		Map<String, QueueResponse> response = new Hashtable<String, QueueResponse>();
+		Response response = new Response();
+		Map<String, QueueResponse> queueResponses = new Hashtable<String, QueueResponse>();
 		NetworkModel model = (NetworkModel) resource.getModel();
 		if (model.getNetworkElements() != null && !model.getNetworkElements().isEmpty()) {
 			for (NetworkElement networkElement : model.getNetworkElements()) {
@@ -118,15 +119,16 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 					try {
 						QueueResponse queueResponse = executeQueue(networkElement.getName());
 						if (queueResponse != null) {
-							response.put(networkElement.getName(), queueResponse);
+							queueResponses.put(networkElement.getName(), queueResponse);
 						}
 					} catch (CapabilityException e) {
-						response.put(networkElement.getName(), new QueueResponse());
+						queueResponses.put(networkElement.getName(), new QueueResponse());
 					}
 				}
 			}
 		}
 		log.info("End of execute call");
+		response.setResponse(queueResponses);
 		return response;
 	}
 
@@ -192,4 +194,5 @@ public class QueueCapability extends AbstractCapability implements IQueueCapabil
 	private String[] getResourceTypeAndName(String name) {
 		return name.split(":");
 	}
+
 }

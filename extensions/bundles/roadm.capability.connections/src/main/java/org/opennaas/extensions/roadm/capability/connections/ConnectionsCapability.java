@@ -35,7 +35,7 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IConnectionsCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IConnectionsCapability.class.getName());
 		super.activate();
 	}
 
@@ -46,7 +46,7 @@ public class ConnectionsCapability extends AbstractCapability implements IConnec
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		// registration.unregister();
+		registration.unregister();
 		super.deactivate();
 	}
 

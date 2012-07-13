@@ -331,8 +331,7 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 		if (props != null) {
 			props.put("service.exported.interfaces", "*");
 			props.put("service.exported.configs", "org.apache.cxf.rs");
-			props.put("service.exported.intents", "HTTP");
-			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName);
+			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
 		}
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
