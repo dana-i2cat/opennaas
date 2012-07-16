@@ -172,6 +172,8 @@ public class CompleteAlarmsWorkflowTest
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter("protocol.mock", "true");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL, "wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"password");
 		return protocolSessionContext;
 	}
 

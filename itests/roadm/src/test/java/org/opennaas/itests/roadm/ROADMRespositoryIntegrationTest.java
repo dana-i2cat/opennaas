@@ -111,6 +111,9 @@ public class ROADMRespositoryIntegrationTest
 				"protocol.mock", "true");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"password");
+
 		return protocolSessionContext;
 	}
 
