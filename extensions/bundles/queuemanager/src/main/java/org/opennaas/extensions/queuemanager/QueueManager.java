@@ -143,13 +143,15 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	@Override
-	public List<String> getActionsId() {
+	public Response getActionsId() {
+		Response response = new Response();
+		List<String> ids = new ArrayList<String>();
 		List<IAction> actions = getActions();
-		List<String> ids = new ArrayList<String>(actions.size());
+		response.setList(ids);
 		for (IAction a : actions) {
 			ids.add(a.getActionID());
 		}
-		return ids;
+		return response;
 	}
 
 	/*

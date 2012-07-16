@@ -20,32 +20,53 @@ import org.opennaas.core.resources.queue.QueueResponse;
 @Path("/")
 public interface IQueueManagerCapability extends ICapability {
 
+	/**
+	 * @return
+	 * @throws ProtocolException
+	 * @throws CapabilityException
+	 * @throws ActionException
+	 */
 	@POST
 	@Path("/execute")
 	@Produces(MediaType.APPLICATION_XML)
 	public QueueResponse execute() throws ProtocolException,
 			CapabilityException, ActionException;
 
+	/**
+	 * 
+	 */
 	@POST
 	@Path("/clear")
 	public void clear();
 
-	// TODO move to an other interface:
-	// the fact that this method is not exported through ws suggest it should be placed in an other interface
-	public void queueAction(IAction action) throws CapabilityException;
-
+	/**
+	 * @return
+	 */
 	@GET
-	@Path("/list")
+	@Path("/getActionsId")
 	@Produces(MediaType.APPLICATION_XML)
-	public List<IAction> getActions();
+	public Response getActionsId();
 
-	@POST
-	@Path("/listIds")
-	@Produces(MediaType.APPLICATION_XML)
-	public List<String> getActionsId();
-
+	/**
+	 * @param modifyParams
+	 * @throws CapabilityException
+	 */
 	@POST
 	@Path("/modify")
 	@Consumes(MediaType.APPLICATION_XML)
 	public void modify(ModifyParams modifyParams) throws CapabilityException;
+
+	// TODO move to an other interface:
+	// the fact that this method is not exported through ws suggest it should be placed in an other interface
+
+	/**
+	 * @param action
+	 * @throws CapabilityException
+	 */
+	public void queueAction(IAction action) throws CapabilityException;
+
+	/**
+	 * @return
+	 */
+	public List<IAction> getActions();
 }
