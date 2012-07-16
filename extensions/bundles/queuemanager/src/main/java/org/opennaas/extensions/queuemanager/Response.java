@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Jordi
- * @param <E>
  */
 @XmlRootElement
 public class Response {

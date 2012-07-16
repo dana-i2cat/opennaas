@@ -1,7 +1,5 @@
 package org.opennaas.core.resources.action;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
@@ -9,35 +7,38 @@ import org.opennaas.core.resources.IModel;
 public abstract class Action implements IAction {
 
 	protected Log		log				= LogFactory.getLog(Action.class);
-
-	// FIXME what model is the entire model or the one for change from the command
-	@XmlTransient
 	protected IModel	modelToUpdate;
 	protected Object	params			= null;
 	protected String	actionID		= null;
 
 	protected Object	behaviorParams	= null;
 
+	@Override
 	public IModel getModelToUpdate() {
 		return modelToUpdate;
 	}
 
+	@Override
 	public void setModelToUpdate(IModel modelToUpdate) {
 		this.modelToUpdate = modelToUpdate;
 	}
 
+	@Override
 	public Object getParams() {
 		return params;
 	}
 
+	@Override
 	public void setParams(Object params) {
 		this.params = params;
 	}
 
+	@Override
 	public String getActionID() {
 		return actionID;
 	}
 
+	@Override
 	public void setActionID(String actionID) {
 		this.actionID = actionID;
 	}
@@ -55,13 +56,4 @@ public abstract class Action implements IAction {
 		behaviorParams = params;
 	}
 
-	// static class Adapter extends XmlAdapter<Action, IAction> {
-	// public IAction unmarshal(Action a) {
-	// return a;
-	// }
-	//
-	// public Action marshal(IAction a) {
-	// return (Action) a;
-	// }
-	// }
 }
