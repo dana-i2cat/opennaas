@@ -9,6 +9,10 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionFactory;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
@@ -35,7 +39,7 @@ public class ProtocolManager implements IProtocolManager {
 	private synchronized String createProtocolSessionManager(String resourceID) throws ProtocolException {
 		log.debug("Creating new ProtocolSessionManager for resource " + resourceID);
 
-		// FIXME in the near future, a check should be done here to avoid creating PSM for resources that don't exist in ResourceManager.
+		checkResourceExists(resourceID);
 
 		if (sessionManagers.containsKey(resourceID)) {
 			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
@@ -44,6 +48,8 @@ public class ProtocolManager implements IProtocolManager {
 		ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceID);
 		protocolSessionManager.setProtocolManager(this);
 		protocolSessionManager.setEventManager(getEventManager());
+
+		protocolSessionManager.registerAsOSGiService();
 
 		sessionManagers.put(resourceID, protocolSessionManager);
 
@@ -63,6 +69,10 @@ public class ProtocolManager implements IProtocolManager {
 		}
 
 		IProtocolSessionManager protocolSessionManager = sessionManagers.get(resourceID);
+
+		if (protocolSessionManager instanceof ProtocolSessionManager) {
+			((ProtocolSessionManager) protocolSessionManager).unregisterAsOSGiService();
+		}
 
 		for (ProtocolSessionContext toUnregister : protocolSessionManager.getRegisteredContexts()) {
 			protocolSessionManager.unregisterContext(toUnregister);
@@ -198,6 +208,20 @@ public class ProtocolManager implements IProtocolManager {
 
 	private IEventManager getEventManager() throws ProtocolException {
 		return this.eventManager;
+	}
+
+	public IResource checkResourceExists(String resourceID) throws ProtocolException {
+		try {
+			IResource resource = Activator.getResourceManagerService().getResourceById(resourceID);
+			if (resource == null) {
+				throw new ProtocolException("Can not create a PSM for given resource. Given resource does not exist in ResourceManager");
+			}
+			return resource;
+		} catch (ResourceException e) {
+			throw new ProtocolException("Can not create a PSM for given resource. Given resource does not exist in ResourceManager", e);
+		} catch (ActivatorException e) {
+			throw new ProtocolException(e);
+		}
 	}
 
 }
