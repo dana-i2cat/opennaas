@@ -37,6 +37,7 @@ public class QueueManager extends AbstractCapability implements
 	public final static String		QUEUE			= CAPABILITY_TYPE;
 	private final Log				log				= LogFactory.getLog(QueueManager.class);
 	private String					resourceId		= "";
+
 	private final Vector<IAction>	queue			= new Vector<IAction>();
 
 	/**
@@ -97,9 +98,10 @@ public class QueueManager extends AbstractCapability implements
 		Dictionary<String, String> props = new Hashtable<String, String>();
 		props.put(ResourceDescriptorConstants.CAPABILITY, "queue");
 		props.put(ResourceDescriptorConstants.CAPABILITY_NAME, resourceId);
-		registration = Activator.getContext().registerService(
-				IQueueManagerCapability.class.getName(), this, props);
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IQueueManagerCapability.class.getName());
+		// registration = Activator.getContext().registerService(
+		// IQueueManagerCapability.class.getName(), this, props);
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IQueueManagerCapability.class.getName(), props);
 		super.initialize();
 	}
 
@@ -138,6 +140,21 @@ public class QueueManager extends AbstractCapability implements
 		}
 		log.info("End of getActions call");
 		return actions;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.queuemanager.IQueueManagerCapability#getActionsId()
+	 */
+	@Override
+	public String getActionsId() {
+		List<String> ids = new ArrayList<String>();
+		List<IAction> actions = getActions();
+		for (IAction a : actions) {
+			ids.add(a.getActionID());
+		}
+		return ids.toString();
 	}
 
 	/*
