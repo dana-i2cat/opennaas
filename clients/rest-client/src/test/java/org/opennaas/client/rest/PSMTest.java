@@ -25,7 +25,8 @@ public class PSMTest {
 
 	public static void main(String[] args) throws ProtocolException, URISyntaxException {
 
-		ProtocolSessionContext context = createProtocolSessionContext();
+		String routerName1 = "lolaM20";
+		String routerName2 = "myreM7i";
 
 		List<String> sessionIds = getAllProtocolSessionIds();
 		String sessionId = sessionIds.get(0);
@@ -33,20 +34,26 @@ public class PSMTest {
 		isLocked(sessionId);
 		destroyProtocolSession(sessionId);
 
-		registerContext(context);
-		List<ProtocolSessionContext> contexts = getRegisteredContexts();
-		unregisterContext(contexts.get(0));
+		ProtocolSessionContext context = createProtocolSessionContext();
 
-		registerContext(context);
-		unregisterContext((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL));
-		contexts = getRegisteredContexts();
+		registerContext(context, routerName1);
+		List<ProtocolSessionContext> contexts = getRegisteredContexts(routerName1);
+		unregisterContext(contexts.get(0), routerName1);
+
+		registerContext(context, routerName2);
+		List<ProtocolSessionContext> contexts2 = getRegisteredContexts(routerName2);
+		unregisterContext(contexts2.get(0), routerName2);
+
+		registerContext(context, routerName1);
+		unregisterContext((String) context.getSessionParameters().get(ProtocolSessionContext.PROTOCOL), routerName1);
+		contexts = getRegisteredContexts(routerName1);
 
 	}
 
-	static void registerContext(ProtocolSessionContext context) throws ProtocolException, URISyntaxException {
+	static void registerContext(ProtocolSessionContext context, String routerName) throws ProtocolException, URISyntaxException {
 		ClientResponse response = null;
 		String methodPath = "context/register";
-		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/lolaM20/protocolSessionManager/" + methodPath, null, null);
+		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/" + routerName + "/protocolSessionManager/" + methodPath, null, null);
 
 		String url = uri.toASCIIString();
 
@@ -60,10 +67,10 @@ public class PSMTest {
 		}
 	}
 
-	static void unregisterContext(ProtocolSessionContext context) throws ProtocolException, URISyntaxException {
+	static void unregisterContext(ProtocolSessionContext context, String routerName) throws ProtocolException, URISyntaxException {
 		ClientResponse response = null;
 		String methodPath = "context/unregister";
-		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/lolaM20/protocolSessionManager/" + methodPath, null, null);
+		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/" + routerName + "/protocolSessionManager/" + methodPath, null, null);
 		String url = uri.toASCIIString();
 
 		try {
@@ -76,11 +83,11 @@ public class PSMTest {
 		}
 	}
 
-	static void unregisterContext(String protocol) throws ProtocolException, URISyntaxException {
+	static void unregisterContext(String protocol, String routerName) throws ProtocolException, URISyntaxException {
 
 		ClientResponse response = null;
 		String methodPath = "context/" + protocol;
-		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/lolaM20/protocolSessionManager/" + methodPath, null, null);
+		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/" + routerName + "/protocolSessionManager/" + methodPath, null, null);
 		String url = uri.toASCIIString();
 		try {
 			Client client = Client.create();
@@ -92,10 +99,10 @@ public class PSMTest {
 		}
 	}
 
-	static List<ProtocolSessionContext> getRegisteredContexts() throws URISyntaxException {
+	static List<ProtocolSessionContext> getRegisteredContexts(String routerName) throws URISyntaxException {
 		List<ProtocolSessionContext> response = null;
 		String methodPath = "context/";
-		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/lolaM20/protocolSessionManager/" + methodPath, null, null);
+		URI uri = new URI("http", null, "localhost", 8888, "/opennaas/router/" + routerName + "/protocolSessionManager/" + methodPath, null, null);
 		String url = uri.toASCIIString();
 
 		GenericType<List<ProtocolSessionContext>> genericType =
