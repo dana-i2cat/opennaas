@@ -26,16 +26,16 @@ public class ChassisTest {
 	private static final Logger	LOGGER	= Logger.getLogger(ChassisTest.class);
 
 	public static void main(String[] args) {
-		// upPhysicalInterface();
-		// downPhysicalInterface();
-		// createSubInterface();
-		// deleteSubInterface();
-		// createLogicalRouter();
-		// deleteLogicalRouter();
-		// addInterfacesToLogicalRouter();
+		upPhysicalInterface();
+		downPhysicalInterface();
+		createSubInterface();
+		deleteSubInterface();
+		createLogicalRouter();
+		deleteLogicalRouter();
+		addInterfacesToLogicalRouter();
 		removeInterfacesFromLogicalRouter();
-		// setEncapsulation();
-		// setEncapsulationLabel();
+		setEncapsulation();
+		setEncapsulationLabel();
 	}
 
 	/**
