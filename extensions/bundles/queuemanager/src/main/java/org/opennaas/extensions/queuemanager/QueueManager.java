@@ -142,16 +142,19 @@ public class QueueManager extends AbstractCapability implements
 		return actions;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.queuemanager.IQueueManagerCapability#getActionsId()
+	 */
 	@Override
-	public Response getActionsId() {
-		Response response = new Response();
+	public String getActionsId() {
 		List<String> ids = new ArrayList<String>();
 		List<IAction> actions = getActions();
-		response.setList(ids);
 		for (IAction a : actions) {
 			ids.add(a.getActionID());
 		}
-		return response;
+		return ids.toString();
 	}
 
 	/*

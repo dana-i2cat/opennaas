@@ -5,7 +5,6 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.queue.ModifyParams;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.extensions.queuemanager.Response;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -24,12 +23,12 @@ public class QueueManagerTest {
 
 	private static void list() {
 		String url = "http://localhost:8888/opennaas/router/lolaM20/queue/getActionsId";
-		Response response = null;
+		String response = null;
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.accept(MediaType.APPLICATION_XML).get(Response.class);
-			LOGGER.info("Response nº: " + response.getList().size());
+			response = webResource.accept(MediaType.TEXT_PLAIN).get(String.class);
+			LOGGER.info("Response: " + response);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}

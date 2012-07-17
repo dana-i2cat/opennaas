@@ -44,8 +44,8 @@ public interface IQueueManagerCapability extends ICapability {
 	 */
 	@GET
 	@Path("/getActionsId")
-	@Produces(MediaType.APPLICATION_XML)
-	public Response getActionsId();
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getActionsId();
 
 	/**
 	 * @param modifyParams
