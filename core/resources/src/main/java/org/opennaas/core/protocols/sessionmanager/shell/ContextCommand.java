@@ -9,7 +9,6 @@ import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-import net.i2cat.netconf.SessionContext;
 
 /**
  * List the device ids registered to the protocol manager
@@ -21,25 +20,28 @@ import net.i2cat.netconf.SessionContext;
 public class ContextCommand extends GenericKarafCommand {
 
 	@Argument(name = "resourceType:resourceName", index = 0, required = true, description = "The resource owning the context.")
-	String	resourceId;
+	String						resourceId;
 
 	@Argument(name = "protocol", required = false, index = 1, description = "The protocol of the context")
-	String	protocol;		// user and password are inside PROTOCOL_URI
+	String						protocol;					// user and password are inside PROTOCOL_URI
 
-	@Argument(name = "authType", required = true, index = 2, description = "Type of authentication to use.")
-	String	authType;
+	@Argument(name = "authType", required = true, index = 2, description = "Type of authType to use.")
+	String						authType;
 
 	@Argument(name = "uri", index = 3, required = false, description = "The URI passed to the protocol implementation of the context")
-	String	uri;			// user and password are inside PROTOCOL_URI
+	String						uri;						// user and password are inside PROTOCOL_URI
 
 	@Argument(name = "privateKeyPath", index = 4, required = false, description = "The path where the private key is stored.")
-	String	keyPath;
+	String						keyPath;
 
 	@Argument(name = "keyPassphrase", index = 5, required = false, description = "Passphrase to unlock the private key.")
-	String	keyPassphrase;
+	String						keyPassphrase;
 
 	@Option(name = "--remove", aliases = { "-r" }, required = false, description = "Instead of adding a context, remove it for the named protocol. ")
-	boolean	optionRemove;
+	boolean						optionRemove;
+
+	private static final String	PASSWORD	= "password";
+	private static final String	PUBLICKEY	= "publickey";
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -89,21 +91,20 @@ public class ContextCommand extends GenericKarafCommand {
 			printEndCommand();
 			return null;
 		}
-		SessionContext.AuthType authentication = SessionContext.AuthType.getByValue(authType);
 
-		if (authentication.equals(SessionContext.AuthType.PUBLICKEY)) {
+		if (authType.equals(PUBLICKEY)) {
 
 			if ((keyPath == null) || (keyPath.contentEquals("")) || (keyPassphrase == null) || keyPassphrase.contentEquals("")) {
-				printError("You must specify a [file path] and [password] if you want to use key authentication");
+				printError("You must specify a [file path] and [password] if you want to use key authType");
 				printEndCommand();
 				return null;
 			}
 
 		}
 
-		if (!authentication.equals(SessionContext.AuthType.PUBLICKEY) && !authentication.equals(SessionContext.AuthType.PASSWORD)) {
+		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD)) {
 
-			printError("You must specify a valid authentication type. Possible options are: \"password\", \"publickey\".");
+			printError("You must specify a valid authType type. Possible options are: \"password\", \"publickey\".");
 			printEndCommand();
 			return null;
 		}
@@ -115,7 +116,7 @@ public class ContextCommand extends GenericKarafCommand {
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
 		context.addParameter(ProtocolSessionContext.KEY_PATH, keyPath);
 		context.addParameter(ProtocolSessionContext.KEY_PASSPHRASE, keyPassphrase);
-		if (authentication.equals(SessionContext.AuthType.PUBLICKEY)) {
+		if (authType.equals(PUBLICKEY)) {
 			String username = getKeyUsername(uri);
 			context.addParameter(ProtocolSessionContext.KEY_USERNAME, username);
 		}
