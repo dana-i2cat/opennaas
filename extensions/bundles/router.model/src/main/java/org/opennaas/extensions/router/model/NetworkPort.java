@@ -7,6 +7,7 @@ package org.opennaas.extensions.router.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
 /**
@@ -16,6 +17,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
  * NetworkPort is the logical representation of network communications hardware such as a physical connector and the setup or operation of the network
  * chips, at the lowest layers of a network stack.
  */
+@XmlRootElement
 @XmlSeeAlso({ EthernetPort.class, FCPort.class, LogicalTunnelPort.class })
 public class NetworkPort extends LogicalPort implements Serializable {
 
