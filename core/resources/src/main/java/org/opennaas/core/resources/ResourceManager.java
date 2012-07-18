@@ -325,4 +325,30 @@ public class ResourceManager implements IResourceManager {
 			removeResource(resource.getResourceIdentifier());
 		}
 	}
+
+	@Override
+	public String modifyResource(String resourceId, ResourceDescriptor resourceDescriptor) throws ResourceException {
+		return modifyResource(getResourceById(resourceId).getResourceIdentifier(), resourceDescriptor).getResourceIdentifier().getId();
+	}
+
+	@Override
+	public void removeResource(String resourceId) throws ResourceException {
+		removeResource(getResourceById(resourceId).getResourceIdentifier());
+	}
+
+	@Override
+	public void startResource(String resourceId) throws ResourceException {
+		startResource(getResourceById(resourceId).getResourceIdentifier());
+
+	}
+
+	@Override
+	public void stopResource(String resourceId) throws ResourceException {
+		stopResource(getResourceById(resourceId).getResourceIdentifier());
+	}
+
+	@Override
+	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
+		return createResource(resourceDescriptor).getResourceIdentifier().getId();
+	}
 }
