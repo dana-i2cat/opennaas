@@ -109,6 +109,23 @@ public class ContextCommand extends GenericKarafCommand {
 			return null;
 		}
 
+		if (authType.equals(PUBLICKEY)) {
+
+			if ((keyPath == null) || (keyPath.contentEquals("")) || (keyPassphrase == null) || keyPassphrase.contentEquals("")) {
+				printError("You must specify a [file path] and [password] if you want to use key authType");
+				printEndCommand();
+				return null;
+			}
+
+		}
+
+		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD)) {
+
+			printError("You must specify a valid authType type. Possible options are: \"password\", \"publickey\".");
+			printEndCommand();
+			return null;
+		}
+
 		ProtocolSessionContext context = new ProtocolSessionContext();
 
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
@@ -116,7 +133,9 @@ public class ContextCommand extends GenericKarafCommand {
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
 		context.addParameter(ProtocolSessionContext.KEY_PATH, keyPath);
 		context.addParameter(ProtocolSessionContext.KEY_PASSPHRASE, keyPassphrase);
+
 		if (authType.equals(PUBLICKEY)) {
+
 			String username = getKeyUsername(uri);
 			context.addParameter(ProtocolSessionContext.KEY_USERNAME, username);
 		}
