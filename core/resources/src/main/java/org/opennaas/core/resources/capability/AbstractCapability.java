@@ -74,14 +74,24 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 * @return the resource name through the resource descriptor
 	 */
 	public String getResourceName() {
-		return resource.getResourceDescriptor().getInformation().getName();
+		String resourceName = "";
+		if (resource.getResourceDescriptor() != null
+				&& resource.getResourceDescriptor().getInformation() != null) {
+			resourceName = resource.getResourceDescriptor().getInformation().getType();
+		}
+		return resourceName;
 	}
 
 	/**
 	 * @return the resource name through the resource descriptor
 	 */
 	public String getResourceType() {
-		return resource.getResourceDescriptor().getInformation().getType();
+		String resourceType = "";
+		if (resource.getResourceDescriptor() != null
+				&& resource.getResourceDescriptor().getInformation() != null) {
+			resourceType = resource.getResourceDescriptor().getInformation().getType();
+		}
+		return resourceType;
 	}
 
 	// IQueueingCapability methods
