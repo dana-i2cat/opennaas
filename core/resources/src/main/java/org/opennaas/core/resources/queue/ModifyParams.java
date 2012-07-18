@@ -1,5 +1,8 @@
 package org.opennaas.core.resources.queue;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class ModifyParams {
 	private int			posAction;
 
