@@ -1,6 +1,7 @@
 package org.opennaas.extensions.router.junos.actionssets.actions.test.logicalrouters;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.HashMap;
 
@@ -44,6 +45,7 @@ public class AddInterfaceToLRTest {
 		protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 			{
 				put(ProtocolSessionContext.PROTOCOL, "netconf");
+				put(ProtocolSessionContext.AUTH_TYPE, "password");
 			}
 		});
 		protocolSessionManager.registerContext(netconfContext);
@@ -93,6 +95,9 @@ public class AddInterfaceToLRTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE,
+				"password");
+
 		return protocolSessionContext;
 	}
 }
