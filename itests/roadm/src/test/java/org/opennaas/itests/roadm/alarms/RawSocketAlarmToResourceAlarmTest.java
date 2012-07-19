@@ -33,8 +33,8 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.roadm.wonesys.protocols.alarms.WonesysAlarm;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -173,6 +173,8 @@ public class RawSocketAlarmToResourceAlarmTest implements EventHandler
 				"protocol.mock", "true");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE,
+				"password");
 		// ADDED
 		return protocolSessionContext;
 	}

@@ -43,6 +43,7 @@ public class PrepareRestoreActionTest {
 			protocolManager.sessionFactoryAdded(new NetconfProtocolSessionFactory(), new HashMap<String, String>() {
 				{
 					put(ProtocolSessionContext.PROTOCOL, "netconf");
+
 				}
 			});
 			protocolSessionManager.registerContext(netconfContext);
@@ -99,6 +100,8 @@ public class PrepareRestoreActionTest {
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE,
+				"password");
 		// ADDED
 		return protocolSessionContext;
 
