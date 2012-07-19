@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Encapsulates the parameters required to create a protocol session, including the data required to connect to the remote device and the parameters
  * that define the behavior of the session (keepAlive, ...)
@@ -12,6 +14,7 @@ import java.util.Map.Entry;
  * @author eduardgrasa
  * 
  */
+@XmlRootElement
 public class ProtocolSessionContext {
 
 	public static final String	PROTOCOL			= "protocol";
