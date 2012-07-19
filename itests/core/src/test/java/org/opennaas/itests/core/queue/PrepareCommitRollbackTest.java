@@ -111,6 +111,7 @@ public class PrepareCommitRollbackTest
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 		return protocolSessionContext;
 	}
 

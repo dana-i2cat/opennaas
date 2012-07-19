@@ -70,13 +70,18 @@
 			<artifactId>paxexam-karaf-container</artifactId>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>net.i2cat.netconf</groupId>
+			<artifactId>netconf4j</artifactId>
+		</dependency>	
 		<!-- REST annotations -->
 		<dependency>
 			<groupId>org.apache.servicemix.specs</groupId>
 			<artifactId>org.apache.servicemix.specs.jsr311-api-1.1</artifactId>
-		</dependency>
-	</dependencies>
+		</dependency>		
 	
+
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
