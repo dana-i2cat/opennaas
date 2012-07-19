@@ -245,6 +245,7 @@ public class NetOSPFIntegrationTest {
 
 		psc.addParameter(ProtocolSessionContext.PROTOCOL_URI, RESOURCE_URI);
 		psc.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
+		psc.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 
 		psm.registerContext(psc);
 

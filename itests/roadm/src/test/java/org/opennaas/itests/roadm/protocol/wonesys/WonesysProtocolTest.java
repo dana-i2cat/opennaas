@@ -542,6 +542,8 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 		ProtocolSessionContext protocolSessionContext = new ProtocolSessionContext();
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"wonesys");
+		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
+				"password");
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, "wonesys://" + ip + ":" + port);
 		return protocolSessionContext;
 	}

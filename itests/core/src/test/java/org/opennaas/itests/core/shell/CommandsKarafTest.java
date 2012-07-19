@@ -1,8 +1,11 @@
 package org.opennaas.itests.core.shell;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +32,8 @@ import org.opennaas.core.resources.profile.ProfileDescriptor;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.itests.core.resources.DummyAction;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -296,6 +299,8 @@ public class CommandsKarafTest extends AbstractKarafCommandTest
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
+
 		// ADDED
 		return protocolSessionContext;
 	}

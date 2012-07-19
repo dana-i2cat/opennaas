@@ -1,8 +1,11 @@
 package org.opennaas.itests.bod;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
-import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
-import static org.ops4j.pax.exam.CoreOptions.*;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.ops4j.pax.exam.CoreOptions.options;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +38,9 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
-import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
@@ -235,6 +238,7 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 
 		psContext.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
 		psContext.addParameter(ProtocolSessionContext.PROTOCOL, "netconf");
+		psContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 
 		protocolManager.getProtocolSessionManagerWithContext(resourceId, psContext);
 	}
