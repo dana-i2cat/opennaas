@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -23,7 +24,9 @@ import org.junit.runner.RunWith;
 import org.opennaas.core.protocols.sessionmanager.ProtocolManager;
 import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.ResourceIdentifier;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
@@ -35,7 +38,6 @@ import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.command.Response.Status;
-import org.opennaas.core.resources.mock.MockResource;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
@@ -95,7 +97,7 @@ public class ConnectionsCapabilityIntegrationTest
 	private String					hostPort		= "27773";
 	private int						sessionCounter	= 0;
 
-	private MockResource			mockResource;
+	private IResource				mockResource;
 	private IConnectionsCapability	connectionsCapability;
 	private IQueueManagerCapability	queueCapability;
 
@@ -108,6 +110,9 @@ public class ConnectionsCapabilityIntegrationTest
 
 	@Inject
 	private IProtocolManager		protocolManager;
+
+	@Inject
+	private IResourceManager		resourceManager;
 
 	@Inject
 	@Filter("(capability=connections)")
@@ -284,11 +289,9 @@ public class ConnectionsCapabilityIntegrationTest
 		OpticalSwitchFactory switchFactory = new OpticalSwitchFactory();
 
 		/* initialize model */
-		mockResource = new MockResource();
+		mockResource = resourceManager.createResource(CapabilityHelper.newResourceDescriptor("roadm"));
 		mockResource.setModel((IModel) switchFactory.newPedrosaProteusOpticalSwitch());
-		mockResource.setResourceDescriptor(CapabilityHelper.newResourceDescriptor("roadm"));
-		mockResource.setResourceIdentifier(new ResourceIdentifier(mockResource.getResourceDescriptor().getInformation().getType(), mockResource
-				.getResourceDescriptor().getId()));
+
 	}
 
 	/**
@@ -314,7 +317,7 @@ public class ConnectionsCapabilityIntegrationTest
 		queueCapability = (IQueueManagerCapability) queueManagerFactory.create(mockResource);
 		((ICapabilityLifecycle) queueCapability).initialize();
 
-		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextWonesys());
+		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceIdentifier().getId(), newSessionContextWonesys());
 
 		// Test elements not null
 		log.info("Checking connections factory");
@@ -331,6 +334,11 @@ public class ConnectionsCapabilityIntegrationTest
 	public void setup() throws Exception {
 		initResource();
 		initCapability();
+	}
+
+	@After
+	public void clearResourceManager() throws ResourceException {
+		resourceManager.destroyAllResources();
 	}
 
 	@Test

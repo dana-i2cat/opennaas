@@ -17,7 +17,9 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.SessionAlarm;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
@@ -484,20 +486,30 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	public void registerAsOSGiService() throws ProtocolException {
-		Dictionary<String, String> props = new Hashtable<String, String>();
-		props.put("resourceId", resourceID);
-		props = addWSRegistrationProperties(props);
-
-		registration = Activator.getBundleContext().registerService(IProtocolSessionManager.class.getName(), this, props);
+		registration = null;
+		if (Activator.getBundleContext() != null) {
+			Dictionary<String, String> props = new Hashtable<String, String>();
+			props.put("resourceId", resourceID);
+			props = addWSRegistrationProperties(props);
+			registration = Activator.getBundleContext().registerService(IProtocolSessionManager.class.getName(), this, props);
+		}
 	}
 
 	public void unregisterAsOSGiService() {
-		registration.unregister();
+		if (registration != null) {
+			registration.unregister();
+			registration = null;
+		}
 	}
 
 	private Dictionary<String, String> addWSRegistrationProperties(Dictionary<String, String> props) throws ProtocolException {
 
-		IResource resource = protocolManager.checkResourceExists(resourceID);
+		IResource resource;
+		try {
+			resource = getResource(resourceID);
+		} catch (ResourceException e) {
+			throw new ProtocolException("Fail to load WS registration properties", e);
+		}
 
 		String resourceType = resource.getResourceDescriptor().getInformation().getType();
 		String resourceName = resource.getResourceDescriptor().getInformation().getName();
@@ -511,4 +523,19 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 
 		return props;
 	}
+
+	private IResource getResource(String resourceId) throws ResourceException {
+		try {
+			IResource resource = Activator.getResourceManagerService().getResourceById(resourceID);
+			if (resource == null) {
+				throw new ResourceException("Given resource does not exist in ResourceManager");
+			}
+			return resource;
+		} catch (ResourceException e) {
+			throw new ResourceException("Given resource does not exist in ResourceManager", e);
+		} catch (ActivatorException e) {
+			throw new ResourceException("Fail to check existence of given resource", e);
+		}
+	}
+
 }
