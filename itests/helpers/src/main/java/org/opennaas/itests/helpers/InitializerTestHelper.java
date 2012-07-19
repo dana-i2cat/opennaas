@@ -96,6 +96,7 @@ public class InitializerTestHelper {
 				ProtocolSessionContext.PROTOCOL_URI, resourceURI);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 
 		protocolSessionManager.registerContext(protocolSessionContext);
 

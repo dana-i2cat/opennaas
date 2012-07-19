@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
@@ -38,7 +39,7 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceName(), IIPCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IIPCapability.class.getName());
 		super.activate();
 	}
 
@@ -49,8 +50,13 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 	 */
 	@Override
 	public void deactivate() throws CapabilityException {
-		// registration.unregister();
+		registration.unregister();
 		super.deactivate();
+	}
+
+	@Override
+	public void setIPv4(SetIpAddressRequest request) throws CapabilityException {
+		setIPv4(request.getLogicalDevice(), request.getIpProtocolEndpoint());
 	}
 
 	/*
