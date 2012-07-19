@@ -62,7 +62,7 @@
     <information>
         <type>router</type>
         <name>myreM7i</name>
-	<description>Junos 11 Router</decription>
+	<description>Junos 11 Router</description>
     </information>
     <properties/>
 

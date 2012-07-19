@@ -1,7 +1,9 @@
 package org.opennaas.core.protocols.sessionmanager;
 
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -14,6 +16,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.Activator;
+import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.alarms.CapabilityAlarm;
 import org.opennaas.core.resources.alarms.SessionAlarm;
 import org.opennaas.core.resources.protocol.IProtocolMessageFilter;
@@ -24,6 +28,7 @@ import org.opennaas.core.resources.protocol.IProtocolSessionListener;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.event.Event;
 import org.osgi.service.event.EventHandler;
 
@@ -46,6 +51,8 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	 * key: sessionId value: registration number
 	 */
 	private Map<String, Integer>				sessionEventsListenerRegistrationNumbers	= new HashMap<String, Integer>();
+
+	private ServiceRegistration					registration;
 
 	// TODO get this from the configuration
 	private static long							expirationTime								= 3000 * 1000;										// milis
@@ -103,6 +110,13 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 	}
 
 	@Override
+	public ListResponse getAllProtocolSessionIdsWS() {
+		ListResponse resp = new ListResponse();
+		resp.setList(new ArrayList<String>(getAllProtocolSessionIds()));
+		return resp;
+	}
+
+	@Override
 	public Set<String> getAllProtocolSessionIds() {
 		return liveSessions.keySet();
 	}
@@ -138,6 +152,7 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		try {
 			registerAsSessionAlarmListener(this, sessionID);
 		} catch (ProtocolException e) {
+			protocolSession.unregisterProtocolSessionListener(this, sessionID);
 			throw new ProtocolException("Failed to register as session alarms listener for session " + sessionID, e);
 		}
 
@@ -468,4 +483,32 @@ public class ProtocolSessionManager implements IProtocolSessionManager, IProtoco
 		return this.eventManager;
 	}
 
+	public void registerAsOSGiService() throws ProtocolException {
+		Dictionary<String, String> props = new Hashtable<String, String>();
+		props.put("resourceId", resourceID);
+		props = addWSRegistrationProperties(props);
+
+		registration = Activator.getBundleContext().registerService(IProtocolSessionManager.class.getName(), this, props);
+	}
+
+	public void unregisterAsOSGiService() {
+		registration.unregister();
+	}
+
+	private Dictionary<String, String> addWSRegistrationProperties(Dictionary<String, String> props) throws ProtocolException {
+
+		IResource resource = protocolManager.checkResourceExists(resourceID);
+
+		String resourceType = resource.getResourceDescriptor().getInformation().getType();
+		String resourceName = resource.getResourceDescriptor().getInformation().getName();
+
+		if (props != null) {
+			props.put("service.exported.interfaces", "*");
+			props.put("service.exported.configs", "org.apache.cxf.rs");
+			props.put("org.apache.cxf.ws.address",
+					"http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/protocolSessionManager" + "/");
+		}
+
+		return props;
+	}
 }
