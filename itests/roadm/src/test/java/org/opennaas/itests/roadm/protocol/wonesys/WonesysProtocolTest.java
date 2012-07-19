@@ -21,14 +21,20 @@ import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
+import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.command.CommandException;
 import org.opennaas.core.resources.command.Response;
+import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSession;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
@@ -76,7 +82,8 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 
 	private String						alarmsPort		= "32162";										// SNMP traps port (162). if different,
 																										// 162 needs to be redirected to this port
-	private String						resourceId		= "Proteus-Pedrosa";
+	private String						resourceName	= "Proteus-Pedrosa";
+	private String						resourceId;
 	private String						hostIpAddress	= "10.10.80.11";
 	private String						hostPort		= "27773";										// in order to receive traps.
 
@@ -95,6 +102,9 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 	private IProtocolManager			protocolManager;
 
 	@Inject
+	private IResourceManager			resourceManager;
+
+	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.roadm.protocols.wonesys)")
 	BlueprintContainer					wonesysProtocolService;
 
@@ -110,6 +120,18 @@ public class WonesysProtocolTest implements EventHandler, ITransportListener
 				includeFeatures("opennaas-luminis", "opennaas-roadm-proteus"),
 				noConsole(),
 				keepRuntimeFolder());
+	}
+
+	@Before
+	public void createResource() throws ResourceException {
+		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
+		resourceDescriptor.getInformation().setName(resourceName);
+		resourceId = resourceManager.createResource(resourceDescriptor).getResourceIdentifier().getId();
+	}
+
+	@After
+	public void removeResource() throws ResourceException {
+		resourceManager.destroyAllResources();
 	}
 
 	// FIXME Uncomment to test transport works ok

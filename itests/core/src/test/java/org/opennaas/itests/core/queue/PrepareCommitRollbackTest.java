@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
@@ -69,6 +70,9 @@ public class PrepareCommitRollbackTest
 
 	@Inject
 	private IProtocolManager		protocolManager;
+
+	@Inject
+	private IResourceManager		resourceManager;
 
 	@Inject
 	@Filter("(capability=queue)")
@@ -120,6 +124,9 @@ public class PrepareCommitRollbackTest
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
+
+		// will not be the same that mockResource but will do the trick
+		resourceManager.createResource(resourceDescriptor);
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
