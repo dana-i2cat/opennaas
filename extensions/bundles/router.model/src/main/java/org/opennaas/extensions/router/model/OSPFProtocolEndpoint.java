@@ -5,8 +5,9 @@
 
 package org.opennaas.extensions.router.model;
 
-import java.io.*;
-import java.lang.Exception;
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This Class contains accessor and mutator methods for all properties defined in the CIM class OSPFProtocolEndpoint as well as methods comparable to
@@ -17,6 +18,7 @@ import java.lang.Exception;
  * instance via a BindsTo association. The IPProtocolEndpoint instance is the Antecedent and the OSPFProtocolEndpoint instance is the Dependent in the
  * BindsTo association.
  */
+@XmlRootElement
 public class OSPFProtocolEndpoint extends OSPFProtocolEndpointBase implements
 		Serializable {
 

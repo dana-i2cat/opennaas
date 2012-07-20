@@ -21,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
@@ -67,6 +68,9 @@ public class QueuemanagerTest
 	private IProtocolManager		protocolManager;
 
 	@Inject
+	private IResourceManager		resourceManager;
+
+	@Inject
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
@@ -102,6 +106,8 @@ public class QueuemanagerTest
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
+
 		return protocolSessionContext;
 	}
 
@@ -117,6 +123,9 @@ public class QueuemanagerTest
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
 
+		// will not be the same that mockResource but will do the trick
+		resourceManager.createResource(resourceDescriptor);
+
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 
 		log.info("INFO: Before test, getting queue...");
@@ -128,9 +137,10 @@ public class QueuemanagerTest
 	}
 
 	@After
-	public void after() throws CapabilityException {
+	public void after() throws ResourceException {
 		log.info("INFO: After test, cleaning queue...");
 		queueManagerCapability.clear();
+		resourceManager.destroyAllResources();
 	}
 
 	@Test

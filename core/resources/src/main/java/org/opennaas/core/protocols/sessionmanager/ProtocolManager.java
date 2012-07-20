@@ -36,6 +36,7 @@ public class ProtocolManager implements IProtocolManager {
 		log.debug("Creating new ProtocolSessionManager for resource " + resourceID);
 
 		// FIXME in the near future, a check should be done here to avoid creating PSM for resources that don't exist in ResourceManager.
+		// It will imply changing a lot of tests, be prepared :P
 
 		if (sessionManagers.containsKey(resourceID)) {
 			throw new ProtocolException("This deviceID is already associated to an existing ProtocolSessionManager");
@@ -44,6 +45,8 @@ public class ProtocolManager implements IProtocolManager {
 		ProtocolSessionManager protocolSessionManager = new ProtocolSessionManager(resourceID);
 		protocolSessionManager.setProtocolManager(this);
 		protocolSessionManager.setEventManager(getEventManager());
+
+		protocolSessionManager.registerAsOSGiService();
 
 		sessionManagers.put(resourceID, protocolSessionManager);
 
@@ -63,6 +66,10 @@ public class ProtocolManager implements IProtocolManager {
 		}
 
 		IProtocolSessionManager protocolSessionManager = sessionManagers.get(resourceID);
+
+		if (protocolSessionManager instanceof ProtocolSessionManager) {
+			((ProtocolSessionManager) protocolSessionManager).unregisterAsOSGiService();
+		}
 
 		for (ProtocolSessionContext toUnregister : protocolSessionManager.getRegisteredContexts()) {
 			protocolSessionManager.unregisterContext(toUnregister);
@@ -199,5 +206,4 @@ public class ProtocolManager implements IProtocolManager {
 	private IEventManager getEventManager() throws ProtocolException {
 		return this.eventManager;
 	}
-
 }
