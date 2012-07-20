@@ -242,7 +242,7 @@ public class MonitoringCapabilityTest implements EventHandler
 	@Test
 	public void checkHandleSessionAlarmTriggersCapabilityAlarmTest() throws Exception {
 
-		String resourceId = "TestResourceId";
+		String resourceId = resource.getResourceIdentifier().getId();
 
 		IProtocolSessionFactory factory = new MockProtocolSessionFactory();
 		Map serviceProperties = new HashMap<String, String>();
@@ -292,7 +292,7 @@ public class MonitoringCapabilityTest implements EventHandler
 	@Test
 	public void checkSessionAlarmTriggersCapabilityAlarmTest2() throws Exception {
 
-		String resourceId = "TestResourceId";
+		String resourceId = resource.getResourceIdentifier().getId();
 
 		IProtocolSessionFactory factory = new MockProtocolSessionFactory();
 		Map serviceProperties = new HashMap<String, String>();
