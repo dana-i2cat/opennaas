@@ -200,4 +200,16 @@
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>
 	
+	<feature name="itests-rest" version="${project.version}">
+		<feature version="${project.version}">opennaas-ws-rest</feature>	
+<!-- 		<bundle dependency="true">mvn:javax.jws/jsr181-api/1.0-MR1</bundle> -->
+<!-- 		<bundle dependency="true">mvn:com.sun.jersey/jersey-core/1.4</bundle> -->
+<!-- 		<bundle dependency="true">mvn:com.sun.jersey/jersey-bundle/1.4</bundle>	 -->
+<!-- 		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-http-servlet/1.9.50</bundle> -->
+<!-- 		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-http-webserver/1.9.50</bundle> -->
+<!-- 		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-rcm/1.9.50</bundle>	 -->
+<!-- 		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-http/1.9.50</bundle>	 -->
+<!-- 		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-framework/1.9.50</bundle> -->
+	</feature>
+	
 </features>
