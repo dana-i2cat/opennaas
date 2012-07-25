@@ -32,7 +32,9 @@ public class IPTest {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			response = webResource.accept(MediaType.APPLICATION_XML)
+					.type(MediaType.APPLICATION_XML)
+					.post(ClientResponse.class, request);
 			LOGGER.info("Response code: " + response.getStatus());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -45,7 +47,7 @@ public class IPTest {
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, iface);
+			response = webResource.accept(MediaType.APPLICATION_XML).type(MediaType.APPLICATION_XML).post(ClientResponse.class, iface);
 			LOGGER.info("Response code: " + response.getStatus());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
