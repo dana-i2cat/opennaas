@@ -14,6 +14,7 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalDevice;
 import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 public class IPCapability extends AbstractCapability implements IIPCapability {
 
@@ -29,6 +30,33 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new IP Capability");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IIPCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
+	}
+
+	@Override
+	public void setIPv4(SetIpAddressRequest request) throws CapabilityException {
+		setIPv4(request.getLogicalDevice(), request.getIpProtocolEndpoint());
 	}
 
 	/*
@@ -82,6 +110,11 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#getActionSet()
+	 */
 	@Override
 	public IActionSet getActionSet() throws CapabilityException {
 		String name = this.descriptor.getPropertyValue(ResourceDescriptorConstants.ACTION_NAME);
@@ -95,11 +128,21 @@ public class IPCapability extends AbstractCapability implements IIPCapability {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);

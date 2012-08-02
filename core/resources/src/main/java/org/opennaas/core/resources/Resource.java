@@ -453,8 +453,14 @@ public class Resource implements IResource {
 
 	}
 
+	/**
+	 * @param errorMessage
+	 * @param cause
+	 * @throws CorruptStateException
+	 */
 	private void markAsCorrupt(String errorMessage, Throwable cause) throws CorruptStateException {
 		setState(State.ERROR);
 		throw new CorruptStateException(errorMessage + " Resource is in a corrupt state.", cause);
 	}
+
 }

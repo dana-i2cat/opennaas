@@ -3,12 +3,24 @@ package org.opennaas.core.resources.protocol;
 import java.util.List;
 import java.util.Set;
 
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+import org.opennaas.core.protocols.sessionmanager.ListResponse;
+
 /**
  * Manages all the sessions with a single device, identified by device_id
  * 
  * @author eduardgrasa
  * 
  */
+@Path("/")
 public interface IProtocolSessionManager {
 
 	/**
@@ -23,6 +35,11 @@ public interface IProtocolSessionManager {
 	 * 
 	 * @return
 	 */
+	@GET
+	@Path("/session/")
+	@Produces(MediaType.APPLICATION_XML)
+	public ListResponse getAllProtocolSessionIdsWS();
+
 	public Set<String> getAllProtocolSessionIds();
 
 	/**
@@ -94,6 +111,8 @@ public interface IProtocolSessionManager {
 	 * @throws ProtocolException
 	 *             If trying to register a context for a protocol that is not supported. Or unregistering older context fails.
 	 */
+	@POST
+	@Path("/context/register")
 	void registerContext(ProtocolSessionContext context) throws ProtocolException;
 
 	/**
@@ -105,6 +124,9 @@ public interface IProtocolSessionManager {
 	 * @throws ProtocolException
 	 *             If there is an error terminating sessions
 	 */
+	@POST
+	@Path("/context/unregister")
+	@Consumes(MediaType.APPLICATION_XML)
 	void unregisterContext(ProtocolSessionContext context) throws ProtocolException;
 
 	/**
@@ -116,13 +138,18 @@ public interface IProtocolSessionManager {
 	 * @throws ProtocolException
 	 *             If there is an error terminating sessions
 	 */
-	void unregisterContext(String protocol) throws ProtocolException;
+	@DELETE
+	@Path("/context/{protocol}")
+	void unregisterContext(@PathParam("protocol") String protocol) throws ProtocolException;
 
 	/**
 	 * Returns the list of registered contexts.
 	 * 
 	 * @return
 	 */
+	@GET
+	@Path("/context/")
+	@Produces(MediaType.APPLICATION_XML)
 	List<ProtocolSessionContext> getRegisteredContexts();
 
 	/**
@@ -132,7 +159,9 @@ public interface IProtocolSessionManager {
 	 *            The session to destroy.
 	 * @throws ProtocolException
 	 */
-	void destroyProtocolSession(String sessionID) throws ProtocolException;
+	@DELETE
+	@Path("/session/{sessionId}")
+	void destroyProtocolSession(@PathParam("sessionId") String sessionID) throws ProtocolException;
 
 	/**
 	 * Check if a given session Id is locked.
@@ -142,6 +171,8 @@ public interface IProtocolSessionManager {
 	 * @return
 	 * @throws ProtocolException
 	 */
-	boolean isLocked(String sessionId) throws ProtocolException;
+	@GET
+	@Path("/session/{sessionId}/locked")
+	boolean isLocked(@PathParam("sessionId") String sessionId) throws ProtocolException;
 
 }

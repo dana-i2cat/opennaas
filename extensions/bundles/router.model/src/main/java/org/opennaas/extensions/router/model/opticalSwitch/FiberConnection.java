@@ -1,8 +1,11 @@
 package org.opennaas.extensions.router.model.opticalSwitch;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.opennaas.extensions.router.model.FCPort;
 import org.opennaas.extensions.router.model.opticalSwitch.dwdm.proteus.cards.ProteusOpticalSwitchCard;
 
+@XmlRootElement
 public class FiberConnection {
 
 	/* These parameters don't have to be complete, it is enough if they contain */

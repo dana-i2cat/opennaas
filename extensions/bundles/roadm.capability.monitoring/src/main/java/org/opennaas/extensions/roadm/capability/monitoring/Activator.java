@@ -71,7 +71,7 @@ public class Activator extends AbstractActivator implements BundleActivator {
 	 */
 	private static Filter createFilterMonitoringActionSet(String name, String version) throws InvalidSyntaxException {
 		Properties properties = new Properties();
-		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, MonitoringCapability.CAPABILITY_NAME);
+		properties.setProperty(ResourceDescriptorConstants.ACTION_CAPABILITY, MonitoringCapability.CAPABILITY_TYPE);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_NAME, name);
 		properties.setProperty(ResourceDescriptorConstants.ACTION_VERSION, version);
 		return createServiceFilter(IActionSet.class.getName(), properties);
