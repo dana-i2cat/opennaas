@@ -22,6 +22,8 @@ import org.opennaas.extensions.router.model.OSPFAreaConfiguration;
 import org.opennaas.extensions.router.model.OSPFProtocolEndpoint;
 import org.opennaas.extensions.router.model.OSPFService;
 import org.opennaas.extensions.router.model.Service;
+import org.opennaas.extensions.router.model.wrappers.AddInterfacesInOSPFAreaRequest;
+import org.opennaas.extensions.router.model.wrappers.RemoveInterfacesInOSPFAreaRequest;
 
 /**
  * @author Isart Canyameres
@@ -47,11 +49,43 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		log.debug("Built new OSPF Capability");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IOSPFCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.ICapability#getCapabilityName()
+	 */
 	@Override
 	public String getCapabilityName() {
 		return CAPABILITY_TYPE;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#queueAction(org.opennaas.core.resources.action.IAction)
+	 */
 	@Override
 	public void queueAction(IAction action) throws CapabilityException {
 		getQueueManager(resourceId).queueAction(action);
@@ -171,6 +205,17 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#addInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
+	 * AddInterfacesOSPFRequest)
+	 */
+	@Override
+	public void addInterfacesInOSPFArea(AddInterfacesInOSPFAreaRequest request) throws CapabilityException {
+		addInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFService#addInterfacesInOSPFArea(java.util.List,
 	 * org.opennaas.extensions.router.model.OSPFArea)
 	 */
@@ -199,6 +244,17 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 		action = createActionAndCheckParams(OSPFActionSet.OSPF_ADD_INTERFACE_IN_AREA, area);
 		queueAction(action);
 		log.info("End of addInterfacesInOSPFArea call");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.router.capability.ospf.IOSPFCapability#removeInterfacesInOSPFArea(org.opennaas.extensions.router.model.wrappers.
+	 * AddInterfacesOSPFRequest)
+	 */
+	@Override
+	public void removeInterfacesInOSPFArea(RemoveInterfacesInOSPFAreaRequest request) throws CapabilityException {
+		removeInterfacesInOSPFArea(request.getInterfaces(), request.getOspfArea());
 	}
 
 	/*
@@ -327,4 +383,5 @@ public class OSPFCapability extends AbstractCapability implements IOSPFCapabilit
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
 	}
+
 }

@@ -1,11 +1,8 @@
 package org.opennaas.itests.router.shell;
 
-import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
-import static org.ops4j.pax.exam.CoreOptions.options;
+import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.*;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.*;
+import static org.ops4j.pax.exam.CoreOptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +29,7 @@ import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
-import org.opennaas.extensions.itests.helpers.KarafCommandHelper;
+import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.LogicalDevice;
@@ -44,15 +41,12 @@ import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.itests.router.helpers.ExistanceHelper;
 import org.ops4j.pax.exam.Option;
-import org.ops4j.pax.exam.TestProbeBuilder;
 import org.ops4j.pax.exam.junit.Configuration;
 import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
-import org.ops4j.pax.exam.junit.ProbeBuilder;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.Constants;
 import org.osgi.service.blueprint.container.BlueprintContainer;
 
 /**
@@ -67,7 +61,7 @@ import org.osgi.service.blueprint.container.BlueprintContainer;
 // @SuppressWarnings("unused")
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
-public class ChassisKarafCommandsTests
+public class ChassisKarafCommandsTests extends AbstractKarafCommandTest
 {
 	private final static Log	log	= LogFactory.getLog(ChassisKarafCommandsTests.class);
 
@@ -99,12 +93,6 @@ public class ChassisKarafCommandsTests
 	@Inject
 	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.router.capability.chassis)")
 	private BlueprintContainer	chassisService;
-
-	@ProbeBuilder
-	public TestProbeBuilder probeConfiguration(TestProbeBuilder probe) {
-		probe.setHeader(Constants.DYNAMICIMPORT_PACKAGE, "*,org.apache.felix.service.*;status=provisional");
-		return probe;
-	}
 
 	@Configuration
 	public static Option[] configuration() {
@@ -175,19 +163,18 @@ public class ChassisKarafCommandsTests
 	public void DownInterfaceETHTest() throws Exception {
 		String interfaceToConfigure = "fe-0/3/0";
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output contains no ERROR
 		Assert.assertTrue(response.get(1).isEmpty());
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output contains no ERROR
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output contains no ERROR
@@ -215,20 +202,19 @@ public class ChassisKarafCommandsTests
 	public void DownInterfaceLTTest() throws Exception {
 		String interfaceToConfigure = "lt-0/1/2";
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output contains no ERROR
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output contains no ERROR
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output contains no ERROR
@@ -254,19 +240,19 @@ public class ChassisKarafCommandsTests
 	public void DownInterfaceLo() throws Exception {
 
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " lo0", commandprocessor);
+		List<String> response = executeCommand("chassis:down " + resourceFriendlyID + " lo0");
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -289,19 +275,19 @@ public class ChassisKarafCommandsTests
 	public void UPInterfaceLo() throws Exception {
 
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " lo0", commandprocessor);
+		List<String> response = executeCommand("chassis:up " + resourceFriendlyID + " lo0");
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -360,19 +346,18 @@ public class ChassisKarafCommandsTests
 
 		// try {
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -407,20 +392,19 @@ public class ChassisKarafCommandsTests
 	public void DownInterfaceLT(String interfaceToConfigure) throws Exception {
 		// try {
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:down " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -446,8 +430,7 @@ public class ChassisKarafCommandsTests
 	public void UpInterfaceETH(String interfaceToConfigure) throws Exception {
 
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:up " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
@@ -455,7 +438,7 @@ public class ChassisKarafCommandsTests
 
 		// assert command output no contains ERROR tag
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
@@ -463,7 +446,7 @@ public class ChassisKarafCommandsTests
 
 		// assert command output no contains ERROR tag
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -496,19 +479,18 @@ public class ChassisKarafCommandsTests
 	public void UpInterfaceLT(String interfaceToConfigure) throws Exception {
 
 		// chassis:setVLAN interface VLANid
-		List<String> response = KarafCommandHelper.executeCommand("chassis:up " + resourceFriendlyID + " " + interfaceToConfigure,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:up " + resourceFriendlyID + " " + interfaceToConfigure);
 		log.info(response.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		log.info(response1.get(0));
 
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -538,8 +520,7 @@ public class ChassisKarafCommandsTests
 
 		// set LO
 
-		List<String> responseError = KarafCommandHelper.executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " lo0.1 1",
-				commandprocessor);
+		List<String> responseError = executeCommand("chassis:setEncapsulation " + resourceFriendlyID + " lo0.1 1");
 		Assert.assertTrue(responseError.get(1).contains("Encapsulation in loopback interfaces is not supported."));
 
 	}
@@ -554,23 +535,20 @@ public class ChassisKarafCommandsTests
 			logicalRouterName = "pepito";
 		}
 
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
-				commandprocessor);
+		List<String> response2 = executeCommand("chassis:listLogicalRouters " + resourceFriendlyID);
 		Assert.assertTrue(response2.get(0).contains(logicalRouterName));
 
 		// chassis:deleteLogicalRoute
 
-		List<String> response = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
-				commandprocessor);
+		List<String> response = executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		List<String> response1 = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		List<String> response1 = executeCommand("queue:execute " + resourceFriendlyID);
 		// assert command output no contains ERROR tagInitializerTestHelper
 		Assert.assertTrue(response1.get(1).isEmpty());
 
-		response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
-				commandprocessor);
+		response2 = executeCommand("chassis:listLogicalRouters " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response2.get(1).isEmpty());
 
@@ -594,9 +572,7 @@ public class ChassisKarafCommandsTests
 			logicalRouterName = "pepito";
 		}
 		// chassis:listLogicalRouters
-		response =
-				KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID,
-						commandprocessor);
+		response = executeCommand("chassis:listLogicalRouters " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
@@ -616,8 +592,7 @@ public class ChassisKarafCommandsTests
 		}
 
 		// resource:list
-		List<String> response =
-				KarafCommandHelper.executeCommand("resource:list ", commandprocessor);
+		List<String> response = executeCommand("resource:list ");
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
@@ -625,8 +600,7 @@ public class ChassisKarafCommandsTests
 		Assert.assertTrue(response.get(0).contains(logicalRouterName));
 
 		response =
-				KarafCommandHelper.executeCommand("resource:info " + "router:" + logicalRouterName,
-						commandprocessor);
+				executeCommand("resource:info " + "router:" + logicalRouterName);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
@@ -650,17 +624,14 @@ public class ChassisKarafCommandsTests
 
 		// creating LogicalRouter
 		response =
-				KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
-						commandprocessor);
+				executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " " + logicalRouterName);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 		response =
-				KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID,
-						commandprocessor);
+				executeCommand("queue:execute " + resourceFriendlyID);
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response1 = KarafCommandHelper.executeCommand("resource:list ",
-				commandprocessor);
+		response1 = executeCommand("resource:list ");
 		Assert.assertTrue(response1.get(1).isEmpty());
 		if (!isMock) {
 			Assert.assertTrue(ExistanceHelper.checkExistLogicalRouter((ComputerSystem) resource.getModel(), logicalRouterName));
@@ -693,14 +664,13 @@ public class ChassisKarafCommandsTests
 		// correct
 		// You should have a different command o extra flag to create this resource (in the resource:create??). Also, you have to specify its
 		// capabilities
-		response = KarafCommandHelper.executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
-				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3,
-				commandprocessor);
+		response = executeCommand("chassis:createLogicalRouter " + resourceFriendlyID + " "
+				+ logicalRouterName + " " + interfId1 + " " + interfId2 + " " + interfId3);
 
-		response = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		response = executeCommand("queue:execute " + resourceFriendlyID);
 
 		// check logical router creation
-		List<String> response2 = KarafCommandHelper.executeCommand("chassis:listLogicalRouters " + resourceFriendlyID, commandprocessor);
+		List<String> response2 = executeCommand("chassis:listLogicalRouters " + resourceFriendlyID);
 		log.info(response2.get(0));
 
 		// assert command output no contains ERROR tag
@@ -721,7 +691,7 @@ public class ChassisKarafCommandsTests
 		IResource logicalResource = resourceManager.getResource(resourceIdentifier);
 
 		// check logical router creation
-		List<String> response8 = KarafCommandHelper.executeCommand("resource:start router:" + logicalRouterName, commandprocessor);
+		List<String> response8 = executeCommand("resource:start router:" + logicalRouterName);
 		log.info(response8.get(0));
 
 		// assert command output no contains ERROR tag
@@ -758,16 +728,14 @@ public class ChassisKarafCommandsTests
 
 		// chassis:addInterfaceToLR R1 L1 fe-0/0/1.1
 		// check interface is included in the L1
-		List<String> response4 = KarafCommandHelper.executeCommand(
-				"chassis:addInterfaceToLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
-				commandprocessor);
+		List<String> response4 = executeCommand(
+				"chassis:addInterfaceToLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4);
 		log.info(response4.get(0));
 
 		// chassis:removeInterfaceFromLR R1 L1 fe-0/0/1.1
 		// check interface is not included in the L1
-		List<String> response5 = KarafCommandHelper.executeCommand(
-				"chassis:removeInterfaceFromLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4,
-				commandprocessor);
+		List<String> response5 = executeCommand(
+				"chassis:removeInterfaceFromLR " + resourceFriendlyID + " " + "router:" + logicalRouterName + " " + interfId4);
 		log.info(response5.get(0));
 
 		resourceManager.startResource(logicalResource.getResourceIdentifier());
@@ -779,8 +747,7 @@ public class ChassisKarafCommandsTests
 			isSent = false;
 		}
 
-		List<String> response6 = KarafCommandHelper.executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName,
-				commandprocessor);
+		List<String> response6 = executeCommand("chassis:deleteLogicalRouter " + resourceFriendlyID + " " + logicalRouterName);
 		log.info(response6.get(0));
 
 		// assert command output no contains ERROR tag
@@ -798,9 +765,8 @@ public class ChassisKarafCommandsTests
 	public boolean testLogicalRouterConfigureCheckInterface(CommandProcessor commandprocessor, String inter, String port, String Ip, String mask,
 			String resourceFriendlyID) throws Exception {
 		// ipv4:setIP fe-0/0/1.1 192.168.1.2 255.255.255.0
-		List<String> response = KarafCommandHelper.executeCommand(
-				"ipv4:setIP " + resourceFriendlyID + " " + inter + "." + port + " " + Ip + " " + mask,
-				commandprocessor);
+		List<String> response = executeCommand(
+				"ipv4:setIP " + resourceFriendlyID + " " + inter + "." + port + " " + Ip + " " + mask);
 
 		if (inter.startsWith("lo"))
 			Assert.assertTrue(response.get(1).contains("[ERROR] Configuration for Loopback interface not allowed"));
@@ -907,7 +873,7 @@ public class ChassisKarafCommandsTests
 	public void testingMethod(String inter, String subport, int VLANid, String tag) throws Exception {
 
 		// REFRESH to fill up the model
-		List<String> responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		List<String> responseError = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -915,25 +881,25 @@ public class ChassisKarafCommandsTests
 		int OldVLAN = getOldInterface(resource, inter, subport);
 
 		// SET NEW VLAN
-		responseError = KarafCommandHelper.executeCommand(
+		responseError = executeCommand(
 				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + tag
-				, commandprocessor);
+				);
 		// assert command output no contains ERROR tag
 		if (!responseError.get(1).isEmpty()) {
 			Assert.fail(responseError.get(1));
 		}
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
-		responseError = KarafCommandHelper.executeCommand(
+		responseError = executeCommand(
 				"chassis:setEncapsulationLabel " + resourceFriendlyID + " " + inter + "." + subport + " " + VLANid
-				, commandprocessor);
+				);
 
 		if (!responseError.get(1).isEmpty()) {
 			Assert.fail(responseError.get(1));
 		}
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
-		responseError = KarafCommandHelper.executeCommand("queue:execute " + resourceFriendlyID, commandprocessor);
+		responseError = executeCommand("queue:execute " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -941,7 +907,7 @@ public class ChassisKarafCommandsTests
 		checkModel(inter, subport, OldVLAN, resource);
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		responseError = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
@@ -949,15 +915,15 @@ public class ChassisKarafCommandsTests
 		checkModel(inter, subport, VLANid, resource);
 
 		// ROLLBACK OF THE INTERFACE
-		responseError = KarafCommandHelper.executeCommand(
+		responseError = executeCommand(
 				"chassis:setEncapsulation " + resourceFriendlyID + " " + inter + "." + subport + " " + tag
-				, commandprocessor);
+				);
 		Assert.assertTrue(responseError.get(1).isEmpty());
-		responseError = KarafCommandHelper.executeCommand("queue:execute  " + resourceFriendlyID, commandprocessor);
+		responseError = executeCommand("queue:execute  " + resourceFriendlyID);
 		Assert.assertTrue(responseError.get(1).isEmpty());
 
 		// REFRESH to fill up the model
-		responseError = KarafCommandHelper.executeCommand("chassis:showInterfaces " + resourceFriendlyID, commandprocessor);
+		responseError = executeCommand("chassis:showInterfaces " + resourceFriendlyID);
 		// assert command output no contains ERROR tag
 		Assert.assertTrue(responseError.get(1).isEmpty());
 

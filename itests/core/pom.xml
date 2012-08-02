@@ -3,7 +3,7 @@
 	<parent>
 		<artifactId>org.opennaas.itests</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.11</version>
+		<version>0.12</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests.core</artifactId>
@@ -25,8 +25,8 @@
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.itests.helpers</artifactId>
+			<groupId>org.opennaas.itests</groupId>
+			<artifactId>org.opennaas.itests.helpers</artifactId>
 		</dependency>
 	</dependencies>
 

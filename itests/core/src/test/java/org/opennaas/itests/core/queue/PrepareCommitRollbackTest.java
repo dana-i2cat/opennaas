@@ -1,10 +1,10 @@
 package org.opennaas.itests.core.queue;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.IAction;
@@ -71,6 +72,9 @@ public class PrepareCommitRollbackTest
 	private IProtocolManager		protocolManager;
 
 	@Inject
+	private IResourceManager		resourceManager;
+
+	@Inject
 	@Filter("(capability=queue)")
 	private ICapabilityFactory		queueManagerFactory;
 
@@ -107,6 +111,7 @@ public class PrepareCommitRollbackTest
 				ProtocolSessionContext.PROTOCOL_URI, uri);
 		protocolSessionContext.addParameter(ProtocolSessionContext.PROTOCOL,
 				"netconf");
+		protocolSessionContext.addParameter(ProtocolSessionContext.AUTH_TYPE, "password");
 		return protocolSessionContext;
 	}
 
@@ -120,6 +125,9 @@ public class PrepareCommitRollbackTest
 		ResourceDescriptor resourceDescriptor = ResourceDescriptorFactory.newResourceDescriptor("mockresource", "router", capabilities);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
+
+		// will not be the same that mockResource but will do the trick
+		resourceManager.createResource(resourceDescriptor);
 
 		protocolManager.getProtocolSessionManagerWithContext(mockResource.getResourceId(), newSessionContextNetconf());
 

@@ -1,11 +1,11 @@
 package org.opennaas.itests.core.queue;
 
 import static org.openengsb.labs.paxexam.karaf.options.KarafDistributionOption.keepRuntimeFolder;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeFeatures;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.includeTestHelper;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.noConsole;
-import static org.opennaas.extensions.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeFeatures;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeSwissboxFramework;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.includeTestHelper;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.noConsole;
+import static org.opennaas.itests.helpers.OpennaasExamOptions.opennaasDistributionConfiguration;
 import static org.ops4j.pax.exam.CoreOptions.options;
 import static org.ops4j.pax.swissbox.framework.ServiceLookup.getService;
 
@@ -24,6 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.CorruptStateException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IncorrectLifecycleStateException;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -32,6 +34,7 @@ import org.opennaas.core.resources.capability.ICapabilityFactory;
 import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.command.Response;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.helpers.ResourceHelper;
@@ -74,15 +77,19 @@ public class QueueTest
 	 * runs.
 	 */
 
-	private final static Log		log			= LogFactory.getLog(QueueTest.class);
+	private final static Log		log				= LogFactory.getLog(QueueTest.class);
 
-	private final static String		resourceID	= "junosResource";
+	private final static String		resourceName	= "junosResource";
+	private String					resourceID;
 	private MockResource			mockResource;
 	private IQueueManagerCapability	queueCapability;
 	private IQueueManagerCapability	queueManagerService;
 
 	@Inject
 	private IProtocolManager		protocolManager;
+
+	@Inject
+	private IResourceManager		resourceManager;
 
 	@Inject
 	@Filter("(capability=queue)")
@@ -101,7 +108,7 @@ public class QueueTest
 				keepRuntimeFolder());
 	}
 
-	public void initBundles() throws ProtocolException {
+	public void initBundles() throws ProtocolException, ResourceException {
 		/* init capability */
 
 		log.info("This is running inside Equinox. With all configuration set up like you specified. ");
@@ -118,19 +125,24 @@ public class QueueTest
 				"user:pass@host.net:2212");
 
 		List<CapabilityDescriptor> capabilityDescriptors = new ArrayList<CapabilityDescriptor>();
-		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(
-				QueueManager.QUEUE, "queue"));
+		capabilityDescriptors.add(MockResource.createCapabilityDescriptor(QueueManager.QUEUE, "queue"));
 
 		resourceDescriptor.setProperties(properties);
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
-		resourceDescriptor.setId(resourceID);
+		Information info = new Information();
+		info.setName(resourceName);
+		info.setType("router");
+		resourceDescriptor.setInformation(info);
 
 		mockResource.setResourceDescriptor(resourceDescriptor);
+
+		// will not be the same that mockResource but will do the trick
+		IResource resource = resourceManager.createResource(resourceDescriptor);
+		resourceID = resource.getResourceIdentifier().getId();
 
 		protocolManager.getProtocolSessionManagerWithContext(resourceID, ResourceHelper.newSessionContextNetconf());
 
 		log.info("INFO: Initialized!");
-
 	}
 
 	@Before
