@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBContext;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 
@@ -307,5 +308,21 @@ public class ResourceManager implements IResourceManager {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void destroyAllResources() throws ResourceException {
+		List<IResource> resources = listResources();
+
+		for (IResource resource : resources)
+		{
+			if (resource.getState() == State.ACTIVE)
+				stopResource(resource.getResourceIdentifier());
+		}
+
+		for (IResource resource : resources)
+		{
+			removeResource(resource.getResourceIdentifier());
+		}
 	}
 }

@@ -62,52 +62,73 @@ public class VLANAwareBridgeCapability extends AbstractCapability implements IVL
 			throw new CapabilityException(e);
 		}
 	}
-	
+
 	/**
 	 * Add a new VLAN Configuration to the VLAN database
+	 * 
 	 * @param vlanConfiguration
 	 * @throws CapabilityException
 	 */
 	@Override
-	public void createVLANConfiguration(VLANConfiguration vlanConfiguration) throws CapabilityException{
-		queueAction(
-				createActionAndCheckParams(
-						VLANAwareBridgeActionSet.CREATE_VLAN_CONFIGURATION, vlanConfiguration));
+	public void createVLANConfiguration(VLANConfiguration vlanConfiguration) throws CapabilityException {
+		queueAction(createActionAndCheckParams(
+				VLANAwareBridgeActionSet.CREATE_VLAN_CONFIGURATION, vlanConfiguration));
 	}
-	
+
 	/**
 	 * Delete a VLAN Configuration from the VLAN database
-	 * @param vlanId the id of the VLAN
+	 * 
+	 * @param vlanId
+	 *            the id of the VLAN
 	 * @throws CapabilityException
 	 */
 	@Override
-	public void deleteVLANConfiguration(int vlanId) throws CapabilityException{
-		queueAction(
-				createActionAndCheckParams(
-						VLANAwareBridgeActionSet.DELETE_VLAN_CONFIGURATION, vlanId));
+	public void deleteVLANConfiguration(int vlanId) throws CapabilityException {
+		queueAction(createActionAndCheckParams(
+				VLANAwareBridgeActionSet.DELETE_VLAN_CONFIGURATION, vlanId));
 	}
-	
+
 	/**
 	 * 
 	 * @param entry
 	 * @throws CapabilityException
 	 */
 	@Override
-	public void addStaticVLANRegistrationEntryToFilteringDatabase(StaticVLANRegistrationEntry entry) throws CapabilityException{
-		queueAction(
-				createActionAndCheckParams(
-						VLANAwareBridgeActionSet.ADD_STATIC_VLAN_REGISTRATION_ENTRY_TO_FILTERING_DATABASE, entry));
+	public void addStaticVLANRegistrationEntryToFilteringDatabase(StaticVLANRegistrationEntry entry) throws CapabilityException {
+		queueAction(createActionAndCheckParams(
+				VLANAwareBridgeActionSet.ADD_STATIC_VLAN_REGISTRATION_ENTRY_TO_FILTERING_DATABASE, entry));
 	}
-	
+
 	/**
 	 * @param vlanID
 	 * @throws CapabilityException
 	 */
 	@Override
-	public void deleteStaticVLANRegistrationEntryFromFilteringDatabase(int vlanID) throws CapabilityException{
-		queueAction(
-				createActionAndCheckParams(
-						VLANAwareBridgeActionSet.DELETE_STATIC_VLAN_REGISTRATION_ENTRY_FROM_FILTERING_DATABASE, vlanID));
+	public void deleteStaticVLANRegistrationEntryFromFilteringDatabase(int vlanID) throws CapabilityException {
+		queueAction(createActionAndCheckParams(
+				VLANAwareBridgeActionSet.DELETE_STATIC_VLAN_REGISTRATION_ENTRY_FROM_FILTERING_DATABASE, vlanID));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#activate()
+	 */
+	@Override
+	public void activate() throws CapabilityException {
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), VLANAwareBridgeCapability.class.getName());
+		super.activate();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.capability.AbstractCapability#deactivate()
+	 */
+	@Override
+	public void deactivate() throws CapabilityException {
+		registration.unregister();
+		super.deactivate();
 	}
 
 	/**
