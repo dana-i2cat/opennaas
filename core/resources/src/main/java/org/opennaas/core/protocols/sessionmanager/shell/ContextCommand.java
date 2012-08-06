@@ -1,5 +1,9 @@
 package org.opennaas.core.protocols.sessionmanager.shell;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
 import org.apache.felix.gogo.commands.Option;
@@ -39,6 +43,9 @@ public class ContextCommand extends GenericKarafCommand {
 
 	@Option(name = "--remove", aliases = { "-r" }, required = false, description = "Instead of adding a context, remove it for the named protocol. ")
 	boolean						optionRemove;
+
+	@Option(name = "--interactive", aliases = { "-i" }, required = false, description = "Tells command to ask for passwords interactively")
+	boolean						interactive;
 
 	private static final String	PASSWORD	= "password";
 	private static final String	PUBLICKEY	= "publickey";
@@ -92,35 +99,17 @@ public class ContextCommand extends GenericKarafCommand {
 			return null;
 		}
 
-		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD)) {
-
-			printError("You must specify a valid authType type. Possible options are: \"password\", \"publickey\".");
-			printEndCommand();
-			return null;
-		}
-
-		if (authType.equals(PUBLICKEY)) {
-
-			if ((keyPath == null) || (keyPath.contentEquals(""))) {
-				printError("You must specify a [file path] if you want to use key authType");
-				printEndCommand();
-				return null;
-			}
-
-		}
-
 		ProtocolSessionContext context = new ProtocolSessionContext();
 
 		context.addParameter(ProtocolSessionContext.PROTOCOL, protocol);
-		context.addParameter(ProtocolSessionContext.AUTH_TYPE, authType);
 		context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri);
-		context.addParameter(ProtocolSessionContext.KEY_PATH, keyPath);
-		context.addParameter(ProtocolSessionContext.KEY_PASSPHRASE, keyPassphrase);
 
-		if (authType.equals(PUBLICKEY)) {
-
-			String username = getKeyUsername(uri);
-			context.addParameter(ProtocolSessionContext.KEY_USERNAME, username);
+		try {
+			context = checkAndSetAuthentication(context);
+		} catch (Exception e) {
+			printError(e.getLocalizedMessage());
+			printEndCommand();
+			return null;
 		}
 
 		sessionManager.registerContext(context);
@@ -130,11 +119,109 @@ public class ContextCommand extends GenericKarafCommand {
 
 	}
 
-	private String getKeyUsername(String uri) {
+	/**
+	 * 
+	 * @param context
+	 * @return
+	 * @throws Exception
+	 */
+	private ProtocolSessionContext checkAndSetAuthentication(ProtocolSessionContext context) throws Exception {
 
-		String subUri = uri.split("//")[1];
-		String username = subUri.split("@")[0];
+		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD)) {
+			throw new Exception("You must specify a valid authType type. Possible options are: \"password\", \"publickey\".");
+		}
 
-		return username;
+		if (authType.equals(PASSWORD)) {
+			String userName = getUsername();
+			String password = getPassword();
+
+			if (userName == null || password == null) {
+				throw new Exception("You must specify a userName and password for password authentication.");
+			}
+
+			// UPDATE CONTEXT
+			context.addParameter(ProtocolSessionContext.AUTH_TYPE, PASSWORD);
+			context.addParameter(ProtocolSessionContext.USERNAME, userName);
+			context.addParameter(ProtocolSessionContext.PASSWORD, password);
+
+		} else if (authType.equals(PUBLICKEY)) {
+			String userName = getKeyUsername();
+			String keyPassphrase = getKeyPassphrase();
+
+			if (userName == null) {
+				throw new Exception("You must specify a userName for key authentication.");
+			}
+
+			if ((keyPath == null) || (keyPath.contentEquals(""))) {
+				throw new Exception("You must specify a private key file path for key authentication.");
+			}
+
+			// UPDATE CONTEXT
+			context.addParameter(ProtocolSessionContext.AUTH_TYPE, PUBLICKEY);
+			context.addParameter(ProtocolSessionContext.KEY_USERNAME, userName);
+			context.addParameter(ProtocolSessionContext.KEY_PATH, keyPath);
+			context.addParameter(ProtocolSessionContext.KEY_PASSPHRASE, keyPassphrase);
+
+		} else {
+			context.addParameter(ProtocolSessionContext.AUTH_TYPE, authType);
+		}
+
+		return context;
+	}
+
+	private String getUsername() throws URISyntaxException {
+		return getUserNameFromUri();
+	}
+
+	private String getPassword() throws IOException, URISyntaxException {
+		String password;
+
+		if (interactive) {
+			String askPasswordMsg = "password:";
+			password = askPasswordInteractively(askPasswordMsg);
+		} else {
+			password = getPasswordFromURI();
+		}
+
+		return password;
+	}
+
+	private String getKeyUsername() throws URISyntaxException {
+		return getUserNameFromUri();
+	}
+
+	private String getKeyPassphrase() throws IOException {
+		String passphrase;
+		if (interactive) {
+			String usrMsg = "Private key passphare:";
+			passphrase = askPasswordInteractively(usrMsg);
+		} else {
+			passphrase = keyPassphrase;
+		}
+		return passphrase;
+	}
+
+	private String getUserNameFromUri() throws URISyntaxException {
+		URI uRI = new URI(uri);
+		String userInfo = uRI.getUserInfo();
+		if (userInfo == null)
+			return null;
+
+		String userName = userInfo.split(":")[0];
+		return userName;
+	}
+
+	private String getPasswordFromURI() throws URISyntaxException {
+		URI uRI = new URI(uri);
+		String userInfo = uRI.getUserInfo();
+		if (userInfo == null)
+			return null;
+
+		if (userInfo.split(":").length > 1) {
+			String password = userInfo.split(":")[1];
+			return password;
+		} else {
+			return null;
+		}
 	}
 }
