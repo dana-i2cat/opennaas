@@ -1,10 +1,11 @@
 package org.opennaas.core.resources.shell;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.util.List;
+
+import jline.console.ConsoleReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -300,14 +301,15 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 
 	protected String askPasswordInteractively(String displayMessage) throws IOException {
 
-		commandSession.getConsole().append(displayMessage);
+		commandSession.getConsole().append(displayMessage + "\n");
 		commandSession.getConsole().flush();
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(commandSession.getKeyboard(), "UTF-8"));
-		String line = reader.readLine();
+		ConsoleReader consoleReader = new ConsoleReader(commandSession.getKeyboard(), new OutputStreamWriter(
+				commandSession.getConsole()));
+		String password = consoleReader.readLine(new Character((char) 0));
 
 		commandSession.getConsole().append("\n");
 		commandSession.getConsole().flush();
-		return line;
+		return password;
 	}
 }
