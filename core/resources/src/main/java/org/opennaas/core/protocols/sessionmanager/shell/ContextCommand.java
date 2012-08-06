@@ -189,8 +189,6 @@ public class ContextCommand extends GenericKarafCommand {
 		if (interactive) {
 			String askPasswordMsg = "password:";
 			password = askPasswordInteractively(askPasswordMsg);
-			// TODO REMOVE!!!!
-			printSymbol(password);
 		} else {
 			password = getPasswordFromURI();
 		}
@@ -199,10 +197,6 @@ public class ContextCommand extends GenericKarafCommand {
 	}
 
 	private String getKeyUsername() throws URISyntaxException {
-
-		// String subUri = uri.split("//")[1];
-		// String username = subUri.split("@")[0];
-
 		return getUserNameFromUri();
 	}
 
@@ -211,8 +205,6 @@ public class ContextCommand extends GenericKarafCommand {
 		if (interactive) {
 			String usrMsg = "Private key passphare:";
 			passphrase = askPasswordInteractively(usrMsg);
-			// TODO REMOVE!!!!
-			printSymbol(passphrase);
 		} else {
 			passphrase = keyPassphrase;
 		}

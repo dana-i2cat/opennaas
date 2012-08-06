@@ -308,8 +308,6 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 				commandSession.getConsole()));
 		String password = consoleReader.readLine(new Character((char) 0));
 
-		commandSession.getConsole().append("\n");
-		commandSession.getConsole().flush();
 		return password;
 	}
 }
