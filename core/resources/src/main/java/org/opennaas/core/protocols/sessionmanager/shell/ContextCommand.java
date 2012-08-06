@@ -144,16 +144,6 @@ public class ContextCommand extends GenericKarafCommand {
 			context.addParameter(ProtocolSessionContext.USERNAME, userName);
 			context.addParameter(ProtocolSessionContext.PASSWORD, password);
 
-			// workaround for netconf4j library
-			// store username and password in the uri
-			String userInfo = userName + ":" + password;
-			URI uri1 = new URI(uri);
-			URI uri2 = new URI(uri1.getScheme(),
-					userInfo, uri1.getHost(), uri1.getPort(),
-					uri1.getPath(), uri1.getQuery(),
-					uri1.getFragment());
-			context.addParameter(ProtocolSessionContext.PROTOCOL_URI, uri2.toString());
-
 		} else if (authType.equals(PUBLICKEY)) {
 			String userName = getKeyUsername();
 			String keyPassphrase = getKeyPassphrase();
