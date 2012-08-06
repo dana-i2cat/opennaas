@@ -1,10 +1,14 @@
 package org.opennaas.core.resources.shell;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.felix.service.command.CommandSession;
 import org.apache.karaf.shell.console.OsgiCommandSupport;
 import org.opennaas.core.resources.Activator;
 import org.opennaas.core.resources.IResource;
@@ -18,27 +22,35 @@ import org.opennaas.core.resources.profile.IProfileManager;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 
 public abstract class GenericKarafCommand extends OsgiCommandSupport {
-	Log						log					= LogFactory.getLog(GenericKarafCommand.class);
+	Log							log					= LogFactory.getLog(GenericKarafCommand.class);
 
-	protected PrintStream	out					= System.out;
-	protected PrintStream	err					= System.err;
-	protected int			totalFiles			= 0;
-	protected String[]		argsInterface		= null;
+	protected PrintStream		out					= System.out;
+	protected PrintStream		err					= System.err;
+	protected int				totalFiles			= 0;
+	protected String[]			argsInterface		= null;
 	// Messages
-	protected String		error				= "[ERROR] ";
-	protected String		info				= "[INFO] ";
+	protected String			error				= "[ERROR] ";
+	protected String			info				= "[INFO] ";
 	// Symbols
-	protected String		simpleTab			= " ";
-	protected String		doubleTab			= "     ";
-	protected String		indexArrowRigth		= ">>>>";
-	protected String		indexArrowLeft		= "<<<<";
-	protected String		bullet				= "o";
+	protected String			simpleTab			= " ";
+	protected String			doubleTab			= "     ";
+	protected String			indexArrowRigth		= ">>>>";
+	protected String			indexArrowLeft		= "<<<<";
+	protected String			bullet				= "o";
 
 	// Separators
-	protected String		doubleLine			= "===========================================================================";
-	protected String		underLine			= "___________________________________________________________________";
-	protected String		horizontalSeparator	= "|------------------------------------------------------------------|";
-	protected String		titleFrame			= "=";
+	protected String			doubleLine			= "===========================================================================";
+	protected String			underLine			= "___________________________________________________________________";
+	protected String			horizontalSeparator	= "|------------------------------------------------------------------|";
+	protected String			titleFrame			= "=";
+
+	protected CommandSession	commandSession;
+
+	@Override
+	public Object execute(CommandSession session) throws Exception {
+		this.commandSession = session;
+		return super.execute(session);
+	}
 
 	public void printInitCommand(String commandName) {
 
@@ -284,5 +296,18 @@ public abstract class GenericKarafCommand extends OsgiCommandSupport {
 			printSymbol(response.getStatus().toString());
 			return null;
 		}
+	}
+
+	protected String askPasswordInteractively(String displayMessage) throws IOException {
+
+		commandSession.getConsole().append(displayMessage);
+		commandSession.getConsole().flush();
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(commandSession.getKeyboard(), "UTF-8"));
+		String line = reader.readLine();
+
+		commandSession.getConsole().append("\n");
+		commandSession.getConsole().flush();
+		return line;
 	}
 }
