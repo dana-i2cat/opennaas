@@ -113,6 +113,7 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		// FIXME should use a generic getIModel2NdlWrapper method placed in IModel (NetworkModel should be moved to OpenNaaS for that)
 		// IModel2NdlWrapper wrapper = resourceModel.getIModel2NdlWrapper();
 		// wrapper.addModelToNetworkModel(resource.getModel(), networkModel);
+		log.debug("Adding resource " + toAddName + " to network " + getResourceName());
 		if (resourceModel instanceof ManagedElement) {
 			// update model
 			List<NetworkElement> createdElements = Cim2NdlMapper.addModelToNetworkModel(resourceToAdd.getModel(), networkModel, toAddName);
@@ -375,6 +376,8 @@ public class NetworkBasicCapability extends AbstractCapability implements INetwo
 		// update topology in descriptor
 		NetworkTopology topology = NetworkMapperModelToDescriptor.modelToDescriptor(networkModel);
 		network.getResourceDescriptor().setNetworkTopology(topology);
+
+		log.info("Created connection between interfaces " + interface1.getName() + " " + interface2.getName());
 
 		return connection;
 	}
