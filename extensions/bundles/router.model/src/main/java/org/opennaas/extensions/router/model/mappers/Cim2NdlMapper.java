@@ -8,6 +8,7 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.layer.Layer;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface;
 import org.opennaas.extensions.network.model.technology.ethernet.EthernetLayer;
 import org.opennaas.extensions.network.model.technology.ethernet.TaggedEthernetLayer;
 import org.opennaas.extensions.network.model.technology.ip.IPLayer;
@@ -137,10 +138,11 @@ public class Cim2NdlMapper {
 			if (port instanceof EthernetPort || port instanceof LogicalTunnelPort) {
 				Layer ethLayer = obtainEthernetLayer(networkModel);
 
-				Interface iface = new Interface();
+				EthernetInterface iface = new EthernetInterface();
 				iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
 				iface.setLayer(ethLayer);
 				iface.setDevice(dev);
+				iface.setBandwidth(port.getSpeed());
 
 				dev.getInterfaces().add(iface);
 				networkModel.getNetworkElements().add(iface);
@@ -166,7 +168,7 @@ public class Cim2NdlMapper {
 					if (endpoint instanceof VLANEndpoint) {
 						Layer ifaceLayer = obtainTaggedEthernetLayer(networkModel);
 
-						Interface iface = new Interface();
+						Interface iface = new EthernetInterface();
 						iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
 						iface.setLayer(ifaceLayer);
 						iface.setDevice(dev);
