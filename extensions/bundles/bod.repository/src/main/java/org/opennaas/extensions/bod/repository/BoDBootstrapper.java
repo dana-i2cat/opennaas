@@ -3,8 +3,8 @@ package org.opennaas.extensions.bod.repository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -24,7 +24,7 @@ public class BoDBootstrapper implements IResourceBootstrapper {
 
 	private IModel	oldModel;
 
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 
 		log.info("Loading bootstrap to start resource...");
 		oldModel = resource.getModel();
@@ -67,14 +67,15 @@ public class BoDBootstrapper implements IResourceBootstrapper {
 			}
 		}
 
-		if (resource.getProfile() != null) {
+		if (resource.hasProfile()) {
 			log.debug("Executing initModel from profile...");
 			resource.getProfile().initModel(resource.getModel());
 		}
+
 	}
 
 	@Override
-	public void resetModel(IResource resource) throws ResourceException {
+	public void resetModel(Resource resource) throws ResourceException {
 
 		NetworkDomain networkDomain = new NetworkDomain();
 		ResourceDescriptor resourceDescriptor = resource.getResourceDescriptor();
@@ -89,7 +90,7 @@ public class BoDBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 
 		resource.setModel(oldModel);
 	}

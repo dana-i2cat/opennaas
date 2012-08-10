@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -22,13 +23,15 @@ public class MockBootstrapper implements IResourceBootstrapper {
 
 	IModel	oldModel;
 
-	public void resetModel(IResource resource) throws ResourceException {
+	@Override
+	public void resetModel(Resource resource) throws ResourceException {
 		resource.setModel(new ComputerSystem());
 		if (isALogicalRouter(resource))
 			((ComputerSystem) resource.getModel()).setElementName(resource.getResourceDescriptor().getInformation().getName());
 	}
 
-	public void bootstrap(IResource resource) throws ResourceException {
+	@Override
+	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 
 		oldModel = resource.getModel();
@@ -81,7 +84,7 @@ public class MockBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
 

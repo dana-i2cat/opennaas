@@ -33,6 +33,7 @@ import org.opennaas.core.events.EventFilter;
 import org.opennaas.core.events.IEventManager;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionSet;
 import org.opennaas.core.resources.action.IActionSet;
@@ -160,7 +161,7 @@ public class CoreTest
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			// call createResource(resourceDescriptor)
-			IResource resource = resourceManager.createResource(resourceDescriptor);
+			Resource resource = (Resource) resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());
 
@@ -206,7 +207,7 @@ public class CoreTest
 			resourceDescriptor.setProfileId(profile.getProfileName());
 
 			// call createResource(resourceDescriptor)
-			IResource resource = resourceManager.createResource(resourceDescriptor);
+			Resource resource = (Resource) resourceManager.createResource(resourceDescriptor);
 			createProtocolForResource(resourceDescriptor.getId());
 			// log.info("UseProfileBundleTest: resource. getResourceIdentifier.getId gives us: " + resource.getResourceIdentifier().getId());
 			resourceManager.startResource(resource.getResourceIdentifier());

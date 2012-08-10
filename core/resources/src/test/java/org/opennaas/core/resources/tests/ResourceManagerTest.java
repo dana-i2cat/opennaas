@@ -75,14 +75,14 @@ public class ResourceManagerTest {
 	}
 
 	private IResource getMockResource(String type, String id) {
-		IResource mockResource = new Resource();
+		Resource mockResource = new Resource();
 		IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier(type, id);
 		mockResource.setResourceIdentifier(mockResourceIdentifier);
 		return mockResource;
 	}
 
 	private IResource getMockResourceWithInformation(String type, String id) {
-		IResource mockResource = new Resource();
+		Resource mockResource = new Resource();
 		IResourceIdentifier mockResourceIdentifier = new ResourceIdentifier(type, id);
 		mockResource.setResourceIdentifier(mockResourceIdentifier);
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();

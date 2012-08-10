@@ -11,6 +11,7 @@ import org.opennaas.core.resources.capability.ICapabilityLifecycle;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfiled;
 
 /**
  * Main resource class
@@ -19,7 +20,7 @@ import org.opennaas.core.resources.profile.IProfile;
  * @author Isart Canyameres Giménez (i2cat)
  * 
  */
-public class Resource implements IResource {
+public class Resource implements IResource, ILifecycle, IProfiled {
 
 	/** The logger **/
 	Log									logger				= LogFactory.getLog(Resource.class);
@@ -163,17 +164,17 @@ public class Resource implements IResource {
 		return resourceDescriptor;
 	}
 
-	@Override
+	// @Override
 	public void setResourceDescriptor(ResourceDescriptor resourceDescriptor) {
 		this.resourceDescriptor = resourceDescriptor;
 	}
 
-	@Override
+	// @Override
 	public void setResourceIdentifier(IResourceIdentifier resourceIdentifier) {
 		this.resourceIdentifier = resourceIdentifier;
 	}
 
-	@Override
+	// @Override
 	public void addCapability(ICapability capability) {
 		if (!(capability instanceof ICapabilityLifecycle))
 			throw new IllegalArgumentException("Given capability must be of type " + ICapabilityLifecycle.class.getName());
@@ -203,7 +204,7 @@ public class Resource implements IResource {
 		return null;
 	}
 
-	@Override
+	// @Override
 	public ICapability removeCapability(Information information) {
 		ICapability capability = getCapability(information);
 		capabilities.remove(capability);
@@ -216,7 +217,7 @@ public class Resource implements IResource {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
+	// @Override
 	public void setCapabilities(List<? extends ICapability> capabilities) {
 		for (ICapability capability : capabilities) {
 			if (!(capability instanceof ICapabilityLifecycle))
@@ -246,7 +247,7 @@ public class Resource implements IResource {
 		throw new ResourceException("Cannot find capability with interface " + interfaze);
 	}
 
-	@Override
+	// @Override
 	public void start() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to start it");
@@ -259,7 +260,7 @@ public class Resource implements IResource {
 		}
 	}
 
-	@Override
+	// @Override
 	public void stop() throws ResourceException, CorruptStateException {
 		logger.info("Resource is in " + this.getState()
 				+ " state. Trying to stop it");
@@ -275,7 +276,7 @@ public class Resource implements IResource {
 	/**
 	 * @return the bootstrapper
 	 */
-	@Override
+	// @Override
 	public IResourceBootstrapper getBootstrapper() {
 		return bootstrapper;
 	}
@@ -284,7 +285,7 @@ public class Resource implements IResource {
 	 * @param bootstrapper
 	 *            the bootstrapper to set
 	 */
-	@Override
+	// @Override
 	public void setBootstrapper(IResourceBootstrapper bootstrapper) {
 		this.bootstrapper = bootstrapper;
 	}
@@ -293,7 +294,7 @@ public class Resource implements IResource {
 	 * @param model
 	 *            the model to set
 	 */
-	@Override
+	// @Override
 	public void setModel(IModel model) {
 		this.model = model;
 	}
@@ -304,6 +305,11 @@ public class Resource implements IResource {
 	@Override
 	public IModel getModel() {
 		return model;
+	}
+
+	@Override
+	public boolean hasProfile() {
+		return (profile != null);
 	}
 
 	@Override
