@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Jordi
  */
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class ResourceNotFoundException extends RuntimeException {
+public class LogicalRouterException extends RuntimeException {
 
 	/**
 	 * 
@@ -18,7 +18,7 @@ public class ResourceNotFoundException extends RuntimeException {
 	/**
 	 * @param resourceId
 	 */
-	public ResourceNotFoundException(Long resourceId) {
+	public LogicalRouterException(Long resourceId) {
 		this.resourceId = resourceId;
 	}
 
