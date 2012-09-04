@@ -39,5 +39,10 @@
 		<property name="prefix" value="/WEB-INF/views/"/>
 		<property name="suffix" value=".jsp"/>
 	</bean>
+	
+	<!-- Class to generate calls to OpenNaaS Rest Interface -->
+	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest">
+		<property name="messageSource" ref="messageSource"/>
+	</bean>
 
 </beans>

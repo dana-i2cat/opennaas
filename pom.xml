@@ -62,7 +62,9 @@
 		<hibernate.jpa-api.version>2.0-cr-1</hibernate.jpa-api.version>
 		<hsqldb.version>1.8.0.10</hsqldb.version>
 		<javamail.version>1.4.4</javamail.version>
-		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>
+		<jaxb.impl.version>2.2.1.1_1</jaxb.impl.version>		
+		<jersey-bundle.version>1.10-b01</jersey-bundle.version>	
+		<jersey-core.version>1.12</jersey-core.version>
 		<jetty.version>7.4.2.v20110526</jetty.version>
 		<jslt.version>1.2</jslt.version>
 		<jsp-api.version>2.1</jsp-api.version>
@@ -756,7 +758,6 @@
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
 			</dependency>
-			
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-transports-http</artifactId>
@@ -802,6 +803,16 @@
 				<artifactId>xbean-spring</artifactId>
 				<version>${xbean.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-core</artifactId>
+				<version>${jersey-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey</groupId>
+				<artifactId>jersey-bundle</artifactId>
+				<version>${jersey-bundle.version}</version>
+			</dependency>
 			<!-- Unit tests -->
 			<dependency>
 				<groupId>junit</groupId>
@@ -821,7 +832,6 @@
 				<version>${easymock.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 			<!-- Integration tests -->
 			<dependency>
 				<groupId>org.openengsb.labs.paxexam.karaf</groupId>
@@ -841,14 +851,12 @@
 				<version>1.5.0</version>
 				<scope>test</scope>
 			</dependency>
-
 			<!-- Features -->
 			<dependency>
 				<groupId>org.apache.servicemix</groupId>
 				<artifactId>apache-servicemix</artifactId>
 				<version>${servicemix.version}</version>
 			</dependency>
-
 			<!-- Misc -->
 			<dependency>
 				<groupId>westhawk</groupId>
