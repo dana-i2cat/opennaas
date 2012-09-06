@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
@@ -25,6 +27,8 @@ import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class Cim2NdlMapper {
+
+	private static Log	log	= LogFactory.getLog(Cim2NdlMapper.class);
 
 	/**
 	 * Transforms given model to a NDL representation and adds it to networkModel.
@@ -88,6 +92,7 @@ public class Cim2NdlMapper {
 			dev.setName(managedElement.getName());
 		}
 		networkModel.getNetworkElements().add(dev);
+		log.debug("Added device " + dev.getName());
 
 		return dev;
 	}
@@ -145,6 +150,7 @@ public class Cim2NdlMapper {
 				dev.getInterfaces().add(iface);
 				networkModel.getNetworkElements().add(iface);
 				listInterface.add(iface);
+				log.debug("Added iface " + iface.getName() + " in layer " + ethLayer.getName());
 			}
 		}
 		return listInterface;
@@ -181,6 +187,7 @@ public class Cim2NdlMapper {
 						dev.getInterfaces().add(iface);
 						networkModel.getNetworkElements().add(iface);
 						listInterface.add(iface);
+						log.debug("Added iface " + iface.getName() + " in layer " + ifaceLayer.getName());
 					}
 				}
 			}
@@ -222,6 +229,8 @@ public class Cim2NdlMapper {
 						networkModel.getNetworkElements().add(iface);
 
 						listInterface.add(iface);
+
+						log.debug("Added iface " + iface.getName() + " in layer " + ifaceLayer.getName());
 					}
 				}
 			}
