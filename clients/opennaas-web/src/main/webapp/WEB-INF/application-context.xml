@@ -56,7 +56,8 @@
 		<property name="messageSource" ref="messageSource"/>
 	</bean>
 	
-	<!-- Class to generate calls to OpenNaaS Rest Interface -->
+	<!-- OpenNaas Beans-->
 	<bean id="logicalRouterBO" class="org.opennaas.web.bos.LogicalRouterBO" />
-
+	
+	<bean id="queueBO" class="org.opennaas.web.bos.QueueBO" />
 </beans>

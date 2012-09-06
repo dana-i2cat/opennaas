@@ -24,7 +24,6 @@
 	<logger name="org.opennaas.web">
 		<level value="info" />
         <appender-ref ref="file" />
-		<appender-ref ref="console" />
 	</logger>
 
 	<!-- 3rdparty Loggers -->
@@ -50,7 +49,7 @@
 	
 	<!-- Root Logger -->
 	<root>
-		<priority value="none" />
+		<priority value="info" />
 		<appender-ref ref="console" />
 	</root>
 

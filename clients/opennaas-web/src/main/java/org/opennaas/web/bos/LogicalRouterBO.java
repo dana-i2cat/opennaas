@@ -5,20 +5,23 @@ package org.opennaas.web.bos;
 
 import org.opennaas.extensions.router.model.ComputerSystem;
 
-import com.sun.jersey.api.client.ClientResponse;
-
 /**
  * @author Jordi
  */
 public class LogicalRouterBO extends GenericBO {
 
+	/**
+	 * Push an action in the queue to create a Logical Router
+	 */
 	public void createLogicalRouter() {
-		ClientResponse response = opennaasRest
-				.executePost("router", "lolaM20", "chassis", "createLogicalRouter", getComputerSystem());
+		String path = "router/lolaM20/chassis/createLogicalRouter";
+		opennaasRest.post(path, getComputerSystem());
 	}
 
 	/**
-	 * @return
+	 * Get the ComputerSystem
+	 * 
+	 * @return a ComputerSystem
 	 */
 	private static ComputerSystem getComputerSystem() {
 		ComputerSystem computerSystem = new ComputerSystem();

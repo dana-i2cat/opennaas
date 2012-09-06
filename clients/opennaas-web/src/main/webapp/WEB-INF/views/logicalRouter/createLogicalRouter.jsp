@@ -3,7 +3,7 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>
 
 <html>
 <head>
@@ -20,32 +20,37 @@
 	<h1>
 		Create Logical Router
 	</h1>
+	<div>
+		<div style='float: right'>
+			<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
+		</div>
+		<div style='float: left'>
+			<a href="/opennaas">Home</a>
+		</div>
+	</div>
+	<hr>
 	<div class="span-12 last">	
-		<form:form modelAttribute="logicalRouter" action="logicalRouter" method="post">
+		<spring:form modelAttribute="logicalRouter" action="logicalRouter" method="post">
 		  	<fieldset>		
 				<legend>Logical Router Fields</legend>
 				<p>
-					<form:label	for="name" path="name" cssErrorClass="error">Name</form:label><br/>
-					<form:input path="name" /> <form:errors path="name" />			
+					<spring:label for="name" path="name" cssErrorClass="error">Name</spring:label><br/>
+					<spring:input path="name" /> <spring:errors path="name" />			
 				</p>
 				<p>	
-					<form:label for="router" path="router" cssErrorClass="error">Router</form:label><br/>
-					<form:input path="router" /> <form:errors path="router" />
+					<spring:label for="router" path="router" cssErrorClass="error">Router</spring:label><br/>
+					<spring:input path="router" /> <spring:errors path="router" />
 				</p>
 				<p>	
-					<form:label for="iface" path="iface" cssErrorClass="error">Interface</form:label><br/>
-					<form:input path="iface" /> <form:errors path="iface" />
+					<spring:label for="iface" path="iface" cssErrorClass="error">Interface</spring:label><br/>
+					<spring:input path="iface" /> <spring:errors path="iface" />
 				</p>
 				<p>	
 					<input type="submit" />
 				</p>
 			</fieldset>
-		</form:form>
+		</spring:form>
 	</div>
-	<hr>	
-	<ul>
-		<li><a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a></li>
-	</ul>	
 </div>
 </body>
 </html>

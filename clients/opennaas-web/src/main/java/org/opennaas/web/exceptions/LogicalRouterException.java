@@ -1,4 +1,4 @@
-package org.opennaas.web.controllers;
+package org.opennaas.web.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
