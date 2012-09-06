@@ -3,8 +3,8 @@ package org.opennaas.extensions.roadm.repository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -22,7 +22,7 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 	private IModel	oldModel;
 
 	@Override
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource..");
 		oldModel = resource.getModel();
 		resource.setModel(new ProteusOpticalSwitch()); // TODO LUMINIS WORK WITH OPTICAL SWITCHES OR WITH PROTEUS OPTICAL SWITCHES
@@ -86,11 +86,12 @@ public class ROADMBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
 
-	public void resetModel(IResource resource) throws ResourceException {
+	@Override
+	public void resetModel(Resource resource) throws ResourceException {
 
 	}
 
