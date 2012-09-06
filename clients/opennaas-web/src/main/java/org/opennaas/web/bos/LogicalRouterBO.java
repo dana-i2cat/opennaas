@@ -15,7 +15,7 @@ public class LogicalRouterBO extends GenericBO {
 	 */
 	public void createLogicalRouter() {
 		String path = "router/lolaM20/chassis/createLogicalRouter";
-		opennaasRest.post(path, getComputerSystem());
+		opennaasRest.post(getURL(path), getComputerSystem());
 	}
 
 	/**

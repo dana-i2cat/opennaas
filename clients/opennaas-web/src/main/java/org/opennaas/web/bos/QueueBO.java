@@ -19,7 +19,7 @@ public class QueueBO extends GenericBO {
 	public List<String> getActions() {
 		String path = "router/lolaM20/queue/getActionsId";
 		List<String> actionList = null;
-		Object response = opennaasRest.get(path, String.class);
+		Object response = opennaasRest.get(getURL(path), String.class);
 		if (response instanceof String) {
 			String retValue = (String) response;
 			actionList = Arrays.asList(retValue);
@@ -32,6 +32,6 @@ public class QueueBO extends GenericBO {
 	 */
 	public void execute() {
 		String path = "router/lolaM20/queue/execute";
-		opennaasRest.post(path, QueueResponse.class);
+		opennaasRest.post(getURL(path), QueueResponse.class);
 	}
 }

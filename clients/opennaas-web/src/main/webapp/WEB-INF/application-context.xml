@@ -51,12 +51,10 @@
 		</property>
 	</bean>
 	
-	<!-- Class to generate calls to OpenNaaS Rest Interface -->
-	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest">
-		<property name="messageSource" ref="messageSource"/>
-	</bean>
-	
+
 	<!-- OpenNaas Beans-->
+	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest" />
+		
 	<bean id="logicalRouterBO" class="org.opennaas.web.bos.LogicalRouterBO" />
 	
 	<bean id="queueBO" class="org.opennaas.web.bos.QueueBO" />
