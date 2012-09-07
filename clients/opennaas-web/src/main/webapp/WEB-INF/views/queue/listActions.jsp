@@ -20,7 +20,7 @@
 <body>
 <div class="container">
 	<h1>
-		List Actions
+		<spring:message code="queue.listactions.title"/>
 	</h1>
 	<div>
 		<div style='float: right'>
@@ -51,7 +51,7 @@
 		<ul>
 			<form:form modelAttribute="queue" action="queue" method="post">
 			  	<fieldset>		
-					<legend>Execute the Queue:</legend>		
+					<legend><spring:message code="queue.listactions.legend"/></legend>		
 					<input type="submit" value="Execute"/>
 				</fieldset>
 			</form:form>

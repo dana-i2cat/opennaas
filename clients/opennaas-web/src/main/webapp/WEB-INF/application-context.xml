@@ -14,7 +14,7 @@
 	<mvc:annotation-driven />
 
 	<!-- Forwards requests to the "/" resource to the "welcome" view -->
-	<mvc:view-controller path="/" view-name="welcome"/>
+	<mvc:view-controller path="/" view-name="index"/>
 
 	<!-- Configures Handler Interceptors -->	
 	<mvc:interceptors>

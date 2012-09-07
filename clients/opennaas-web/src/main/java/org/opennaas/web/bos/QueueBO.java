@@ -12,13 +12,15 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public class QueueBO extends GenericBO {
 
+	private static final String	GET_ACTIONS_ID	= "router/lolaM20/queue/getActionsId";
+	private static final String	EXECUTE			= "router/lolaM20/queue/execute";
+
 	/**
 	 * Get the actions of the Queue
 	 */
 	public String[] getActions() {
-		String path = "router/lolaM20/queue/getActionsId";
 		String[] actionList = null;
-		ClientResponse response = opennaasRest.get(getURL(path));
+		ClientResponse response = opennaasRest.get(getURL(GET_ACTIONS_ID));
 		String retValue = response.getEntity(String.class);
 		retValue = retValue.replace("[", "");
 		retValue = retValue.replace("]", "");
@@ -30,7 +32,6 @@ public class QueueBO extends GenericBO {
 	 * Execute the queue
 	 */
 	public void execute() {
-		String path = "router/lolaM20/queue/execute";
-		opennaasRest.post(getURL(path), QueueResponse.class);
+		opennaasRest.post(getURL(EXECUTE), QueueResponse.class);
 	}
 }

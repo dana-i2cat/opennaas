@@ -10,12 +10,13 @@ import org.opennaas.extensions.router.model.ComputerSystem;
  */
 public class LogicalRouterBO extends GenericBO {
 
+	private static final String	CREATE_LOGICAL_ROUTER	= "router/lolaM20/chassis/createLogicalRouter";
+
 	/**
 	 * Push an action in the queue to create a Logical Router
 	 */
 	public void createLogicalRouter() {
-		String path = "router/lolaM20/chassis/createLogicalRouter";
-		opennaasRest.post(getURL(path), getComputerSystem());
+		opennaasRest.post(getURL(CREATE_LOGICAL_ROUTER), getComputerSystem());
 	}
 
 	/**

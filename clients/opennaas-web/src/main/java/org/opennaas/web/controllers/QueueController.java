@@ -1,7 +1,10 @@
 package org.opennaas.web.controllers;
 
+import java.util.Locale;
+
 import org.opennaas.web.bos.QueueBO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class QueueController {
 
 	@Autowired
-	private QueueBO	queueBO;
+	private QueueBO									queueBO;
+	@Autowired
+	private ReloadableResourceBundleMessageSource	messageSource;
 
 	/**
 	 * Get the actions of the queue
@@ -36,10 +41,11 @@ public class QueueController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String executeQueue(Model model) {
+	public String execute(Model model, Locale locale) {
 		queueBO.execute();
 		model.addAttribute("actions", queueBO.getActions());
-		model.addAttribute("infoMsg", "Queue executed");
+		model.addAttribute("infoMsg", messageSource
+				.getMessage("queue.execute.message.info", null, locale));
 		return "queue/listActions";
 	}
 }

@@ -3,6 +3,9 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
+
 <html>
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -17,7 +20,7 @@
 <body>
 <div class="container">  
 	<h1>
-		<fmt:message key="welcome.title"/>
+		<fmt:message key="index.title"/>
 	</h1>
 	<div>
 		<div style='float: right'>
@@ -26,10 +29,10 @@
 	</div>
 	<hr>
 	<ul>
-		<li><a href="logicalRouter">Create Logical Router</a></li>
+		<li><a href="logicalRouter"><spring:message code="index.menu.logicalrouter"/></a></li>
 	</ul>
 	<ul>
-		<li><a href="queue">Manage Queue</a></li>
+		<li><a href="queue"><spring:message code="index.menu.queue"/></a></li>
 	</ul>
 </div>
 </body>

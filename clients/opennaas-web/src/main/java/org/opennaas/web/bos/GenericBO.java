@@ -15,12 +15,10 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 public class GenericBO {
 
 	private static final Logger						LOGGER	= Logger.getLogger(GenericBO.class);
-
-	@Autowired
-	private ReloadableResourceBundleMessageSource	messageSource;
-
 	@Autowired
 	protected OpennaasRest							opennaasRest;
+	@Autowired
+	private ReloadableResourceBundleMessageSource	messageSource;
 
 	/**
 	 * @param path
