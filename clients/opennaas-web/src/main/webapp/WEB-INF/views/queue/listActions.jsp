@@ -3,7 +3,8 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <html>
 <head>
@@ -11,6 +12,7 @@
 	<title>List Actions</title>
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css" media="print">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/custom.css" />" type="text/css" media="print">
 	<!--[if lt IE 8]>
 		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css" media="screen, projection">
 	<![endif]-->
@@ -30,9 +32,13 @@
 	</div>
 	<hr>
 	
-	<c:forEach items="${messages}" var="message">
-  		<c:out value="${message}"></c:out>
-	</c:forEach>
+	<c:if test="${not empty infoMsg}" >
+		<div class="success">
+			<span>
+				<spring:message text="${infoMsg}" />
+			</span>
+		</div>
+	</c:if>
 	
 	<div class="span-12 last">	
 		<ul>
@@ -43,12 +49,12 @@
 	   		</c:forEach>
 		</ul>
 		<ul>
-			<spring:form modelAttribute="queue" action="queue" method="post">
+			<form:form modelAttribute="queue" action="queue" method="post">
 			  	<fieldset>		
 					<legend>Execute the Queue:</legend>		
 					<input type="submit" value="Execute"/>
 				</fieldset>
-			</spring:form>
+			</form:form>
 		</ul>	
 	</div>
 </div>

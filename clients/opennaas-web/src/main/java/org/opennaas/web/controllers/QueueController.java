@@ -39,6 +39,7 @@ public class QueueController {
 	public String executeQueue(Model model) {
 		queueBO.execute();
 		model.addAttribute("actions", queueBO.getActions());
+		model.addAttribute("infoMsg", "Queue executed");
 		return "queue/listActions";
 	}
 }

@@ -25,7 +25,7 @@ public class LogicalRouterController {
 	 * Redirect to the form to create a LogicalRouter
 	 * 
 	 * @param model
-	 * @return 
+	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
@@ -34,15 +34,19 @@ public class LogicalRouterController {
 	}
 
 	/**
-	 * Create a LogicalRouter 
+	 * Create a LogicalRouter
+	 * 
 	 * @param logicalRouter
 	 * @param result
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String create(@Valid LogicalRouter logicalRouter, BindingResult result) {
-		logicalRouterBO.createLogicalRouter();
+	public String create(@Valid LogicalRouter logicalRouter, BindingResult result, Model model) {
+		if (!result.hasErrors()) {
+			logicalRouterBO.createLogicalRouter();
+			model.addAttribute("infoMsg", "Logical Router action added to the queue");
+		}
+
 		return "logicalRouter/createLogicalRouter";
 	}
-
 }

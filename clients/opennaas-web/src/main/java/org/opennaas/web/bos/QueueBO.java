@@ -3,10 +3,9 @@
  */
 package org.opennaas.web.bos;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.opennaas.core.resources.queue.QueueResponse;
+
+import com.sun.jersey.api.client.ClientResponse;
 
 /**
  * @author Jordi
@@ -16,14 +15,14 @@ public class QueueBO extends GenericBO {
 	/**
 	 * Get the actions of the Queue
 	 */
-	public List<String> getActions() {
+	public String[] getActions() {
 		String path = "router/lolaM20/queue/getActionsId";
-		List<String> actionList = null;
-		Object response = opennaasRest.get(getURL(path), String.class);
-		if (response instanceof String) {
-			String retValue = (String) response;
-			actionList = Arrays.asList(retValue);
-		}
+		String[] actionList = null;
+		ClientResponse response = opennaasRest.get(getURL(path));
+		String retValue = response.getEntity(String.class);
+		retValue = retValue.replace("[", "");
+		retValue = retValue.replace("]", "");
+		actionList = retValue.equals("") ? null : retValue.split(",");
 		return actionList;
 	}
 

@@ -3,7 +3,8 @@
 <%@ page session="false" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
 
 <html>
 <head>
@@ -11,6 +12,7 @@
 	<title>Create Logical Router</title>
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css" media="print">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/custom.css" />" type="text/css" media="print">
 	<!--[if lt IE 8]>
 		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css" media="screen, projection">
 	<![endif]-->
@@ -29,27 +31,36 @@
 		</div>
 	</div>
 	<hr>
+	
+	<c:if test="${not empty infoMsg}" >
+		<div class="success">
+			<span>
+				<spring:message text="${infoMsg}" />
+			</span>
+		</div>
+	</c:if>
+	
 	<div class="span-12 last">	
-		<spring:form modelAttribute="logicalRouter" action="logicalRouter" method="post">
+		<form:form modelAttribute="logicalRouter" action="logicalRouter" method="post">
 		  	<fieldset>		
 				<legend>Logical Router Fields</legend>
 				<p>
-					<spring:label for="name" path="name" cssErrorClass="error">Name</spring:label><br/>
-					<spring:input path="name" /> <spring:errors path="name" />			
+					<form:label for="name" path="name" cssErrorClass="error">Name</form:label><br/>
+					<form:input path="name" /> <form:errors path="name" />			
 				</p>
 				<p>	
-					<spring:label for="router" path="router" cssErrorClass="error">Router</spring:label><br/>
-					<spring:input path="router" /> <spring:errors path="router" />
+					<form:label for="router" path="router" cssErrorClass="error">Router</form:label><br/>
+					<form:input path="router" /> <form:errors path="router" />
 				</p>
 				<p>	
-					<spring:label for="iface" path="iface" cssErrorClass="error">Interface</spring:label><br/>
-					<spring:input path="iface" /> <spring:errors path="iface" />
+					<form:label for="iface" path="iface" cssErrorClass="error">Interface</form:label><br/>
+					<form:input path="iface" /> <form:errors path="iface" />
 				</p>
 				<p>	
 					<input type="submit" />
 				</p>
 			</fieldset>
-		</spring:form>
+		</form:form>
 	</div>
 </div>
 </body>

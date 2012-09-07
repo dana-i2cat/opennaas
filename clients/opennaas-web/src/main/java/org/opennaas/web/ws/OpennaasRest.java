@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 
@@ -32,8 +33,9 @@ public class OpennaasRest {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("Response code: " + response.getStatus());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
@@ -52,10 +54,11 @@ public class OpennaasRest {
 					+ " and return class: " + ret.getClass().getCanonicalName());
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.TEXT_PLAIN).get(ret);
+			response = webResource.type(MediaType.APPLICATION_XML).get(ret);
 			LOGGER.info("Response class is: " + response.getClass().getCanonicalName());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
@@ -74,8 +77,9 @@ public class OpennaasRest {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class);
 			LOGGER.info("Response code: " + response.getStatus());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
@@ -95,8 +99,9 @@ public class OpennaasRest {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).post(ret);
 			LOGGER.info("Response class is: " + response.getClass().getCanonicalName());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
@@ -117,8 +122,9 @@ public class OpennaasRest {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, bean);
 			LOGGER.info("Response code: " + response.getStatus());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
@@ -140,8 +146,9 @@ public class OpennaasRest {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).post(ret, bean);
 			LOGGER.info("Response class is: " + response.getClass().getCanonicalName());
-		} catch (Exception e) {
+		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
+			throw e;
 		}
 		return response;
 	}
