@@ -2,6 +2,7 @@ package org.opennaas.web.controllers;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.opennaas.web.bos.LogicalRouterBO;
@@ -11,8 +12,11 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.sun.jersey.api.client.ClientHandlerException;
 
 /**
  * @author Jordi
@@ -56,5 +60,18 @@ public class LogicalRouterController {
 					.getMessage("logicalrouter.create.message.error", null, locale));
 		}
 		return "logicalRouter/createLogicalRouter";
+	}
+
+	/**
+	 * Handle the ClientHandlerException
+	 * 
+	 * @param ex
+	 * @param request
+	 * @return
+	 */
+	@ExceptionHandler(ClientHandlerException.class)
+	public String clientHandlerException(ClientHandlerException ex, HttpServletRequest request) {
+		request.setAttribute("exception", ex.getMessage());
+		return "exception";
 	}
 }
