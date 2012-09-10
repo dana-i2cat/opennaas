@@ -22,6 +22,7 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class MantychoreBootstrapper implements IResourceBootstrapper {
 	Log		log	= LogFactory.getLog(MantychoreBootstrapper.class);
@@ -74,33 +75,61 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			resource.getProfile().initModel(resource.getModel());
 		}
 
-		/* the type resource is the same for all logical devices and for the physical device */
-		String typeResource = resource.getResourceIdentifier().getType();
-		IResourceManager resourceManager;
-		try {
-			resourceManager = Activator.getResourceManagerService();
-		} catch (Exception e1) {
-			throw new ResourceException("It was impossible get the Resource Manager Service to do execute the bootstrapper");
+		if (ModelHelper.getInterfaces(((ComputerSystem) resource.getModel())).isEmpty()) {
+			log.warn("Router has no interfaces");
 		}
-		List<String> nameLogicalRouters = resource.getModel().getChildren();
 
-		/* initialize each resource */
-		for (String nameResource : nameLogicalRouters) {
-			try {
-				resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
-			} catch (ResourceNotFoundException e) {
-				// TODO If the resource exists what it is our decision?
-				log.error(e.getMessage());
-				log.info("This resource is new, it have to be created");
-				ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+		// FIXME This should be part of refresh action
+		initVirtualResources(resource);
+	}
 
-				/* create new resources */
-				resourceManager.createResource(newResourceDescriptor);
+	/**
+	 * FIXME this method should be part of refresh action. Remove it when moved!!!
+	 * 
+	 * @param resource
+	 * @throws ResourceException
+	 */
+	private void initVirtualResources(IResource resource) throws ResourceException {
+
+		if (resource.getModel() != null) {
+
+			List<String> nameLogicalRouters = resource.getModel().getChildren();
+
+			if (!nameLogicalRouters.isEmpty()) {
+
+				log.debug("Loading child logical routers");
+
+				/* resource type for all child logical devices is the same as the parent (physical) one */
+				String typeResource = resource.getResourceIdentifier().getType();
+				IResourceManager resourceManager;
+				try {
+					resourceManager = Activator.getResourceManagerService();
+				} catch (Exception e1) {
+					throw new ResourceException("Could not get Resource Manager Service.");
+				}
+
+				/* initialize each resource */
+				int createdResources = 0;
+				for (String nameResource : nameLogicalRouters) {
+					try {
+						resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
+						log.info("A resource with this name already exists, omitting creation");
+					} catch (ResourceNotFoundException e) {
+						// TODO If the resource exists what it is our decision?
+						log.error(e.getMessage());
+						log.info("This resource is new, it have to be created");
+						ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+
+						/* create new resources */
+						resourceManager.createResource(newResourceDescriptor);
+						createdResources++;
+					}
+				}
+				log.debug("Loaded " + createdResources + " new logical routers");
+
+				// FIXME If a resource is created, we have to delete the don't used resources
 			}
 		}
-
-		// FIXME If a resource is created, we have to delete the don't used resources
-
 	}
 
 	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource) throws ResourceException {
