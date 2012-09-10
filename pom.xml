@@ -94,6 +94,9 @@
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<spring.osgi.version>1.2.1</spring.osgi.version>
+		<tiles-api.version>2.2.2</tiles-api.version>
+		<tiles-core.version>2.2.2</tiles-core.version>
+		<tiles-jsp.version>2.2.2</tiles-jsp.version>
 		<validation-api>1.0.0.GA</validation-api>
 		<westhawk.snmp.version>4_13</westhawk.snmp.version>
 		<xbean.version>3.9</xbean.version>
@@ -623,6 +626,22 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
 				<version>${jslt.version}</version>
+			</dependency>
+			<!-- Tiles -->
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-core</artifactId>
+				<version>${tiles-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-api</artifactId>
+				<version>${tiles-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tiles</groupId>
+				<artifactId>tiles-jsp</artifactId>
+				<version>${tiles-jsp.version}</version>
 			</dependency>
 			<!-- Logging -->
 			<dependency>
