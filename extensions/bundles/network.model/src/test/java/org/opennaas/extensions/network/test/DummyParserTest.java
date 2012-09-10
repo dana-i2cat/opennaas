@@ -1,11 +1,11 @@
 package org.opennaas.extensions.network.test;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,40 +24,42 @@ public class DummyParserTest {
 	Log	log	= LogFactory.getLog(DummyParserTest.class);
 
 	@Test
-	public void NDLToJavaTest() {
-		String filePath = "network/network_example1.xml";
+	public void NDLToJavaTest() throws Exception {
+
+		String path = new File(".").getCanonicalPath();
+		System.out.println(path);
+		String filePath = "src/test/resources/network_example1.xml";
 		try {
 			NetworkTopology exampleDescriptor = getNetworkDescriptor(filePath);
 			log.info(exampleDescriptor.toString());
-		} catch (Exception e) {
+		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getMessage(), e.getCause());
+			throw e;
 		}
 	}
 
 	@Test
-	public void javaToNDLTest() {
+	public void javaToNDLTest() throws IOException {
 		try {
-			String filePath = "target/test1.xml";
+			String filePath = "src/test/resources/test1.xml";
 			NetworkTopology mockRDF = MockNetworkDescriptor.newSimpleNDLNetworkDescriptor();
 			addNetworkDescriptor(mockRDF, filePath);
 		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getMessage(), e.getCause());
+			throw e;
 		}
 
 	}
 
 	@Test
-	public void NDLToJavaTestWithDiffLayers() {
-		String filePath = "network/network_diffs_layer.xml";
-
+	public void NDLToJavaTestWithDiffLayers() throws Exception {
+		String filePath = "src/test/resources/network_diffs_layer.xml";
 		try {
 			NetworkTopology exampleDescriptor = getNetworkDescriptor(filePath);
 			log.info(exampleDescriptor.toString());
-		} catch (Exception e) {
+		} catch (IOException e) {
 			log.error(e.getMessage());
-			log.error(e.getMessage(), e.getCause());
+			throw e;
 		}
 	}
 
@@ -72,21 +74,8 @@ public class DummyParserTest {
 	 * @throws SAXException
 	 */
 	private NetworkTopology getNetworkDescriptor(String filename) throws JAXBException, IOException, ResourceException, SAXException {
-		InputStream stream = null;
-		// First try a URL
-		try {
-			URL url = new URL(filename);
-			log.info("URL: " + url);
-			stream = url.openStream();
-		} catch (MalformedURLException ignore) {
-			// Then try a file
-			// Added class loader to read files
-			stream = this.getClass().getClassLoader().getResourceAsStream(filename);
-			log.error("file: " + filename);
-			// stream = new FileInputStream(filename);
-		}
-
-		NetworkTopology rd = loadNetworkDescriptor(stream);
+		FileInputStream inputStream = new FileInputStream(filename);
+		NetworkTopology rd = loadNetworkDescriptor(inputStream);
 		return rd;
 	}
 
