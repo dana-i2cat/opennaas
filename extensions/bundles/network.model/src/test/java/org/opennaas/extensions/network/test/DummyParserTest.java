@@ -24,8 +24,7 @@ public class DummyParserTest {
 	Log	log	= LogFactory.getLog(DummyParserTest.class);
 
 	@Test
-	public void NDLToJavaTest() throws Exception {
-
+	public void testNDLToJava() throws Exception {
 		String path = new File(".").getCanonicalPath();
 		System.out.println(path);
 		String filePath = "src/test/resources/network_example1.xml";
@@ -39,9 +38,9 @@ public class DummyParserTest {
 	}
 
 	@Test
-	public void javaToNDLTest() throws IOException {
+	public void testJavaToNDL() throws IOException {
 		try {
-			String filePath = "src/test/resources/test1.xml";
+			String filePath = "target/test1.xml";
 			NetworkTopology mockRDF = MockNetworkDescriptor.newSimpleNDLNetworkDescriptor();
 			addNetworkDescriptor(mockRDF, filePath);
 		} catch (IOException e) {
@@ -52,7 +51,7 @@ public class DummyParserTest {
 	}
 
 	@Test
-	public void NDLToJavaTestWithDiffLayers() throws Exception {
+	public void testNDLToJavaWithDiffLayers() throws Exception {
 		String filePath = "src/test/resources/network_diffs_layer.xml";
 		try {
 			NetworkTopology exampleDescriptor = getNetworkDescriptor(filePath);
