@@ -36,15 +36,7 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 
 			EthernetPort eth = (EthernetPort) params;
 
-			if (eth.getName() == null || eth.getName().isEmpty())
-				throw new ActionException("Not valid name for the interface");
-
-			if (eth.getName().startsWith("gr-"))
-				setTemplate("/VM_files/configureGRELogicalInterface.vm");
-			else if (eth.getProtocolEndpoint().isEmpty())
-				setTemplate("/VM_files/configureEthWithoutVLAN.vm");
-			else
-				setTemplate("/VM_files/configureEthVLAN.vm");
+			checkEthernetParams(eth);
 
 		} else if (params instanceof LogicalTunnelPort) {
 			LogicalTunnelPort lt = (LogicalTunnelPort) params;
@@ -58,6 +50,22 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 			throw new ActionException("Not valid object param " + params.getClass().getCanonicalName() + " for this action");
 
 		return true;
+	}
+
+	private void checkEthernetParams(EthernetPort eth) throws ActionException {
+
+		if (eth.getName() == null || eth.getName().isEmpty())
+			throw new ActionException("Not valid name for the interface");
+
+		if (eth.getName().startsWith("gr-"))
+			setTemplate("/VM_files/configureGRELogicalInterface.vm");
+
+		else if (eth.getProtocolEndpoint().isEmpty())
+			setTemplate("/VM_files/configureEthWithoutVLAN.vm");
+
+		else
+			setTemplate("/VM_files/configureEthVLAN.vm");
+
 	}
 
 	@Override
