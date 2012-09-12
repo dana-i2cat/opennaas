@@ -57,6 +57,13 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 		if (eth.getName() == null || eth.getName().isEmpty())
 			throw new ActionException("Not valid name for the interface");
 
+		/**
+		 * FIXME. Function should check encapsulation of the physical interface when OpenNaaS support it. For the moment, it's enough to check if the
+		 * params does not contain a vlanEndpoint (which means that the vlanID was not set and the portNumber must be 0)
+		 */
+		if ((eth.getPortNumber() != 0) && (eth.getProtocolEndpoint().isEmpty()))
+			throw new ActionException("Only unit 0 is valid for non tagged-ethernet encapsulation.");
+
 		if (eth.getName().startsWith("gr-"))
 			setTemplate("/VM_files/configureGRELogicalInterface.vm");
 
