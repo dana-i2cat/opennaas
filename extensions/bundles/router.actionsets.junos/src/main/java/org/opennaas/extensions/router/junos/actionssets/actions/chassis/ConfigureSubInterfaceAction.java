@@ -41,6 +41,8 @@ public class ConfigureSubInterfaceAction extends JunosAction {
 
 			if (eth.getName().startsWith("gr-"))
 				setTemplate("/VM_files/configureGRELogicalInterface.vm");
+			else if (eth.getProtocolEndpoint().isEmpty())
+				setTemplate("/VM_files/configureEthWithoutVLAN.vm");
 			else
 				setTemplate("/VM_files/configureEthVLAN.vm");
 
