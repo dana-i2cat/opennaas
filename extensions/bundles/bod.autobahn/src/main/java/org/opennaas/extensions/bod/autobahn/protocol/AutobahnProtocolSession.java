@@ -75,7 +75,7 @@ public class AutobahnProtocolSession implements IProtocolSession
 	public void connect() throws ProtocolException
 	{
 		uapService =
-			createUserAccessPointService(getServiceUri() + "uap2");
+			createUserAccessPointService(getServiceUri() + "uap");
 		administrationService =
 			createAdministrationService(getServiceUri() + "administration");
 		status = CONNECTED;
