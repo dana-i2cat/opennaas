@@ -36,7 +36,7 @@ public class QueueController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getActions(Model model) {
 		model.addAttribute("actions", queueBO.getActions());
-		return "queue/listActions";
+		return "listQueueActions";
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class QueueController {
 		model.addAttribute("actions", queueBO.getActions());
 		model.addAttribute("infoMsg", messageSource
 				.getMessage("queue.execute.message.info", null, locale));
-		return "queue/listActions";
+		return "listQueueActions";
 	}
 
 	/**

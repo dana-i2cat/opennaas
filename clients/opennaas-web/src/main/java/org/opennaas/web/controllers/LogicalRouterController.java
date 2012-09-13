@@ -39,7 +39,7 @@ public class LogicalRouterController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
 		model.addAttribute(new LogicalRouter());
-		return "logicalRouter/createLogicalRouter";
+		return "createLogicalRouter";
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class LogicalRouterController {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("logicalrouter.create.message.error", null, locale));
 		}
-		return "logicalRouter/createLogicalRouter";
+		return "createLogicalRouter";
 	}
 
 	/**
