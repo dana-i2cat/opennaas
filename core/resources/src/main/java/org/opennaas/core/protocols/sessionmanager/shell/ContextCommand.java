@@ -49,6 +49,7 @@ public class ContextCommand extends GenericKarafCommand {
 
 	private static final String	PASSWORD	= "password";
 	private static final String	PUBLICKEY	= "publickey";
+	private static final String	NOAUTH		= "noauth";
 
 	@Override
 	protected Object doExecute() throws Exception {
@@ -127,8 +128,8 @@ public class ContextCommand extends GenericKarafCommand {
 	 */
 	private ProtocolSessionContext checkAndSetAuthentication(ProtocolSessionContext context) throws Exception {
 
-		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD)) {
-			throw new Exception("You must specify a valid authType type. Possible options are: \"password\", \"publickey\".");
+		if (!authType.equals(PUBLICKEY) && !authType.equals(PASSWORD) && !authType.equals(NOAUTH)) {
+			throw new Exception("You must specify a valid authType type. Possible options are: \"password\", \"publickey\", \"noauth\".");
 		}
 
 		if (authType.equals(PASSWORD)) {
