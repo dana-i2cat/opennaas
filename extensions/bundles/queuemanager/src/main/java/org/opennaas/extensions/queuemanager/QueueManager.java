@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
@@ -307,7 +306,7 @@ public class QueueManager extends AbstractCapability implements
 				if (((Resource) resource).getBootstrapper() == null)
 					throw new ResourceException("Null Bootstrapper found. Could not reset model");
 
-				((Resource) resource).getBootstrapper().resetModel(resource);
+				((Resource) resource).getBootstrapper().resetModel((Resource) resource);
 				sendRefresh();
 
 			} catch (ResourceException resourceExcept) {
@@ -359,63 +358,42 @@ public class QueueManager extends AbstractCapability implements
 	}
 
 	/**
-	 * FIXME this method should be part of refresh action. Remove it when moved!!!
-	 * 
-	 * @param resource
-	 * @throws ResourceException
-	 */
-	private void initVirtualResources(IResource resource) throws ResourceException {
-
-		if (resource.getModel() != null) {
-
-			List<String> nameLogicalRouters = resource.getModel().getChildren();
-
-			if (!nameLogicalRouters.isEmpty()) {
-
-				log.debug("Loading child logical routers");
-
-				/* resource type for all child logical devices is the same as the parent (physical) one */
-				String typeResource = resource.getResourceIdentifier().getType();
-				IResourceManager resourceManager;
-				try {
-					resourceManager = Activator.getResourceManagerService();
-				} catch (Exception e1) {
-					throw new ResourceException("Could not get Resource Manager Service.");
-				}
-
-				/* initialize each resource */
-				int createdResources = 0;
-				for (String nameResource : nameLogicalRouters) {
-					try {
-						resourceManager.getIdentifierFromResourceName(typeResource, nameResource);
-						log.info("A resource with this name already exists, omitting creation");
-					} catch (ResourceNotFoundException e) {
-						// TODO If the resource exists what it is our decision?
-						log.error(e.getMessage());
-						log.info("This resource is new, it have to be created");
-						ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
-
-						/* create new resources */
-						resourceManager.createResource(newResourceDescriptor);
-						createdResources++;
-					}
-				}
-				log.debug("Loaded " + createdResources + " new logical routers");
-
-				// FIXME If a resource is created, we have to delete the don't used resources
-			}
-		}
-	}
-
-	/**
 	 * @throws CapabilityException
 	 */
 	private void initVirtualResources() throws CapabilityException {
+		String typeResource = resource.getResourceIdentifier().getType();
+		List<String> nameLogicalRouters = resource.getModel().getChildren();
+
+		IResourceManager manager;
 		try {
-			initVirtualResources(resource);
+			manager = Activator.getResourceManagerService();
+		} catch (ActivatorException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			throw new CapabilityException("Can't get ResourceManagerService!");
+		}
+
+		// initialize each resource
+		try {
+			for (String nameResource : nameLogicalRouters) {
+				try {
+					manager.getIdentifierFromResourceName(typeResource,
+							nameResource);
+				} catch (ResourceNotFoundException e) {
+					// TODO WHO IS RESPONSIBLE FOR CREATING A CHILD VIRTUAL RESOURCE?
+					log.error(e.getMessage());
+					log.info("Since this resource didn't exist, it has to be created.");
+					ResourceDescriptor newResourceDescriptor = newResourceDescriptor(
+							resource.getResourceDescriptor(), nameResource);
+					// create new resources
+					manager.createResource(newResourceDescriptor);
+
+				}
+			}
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
+
 	}
 
 	// FIXME this parameters shouldn't be in the queue because it is an opennaas module <br>
