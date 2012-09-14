@@ -226,7 +226,7 @@ public class ResourceRepository implements IResourceRepository {
 		try {
 
 			// Get the old resource
-			IResource resource = getResource(identifier);
+			Resource resource = (Resource) getResource(identifier);
 			ResourceDescriptor oldConfig = resource.getResourceDescriptor();
 
 			IResourceIdentifier resourceIdentifier = resource.getResourceIdentifier();
@@ -324,7 +324,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	private IResource initResource(IResource resource, ResourceDescriptor resourceDescriptor, IResourceIdentifier resourceIdentifier)
+	private IResource initResource(Resource resource, ResourceDescriptor resourceDescriptor, IResourceIdentifier resourceIdentifier)
 			throws ResourceException, CorruptStateException {
 
 		logger.debug("Initializing resource " + resourceIdentifier.getId() + " ...");
@@ -361,7 +361,7 @@ public class ResourceRepository implements IResourceRepository {
 	private void activateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Activating resource " + resourceId + " ...");
 
-		IResource resource = getResource(resourceId);
+		Resource resource = (Resource) getResource(resourceId);
 
 		// Each repository can override this method to add new conditions to start a resource
 		checkResourceCanBeStarted(resource);
@@ -437,7 +437,7 @@ public class ResourceRepository implements IResourceRepository {
 	private void deactivateResource(String resourceId) throws ResourceException, CorruptStateException {
 		logger.debug("Deactivating resource " + resourceId + " ...");
 
-		IResource resource = getResource(resourceId);
+		Resource resource = (Resource) getResource(resourceId);
 
 		try {
 
@@ -580,7 +580,7 @@ public class ResourceRepository implements IResourceRepository {
 		return capabilities;
 	}
 
-	private void loadProfileInResource(IResource resource, String profileId) throws ResourceException {
+	private void loadProfileInResource(Resource resource, String profileId) throws ResourceException {
 
 		try {
 			IProfileManager profileManager = Activator.getProfileManagerService();
@@ -595,7 +595,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	private void unregisterProfileInResource(IResource resource) throws ResourceException {
+	private void unregisterProfileInResource(Resource resource) throws ResourceException {
 		try {
 
 			String profileId = resource.getResourceDescriptor().getProfileId();
@@ -645,7 +645,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.debug("Resource deactivated");
 	}
 
-	private void forceUnregisterProfileInResource(IResource resource) throws ResourceException {
+	private void forceUnregisterProfileInResource(Resource resource) throws ResourceException {
 		try {
 
 			String profileId = resource.getResourceDescriptor().getProfileId();

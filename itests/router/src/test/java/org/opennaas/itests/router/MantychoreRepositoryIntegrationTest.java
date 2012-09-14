@@ -24,6 +24,7 @@ import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.ResourceRepository;
@@ -157,7 +158,7 @@ public class MantychoreRepositoryIntegrationTest
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
 		/* create resource */
-		IResource resource = resourceManager.createResource(resourceDescriptor);
+		Resource resource = (Resource) resourceManager.createResource(resourceDescriptor);
 
 		Assert.assertNotNull(resource.getResourceIdentifier());
 		Assert.assertNotNull(resource.getResourceDescriptor());
@@ -238,7 +239,7 @@ public class MantychoreRepositoryIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		IResource resource = resourceManager.createResource(resourceDescriptor);
+		Resource resource = (Resource) resourceManager.createResource(resourceDescriptor);
 		resource.setModel(new ComputerSystem());
 		createProtocolForResource(resource.getResourceIdentifier().getId());
 
@@ -288,7 +289,7 @@ public class MantychoreRepositoryIntegrationTest
 
 		resourceDescriptor.setCapabilityDescriptors(capabilityDescriptors);
 
-		IResource resource = resourceManager.createResource(resourceDescriptor);
+		Resource resource = (Resource) resourceManager.createResource(resourceDescriptor);
 		resource.setModel(new ComputerSystem());
 
 		/* first test, check that the resource has created all the logical resources and they have an initialized model */

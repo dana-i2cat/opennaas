@@ -21,6 +21,7 @@ import org.opennaas.core.resources.ILifecycle.State;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
 import org.opennaas.core.resources.IResourceRepository;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionResponse;
 import org.opennaas.core.resources.action.ActionResponse.STATUS;
@@ -142,7 +143,7 @@ public class ROADMRespositoryIntegrationTest
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		/* create resource */
-		IResource resource = repository.createResource(resourceDescriptor);
+		Resource resource = (Resource) repository.createResource(resourceDescriptor);
 
 		Assert.assertNotNull(resource.getResourceIdentifier());
 		Assert.assertNotNull(resource.getResourceDescriptor());
@@ -198,7 +199,7 @@ public class ROADMRespositoryIntegrationTest
 		ResourceDescriptor resourceDescriptor = ResourceHelper.newResourceDescriptorProteus("roadm");
 
 		/* create resource */
-		IResource resource = repository.createResource(resourceDescriptor);
+		Resource resource = (Resource) repository.createResource(resourceDescriptor);
 
 		Assert.assertNotNull(resource.getResourceIdentifier());
 		Assert.assertNotNull(resource.getResourceDescriptor());
@@ -323,7 +324,7 @@ public class ROADMRespositoryIntegrationTest
 	@Test
 	public void getStartUpRefreshActionTest() throws Exception {
 
-		mockResource.setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
+		((Resource) mockResource).setResourceDescriptor(ResourceHelper.newResourceDescriptorProteus("roadm"));
 
 		// Test elements not null
 		log.info("Checking connections factory");

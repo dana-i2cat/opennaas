@@ -26,6 +26,7 @@ import org.opennaas.core.protocols.sessionmanager.ProtocolSessionManager;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
@@ -290,7 +291,7 @@ public class ConnectionsCapabilityIntegrationTest
 
 		/* initialize model */
 		mockResource = resourceManager.createResource(CapabilityHelper.newResourceDescriptor("roadm"));
-		mockResource.setModel((IModel) switchFactory.newPedrosaProteusOpticalSwitch());
+		((Resource) mockResource).setModel((IModel) switchFactory.newPedrosaProteusOpticalSwitch());
 
 	}
 

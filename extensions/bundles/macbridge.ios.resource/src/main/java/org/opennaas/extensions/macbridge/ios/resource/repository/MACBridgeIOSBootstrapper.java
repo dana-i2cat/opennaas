@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.capability.AbstractCapability;
@@ -15,25 +16,24 @@ import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.capability.macbridge.model.MACBridge;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
-import org.opennaas.extensions.router.model.ComputerSystem;
 
 public class MACBridgeIOSBootstrapper implements IResourceBootstrapper {
 	Log		log	= LogFactory.getLog(MACBridgeIOSBootstrapper.class);
 	IModel	oldModel;
 
 	@Override
-	public void resetModel(IResource resource) throws ResourceException {
-		//Do nothing, don't want to reset the model (each refresh action updates)
-		//the model whenever it is executed
+	public void resetModel(Resource resource) throws ResourceException {
+		// Do nothing, don't want to reset the model (each refresh action updates)
+		// the model whenever it is executed
 	}
 
 	@Override
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
-		if (resource.getModel() == null){
+		if (resource.getModel() == null) {
 			resource.setModel(new MACBridge());
 		}
-		
+
 		/* start its capabilities */
 		for (ICapability capab : resource.getCapabilities()) {
 			/* abstract capabilities have to be initialized */
@@ -67,7 +67,6 @@ public class MACBridgeIOSBootstrapper implements IResourceBootstrapper {
 		}
 	}
 
-
 	public void createResource(MACBridgeIOSRepository repository, ResourceDescriptor descriptor) {
 		/* Profile info is not cloned */
 		// descriptor.setProfileId(profileName);
@@ -82,9 +81,8 @@ public class MACBridgeIOSBootstrapper implements IResourceBootstrapper {
 				+ resource.getResourceDescriptor().getInformation().getName());
 	}
 
-
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
 }

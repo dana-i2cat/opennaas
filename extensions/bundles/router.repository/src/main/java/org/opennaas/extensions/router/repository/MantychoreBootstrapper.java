@@ -10,6 +10,7 @@ import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.ActionException;
@@ -30,7 +31,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	IModel	oldModel;
 
 	@Override
-	public void resetModel(IResource resource) throws ResourceException {
+	public void resetModel(Resource resource) throws ResourceException {
 		resource.setModel(new ComputerSystem());
 		((ComputerSystem) resource.getModel()).setName(resource.getResourceDescriptor().getInformation().getName());
 		if (isALogicalRouter(resource))
@@ -38,7 +39,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 		oldModel = resource.getModel();
 		resetModel(resource);
@@ -177,7 +178,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
 
