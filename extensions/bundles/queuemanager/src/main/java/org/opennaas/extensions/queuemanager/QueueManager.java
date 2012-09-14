@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
@@ -149,13 +151,13 @@ public class QueueManager extends AbstractCapability implements
 	 * @see org.opennaas.extensions.queuemanager.IQueueManagerCapability#getActionsId()
 	 */
 	@Override
-	public String getActionsId() {
+	public Response getActionsId() {
 		List<String> ids = new ArrayList<String>();
 		List<IAction> actions = getActions();
 		for (IAction a : actions) {
 			ids.add(a.getActionID());
 		}
-		return ids.toString();
+		return Response.ok(ids.toString()).build();
 	}
 
 	/*
