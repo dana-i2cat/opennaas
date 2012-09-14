@@ -8,6 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.IAction;
@@ -44,8 +45,8 @@ public interface IQueueManagerCapability extends ICapability {
 	 */
 	@GET
 	@Path("/getActionsId")
-	@Produces(MediaType.TEXT_PLAIN)
-	public String getActionsId();
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getActionsId();
 
 	/**
 	 * @param modifyParams
@@ -69,4 +70,5 @@ public interface IQueueManagerCapability extends ICapability {
 	 * @return
 	 */
 	public List<IAction> getActions();
+
 }
