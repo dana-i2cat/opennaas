@@ -16,7 +16,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
+			<artifactId>org.opennaas.extensions.router</artifactId>
 		</dependency>
 	</dependencies>
 

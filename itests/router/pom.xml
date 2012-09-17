@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.repository</artifactId>
+			<artifactId>org.opennaas.extensions.router</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
@@ -27,26 +27,6 @@
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.queuemanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.chassis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.staticroute</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ospf</artifactId>
-		</dependency>
-	    <dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.gretunnel</artifactId>
-	    </dependency>
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.router.capability.ip</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.opennaas</groupId>
