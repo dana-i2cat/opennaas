@@ -66,7 +66,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 			validateResource(resource);
 
-			checkParams();
+			checkParams(resource);
 
 			IChassisCapability chassisCapability = (IChassisCapability) resource.getCapabilityByInterface(IChassisCapability.class);
 			chassisCapability.createSubInterface(prepareParams());
@@ -85,7 +85,7 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 		return null;
 	}
 
-	public void checkParams() throws Exception {
+	public void checkParams(IResource resource) throws Exception {
 
 		Pattern ltPattern = Pattern.compile("lt-[0-9]/[0-9]/[0-9].[0-9]");
 		Matcher ltmatcher = ltPattern.matcher(subinterface);
@@ -103,8 +103,8 @@ public class CreateSubInterfaceCommand extends GenericKarafCommand {
 
 		/* check ethernet ports */
 		if (ethmatcher.find() || lomatcher.find()) {
-			if (vlanid == -1)
-				throw new Exception("vlan must be specified in ethernet interfaces");
+			if ((vlanid == -1) && (Integer.parseInt(args[1]) != 0))
+				throw new Exception("Only unit 0 is valid for non tagged-ethernet encapsulation.");
 		}
 
 	}

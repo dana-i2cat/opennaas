@@ -264,12 +264,16 @@ public class ParamCreationHelper {
 
 	}
 
-	public static EthernetPort newParamsInterfaceEthernetPort(String name, int port) {
+	public static EthernetPort newParamsInterfaceEthernetPort(String name, int port, int vlanID) {
 		EthernetPort eth = new EthernetPort();
 		eth.setLinkTechnology(NetworkPort.LinkTechnology.ETHERNET);
 		eth.setName(name);
 		eth.setPortNumber(port);
+		VLANEndpoint vlanEndpoint = new VLANEndpoint();
+		vlanEndpoint.setVlanID(vlanID);
+		eth.addProtocolEndpoint(vlanEndpoint);
 		eth.setDescription("capability test");
+
 		return eth;
 	}
 
