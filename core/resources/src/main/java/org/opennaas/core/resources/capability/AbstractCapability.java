@@ -340,18 +340,16 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
 		if (props != null) {
 			// Rest
-			// props.put("service.exported.interfaces", "*");
-			// props.put("service.exported.configs", "org.apache.cxf.rs");
-			// props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
-			// }
+			props.put("service.exported.interfaces", "*");
+			props.put("service.exported.configs", "org.apache.cxf.rs");
+			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
 
 			// Soap
-			props.put("service.exported.interfaces", "*");
-			props.put("org.apache.cxf.ws.databinding", "jaxb");
-			props.put("service.exported.configs", "org.apache.cxf.ws");
-			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
+			// props.put("service.exported.interfaces", "*");
+			// props.put("org.apache.cxf.ws.databinding", "jaxb");
+			// props.put("service.exported.configs", "org.apache.cxf.ws");
+			// props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
 		}
-
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
 
