@@ -3,8 +3,8 @@ package org.opennaas.extensions.sampleresource.repository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.extensions.sampleresource.model.SampleModel;
 
@@ -19,7 +19,7 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 
 	private IModel	oldModel;
 
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 
 		log.info("Loading bootstrap to start resource...");
 		resource.setModel(new SampleModel());
@@ -28,13 +28,13 @@ public class sampleResourceBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void resetModel(IResource resource) throws ResourceException {
+	public void resetModel(Resource resource) throws ResourceException {
 
 		resource.setModel(new SampleModel());
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 
 		resource.setModel(oldModel);
 	}

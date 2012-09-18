@@ -23,7 +23,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
-@Path("/resource")
+@Path("/resources")
 public interface IResourceManager {
 
 	public static final String	NOTIFICATIONS_TOPIC	= "com/iaasframework/resources/core/ResourceManager";
@@ -36,17 +36,32 @@ public interface IResourceManager {
 	public static final String	RESOURCE_STOPED		= "resourceStoped";
 
 	/**
-	 * Create a new resource with a given resourceDescriptor
+	 * Create a new resource with a given resourceDescriptor, and returns its id.
 	 * 
 	 * @param resourceDescriptor
-	 * @returns the new resource
+	 * @returns the id of the new resource
 	 * @throws ResourceException
 	 */
 	@Path("/create")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
+	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException;
+
+	/**
+	 * Create a new resource with a given resourceDescriptor
+	 * 
+	 * @param resourceDescriptor
+	 * @returns the new resource
+	 * @throws ResourceException
+	 */
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
+
+	@Path("/{resourceId}/modify")
+	@PUT
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_XML)
+	public String modifyResource(@PathParam("resourceId") String resourceId, ResourceDescriptor resourceDescriptor) throws ResourceException;
 
 	/**
 	 * Modify the existing resource that matches the id (inside resourceDescriptor)
@@ -57,11 +72,11 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 *             if failed to modify
 	 */
-	@Path("/update")
-	@PUT
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
 	public IResource modifyResource(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor) throws ResourceException;
+
+	@Path("/{resourceId}/remove")
+	@DELETE
+	public void removeResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
 	 * Remove the existing resource that matches the id
@@ -69,9 +84,6 @@ public interface IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@Path("/delete")
-	@DELETE
-	@Consumes(MediaType.APPLICATION_XML)
 	public void removeResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
@@ -91,7 +103,7 @@ public interface IResourceManager {
 	 * @return
 	 */
 	@GET
-	@Path("/getResources")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_XML)
 	public List<IResource> listResources();
 
@@ -112,10 +124,6 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 *             if resource is not found
 	 */
-	@POST
-	@Path("/getResourceByIdentifier")
-	@Consumes(MediaType.APPLICATION_XML)
-	@Produces(MediaType.APPLICATION_XML)
 	public IResource getResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
@@ -127,9 +135,13 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	@GET
-	@Path("/getResourceById/{id}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_XML)
 	public IResource getResourceById(@PathParam("id") String resourceId) throws ResourceException;
+
+	@POST
+	@Path("{resourceId}/start")
+	public void startResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
 	 * Start an existing resource
@@ -137,10 +149,11 @@ public interface IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@POST
-	@Path("/start")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void startResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
+
+	@POST
+	@Path("{resourceId}/stop")
+	public void stopResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
 	 * Stop an existing resource
@@ -148,9 +161,6 @@ public interface IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@POST
-	@Path("/stop")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void stopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**
@@ -160,9 +170,8 @@ public interface IResourceManager {
 	 * @param fileName
 	 * @throws ResourceException
 	 */
-	@POST
-	@Path("/exportResourceDescriptor")
-	@Consumes(MediaType.APPLICATION_XML)
+	// FIXME remove or convert to ResourceDescriptor getResourceDescriptor(IResourceIdentifier resourceIdentifier).
+	// export to file is a view functionality, not related with business logic.
 	public void exportResourceDescriptor(IResourceIdentifier resourceIdentifier, String fileName) throws ResourceException;
 
 	/**
@@ -186,7 +195,7 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	@GET
-	@Path("/getNameFromResourceId/{id}")
+	@Path("/{id}/name")
 	public String getNameFromResourceID(@PathParam("id") String ID) throws ResourceException;
 
 	/**
@@ -194,9 +203,6 @@ public interface IResourceManager {
 	 * @param resourceIdentifier
 	 * @throws ResourceException
 	 */
-	@POST
-	@Path("/forceStopResource")
-	@Consumes(MediaType.APPLICATION_XML)
 	public void forceStopResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
 	/**

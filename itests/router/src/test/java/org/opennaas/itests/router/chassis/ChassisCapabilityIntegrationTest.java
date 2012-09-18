@@ -35,7 +35,6 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.queue.QueueResponse;
-import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
@@ -46,6 +45,7 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.ManagedSystemElement.OperationalStatus;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.ProtocolEndpoint.ProtocolIFType;
+import org.opennaas.itests.helpers.InitializerTestHelper;
 import org.opennaas.itests.router.TestsConstants;
 import org.opennaas.itests.router.helpers.ParamCreationHelper;
 import org.ops4j.pax.exam.Option;
@@ -107,7 +107,7 @@ public class ChassisCapabilityIntegrationTest
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
-		chassisCapability.setEncapsulation(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13),
+		chassisCapability.setEncapsulation(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13, 13),
 				ProtocolIFType.LAYER_2_VLAN_USING_802_1Q);
 		actionCount++;
 
@@ -144,10 +144,10 @@ public class ChassisCapabilityIntegrationTest
 		IChassisCapability chassisCapability = (IChassisCapability) routerResource
 				.getCapability(InitializerTestHelper.getCapabilityInformation(TestsConstants.CHASSIS_CAPABILITY_TYPE));
 
-		chassisCapability.createSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		chassisCapability.createSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13, 13));
 		actionCount++;
 
-		chassisCapability.deleteSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13));
+		chassisCapability.deleteSubInterface(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13, 13));
 		actionCount++;
 
 		// // FIXME disabled as it fails (it is tested in testSetEncapsulationAction, now ignored)
@@ -167,12 +167,12 @@ public class ChassisCapabilityIntegrationTest
 		// Assert.assertTrue(resp.getErrors().size() == 0);
 
 		List<LogicalPort> lInterfaces = new ArrayList<LogicalPort>();
-		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13));
+		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/1/0", 13, 13));
 		chassisCapability.addInterfacesToLogicalRouter(ParamCreationHelper.newParamsLRWithInterface("cpe1"), lInterfaces);
 		actionCount++;
 
 		lInterfaces = new ArrayList<LogicalPort>();
-		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13));
+		lInterfaces.add(ParamCreationHelper.newParamsInterfaceEthernetPort("fe-0/0/3", 13, 13));
 		chassisCapability.removeInterfacesFromLogicalRouter(ParamCreationHelper.newParamsLRWithInterface("cpe2"), lInterfaces);
 		actionCount++;
 
