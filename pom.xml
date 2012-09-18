@@ -937,7 +937,7 @@
 		<module>platform</module>
 		<module>itests</module>
 		<module>clients</module>
-		<module>utils/new-cim</module>
+		<!-- <module>utils/new-cim</module> -->
 	</modules>
 	<build>
 		<pluginManagement>
