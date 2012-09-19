@@ -91,7 +91,9 @@ public class CLIProtocolSession implements IProtocolSession{
     
     private void initializePromptsAndErrorPatterns(){
     	prompts = new ArrayList<String>();
-    	//TODO hardcoded since some of these parameters are not allowed in a URL
+    	// TODO hardcoded since some of these parameters are not allowed in a URL
+    	// FIXME Harcoded for catalyst session context, it may change for other resources!!!
+    	// TODO need to find a way to specify these delimiters in catalyst ProtocolSessionContext
     	prompts.add("#");
     	prompts.add(":");
     	prompts.add(">");

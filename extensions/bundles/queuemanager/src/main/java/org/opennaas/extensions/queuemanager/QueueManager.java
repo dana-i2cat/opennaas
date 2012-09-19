@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResourceManager;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceNotFoundException;
 import org.opennaas.core.resources.action.ActionException;
@@ -148,13 +151,13 @@ public class QueueManager extends AbstractCapability implements
 	 * @see org.opennaas.extensions.queuemanager.IQueueManagerCapability#getActionsId()
 	 */
 	@Override
-	public String getActionsId() {
+	public Response getActionsId() {
 		List<String> ids = new ArrayList<String>();
 		List<IAction> actions = getActions();
 		for (IAction a : actions) {
 			ids.add(a.getActionID());
 		}
-		return ids.toString();
+		return Response.ok(ids.toString()).build();
 	}
 
 	/*
@@ -297,31 +300,33 @@ public class QueueManager extends AbstractCapability implements
 		clear();
 
 		/* refresh operation */
-		try {
-			// FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
-			if (resource.getBootstrapper() == null)
-				throw new ResourceException("Null Bootstrapper found. Could not reset model");
+		if (resource instanceof Resource) {
+			try {
+				// FIXME WHAT CAN WE SO IF BOOTSTRAPPER IS NULL??
+				if (((Resource) resource).getBootstrapper() == null)
+					throw new ResourceException("Null Bootstrapper found. Could not reset model");
 
-			resource.getBootstrapper().resetModel(resource);
-			sendRefresh();
+				((Resource) resource).getBootstrapper().resetModel((Resource) resource);
+				sendRefresh();
 
-		} catch (ResourceException resourceExcept) {
-			log.warn("The resource couldn't reset its model...", resourceExcept);
+			} catch (ResourceException resourceExcept) {
+				log.warn("The resource couldn't reset its model...", resourceExcept);
+			}
+
+			try {
+				ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
+				queueResponse.setRefreshResponse(refreshResponse);
+			} catch (ActionException e) {
+				throw new CapabilityException(e);
+			}
+
+			if (((Resource) resource).getProfile() != null) {
+				log.debug("Executing initModel from profile...");
+				((Resource) resource).getProfile().initModel(resource.getModel());
+			}
+
+			initVirtualResources();
 		}
-
-		try {
-			ActionResponse refreshResponse = executeRefreshActions(protocolSessionManager);
-			queueResponse.setRefreshResponse(refreshResponse);
-		} catch (ActionException e) {
-			throw new CapabilityException(e);
-		}
-
-		if (resource.getProfile() != null) {
-			log.debug("Executing initModel from profile...");
-			resource.getProfile().initModel(resource.getModel());
-		}
-
-		initVirtualResources();
 
 		/* stop time */
 		stopTime = java.lang.System.currentTimeMillis();
