@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.layer.Layer;
+import org.opennaas.extensions.network.model.technology.ethernet.EthernetInterface;
 import org.opennaas.extensions.network.model.technology.ethernet.EthernetLayer;
 import org.opennaas.extensions.network.model.technology.ethernet.TaggedEthernetLayer;
 import org.opennaas.extensions.network.model.technology.ip.IPLayer;
@@ -25,6 +28,8 @@ import org.opennaas.extensions.router.model.VLANEndpoint;
 import org.opennaas.extensions.router.model.utils.ModelHelper;
 
 public class Cim2NdlMapper {
+
+	private static Log	log	= LogFactory.getLog(Cim2NdlMapper.class);
 
 	/**
 	 * Transforms given model to a NDL representation and adds it to networkModel.
@@ -88,6 +93,7 @@ public class Cim2NdlMapper {
 			dev.setName(managedElement.getName());
 		}
 		networkModel.getNetworkElements().add(dev);
+		log.debug("Added device " + dev.getName());
 
 		return dev;
 	}
@@ -137,14 +143,16 @@ public class Cim2NdlMapper {
 			if (port instanceof EthernetPort || port instanceof LogicalTunnelPort) {
 				Layer ethLayer = obtainEthernetLayer(networkModel);
 
-				Interface iface = new Interface();
+				EthernetInterface iface = new EthernetInterface();
 				iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
 				iface.setLayer(ethLayer);
 				iface.setDevice(dev);
+				iface.setBandwidth(port.getSpeed());
 
 				dev.getInterfaces().add(iface);
 				networkModel.getNetworkElements().add(iface);
 				listInterface.add(iface);
+				log.debug("Added iface " + iface.getName() + " in layer " + ethLayer.getName());
 			}
 		}
 		return listInterface;
@@ -166,7 +174,7 @@ public class Cim2NdlMapper {
 					if (endpoint instanceof VLANEndpoint) {
 						Layer ifaceLayer = obtainTaggedEthernetLayer(networkModel);
 
-						Interface iface = new Interface();
+						Interface iface = new EthernetInterface();
 						iface.setName(addResourceName(dev, port.getName() + "." + port.getPortNumber()));
 						iface.setLayer(ifaceLayer);
 						iface.setDevice(dev);
@@ -181,6 +189,7 @@ public class Cim2NdlMapper {
 						dev.getInterfaces().add(iface);
 						networkModel.getNetworkElements().add(iface);
 						listInterface.add(iface);
+						log.debug("Added iface " + iface.getName() + " in layer " + ifaceLayer.getName());
 					}
 				}
 			}
@@ -222,6 +231,8 @@ public class Cim2NdlMapper {
 						networkModel.getNetworkElements().add(iface);
 
 						listInterface.add(iface);
+
+						log.debug("Added iface " + iface.getName() + " in layer " + ifaceLayer.getName());
 					}
 				}
 			}

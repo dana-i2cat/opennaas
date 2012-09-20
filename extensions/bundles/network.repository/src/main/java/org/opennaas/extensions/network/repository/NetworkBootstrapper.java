@@ -3,8 +3,8 @@ package org.opennaas.extensions.network.repository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.extensions.network.model.NetworkModel;
@@ -15,12 +15,12 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 	IModel	oldModel;
 
 	@Override
-	public void resetModel(IResource resource) throws ResourceException {
+	public void resetModel(Resource resource) throws ResourceException {
 		resource.setModel(new NetworkModel());
 	}
 
 	@Override
-	public void bootstrap(IResource resource) throws ResourceException {
+	public void bootstrap(Resource resource) throws ResourceException {
 		log.info("Loading bootstrap to start resource...");
 
 		oldModel = resource.getModel();
@@ -45,7 +45,7 @@ public class NetworkBootstrapper implements IResourceBootstrapper {
 	}
 
 	@Override
-	public void revertBootstrap(IResource resource) throws ResourceException {
+	public void revertBootstrap(Resource resource) throws ResourceException {
 		resource.setModel(oldModel);
 	}
 }

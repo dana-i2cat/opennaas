@@ -17,6 +17,7 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.profile.IProfile;
+import org.opennaas.core.resources.profile.IProfiled;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
@@ -337,11 +338,17 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 */
 	protected ServiceRegistration registerService(BundleContext bundleContext, String capabilityName, String resourceType, String resourceName,
 			String ifaceName, Dictionary<String, String> props) throws CapabilityException {
-		// Rest
 		if (props != null) {
+			// Rest
 			props.put("service.exported.interfaces", "*");
 			props.put("service.exported.configs", "org.apache.cxf.rs");
 			props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
+
+			// Soap
+			// props.put("service.exported.interfaces", "*");
+			// props.put("org.apache.cxf.ws.databinding", "jaxb");
+			// props.put("service.exported.configs", "org.apache.cxf.ws");
+			// props.put("org.apache.cxf.ws.address", "http://localhost:8888/opennaas/" + resourceType + "/" + resourceName + "/" + capabilityName);
 		}
 		return registration = bundleContext.registerService(ifaceName, this, props);
 	}
@@ -353,16 +360,18 @@ public abstract class AbstractCapability implements ICapabilityLifecycle, IQueue
 	 *             if there is a problem instantiating the action
 	 */
 	private Action loadActionFromProfile(String actionId) throws ActionException {
-		IProfile profile = resource.getProfile();
-
-		ActionSet actionSet = null;
 		Action action = null;
 
-		if (profile != null) {
-			actionSet = (ActionSet) profile.getActionSetForCapability(capabilityId);
-			if (actionSet != null) {
-				// try to load the actionId from profile ActionSet
-				action = actionSet.obtainAction(actionId);
+		if (resource instanceof IProfiled) {
+			if (((IProfiled) resource).hasProfile()) {
+				IProfile profile = ((IProfiled) resource).getProfile();
+
+				ActionSet actionSet = null;
+				actionSet = (ActionSet) profile.getActionSetForCapability(capabilityId);
+				if (actionSet != null) {
+					// try to load the actionId from profile ActionSet
+					action = actionSet.obtainAction(actionId);
+				}
 			}
 		}
 		return action;

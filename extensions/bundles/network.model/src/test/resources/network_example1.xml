@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        xmlns:ndl="http://www.science.uva.nl/research/sne/ndl#">
+
+<ndl:Location rdf:about="#Netherlight">
+        <ndl:name>First Mantychore Exchange</ndl:name>
+</ndl:Location>
+
+<!-- router1  -->
+<ndl:Device rdf:about="#router:R-AS2-1">
+        <ndl:name>router:R-AS2-1</ndl:name>
+        <ndl:locatedAt rdf:resource="#heanet"/>
+        <ndl:hasInterface rdf:resource="#router:R-AS2-1:lt-1/2/0.51"/>  
+        <ndl:hasInterface rdf:resource="#router:R-AS2-1:lt-1/2/0.100"/>    
+        <ndl:hasInterface rdf:resource="#router:R-AS2-1:lo0.1"/>   
+</ndl:Device>
+
+<!-- router2  -->
+<ndl:Device rdf:about="#router:R-AS2-2">
+        <ndl:name>router:R-AS2-2</ndl:name>
+        <ndl:locatedAt rdf:resource="#heanet"/>
+        <ndl:hasInterface rdf:resource="#router:R-AS2-2:lt-1/2/0.100"/>  
+        <ndl:hasInterface rdf:resource="#router:R-AS2-2:lt-1/2/0.101"/>    
+        <ndl:hasInterface rdf:resource="#router:R-AS2-2:lo0.3"/>   
+</ndl:Device>
+
+<!-- router3  -->
+<ndl:Device rdf:about="#router:R-AS2-3">
+        <ndl:name>router:R-AS2-3</ndl:name>
+        <ndl:locatedAt rdf:resource="#heanet"/>
+        <ndl:hasInterface rdf:resource="#router:R-AS2-3:lt-1/2/0.103"/>    
+        <ndl:hasInterface rdf:resource="#router:R-AS2-3:lo0.4"/>   
+</ndl:Device>
+
+
+<ndl:Interface rdf:about="#router:R-AS2-1:lt-1/2/0.51">
+        <ndl:name>router:R-AS2-1:lt-1/2/0.51</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R1:lt-1/2/0.50"/> <!-- connected to other network -->
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-1:lt-1/2/0.100">
+        <ndl:name>router:R-AS2-1:lt-1/2/0.100</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R-AS2-2:lt-1/2/0.101"/> 
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-1:lo0.1">
+        <ndl:name>router:R-AS2-1:lo0.1</ndl:name>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-2:lt-1/2/0.101">
+        <ndl:name>router:R-AS2-2:lt-1/2/0.101</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R-AS2-1:lt-1/2/0.100"/>
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-2:lt-1/2/0.102">
+        <ndl:name>router:R-AS2-2:lt-1/2/0.102</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R-AS2-3:lt-1/2/0.103"/> 
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-2:lo0.3">
+        <ndl:name>router:R-AS2-2:lo0.3</ndl:name>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-3:lt-1/2/0.103">
+        <ndl:name>router:R-AS2-3:lt-1/2/0.103</ndl:name>
+        <ndl:linkTo rdf:resource="#router:R-AS2-2:lt-1/2/0.102"/> 
+        <ndl:capacity rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.2E+9</ndl:capacity>
+</ndl:Interface>
+
+<ndl:Interface rdf:about="#router:R-AS2-3:lo0.4">
+        <ndl:name>router:R-AS2-3:lo0.4</ndl:name>
+</ndl:Interface>
+
+</rdf:RDF>

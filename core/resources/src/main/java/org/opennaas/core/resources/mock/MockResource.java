@@ -8,9 +8,9 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opennaas.core.resources.IModel;
-import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceBootstrapper;
 import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.capability.ICapability;
@@ -22,7 +22,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.core.resources.profile.IProfile;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 
-public class MockResource implements IResource {
+public class MockResource extends Resource {
 	static Log					log				= LogFactory
 														.getLog(MockResource.class);
 
