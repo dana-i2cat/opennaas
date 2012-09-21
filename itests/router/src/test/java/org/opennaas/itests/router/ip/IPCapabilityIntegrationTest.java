@@ -135,6 +135,7 @@ public class IPCapabilityIntegrationTest
 		String method = "setIPv4";
 		Client client = null;
 		try {
+			Thread.sleep(5000);
 			client = Client.create();
 			webResource = client.resource(WS_PATH + method);
 			response = webResource.accept(MediaType.APPLICATION_XML).type(MediaType.APPLICATION_XML).post(ClientResponse.class, getSetIPv4Request());
