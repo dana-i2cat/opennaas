@@ -1272,7 +1272,7 @@
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.i2cat.net</id>
-			<name>&gt;maven.i2cat.net-releases</name>
+			<name>maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
