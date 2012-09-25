@@ -6,10 +6,11 @@ import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 
 import org.apache.log4j.Logger;
+import org.opennaas.extensions.router.capability.ip.ws.wrapper.SetInterfaceDescriptionRequest;
+import org.opennaas.extensions.router.capability.ip.ws.wrapper.SetIpAddressRequest;
 import org.opennaas.extensions.router.model.EthernetPort;
 import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalPort;
-import org.opennaas.extensions.router.model.wrappers.SetIpAddressRequest;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -39,24 +40,25 @@ public class IPTest {
 		}
 	}
 
-	public static void setInterfaceDescription(LogicalPort iface) {
+	public static void setInterfaceDescription(SetInterfaceDescriptionRequest req) {
 		ClientResponse response = null;
 		String url = "http://localhost:8888/opennaas/router/lolaM20/ipv4/setInterfaceDescription";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, iface);
+			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, req);
 			LOGGER.info("Response code: " + response.getStatus());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
 	}
 
-	private static LogicalPort generateLogicalPortWithDescription() {
+	private static SetInterfaceDescriptionRequest generateLogicalPortWithDescription() {
+		SetInterfaceDescriptionRequest req = new SetInterfaceDescriptionRequest();
 		LogicalPort port = generateLogicalPort();
 		port.setDescription("Description set through REST");
-
-		return port;
+		req.setIface(port);
+		return req;
 	}
 
 	private static LogicalPort generateLogicalPort() {
