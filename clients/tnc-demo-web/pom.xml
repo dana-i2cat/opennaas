@@ -75,11 +75,6 @@
 			<artifactId>cxf-rt-ws-security</artifactId>
 			<version>${cxf.version}</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.opennaas</groupId> -->
-<!-- 			<artifactId>org.opennaas.ws.client</artifactId> -->
-<!-- 			<version>${project.version}</version> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.ws</artifactId>

@@ -5,6 +5,7 @@ import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.network.capability.basic.ws.NetworkBasicCapabilityServiceImpl;
 
 public class NetworkBasicCapabilityFactory extends AbstractCapabilityFactory {
 
@@ -20,7 +21,7 @@ public class NetworkBasicCapabilityFactory extends AbstractCapabilityFactory {
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		return new NetworkBasicCapability(capabilityDescriptor, resourceId);
+		return new NetworkBasicCapabilityServiceImpl(capabilityDescriptor, resourceId);
 	}
 
 }

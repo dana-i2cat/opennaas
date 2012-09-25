@@ -11,6 +11,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
+import org.opennaas.extensions.bod.capability.l2bod.ws.IL2BoDCapabilityService;
 import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
@@ -27,7 +28,6 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 * @param resourceId
 	 */
 	public L2BoDCapability(CapabilityDescriptor descriptor, String resourceId) {
-
 		super(descriptor);
 		this.resourceId = resourceId;
 		log.debug("Built new L2BoD Capability");
@@ -67,7 +67,7 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IL2BoDCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IL2BoDCapabilityService.class.getName());
 		super.activate();
 	}
 

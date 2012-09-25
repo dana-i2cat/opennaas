@@ -11,6 +11,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
 import org.opennaas.extensions.capability.macbridge.model.StaticVLANRegistrationEntry;
 import org.opennaas.extensions.capability.macbridge.model.VLANConfiguration;
+import org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws.IVLANAwareBridgeCapabilityService;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 /**
@@ -116,7 +117,8 @@ public class VLANAwareBridgeCapability extends AbstractCapability implements IVL
 	 */
 	@Override
 	public void activate() throws CapabilityException {
-		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), VLANAwareBridgeCapability.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(),
+				IVLANAwareBridgeCapabilityService.class.getName());
 		super.activate();
 	}
 
