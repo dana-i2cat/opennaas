@@ -5,6 +5,7 @@ import org.opennaas.core.resources.capability.AbstractCapabilityFactory;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.capability.ICapability;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.extensions.capability.macbridge.vlanawarebridge.ws.VLANAwareBridgeCapabilityServiceImpl;
 
 /**
  * @author Jordi Puig
@@ -24,7 +25,7 @@ public class VLANAwareBridgeCapabilityFactory extends AbstractCapabilityFactory 
 
 	@Override
 	public ICapability createCapability(CapabilityDescriptor capabilityDescriptor, String resourceId) throws CapabilityException {
-		return new VLANAwareBridgeCapability(capabilityDescriptor, resourceId);
+		return new VLANAwareBridgeCapabilityServiceImpl(capabilityDescriptor, resourceId);
 	}
 
 }
