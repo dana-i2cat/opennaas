@@ -3,12 +3,13 @@ package org.opennaas.client.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.joda.time.DateTime;
 import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
+import org.opennaas.extensions.bod.capability.l2bod.ws.wrapper.RequestConnectionRequest;
+import org.opennaas.extensions.bod.capability.l2bod.ws.wrapper.ShutDownConnectionRequest;
 import org.opennaas.extensions.network.model.topology.Device;
 import org.opennaas.extensions.network.model.topology.Interface;
 
@@ -50,9 +51,7 @@ public class L2BoDTest {
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
-			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class,
-					new GenericEntity<List<Interface>>(getListInterfaces()) {
-					});
+			response = webResource.type(MediaType.APPLICATION_XML).post(ClientResponse.class, getListInterfaces());
 			LOGGER.info("Response code: " + response.getStatus());
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
@@ -62,22 +61,26 @@ public class L2BoDTest {
 	/**
 	 * @return
 	 */
-	private static List<Interface> getListInterfaces() {
+	private static ShutDownConnectionRequest getListInterfaces() {
 		List<Interface> listInterfaces = new ArrayList<Interface>();
+		ShutDownConnectionRequest request = new ShutDownConnectionRequest();
+		request.setListInterfaces(listInterfaces);
 		Interface iface = new Interface();
 		Device device = new Device();
 		device.setName("MyDevice");
 		iface.setDevice(device);
 		iface.setName("MyIface");
 		listInterfaces.add(iface);
-		return listInterfaces;
+		return request;
 	}
 
 	/**
 	 * @return
 	 */
-	private static RequestConnectionParameters getParameters() {
+	private static RequestConnectionRequest getParameters() {
 		RequestConnectionParameters parameters = new RequestConnectionParameters();
+		RequestConnectionRequest request = new RequestConnectionRequest();
+		request.setParameters(parameters);
 		parameters.capacity = 10;
 		parameters.endTime = new DateTime();
 		parameters.interface1 = new Interface();
@@ -87,7 +90,7 @@ public class L2BoDTest {
 		parameters.interface2 = new Interface();
 		parameters.startTime = new DateTime();
 		parameters.vlanid = 10;
-		return parameters;
+		return request;
 	}
 
 }

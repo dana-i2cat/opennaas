@@ -31,7 +31,7 @@ public class IPCapabilityServiceImpl extends IPCapability implements IIPCapabili
 	 */
 	@Override
 	public Response setIPv4(SetIpAddressRequest request) throws CapabilityException {
-		LOGGER.info("Calling setIPv4 service");
+		LOGGER.info("Start setIPv4 service");
 		setIPv4(request.getLogicalDevice(), request.getIpProtocolEndpoint());
 		LOGGER.info("End of setIPv4 service");
 		return Response.ok().build();
