@@ -19,11 +19,6 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.core.resources</artifactId>
 		</dependency>
-		<!-- FIXME remove when toNDL is in IModel instead of in ManagedElement -->
-		<dependency>
-			<groupId>org.opennaas</groupId>
-			<artifactId>org.opennaas.extensions.network.model</artifactId>
-		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
