@@ -5,8 +5,8 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.opennaas.web.bos.LogicalRouterBO;
-import org.opennaas.web.entities.LogicalRouter;
+import org.opennaas.web.bos.VCPENetworkBO;
+import org.opennaas.web.entities.VCPENetwork;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -22,44 +22,70 @@ import com.sun.jersey.api.client.ClientHandlerException;
  * @author Jordi
  */
 @Controller
-@RequestMapping(value = "/logicalRouter")
-public class LogicalRouterController {
+@RequestMapping(value = "/vcpeNetwork")
+public class VCPENetworkController {
 
 	@Autowired
-	private LogicalRouterBO							logicalRouterBO;
+	private VCPENetworkBO							vcpeNetworkBO;
 	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
 
 	/**
-	 * Redirect to the form to create a LogicalRouter
+	 * Redirect to the form to create a VCPENetwork
 	 * 
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
-		model.addAttribute(new LogicalRouter());
-		return "createLogicalRouter";
+		model.addAttribute("vcpeNetwork", new VCPENetwork());
+		return "createVCPENetwork";
 	}
 
 	/**
-	 * Create a LogicalRouter
+	 * Create a VCPE Network
 	 * 
-	 * @param logicalRouter
+	 * @param vcpeNetwork
 	 * @param result
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public String create(@Valid LogicalRouter logicalRouter, BindingResult result, Model model, Locale locale) {
+	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		if (!result.hasErrors()) {
-			logicalRouterBO.createLogicalRouter();
+			vcpeNetworkBO.createVCPENetwork(vcpeNetwork);
 			model.addAttribute("infoMsg", messageSource
-					.getMessage("logicalrouter.create.message.info", null, locale));
+					.getMessage("vcpenetwork.create.message.info", null, locale));
 		} else {
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("logicalrouter.create.message.error", null, locale));
+					.getMessage("vcpenetwork.create.message.error", null, locale));
 		}
-		return "createLogicalRouter";
+		return "createVCPENetwork";
+	}
+
+	/**
+	 * Create a VCPE Network
+	 * 
+	 * @param vcpeNetwork
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public String delete(String vcpeNetworkName, Model model, Locale locale) {
+		vcpeNetworkBO.deleteVCPENetwork(vcpeNetworkName);
+		return "createVCPENetwork";
+	}
+
+	/**
+	 * Create a VCPE Network
+	 * 
+	 * @param vcpeNetwork
+	 * @param result
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST)
+	public String edit(String vcpeNetworkName, Model model, Locale locale) {
+		model.addAttribute("vcpeNetwork", vcpeNetworkBO.getVCPENetworkByName(vcpeNetworkName));
+		return "createVCPENetwork";
 	}
 
 	/**
