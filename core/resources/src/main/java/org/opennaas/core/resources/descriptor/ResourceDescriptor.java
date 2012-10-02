@@ -36,6 +36,7 @@ import org.opennaas.core.resources.descriptor.network.NetworkTopology;
 public class ResourceDescriptor {
 
 	public static final String			VIRTUAL				= "virtual";
+	public static final String			HOSTED_BY			= "hostedBy";
 
 	private static final long			serialVersionUID	= -8571009012048021984L;
 
