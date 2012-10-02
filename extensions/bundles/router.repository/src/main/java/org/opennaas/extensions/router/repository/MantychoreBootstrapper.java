@@ -102,6 +102,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 
 				/* resource type for all child logical devices is the same as the parent (physical) one */
 				String typeResource = resource.getResourceIdentifier().getType();
+				String parentId = resource.getResourceIdentifier().getId();
 				IResourceManager resourceManager;
 				try {
 					resourceManager = Activator.getResourceManagerService();
@@ -119,7 +120,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 						// TODO If the resource exists what it is our decision?
 						log.error(e.getMessage());
 						log.info("This resource is new, it have to be created");
-						ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource);
+						ResourceDescriptor newResourceDescriptor = newResourceDescriptor(resource.getResourceDescriptor(), nameResource, parentId);
 
 						/* create new resources */
 						resourceManager.createResource(newResourceDescriptor);
@@ -133,7 +134,8 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 		}
 	}
 
-	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource) throws ResourceException {
+	private ResourceDescriptor newResourceDescriptor(ResourceDescriptor resourceDescriptor, String nameResource, String parentId)
+			throws ResourceException {
 
 		try {
 			ResourceDescriptor newResourceDescriptor = (ResourceDescriptor) resourceDescriptor.clone();
@@ -148,6 +150,7 @@ public class MantychoreBootstrapper implements IResourceBootstrapper {
 			/* added virtual description */
 			Map<String, String> properties = new HashMap<String, String>();
 			properties.put(ResourceDescriptor.VIRTUAL, "true");
+			properties.put(ResourceDescriptor.HOSTED_BY, parentId);
 			newResourceDescriptor.setProperties(properties);
 
 			return newResourceDescriptor;
