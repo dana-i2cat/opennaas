@@ -7,32 +7,46 @@
 <%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title><tiles:insertAttribute name="title" ignore="true" /></title>
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" media="screen, projection">
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css" media="print">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/opennaas.css" />" type="text/css" media="screen, print">
 	<!--[if lt IE 8]>
 		<link rel="stylesheet" href="opennaas//resources/blueprint/ie.css" type="text/css" media="screen, projection">
 	<![endif]-->
+	
+	<!-- JQuery -->
+	<link rel="stylesheet" href="resources/blueprint/jquery/themes/base/jquery.ui.all.css">
+	<script src="resources/blueprint/jquery/jquery-1.8.2.js"></script>
+	<script src="resources/blueprint/jquery/ui/jquery.ui.core.js"></script>
+	<script src="resources/blueprint/jquery/ui/jquery.ui.widget.js"></script>
+	<script src="resources/blueprint/jquery/ui/jquery.ui.tabs.js"></script>
+	<script>
+		$(function() {
+			$( "#tabs" ).tabs();
+		});
+	</script>	
 </head>
-
 <body>
+
+
 <div class="container">
 	<div id="header">
 		<tiles:insertAttribute name="header" />
 	</div>
-	<div id="menu" style="float:left; width:250px; margin-top:10px;">
+	<div id="menu">
 	    <tiles:insertAttribute name="menu" />
 	</div>
-	<div id="body" style="float:left; width:500px; min-height: 300px">
+	<div id="body">
 		<tiles:insertAttribute name="body" />
 	</div>
-	<div id="footer"style="margin:0px auto 0px auto; width:500px" >
+	<div id="footer">
     	<tiles:insertAttribute name="footer" />
 	</div>
 </div>
+
 </body>
 </html>
