@@ -8,5 +8,9 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 <ul>
-	<li><a href="<c:url value="/vcpeNetwork" />"><spring:message code="index.menu.vcpenetwork"/></a></li>
+	<li>
+		<a href="<c:url value="/vcpeNetwork" />">
+			<spring:message code="index.menu.vcpenetwork"/>
+		</a>
+	</li>
 </ul>
