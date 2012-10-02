@@ -175,6 +175,11 @@
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.capability.vlanawarebridge/${project.version}</bundle>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.macbridge.ios.resource/${project.version}</bundle>
 	</feature>
+	
+	<feature name="opennaas-vcpe" version="${project.version}">
+		<feature version="${opennaas.version}">org.opennaas.core</feature>
+		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
+	</feature>
 
 	<feature name="opennaas" version="${project.version}">
 		<feature version="${project.version}">opennaas-router</feature>
@@ -186,6 +191,7 @@
 		<feature version="${project.version}">opennaas-roadm-proteus</feature>
 		<feature version="${project.version}">opennaas-sampleresource</feature>
 		<feature version="${project.version}">opennaas-cisco</feature>
+		<feature version="${project.version}">opennaas-vcpe</feature>
 		<feature version="${project.version}">opennaas-ws-rest</feature>
 <!-- 		<feature version="${project.version}">opennaas-ws-soap</feature> -->
 	</feature>
