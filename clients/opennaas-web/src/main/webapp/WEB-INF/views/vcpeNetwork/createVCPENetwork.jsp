@@ -8,7 +8,7 @@
 
 <div class="span-12 last">
 
-	<form:form modelAttribute="vcpeNetwork" action="vcpeNetwork" method="post">
+	<form:form modelAttribute="VCPENetwork" action="./vcpeNetwork/create" method="post">
 		<fieldset>
 			<legend>
 				<spring:message code="vcpenetwork.create.legend" />
@@ -42,21 +42,21 @@
 		
 			<div style="float: left; margin:0px 0 20px 0px;">
 				<h3><spring:message code="vcpenetwork.logicalrouter1" /></h3>
-				<c:forEach items="${vcpeNetwork.logicalRouter1.interfaces}" varStatus="vs">
+				<c:forEach items="${VCPENetwork.logicalRouter1.interfaces}" varStatus="vs">
 					<div class="field">
 						<legend>Interface ${vs.index + 1}</legend>
 						<div class="input">
 							<spring:message code="logicalrouter.physicalinterface" />
 							<form:input path="logicalRouter1.interfaces[${vs.index}].name" size="8"/>
 							<form:errors path="logicalRouter1.interfaces[${vs.index}].name" size="8"/>.
-							<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="3"/>
-							<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="3" />
+							<form:input path="logicalRouter1.interfaces[${vs.index}].port" size="2"/>
+							<form:errors path="logicalRouter1.interfaces[${vs.index}].port" size="2" />
 							<spring:message code="logicalrouter.ipAddress" />
-							<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="8"/>
-							<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="8"/>
+							<form:input path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="10"/>
+							<form:errors path="logicalRouter1.interfaces[${vs.index}].ipAddress" size="10"/>
 							<spring:message code="logicalrouter.vlan" />
-							<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="3"/>
-							<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="3" />
+							<form:input path="logicalRouter1.interfaces[${vs.index}].vlan" size="2"/>
+							<form:errors path="logicalRouter1.interfaces[${vs.index}].vlan" size="2" />
 						</div>
 					</div>
 				</c:forEach>
@@ -66,21 +66,21 @@
 
 			<div style="float: left; margin:5px 0 15px 0px;">
 				<h3><spring:message code="vcpenetwork.logicalrouter2" /></h3>
-				<c:forEach items="${vcpeNetwork.logicalRouter2.interfaces}" varStatus="vs">
+				<c:forEach items="${VCPENetwork.logicalRouter2.interfaces}" varStatus="vs">
 					<div class="field">
 						<legend>Interface ${vs.index + 1}</legend>
 						<div class="input">
 							<spring:message code="logicalrouter.physicalinterface" />
 							<form:input path="logicalRouter2.interfaces[${vs.index}].name" size="8"/>
 							<form:errors path="logicalRouter2.interfaces[${vs.index}].name" size="8"/>.
-							<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="3"/>
-							<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="3" />
+							<form:input path="logicalRouter2.interfaces[${vs.index}].port" size="2"/>
+							<form:errors path="logicalRouter2.interfaces[${vs.index}].port" size="2" />
 							<spring:message code="logicalrouter.ipAddress" />
-							<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="8"/>
-							<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="8"/>
+							<form:input path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="10"/>
+							<form:errors path="logicalRouter2.interfaces[${vs.index}].ipAddress" size="10"/>
 							<spring:message code="logicalrouter.vlan" />
-							<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="3"/>
-							<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="3" />
+							<form:input path="logicalRouter2.interfaces[${vs.index}].vlan" size="2"/>
+							<form:errors path="logicalRouter2.interfaces[${vs.index}].vlan" size="2" />
 						</div>
 					</div>
 				</c:forEach>

@@ -8,6 +8,8 @@ import javax.validation.constraints.Size;
 
 public class VCPENetwork {
 
+	private String			id;
+
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String			name;
@@ -26,6 +28,21 @@ public class VCPENetwork {
 	public VCPENetwork() {
 		logicalRouter1 = new LogicalRouter();
 		logicalRouter2 = new LogicalRouter();
+	}
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	/**

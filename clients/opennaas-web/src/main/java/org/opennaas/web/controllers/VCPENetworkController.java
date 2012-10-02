@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.sun.jersey.api.client.ClientHandlerException;
-
 /**
  * @author Jordi
  */
@@ -38,7 +36,7 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
-		model.addAttribute("vcpeNetwork", new VCPENetwork());
+		model.addAttribute(new VCPENetwork());
 		return "createVCPENetwork";
 	}
 
@@ -49,10 +47,12 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, value = "create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		if (!result.hasErrors()) {
-			vcpeNetworkBO.createVCPENetwork(vcpeNetwork);
+			String vcpeNetworkId = vcpeNetworkBO.create(vcpeNetwork);
+			vcpeNetwork.setId(vcpeNetworkId);
+			vcpeNetworkBO.start(vcpeNetworkId);
 			model.addAttribute("infoMsg", messageSource
 					.getMessage("vcpenetwork.create.message.info", null, locale));
 		} else {
@@ -69,9 +69,10 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String delete(String vcpeNetworkName, Model model, Locale locale) {
-		vcpeNetworkBO.deleteVCPENetwork(vcpeNetworkName);
+	@RequestMapping(method = RequestMethod.POST, value = "delete")
+	public String delete(String vcpeNetworkId, Model model, Locale locale) {
+		vcpeNetworkBO.stop(vcpeNetworkId);
+		vcpeNetworkBO.delete(vcpeNetworkId);
 		return "createVCPENetwork";
 	}
 
@@ -82,21 +83,21 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST)
-	public String edit(String vcpeNetworkName, Model model, Locale locale) {
-		model.addAttribute("vcpeNetwork", vcpeNetworkBO.getVCPENetworkByName(vcpeNetworkName));
+	@RequestMapping(method = RequestMethod.POST, value = "edit")
+	public String edit(String vcpeNetworkId, Model model, Locale locale) {
+		model.addAttribute(vcpeNetworkBO.getVCPENetwork(vcpeNetworkId));
 		return "createVCPENetwork";
 	}
 
 	/**
-	 * Handle the ClientHandlerException
+	 * Handle the Exception and subclasses
 	 * 
 	 * @param ex
 	 * @param request
 	 * @return
 	 */
-	@ExceptionHandler(ClientHandlerException.class)
-	public String clientHandlerException(ClientHandlerException ex, HttpServletRequest request) {
+	@ExceptionHandler(Exception.class)
+	public String exception(Exception ex, HttpServletRequest request) {
 		request.setAttribute("exception", ex.getMessage());
 		return "exception";
 	}
