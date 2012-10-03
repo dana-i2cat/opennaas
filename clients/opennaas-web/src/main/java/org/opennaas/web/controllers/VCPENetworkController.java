@@ -69,7 +69,7 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "delete")
+	@RequestMapping(method = RequestMethod.GET, value = "delete")
 	public String delete(String vcpeNetworkId, Model model, Locale locale) {
 		vcpeNetworkBO.stop(vcpeNetworkId);
 		vcpeNetworkBO.delete(vcpeNetworkId);
@@ -83,7 +83,7 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "edit")
+	@RequestMapping(method = RequestMethod.GET, value = "edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
 		model.addAttribute(vcpeNetworkBO.getVCPENetwork(vcpeNetworkId));
 		return "createVCPENetwork";

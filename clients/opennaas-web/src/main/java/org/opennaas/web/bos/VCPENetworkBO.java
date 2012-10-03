@@ -66,8 +66,10 @@ public class VCPENetworkBO extends GenericBO {
 	 * @return VCPENetwork
 	 */
 	public VCPENetwork getVCPENetwork(String vcpeNetworkId) {
-		String url = getURL("resources/getResourceById/" + vcpeNetworkId);
-		return opennaasRest.post(url).getEntity(VCPENetwork.class);
+		// TODO Need to call OpenNaaS
+		// String url = getURL("resources/getResourceById/" + vcpeNetworkId);
+		// return opennaasRest.post(url).getEntity(VCPENetwork.class);
+		return getAllVCPENetwork().get(0);
 	}
 
 	/**
