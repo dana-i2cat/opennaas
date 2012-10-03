@@ -25,9 +25,9 @@
 		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/createVCPENetwork.jsp" />
 	</definition>
 
-	<definition name="listQueueActions" extends="base.definition">
-		<put-attribute name="title" value="List Queue Actions" />
-		<put-attribute name="body" value="/WEB-INF/views/queue/listActions.jsp" />
+	<definition name="listVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="List VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/listVCPENetwork.jsp" />
 	</definition>
 
 </tiles-definitions>

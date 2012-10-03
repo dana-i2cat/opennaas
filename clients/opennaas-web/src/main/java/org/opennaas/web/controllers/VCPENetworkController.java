@@ -90,6 +90,18 @@ public class VCPENetworkController {
 	}
 
 	/**
+	 * Redirect to the form to create a VCPENetwork
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "list")
+	public String list(Model model) {
+		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetwork());
+		return "listVCPENetwork";
+	}
+
+	/**
 	 * Handle the Exception and subclasses
 	 * 
 	 * @param ex

@@ -3,8 +3,12 @@
  */
 package org.opennaas.web.bos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
 
 /**
@@ -56,12 +60,55 @@ public class VCPENetworkBO extends GenericBO {
 	}
 
 	/**
+	 * Call a rest url to get a VCPE Network with id = vcpeNetworkId
+	 * 
 	 * @param vcpeNetworkName
-	 * @return
+	 * @return VCPENetwork
 	 */
 	public VCPENetwork getVCPENetwork(String vcpeNetworkId) {
 		String url = getURL("resources/getResourceById/" + vcpeNetworkId);
 		return opennaasRest.post(url).getEntity(VCPENetwork.class);
+	}
+
+	/**
+	 * Call a rest url to get all VCPE Network
+	 * 
+	 * @return List<VCPENetwork>
+	 */
+	public List<VCPENetwork> getAllVCPENetwork() {
+		// TODO Need to call OpenNaaS
+		List<VCPENetwork> list = new ArrayList<VCPENetwork>();
+		VCPENetwork vcpeNetwork1 = new VCPENetwork();
+		VCPENetwork vcpeNetwork2 = new VCPENetwork();
+
+		vcpeNetwork1.setId("1");
+		vcpeNetwork1.setName("VCPENetwork-1");
+
+		LogicalRouter logicalRouter1 = new LogicalRouter();
+		logicalRouter1.setName("LR1-VCPE1");
+
+		LogicalRouter logicalRouter2 = new LogicalRouter();
+		logicalRouter2.setName("LR2-VCPE1");
+
+		vcpeNetwork1.setLogicalRouter1(logicalRouter1);
+		vcpeNetwork1.setLogicalRouter2(logicalRouter2);
+
+		vcpeNetwork2.setId("2");
+		vcpeNetwork2.setName("VCPENetwork-2");
+
+		logicalRouter1 = new LogicalRouter();
+		logicalRouter1.setName("LR1-VCPE2");
+
+		logicalRouter2 = new LogicalRouter();
+		logicalRouter2.setName("LR2-VCPE2");
+
+		vcpeNetwork2.setLogicalRouter1(logicalRouter1);
+		vcpeNetwork2.setLogicalRouter2(logicalRouter2);
+
+		list.add(vcpeNetwork1);
+		list.add(vcpeNetwork2);
+
+		return list;
 	}
 
 	/**
@@ -76,5 +123,4 @@ public class VCPENetworkBO extends GenericBO {
 		resourceDescriptor.setInformation(information);
 		return resourceDescriptor;
 	}
-
 }
