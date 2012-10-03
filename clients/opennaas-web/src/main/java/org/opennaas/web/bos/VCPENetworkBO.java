@@ -26,7 +26,11 @@ public class VCPENetworkBO extends GenericBO {
 	 */
 	public String create(Object params) {
 		String url = getURL("resources/create");
-		return (String) opennaasRest.post((url), getResourceDescriptor(params), String.class);
+		String vcpeNetworkId = (String) opennaasRest
+				.post((url), getResourceDescriptor(params), String.class);
+		url = getURL("resources/start/" + vcpeNetworkId);
+		opennaasRest.post(url);
+		return vcpeNetworkId;
 	}
 
 	/**
@@ -35,27 +39,9 @@ public class VCPENetworkBO extends GenericBO {
 	 * @param vcpeNetworkName
 	 */
 	public void delete(String vcpeNetworkId) {
-		String url = getURL("resources/delete/" + vcpeNetworkId);
-		opennaasRest.post(url);
-	}
-
-	/**
-	 * Call a rest url to start a VCPE Network resource
-	 * 
-	 * @param vcpeNetworkName
-	 */
-	public void start(String vcpeNetworkId) {
-		String url = getURL("resources/start/" + vcpeNetworkId);
-		opennaasRest.post(url);
-	}
-
-	/**
-	 * Call a rest url to stop a VCPE Network resource
-	 * 
-	 * @param vcpeNetworkName
-	 */
-	public void stop(String vcpeNetworkId) {
 		String url = getURL("resources/stop/" + vcpeNetworkId);
+		opennaasRest.post(url);
+		url = getURL("resources/delete/" + vcpeNetworkId);
 		opennaasRest.post(url);
 	}
 
