@@ -1,10 +1,11 @@
-package org.opennaas.extensions.router.model.tests;
+package org.opennaas.extensions.network.capability.basic.tests;
 
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.extensions.network.capability.basic.mappers.Cim2NdlMapper;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.technology.ethernet.EthernetLayer;
@@ -21,7 +22,6 @@ import org.opennaas.extensions.router.model.IPProtocolEndpoint;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.System;
 import org.opennaas.extensions.router.model.VLANEndpoint;
-import org.opennaas.extensions.router.model.mappers.Cim2NdlMapper;
 
 public class Cim2NdlMapperTest {
 
