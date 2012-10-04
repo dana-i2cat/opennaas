@@ -39,6 +39,7 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
+		LOGGER.debug("form to create a VCPENetwork");
 		model.addAttribute(new VCPENetwork());
 		return "createVCPENetwork";
 	}
@@ -52,7 +53,7 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
-		LOGGER.debug("add entity : " + vcpeNetwork);
+		LOGGER.debug("add entity: " + vcpeNetwork);
 		if (!result.hasErrors()) {
 			String vcpeNetworkId = vcpeNetworkBO.create(vcpeNetwork);
 			vcpeNetwork.setId(vcpeNetworkId);
@@ -74,7 +75,7 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "delete")
 	public String delete(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("delete entity : " + vcpeNetworkId);
+		LOGGER.debug("delete entity with id: " + vcpeNetworkId);
 		vcpeNetworkBO.delete(vcpeNetworkId);
 		return "createVCPENetwork";
 	}
@@ -88,8 +89,8 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
-		LOGGER.debug("edit entity : " + vcpeNetworkId);
-		model.addAttribute(vcpeNetworkBO.getVCPENetwork(vcpeNetworkId));
+		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
+		model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
 		return "createVCPENetwork";
 	}
 
@@ -101,8 +102,8 @@ public class VCPENetworkController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "list")
 	public String list(Model model) {
-		LOGGER.debug("list entities");
-		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetwork());
+		LOGGER.debug("list all entities");
+		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
 		return "listVCPENetwork";
 	}
 

@@ -6,65 +6,73 @@ package org.opennaas.web.bos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
+import org.opennaas.web.services.ResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author Jordi
  */
-public class VCPENetworkBO extends GenericBO {
+public class VCPENetworkBO {
 
+	private static final Logger	LOGGER			= Logger.getLogger(VCPENetworkBO.class);
 	private static final String	RESOURCE_TYPE	= "vcpenet";
 	private static final String	RESOURCE_NAME	= "vCPENet-1";
 
+	@Autowired
+	private ResourceService		resourceService;
+
 	/**
-	 * Call a rest url to create a VCPE Network resource
+	 * Create a VCPE Network. After start the resource
 	 * 
-	 * @param params
+	 * @param vcpeNetwork
 	 */
-	public String create(Object params) {
-		String url = getURL("resources/create");
-		String vcpeNetworkId = (String) opennaasRest
-				.post((url), getResourceDescriptor(params), String.class);
-		url = getURL("resources/start/" + vcpeNetworkId);
-		opennaasRest.post(url);
+	public String create(VCPENetwork vcpeNetwork) {
+		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
+		String vcpeNetworkId = resourceService.create(getResourceDescriptor(vcpeNetwork));
+		LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
+		resourceService.start(vcpeNetworkId);
 		return vcpeNetworkId;
 	}
 
 	/**
-	 * Call a rest url to delete a VCPE Network resource
+	 * Delete a VCPE Network. First stop the resource
 	 * 
-	 * @param vcpeNetworkName
+	 * @param vcpeNetworkId
 	 */
 	public void delete(String vcpeNetworkId) {
-		String url = getURL("resources/stop/" + vcpeNetworkId);
-		opennaasRest.post(url);
-		url = getURL("resources/delete/" + vcpeNetworkId);
-		opennaasRest.post(url);
+		LOGGER.debug("stop a VCPENetwork with id: " + vcpeNetworkId);
+		resourceService.stop(vcpeNetworkId);
+		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
+		resourceService.delete(vcpeNetworkId);
 	}
 
 	/**
-	 * Call a rest url to get a VCPE Network with id = vcpeNetworkId
+	 * Get a VCPE Network with id = vcpeNetworkId
 	 * 
-	 * @param vcpeNetworkName
+	 * @param vcpeNetworkId
 	 * @return VCPENetwork
 	 */
-	public VCPENetwork getVCPENetwork(String vcpeNetworkId) {
-		// TODO Need to call OpenNaaS
-		// String url = getURL("resources/getResourceById/" + vcpeNetworkId);
-		// return opennaasRest.post(url).getEntity(VCPENetwork.class);
-		return getAllVCPENetwork().get(0);
+	public VCPENetwork getById(String vcpeNetworkId) {
+		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
+		// TODO Need to call OpenNaaS through DAO layer
+		// return vcpeNetworkDao.getById(vcpeNetworkId);
+		return getAll().get(0);
 	}
 
 	/**
-	 * Call a rest url to get all VCPE Network
+	 * Get all VCPE Network
 	 * 
 	 * @return List<VCPENetwork>
 	 */
-	public List<VCPENetwork> getAllVCPENetwork() {
-		// TODO Need to call OpenNaaS
+	public List<VCPENetwork> getAll() {
+		LOGGER.debug("get all VCPENetwork");
+		// TODO Need to call OpenNaaS through DAO layer
+		// return vcpeNetworkDao.getAll();
 		List<VCPENetwork> list = new ArrayList<VCPENetwork>();
 		VCPENetwork vcpeNetwork1 = new VCPENetwork();
 		VCPENetwork vcpeNetwork2 = new VCPENetwork();
@@ -100,10 +108,11 @@ public class VCPENetworkBO extends GenericBO {
 	}
 
 	/**
+	 * 
 	 * @param params
 	 * @return
 	 */
-	private ResourceDescriptor getResourceDescriptor(Object params) {
+	private ResourceDescriptor getResourceDescriptor(VCPENetwork vcpeNetwork) {
 		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
 		Information information = new Information();
 		information.setType(RESOURCE_TYPE);

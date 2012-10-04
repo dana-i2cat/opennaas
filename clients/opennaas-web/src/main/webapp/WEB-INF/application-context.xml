@@ -60,6 +60,6 @@
 	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest" />
 		
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
-	
-	<bean id="queueBO" class="org.opennaas.web.bos.QueueBO" />
+
+	<bean id="resourceService" class="org.opennaas.web.services.ResourceService" />	
 </beans>

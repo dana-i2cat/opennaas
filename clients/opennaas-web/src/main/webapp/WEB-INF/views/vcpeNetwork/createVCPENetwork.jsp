@@ -8,7 +8,7 @@
 
 <div class="span-15 last">
 
-	<form:form modelAttribute="VCPENetwork" action="./vcpeNetwork/create" method="post">
+	<form:form modelAttribute="VCPENetwork" action="create" method="post">
 		<fieldset>
 			<legend>
 				<spring:message code="vcpenetwork.create.legend" />
