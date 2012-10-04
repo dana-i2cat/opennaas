@@ -27,6 +27,16 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-core</artifactId>
+			<version>1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.12</version>
+		</dependency>
+		<dependency>
 			<groupId>org.ops4j.pax.swissbox</groupId>
 			<artifactId>pax-swissbox-framework</artifactId>
 		</dependency>

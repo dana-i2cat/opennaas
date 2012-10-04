@@ -205,4 +205,17 @@
 		<bundle>mvn:org.opennaas.itests/org.opennaas.itests.helpers/${project.version}</bundle>
 	</feature>
 	
+	<feature name="itests-rest" version="${project.version}">
+		<feature>cxf</feature>
+		<feature>opennaas-ws-rest</feature>
+
+		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-nio-framework/1.9.50</bundle>
+		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-http/1.9.50</bundle>
+		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-portunif/1.9.50</bundle>
+		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-rcm/1.9.50</bundle>
+		<bundle dependency="true">mvn:com.sun.grizzly/grizzly-http-servlet/1.9.50</bundle>
+		<bundle dependency="true">mvn:com.sun.jersey/jersey-client/1.13</bundle>
+		<bundle dependency="true">mvn:com.sun.jersey/jersey-core/1.13</bundle>
+	</feature>
+	
 </features>
