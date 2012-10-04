@@ -8,8 +8,14 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 <ul>
-	<li><a href="<c:url value="/logicalRouter" />"><spring:message code="index.menu.logicalrouter"/></a></li>
-</ul>
-<ul>
-	<li><a href="<c:url value="/queue" />"><spring:message code="index.menu.queue"/></a></li>
+	<li>
+		<a href="<c:url value="/vcpeNetwork/create" />">
+			<spring:message code="index.menu.vcpenetwork.create"/>
+		</a>
+	</li>
+	<li>
+		<a href="<c:url value="/vcpeNetwork/list" />">
+			<spring:message code="index.menu.vcpenetwork.list"/>
+		</a>
+	</li>
 </ul>
