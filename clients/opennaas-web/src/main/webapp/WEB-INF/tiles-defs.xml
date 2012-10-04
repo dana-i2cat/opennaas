@@ -20,14 +20,14 @@
 		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
 	</definition>
 
-	<definition name="createLogicalRouter" extends="base.definition">
+	<definition name="createVCPENetwork" extends="base.definition">
 		<put-attribute name="title" value="Create Logical Router" />
-		<put-attribute name="body" value="/WEB-INF/views/logicalRouter/createLogicalRouter.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/createVCPENetwork.jsp" />
 	</definition>
 
-	<definition name="listQueueActions" extends="base.definition">
-		<put-attribute name="title" value="List Queue Actions" />
-		<put-attribute name="body" value="/WEB-INF/views/queue/listActions.jsp" />
+	<definition name="listVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="List VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/listVCPENetwork.jsp" />
 	</definition>
 
 </tiles-definitions>
