@@ -212,4 +212,26 @@ public interface IResourceManager {
 	 */
 	public void destroyAllResources() throws ResourceException;
 
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptor/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return List<ResourceDescriptor>
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getAllDescriptors/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	@Consumes(MediaType.APPLICATION_XML)
+	public List<ResourceDescriptor> getAllResourceDescriptorByType(@PathParam("type") String type) throws ResourceException;
+
 }

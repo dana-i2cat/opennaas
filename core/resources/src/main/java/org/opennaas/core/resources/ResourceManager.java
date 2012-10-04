@@ -311,6 +311,20 @@ public class ResourceManager implements IResourceManager {
 	}
 
 	@Override
+	public ResourceDescriptor getResourceDescriptor(String resourceId) throws ResourceException {
+		ResourceDescriptor descriptor = null;
+		try {
+			for (IResourceRepository repo : resourceRepositories.values()) {
+				IResource resource = repo.getResource(resourceId);
+				descriptor = resource.getResourceDescriptor();
+			}
+		} catch (ResourceException e) {
+			throw e;
+		}
+		return descriptor;
+	}
+
+	@Override
 	public void destroyAllResources() throws ResourceException {
 		List<IResource> resources = listResources();
 
@@ -350,5 +364,20 @@ public class ResourceManager implements IResourceManager {
 	@Override
 	public String createResourceWS(ResourceDescriptor resourceDescriptor) throws ResourceException {
 		return createResource(resourceDescriptor).getResourceIdentifier().getId();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IResourceManager#getAllResourceDescriptorByType(java.lang.String)
+	 */
+	@Override
+	public List<ResourceDescriptor> getAllResourceDescriptorByType(String type) throws ResourceException {
+		List<IResource> listResources = listResourcesByType(type);
+		List<ResourceDescriptor> listDescriptors = new ArrayList<ResourceDescriptor>();
+		for (int i = 0; i < listDescriptors.size(); i++) {
+			listDescriptors.add(listResources.get(i).getResourceDescriptor());
+		}
+		return listDescriptors;
 	}
 }
