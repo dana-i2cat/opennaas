@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.web.bos;
+package org.opennaas.web.services;
 
 import org.apache.log4j.Logger;
 import org.opennaas.web.utils.Constants;
@@ -12,9 +12,9 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 /**
  * @author Jordi
  */
-public class GenericBO {
+public abstract class GenericService {
 
-	private static final Logger						LOGGER	= Logger.getLogger(GenericBO.class);
+	private static final Logger						LOGGER	= Logger.getLogger(GenericService.class);
 	@Autowired
 	protected OpennaasRest							opennaasRest;
 	@Autowired
