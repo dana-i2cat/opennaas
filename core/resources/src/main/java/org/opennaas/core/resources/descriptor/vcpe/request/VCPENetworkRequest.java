@@ -1,4 +1,4 @@
-package org.opennaas.extensions.vcpe.descriptor.request;
+package org.opennaas.core.resources.descriptor.vcpe.request;
 
 import java.util.List;
 

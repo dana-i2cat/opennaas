@@ -1,16 +1,16 @@
-package org.opennaas.extensions.vcpe.descriptor.helper;
+package org.opennaas.core.resources.descriptor.vcpe.helper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.extensions.vcpe.descriptor.VCPENetworkDescriptor;
-import org.opennaas.extensions.vcpe.descriptor.request.RequestDevice;
-import org.opennaas.extensions.vcpe.descriptor.request.RequestDomain;
-import org.opennaas.extensions.vcpe.descriptor.request.RequestElement;
-import org.opennaas.extensions.vcpe.descriptor.request.RequestInterface;
-import org.opennaas.extensions.vcpe.descriptor.request.RequestLink;
-import org.opennaas.extensions.vcpe.descriptor.request.VCPENetworkRequest;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
+import org.opennaas.core.resources.descriptor.vcpe.request.RequestDevice;
+import org.opennaas.core.resources.descriptor.vcpe.request.RequestDomain;
+import org.opennaas.core.resources.descriptor.vcpe.request.RequestElement;
+import org.opennaas.core.resources.descriptor.vcpe.request.RequestInterface;
+import org.opennaas.core.resources.descriptor.vcpe.request.RequestLink;
+import org.opennaas.core.resources.descriptor.vcpe.request.VCPENetworkRequest;
 
 public class VCPENetworkDescriptorHelper {
 

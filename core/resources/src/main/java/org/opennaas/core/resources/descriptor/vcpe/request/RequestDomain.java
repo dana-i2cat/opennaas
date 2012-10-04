@@ -1,32 +1,23 @@
-package org.opennaas.extensions.vcpe.descriptor.request;
+package org.opennaas.core.resources.descriptor.vcpe.request;
 
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlIDREF;
 
-public class RequestDevice extends RequestElement {
+public class RequestDomain extends RequestElement {
 
-	private String					name;
-
-	private String					parentName;
+	@XmlIDREF
+	private List<RequestDevice>		devices;
 
 	@XmlIDREF
 	private List<RequestInterface>	interfaces;
 
-	public String getName() {
-		return name;
+	public List<RequestDevice> getDevices() {
+		return devices;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getParentName() {
-		return parentName;
-	}
-
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
+	public void setDevices(List<RequestDevice> devices) {
+		this.devices = devices;
 	}
 
 	public List<RequestInterface> getInterfaces() {
@@ -41,9 +32,8 @@ public class RequestDevice extends RequestElement {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
+		result = prime * result + ((devices == null) ? 0 : devices.hashCode());
 		result = prime * result + ((interfaces == null) ? 0 : interfaces.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((parentName == null) ? 0 : parentName.hashCode());
 		return result;
 	}
 
@@ -55,26 +45,21 @@ public class RequestDevice extends RequestElement {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RequestDevice other = (RequestDevice) obj;
+		RequestDomain other = (RequestDomain) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (devices == null) {
+			if (other.devices != null)
+				return false;
+		} else if (!devices.equals(other.devices))
+			return false;
 		if (interfaces == null) {
 			if (other.interfaces != null)
 				return false;
 		} else if (!interfaces.equals(other.interfaces))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (parentName == null) {
-			if (other.parentName != null)
-				return false;
-		} else if (!parentName.equals(other.parentName))
 			return false;
 		return true;
 	}

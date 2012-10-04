@@ -13,8 +13,8 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.opennaas.extensions.vcpe.descriptor.VCPENetworkDescriptor;
-import org.opennaas.extensions.vcpe.descriptor.helper.VCPENetworkDescriptorHelper;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
+import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
 
 public class DescriptorTest {
 
