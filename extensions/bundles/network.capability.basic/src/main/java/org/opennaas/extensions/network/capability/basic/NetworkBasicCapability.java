@@ -17,6 +17,7 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.network.capability.basic.mappers.Cim2NdlMapper;
 import org.opennaas.extensions.network.model.NetworkModel;
 import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
@@ -25,7 +26,6 @@ import org.opennaas.extensions.network.model.topology.NetworkConnection;
 import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.network.repository.NetworkMapperModelToDescriptor;
 import org.opennaas.extensions.router.model.ManagedElement;
-import org.opennaas.extensions.router.model.mappers.Cim2NdlMapper;
 
 public class NetworkBasicCapability extends AbstractCapability implements INetworkBasicCapability {
 
