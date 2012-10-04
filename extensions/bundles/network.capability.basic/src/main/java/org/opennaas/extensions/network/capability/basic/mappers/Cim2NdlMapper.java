@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.model.mappers;
+package org.opennaas.extensions.network.capability.basic.mappers;
 
 import java.util.ArrayList;
 import java.util.Collection;
