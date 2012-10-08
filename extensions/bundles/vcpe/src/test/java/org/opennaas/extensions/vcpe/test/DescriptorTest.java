@@ -13,24 +13,25 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
 
 public class DescriptorTest {
 
 	@Test
-	public void marshallDescriptorTest() throws JAXBException {
+	public void marshallDescriptorTest() throws JAXBException, SerializationException {
 
 		StringWriter writer = new StringWriter();
 		VCPENetworkDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
-				"vcpeNet1", VCPENetworkDescriptorHelper.generateSampleRequest());
+				"vcpeNet1", "bla, bla, bla");
 
 		marshallVCPENetDescriptor(writer, descriptor);
 
 		VCPENetworkDescriptor loaded = unmarshallVCPENetDescriptor(new StringReader(writer.toString()));
 
 		Assert.assertEquals(loaded.getInformation(), descriptor.getInformation());
-		Assert.assertEquals(loaded.getRequest(), descriptor.getRequest());
+		Assert.assertEquals(loaded.getvCPEModel(), descriptor.getvCPEModel());
 	}
 
 	private static Writer marshallVCPENetDescriptor(Writer writer, VCPENetworkDescriptor descriptor) throws JAXBException {
