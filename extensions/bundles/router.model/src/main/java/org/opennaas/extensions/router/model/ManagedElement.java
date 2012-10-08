@@ -13,7 +13,6 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.SerializationException;
 
@@ -633,7 +632,7 @@ public class ManagedElement implements IModel, Serializable {
 	@Override
 	public String toXml() throws SerializationException {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 } // Class ManagedElement

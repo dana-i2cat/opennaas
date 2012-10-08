@@ -3,7 +3,6 @@ package org.opennaas.extensions.sampleresource.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.NotImplementedException;
 import org.opennaas.core.resources.IModel;
 import org.opennaas.core.resources.SerializationException;
 
@@ -27,7 +26,7 @@ public class SampleModel implements IModel {
 	@Override
 	public String toXml() throws SerializationException {
 		// TODO Auto-generated method stub
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 	}
 
 }
