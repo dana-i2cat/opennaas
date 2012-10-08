@@ -13,9 +13,12 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.ObjectSerializer;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
+import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class DescriptorTest {
 
@@ -23,8 +26,9 @@ public class DescriptorTest {
 	public void marshallDescriptorTest() throws JAXBException, SerializationException {
 
 		StringWriter writer = new StringWriter();
+		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
 		VCPENetworkDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
-				"vcpeNet1", "bla, bla, bla");
+				"vcpeNet1", model.toXml());
 
 		marshallVCPENetDescriptor(writer, descriptor);
 
@@ -32,6 +36,12 @@ public class DescriptorTest {
 
 		Assert.assertEquals(loaded.getInformation(), descriptor.getInformation());
 		Assert.assertEquals(loaded.getvCPEModel(), descriptor.getvCPEModel());
+
+		VCPENetworkModel loadedModel = (VCPENetworkModel) ObjectSerializer.fromXml(loaded.getvCPEModel(), VCPENetworkModel.class);
+
+		Assert.assertEquals(model, loadedModel);
+
+		// System.out.println(writer.toString());
 	}
 
 	private static Writer marshallVCPENetDescriptor(Writer writer, VCPENetworkDescriptor descriptor) throws JAXBException {

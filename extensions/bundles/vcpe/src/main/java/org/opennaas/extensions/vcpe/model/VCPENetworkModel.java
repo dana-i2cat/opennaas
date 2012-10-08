@@ -8,6 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.opennaas.core.resources.IModel;
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.SerializationException;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -56,6 +58,11 @@ public class VCPENetworkModel implements IModel {
 		} else if (!elements.equals(other.elements))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toXml() throws SerializationException {
+		return ObjectSerializer.toXml(this);
 	}
 
 }

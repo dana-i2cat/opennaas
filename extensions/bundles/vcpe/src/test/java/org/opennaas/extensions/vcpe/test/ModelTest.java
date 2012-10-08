@@ -13,6 +13,8 @@ import javax.xml.bind.Unmarshaller;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.opennaas.core.resources.ObjectSerializer;
+import org.opennaas.core.resources.SerializationException;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
@@ -24,10 +26,24 @@ public class ModelTest {
 		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
 
 		StringWriter writer = (StringWriter) marshall(model, new StringWriter());
-		System.out.println(writer.toString());
 		VCPENetworkModel loaded = unmarshall(new StringReader(writer.toString()));
 
 		Assert.assertEquals(model, loaded);
+	}
+
+	@Test
+	public void marshallUsingToXmlTest() throws JAXBException, SerializationException {
+
+		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
+
+		String xml = model.toXml();
+
+		VCPENetworkModel loaded = (VCPENetworkModel) ObjectSerializer.fromXml(xml, VCPENetworkModel.class);
+		String xml2 = loaded.toXml();
+		// System.out.println(xml2);
+
+		Assert.assertEquals(model, loaded);
+		Assert.assertEquals(xml, xml2);
 	}
 
 	private Writer marshall(VCPENetworkModel model, Writer writer) throws JAXBException {
