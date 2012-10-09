@@ -28,6 +28,7 @@ import org.ops4j.pax.exam.junit.ExamReactorStrategy;
 import org.ops4j.pax.exam.junit.JUnit4TestRunner;
 import org.ops4j.pax.exam.spi.reactors.EagerSingleStagedReactorFactory;
 import org.ops4j.pax.exam.util.Filter;
+import org.osgi.service.blueprint.container.BlueprintContainer;
 
 @RunWith(JUnit4TestRunner.class)
 @ExamReactorStrategy(EagerSingleStagedReactorFactory.class)
@@ -37,8 +38,12 @@ public class VCPENetworkTest {
 	private IResourceManager	rm;
 
 	@Inject
-	@Filter("type=vcpe")
+	@Filter("(type=vcpenet)")
 	private IResourceRepository	resourceRepo;
+
+	@Inject
+	@Filter("(osgi.blueprint.container.symbolicname=org.opennaas.extensions.vcpe)")
+	private BlueprintContainer	vcpeBundleBlueprintContainer;
 
 	private String				resourceName	= "vcpenet1";
 	private String				resourceType	= "vcpenet";
@@ -56,7 +61,7 @@ public class VCPENetworkTest {
 			throws InterruptedException, ResourceException, SerializationException
 	{
 		createResource();
-		startResource();
+		// startResource();
 
 		rm.destroyAllResources();
 	}

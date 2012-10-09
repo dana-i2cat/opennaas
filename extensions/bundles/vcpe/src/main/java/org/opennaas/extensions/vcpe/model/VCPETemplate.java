@@ -54,4 +54,9 @@ public class VCPETemplate {
 	public static final String	UP1_LINK						= TEMPLATE_NS + ".link.up.1";
 	public static final String	UP2_LINK						= TEMPLATE_NS + ".link.up.2";
 
+	public static final String	LINK_TYPE_LT					= "lt";
+	public static final String	LINK_TYPE_AUTOBAHN				= "autobahn";
+	public static final String	LINK_TYPE_ETH					= "eth";
+	public static final String	LINK_TYPE_VIRTUAL				= "virtual";
+
 }
