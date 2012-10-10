@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<vcpeNetworkModel xmlns="org.opennaas.extensions.vcpe.model">
+	<elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe1.router
+		</templateName>
+		<name>router:vCPE1</name>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe1.inter.iface.local
+		</interfaces>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe1.down.iface.local
+		</interfaces>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe1.up.iface.local
+		</interfaces>
+	</elements>
+	<elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe2.router
+		</templateName>
+		<name>router:vCPE2</name>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe2.inter.iface.local
+		</interfaces>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe2.down.iface.local
+		</interfaces>
+		<interfaces>org.opennaas.extensions.vcpe.template.1.vcpe2.up.iface.local
+		</interfaces>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe1.inter.iface.local
+		</templateName>
+		<name>fe-0/3/3.1</name>
+		<vlanId>1</vlanId>
+		<ipAddress>192.1.1.128</ipAddress>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe1.down.iface.local
+		</templateName>
+		<name>fe-0/3/0.13</name>
+		<vlanId>13</vlanId>
+		<ipAddress>192.1.1.1</ipAddress>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe1.up.iface.local
+		</templateName>
+		<name>ge-0/2/0.80</name>
+		<vlanId>80</vlanId>
+		<ipAddress>192.1.1.256</ipAddress>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe2.inter.iface.local
+		</templateName>
+		<name>ge-2/0/1.81</name>
+		<vlanId>81</vlanId>
+		<ipAddress>160.1.1.128</ipAddress>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe2.down.iface.local
+		</templateName>
+		<name>ge-2/0/0.12</name>
+		<vlanId>12</vlanId>
+		<ipAddress>160.1.1.1</ipAddress>
+	</elements>
+	<elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<templateName>org.opennaas.extensions.vcpe.template.1.vcpe2.up.iface.local
+		</templateName>
+		<name>ge-2/0/0.13</name>
+		<vlanId>16</vlanId>
+		<ipAddress>160.1.1.256</ipAddress>
+	</elements>
+</vcpeNetworkModel>

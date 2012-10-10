@@ -10,12 +10,14 @@ import org.apache.log4j.Logger;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
 /**
  * @author Jordi
+ * @param <T>
  */
-public class OpennaasRest {
+public class OpennaasRest<T> {
 
 	private static final Logger	LOGGER	= Logger.getLogger(OpennaasRest.class);
 
@@ -55,6 +57,29 @@ public class OpennaasRest {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML).get(ret);
+			LOGGER.info("Response class is: " + response.getClass().getCanonicalName());
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return response;
+	}
+
+	/**
+	 * Call a get method using the param url and returning and object of type GenericType<T>
+	 * 
+	 * @param url
+	 * @param ret
+	 * @return an object of type ret
+	 */
+	public <T> T get(String url, GenericType<T> gt) {
+		T response = null;
+		try {
+			LOGGER.info("Execute a get method with url: " + url
+					+ " and return class: " + gt.getClass().getCanonicalName());
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML).get(gt);
 			LOGGER.info("Response class is: " + response.getClass().getCanonicalName());
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
