@@ -409,13 +409,9 @@ public class ResourceManager implements IResourceManager {
 	 * @see org.opennaas.core.resources.IResourceManager#getModelsByType(java.lang.String)
 	 */
 	@Override
-	public List<String> getModelsByType(String type) throws ResourceException {
-		List<IResource> listResources = listResourcesByType(type);
-		List<String> listModels = new ArrayList<String>();
-		for (int i = 0; i < listResources.size(); i++) {
-			listModels.add(listResources.get(i).getModel().toString());
-		}
-		return listModels;
+	public List<IModel> getModelsByType(String type) throws ResourceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/*

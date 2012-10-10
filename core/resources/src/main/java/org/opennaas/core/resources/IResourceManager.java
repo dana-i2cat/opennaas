@@ -252,7 +252,7 @@ public interface IResourceManager {
 	@GET
 	@Path("getModelsByType/{type}")
 	@Produces(MediaType.APPLICATION_XML)
-	public List<String> getModelsByType(@PathParam("type") String type) throws ResourceException;
+	public List<IModel> getModelsByType(@PathParam("type") String type) throws ResourceException;
 
 	/**
 	 * @param resourceId
