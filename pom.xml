@@ -302,6 +302,11 @@
 				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.vcpe</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
