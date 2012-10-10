@@ -21,6 +21,7 @@ import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -60,13 +61,15 @@ public class VCPENetworkTest {
 	public void resourceWorkflow()
 			throws InterruptedException, ResourceException, SerializationException
 	{
-		createResource();
+		IResource resource = createResource();
 		// startResource();
+		// createVCPENetScenario(resource);
+		// destroyVCPENetScenario(resource);
 
 		rm.destroyAllResources();
 	}
 
-	public void createResource() throws ResourceException, SerializationException {
+	public IResource createResource() throws ResourceException, SerializationException {
 
 		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
 				resourceName,
@@ -82,6 +85,8 @@ public class VCPENetworkTest {
 		Assert.assertNotNull(resourceRepo);
 		List<IResource> resources1 = resourceRepo.listResources();
 		Assert.assertFalse(resources1.isEmpty());
+
+		return resource;
 
 	}
 
@@ -102,6 +107,20 @@ public class VCPENetworkTest {
 		Assert.assertNotNull(resource);
 
 		Assert.assertEquals(org.opennaas.core.resources.ILifecycle.State.ACTIVE, resource.getState());
+	}
+
+	public void createVCPENetScenario(IResource resource) throws ResourceException {
+
+		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		cap.buildVCPENetwork(VCPENetworkModelHelper.generateSampleModel());
+
+	}
+
+	public void destroyVCPENetScenario(IResource resource) throws ResourceException {
+
+		IVCPENetworkBuilder cap = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+		cap.destroyVCPENetwork();
+
 	}
 
 }
