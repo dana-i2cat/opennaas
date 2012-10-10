@@ -139,6 +139,12 @@ public interface IResourceManager {
 	@Produces(MediaType.APPLICATION_XML)
 	public IResource getResourceById(@PathParam("resourceId") String resourceId) throws ResourceException;
 
+	/**
+	 * Start a resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
 	@Path("/start/{resourceId}")
 	public void startResource(@PathParam("resourceId") String resourceId) throws ResourceException;
@@ -151,6 +157,12 @@ public interface IResourceManager {
 	 */
 	public void startResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	/**
+	 * Stop an existing resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
 	@Path("/stop/{resourceId}")
 	public void stopResource(@PathParam("resourceId") String resourceId) throws ResourceException;
@@ -211,5 +223,45 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	public void destroyAllResources() throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptor/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return List<ResourceDescriptor>
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptorsByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	public List<ResourceDescriptor> getResourceDescriptorsByType(@PathParam("type") String type) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return List<ResourceDescriptor>
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getModelsByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	public List<String> getModelsByType(@PathParam("type") String type) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getModel/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public String getModel(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 }
