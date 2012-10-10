@@ -14,10 +14,13 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 	@Override
 	public void bootstrap(Resource resource) throws ResourceException {
 
+		// load model from the one persisted in the descriptor
 		VCPENetworkModel model = loadModelFromDescriptor(
 				(VCPENetworkDescriptor) resource.getResourceDescriptor());
 		resource.setModel(model);
 
+		// FIXME scenario should be created upon request (by calling capability)
+		// not during bootstrap when resource is starting
 		VCPENetworkModel currentModel = buildDesiredScenario(resource);
 		resource.setModel(currentModel);
 	}
@@ -25,8 +28,13 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 	@Override
 	public void revertBootstrap(Resource resource) throws ResourceException {
 
+		// FIXME scenario should be destroyed upon request (by calling capability)
+		// not when resource is stopping
 		unbuildScenario(resource);
 		resetModel(resource);
+
+		// persist model into descriptor
+		storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
 	}
 
 	@Override
@@ -36,6 +44,10 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 
 	private VCPENetworkModel loadModelFromDescriptor(VCPENetworkDescriptor descriptor)
 			throws ResourceException {
+
+		if (descriptor.getvCPEModel() == null)
+			return null;
+
 		try {
 			VCPENetworkModel model = (VCPENetworkModel) ObjectSerializer.fromXml(
 					descriptor.getvCPEModel(), VCPENetworkModel.class);
@@ -47,20 +59,27 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 
 	private VCPENetworkDescriptor storeModelIntoDescriptor(VCPENetworkModel model,
 			VCPENetworkDescriptor descriptor) throws ResourceException {
-		try {
-			descriptor.setvCPEModel(ObjectSerializer.toXml(model));
-			return descriptor;
-		} catch (SerializationException e) {
-			throw new ResourceException(e);
-		}
 
+		if (model == null) {
+			descriptor.setvCPEModel(null);
+		} else {
+			try {
+				descriptor.setvCPEModel(ObjectSerializer.toXml(model));
+			} catch (SerializationException e) {
+				throw new ResourceException(e);
+			}
+		}
+		return descriptor;
 	}
 
+	// TODO REMOVE
 	private VCPENetworkModel buildDesiredScenario(Resource resource) throws ResourceException {
+
 		IVCPENetworkBuilder capab = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
 		return capab.buildVCPENetwork((VCPENetworkModel) resource.getModel());
 	}
 
+	// TODO REMOVE
 	private void unbuildScenario(Resource resource) throws ResourceException {
 		IVCPENetworkBuilder capab = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
 		capab.destroyVCPENetwork();
