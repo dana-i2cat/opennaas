@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.web.entities.VCPENetwork;
+import org.opennaas.web.utils.Constants;
+
+import com.sun.jersey.api.client.GenericType;
 
 /**
  * @author Jordi
@@ -20,8 +23,9 @@ public class ResourceService extends GenericService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<VCPENetwork> getAll() {
-		String url = getURL("resources/getResources");
-		return (List<VCPENetwork>) opennaasRest.post(url, List.class);
+		String url = getURL("resources/getAllDescriptors/" + Constants.RESOURCE_VCPENET_TYPE);
+		return (List<VCPENetwork>) opennaasRest.get(url, new GenericType<List<ResourceDescriptor>>() {
+		});
 	}
 
 	/**
@@ -85,7 +89,7 @@ public class ResourceService extends GenericService {
 	 * @return VCPENetwork
 	 */
 	public VCPENetwork getById(String id) {
-		String url = getURL("resources/getResourceById/" + id);
-		return opennaasRest.post(url).getEntity(VCPENetwork.class);
+		String url = getURL("resources/getDescriptor/" + id);
+		return opennaasRest.get(url).getEntity(VCPENetwork.class);
 	}
 }

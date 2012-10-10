@@ -96,7 +96,7 @@ public class ResourceRepository implements IResourceRepository {
 		this.bootstrapperFactory = bootstrapperFactory;
 	}
 
-	public Map<String, ICapabilityFactory> getCapabilityFactories() {
+	@Override	public Map<String, ICapabilityFactory> getCapabilityFactories() {
 		return capabilityFactories;
 	}
 
@@ -109,7 +109,7 @@ public class ResourceRepository implements IResourceRepository {
 	/**
 	 * @return the resourceType
 	 */
-	public String getResourceType() {
+	@Override	public String getResourceType() {
 		return resourceType;
 	}
 
@@ -123,7 +123,7 @@ public class ResourceRepository implements IResourceRepository {
 	// this.resourceType = resourceType;
 	// }
 
-	public List<IResource> listResources() {
+	@Override	public List<IResource> listResources() {
 		Iterator<String> ids = resourceRepository.keySet().iterator();
 		List<IResource> result = new ArrayList<IResource>();
 
@@ -133,7 +133,7 @@ public class ResourceRepository implements IResourceRepository {
 		return result;
 	}
 
-	public IResource getResource(String identifier) throws ResourceException {
+	@Override	public IResource getResource(String identifier) throws ResourceException {
 		IResource result = resourceRepository.get(identifier);
 		if (result == null) {
 			throw new ResourceException("No resource with ID " + identifier
@@ -171,7 +171,7 @@ public class ResourceRepository implements IResourceRepository {
 	/**
 	 * Uses a new resourceIdentifier to identify the resource
 	 */
-	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
+	@Override	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException {
 
 		logger.debug("Creating resource from configuration");
 
@@ -205,7 +205,7 @@ public class ResourceRepository implements IResourceRepository {
 		return resource;
 	}
 
-	public void removeResource(String identifier) throws ResourceException {
+	@Override	public void removeResource(String identifier) throws ResourceException {
 		logger.info("Removing resource with ID #" + identifier);
 
 		IResource resource = getResource(identifier);
@@ -221,7 +221,7 @@ public class ResourceRepository implements IResourceRepository {
 		unpersistResourceDescriptor(resource.getResourceDescriptor());
 	}
 
-	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
+	@Override	public IResource modifyResource(String identifier, ResourceDescriptor descriptor) throws ResourceException {
 
 		try {
 
@@ -262,7 +262,7 @@ public class ResourceRepository implements IResourceRepository {
 		}
 	}
 
-	public void startResource(String identifier) throws ResourceException {
+	@Override	public void startResource(String identifier) throws ResourceException {
 		logger.debug("Starting resource runtime object for ID #"
 				+ identifier);
 		try {
@@ -273,7 +273,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.info("Started resource with ID #" + identifier);
 	}
 
-	public void stopResource(String identifier) throws ResourceException {
+	@Override	public void stopResource(String identifier) throws ResourceException {
 		logger.debug("Stopping resource runtime object for ID #"
 				+ identifier);
 		try {
@@ -284,7 +284,7 @@ public class ResourceRepository implements IResourceRepository {
 		logger.info("Stopped resource with ID #" + identifier);
 	}
 
-	public void forceStopResource(String identifier) throws ResourceException {
+	@Override	public void forceStopResource(String identifier) throws ResourceException {
 		logger.debug("Stopping resource runtime object for ID #"
 				+ identifier);
 		forceDeactivateResource(identifier);

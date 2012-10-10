@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceIdentifier;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -38,8 +39,55 @@ public class ResourceManagerTest {
 		stopResource(identifier1);
 		removeResource(identifier1);
 
-		// IResource resource1 = getResource(identifier1);
-		// listResources();
+		IResource resource1 = getResource(identifier1);
+		listResources();
+		getResourceDescriptors();
+		getModel("084fe9f9-6e51-4e9b-9dce-bc03ceee5816");
+	}
+
+	private static void getResource(String id) throws URISyntaxException {
+		Resource response = null;
+		String url = "http://localhost:8888/opennaas/resources/getResource/" + id;
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML).get(Resource.class);
+			LOGGER.info("resource: " + response);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+
+	}
+
+	private static void getModel(String id) throws URISyntaxException {
+		String response = null;
+		String url = "http://localhost:8888/opennaas/resources/getModel/" + id;
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML).get(String.class);
+			LOGGER.info("resource: " + response);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * 
+	 */
+	private static void getResourceDescriptors() {
+		List<ResourceDescriptor> response = null;
+		String url = "http://localhost:8888/opennaas/resources/getAllDescriptors/vcpenet";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML).get(new GenericType<List<ResourceDescriptor>>() {
+			});
+			LOGGER.info("resourceId: " + response);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
 	}
 
 	private static String createResource(ResourceDescriptor desc) {

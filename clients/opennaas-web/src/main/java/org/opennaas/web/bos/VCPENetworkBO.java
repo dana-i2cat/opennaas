@@ -3,15 +3,14 @@
  */
 package org.opennaas.web.bos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.descriptor.Information;
-import org.opennaas.core.resources.descriptor.ResourceDescriptor;
-import org.opennaas.web.entities.LogicalRouter;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.ResourceService;
+import org.opennaas.web.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -19,9 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class VCPENetworkBO {
 
-	private static final Logger	LOGGER			= Logger.getLogger(VCPENetworkBO.class);
-	private static final String	RESOURCE_TYPE	= "vcpenet";
-	private static final String	RESOURCE_NAME	= "vCPENet-1";
+	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkBO.class);
 
 	@Autowired
 	private ResourceService		resourceService;
@@ -60,7 +57,7 @@ public class VCPENetworkBO {
 	public VCPENetwork getById(String vcpeNetworkId) {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
 		// TODO Need to call OpenNaaS through DAO layer
-		// return vcpeNetworkDao.getById(vcpeNetworkId);
+		// return resourceService.getById(vcpeNetworkId);
 		return getAll().get(0);
 	}
 
@@ -71,40 +68,7 @@ public class VCPENetworkBO {
 	 */
 	public List<VCPENetwork> getAll() {
 		LOGGER.debug("get all VCPENetwork");
-		// TODO Need to call OpenNaaS through DAO layer
-		// return vcpeNetworkDao.getAll();
-		List<VCPENetwork> list = new ArrayList<VCPENetwork>();
-		VCPENetwork vcpeNetwork1 = new VCPENetwork();
-		VCPENetwork vcpeNetwork2 = new VCPENetwork();
-
-		vcpeNetwork1.setId("1");
-		vcpeNetwork1.setName("VCPENetwork-1");
-
-		LogicalRouter logicalRouter1 = new LogicalRouter();
-		logicalRouter1.setName("LR1-VCPE1");
-
-		LogicalRouter logicalRouter2 = new LogicalRouter();
-		logicalRouter2.setName("LR2-VCPE1");
-
-		vcpeNetwork1.setLogicalRouter1(logicalRouter1);
-		vcpeNetwork1.setLogicalRouter2(logicalRouter2);
-
-		vcpeNetwork2.setId("2");
-		vcpeNetwork2.setName("VCPENetwork-2");
-
-		logicalRouter1 = new LogicalRouter();
-		logicalRouter1.setName("LR1-VCPE2");
-
-		logicalRouter2 = new LogicalRouter();
-		logicalRouter2.setName("LR2-VCPE2");
-
-		vcpeNetwork2.setLogicalRouter1(logicalRouter1);
-		vcpeNetwork2.setLogicalRouter2(logicalRouter2);
-
-		list.add(vcpeNetwork1);
-		list.add(vcpeNetwork2);
-
-		return list;
+		return resourceService.getAll();
 	}
 
 	/**
@@ -112,12 +76,12 @@ public class VCPENetworkBO {
 	 * @param params
 	 * @return
 	 */
-	private ResourceDescriptor getResourceDescriptor(VCPENetwork vcpeNetwork) {
-		ResourceDescriptor resourceDescriptor = new ResourceDescriptor();
+	private VCPENetworkDescriptor getResourceDescriptor(VCPENetwork vcpeNetwork) {
+		VCPENetworkDescriptor descriptor = new VCPENetworkDescriptor();
 		Information information = new Information();
-		information.setType(RESOURCE_TYPE);
-		information.setType(RESOURCE_NAME);
-		resourceDescriptor.setInformation(information);
-		return resourceDescriptor;
+		information.setType(Constants.RESOURCE_VCPENET_TYPE);
+		information.setName(vcpeNetwork.getName());
+		descriptor.setInformation(information);
+		return descriptor;
 	}
 }
