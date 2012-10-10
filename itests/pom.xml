@@ -19,6 +19,7 @@
 		<module>network</module>
 		<module>roadm</module>
 		<module>bod</module>
+		<module>vcpe</module>
 	</modules>
 
 	<dependencies>
