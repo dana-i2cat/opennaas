@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.apache.log4j.Logger;
+import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -19,7 +20,6 @@ import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
-import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.ResourceService;
 import org.opennaas.web.utils.Constants;
@@ -42,9 +42,9 @@ public class VCPENetworkBO {
 	 */
 	public String create(VCPENetwork vcpeNetwork) {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
-		String vcpeNetworkId = resourceService.create(getResourceDescriptor(vcpeNetwork));
+		String vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
 		LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.start(vcpeNetworkId);
+		resourceService.startResource(vcpeNetworkId);
 		return vcpeNetworkId;
 	}
 
@@ -55,9 +55,9 @@ public class VCPENetworkBO {
 	 */
 	public void delete(String vcpeNetworkId) {
 		LOGGER.debug("stop a VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.stop(vcpeNetworkId);
+		resourceService.stopResource(vcpeNetworkId);
 		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
-		resourceService.delete(vcpeNetworkId);
+		resourceService.deleteResource(vcpeNetworkId);
 	}
 
 	/**
@@ -68,7 +68,8 @@ public class VCPENetworkBO {
 	 */
 	public VCPENetwork getById(String vcpeNetworkId) {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
-		return resourceService.getById(vcpeNetworkId);
+		Resource resource = resourceService.getResourceById(vcpeNetworkId);
+		return resourceToVCPENetwork(resource);
 	}
 
 	/**
@@ -78,7 +79,16 @@ public class VCPENetworkBO {
 	 */
 	public List<VCPENetwork> getAll() {
 		LOGGER.debug("get all VCPENetwork");
-		return resourceService.getAll();
+		return resourceService.getAllResources();
+	}
+
+	/**
+	 * @param resource
+	 * @return
+	 */
+	private VCPENetwork resourceToVCPENetwork(Resource resource) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -95,57 +105,6 @@ public class VCPENetworkBO {
 		// OpenNaaS VCPENetwork Model
 		descriptor.setvCPEModel(getVCPENetworkModel(vcpeNetwork));
 		return descriptor;
-	}
-
-	public static void main(String[] args) {
-		VCPENetwork vcpeNetwork = new VCPENetwork();
-		LogicalRouter logicalRouter1 = new LogicalRouter();
-		vcpeNetwork.setLogicalRouter1(logicalRouter1);
-		LogicalRouter logicalRouter2 = new LogicalRouter();
-		vcpeNetwork.setLogicalRouter2(logicalRouter2);
-
-		org.opennaas.web.entities.Interface interface1 = new org.opennaas.web.entities.Interface();
-		interface1.setName("fe-0/3/3");
-		interface1.setPort("1");
-		interface1.setVlan(1);
-		interface1.setIpAddress("192.1.1.128");
-		org.opennaas.web.entities.Interface interface2 = new org.opennaas.web.entities.Interface();
-		interface2.setName("fe-0/3/0");
-		interface2.setPort("13");
-		interface2.setVlan(13);
-		interface2.setIpAddress("192.1.1.1");
-		org.opennaas.web.entities.Interface interface3 = new org.opennaas.web.entities.Interface();
-		interface3.setName("ge-0/2/0");
-		interface3.setPort("80");
-		interface3.setVlan(80);
-		interface3.setIpAddress("192.1.1.256");
-		List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
-		logicalRouter1.setInterfaces(interfaces);
-
-		interface1 = new org.opennaas.web.entities.Interface();
-		interface1.setName("ge-2/0/1");
-		interface1.setPort("81");
-		interface1.setVlan(81);
-		interface1.setIpAddress("160.1.1.128");
-		interface2 = new org.opennaas.web.entities.Interface();
-		interface2.setName("ge-2/0/0");
-		interface2.setPort("12");
-		interface2.setVlan(12);
-		interface2.setIpAddress("160.1.1.1");
-		interface3 = new org.opennaas.web.entities.Interface();
-		interface3.setName("ge-2/0/0");
-		interface3.setPort("13");
-		interface3.setVlan(16);
-		interface3.setIpAddress("160.1.1.256");
-		interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
-		logicalRouter2.setInterfaces(interfaces);
-		System.out.println(getVCPENetworkModel(vcpeNetwork));
 	}
 
 	/**
@@ -246,7 +205,7 @@ public class VCPENetworkBO {
 		} catch (JAXBException e) {
 			throw new RuntimeException(e);
 		}
-
 		return result;
 	}
+
 }
