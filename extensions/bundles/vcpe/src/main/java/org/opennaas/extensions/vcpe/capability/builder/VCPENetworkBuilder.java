@@ -18,8 +18,12 @@ import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
+import org.opennaas.extensions.router.capability.ip.IIPCapability;
 import org.opennaas.extensions.router.model.ComputerSystem;
+import org.opennaas.extensions.router.model.IPProtocolEndpoint;
+import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.NetworkPort;
+import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.VCPEToRouterModelTranslator;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -93,9 +97,9 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		createSubInterfaces(resource, desiredScenario);
 
-		createLogicalRouters(resource, desiredScenario);
+		assignIPAddresses(resource, desiredScenario);
 
-		// assignIPAddresses(resource, desiredScenario);
+		createLogicalRouters(resource, desiredScenario);
 
 		// configureEGP(resource, desiredScenario);
 
@@ -228,7 +232,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		for (Interface iface : ifaces) {
 			NetworkPort port = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(iface, model);
 			chassisCapability.createSubInterface(port);
-			// Note: this call will also assign IP addresses to given interfaces
+			// Note: this call will NOT assign IP addresses to given interfaces
 		}
 
 	}
@@ -263,6 +267,43 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 		getResourceManager().removeResource(lrId);
 
+	}
+
+	private void assignIPAddresses(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Interface up1 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP1_INTERFACE_PEER);
+		Interface up2 = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.UP2_INTERFACE_PEER);
+
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+
+		setIP(phy1, up1, model);
+		setIP(phy2, up2, model);
+
+		// we assign addresses in physical routers
+		// logical ones may not exist yet
+		for (Interface iface : lr1.getInterfaces()) {
+			setIP(phy1, iface, model);
+		}
+		for (Interface iface : lr2.getInterfaces()) {
+			setIP(phy2, iface, model);
+		}
+	}
+
+	private void setIP(Router router, Interface iface, VCPENetworkModel model) throws ResourceException {
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+
+		IIPCapability capability = (IIPCapability) routerResource.getCapabilityByInterface(IIPCapability.class);
+
+		LogicalPort port = VCPEToRouterModelTranslator.vCPEInterfaceToLogicalPort(iface, model);
+		for (ProtocolEndpoint pep : port.getProtocolEndpoint()) {
+			if (pep instanceof IPProtocolEndpoint) {
+				capability.setIPv4(port, (IPProtocolEndpoint) pep);
+			}
+		}
 	}
 
 	private IResourceManager getResourceManager() throws ResourceException {

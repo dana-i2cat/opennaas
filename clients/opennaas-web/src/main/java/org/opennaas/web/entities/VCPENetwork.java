@@ -43,19 +43,19 @@ public class VCPENetwork {
 		interface1.setName("fe-0/3/2");
 		interface1.setPort("1");
 		interface1.setVlan(1);
-		interface1.setIpAddress("1.1.1.1");
+		interface1.setIpAddress("192.168.0.1/30");
 		interface1.setLabelName("Inter Interface");
 
 		interface2.setName("ge-0/2/0");
 		interface2.setPort("1");
 		interface2.setVlan(1);
-		interface2.setIpAddress("1.1.1.1");
+		interface2.setIpAddress("192.0.2.2/25");
 		interface2.setLabelName("Down Interface");
 
 		interface3.setName("lt-0/1/2");
 		interface3.setPort("1");
 		interface3.setVlan(0);
-		interface3.setIpAddress("1.1.1.1");
+		interface3.setIpAddress("192.168.0.5/30");
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter1.setInterfaces(interfaces);
@@ -74,19 +74,19 @@ public class VCPENetwork {
 		interface1.setName("fe-0/3/3");
 		interface1.setPort("1");
 		interface1.setVlan(1);
-		interface1.setIpAddress("1.1.1.1");
+		interface1.setIpAddress("192.168.0.2/30");
 		interface1.setLabelName("Inter Interface");
 
 		interface2.setName("ge-0/2/0");
 		interface2.setPort("2");
 		interface2.setVlan(2);
-		interface2.setIpAddress("1.1.1.1");
+		interface2.setIpAddress("192.0.2.3/25");
 		interface2.setLabelName("Down Interface");
 
 		interface3.setName("lt-0/1/2");
 		interface3.setPort("2");
 		interface3.setVlan(0);
-		interface3.setIpAddress("1.1.1.1");
+		interface3.setIpAddress("192.168.0.9/30");
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter2.setInterfaces(interfaces);
