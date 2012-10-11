@@ -5,7 +5,6 @@ package org.opennaas.web.services;
 
 import org.apache.log4j.Logger;
 import org.opennaas.web.utils.Constants;
-import org.opennaas.web.ws.OpennaasRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
@@ -15,8 +14,6 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 public abstract class GenericService {
 
 	private static final Logger						LOGGER	= Logger.getLogger(GenericService.class);
-	@Autowired
-	protected OpennaasRest							opennaasRest;
 	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
 
