@@ -8,6 +8,7 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetBootstrapper implements IResourceBootstrapper {
 
@@ -75,8 +76,11 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 	// TODO REMOVE
 	private VCPENetworkModel buildDesiredScenario(Resource resource) throws ResourceException {
 
+		// simulating vCPENetwork factory with a HARDCODED model
+		VCPENetworkModel desiredScenario = VCPENetworkModelHelper.generateSampleModel();
+
 		IVCPENetworkBuilder capab = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
-		return capab.buildVCPENetwork((VCPENetworkModel) resource.getModel());
+		return capab.buildVCPENetwork(desiredScenario);
 	}
 
 	// TODO REMOVE
