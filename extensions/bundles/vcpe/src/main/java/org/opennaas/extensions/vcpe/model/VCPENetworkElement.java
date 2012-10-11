@@ -10,16 +10,16 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 public abstract class VCPENetworkElement {
 
 	@XmlID
-	protected String	templateName;
+	protected String	nameInTemplate;
 
 	protected String	name;
 
-	public String getTemplateName() {
-		return templateName;
+	public String getNameInTemplate() {
+		return nameInTemplate;
 	}
 
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
+	public void setNameInTemplate(String nameInTemplate) {
+		this.nameInTemplate = nameInTemplate;
 	}
 
 	public String getName() {
@@ -35,7 +35,7 @@ public abstract class VCPENetworkElement {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
+		result = prime * result + ((nameInTemplate == null) ? 0 : nameInTemplate.hashCode());
 		return result;
 	}
 
@@ -53,10 +53,10 @@ public abstract class VCPENetworkElement {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (templateName == null) {
-			if (other.templateName != null)
+		if (nameInTemplate == null) {
+			if (other.nameInTemplate != null)
 				return false;
-		} else if (!templateName.equals(other.templateName))
+		} else if (!nameInTemplate.equals(other.nameInTemplate))
 			return false;
 		return true;
 	}

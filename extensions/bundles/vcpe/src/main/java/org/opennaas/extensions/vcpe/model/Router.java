@@ -42,10 +42,10 @@ public class Router extends VCPENetworkElement {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		if (templateName == null) {
-			if (other.templateName != null)
+		if (nameInTemplate == null) {
+			if (other.nameInTemplate != null)
 				return false;
-		} else if (!templateName.equals(other.templateName))
+		} else if (!nameInTemplate.equals(other.nameInTemplate))
 			return false;
 		if (interfaces == null) {
 			if (other.interfaces != null)
