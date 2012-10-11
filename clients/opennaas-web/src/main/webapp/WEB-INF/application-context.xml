@@ -57,9 +57,6 @@
 	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" p:definitions="/WEB-INF/tiles-defs.xml" />   
 
 	<!-- OpenNaas Beans-->
-	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest" />
-		
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
-
 	<bean id="resourceService" class="org.opennaas.web.services.ResourceService" />	
 </beans>

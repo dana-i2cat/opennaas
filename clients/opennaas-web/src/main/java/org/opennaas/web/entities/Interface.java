@@ -11,6 +11,8 @@ import javax.validation.constraints.Size;
  */
 public class Interface {
 
+	private String	labelName;
+
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String	name;
@@ -85,6 +87,21 @@ public class Interface {
 	 */
 	public void setVlan(Integer vlan) {
 		this.vlan = vlan;
+	}
+
+	/**
+	 * @return the labelName
+	 */
+	public String getLabelName() {
+		return labelName;
+	}
+
+	/**
+	 * @param labelName
+	 *            the labelName to set
+	 */
+	public void setLabelName(String labelName) {
+		this.labelName = labelName;
 	}
 
 }
