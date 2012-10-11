@@ -64,6 +64,7 @@ public class VCPENetworkModelHelper {
 		inter1.setNameInTemplate(VCPETemplate.INTER1_INTERFACE_LOCAL);
 		inter1.setName("fe-0/3/2.1");
 		inter1.setVlanId(1);
+		inter1.setIpAddress("192.168.0.1/30");
 
 		Interface inter1other = new Interface();
 		inter1other.setNameInTemplate(VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
@@ -74,6 +75,7 @@ public class VCPENetworkModelHelper {
 		down1.setNameInTemplate(VCPETemplate.DOWN1_INTERFACE_LOCAL);
 		down1.setName("ge-0/2/0.1");
 		down1.setVlanId(1);
+		down1.setIpAddress("192.0.2.2/25");
 
 		Interface down1other = new Interface();
 		down1other.setNameInTemplate(VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
@@ -83,10 +85,12 @@ public class VCPENetworkModelHelper {
 		Interface up1 = new Interface();
 		up1.setNameInTemplate(VCPETemplate.UP1_INTERFACE_LOCAL);
 		up1.setName("lt-0/1/2.1");
+		up1.setIpAddress("192.168.0.5/30");
 
 		Interface up1other = new Interface();
 		up1other.setNameInTemplate(VCPETemplate.UP1_INTERFACE_PEER);
 		up1other.setName("lt-0/1/2.3"); // in physical router
+		up1other.setIpAddress("192.168.0.6/30");
 
 		List<Interface> vcpe1Interfaces = new ArrayList<Interface>();
 		vcpe1Interfaces.add(inter1);
@@ -103,6 +107,7 @@ public class VCPENetworkModelHelper {
 		inter2.setNameInTemplate(VCPETemplate.INTER2_INTERFACE_LOCAL);
 		inter2.setName("fe-0/3/3.1");
 		inter2.setVlanId(1);
+		inter2.setIpAddress("192.168.0.2/30");
 
 		Interface inter2other = new Interface();
 		inter2other.setNameInTemplate(VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
@@ -113,6 +118,7 @@ public class VCPENetworkModelHelper {
 		down2.setNameInTemplate(VCPETemplate.DOWN2_INTERFACE_LOCAL);
 		down2.setName("ge-0/2/0.2");
 		down2.setVlanId(2);
+		down2.setIpAddress("192.0.2.3/25");
 
 		Interface down2other = new Interface();
 		down2other.setNameInTemplate(VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
@@ -122,10 +128,12 @@ public class VCPENetworkModelHelper {
 		Interface up2 = new Interface();
 		up2.setNameInTemplate(VCPETemplate.UP2_INTERFACE_LOCAL);
 		up2.setName("lt-0/1/2.2"); // in physical router
+		up2.setIpAddress("192.168.0.9/30");
 
 		Interface up2other = new Interface();
 		up2other.setNameInTemplate(VCPETemplate.UP2_INTERFACE_PEER);
 		up2other.setName("lt-0/1/2.4");
+		up2other.setIpAddress("192.168.0.10/30");
 
 		List<Interface> vcpe2Interfaces = new ArrayList<Interface>();
 		vcpe2Interfaces.add(inter2);

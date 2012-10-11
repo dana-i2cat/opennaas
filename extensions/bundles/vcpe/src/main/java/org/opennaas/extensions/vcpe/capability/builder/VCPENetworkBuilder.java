@@ -228,7 +228,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		for (Interface iface : ifaces) {
 			NetworkPort port = VCPEToRouterModelTranslator.vCPEInterfaceToNetworkPort(iface, model);
 			chassisCapability.createSubInterface(port);
-			// Note: this call will also assign IP addresses to given interfaces
+			// Note: this call will NOT assign IP addresses to given interfaces
 		}
 
 	}
