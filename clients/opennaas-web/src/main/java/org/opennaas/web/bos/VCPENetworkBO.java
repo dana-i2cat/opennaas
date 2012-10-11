@@ -13,6 +13,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -102,9 +103,22 @@ public class VCPENetworkBO {
 		information.setType(Constants.RESOURCE_VCPENET_TYPE);
 		information.setName(vcpeNetwork.getName());
 		descriptor.setInformation(information);
+
+		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
+		capabs.add(generateBuilderCapabilityDescriptor());
+		descriptor.setCapabilityDescriptors(capabs);
+
 		// OpenNaaS VCPENetwork Model
 		descriptor.setvCPEModel(getVCPENetworkModel(vcpeNetwork));
 		return descriptor;
+	}
+
+	private static CapabilityDescriptor generateBuilderCapabilityDescriptor() {
+		CapabilityDescriptor desc = new CapabilityDescriptor();
+		Information info = new Information();
+		info.setType("vcpenet_builder");
+		desc.setCapabilityInformation(info);
+		return desc;
 	}
 
 	/**
