@@ -41,7 +41,7 @@ public class DescriptorTest {
 
 		Assert.assertEquals(model, loadedModel);
 
-		// System.out.println(writer.toString());
+		System.out.println(writer.toString());
 	}
 
 	private static Writer marshallVCPENetDescriptor(Writer writer, VCPENetworkDescriptor descriptor) throws JAXBException {

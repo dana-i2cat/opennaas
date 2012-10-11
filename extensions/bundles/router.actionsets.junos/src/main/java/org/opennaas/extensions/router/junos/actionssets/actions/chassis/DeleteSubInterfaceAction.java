@@ -13,6 +13,7 @@ import org.opennaas.extensions.router.junos.actionssets.actions.JunosAction;
 import org.opennaas.extensions.router.junos.commandsets.commands.EditNetconfCommand;
 import org.opennaas.extensions.router.model.ComputerSystem;
 import org.opennaas.extensions.router.model.EthernetPort;
+import org.opennaas.extensions.router.model.LogicalTunnelPort;
 
 public class DeleteSubInterfaceAction extends JunosAction {
 
@@ -30,8 +31,12 @@ public class DeleteSubInterfaceAction extends JunosAction {
 	@Override
 	public boolean checkParams(Object params) throws ActionException {
 
-		if (!(params instanceof EthernetPort))
+		if (!((params instanceof EthernetPort) || (params instanceof LogicalTunnelPort)))
 			return false;
+		// If we are removing a LogicalTunnelPort, the router may generate an error
+		// when committing.
+		// This will happen if peer LT interface is still pointing to the removed one.
+		// The user must remove both LT interfaces at same commit, or commit will fail.
 
 		return true;
 	}
