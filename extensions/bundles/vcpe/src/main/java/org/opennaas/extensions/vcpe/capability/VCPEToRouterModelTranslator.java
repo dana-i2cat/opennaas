@@ -9,6 +9,7 @@ import org.opennaas.extensions.router.model.LogicalPort;
 import org.opennaas.extensions.router.model.LogicalTunnelPort;
 import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.VLANEndpoint;
+import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -42,16 +43,7 @@ public class VCPEToRouterModelTranslator {
 			port = new LogicalPort();
 			port.setName(iface.getName());
 
-			if (iface.getVlanId() != 0) {
-				VLANEndpoint vlanEP = new VLANEndpoint();
-				vlanEP.setVlanID(Integer.parseInt(Long.toString(iface.getVlanId())));
-				port.addProtocolEndpoint(vlanEP);
-			}
-			if (iface.getIpAddress() != null) {
-				IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
-				ipEP.setIPv4Address(iface.getIpAddress());
-				port.addProtocolEndpoint(ipEP);
-			}
+			port = assignIPAddressAndVlan(iface, port);
 		}
 		return port;
 	}
@@ -81,17 +73,27 @@ public class VCPEToRouterModelTranslator {
 		port.setName(ifaceNameParts[0]);
 		((NetworkPort) port).setPortNumber(Integer.parseInt(ifaceNameParts[1]));
 
-		if (iface.getVlanId() != 0) {
-			VLANEndpoint vlanEP = new VLANEndpoint();
-			vlanEP.setVlanID(Integer.parseInt(Long.toString(iface.getVlanId())));
-			port.addProtocolEndpoint(vlanEP);
-		}
-		if (iface.getIpAddress() != null) {
-			IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
-			ipEP.setIPv4Address(iface.getIpAddress());
-			port.addProtocolEndpoint(ipEP);
-		}
+		port = (NetworkPort) assignIPAddressAndVlan(iface, port);
 		return port;
+	}
+
+	private static LogicalPort assignIPAddressAndVlan(Interface source, LogicalPort target) {
+
+		if (source.getVlanId() != 0) {
+			VLANEndpoint vlanEP = new VLANEndpoint();
+			vlanEP.setVlanID(Integer.parseInt(Long.toString(source.getVlanId())));
+			target.addProtocolEndpoint(vlanEP);
+		}
+		if (source.getIpAddress() != null) {
+			String[] addressAndMask = IPUtilsHelper.composedIPAddressToIPAddressAndMask(source.getIpAddress());
+
+			IPProtocolEndpoint ipEP = new IPProtocolEndpoint();
+			ipEP.setIPv4Address(addressAndMask[0]);
+			if (addressAndMask.length > 1)
+				ipEP.setSubnetMask(addressAndMask[1]);
+			target.addProtocolEndpoint(ipEP);
+		}
+		return target;
 	}
 
 	private static Interface findPeerInterface(Interface iface, VCPENetworkModel model) {
