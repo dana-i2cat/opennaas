@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <vcpeNetworkDescriptor xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:ns4="http://www.science.uva.nl/research/sne/ndl/domain#" xmlns:ns3="http://www.science.uva.nl/research/sne/ndl#" xmlns:ns5="org.opennaas.core.resources.descriptor.vcpe">
+    <capabilityDescriptors>
+        <information>
+            <type>vcpenet_builder</type>
+        </information>
+    </capabilityDescriptors>
     <information>
         <name>vcpeNet1</name>
         <type>vcpenet</type>
@@ -9,14 +14,14 @@
 &lt;vcpeNetworkModel xmlns="org.opennaas.extensions.vcpe.model"&gt;
     &lt;elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe1.phy.router&lt;/nameInTemplate&gt;
-        &lt;name&gt;router:lola&lt;/name&gt;
+        &lt;name&gt;lola&lt;/name&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe1.inter.phy.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe1.down.phy.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe1.up.phy.iface.local&lt;/interfaces&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe1.inter.phy.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2&lt;/name&gt;
+        &lt;name&gt;fe-0/3/2&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
@@ -26,7 +31,7 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe1.down.phy.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2&lt;/name&gt;
+        &lt;name&gt;ge-0/2/0&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
@@ -46,14 +51,14 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe2.phy.router&lt;/nameInTemplate&gt;
-        &lt;name&gt;router:myre&lt;/name&gt;
+        &lt;name&gt;lola&lt;/name&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe2.inter.phy.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe2.down.phy.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.cpe2.up.phy.iface.local&lt;/interfaces&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe2.inter.phy.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2&lt;/name&gt;
+        &lt;name&gt;fe-0/3/3&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
@@ -63,7 +68,7 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.cpe2.down.phy.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2&lt;/name&gt;
+        &lt;name&gt;ge-0/2/0&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
@@ -83,25 +88,28 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.router&lt;/nameInTemplate&gt;
-        &lt;name&gt;router:vCPE1&lt;/name&gt;
+        &lt;name&gt;vCPE1&lt;/name&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.inter.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.down.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.up.iface.local&lt;/interfaces&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.inter.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2.1&lt;/name&gt;
+        &lt;name&gt;fe-0/3/2.1&lt;/name&gt;
         &lt;vlanId&gt;1&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.1/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.down.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2.2&lt;/name&gt;
-        &lt;vlanId&gt;2&lt;/vlanId&gt;
+        &lt;name&gt;ge-0/2/0.1&lt;/name&gt;
+        &lt;vlanId&gt;1&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.0.2.2/25&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.up.iface.local&lt;/nameInTemplate&gt;
         &lt;name&gt;lt-0/1/2.1&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.5/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.inter.iface.other&lt;/nameInTemplate&gt;
@@ -115,30 +123,34 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.up.iface.other&lt;/nameInTemplate&gt;
-        &lt;name&gt;lt-0/1/2.1&lt;/name&gt;
+        &lt;name&gt;lt-0/1/2.3&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.6/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="router" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.router&lt;/nameInTemplate&gt;
-        &lt;name&gt;router:vCPE2&lt;/name&gt;
+        &lt;name&gt;vCPE2&lt;/name&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.inter.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.down.iface.local&lt;/interfaces&gt;
         &lt;interfaces&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.up.iface.local&lt;/interfaces&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.inter.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2.1&lt;/name&gt;
+        &lt;name&gt;fe-0/3/3.1&lt;/name&gt;
         &lt;vlanId&gt;1&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.2/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.down.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;fe-0/1/2.2&lt;/name&gt;
+        &lt;name&gt;ge-0/2/0.2&lt;/name&gt;
         &lt;vlanId&gt;2&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.0.2.3/25&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.up.iface.local&lt;/nameInTemplate&gt;
-        &lt;name&gt;lt-0/1/2.1&lt;/name&gt;
+        &lt;name&gt;lt-0/1/2.2&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.9/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.inter.iface.other&lt;/nameInTemplate&gt;
@@ -152,8 +164,9 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.up.iface.other&lt;/nameInTemplate&gt;
-        &lt;name&gt;lt-0/1/2.1&lt;/name&gt;
+        &lt;name&gt;lt-0/1/2.4&lt;/name&gt;
         &lt;vlanId&gt;0&lt;/vlanId&gt;
+        &lt;ipAddress&gt;192.168.0.10/30&lt;/ipAddress&gt;
     &lt;/elements&gt;
     &lt;elements xsi:type="interface" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.client.iface.other&lt;/nameInTemplate&gt;
@@ -167,6 +180,7 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="link" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.link.inter&lt;/nameInTemplate&gt;
+        &lt;type&gt;virtual&lt;/type&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.inter.local.1&lt;/implementedBy&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.inter.other&lt;/implementedBy&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.inter.local.2&lt;/implementedBy&gt;
@@ -194,6 +208,7 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="link" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.link.down.1&lt;/nameInTemplate&gt;
+        &lt;type&gt;virtual&lt;/type&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.down.1.local&lt;/implementedBy&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.down.1.other&lt;/implementedBy&gt;
         &lt;source&gt;org.opennaas.extensions.vcpe.template.1.vcpe1.down.iface.local&lt;/source&gt;
@@ -214,6 +229,7 @@
     &lt;/elements&gt;
     &lt;elements xsi:type="link" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
         &lt;nameInTemplate&gt;org.opennaas.extensions.vcpe.template.1.link.down.2&lt;/nameInTemplate&gt;
+        &lt;type&gt;virtual&lt;/type&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.down.2.local&lt;/implementedBy&gt;
         &lt;implementedBy&gt;org.opennaas.extensions.vcpe.template.1.link.down.2.other&lt;/implementedBy&gt;
         &lt;source&gt;org.opennaas.extensions.vcpe.template.1.vcpe2.down.iface.local&lt;/source&gt;
