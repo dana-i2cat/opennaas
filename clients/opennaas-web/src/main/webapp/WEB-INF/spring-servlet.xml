@@ -14,5 +14,8 @@
 			</value>
 		</property>
 	</bean>
+	
+	<!--  The tilesConfigurer bean initializes tiles with all the tiles configuration file -->
+	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" p:definitions="/WEB-INF/tiles-defs.xml" />   
 
 </beans>
