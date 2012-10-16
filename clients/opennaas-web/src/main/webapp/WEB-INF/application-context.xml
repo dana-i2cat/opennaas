@@ -43,19 +43,6 @@
 		</property>
 	</bean>
 	
-	<!--  The tilesViewResolver bean defines using Spring's TilesView which uses the url to lookup the Tiles definition and render it. -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass">
-			<value>
-				org.springframework.web.servlet.view.tiles2.TilesView
-			</value>
-		</property>
-	</bean>
-	
-	<!--  The tilesConfigurer bean initializes tiles with all the tiles configuration file -->
-	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" p:definitions="/WEB-INF/tiles-defs.xml" />   
-
 	<!-- OpenNaas Beans-->
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
 	<bean id="resourceService" class="org.opennaas.web.services.ResourceService" />	

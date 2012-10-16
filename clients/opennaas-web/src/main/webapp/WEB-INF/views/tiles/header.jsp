@@ -16,7 +16,7 @@
 		<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
 	</div>
 	<div style='float: left'>
-		<a href="/opennaas">Home</a>
+		<a href="<c:url value="/secure/home" />">Home</a> | <a href="<c:url value="/auth/logout" />">Logout</a>
 	</div>
 </div>
 <hr>
