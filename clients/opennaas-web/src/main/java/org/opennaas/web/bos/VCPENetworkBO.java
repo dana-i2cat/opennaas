@@ -13,6 +13,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.Resource;
+import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.model.Interface;
@@ -117,9 +118,22 @@ public class VCPENetworkBO {
 		information.setType(Constants.RESOURCE_VCPENET_TYPE);
 		information.setName(vcpeNetwork.getName());
 		descriptor.setInformation(information);
+
+		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
+		capabs.add(generateBuilderCapabilityDescriptor());
+		descriptor.setCapabilityDescriptors(capabs);
+
 		// OpenNaaS VCPENetwork Model
 		descriptor.setvCPEModel(getVCPENetworkModel(vcpeNetwork));
 		return descriptor;
+	}
+
+	private static CapabilityDescriptor generateBuilderCapabilityDescriptor() {
+		CapabilityDescriptor desc = new CapabilityDescriptor();
+		Information info = new Information();
+		info.setType("vcpenet_builder");
+		desc.setCapabilityInformation(info);
+		return desc;
 	}
 
 	/**
@@ -129,12 +143,12 @@ public class VCPENetworkBO {
 	private static String getVCPENetworkModel(VCPENetwork vcpeNetwork) {
 		// vcpe1
 		Router vcpe1 = new Router();
-		vcpe1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
+		vcpe1.setNameInTemplate(VCPETemplate.VCPE1_ROUTER);
 		vcpe1.setName("router:vCPE1");
 
 		// Inter Interface
 		Interface inter1 = new Interface();
-		inter1.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
+		inter1.setNameInTemplate(VCPETemplate.INTER1_INTERFACE_LOCAL);
 		inter1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getName() +
 				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getPort());
 		inter1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getVlan());
@@ -142,7 +156,7 @@ public class VCPENetworkBO {
 
 		// Down Interface
 		Interface down1 = new Interface();
-		down1.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
+		down1.setNameInTemplate(VCPETemplate.DOWN1_INTERFACE_LOCAL);
 		down1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getName() +
 				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getPort());
 		down1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getVlan());
@@ -150,7 +164,7 @@ public class VCPENetworkBO {
 
 		// Up Interface
 		Interface up1 = new Interface();
-		up1.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
+		up1.setNameInTemplate(VCPETemplate.UP1_INTERFACE_LOCAL);
 		up1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getName() +
 				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getPort());
 		up1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getVlan());
@@ -164,12 +178,12 @@ public class VCPENetworkBO {
 
 		// vcpe2
 		Router vcpe2 = new Router();
-		vcpe2.setTemplateName(VCPETemplate.VCPE2_ROUTER);
+		vcpe2.setNameInTemplate(VCPETemplate.VCPE2_ROUTER);
 		vcpe2.setName("router:vCPE2");
 
 		// Inter Interface
 		Interface inter2 = new Interface();
-		inter2.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
+		inter2.setNameInTemplate(VCPETemplate.INTER2_INTERFACE_LOCAL);
 		inter2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getName() +
 				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getPort());
 		inter2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getVlan());
@@ -177,7 +191,7 @@ public class VCPENetworkBO {
 
 		// Down Interface
 		Interface down2 = new Interface();
-		down2.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
+		down2.setNameInTemplate(VCPETemplate.DOWN2_INTERFACE_LOCAL);
 		down2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getName() +
 				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getPort());
 		down2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getVlan());
@@ -185,7 +199,7 @@ public class VCPENetworkBO {
 
 		// Up Interface
 		Interface up2 = new Interface();
-		up2.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
+		up2.setNameInTemplate(VCPETemplate.UP2_INTERFACE_LOCAL);
 		up2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getName() +
 				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getPort());
 		up2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getVlan());
