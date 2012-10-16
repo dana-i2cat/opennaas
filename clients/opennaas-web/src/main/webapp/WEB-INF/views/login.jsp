@@ -5,39 +5,32 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
-
 <html>
 <head>
-	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
-	<title><fmt:message key="index.title"/></title>
+	<title><fmt:message key="login.title"/></title>
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css">
 	<link rel="stylesheet" href="<c:url value="/resources/blueprint/print.css" />" type="text/css">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/opennaas.css" />" type="text/css">
 	<!--[if lt IE 8]>
 		<link rel="stylesheet" href="<c:url value="/resources/blueprint/ie.css" />" type="text/css">
 	<![endif]-->
 </head>
 <body>
-<div class="container">  
-	<h1>
-		Error page
-	</h1>
-
-	<div>
-		<div style='float: right'>
-			<a href="?locale=en_gb">en</a> | <a href="?locale=es_es">es</a>
-		</div>
+	<div id="login">
+		<fieldset>
+			<h4>Login</h4>
+			<div id="login-error">${error}</div>
+		
+			<form action="../j_spring_security_check" method="post">
+				<p>
+					<label for="j_username">Username</label> <input id="j_username" name="j_username" type="text" />
+				</p>
+				<p>
+					<label for="j_password">Password</label> <input id="j_password" name="j_password" type="password" />
+				</p>
+				<input type="submit" value="Login" />
+			</form>
+		</fieldset>
 	</div>
-	<h2>Your application has generated an error</h2>
-    <h3>Please check for the error given below</h3>
-	<b>Exception message:</b><br> 	    
-	<hr>
-	<c:if test="${not empty exception}" >
-		<div class="error">
-			<span>
-				<spring:message text="${exception}" />
-			</span>
-		</div>
-	</c:if>
-</div>
 </body>
 </html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+			http://www.springframework.org/schema/security 
+			http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+	
+	<!-- This is where we configure Spring-Security  -->
+	<security:http auto-config="true" use-expressions="true" access-denied-page="/auth/denied" >
+		<security:intercept-url pattern="index.jsp" access="permitAll" />
+		<security:intercept-url pattern="/auth/login" access="permitAll"/>
+		<security:intercept-url pattern="/secure/noc/**" access="hasRole('ROLE_NOC')"/>
+		<security:intercept-url pattern="/secure/**" access="hasRole('ROLE_CLIENT')"/>
+			
+		<security:form-login
+				login-page="/auth/login" 
+				authentication-failure-url="/auth/login?error=true" 
+				default-target-url="/secure/home"/>
+			
+		<security:logout 
+				invalidate-session="true" 
+				logout-success-url="/auth/login" 
+				logout-url="/auth/logout"/>
+				
+	</security:http>
+	
+	 <security:authentication-manager>
+        <security:authentication-provider>
+            <security:user-service>
+                <security:user name="client" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_CLIENT" />
+                <security:user name="noc" password="e10adc3949ba59abbe56e057f20f883e" authorities="ROLE_NOC, ROLE_CLIENT" />
+            </security:user-service>
+            <security:password-encoder ref="passwordEncoder"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+	
+	<!-- Use a Md5 encoder since the user's passwords are stored as Md5 in the database -->
+	<bean class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" id="passwordEncoder"/>
+		
+</beans>

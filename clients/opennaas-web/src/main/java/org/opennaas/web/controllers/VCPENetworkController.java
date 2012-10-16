@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author Jordi
  */
 @Controller
-@RequestMapping(value = "/vcpeNetwork")
 public class VCPENetworkController {
 
 	private static final Logger						LOGGER	= Logger.getLogger(VCPENetworkController.class);
@@ -51,7 +50,7 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "create")
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
 		if (!result.hasErrors()) {
@@ -73,11 +72,14 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "delete")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/delete")
 	public String delete(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("delete entity with id: " + vcpeNetworkId);
 		vcpeNetworkBO.delete(vcpeNetworkId);
-		return "createVCPENetwork";
+		model.addAttribute("infoMsg", messageSource
+				.getMessage("vcpenetwork.delete.message.info", null, locale));
+		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
+		return "listVCPENetwork";
 	}
 
 	/**
@@ -87,7 +89,7 @@ public class VCPENetworkController {
 	 * @param result
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "edit")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
 		model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
@@ -95,16 +97,29 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Redirect to the form to create a VCPENetwork
+	 * List all the VCPENetwork
 	 * 
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.GET, value = "list")
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/list")
 	public String list(Model model) {
 		LOGGER.debug("list all entities");
 		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
 		return "listVCPENetwork";
+	}
+
+	/**
+	 * View a VCPENetwork
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/view")
+	public String view(Model model) {
+		// TODO
+		LOGGER.debug("view all entities");
+		return "viewVCPENetwork";
 	}
 
 	/**
