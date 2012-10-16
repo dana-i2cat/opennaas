@@ -69,8 +69,12 @@ public class VCPENetworkBO {
 	 */
 	public VCPENetwork getById(String vcpeNetworkId) {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
-		Resource resource = resourceService.getResourceById(vcpeNetworkId);
-		return resourceToVCPENetwork(resource);
+		// TODO Call to OpenNaaS
+		// Resource resource = resourceService.getResourceById(vcpeNetworkId);
+		// return resourceToVCPENetwork(resource);
+		VCPENetwork vcpeNetwork = new VCPENetwork();
+		vcpeNetwork.setName("VCPENetwork-1");
+		return vcpeNetwork;
 	}
 
 	/**
@@ -80,7 +84,18 @@ public class VCPENetworkBO {
 	 */
 	public List<VCPENetwork> getAll() {
 		LOGGER.debug("get all VCPENetwork");
-		return resourceService.getAllResources();
+		List<VCPENetwork> vcpeNetworks = new ArrayList<VCPENetwork>();
+		VCPENetwork vcpeNetwork1 = new VCPENetwork();
+		VCPENetwork vcpeNetwork2 = new VCPENetwork();
+		vcpeNetworks.add(vcpeNetwork1);
+		vcpeNetworks.add(vcpeNetwork2);
+		vcpeNetwork1.setName("VCPENetwork-1");
+		vcpeNetwork1.setId("1");
+		vcpeNetwork2.setName("VCPENetwork-2");
+		vcpeNetwork2.setId("2");
+		return vcpeNetworks;
+		// TODO Call to OpenNaaS
+		// return resourceService.getAllResources();
 	}
 
 	/**

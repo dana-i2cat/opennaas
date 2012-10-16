@@ -21,3 +21,9 @@ OpenNaaS Custom CSS
 	margin: 0px auto 0px auto;
 	width: 500px;
 }
+
+#login {
+	width: 260px;
+	height: 50px;
+	margin: 50px auto 0px auto;
+}

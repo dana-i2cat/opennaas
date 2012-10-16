@@ -11,10 +11,10 @@
 <head>
 	<META http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title><tiles:insertAttribute name="title" ignore="true" /></title>
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" media="screen, projection">
-	<link rel="stylesheet" href="<c:url value="/resources/blueprint/opennaas.css" />" type="text/css" media="screen, print">
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/screen.css" />" type="text/css" >
+	<link rel="stylesheet" href="<c:url value="/resources/blueprint/opennaas.css" />" type="text/css" >
 	<!--[if lt IE 8]>
-		<link rel="stylesheet" href="opennaas//resources/blueprint/ie.css" type="text/css" media="screen, projection">
+		<link rel="stylesheet" href="opennaas//resources/blueprint/ie.css" type="text/css" >
 	<![endif]-->
 	
 	<!-- JQuery -->
