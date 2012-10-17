@@ -23,7 +23,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
-@Path("/resources")
+@Path("/")
 public interface IResourceManager {
 
 	public static final String	NOTIFICATIONS_TOPIC	= "com/iaasframework/resources/core/ResourceManager";
@@ -57,7 +57,7 @@ public interface IResourceManager {
 	 */
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
 
-	@Path("/{resourceId}/modify")
+	@Path("/modify/{resourceId}")
 	@PUT
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
@@ -74,7 +74,7 @@ public interface IResourceManager {
 	 */
 	public IResource modifyResource(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor) throws ResourceException;
 
-	@Path("/{resourceId}/remove")
+	@Path("/remove/{resourceId}")
 	@DELETE
 	public void removeResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
@@ -135,12 +135,18 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	@GET
-	@Path("/{id}")
+	@Path("/getResource/{resourceId}")
 	@Produces(MediaType.APPLICATION_XML)
-	public IResource getResourceById(@PathParam("id") String resourceId) throws ResourceException;
+	public IResource getResourceById(@PathParam("resourceId") String resourceId) throws ResourceException;
 
+	/**
+	 * Start a resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
-	@Path("{resourceId}/start")
+	@Path("/start/{resourceId}")
 	public void startResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
@@ -151,8 +157,14 @@ public interface IResourceManager {
 	 */
 	public void startResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	/**
+	 * Stop an existing resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
-	@Path("{resourceId}/stop")
+	@Path("/stop/{resourceId}")
 	public void stopResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
@@ -195,8 +207,8 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	@GET
-	@Path("/{id}/name")
-	public String getNameFromResourceID(@PathParam("id") String ID) throws ResourceException;
+	@Path("/getName/{resourceId}/")
+	public String getNameFromResourceID(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
 	 * 
@@ -211,5 +223,45 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	public void destroyAllResources() throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptor/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return List<ResourceDescriptor>
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptorsByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	public List<ResourceDescriptor> getResourceDescriptorsByType(@PathParam("type") String type) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return List<ResourceDescriptor>
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getModelsByType/{type}")
+	@Produces(MediaType.APPLICATION_XML)
+	public List<IModel> getModelsByType(@PathParam("type") String type) throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getModel/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public String getModel(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 }

@@ -46,7 +46,7 @@
 		<commons.net.version>1.4.1_3</commons.net.version>
 		<commons.pool.version>1.5.4</commons.pool.version>
 		<cxf.version>2.4.3-fuse-01-02</cxf.version>
-		<cxf.dosgi.version>1.3.1</cxf.dosgi.version>
+		<cxf.dosgi.version>1.3</cxf.dosgi.version>
 		<easymock.version>3.1</easymock.version>
 		<felix.gogo.version>0.10.0</felix.gogo.version>
 		<geronimo.jaxws.version>1.0</geronimo.jaxws.version>
@@ -302,6 +302,11 @@
 				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.vcpe</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
@@ -512,6 +517,37 @@
 			<dependency>
 			    <groupId>org.springframework</groupId>
 			    <artifactId>spring-oxm</artifactId>
+			    <version>${spring.version}</version>
+			</dependency>
+			<!-- Contains core authentication and access-contol classes and interfaces, 
+				remoting support and basic provisioning APIs. -->
+			<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-core</artifactId>
+			    <version>${spring.version}</version>
+	 		</dependency> 
+	 		<!-- Contains filters and related web-security infrastructure code. 
+	 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
+	 			web authentication services and URL-based access-control. -->
+			<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-web</artifactId>
+			    <version>${spring.version}</version>
+	  		</dependency>
+	  		<!-- Contains the security namespace parsing code. 
+	  			You need it if you are using the Spring Security XML namespace for configuration. 
+	  			The main package is org.springframework.security.config. 
+	  			None of the classes are intended for direct use in an application. --> 
+	  		<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-config</artifactId>
+			    <version>${spring.version}</version>
+	  		</dependency>
+	  		<!-- Spring Security has its own taglib which provides basic support for accessing 
+	  			security information and applying security constraints in JSPs. -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
 			    <version>${spring.version}</version>
 			</dependency>
 			<!-- Web application development utilities applicable to both Servlet and 

@@ -1,4 +1,4 @@
-package org.opennaas.extensions.router.junos.action.test;
+package org.opennaas.extensions.router.junos.actionssets.actions.test.gretunnel;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

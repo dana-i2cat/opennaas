@@ -3,7 +3,6 @@ package org.opennaas.extensions.router.model.utils;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-
 /**
  * It is used to parse different messages
  * 
@@ -47,6 +46,18 @@ public class IPUtilsHelper {
 		int result = bitPrefixC | (Integer.parseInt(ipAddress[3]));
 
 		return result;
+	}
+
+	public static String ipAddressAndMaskToComposedIPAddress(String ipAddress, String mask) {
+		return ipAddress + "/" + parseLongToShortIpv4NetMask(mask);
+	}
+
+	public static String[] composedIPAddressToIPAddressAndMask(String composedIPAddress) {
+		String[] parts = composedIPAddress.split("\\/");
+		if (parts.length > 1) {
+			parts[1] = parseShortToLongIpv4NetMask(parts[1]);
+		}
+		return parts;
 	}
 
 	/* extra methods */
