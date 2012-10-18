@@ -3,6 +3,8 @@
  */
 package org.opennaas.web.services;
 
+import javax.ws.rs.core.Response.Status.Family;
+
 import org.apache.log4j.Logger;
 import org.opennaas.web.services.rest.RestServiceException;
 import org.opennaas.web.utils.Constants;
@@ -16,9 +18,7 @@ import com.sun.jersey.api.client.ClientResponse;
  */
 public abstract class GenericRestService {
 
-	private static final Logger						LOGGER					= Logger.getLogger(GenericRestService.class);
-	protected static final Integer					HTTP_STATUS_CODE_MAX_OK	= 299;
-	protected static final Integer					HTTP_STATUS_CODE_MIN_OK	= 200;
+	private static final Logger						LOGGER	= Logger.getLogger(GenericRestService.class);
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
@@ -42,8 +42,8 @@ public abstract class GenericRestService {
 	 */
 	protected Boolean checkResponse(ClientResponse response) throws RestServiceException {
 		LOGGER.info("Response: " + response);
-		if (response.getStatus() > HTTP_STATUS_CODE_MAX_OK
-				|| response.getStatus() < HTTP_STATUS_CODE_MIN_OK) {
+		Family family = ClientResponse.Status.fromStatusCode(response.getStatus()).getFamily();
+		if (!family.equals(Family.SUCCESSFUL)) {
 			throw new RestServiceException(response);
 		}
 		return true;
