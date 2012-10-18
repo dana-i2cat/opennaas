@@ -10,7 +10,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 @Path("/")
@@ -28,7 +27,7 @@ public interface IVCPENetworkManager {
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean create(String vcpeNetworkId, Router router1, Router router2);
+	public Boolean create(VCPENetworkModel vcpeNetworkModel);
 
 	/**
 	 * Remove a VCPE infrastructure of the resource with id = vcpeNetworkId

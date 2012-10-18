@@ -30,6 +30,7 @@ public class VCPENetwork {
 	 */
 	public VCPENetwork() {
 		logicalRouter1 = new LogicalRouter();
+		logicalRouter1.setName("LR-1");
 		List<Interface> interfaces = new ArrayList<Interface>();
 
 		Interface interface1 = new Interface();
@@ -61,6 +62,7 @@ public class VCPENetwork {
 		logicalRouter1.setInterfaces(interfaces);
 
 		logicalRouter2 = new LogicalRouter();
+		logicalRouter2.setName("LR-backup");
 		interfaces = new ArrayList<Interface>();
 
 		interface1 = new Interface();

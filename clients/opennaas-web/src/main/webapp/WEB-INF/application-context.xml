@@ -46,4 +46,5 @@
 	<!-- OpenNaas Beans-->
 	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
 	<bean id="resourceService" class="org.opennaas.web.services.ResourceService" />	
+	<bean id="vcpeNetworkService" class="org.opennaas.web.services.VCPENetworkService" />	
 </beans>

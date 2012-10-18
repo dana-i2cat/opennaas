@@ -2,7 +2,6 @@ package org.opennaas.extensions.vcpe.manager;
 
 import java.util.List;
 
-import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
@@ -10,13 +9,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#create(java.lang.String, org.opennaas.extensions.vcpe.model.Router,
-	 * org.opennaas.extensions.vcpe.model.Router)
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#create(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public Boolean create(String vcpeNetworkId, Router router1, Router router2) {
+	public Boolean create(VCPENetworkModel vcpeNetworkModel) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	/*
@@ -27,7 +25,7 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public Boolean remove(String vcpeNetworkId) {
 		// TODO Auto-generated method stub
-		return null;
+		return true;
 	}
 
 	/*
