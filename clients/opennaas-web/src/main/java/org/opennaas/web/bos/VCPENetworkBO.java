@@ -11,7 +11,7 @@ import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.model.Interface;
-import org.opennaas.extensions.vcpe.model.Router;
+import org.opennaas.extensions.vcpe.model.LogicalRouter;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.web.entities.VCPENetwork;
@@ -148,8 +148,8 @@ public class VCPENetworkBO {
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		request.setElements(elements);
 		// LogicalRouters
-		Router logicalRouter1 = getRouter(vcpeNetwork.getLogicalRouter1().getName(), vcpeNetwork.getLogicalRouter1().getInterfaces());
-		Router logicalRouter2 = getRouter(vcpeNetwork.getLogicalRouter2().getName(), vcpeNetwork.getLogicalRouter2().getInterfaces());
+		LogicalRouter logicalRouter1 = getLogicalRouter(vcpeNetwork.getLogicalRouter1().getName(), vcpeNetwork.getLogicalRouter1().getInterfaces());
+		LogicalRouter logicalRouter2 = getLogicalRouter(vcpeNetwork.getLogicalRouter2().getName(), vcpeNetwork.getLogicalRouter2().getInterfaces());
 		elements.add(logicalRouter1);
 		elements.add(logicalRouter2);
 		// Add interfaces to elements
@@ -166,8 +166,8 @@ public class VCPENetworkBO {
 	 * @param logicalRouter1
 	 * @return
 	 */
-	private Router getRouter(String lrName, List<org.opennaas.web.entities.Interface> ifaces) {
-		Router router = new Router();
+	private LogicalRouter getLogicalRouter(String lrName, List<org.opennaas.web.entities.Interface> ifaces) {
+		LogicalRouter router = new LogicalRouter();
 		router.setName(lrName);
 		router.setNameInTemplate(lrName);
 		// Interfaces
