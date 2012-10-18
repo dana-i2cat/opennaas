@@ -44,8 +44,8 @@ public class VCPENetworkBO {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
 		String vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
 		LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
-		// resourceService.startResource(vcpeNetworkId);
-		LOGGER.debug("build the VCPENetwork enviroment");
+		resourceService.startResource(vcpeNetworkId);
+		LOGGER.debug("create the VCPENetwork enviroment");
 		vcpeNetworkService.createVCPENetwork(getCreateVCPERequest(vcpeNetworkId, vcpeNetwork));
 		return vcpeNetworkId;
 	}
@@ -57,10 +57,13 @@ public class VCPENetworkBO {
 	 * @throws RestServiceException
 	 */
 	public void delete(String vcpeNetworkId) throws RestServiceException {
+		LOGGER.debug("destroy the VCPENetwork enviroment");
+		vcpeNetworkService.deleteVCPENetwork(vcpeNetworkId);
 		LOGGER.debug("stop a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.stopResource(vcpeNetworkId);
 		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.deleteResource(vcpeNetworkId);
+
 	}
 
 	/**

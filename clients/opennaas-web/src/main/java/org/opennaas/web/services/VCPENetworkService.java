@@ -22,12 +22,10 @@ public class VCPENetworkService extends GenericRestService {
 	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkService.class);
 
 	/**
-	 * Call a rest url to create a VCPENetwork infrastructure
+	 * Call a rest url to create a VCPENetwork environment
 	 * 
-	 * @param createVCPENetRequest
-	 * 
-	 * @param id
-	 * @return String
+	 * @param request
+	 * @return true if the environment has been created
 	 * @throws RestServiceException
 	 */
 	public Boolean createVCPENetwork(VCPENetworkModel request) throws RestServiceException {
@@ -39,6 +37,29 @@ public class VCPENetworkService extends GenericRestService {
 			WebResource webResource = client.resource(url);
 			response = webResource.type(MediaType.APPLICATION_XML)
 					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class, request);
+			LOGGER.info("VCPENetwork created: " + response);
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+			throw e;
+		}
+		return checkResponse(response);
+	}
+
+	/**
+	 * Call a rest url to destroy a VCPENetwork environment
+	 * 
+	 * @param vcpeNetworkId
+	 * @throws RestServiceException
+	 */
+	public Boolean deleteVCPENetwork(String vcpeNetworkId) throws RestServiceException {
+		ClientResponse response = null;
+		try {
+			LOGGER.info("Calling remove VCPENetworkManager service");
+			String url = getURL("vcpenetwork/remove/" + vcpeNetworkId);
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML)
+					.accept(MediaType.APPLICATION_XML).post(ClientResponse.class);
 			LOGGER.info("VCPENetwork created: " + response);
 		} catch (ClientHandlerException e) {
 			LOGGER.error(e.getMessage());
