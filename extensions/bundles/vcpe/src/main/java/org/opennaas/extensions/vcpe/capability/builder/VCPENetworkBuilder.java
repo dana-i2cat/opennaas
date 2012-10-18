@@ -119,6 +119,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		unconfigureEGP(resource, currentScenario);
 
+		// not necessary because subinterfaces will be removed afterwards
 		// removeIPAddresses(resource, currentScenario);
 
 		removeLogicalRouters(resource, currentScenario);
@@ -311,13 +312,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// only static routes by now
 		configureStaticRoutesInProvider(resource, model);
-		configureStaticRoutesInClient(resource, model);
+		// TODO uncomment when logical routers are started
+		// configureStaticRoutesInClient(resource, model);
 	}
 
 	private void unconfigureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// only static routes by now
 
-		unconfigureStaticRoutesInProvider(resource, model);
+		// TODO uncomment when unconfiguring static routes is available
+		// unconfigureStaticRoutesInProvider(resource, model);
 		// not necessary because logical routers will be dropped anyway
 		// unconfigureStaticRoutesInClient(resource, model);
 	}
