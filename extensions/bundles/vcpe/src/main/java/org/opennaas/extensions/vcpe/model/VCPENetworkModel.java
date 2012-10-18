@@ -20,29 +20,96 @@ public class VCPENetworkModel implements IModel {
 	 */
 	private static final long			serialVersionUID	= -1793468268517626224L;
 
+	private String						vcpeNetworkId;
+
+	private String						vcpeNetworkName;
+
 	private List<VCPENetworkElement>	elements;
 
+	/**
+	 * @return
+	 */
+	public List<VCPENetworkElement> getElements() {
+		return elements;
+	}
+
+	/**
+	 * @param elements
+	 */
+	public void setElements(List<VCPENetworkElement> elements) {
+		this.elements = elements;
+	}
+
+	/**
+	 * @return the vcpeNetworkId
+	 */
+	public String getVcpeNetworkId() {
+		return vcpeNetworkId;
+	}
+
+	/**
+	 * @param vcpeNetworkId
+	 *            the vcpeNetworkId to set
+	 */
+	public void setVcpeNetworkId(String vcpeNetworkId) {
+		this.vcpeNetworkId = vcpeNetworkId;
+	}
+
+	/**
+	 * @return the vcpeNetworkName
+	 */
+	public String getVcpeNetworkName() {
+		return vcpeNetworkName;
+	}
+
+	/**
+	 * @param vcpeNetworkName
+	 *            the vcpeNetworkName to set
+	 */
+	public void setVcpeNetworkName(String vcpeNetworkName) {
+		this.vcpeNetworkName = vcpeNetworkName;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IModel#getChildren()
+	 */
 	@Override
 	public List<String> getChildren() {
 		return new ArrayList<String>();
 	}
 
-	public List<VCPENetworkElement> getElements() {
-		return elements;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.core.resources.IModel#toXml()
+	 */
+	@Override
+	public String toXml() throws SerializationException {
+		return ObjectSerializer.toXml(this);
 	}
 
-	public void setElements(List<VCPENetworkElement> elements) {
-		this.elements = elements;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
+		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
+		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
 		return result;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -57,12 +124,16 @@ public class VCPENetworkModel implements IModel {
 				return false;
 		} else if (!elements.equals(other.elements))
 			return false;
+		if (vcpeNetworkId == null) {
+			if (other.vcpeNetworkId != null)
+				return false;
+		} else if (!vcpeNetworkId.equals(other.vcpeNetworkId))
+			return false;
+		if (vcpeNetworkName == null) {
+			if (other.vcpeNetworkName != null)
+				return false;
+		} else if (!vcpeNetworkName.equals(other.vcpeNetworkName))
+			return false;
 		return true;
 	}
-
-	@Override
-	public String toXml() throws SerializationException {
-		return ObjectSerializer.toXml(this);
-	}
-
 }
