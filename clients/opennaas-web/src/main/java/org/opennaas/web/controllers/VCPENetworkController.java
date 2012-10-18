@@ -89,7 +89,7 @@ public class VCPENetworkController {
 					.getMessage("vcpenetwork.delete.message.info", null, locale));
 			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
 		} catch (RestServiceException e) {
-			model.addAttribute("infoMsg", messageSource
+			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
 		}
 		return "listVCPENetwork";
