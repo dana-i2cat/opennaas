@@ -35,11 +35,11 @@ public interface IVCPENetworkManager {
 	 * @param vcpeNetworkId
 	 * @return true if the VCPE has been removed, false otherwise
 	 */
-	@Path("/remove")
+	@Path("/remove/{id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean remove(String vcpeNetworkId);
+	public Boolean remove(@PathParam("id") String vcpeNetworkId);
 
 	/**
 	 * Get the VCPENetwork with id = vcpeNetworkId

@@ -41,6 +41,7 @@ public abstract class GenericRestService {
 	 * @throws RestServiceException
 	 */
 	protected Boolean checkResponse(ClientResponse response) throws RestServiceException {
+		LOGGER.info("Response: " + response);
 		if (response.getStatus() > HTTP_STATUS_CODE_MAX_OK
 				|| response.getStatus() < HTTP_STATUS_CODE_MIN_OK) {
 			throw new RestServiceException(response);
