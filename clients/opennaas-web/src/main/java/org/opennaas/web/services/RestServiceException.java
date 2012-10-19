@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.web.services.rest;
+package org.opennaas.web.services;
 
 import com.sun.jersey.api.client.ClientResponse;
 

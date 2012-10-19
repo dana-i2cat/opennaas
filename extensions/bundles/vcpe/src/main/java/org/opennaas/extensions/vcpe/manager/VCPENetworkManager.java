@@ -1,8 +1,10 @@
 package org.opennaas.extensions.vcpe.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
@@ -36,7 +38,10 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) {
 		// TODO Auto-generated method stub
-		return null;
+		VCPENetworkModel vcpeNetworkModel = VCPENetworkModelHelper.generateSampleModel();
+		vcpeNetworkModel.setVcpeNetworkId("Dummy-Network-TODO");
+		vcpeNetworkModel.setVcpeNetworkName("Dummy-Network-TODO");
+		return vcpeNetworkModel;
 	}
 
 	/*
@@ -47,7 +52,12 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	@Override
 	public List<VCPENetworkModel> getAllVCPENetworks() {
 		// TODO Auto-generated method stub
-		return null;
+		List<VCPENetworkModel> list = new ArrayList<VCPENetworkModel>();
+		VCPENetworkModel vcpeNetworkModel = VCPENetworkModelHelper.generateSampleModel();
+		vcpeNetworkModel.setVcpeNetworkId("1");
+		vcpeNetworkModel.setVcpeNetworkName("Dummy-Network-TODO");
+		list.add(vcpeNetworkModel);
+		return list;
 	}
 
 }
