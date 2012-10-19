@@ -104,4 +104,26 @@ public class Interface {
 		this.labelName = labelName;
 	}
 
+	/**
+	 * @return
+	 */
+	public String getCompleteName() {
+		return getName() + "." + getPort();
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getNameFromCompleteName(String completeName) {
+		String aCompleteName[] = completeName.split("\\.");
+		return aCompleteName[0];
+	}
+
+	/**
+	 * @return
+	 */
+	public static String getPortFromCompleteName(String completeName) {
+		String aCompleteName[] = completeName.split("\\.");
+		return aCompleteName[1];
+	}
 }
