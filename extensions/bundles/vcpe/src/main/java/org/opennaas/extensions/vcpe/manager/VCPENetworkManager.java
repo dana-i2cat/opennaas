@@ -1,0 +1,77 @@
+package org.opennaas.extensions.vcpe.manager;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
+import org.opennaas.extensions.vcpe.Activator;
+import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+
+public class VCPENetworkManager implements IVCPENetworkManager {
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#create(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 */
+	@Override
+	public Boolean create(VCPENetworkModel vcpeNetworkModel) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#removed(java.lang.String)
+	 */
+	@Override
+	public Boolean remove(String vcpeNetworkId) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#getVCPENetworkById(java.lang.String)
+	 */
+	@Override
+	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
+		IResource resource = null;
+		try {
+			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			if (resource == null) {
+				throw new VCPENetworkManagerException("don't find a VCPENetwork with id = " + vcpeNetworkId);
+			}
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		} catch (ResourceException e) {
+			throw new VCPENetworkManagerException(e);
+		}
+		return (VCPENetworkModel) resource.getModel();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#getAllVCPENetworks()
+	 */
+	@Override
+	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException {
+		List<IResource> listModel = null;
+		List<VCPENetworkModel> result = new ArrayList<VCPENetworkModel>();
+		try {
+			listModel = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
+			for (int i = 0; i < listModel.size(); i++) {
+				result.add((VCPENetworkModel) listModel.get(i).getModel());
+			}
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		}
+		return result;
+	}
+}

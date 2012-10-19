@@ -14,7 +14,7 @@ public class VCPENetworkDescriptorHelper {
 		VCPENetworkDescriptor descriptor = new VCPENetworkDescriptor();
 
 		Information info = new Information();
-		info.setType("vcpenet");
+		info.setType(VCPENetworkDescriptor.RESOURCE_TYPE);
 		info.setName(name);
 		descriptor.setInformation(info);
 

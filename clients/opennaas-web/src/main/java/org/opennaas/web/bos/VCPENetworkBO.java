@@ -3,26 +3,24 @@
  */
 package org.opennaas.web.bos;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-
 import org.apache.log4j.Logger;
-import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.Information;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
-import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
+import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
+import org.opennaas.web.entities.Interface;
+import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.ResourceService;
+import org.opennaas.web.services.RestServiceException;
+import org.opennaas.web.services.VCPENetworkService;
 import org.opennaas.web.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,16 +34,22 @@ public class VCPENetworkBO {
 	@Autowired
 	private ResourceService		resourceService;
 
+	@Autowired
+	private VCPENetworkService	vcpeNetworkService;
+
 	/**
-	 * Create a VCPE Network. After start the resource
+	 * Create a VCPE Network, start the resource and build the enviroment
 	 * 
 	 * @param vcpeNetwork
+	 * @throws RestServiceException
 	 */
-	public String create(VCPENetwork vcpeNetwork) {
+	public String create(VCPENetwork vcpeNetwork) throws RestServiceException {
 		LOGGER.debug("create a VCPENetwork: " + vcpeNetwork);
 		String vcpeNetworkId = resourceService.createResource(getResourceDescriptor(vcpeNetwork));
 		LOGGER.debug("start the VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.startResource(vcpeNetworkId);
+		LOGGER.debug("create the VCPENetwork enviroment");
+		vcpeNetworkService.createVCPENetwork(getVCPENetworkOpennaas(vcpeNetworkId, vcpeNetwork));
 		return vcpeNetworkId;
 	}
 
@@ -53,12 +57,16 @@ public class VCPENetworkBO {
 	 * Delete a VCPE Network. First stop the resource
 	 * 
 	 * @param vcpeNetworkId
+	 * @throws RestServiceException
 	 */
-	public void delete(String vcpeNetworkId) {
+	public void delete(String vcpeNetworkId) throws RestServiceException {
+		LOGGER.debug("destroy the VCPENetwork enviroment");
+		vcpeNetworkService.deleteVCPENetwork(vcpeNetworkId);
 		LOGGER.debug("stop a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.stopResource(vcpeNetworkId);
 		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.deleteResource(vcpeNetworkId);
+
 	}
 
 	/**
@@ -66,51 +74,30 @@ public class VCPENetworkBO {
 	 * 
 	 * @param vcpeNetworkId
 	 * @return VCPENetwork
+	 * @throws RestServiceException
 	 */
-	public VCPENetwork getById(String vcpeNetworkId) {
+	public VCPENetwork getById(String vcpeNetworkId) throws RestServiceException {
 		LOGGER.debug("get a VCPENetwork with id: " + vcpeNetworkId);
-		// TODO Call to OpenNaaS
-		// Resource resource = resourceService.getResourceById(vcpeNetworkId);
-		// return resourceToVCPENetwork(resource);
-		VCPENetwork vcpeNetwork = new VCPENetwork();
-		vcpeNetwork.setName("VCPENetwork-1");
-		return vcpeNetwork;
+		VCPENetworkModel openNaasModel = vcpeNetworkService.getVCPENetworkById(vcpeNetworkId);
+		return getVCPENetworkGUI(openNaasModel);
 	}
 
 	/**
 	 * Get all VCPE Network
 	 * 
 	 * @return List<VCPENetwork>
+	 * @throws RestServiceException
 	 */
-	public List<VCPENetwork> getAll() {
+	public List<VCPENetwork> getAllVCPENetworks() throws RestServiceException {
 		LOGGER.debug("get all VCPENetwork");
-		List<VCPENetwork> vcpeNetworks = new ArrayList<VCPENetwork>();
-		VCPENetwork vcpeNetwork1 = new VCPENetwork();
-		VCPENetwork vcpeNetwork2 = new VCPENetwork();
-		vcpeNetworks.add(vcpeNetwork1);
-		vcpeNetworks.add(vcpeNetwork2);
-		vcpeNetwork1.setName("VCPENetwork-1");
-		vcpeNetwork1.setId("1");
-		vcpeNetwork2.setName("VCPENetwork-2");
-		vcpeNetwork2.setId("2");
-		return vcpeNetworks;
-		// TODO Call to OpenNaaS
-		// return resourceService.getAllResources();
+		return getListVCPENetworkGUI(vcpeNetworkService.getAllVCPENetworks());
 	}
 
 	/**
-	 * @param resource
-	 * @return
-	 */
-	private VCPENetwork resourceToVCPENetwork(Resource resource) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
+	 * Get the descriptor with his capability to create the resource
 	 * 
 	 * @param params
-	 * @return
+	 * @return VCPENetworkDescriptor
 	 */
 	private VCPENetworkDescriptor getResourceDescriptor(VCPENetwork vcpeNetwork) {
 		VCPENetworkDescriptor descriptor = new VCPENetworkDescriptor();
@@ -118,123 +105,156 @@ public class VCPENetworkBO {
 		information.setType(Constants.RESOURCE_VCPENET_TYPE);
 		information.setName(vcpeNetwork.getName());
 		descriptor.setInformation(information);
-
+		// Capability
 		List<CapabilityDescriptor> capabs = new ArrayList<CapabilityDescriptor>();
-		capabs.add(generateBuilderCapabilityDescriptor());
+		capabs.add(getBuilderCapability());
 		descriptor.setCapabilityDescriptors(capabs);
-
-		// OpenNaaS VCPENetwork Model
-		descriptor.setvCPEModel(getVCPENetworkModel(vcpeNetwork));
 		return descriptor;
 	}
 
-	private static CapabilityDescriptor generateBuilderCapabilityDescriptor() {
+	/**
+	 * Get the builder capability of the VCPENetwork to create the resource
+	 * 
+	 * @return CapabilityDescriptor
+	 */
+	private CapabilityDescriptor getBuilderCapability() {
 		CapabilityDescriptor desc = new CapabilityDescriptor();
 		Information info = new Information();
-		info.setType("vcpenet_builder");
+		info.setType(Constants.CAPABILITY_VCPENET_BUILDER);
 		desc.setCapabilityInformation(info);
 		return desc;
 	}
 
 	/**
-	 * @param vcpeNetwork
+	 * @param allVCPENetworks
 	 * @return
 	 */
-	private static String getVCPENetworkModel(VCPENetwork vcpeNetwork) {
-		// vcpe1
-		Router vcpe1 = new Router();
-		vcpe1.setNameInTemplate(VCPETemplate.VCPE1_ROUTER);
-		vcpe1.setName("router:vCPE1");
-
-		// Inter Interface
-		Interface inter1 = new Interface();
-		inter1.setNameInTemplate(VCPETemplate.INTER1_INTERFACE_LOCAL);
-		inter1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getName() +
-				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getPort());
-		inter1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getVlan());
-		inter1.setIpAddress(vcpeNetwork.getLogicalRouter1().getInterfaces().get(0).getIpAddress());
-
-		// Down Interface
-		Interface down1 = new Interface();
-		down1.setNameInTemplate(VCPETemplate.DOWN1_INTERFACE_LOCAL);
-		down1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getName() +
-				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getPort());
-		down1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getVlan());
-		down1.setIpAddress(vcpeNetwork.getLogicalRouter1().getInterfaces().get(1).getIpAddress());
-
-		// Up Interface
-		Interface up1 = new Interface();
-		up1.setNameInTemplate(VCPETemplate.UP1_INTERFACE_LOCAL);
-		up1.setName(vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getName() +
-				"." + vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getPort());
-		up1.setVlanId(vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getVlan());
-		up1.setIpAddress(vcpeNetwork.getLogicalRouter1().getInterfaces().get(2).getIpAddress());
-
-		List<Interface> vcpe1Interfaces = new ArrayList<Interface>();
-		vcpe1Interfaces.add(inter1);
-		vcpe1Interfaces.add(down1);
-		vcpe1Interfaces.add(up1);
-		vcpe1.setInterfaces(vcpe1Interfaces);
-
-		// vcpe2
-		Router vcpe2 = new Router();
-		vcpe2.setNameInTemplate(VCPETemplate.VCPE2_ROUTER);
-		vcpe2.setName("router:vCPE2");
-
-		// Inter Interface
-		Interface inter2 = new Interface();
-		inter2.setNameInTemplate(VCPETemplate.INTER2_INTERFACE_LOCAL);
-		inter2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getName() +
-				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getPort());
-		inter2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getVlan());
-		inter2.setIpAddress(vcpeNetwork.getLogicalRouter2().getInterfaces().get(0).getIpAddress());
-
-		// Down Interface
-		Interface down2 = new Interface();
-		down2.setNameInTemplate(VCPETemplate.DOWN2_INTERFACE_LOCAL);
-		down2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getName() +
-				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getPort());
-		down2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getVlan());
-		down2.setIpAddress(vcpeNetwork.getLogicalRouter2().getInterfaces().get(1).getIpAddress());
-
-		// Up Interface
-		Interface up2 = new Interface();
-		up2.setNameInTemplate(VCPETemplate.UP2_INTERFACE_LOCAL);
-		up2.setName(vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getName() +
-				"." + vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getPort());
-		up2.setVlanId(vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getVlan());
-		up2.setIpAddress(vcpeNetwork.getLogicalRouter2().getInterfaces().get(2).getIpAddress());
-
-		List<Interface> vcpe2Interfaces = new ArrayList<Interface>();
-		vcpe2Interfaces.add(inter2);
-		vcpe2Interfaces.add(down2);
-		vcpe2Interfaces.add(up2);
-		vcpe2.setInterfaces(vcpe2Interfaces);
-
-		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
-		elements.add(vcpe1);
-		elements.add(vcpe2);
-		elements.addAll(vcpe1.getInterfaces());
-		elements.addAll(vcpe2.getInterfaces());
-
-		VCPENetworkModel vcpeNetworkModel = new VCPENetworkModel();
-		vcpeNetworkModel.setElements(elements);
-
-		return convertToXml(vcpeNetworkModel, VCPENetworkModel.class);
-	}
-
-	public static String convertToXml(Object source, Class<?>... type) {
-		String result;
-		StringWriter sw = new StringWriter();
-		try {
-			JAXBContext carContext = JAXBContext.newInstance(type);
-			Marshaller carMarshaller = carContext.createMarshaller();
-			carMarshaller.marshal(source, sw);
-			result = sw.toString();
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
+	private List<VCPENetwork> getListVCPENetworkGUI(List<VCPENetworkModel> listModelIn) {
+		List<VCPENetwork> listModelOut = new ArrayList<VCPENetwork>();
+		for (int i = 0; i < listModelIn.size(); i++) {
+			listModelOut.add(getVCPENetworkGUI(listModelIn.get(i)));
 		}
-		return result;
+		return listModelOut;
 	}
 
+	/**
+	 * Convert a OpenNaaS model to a GUI VCPENetwork model
+	 * 
+	 * @param openNaasModel
+	 * @return VCPENetwork
+	 */
+	private VCPENetwork getVCPENetworkGUI(VCPENetworkModel modelIn) {
+		VCPENetwork modelOut = new VCPENetwork();
+		modelOut.setId(modelIn.getVcpeNetworkId());
+		modelOut.setName(modelIn.getVcpeNetworkName());
+
+		Router logicalRouter1 = (Router) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
+		Router logicalRouter2 = (Router) VCPENetworkModelHelper
+				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
+
+		modelOut.setLogicalRouter1(getLRGUI(logicalRouter1));
+		modelOut.setLogicalRouter1(getLRGUI(logicalRouter2));
+		return modelOut;
+	}
+
+	/**
+	 * Return a GUI logical router from a OpenNaaS logical router
+	 * 
+	 * @param inLR
+	 * @return
+	 */
+	private LogicalRouter getLRGUI(Router lrIn) {
+		LogicalRouter lrOut = new LogicalRouter();
+		lrOut.setName(lrIn.getName());
+		// Interfaces
+		List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
+		lrOut.setInterfaces(interfaces);
+		// Interface Inter
+		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(0)));
+		// Interface Down
+		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(1)));
+		// Interface Up
+		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(2)));
+		return lrOut;
+	}
+
+	/**
+	 * @param string
+	 * @param interface1
+	 * @return
+	 */
+	private Interface getInterfaceGUI(org.opennaas.extensions.vcpe.model.Interface interfaceIn) {
+		org.opennaas.web.entities.Interface outIface = new org.opennaas.web.entities.Interface();
+		outIface.setName(org.opennaas.web.entities.Interface.getNameFromCompleteName(interfaceIn.getName()));
+		outIface.setPort(org.opennaas.web.entities.Interface.getPortFromCompleteName(interfaceIn.getName()));
+		outIface.setIpAddress(interfaceIn.getIpAddress());
+		outIface.setVlan((int) interfaceIn.getVlanId());
+		return outIface;
+	}
+
+	/**
+	 * Get params to call the ws to create the VCPENetwork enviroment
+	 * 
+	 * @param vcpeNetworkId
+	 * 
+	 * @param vcpeNetwork
+	 * @return CreateVCPENetRequest
+	 */
+	private VCPENetworkModel getVCPENetworkOpennaas(String vcpeNetworkName, VCPENetwork vcpeNetwork) {
+		VCPENetworkModel request = new VCPENetworkModel();
+		// Id
+		request.setVcpeNetworkName(vcpeNetworkName);
+		// Elements
+		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
+		request.setElements(elements);
+		// LogicalRouters
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter1 = getLROpennaas(vcpeNetwork.getLogicalRouter1());
+		org.opennaas.extensions.vcpe.model.LogicalRouter logicalRouter2 = getLROpennaas(vcpeNetwork.getLogicalRouter2());
+		elements.add(logicalRouter1);
+		elements.add(logicalRouter2);
+		// Add interfaces to elements
+		elements.addAll(logicalRouter1.getInterfaces());
+		elements.addAll(logicalRouter2.getInterfaces());
+		return request;
+	}
+
+	/**
+	 * Return a OpenNaaS logical router from a GUI logical router
+	 * 
+	 * @param string
+	 * 
+	 * @param logicalRouter1
+	 * @return
+	 */
+	private org.opennaas.extensions.vcpe.model.LogicalRouter getLROpennaas(LogicalRouter lrIn) {
+		org.opennaas.extensions.vcpe.model.LogicalRouter lrOut = new org.opennaas.extensions.vcpe.model.LogicalRouter();
+		lrOut.setName(lrIn.getName());
+		lrOut.setNameInTemplate(lrIn.getName());
+		// Interfaces
+		List<org.opennaas.extensions.vcpe.model.Interface> interfaces = new ArrayList<org.opennaas.extensions.vcpe.model.Interface>();
+		lrOut.setInterfaces(interfaces);
+		// Interface Inter
+		interfaces.add(getInterfaceOpennaas(lrIn.getName() + "-inter", lrIn.getInterfaces().get(0)));
+		// Interface Down
+		interfaces.add(getInterfaceOpennaas(lrIn.getName() + "-down", lrIn.getInterfaces().get(1)));
+		// Interface Up
+		interfaces.add(getInterfaceOpennaas(lrIn.getName() + "-up", lrIn.getInterfaces().get(2)));
+		return lrOut;
+	}
+
+	/**
+	 * Return a OpenNaaS interface from a GUI interface
+	 * 
+	 * @param interface1
+	 * @return Interface
+	 */
+	private org.opennaas.extensions.vcpe.model.Interface getInterfaceOpennaas(String name, Interface inIface) {
+		org.opennaas.extensions.vcpe.model.Interface outIface = new org.opennaas.extensions.vcpe.model.Interface();
+		outIface.setName(inIface.getCompleteName());
+		outIface.setIpAddress(inIface.getIpAddress());
+		outIface.setVlanId(inIface.getVlan());
+		outIface.setNameInTemplate(name);
+		return outIface;
+	}
 }

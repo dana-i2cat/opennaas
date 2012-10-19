@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.opennaas.web.bos.VCPENetworkBO;
 import org.opennaas.web.entities.VCPENetwork;
+import org.opennaas.web.services.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -49,19 +50,25 @@ public class VCPENetworkController {
 	 * @param vcpeNetwork
 	 * @param result
 	 * @return
+	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.POST, value = "/secure/noc/vcpeNetwork/create")
 	public String create(@Valid VCPENetwork vcpeNetwork, BindingResult result, Model model, Locale locale) {
 		LOGGER.debug("add entity: " + vcpeNetwork);
-		if (!result.hasErrors()) {
-			String vcpeNetworkId = vcpeNetworkBO.create(vcpeNetwork);
-			vcpeNetwork.setId(vcpeNetworkId);
-			model.addAttribute("infoMsg", messageSource
-					.getMessage("vcpenetwork.create.message.info", null, locale));
-		} else {
+		try {
+			if (!result.hasErrors()) {
+				vcpeNetwork.setId(vcpeNetworkBO.create(vcpeNetwork));
+				model.addAttribute("infoMsg", messageSource
+						.getMessage("vcpenetwork.create.message.info", null, locale));
+			} else {
+				model.addAttribute("errorMsg", messageSource
+						.getMessage("vcpenetwork.create.message.error", null, locale));
+			}
+		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
-					.getMessage("vcpenetwork.create.message.error", null, locale));
+					.getMessage("vcpenetwork.create.message.error", null, locale) + ": " + e.getResponse());
 		}
+
 		return "createVCPENetwork";
 	}
 
@@ -71,14 +78,20 @@ public class VCPENetworkController {
 	 * @param vcpeNetwork
 	 * @param result
 	 * @return
+	 * @throws RestServiceException
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/delete")
 	public String delete(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("delete entity with id: " + vcpeNetworkId);
-		vcpeNetworkBO.delete(vcpeNetworkId);
-		model.addAttribute("infoMsg", messageSource
-				.getMessage("vcpenetwork.delete.message.info", null, locale));
-		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
+		try {
+			vcpeNetworkBO.delete(vcpeNetworkId);
+			model.addAttribute("infoMsg", messageSource
+					.getMessage("vcpenetwork.delete.message.info", null, locale));
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.delete.message.error", null, locale));
+		}
 		return "listVCPENetwork";
 	}
 
@@ -92,7 +105,12 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
-		model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+		try {
+			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		}
 		return "createVCPENetwork";
 	}
 
@@ -103,9 +121,14 @@ public class VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/list")
-	public String list(Model model) {
+	public String list(Model model, Locale locale) {
 		LOGGER.debug("list all entities");
-		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
 		return "listVCPENetwork";
 	}
 
