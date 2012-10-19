@@ -3,8 +3,12 @@ package org.opennaas.extensions.vcpe.manager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opennaas.core.resources.ActivatorException;
+import org.opennaas.core.resources.IResource;
+import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
+import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
 
@@ -36,12 +40,19 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#getVCPENetworkById(java.lang.String)
 	 */
 	@Override
-	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) {
-		// TODO Auto-generated method stub
-		VCPENetworkModel vcpeNetworkModel = VCPENetworkModelHelper.generateSampleModel();
-		vcpeNetworkModel.setVcpeNetworkId("Dummy-Network-TODO");
-		vcpeNetworkModel.setVcpeNetworkName("Dummy-Network-TODO");
-		return vcpeNetworkModel;
+	public VCPENetworkModel getVCPENetworkById(String vcpeNetworkId) throws VCPENetworkManagerException {
+		IResource resource = null;
+		try {
+			resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			if (resource == null) {
+				throw new VCPENetworkManagerException("don't find a VCPENetwork with id = " + vcpeNetworkId);
+			}
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		} catch (ResourceException e) {
+			throw new VCPENetworkManagerException(e);
+		}
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	/*
@@ -50,14 +61,17 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#getAllVCPENetworks()
 	 */
 	@Override
-	public List<VCPENetworkModel> getAllVCPENetworks() {
-		// TODO Auto-generated method stub
-		List<VCPENetworkModel> list = new ArrayList<VCPENetworkModel>();
-		VCPENetworkModel vcpeNetworkModel = VCPENetworkModelHelper.generateSampleModel();
-		vcpeNetworkModel.setVcpeNetworkId("1");
-		vcpeNetworkModel.setVcpeNetworkName("Dummy-Network-TODO");
-		list.add(vcpeNetworkModel);
-		return list;
+	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException {
+		List<IResource> listModel = null;
+		List<VCPENetworkModel> result = new ArrayList<VCPENetworkModel>();
+		try {
+			listModel = Activator.getResourceManagerService().listResourcesByType(VCPENetworkDescriptor.RESOURCE_TYPE);
+			for (int i = 0; i < listModel.size(); i++) {
+				result.add((VCPENetworkModel) listModel.get(i).getModel());
+			}
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		}
+		return result;
 	}
-
 }
