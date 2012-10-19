@@ -13,7 +13,9 @@ import org.opennaas.extensions.vcpe.model.VCPENetworkElement;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
 
 public class VCPENetworkManagerTest {
@@ -22,24 +24,42 @@ public class VCPENetworkManagerTest {
 
 	public static void main(String[] args) throws FileNotFoundException, JAXBException {
 		create();
+		getVCPENetworkById();
+		getAllVCPENetworks();
 	}
 
-	// /**
-	// *
-	// */
-	// private static void create() {
-	// String response = null;
-	// String url = "http://localhost:8888/opennaas/vcpenetwork/create";
-	// try {
-	// Client client = Client.create();
-	// WebResource webResource = client.resource(url);
-	// response = webResource.type(MediaType.APPLICATION_XML)
-	// .accept(MediaType.APPLICATION_XML).post(String.class, getRequest());
-	// LOGGER.info("Response: " + response);
-	// } catch (Exception e) {
-	// LOGGER.error(e.getMessage());
-	// }
-	// }
+	/**
+	 * 
+	 */
+	private static void getAllVCPENetworks() {
+		List<VCPENetworkModel> response = null;
+		String url = "http://localhost:8888/opennaas/vcpenetwork/getAllVCPENetworks";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.type(MediaType.APPLICATION_XML).get(new GenericType<List<VCPENetworkModel>>() {
+			});
+			LOGGER.info("List of VCPENetwork recovered with: " + response.size() + " items");
+		} catch (ClientHandlerException e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
+
+	/**
+	 * 
+	 */
+	private static void getVCPENetworkById() {
+		ClientResponse response = null;
+		String url = "http://localhost:8888/opennaas/vcpenetwork/getVCPENetworkById/1";
+		try {
+			Client client = Client.create();
+			WebResource webResource = client.resource(url);
+			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
+			LOGGER.info("Response: " + response);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+		}
+	}
 
 	/**
 	 * 

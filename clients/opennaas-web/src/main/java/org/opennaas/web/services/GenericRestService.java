@@ -6,7 +6,6 @@ package org.opennaas.web.services;
 import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.log4j.Logger;
-import org.opennaas.web.services.rest.RestServiceException;
 import org.opennaas.web.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;

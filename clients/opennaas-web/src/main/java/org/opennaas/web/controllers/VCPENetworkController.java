@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.opennaas.web.bos.VCPENetworkBO;
 import org.opennaas.web.entities.VCPENetwork;
-import org.opennaas.web.services.rest.RestServiceException;
+import org.opennaas.web.services.RestServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -87,7 +87,7 @@ public class VCPENetworkController {
 			vcpeNetworkBO.delete(vcpeNetworkId);
 			model.addAttribute("infoMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.info", null, locale));
-			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
 		} catch (RestServiceException e) {
 			model.addAttribute("errorMsg", messageSource
 					.getMessage("vcpenetwork.delete.message.error", null, locale));
@@ -105,7 +105,12 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/noc/vcpeNetwork/edit")
 	public String edit(String vcpeNetworkId, Model model, Locale locale) {
 		LOGGER.debug("edit entity with id: " + vcpeNetworkId);
-		model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+		try {
+			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		}
 		return "createVCPENetwork";
 	}
 
@@ -116,9 +121,14 @@ public class VCPENetworkController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/list")
-	public String list(Model model) {
+	public String list(Model model, Locale locale) {
 		LOGGER.debug("list all entities");
-		model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAll());
+		try {
+			model.addAttribute("vcpeNetworkList", vcpeNetworkBO.getAllVCPENetworks());
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.list.message.error", null, locale));
+		}
 		return "listVCPENetwork";
 	}
 
