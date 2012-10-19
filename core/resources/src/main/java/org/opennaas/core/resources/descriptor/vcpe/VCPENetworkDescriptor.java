@@ -13,9 +13,11 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 @Entity
 public class VCPENetworkDescriptor extends ResourceDescriptor {
 
+	public static final String	RESOURCE_TYPE	= "vcpenet";
+
 	@Basic(fetch = FetchType.LAZY)
 	@Lob
-	private String	vCPEModel;
+	private String				vCPEModel;
 
 	@XmlElement(name = "vCPEModel", namespace = "org.opennaas.core.resources.descriptor.vcpe")
 	public String getvCPEModel() {
