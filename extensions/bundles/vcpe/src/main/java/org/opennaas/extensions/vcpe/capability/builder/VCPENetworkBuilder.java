@@ -363,9 +363,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
-		String ipRange = "192.0.2.0/24";
-		// TODO ADD THIS METHOD TO MODEL
-		// ipRange = model.getClientIpAddressRange();
+		String ipRange = model.getClientIpAddressRange();
 		String nextHopIpAddress1 = addressAndMask1[0];
 
 		setStaticRoute(phy1, model, ipRange, nextHopIpAddress1);
