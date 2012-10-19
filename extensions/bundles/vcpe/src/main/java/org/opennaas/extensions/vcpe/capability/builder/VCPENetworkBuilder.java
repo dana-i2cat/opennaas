@@ -348,8 +348,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		List<ProtocolSessionContext> phyContexts = phyPSM.getRegisteredContexts();
 		for (ProtocolSessionContext context : phyContexts) {
-			// TODO copy context, do not reuse it!!!
-			logPSM.registerContext(context);
+			logPSM.registerContext(context.clone());
 		}
 	}
 
