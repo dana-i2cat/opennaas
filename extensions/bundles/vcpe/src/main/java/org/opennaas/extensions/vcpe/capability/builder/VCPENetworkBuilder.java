@@ -116,6 +116,13 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		configureEGP(resource, desiredScenario);
 
+		try {
+			executePhysicalRouters(desiredScenario);
+			executeLogicalRouters(desiredScenario);
+		} catch (ProtocolException e) {
+			throw new ResourceException(e);
+		}
+
 		// TODO return created model, not the desired one
 		return desiredScenario;
 	}
@@ -319,8 +326,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// only static routes by now
 		configureStaticRoutesInProvider(resource, model);
-		// TODO uncomment when logical routers are started
-		// configureStaticRoutesInClient(resource, model);
+		// Notice this requires logical routers to be started
+		configureStaticRoutesInClient(resource, model);
 	}
 
 	private void unconfigureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -328,6 +335,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// TODO uncomment when unconfiguring static routes is available
 		// unconfigureStaticRoutesInProvider(resource, model);
+
 		// not necessary because logical routers will be dropped anyway
 		// unconfigureStaticRoutesInClient(resource, model);
 	}
@@ -448,6 +456,19 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		execute(phyResource1);
 		execute(phyResource2);
+	}
+
+	private void executeLogicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+
+		IResource lrResource1 = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		IResource lrResource2 = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+
+		execute(lrResource1);
+		execute(lrResource2);
 	}
 
 	private void execute(IResource resource) throws ResourceException, ProtocolException {
