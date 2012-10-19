@@ -46,19 +46,22 @@ public interface IVCPENetworkManager {
 	 * 
 	 * @param vcpeNetworkId
 	 * @return VCPENetworkModel
+	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/getVCPENetworkById/{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public VCPENetworkModel getVCPENetworkById(@PathParam("id") String vcpeNetworkId);
+	public VCPENetworkModel getVCPENetworkById(@PathParam("id") String vcpeNetworkId) throws VCPENetworkManagerException;
 
 	/**
 	 * Get all VCPENetworks
 	 * 
 	 * @return
+	 * @throws VCPENetworkManagerException
 	 */
 	@Path("/getAllVCPENetworks")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public List<VCPENetworkModel> getAllVCPENetworks();
+	public List<VCPENetworkModel> getAllVCPENetworks() throws VCPENetworkManagerException;
+
 }

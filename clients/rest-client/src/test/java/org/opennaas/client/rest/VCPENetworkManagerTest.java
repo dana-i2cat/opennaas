@@ -50,12 +50,14 @@ public class VCPENetworkManagerTest {
 	 */
 	private static void getVCPENetworkById() {
 		ClientResponse response = null;
-		String url = "http://localhost:8888/opennaas/vcpenetwork/getVCPENetworkById/1";
+		String url = "http://localhost:8888/opennaas/vcpenetwork/getVCPENetworkById/e6a1f44a-4bd5-40bf-8189-d795de03e4f4";
 		try {
 			Client client = Client.create();
 			WebResource webResource = client.resource(url);
 			response = webResource.accept(MediaType.APPLICATION_XML).get(ClientResponse.class);
 			LOGGER.info("Response: " + response);
+			VCPENetworkModel model = response.getEntity(VCPENetworkModel.class);
+			model.hashCode();
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 		}
