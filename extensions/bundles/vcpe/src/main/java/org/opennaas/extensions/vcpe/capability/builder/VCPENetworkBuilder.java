@@ -13,7 +13,10 @@ import org.opennaas.core.resources.action.IActionSet;
 import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
+import org.opennaas.core.resources.protocol.IProtocolManager;
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
+import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
@@ -101,13 +104,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		createLogicalRouters(resource, desiredScenario);
 
-		// configureEGP(resource, desiredScenario);
-
 		try {
-			execute(desiredScenario);
+			executePhysicalRouters(desiredScenario);
 		} catch (ProtocolException e) {
 			throw new ResourceException(e);
 		}
+
+		startLogicalRouters(resource, desiredScenario);
+
+		// configureEGP(resource, desiredScenario);
 
 		// TODO return created model, not the desired one
 		return desiredScenario;
@@ -119,6 +124,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		// removeIPAddresses(resource, currentScenario);
 
+		stopLogicalRouters(resource, currentScenario);
+
 		removeLogicalRouters(resource, currentScenario);
 
 		removeSubInterfaces(resource, currentScenario);
@@ -126,7 +133,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		// destroyExternalLinks(resource, currentScenario);
 
 		try {
-			execute(currentScenario);
+			executePhysicalRouters(currentScenario);
 		} catch (ProtocolException e) {
 			throw new ResourceException(e);
 		}
@@ -306,15 +313,47 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 	}
 
-	private IResourceManager getResourceManager() throws ResourceException {
+	private void startLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
+		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+
 		try {
-			return Activator.getResourceManagerService();
-		} catch (ActivatorException e) {
-			throw new ResourceException("Could not find ResourceManager", e);
+			registerContexts(phy1, lr1);
+			registerContexts(phy2, lr2);
+		} catch (ProtocolException e) {
+			throw new ResourceException("Failed to start logical louters", e);
+		}
+
+		getResourceManager().startResource(getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		getResourceManager().startResource(getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+	}
+
+	private void stopLogicalRouters(IResource resource, VCPENetworkModel model) throws ResourceException {
+		Router lr1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE1_ROUTER);
+		Router lr2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.VCPE2_ROUTER);
+
+		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr1.getName()));
+		getResourceManager().stopResource(getResourceManager().getIdentifierFromResourceName("router", lr2.getName()));
+	}
+
+	private void registerContexts(Router physical, Router logical) throws ProtocolException, ResourceException {
+
+		IProtocolSessionManager phyPSM = getProtocolManager().getProtocolSessionManager(
+				getResourceManager().getIdentifierFromResourceName("router", physical.getName()).getId());
+
+		IProtocolSessionManager logPSM = getProtocolManager().getProtocolSessionManager(
+				getResourceManager().getIdentifierFromResourceName("router", logical.getName()).getId());
+
+		List<ProtocolSessionContext> phyContexts = phyPSM.getRegisteredContexts();
+		for (ProtocolSessionContext context : phyContexts) {
+			// TODO copy context, do not reuse it!!!
+			logPSM.registerContext(context);
 		}
 	}
 
-	private void execute(VCPENetworkModel model) throws ResourceException, ProtocolException {
+	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
 		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
 
@@ -332,6 +371,22 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		QueueResponse response = qCapability.execute();
 		if (!response.isOk()) {
 			throw new ResourceException("Failed to execute queue for resource " + resource.getResourceDescriptor().getInformation().getName());
+		}
+	}
+
+	private IResourceManager getResourceManager() throws ResourceException {
+		try {
+			return Activator.getResourceManagerService();
+		} catch (ActivatorException e) {
+			throw new ResourceException("Could not find ResourceManager", e);
+		}
+	}
+
+	private IProtocolManager getProtocolManager() throws ResourceException {
+		try {
+			return Activator.getProtocolManagerService();
+		} catch (ActivatorException e) {
+			throw new ResourceException("Could not find ProtocolManager", e);
 		}
 	}
 
