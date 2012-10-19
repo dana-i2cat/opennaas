@@ -325,14 +325,21 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// only static routes by now
+		configureStaticRoutes(resource, model);
+	}
+
+	private void unconfigureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
+		// only static routes by now
+		unconfigureStaticRoutes(resource, model);
+	}
+
+	private void configureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
 		configureStaticRoutesInProvider(resource, model);
 		// Notice this requires logical routers to be started
 		configureStaticRoutesInClient(resource, model);
 	}
 
-	private void unconfigureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
-		// only static routes by now
-
+	private void unconfigureStaticRoutes(IResource resource, VCPENetworkModel model) throws ResourceException {
 		// TODO uncomment when unconfiguring static routes is available
 		// unconfigureStaticRoutesInProvider(resource, model);
 
@@ -356,7 +363,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		String[] addressAndMask1 = IPUtilsHelper.composedIPAddressToIPAddressAndMask(iface1.getIpAddress());
 
-		String ipRange = "";
+		String ipRange = "192.0.2.0/24";
 		// TODO ADD THIS METHOD TO MODEL
 		// ipRange = model.getClientIpAddressRange();
 		String nextHopIpAddress1 = addressAndMask1[0];
