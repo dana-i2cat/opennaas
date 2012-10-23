@@ -147,6 +147,7 @@ public class VCPENetworkBO {
 		VCPENetwork modelOut = new VCPENetwork();
 		modelOut.setId(modelIn.getVcpeNetworkId());
 		modelOut.setName(modelIn.getVcpeNetworkName());
+		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
 
 		Router logicalRouter1 = (Router) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
@@ -211,6 +212,8 @@ public class VCPENetworkBO {
 		request.setVcpeNetworkName(vcpeNetwork.getName());
 		// Template
 		request.setTemplateName(vcpeNetwork.getTemplate());
+		// IP Range
+		request.setClientIpAddressRange(vcpeNetwork.getClientIpRange());
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		request.setElements(elements);
