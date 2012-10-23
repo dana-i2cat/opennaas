@@ -11,8 +11,6 @@ import javax.validation.constraints.Size;
  */
 public class Interface {
 
-	private String	labelName;
-
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String	name;
@@ -28,6 +26,10 @@ public class Interface {
 	@NotNull
 	@Size(min = 1, max = 25)
 	private Integer	vlan;
+
+	private String	templateName;
+
+	private String	labelName;
 
 	/**
 	 * @return the name
@@ -102,6 +104,21 @@ public class Interface {
 	 */
 	public void setLabelName(String labelName) {
 		this.labelName = labelName;
+	}
+
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * @param templateName
+	 *            the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 
 	/**

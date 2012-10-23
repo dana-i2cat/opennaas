@@ -6,9 +6,7 @@ import org.opennaas.core.resources.Resource;
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
-import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
-import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 
 public class VCPENetBootstrapper implements IResourceBootstrapper {
 
@@ -19,23 +17,15 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 		VCPENetworkModel model = loadModelFromDescriptor(
 				(VCPENetworkDescriptor) resource.getResourceDescriptor());
 		resource.setModel(model);
-
-		// FIXME scenario should be created upon request (by calling capability)
-		// not during bootstrap when resource is starting
-		VCPENetworkModel currentModel = buildDesiredScenario(resource);
-		resource.setModel(currentModel);
 	}
 
 	@Override
 	public void revertBootstrap(Resource resource) throws ResourceException {
-
-		// FIXME scenario should be destroyed upon request (by calling capability)
-		// not when resource is stopping
-		unbuildScenario(resource);
-		resetModel(resource);
-
 		// persist model into descriptor
 		storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
+		
+		// reset the model
+		resetModel(resource);
 	}
 
 	@Override
@@ -71,22 +61,6 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 			}
 		}
 		return descriptor;
-	}
-
-	// TODO REMOVE
-	private VCPENetworkModel buildDesiredScenario(Resource resource) throws ResourceException {
-
-		// simulating vCPENetwork factory with a HARDCODED model
-		VCPENetworkModel desiredScenario = VCPENetworkModelHelper.generateSampleModel();
-
-		IVCPENetworkBuilder capab = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
-		return capab.buildVCPENetwork(desiredScenario);
-	}
-
-	// TODO REMOVE
-	private void unbuildScenario(Resource resource) throws ResourceException {
-		IVCPENetworkBuilder capab = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
-		capab.destroyVCPENetwork();
 	}
 
 }

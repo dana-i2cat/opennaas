@@ -19,11 +19,9 @@ public class VCPENetworkModel implements IModel {
 	 * 
 	 */
 	private static final long			serialVersionUID	= -1793468268517626224L;
-
 	private String						vcpeNetworkId;
-
 	private String						vcpeNetworkName;
-
+	private String						templateName;
 	private List<VCPENetworkElement>	elements;
 
 	private String						clientIpAddressRange;
@@ -72,6 +70,21 @@ public class VCPENetworkModel implements IModel {
 		this.vcpeNetworkName = vcpeNetworkName;
 	}
 
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * @param templateName
+	 *            the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
+
 	public String getClientIpAddressRange() {
 		return clientIpAddressRange;
 	}
@@ -111,6 +124,7 @@ public class VCPENetworkModel implements IModel {
 		int result = 1;
 		result = prime * result + ((clientIpAddressRange == null) ? 0 : clientIpAddressRange.hashCode());
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
+		result = prime * result + ((templateName == null) ? 0 : templateName.hashCode());
 		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
 		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
 		return result;
@@ -139,6 +153,11 @@ public class VCPENetworkModel implements IModel {
 			if (other.elements != null)
 				return false;
 		} else if (!elements.equals(other.elements))
+			return false;
+		if (templateName == null) {
+			if (other.templateName != null)
+				return false;
+		} else if (!templateName.equals(other.templateName))
 			return false;
 		if (vcpeNetworkId == null) {
 			if (other.vcpeNetworkId != null)
