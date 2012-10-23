@@ -26,6 +26,8 @@ public class VCPENetworkModel implements IModel {
 
 	private List<VCPENetworkElement>	elements;
 
+	private String						clientIpAddressRange;
+
 	/**
 	 * @return
 	 */
@@ -70,6 +72,14 @@ public class VCPENetworkModel implements IModel {
 		this.vcpeNetworkName = vcpeNetworkName;
 	}
 
+	public String getClientIpAddressRange() {
+		return clientIpAddressRange;
+	}
+
+	public void setClientIpAddressRange(String clientIpAddressRange) {
+		this.clientIpAddressRange = clientIpAddressRange;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -99,6 +109,7 @@ public class VCPENetworkModel implements IModel {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((clientIpAddressRange == null) ? 0 : clientIpAddressRange.hashCode());
 		result = prime * result + ((elements == null) ? 0 : elements.hashCode());
 		result = prime * result + ((vcpeNetworkId == null) ? 0 : vcpeNetworkId.hashCode());
 		result = prime * result + ((vcpeNetworkName == null) ? 0 : vcpeNetworkName.hashCode());
@@ -119,6 +130,11 @@ public class VCPENetworkModel implements IModel {
 		if (getClass() != obj.getClass())
 			return false;
 		VCPENetworkModel other = (VCPENetworkModel) obj;
+		if (clientIpAddressRange == null) {
+			if (other.clientIpAddressRange != null)
+				return false;
+		} else if (!clientIpAddressRange.equals(other.clientIpAddressRange))
+			return false;
 		if (elements == null) {
 			if (other.elements != null)
 				return false;
@@ -136,4 +152,5 @@ public class VCPENetworkModel implements IModel {
 			return false;
 		return true;
 	}
+
 }
