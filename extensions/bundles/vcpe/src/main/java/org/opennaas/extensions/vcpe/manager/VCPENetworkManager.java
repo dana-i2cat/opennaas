@@ -6,8 +6,12 @@ import java.util.List;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.ResourceException;
+import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor;
 import org.opennaas.extensions.vcpe.Activator;
+import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.manager.templates.ITemplate;
+import org.opennaas.extensions.vcpe.manager.templates.TemplateSelector;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 
 public class VCPENetworkManager implements IVCPENetworkManager {
@@ -15,22 +19,47 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#create(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetworkManager#build(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public Boolean create(VCPENetworkModel vcpeNetworkModel) {
-		// TODO Auto-generated method stub
+	public Boolean build(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException {
+		try {
+			ITemplate template = TemplateSelector.getTemplate(vcpeNetworkModel.getTemplateName());
+			VCPENetworkModel model = template.buildModel(vcpeNetworkModel);
+			IResource resource = Activator.getResourceManagerService()
+					.getResourceById(vcpeNetworkModel.getVcpeNetworkId());
+			resource.setModel(model);
+			// Execute the capability and generate the real enviroment
+			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource.getCapabilityByInterface(IVCPENetworkBuilder.class);
+			vcpeNetworkBuilder.buildVCPENetwork(model);
+		} catch (ResourceException e) {
+			throw new VCPENetworkManagerException(e);
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		}
 		return true;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#removed(java.lang.String)
+	 * @see org.opennaas.extensions.vcpe.manager.IVCPENetManager#destroy(java.lang.String)
 	 */
 	@Override
-	public Boolean remove(String vcpeNetworkId) {
-		// TODO Auto-generated method stub
+	public Boolean destroy(String vcpeNetworkId) throws VCPENetworkManagerException {
+		try {
+			IResource resource = Activator.getResourceManagerService().getResourceById(vcpeNetworkId);
+			// Execute the capability and destroy the real enviroment
+			IVCPENetworkBuilder vcpeNetworkBuilder = (IVCPENetworkBuilder) resource
+					.getCapabilityByInterface(IVCPENetworkBuilder.class);
+			vcpeNetworkBuilder.destroyVCPENetwork();
+		} catch (ActivatorException e) {
+			throw new VCPENetworkManagerException(e);
+		} catch (CapabilityException e) {
+			throw new VCPENetworkManagerException(e);
+		} catch (ResourceException e) {
+			throw new VCPENetworkManagerException(e);
+		}
 		return true;
 	}
 
@@ -74,4 +103,5 @@ public class VCPENetworkManager implements IVCPENetworkManager {
 		}
 		return result;
 	}
+
 }

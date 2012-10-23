@@ -115,7 +115,7 @@ public interface IResource {
 	// */
 	// public void stop() throws ResourceException, CorruptStateException;
 
-	// public void setModel(IModel model);
+	public void setModel(IModel model);
 
 	public IModel getModel();
 
