@@ -50,6 +50,8 @@ public class VCPENetworkModelHelper {
 		VCPENetworkModel model = new VCPENetworkModel();
 		model.setElements(all);
 
+		model.setClientIpAddressRange("192.0.2.0/24");
+
 		return model;
 	}
 
