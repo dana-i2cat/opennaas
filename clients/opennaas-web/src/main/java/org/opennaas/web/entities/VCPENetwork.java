@@ -27,10 +27,14 @@ public class VCPENetwork {
 
 	private LogicalRouter	logicalRouter2;
 
+	private String			clientIpRange;
+
 	/**
 	 * 
 	 */
 	public VCPENetwork() {
+		clientIpRange = "192.0.2.0/24";
+
 		logicalRouter1 = new LogicalRouter();
 		logicalRouter1.setName("LR-1");
 		logicalRouter1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
@@ -179,6 +183,21 @@ public class VCPENetwork {
 		this.logicalRouter2 = logicalRouter2;
 	}
 
+	/**
+	 * @return the clientIpRange
+	 */
+	public String getClientIpRange() {
+		return clientIpRange;
+	}
+
+	/**
+	 * @param clientIpRange
+	 *            the clientIpRange to set
+	 */
+	public void setClientIpRange(String clientIpRange) {
+		this.clientIpRange = clientIpRange;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -186,7 +205,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", clientIpRange=" + clientIpRange + "]";
 	}
 
 }

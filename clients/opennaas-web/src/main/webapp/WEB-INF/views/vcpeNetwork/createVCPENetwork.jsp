@@ -32,6 +32,15 @@
 								<form:errors path="name" />
 							</div>
 							
+							<div style="float: left; margin-left: 10px;">
+								<form:label for="clientIpRange" path="clientIpRange" cssErrorClass="error">
+									<spring:message code="vcpenetwork.clientIpRange" />
+								</form:label>
+								<br />
+								<form:input path="clientIpRange" size="12" />
+								<form:errors path="clientIpRange" />
+							</div>
+
 							<div style="float: left; margin-left: 10px;" >
 								<form:label for="template" path="template" cssErrorClass="error">
 									<spring:message code="vcpenetwork.template" />
