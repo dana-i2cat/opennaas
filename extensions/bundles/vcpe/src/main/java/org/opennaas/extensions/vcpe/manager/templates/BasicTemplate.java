@@ -27,6 +27,7 @@ public class BasicTemplate implements ITemplate {
 	@Override
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
 		VCPENetworkModel model = new VCPENetworkModel();
+		model.setClientIpAddressRange(initialModel.getClientIpAddressRange());
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		model.setElements(elements);
 		// Generate the physical model

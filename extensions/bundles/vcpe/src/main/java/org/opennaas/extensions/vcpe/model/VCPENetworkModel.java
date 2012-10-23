@@ -85,10 +85,16 @@ public class VCPENetworkModel implements IModel {
 		this.templateName = templateName;
 	}
 
+	/**
+	 * @return the clientIpAddressRange
+	 */
 	public String getClientIpAddressRange() {
 		return clientIpAddressRange;
 	}
 
+	/**
+	 * @param clientIpAddressRange
+	 */
 	public void setClientIpAddressRange(String clientIpAddressRange) {
 		this.clientIpAddressRange = clientIpAddressRange;
 	}
