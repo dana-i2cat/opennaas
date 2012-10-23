@@ -21,10 +21,11 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 
 	@Override
 	public void revertBootstrap(Resource resource) throws ResourceException {
-		// reset the model
-		resetModel(resource);
 		// persist model into descriptor
 		storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
+		
+		// reset the model
+		resetModel(resource);
 	}
 
 	@Override

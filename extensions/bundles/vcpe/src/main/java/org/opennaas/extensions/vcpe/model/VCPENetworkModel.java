@@ -86,7 +86,7 @@ public class VCPENetworkModel implements IModel {
 	}
 
 	/**
-	 * @return
+	 * @return the clientIpAddressRange
 	 */
 	public String getClientIpAddressRange() {
 		return clientIpAddressRange;
