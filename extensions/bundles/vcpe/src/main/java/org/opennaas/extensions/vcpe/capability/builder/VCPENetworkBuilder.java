@@ -35,6 +35,7 @@ import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.Activator;
 import org.opennaas.extensions.vcpe.capability.VCPEToBoDModelTranslator;
 import org.opennaas.extensions.vcpe.capability.VCPEToRouterModelTranslator;
+import org.opennaas.extensions.vcpe.model.Domain;
 import org.opennaas.extensions.vcpe.model.Interface;
 import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
@@ -467,7 +468,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
 		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(interSrc, interDst, interSrcVlan, interDstVlan);
+		createAutobahnLink(model, interSrc, interDst, interSrcVlan, interDstVlan);
 
 		// down1 link
 		Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
@@ -477,7 +478,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
 		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+		createAutobahnLink(model, down1Src, down1Dst, down1SrcVlan, down1DstVlan);
 
 		// down 2 link
 		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
@@ -487,7 +488,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
 		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
-		createAutobahnLink(down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+		createAutobahnLink(model, down2Src, down2Dst, down2SrcVlan, down2DstVlan);
 	}
 
 	private void destroyExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
@@ -496,38 +497,38 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
 		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(interSrc, interDst);
+		destroyAutobahnLink(model, interSrc, interDst);
 
 		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
 		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(down1Src, down1Dst);
+		destroyAutobahnLink(model, down1Src, down1Dst);
 
 		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
 		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
 
-		destroyAutobahnLink(down2Src, down2Dst);
+		destroyAutobahnLink(model, down2Src, down2Dst);
 	}
 
-	private void createAutobahnLink(Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
+	private void createAutobahnLink(VCPENetworkModel model, Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
 
 		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan);
 
-		// FIXME hardcoded resource name!!!
-		// this name should be taken from physical topology!!!
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+
 		IResource autobahn = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 
 		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
 		capability.requestConnection(requestParams);
 	}
 
-	private void destroyAutobahnLink(Interface src, Interface dst) throws ResourceException {
+	private void destroyAutobahnLink(VCPENetworkModel model, Interface src, Interface dst) throws ResourceException {
 
-		// FIXME hardcoded resource name!!!
-		// this name should be taken from physical topology!!!
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+
 		IResource autobahn = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 
 		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
 		capability.shutDownConnection(createL2BoDShutdownConnectionRequest(src, dst));
@@ -588,10 +589,10 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private void executeAutobahn(VCPENetworkModel model) throws ResourceException, ProtocolException {
 
-		// FIXME hardcoded resource name!!!
-		// this name should be taken from physical topology!!!
+		Domain bod = (Domain) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.AUTOBAHN);
+
 		IResource autobahn = getResourceManager().getResource(
-				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+				getResourceManager().getIdentifierFromResourceName("bod", bod.getName()));
 
 		execute(autobahn);
 	}
