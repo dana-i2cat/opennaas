@@ -3,6 +3,7 @@ package org.opennaas.extensions.vcpe.capability.builder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
 import org.opennaas.core.resources.ActivatorException;
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.IResourceIdentifier;
@@ -18,6 +19,8 @@ import org.opennaas.core.resources.protocol.IProtocolSessionManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
 import org.opennaas.core.resources.queue.QueueResponse;
+import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
+import org.opennaas.extensions.bod.capability.l2bod.RequestConnectionParameters;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 import org.opennaas.extensions.router.capability.chassis.ChassisCapability;
 import org.opennaas.extensions.router.capability.chassis.IChassisCapability;
@@ -30,8 +33,10 @@ import org.opennaas.extensions.router.model.NetworkPort;
 import org.opennaas.extensions.router.model.ProtocolEndpoint;
 import org.opennaas.extensions.router.model.utils.IPUtilsHelper;
 import org.opennaas.extensions.vcpe.Activator;
+import org.opennaas.extensions.vcpe.capability.VCPEToBoDModelTranslator;
 import org.opennaas.extensions.vcpe.capability.VCPEToRouterModelTranslator;
 import org.opennaas.extensions.vcpe.model.Interface;
+import org.opennaas.extensions.vcpe.model.Link;
 import org.opennaas.extensions.vcpe.model.Router;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.VCPETemplate;
@@ -98,7 +103,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
 
-		// createExternalLinks(resource, desiredScenario);
+		createExternalLinks(resource, desiredScenario);
 
 		createSubInterfaces(resource, desiredScenario);
 
@@ -140,7 +145,7 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		removeSubInterfaces(resource, currentScenario);
 
-		// destroyExternalLinks(resource, currentScenario);
+		destroyExternalLinks(resource, currentScenario);
 
 		try {
 			executePhysicalRouters(currentScenario);
@@ -450,6 +455,111 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 	}
 
+	private void createExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		List<Link> links = VCPENetworkModelHelper.getLinks(model.getElements());
+
+		// inter link
+		Link inter = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.INTER_LINK);
+		long interSrcVlan = inter.getSource().getVlanId();
+		long interDstVlan = inter.getSink().getVlanId();
+
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+
+		createAutobahnLink(interSrc, interDst, interSrcVlan, interDstVlan);
+
+		// down1 link
+		Link down1 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN1_LINK);
+		long down1SrcVlan = down1.getSource().getVlanId();
+		long down1DstVlan = down1.getSink().getVlanId();
+
+		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
+		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+
+		createAutobahnLink(down1Src, down1Dst, down1SrcVlan, down1DstVlan);
+
+		// down 2 link
+		Link down2 = (Link) VCPENetworkModelHelper.getElementByNameInTemplate(links, VCPETemplate.DOWN2_LINK);
+		long down2SrcVlan = down2.getSource().getVlanId();
+		long down2DstVlan = down2.getSink().getVlanId();
+
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+
+		createAutobahnLink(down2Src, down2Dst, down2SrcVlan, down2DstVlan);
+	}
+
+	private void destroyExternalLinks(IResource resource, VCPENetworkModel model) throws ResourceException {
+
+		// FIXME links are not uniquely identified by physical interfaces.
+		Interface interSrc = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER1_INTERFACE_AUTOBAHN);
+		Interface interDst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.INTER2_INTERFACE_AUTOBAHN);
+
+		destroyAutobahnLink(interSrc, interDst);
+
+		Interface down1Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN1_INTERFACE_AUTOBAHN);
+		Interface down1Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN);
+
+		destroyAutobahnLink(down1Src, down1Dst);
+
+		Interface down2Src = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.DOWN2_INTERFACE_AUTOBAHN);
+		Interface down2Dst = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CLIENT2_INTERFACE_AUTOBAHN);
+
+		destroyAutobahnLink(down2Src, down2Dst);
+	}
+
+	private void createAutobahnLink(Interface src, Interface dst, long srcVlan, long dstVlan) throws ResourceException {
+
+		RequestConnectionParameters requestParams = createL2BoDCreateConnectionRequest(src, dst, srcVlan, dstVlan);
+
+		// FIXME hardcoded resource name!!!
+		// this name should be taken from physical topology!!!
+		IResource autobahn = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+
+		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
+		capability.requestConnection(requestParams);
+	}
+
+	private void destroyAutobahnLink(Interface src, Interface dst) throws ResourceException {
+
+		// FIXME hardcoded resource name!!!
+		// this name should be taken from physical topology!!!
+		IResource autobahn = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+
+		IL2BoDCapability capability = (IL2BoDCapability) autobahn.getCapabilityByInterface(IL2BoDCapability.class);
+		capability.shutDownConnection(createL2BoDShutdownConnectionRequest(src, dst));
+	}
+
+	private RequestConnectionParameters createL2BoDCreateConnectionRequest(Interface src, Interface dst, long srcVlan, long dstVlan) {
+
+		// TODO hardcoded! Read from config file or from NOC input
+		// set link capacity to 100 MB/s
+		long capacity = 100 * 1000000L;
+
+		// BoD capability supports only same vlan for both endpoints
+		// using srcVlan for both
+		RequestConnectionParameters parameters = new RequestConnectionParameters(
+				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(src),
+				VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(dst),
+				capacity, Integer.parseInt(Long.toString(srcVlan)), new DateTime(), new DateTime());
+
+		return parameters;
+	}
+
+	private List<org.opennaas.extensions.network.model.topology.Interface>
+			createL2BoDShutdownConnectionRequest(Interface src, Interface dst) {
+
+		List<org.opennaas.extensions.network.model.topology.Interface> ifaces =
+				new ArrayList<org.opennaas.extensions.network.model.topology.Interface>();
+
+		ifaces.add(VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(src));
+		ifaces.add(VCPEToBoDModelTranslator.vCPEInterfaceToBoDInterface(dst));
+		return ifaces;
+	}
+
 	private void executePhysicalRouters(VCPENetworkModel model) throws ResourceException, ProtocolException {
 		Router phy1 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE1_PHY_ROUTER);
 		Router phy2 = (Router) VCPENetworkModelHelper.getElementByNameInTemplate(model, VCPETemplate.CPE2_PHY_ROUTER);
@@ -474,6 +584,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		execute(lrResource1);
 		execute(lrResource2);
+	}
+
+	private void executeAutobahn(VCPENetworkModel model) throws ResourceException, ProtocolException {
+
+		// FIXME hardcoded resource name!!!
+		// this name should be taken from physical topology!!!
+		IResource autobahn = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("bod", "autobahn"));
+
+		execute(autobahn);
 	}
 
 	private void execute(IResource resource) throws ResourceException, ProtocolException {

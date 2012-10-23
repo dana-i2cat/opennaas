@@ -16,7 +16,7 @@ public class VCPENetworkModelHelper {
 		return getElementByNameInTemplate(model.getElements(), nameInTemplate);
 	}
 
-	public static VCPENetworkElement getElementByNameInTemplate(List<VCPENetworkElement> elements, String nameInTemplate) {
+	public static VCPENetworkElement getElementByNameInTemplate(List<? extends VCPENetworkElement> elements, String nameInTemplate) {
 		if (nameInTemplate == null)
 			return null;
 
@@ -27,7 +27,7 @@ public class VCPENetworkModelHelper {
 		return null;
 	}
 
-	public static List<Link> getLinks(List<VCPENetworkElement> elements) {
+	public static List<Link> getLinks(List<? extends VCPENetworkElement> elements) {
 		List<Link> links = new ArrayList<Link>();
 		for (VCPENetworkElement element : elements) {
 			if (element instanceof Link) {
@@ -363,5 +363,4 @@ public class VCPENetworkModelHelper {
 
 		return elements;
 	}
-
 }
