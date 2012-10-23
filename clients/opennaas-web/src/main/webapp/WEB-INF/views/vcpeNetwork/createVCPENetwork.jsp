@@ -38,9 +38,7 @@
 								</form:label>
 								<br />
 								<form:select path="template">
-										<form:option value="template1">Template 1</form:option>
-										<form:option value="template2">Template 2</form:option>
-										<form:option value="template3">Template 3</form:option>
+										<form:option value="basic.template">Basic Template </form:option>
 								</form:select>
 								<form:errors path="template" />
 							</div>

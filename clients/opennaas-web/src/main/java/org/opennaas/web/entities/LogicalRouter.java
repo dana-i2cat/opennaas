@@ -18,6 +18,8 @@ public class LogicalRouter {
 	@Size(min = 1, max = 25)
 	private String			name;
 
+	private String			templateName;
+
 	private List<Interface>	interfaces;
 
 	/**
@@ -61,6 +63,21 @@ public class LogicalRouter {
 	 */
 	public void setInterfaces(List<Interface> interfaces) {
 		this.interfaces = interfaces;
+	}
+
+	/**
+	 * @return the templateName
+	 */
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	/**
+	 * @param templateName
+	 *            the templateName to set
+	 */
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
 	}
 
 }

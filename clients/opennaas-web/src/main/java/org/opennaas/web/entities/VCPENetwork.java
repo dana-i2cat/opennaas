@@ -9,6 +9,8 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.opennaas.extensions.vcpe.model.VCPETemplate;
+
 public class VCPENetwork {
 
 	private String			id;
@@ -31,6 +33,7 @@ public class VCPENetwork {
 	public VCPENetwork() {
 		logicalRouter1 = new LogicalRouter();
 		logicalRouter1.setName("LR-1");
+		logicalRouter1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
 		List<Interface> interfaces = new ArrayList<Interface>();
 
 		Interface interface1 = new Interface();
@@ -45,24 +48,28 @@ public class VCPENetwork {
 		interface1.setPort("1");
 		interface1.setVlan(1);
 		interface1.setIpAddress("192.168.0.1/30");
+		interface1.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
 		interface1.setLabelName("Inter Interface");
 
 		interface2.setName("ge-0/2/0");
 		interface2.setPort("1");
 		interface2.setVlan(1);
 		interface2.setIpAddress("192.0.2.2/25");
+		interface2.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
 		interface2.setLabelName("Down Interface");
 
 		interface3.setName("lt-0/1/2");
 		interface3.setPort("1");
 		interface3.setVlan(0);
 		interface3.setIpAddress("192.168.0.5/30");
+		interface3.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter1.setInterfaces(interfaces);
 
 		logicalRouter2 = new LogicalRouter();
 		logicalRouter2.setName("LR-backup");
+		logicalRouter1.setTemplateName(VCPETemplate.VCPE2_ROUTER);
 		interfaces = new ArrayList<Interface>();
 
 		interface1 = new Interface();
@@ -77,18 +84,21 @@ public class VCPENetwork {
 		interface1.setPort("1");
 		interface1.setVlan(1);
 		interface1.setIpAddress("192.168.0.2/30");
+		interface1.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
 		interface1.setLabelName("Inter Interface");
 
 		interface2.setName("ge-0/2/0");
 		interface2.setPort("2");
 		interface2.setVlan(2);
 		interface2.setIpAddress("192.0.2.3/25");
+		interface2.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
 		interface2.setLabelName("Down Interface");
 
 		interface3.setName("lt-0/1/2");
 		interface3.setPort("2");
 		interface3.setVlan(0);
 		interface3.setIpAddress("192.168.0.9/30");
+		interface3.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter2.setInterfaces(interfaces);

@@ -22,24 +22,26 @@ public interface IVCPENetworkManager {
 	 * @param router1
 	 * @param router2
 	 * @return true if the VCPE has been created, false otherwise
+	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/create")
+	@Path("/build")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean create(VCPENetworkModel vcpeNetworkModel);
+	public Boolean build(VCPENetworkModel vcpeNetworkModel) throws VCPENetworkManagerException;
 
 	/**
 	 * Remove a VCPE infrastructure of the resource with id = vcpeNetworkId
 	 * 
 	 * @param vcpeNetworkId
 	 * @return true if the VCPE has been removed, false otherwise
+	 * @throws VCPENetworkManagerException
 	 */
-	@Path("/remove/{id}")
+	@Path("/destroy/{id}")
 	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
-	public Boolean remove(@PathParam("id") String vcpeNetworkId);
+	public Boolean destroy(@PathParam("id") String vcpeNetworkId) throws VCPENetworkManagerException;
 
 	/**
 	 * Get the VCPENetwork with id = vcpeNetworkId
