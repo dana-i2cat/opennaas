@@ -96,7 +96,7 @@ public class VCPENetworkController {
 	}
 
 	/**
-	 * Create a VCPE Network
+	 * Edit a VCPE Network
 	 * 
 	 * @param vcpeNetwork
 	 * @param result
@@ -143,6 +143,42 @@ public class VCPENetworkController {
 		// TODO
 		LOGGER.debug("view all entities");
 		return "viewVCPENetwork";
+	}
+
+	/**
+	 * Redirect to the form to modify the ip's
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.GET, value = "/secure/vcpeNetwork/updateIpsForm")
+	public String updateIpsForm(String vcpeNetworkId, Model model, Locale locale) {
+		LOGGER.debug("updateIpsForm entity with id: " + vcpeNetworkId);
+		try {
+			model.addAttribute(vcpeNetworkBO.getById(vcpeNetworkId));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		}
+		return "updateIpsVCPENetwork";
+	}
+
+	/**
+	 * Redirect to the form to modify the ip's
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(method = RequestMethod.POST, value = "/secure/vcpeNetwork/updateIps")
+	public String updateIps(VCPENetwork vcpeNetwork, Model model, Locale locale) {
+		LOGGER.debug("updateIps of VCPENetwork" + vcpeNetwork);
+		try {
+			model.addAttribute(vcpeNetworkBO.updateIps(vcpeNetwork));
+		} catch (RestServiceException e) {
+			model.addAttribute("errorMsg", messageSource
+					.getMessage("vcpenetwork.edit.message.error", null, locale));
+		}
+		return "updateIpsVCPENetwork";
 	}
 
 	/**
