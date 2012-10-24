@@ -4,12 +4,12 @@ import net.geant.autobahn.administration.ReservationType;
 import net.geant.autobahn.administration.ServiceType;
 
 import org.opennaas.extensions.bod.autobahn.ReservationState;
-import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 
-public class AutobahnLink extends Link
+public class AutobahnLink extends BoDLink
 {
-	private ServiceType service;
-	private ReservationType reservation;
+	private ServiceType		service;
+	private ReservationType	reservation;
 
 	public void setReservation(ReservationType reservation)
 	{
@@ -35,8 +35,8 @@ public class AutobahnLink extends Link
 	public String toString()
 	{
 		return "start=" + reservation.getStartTime() + "," +
-			"end=" + reservation.getEndTime() + "," +
-			"capacity=" + reservation.getCapacity() / 1000000.0 + "MB/s," +
-			"state=" + ReservationState.valueOf(reservation.getState());
+				"end=" + reservation.getEndTime() + "," +
+				"capacity=" + reservation.getCapacity() / 1000000.0 + "MB/s," +
+				"state=" + ReservationState.valueOf(reservation.getState());
 	}
 }

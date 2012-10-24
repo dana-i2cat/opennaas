@@ -58,11 +58,12 @@ public class L2BoDCapabilityServiceImpl extends GenericCapabilityService impleme
 	 * @see org.opennaas.extensions.ws.services.IL2BoDCapabilityService#shutDownConnection(java.lang.String, java.util.List)
 	 */
 	@Override
-	public void shutDownConnection(String resourceId, List<String> listInterfaces) throws ResourceException {
+	public void shutDownConnection(String resourceId, String interfaceName1, String interfaceName2, String vlanid, String capacity,
+			String endTime) throws ResourceException {
 		try {
 			log.info("Start of shutDownConnection call");
 			IL2BoDCapability iL2BoDCapability = (IL2BoDCapability) getCapability(resourceId, IL2BoDCapability.class);
-			iL2BoDCapability.shutDownConnection(getListInterfaces(resourceId, listInterfaces));
+			iL2BoDCapability.shutDownConnection(getParameters(resourceId, interfaceName1, interfaceName2, vlanid, capacity, endTime));
 			log.info("End of shutDownConnection call");
 		} catch (CapabilityException e) {
 			log.error(e);

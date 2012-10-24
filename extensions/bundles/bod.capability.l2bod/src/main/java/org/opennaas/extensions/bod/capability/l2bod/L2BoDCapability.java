@@ -11,7 +11,10 @@ import org.opennaas.core.resources.capability.AbstractCapability;
 import org.opennaas.core.resources.capability.CapabilityException;
 import org.opennaas.core.resources.descriptor.CapabilityDescriptor;
 import org.opennaas.core.resources.descriptor.ResourceDescriptorConstants;
-import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 import org.opennaas.extensions.queuemanager.IQueueManagerCapability;
 
 public class L2BoDCapability extends AbstractCapability implements IL2BoDCapability {
@@ -53,9 +56,37 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(java.util.List)
 	 */
 	@Override
-	public void shutDownConnection(List<Interface> listInterfaces) throws CapabilityException {
+	public void shutDownConnection(RequestConnectionParameters parameters) throws CapabilityException {
 		log.info("Start of shutDownConnection call");
-		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, listInterfaces);
+
+		Link link = getLinkFromRequest(parameters);
+
+		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, link);
+		queueAction(action);
+		log.info("End of shutDownConnection call");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability#shutDownConnection(org.opennaas.extensions.network.model.topology.Link)
+	 */
+	@Override
+	public void shutDownConnection(BoDLink link) throws CapabilityException {
+		log.info("Start of shutDownConnection call");
+
+		List<Link> links = NetworkModelHelper.getLinks((NetworkModel) resource.getModel());
+		int pos = NetworkModelHelper.getNetworkElementByName(link.getName(), links);
+		if (pos == -1) {
+			throw new CapabilityException("Given link does not exist");
+		}
+		if (!(links.get(pos) instanceof BoDLink)) {
+			throw new CapabilityException("Given link does not exist");
+		}
+
+		BoDLink realLink = (BoDLink) links.get(pos);
+
+		IAction action = createActionAndCheckParams(L2BoDActionSet.SHUTDOWN_CONNECTION, realLink);
 		queueAction(action);
 		log.info("End of shutDownConnection call");
 	}
@@ -132,6 +163,19 @@ public class L2BoDCapability extends AbstractCapability implements IL2BoDCapabil
 		} catch (ActivatorException e) {
 			throw new CapabilityException("Failed to get QueueManagerService for resource " + resourceId, e);
 		}
+	}
+
+	public BoDLink getLinkFromRequest(RequestConnectionParameters request) {
+		List<Link> links = NetworkModelHelper.getLinks((NetworkModel) resource.getModel());
+		for (NetworkElement link : ((NetworkModel) resource.getModel()).getNetworkElements()) {
+			if (link instanceof BoDLink) {
+				if (((BoDLink) link).getRequestParameters().equals(request)) {
+					return (BoDLink) link;
+				}
+			}
+
+		}
+		return null;
 	}
 
 }
