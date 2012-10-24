@@ -10,7 +10,6 @@
 <table>
 	<thead>
 		<tr>
-			<th>Id</th>
 			<th>Name</th>
 			<th>Logical Router 1</th>
 			<th>Logical Router 2</th>
@@ -19,12 +18,16 @@
 	<tbody>
 		<c:forEach varStatus="vs" items="${vcpeNetworkList}">
 			<tr>
-				<td>${vcpeNetworkList[vs.index].id}</td>
 				<td>${vcpeNetworkList[vs.index].name}</td>
 				<td>${vcpeNetworkList[vs.index].logicalRouter1.name}</td>
 				<td>${vcpeNetworkList[vs.index].logicalRouter2.name}</td>
 
 				<td><a href="<c:url value="/secure/vcpeNetwork/view?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">View</a></td>				
+				<sec:authorize access="hasRole('ROLE_CLIENT')">
+					<sec:authorize access="!hasRole('ROLE_NOC')">
+						<td><a href="<c:url value="/secure/vcpeNetwork/updateIpsForm?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">Update Ip's</a></td>
+					</sec:authorize>		
+				</sec:authorize>				
 				<sec:authorize access="hasRole('ROLE_NOC')">
 					<td><a href="<c:url value="/secure/noc/vcpeNetwork/edit?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">Edit</a></td>
 					<td><a href="<c:url value="/secure/noc/vcpeNetwork/delete?vcpeNetworkId=${vcpeNetworkList[vs.index].id}" />">Delete</a></td>
