@@ -30,7 +30,7 @@ public class VCPENetwork {
 	private String			clientIpRange;
 
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public VCPENetwork() {
 		clientIpRange = "192.0.2.0/24";
@@ -106,6 +106,18 @@ public class VCPENetwork {
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter2.setInterfaces(interfaces);
+	}
+
+	/**
+	 * @param vcpeNetwork
+	 */
+	public VCPENetwork(VCPENetwork vcpeNetwork) {
+		this.id = vcpeNetwork.getId();
+		this.name = vcpeNetwork.getName();
+		this.template = vcpeNetwork.getName();
+		this.logicalRouter1 = vcpeNetwork.getLogicalRouter1();
+		this.logicalRouter2 = vcpeNetwork.getLogicalRouter2();
+		this.clientIpRange = vcpeNetwork.getClientIpRange();
 	}
 
 	/**
