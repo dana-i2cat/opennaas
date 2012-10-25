@@ -46,6 +46,10 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.bod.capability.l2bod</artifactId>
 		</dependency>
+		<dependency>
+		  <groupId>joda-time</groupId>
+		  <artifactId>joda-time</artifactId>
+	  	</dependency>
 	</dependencies>
 	<build>
 		<plugins>

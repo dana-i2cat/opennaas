@@ -178,6 +178,7 @@
 	<feature name="opennaas-vcpe" version="${project.version}">
 		<feature version="${opennaas.version}">org.opennaas.core</feature>
 		<feature version="${project.version}">opennaas-router</feature>
+		<feature version="${project.version}">opennaas-bod</feature>
 		<bundle>mvn:org.opennaas/org.opennaas.extensions.vcpe/${project.version}</bundle>
 	</feature>
 
