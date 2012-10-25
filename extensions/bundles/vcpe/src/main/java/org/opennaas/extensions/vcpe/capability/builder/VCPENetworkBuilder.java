@@ -127,6 +127,12 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		createExternalLinks(resource, desiredScenario);
 
+		try {
+			executeAutobahn(desiredScenario);
+		} catch (ProtocolException e) {
+			throw new ResourceException(e);
+		}
+
 		createSubInterfaces(resource, desiredScenario);
 
 		assignIPAddresses(resource, desiredScenario);
@@ -167,10 +173,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		removeSubInterfaces(resource, currentScenario);
 
+		try {
+			executePhysicalRouters(currentScenario);
+		} catch (ProtocolException e) {
+			throw new ResourceException(e);
+		}
+
 		destroyExternalLinks(resource, currentScenario);
 
 		try {
-			executePhysicalRouters(currentScenario);
+			executeAutobahn(currentScenario);
 		} catch (ProtocolException e) {
 			throw new ResourceException(e);
 		}
