@@ -48,6 +48,11 @@ public class RequestConnectionCommand extends GenericKarafCommand
 			multiValued = false)
 	private int		vlanid	= -1;
 
+	@Option(name = "--dstvlanid",
+			description = "VLAN ID to use for vlan-tagging in interface2",
+			multiValued = false)
+	private int		vlanid2	= -1;
+
 	@Option(name = "--starttime",
 			aliases = { "--start", "-s" },
 			description = "Start time (yyyy-MM-dd'T'HH:mm:ssZZ)",
@@ -90,11 +95,24 @@ public class RequestConnectionCommand extends GenericKarafCommand
 	private RequestConnectionParameters createParameters(IResource resource)
 	{
 		NetworkModel model = (NetworkModel) resource.getModel();
-		return new RequestConnectionParameters(getInterface(model, interfaceName1),
-				getInterface(model, interfaceName2),
-				capacity * 1000000L, vlanid,
-				parseISO8601Date(startTime),
-				parseISO8601Date(endTime));
+
+		if (vlanid2 == -1) {
+			// use vlanid for both endpoints
+			return new RequestConnectionParameters(getInterface(model, interfaceName1),
+					getInterface(model, interfaceName2),
+					capacity * 1000000L,
+					vlanid,
+					parseISO8601Date(startTime),
+					parseISO8601Date(endTime));
+		} else {
+			return new RequestConnectionParameters(getInterface(model, interfaceName1),
+					getInterface(model, interfaceName2),
+					capacity * 1000000L,
+					vlanid, vlanid2,
+					parseISO8601Date(startTime),
+					parseISO8601Date(endTime));
+		}
+
 	}
 
 	private DateTime parseISO8601Date(String s)
