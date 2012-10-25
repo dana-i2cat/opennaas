@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.opennaas.web.bos.VCPENetworkBO;
 import org.opennaas.web.entities.VCPENetwork;
 import org.opennaas.web.services.RestServiceException;
+import org.opennaas.web.utils.TemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,12 @@ public class VCPENetworkController {
 
 	@Autowired
 	private VCPENetworkBO							vcpeNetworkBO;
+
 	@Autowired
 	private ReloadableResourceBundleMessageSource	messageSource;
+
+	@Autowired
+	private TemplateUtils							templateUtils;
 
 	/**
 	 * Redirect to the form to create a VCPENetwork
@@ -40,7 +45,7 @@ public class VCPENetworkController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String getCreateForm(Model model) {
 		LOGGER.debug("form to create a VCPENetwork");
-		model.addAttribute(new VCPENetwork());
+		model.addAttribute(templateUtils.getDefaultVCPENetwork());
 		return "createVCPENetwork";
 	}
 
