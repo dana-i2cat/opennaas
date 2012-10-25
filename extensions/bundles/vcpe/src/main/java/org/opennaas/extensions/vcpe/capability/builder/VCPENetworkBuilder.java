@@ -1,5 +1,7 @@
 package org.opennaas.extensions.vcpe.capability.builder;
 
+import static com.google.common.collect.Iterables.filter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,8 +115,41 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateIps(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
 	 */
 	@Override
-	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException {
-		// TODO Auto-generated method stub
+	public void updateIps(VCPENetworkModel updatedModel) throws CapabilityException {
+
+		VCPENetworkModel currentModel = (VCPENetworkModel) resource.getModel();
+
+		// launch commands
+		try {
+			for (Router router : filter(updatedModel.getElements(), Router.class)) {
+				for (Interface iface : router.getInterfaces()) {
+					Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+					if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+						setIP(router, outDatedIface, iface.getIpAddress(), currentModel);
+					}
+				}
+			}
+		} catch (ResourceException e) {
+			throw new CapabilityException(e);
+		}
+
+		// execute queues
+		try {
+			executeLogicalRouters(currentModel);
+			executePhysicalRouters(currentModel);
+		} catch (Exception e) {
+			throw new CapabilityException(e);
+		}
+
+		// update IP addresses in model
+		for (Router router : filter(updatedModel.getElements(), Router.class)) {
+			for (Interface iface : router.getInterfaces()) {
+				Interface outDatedIface = (Interface) VCPENetworkModelHelper.getElementByNameInTemplate(currentModel, iface.getNameInTemplate());
+				if (!outDatedIface.getIpAddress().equals(iface.getIpAddress())) {
+					outDatedIface.setIpAddress(iface.getIpAddress());
+				}
+			}
+		}
 	}
 
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
@@ -145,7 +180,8 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 
 		// TODO return created model, not the desired one
-		return desiredScenario;
+		resource.setModel(desiredScenario);
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	private VCPENetworkModel unbuildScenario(IResource resource, VCPENetworkModel currentScenario) throws ResourceException {
@@ -171,8 +207,13 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 		removeResources(currentScenario);
 
-		// TODO return the model after deleting all LR and subInterfaces from it
-		return currentScenario;
+		// return the model after deleting all LR and subInterfaces from it
+		VCPENetworkModel model = new VCPENetworkModel();
+		model.setVcpeNetworkId(currentScenario.getVcpeNetworkId());
+		model.setVcpeNetworkName(currentScenario.getVcpeNetworkName());
+		resource.setModel(model);
+
+		return (VCPENetworkModel) resource.getModel();
 	}
 
 	private void createLogicalRouters(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {
@@ -342,6 +383,17 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 				capability.setIPv4(port, (IPProtocolEndpoint) pep);
 			}
 		}
+	}
+
+	private void setIP(Router router, Interface iface, String ipAddress, VCPENetworkModel model) throws ResourceException {
+		IResource routerResource = getResourceManager().getResource(
+				getResourceManager().getIdentifierFromResourceName("router", router.getName()));
+
+		IIPCapability capability = (IIPCapability) routerResource.getCapabilityByInterface(IIPCapability.class);
+
+		LogicalPort port = VCPEToRouterModelTranslator.vCPEInterfaceToLogicalPort(iface, model);
+		IPProtocolEndpoint ipPEP = VCPEToRouterModelTranslator.ipAddressToProtocolEndpoint(ipAddress);
+		capability.setIPv4(port, ipPEP);
 	}
 
 	private void configureEGP(IResource resource, VCPENetworkModel model) throws ResourceException {
