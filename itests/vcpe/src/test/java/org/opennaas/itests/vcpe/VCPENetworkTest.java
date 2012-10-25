@@ -62,7 +62,7 @@ public class VCPENetworkTest {
 			throws InterruptedException, ResourceException, SerializationException
 	{
 		IResource resource = createResource();
-		// startResource();
+		startResource();
 		// createVCPENetScenario(resource);
 		// destroyVCPENetScenario(resource);
 
@@ -73,7 +73,7 @@ public class VCPENetworkTest {
 
 		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
 				resourceName,
-				VCPENetworkModelHelper.generateSampleModel().toXml());
+				null);
 		IResource resource = rm.createResource(descriptor);
 
 		Assert.assertEquals(resourceName, rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));
