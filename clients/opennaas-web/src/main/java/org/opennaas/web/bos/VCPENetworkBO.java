@@ -70,7 +70,6 @@ public class VCPENetworkBO {
 		resourceService.stopResource(vcpeNetworkId);
 		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.deleteResource(vcpeNetworkId);
-
 	}
 
 	/**
