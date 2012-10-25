@@ -11,6 +11,30 @@ import javax.validation.constraints.Size;
  */
 public class Interface {
 
+	public enum Types {
+		INTER("Inter"), UP("Up"), DOWN("Down");
+
+		private final String	text;
+
+		/**
+		 * @param text
+		 */
+		private Types(final String text) {
+			this.text = text;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+			return text;
+		}
+
+	}
+
 	@NotNull
 	@Size(min = 1, max = 25)
 	private String	name;
