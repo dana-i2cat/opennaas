@@ -135,12 +135,9 @@ public class GetTopologyAction extends AutobahnAction
 				if (!isFinalState(reservation.getState())) {
 					AutobahnLink link = updateLinkTo(interfaces, service, reservation);
 					if (link != null) {
-						if (!interfaces.containsKey(link.getSource().getName())) {
-							interfaces.put(link.getSource().getName(), (AutobahnInterface) link.getSource());
-						}
-						if (!interfaces.containsKey(link.getSink().getName())) {
-							interfaces.put(link.getSink().getName(), (AutobahnInterface) link.getSink());
-						}
+						// ".link" suffix is added in the key to avoid replacing potentially existing interfaces with same name
+						interfaces.put(link.getSource().getName() + ".link", (AutobahnInterface) link.getSource());
+						interfaces.put(link.getSink().getName() + ".link", (AutobahnInterface) link.getSink());
 						links.add(link);
 					}
 				}
@@ -184,7 +181,7 @@ public class GetTopologyAction extends AutobahnAction
 		AutobahnInterface clientInterface;
 		if (port.getVlan() >= 0) {
 			clientInterface = ParameterTranslator.createInterface(port, iface.isLocal());
-			// TODO should check this name is not an autobahn id or there will be conflicts!!
+			// there may be two interfaces with same name if generated name is a valid autobahn id
 			clientInterface.setName(port.getAddress() + "." + port.getVlan());
 			clientInterface.setServerInterface(iface);
 		} else {
