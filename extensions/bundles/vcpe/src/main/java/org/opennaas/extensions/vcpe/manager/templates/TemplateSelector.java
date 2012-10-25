@@ -8,7 +8,7 @@ package org.opennaas.extensions.vcpe.manager.templates;
  */
 public class TemplateSelector {
 
-	private static final String	BASIC_TEMPLATE	= "basic.template";
+	public static final String	BASIC_TEMPLATE	= "basic.template";
 
 	/**
 	 * Return the correct ITemplate from the templateId
