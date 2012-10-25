@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.web.services;
+package org.opennaas.web.services.rest.vcpe;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
+import org.opennaas.web.services.rest.GenericRestService;
+import org.opennaas.web.services.rest.RestServiceException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;

@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import org.apache.log4j.Logger;
 import org.opennaas.web.bos.VCPENetworkBO;
 import org.opennaas.web.entities.VCPENetwork;
-import org.opennaas.web.services.RestServiceException;
+import org.opennaas.web.services.rest.RestServiceException;
 import org.opennaas.web.utils.TemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
