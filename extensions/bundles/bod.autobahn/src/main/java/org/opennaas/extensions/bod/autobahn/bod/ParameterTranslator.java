@@ -34,8 +34,8 @@ public class ParameterTranslator {
 				request.startTime.isBefore(DateTime.now().plusSeconds(10));
 
 		ReservationRequest reservationRequest = new ReservationRequest();
-		reservationRequest.setStartPort(getPortType((AutobahnInterface) request.interface1, request.vlanid));
-		reservationRequest.setEndPort(getPortType((AutobahnInterface) request.interface2, request.vlanid));
+		reservationRequest.setStartPort(getPortType((AutobahnInterface) request.interface1, request.vlanid1));
+		reservationRequest.setEndPort(getPortType((AutobahnInterface) request.interface2, request.vlanid2));
 		reservationRequest.setStartTime(ParameterTranslator.toXMLCalendar(request.startTime));
 		reservationRequest.setEndTime(ParameterTranslator.toXMLCalendar(request.endTime));
 		reservationRequest.setDescription("Submitted by OpenNaaS");

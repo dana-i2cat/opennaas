@@ -15,8 +15,18 @@ public class RequestConnectionParameters
 {
 	public Interface	interface1;
 	public Interface	interface2;
+	/**
+	 * Capacity in B/s
+	 */
 	public long			capacity;
-	public int			vlanid;
+	/**
+	 * VlanId to set into interface1
+	 */
+	public int			vlanid1;
+	/**
+	 * VlanId to set into interface2
+	 */
+	public int			vlanid2;
 	public DateTime		startTime;
 	public DateTime		endTime;
 
@@ -27,6 +37,8 @@ public class RequestConnectionParameters
 	}
 
 	/**
+	 * Constructor to use same vlan in both endpoints
+	 * 
 	 * @param interface1
 	 * @param interface2
 	 * @param capacity
@@ -41,7 +53,32 @@ public class RequestConnectionParameters
 		this.interface1 = interface1;
 		this.interface2 = interface2;
 		this.capacity = capacity;
-		this.vlanid = vlanid;
+		this.vlanid1 = vlanid;
+		this.vlanid2 = vlanid;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
+
+	/**
+	 * Constructor allowing different vlans in connection endpoints
+	 * 
+	 * @param interface1
+	 * @param interface2
+	 * @param capacity
+	 * @param vlanid1
+	 * @param vlanid2
+	 * @param startTime
+	 * @param endTime
+	 */
+	public RequestConnectionParameters(Interface interface1, Interface interface2,
+			long capacity, int vlanid1, int vlanid2,
+			DateTime startTime, DateTime endTime)
+	{
+		this.interface1 = interface1;
+		this.interface2 = interface2;
+		this.capacity = capacity;
+		this.vlanid1 = vlanid1;
+		this.vlanid2 = vlanid2;
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
@@ -53,7 +90,8 @@ public class RequestConnectionParameters
 				.add("interface1", interface1)
 				.add("interface2", interface2)
 				.add("capacity", capacity)
-				.add("vlandid", vlanid)
+				.add("vlandid1", vlanid1)
+				.add("vlandid2", vlanid2)
 				.add("startTime", startTime)
 				.add("endTime", endTime)
 				.toString();
@@ -66,7 +104,8 @@ public class RequestConnectionParameters
 		result = prime * result + (int) (capacity ^ (capacity >>> 32));
 		result = prime * result + ((endTime == null) ? 0 : endTime.hashCode());
 		result = prime * result + ((startTime == null) ? 0 : startTime.hashCode());
-		result = prime * result + vlanid;
+		result = prime * result + vlanid1;
+		result = prime * result + vlanid2;
 		result = prime * result + ((toString() == null) ? 0 : toString().hashCode());
 		return result;
 	}
@@ -100,7 +139,9 @@ public class RequestConnectionParameters
 				return false;
 		} else if (!startTime.equals(other.startTime))
 			return false;
-		if (vlanid != other.vlanid)
+		if (vlanid1 != other.vlanid1)
+			return false;
+		if (vlanid2 != other.vlanid2)
 			return false;
 
 		if (toString() == null) {
