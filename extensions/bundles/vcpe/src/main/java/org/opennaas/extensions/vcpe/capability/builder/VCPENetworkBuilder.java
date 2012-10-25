@@ -55,14 +55,15 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 
 	@Override
 	public void activate() throws CapabilityException {
-		// registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IVCPENetworkBuilder.class.getName());
+		registerService(Activator.getContext(), CAPABILITY_TYPE, getResourceType(), getResourceName(), IVCPENetworkBuilder.class.getName());
 		setState(State.ACTIVE);
 	}
 
 	@Override
 	public void deactivate() throws CapabilityException {
-		// unregisterService();
 		setState(State.INACTIVE);
+		registration.unregister();
+		super.deactivate();
 	}
 
 	@Override
@@ -84,6 +85,11 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 	// IVCPENetworkBuilder implementation //
 	// /////////////////////////////////////
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#buildVCPENetwork(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 */
 	@Override
 	public VCPENetworkModel buildVCPENetwork(VCPENetworkModel desiredScenario) throws CapabilityException {
 		try {
@@ -93,6 +99,11 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#destroyVCPENetwork()
+	 */
 	@Override
 	public void destroyVCPENetwork() throws CapabilityException {
 		try {
@@ -100,6 +111,16 @@ public class VCPENetworkBuilder extends AbstractCapability implements IVCPENetwo
 		} catch (ResourceException e) {
 			throw new CapabilityException(e);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder#updateIps(org.opennaas.extensions.vcpe.model.VCPENetworkModel)
+	 */
+	@Override
+	public void updateIps(VCPENetworkModel vcpeNetworkModel) throws CapabilityException {
+		// TODO Auto-generated method stub
 	}
 
 	private VCPENetworkModel buildDesiredScenario(IResource resource, VCPENetworkModel desiredScenario) throws ResourceException {

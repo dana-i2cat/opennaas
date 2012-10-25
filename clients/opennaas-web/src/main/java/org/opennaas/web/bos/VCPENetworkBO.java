@@ -18,6 +18,7 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.web.entities.Interface;
 import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
+import org.opennaas.web.services.BuilderCapabilityService;
 import org.opennaas.web.services.ResourceService;
 import org.opennaas.web.services.RestServiceException;
 import org.opennaas.web.services.VCPENetworkService;
@@ -29,13 +30,16 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class VCPENetworkBO {
 
-	private static final Logger	LOGGER	= Logger.getLogger(VCPENetworkBO.class);
+	private static final Logger			LOGGER	= Logger.getLogger(VCPENetworkBO.class);
 
 	@Autowired
-	private ResourceService		resourceService;
+	private ResourceService				resourceService;
 
 	@Autowired
-	private VCPENetworkService	vcpeNetworkService;
+	private VCPENetworkService			vcpeNetworkService;
+
+	@Autowired
+	private BuilderCapabilityService	builderService;
 
 	/**
 	 * Create a VCPE Network, start the resource and build the enviroment
@@ -66,7 +70,6 @@ public class VCPENetworkBO {
 		resourceService.stopResource(vcpeNetworkId);
 		LOGGER.debug("delete a VCPENetwork with id: " + vcpeNetworkId);
 		resourceService.deleteResource(vcpeNetworkId);
-
 	}
 
 	/**
@@ -91,6 +94,18 @@ public class VCPENetworkBO {
 	public List<VCPENetwork> getAllVCPENetworks() throws RestServiceException {
 		LOGGER.debug("get all VCPENetwork");
 		return getListVCPENetworkGUI(vcpeNetworkService.getAllVCPENetworks());
+	}
+
+	/**
+	 * Update the ip's of the VCPENetwork
+	 * 
+	 * @param vcpeNetwork
+	 * @return true if the Ips have been updated
+	 */
+	public Boolean updateIps(VCPENetwork vcpeNetwork) throws RestServiceException {
+		LOGGER.debug("update Ip's of VCPENetwork");
+		builderService.updateIpsVCPENetwork(getVCPENetworkOpennaas(vcpeNetwork.getId(), vcpeNetwork));
+		return true;
 	}
 
 	/**
@@ -147,14 +162,15 @@ public class VCPENetworkBO {
 		VCPENetwork modelOut = new VCPENetwork();
 		modelOut.setId(modelIn.getVcpeNetworkId());
 		modelOut.setName(modelIn.getVcpeNetworkName());
+		modelOut.setClientIpRange(modelIn.getClientIpAddressRange());
 
 		Router logicalRouter1 = (Router) VCPENetworkModelHelper
 				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
 		Router logicalRouter2 = (Router) VCPENetworkModelHelper
-				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE1_ROUTER);
+				.getElementByNameInTemplate(modelIn, VCPETemplate.VCPE2_ROUTER);
 
 		modelOut.setLogicalRouter1(getLRGUI(logicalRouter1));
-		modelOut.setLogicalRouter1(getLRGUI(logicalRouter2));
+		modelOut.setLogicalRouter2(getLRGUI(logicalRouter2));
 		return modelOut;
 	}
 
@@ -172,11 +188,17 @@ public class VCPENetworkBO {
 		List<org.opennaas.web.entities.Interface> interfaces = new ArrayList<org.opennaas.web.entities.Interface>();
 		lrOut.setInterfaces(interfaces);
 		// Interface Inter
-		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(0)));
+		Interface inter = getInterfaceGUI(lrIn.getInterfaces().get(0));
+		inter.setLabelName(Interface.Types.INTER.toString());
+		interfaces.add(inter);
 		// Interface Down
-		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(1)));
+		Interface down = getInterfaceGUI(lrIn.getInterfaces().get(1));
+		down.setLabelName(Interface.Types.DOWN.toString());
+		interfaces.add(down);
 		// Interface Up
-		interfaces.add(getInterfaceGUI(lrIn.getInterfaces().get(2)));
+		Interface up = getInterfaceGUI(lrIn.getInterfaces().get(2));
+		up.setLabelName(Interface.Types.UP.toString());
+		interfaces.add(up);
 		return lrOut;
 	}
 
@@ -211,6 +233,8 @@ public class VCPENetworkBO {
 		request.setVcpeNetworkName(vcpeNetwork.getName());
 		// Template
 		request.setTemplateName(vcpeNetwork.getTemplate());
+		// IP Range
+		request.setClientIpAddressRange(vcpeNetwork.getClientIpRange());
 		// Elements
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		request.setElements(elements);
@@ -264,4 +288,5 @@ public class VCPENetworkBO {
 		outIface.setNameInTemplate(inIface.getTemplateName());
 		return outIface;
 	}
+
 }

@@ -27,10 +27,14 @@ public class VCPENetwork {
 
 	private LogicalRouter	logicalRouter2;
 
+	private String			clientIpRange;
+
 	/**
-	 * 
+	 * Default constructor
 	 */
 	public VCPENetwork() {
+		clientIpRange = "192.0.2.0/24";
+
 		logicalRouter1 = new LogicalRouter();
 		logicalRouter1.setName("LR-1");
 		logicalRouter1.setTemplateName(VCPETemplate.VCPE1_ROUTER);
@@ -49,21 +53,21 @@ public class VCPENetwork {
 		interface1.setVlan(1);
 		interface1.setIpAddress("192.168.0.1/30");
 		interface1.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
-		interface1.setLabelName("Inter Interface");
+		interface1.setLabelName(Interface.Types.INTER.toString());
 
 		interface2.setName("ge-0/2/0");
 		interface2.setPort("1");
 		interface2.setVlan(1);
 		interface2.setIpAddress("192.0.2.2/25");
 		interface2.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
-		interface2.setLabelName("Down Interface");
+		interface2.setLabelName(Interface.Types.DOWN.toString());
 
 		interface3.setName("lt-0/1/2");
 		interface3.setPort("1");
 		interface3.setVlan(0);
 		interface3.setIpAddress("192.168.0.5/30");
 		interface3.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
-		interface3.setLabelName("Up Interface");
+		interface3.setLabelName(Interface.Types.UP.toString());
 
 		logicalRouter1.setInterfaces(interfaces);
 
@@ -102,6 +106,18 @@ public class VCPENetwork {
 		interface3.setLabelName("Up Interface");
 
 		logicalRouter2.setInterfaces(interfaces);
+	}
+
+	/**
+	 * @param vcpeNetwork
+	 */
+	public VCPENetwork(VCPENetwork vcpeNetwork) {
+		this.id = vcpeNetwork.getId();
+		this.name = vcpeNetwork.getName();
+		this.template = vcpeNetwork.getName();
+		this.logicalRouter1 = vcpeNetwork.getLogicalRouter1();
+		this.logicalRouter2 = vcpeNetwork.getLogicalRouter2();
+		this.clientIpRange = vcpeNetwork.getClientIpRange();
 	}
 
 	/**
@@ -179,6 +195,21 @@ public class VCPENetwork {
 		this.logicalRouter2 = logicalRouter2;
 	}
 
+	/**
+	 * @return the clientIpRange
+	 */
+	public String getClientIpRange() {
+		return clientIpRange;
+	}
+
+	/**
+	 * @param clientIpRange
+	 *            the clientIpRange to set
+	 */
+	public void setClientIpRange(String clientIpRange) {
+		this.clientIpRange = clientIpRange;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -186,7 +217,7 @@ public class VCPENetwork {
 	 */
 	@Override
 	public String toString() {
-		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + "]";
+		return "VCPENetwork [id=" + id + ", name=" + name + ", template=" + template + ", logicalRouter1=" + logicalRouter1 + ", logicalRouter2=" + logicalRouter2 + ", clientIpRange=" + clientIpRange + "]";
 	}
 
 }

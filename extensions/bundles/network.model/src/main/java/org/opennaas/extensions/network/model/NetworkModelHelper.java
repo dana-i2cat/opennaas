@@ -150,7 +150,7 @@ public class NetworkModelHelper {
 	 * @param networkElements
 	 * @return lowest current position of networkElements containing an element named with given name.
 	 */
-	public static int getNetworkElementByName(String name, List<NetworkElement> networkElements) {
+	public static int getNetworkElementByName(String name, List<? extends NetworkElement> networkElements) {
 		int pos = 0;
 		for (NetworkElement networkElement : networkElements) {
 			if (networkElement.getName() != null

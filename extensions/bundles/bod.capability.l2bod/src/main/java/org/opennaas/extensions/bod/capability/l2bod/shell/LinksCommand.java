@@ -1,16 +1,14 @@
 package org.opennaas.extensions.bod.capability.l2bod.shell;
 
+import static com.google.common.collect.Iterables.filter;
+
 import org.apache.felix.gogo.commands.Argument;
 import org.apache.felix.gogo.commands.Command;
-
 import org.opennaas.core.resources.IResource;
 import org.opennaas.core.resources.shell.GenericKarafCommand;
-
+import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.topology.Interface;
 import org.opennaas.extensions.network.model.topology.Link;
-
-import static com.google.common.collect.Iterables.filter;
 
 @Command(scope = "l2bod", name = "links", description = "Show links of BoD resource.")
 public class LinksCommand extends GenericKarafCommand
@@ -27,10 +25,10 @@ public class LinksCommand extends GenericKarafCommand
 			IResource resource = getResourceFromFriendlyName(resourceId);
 
 			NetworkModel model = (NetworkModel) resource.getModel();
-			for (Interface i: filter(model.getNetworkElements(), Interface.class)) {
-				Link link = i.getLinkTo();
-				if (link != null) {
-					printInfo(i.getName() + " -> " + link.getSink().getName() + " (" + link + ")");
+			for (Link link : filter(model.getNetworkElements(), Link.class)) {
+				printInfo(link.getName());
+				if (link instanceof BoDLink) {
+					printInfo(((BoDLink) link).getRequestParameters().toString());
 				}
 			}
 		} catch (Exception e) {

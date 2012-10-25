@@ -28,12 +28,20 @@ public class BasicTemplate implements ITemplate {
 	@Override
 	public VCPENetworkModel buildModel(VCPENetworkModel initialModel) {
 		VCPENetworkModel model = new VCPENetworkModel();
+		model.setVcpeNetworkId(initialModel.getVcpeNetworkId());
+		model.setVcpeNetworkName(initialModel.getVcpeNetworkName());
+		model.setClientIpAddressRange(initialModel.getClientIpAddressRange());
+		model.setTemplateName(initialModel.getTemplateName());
+
 		List<VCPENetworkElement> elements = new ArrayList<VCPENetworkElement>();
 		model.setElements(elements);
+
 		// Generate the physical model
 		List<VCPENetworkElement> physicalElements = generatePhysicalElements();
+
 		// Generate the logical model
 		List<VCPENetworkElement> logicalElements = generateLogicalElements(initialModel);
+
 		// Add all elements
 		elements.addAll(physicalElements);
 		elements.addAll(logicalElements);
