@@ -23,7 +23,7 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 	public void revertBootstrap(Resource resource) throws ResourceException {
 		// persist model into descriptor
 		storeModelIntoDescriptor((VCPENetworkModel) resource.getModel(), (VCPENetworkDescriptor) resource.getResourceDescriptor());
-		
+
 		// reset the model
 		resetModel(resource);
 	}
@@ -37,7 +37,7 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 			throws ResourceException {
 
 		if (descriptor.getvCPEModel() == null)
-			return null;
+			return new VCPENetworkModel();
 
 		try {
 			VCPENetworkModel model = (VCPENetworkModel) ObjectSerializer.fromXml(
