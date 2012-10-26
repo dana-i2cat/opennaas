@@ -3,6 +3,8 @@
  */
 package org.opennaas.extensions.vcpe.manager.templates;
 
+import org.opennaas.extensions.vcpe.manager.VCPENetworkManagerException;
+
 /**
  * @author Jordi
  */
@@ -15,11 +17,12 @@ public class TemplateSelector {
 	 * 
 	 * @param templateId
 	 * @return ITemplate
+	 * @throws VCPENetworkManagerException
 	 */
-	public static ITemplate getTemplate(String templateId) {
-		ITemplate iTemplate = new BasicTemplate();
+	public static ITemplate getTemplate(String templateId) throws VCPENetworkManagerException {
+		ITemplate iTemplate = new Template();
 		if (templateId.equals(BASIC_TEMPLATE)) {
-			iTemplate = new BasicTemplate();
+			iTemplate = new Template();
 		}
 		return iTemplate;
 	}
