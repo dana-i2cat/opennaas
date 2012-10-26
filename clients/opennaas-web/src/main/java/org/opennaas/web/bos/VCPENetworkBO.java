@@ -18,10 +18,10 @@ import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.opennaas.web.entities.Interface;
 import org.opennaas.web.entities.LogicalRouter;
 import org.opennaas.web.entities.VCPENetwork;
-import org.opennaas.web.services.BuilderCapabilityService;
-import org.opennaas.web.services.ResourceService;
-import org.opennaas.web.services.RestServiceException;
-import org.opennaas.web.services.VCPENetworkService;
+import org.opennaas.web.services.rest.RestServiceException;
+import org.opennaas.web.services.rest.resource.ResourceService;
+import org.opennaas.web.services.rest.vcpe.BuilderCapabilityService;
+import org.opennaas.web.services.rest.vcpe.VCPENetworkService;
 import org.opennaas.web.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 
