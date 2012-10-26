@@ -13,9 +13,14 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 	@Override
 	public void bootstrap(Resource resource) throws ResourceException {
 
-		// load model from the one persisted in the descriptor
-		VCPENetworkModel model = loadModelFromDescriptor(
-				(VCPENetworkDescriptor) resource.getResourceDescriptor());
+		VCPENetworkModel model = createEmptyModel(resource);
+
+		if (((VCPENetworkDescriptor) resource.getResourceDescriptor()).getvCPEModel()
+				!= null) {
+			// load model from the one persisted in the descriptor
+			model = loadModelFromDescriptor(
+					(VCPENetworkDescriptor) resource.getResourceDescriptor());
+		}
 		resource.setModel(model);
 	}
 
@@ -30,15 +35,19 @@ public class VCPENetBootstrapper implements IResourceBootstrapper {
 
 	@Override
 	public void resetModel(Resource resource) throws ResourceException {
-		resource.setModel(new VCPENetworkModel());
+		resource.setModel(createEmptyModel(resource));
+	}
+
+	private VCPENetworkModel createEmptyModel(Resource resource) {
+		VCPENetworkModel model = new VCPENetworkModel();
+		model.setVcpeNetworkId(resource.getResourceIdentifier().getId());
+		model.setVcpeNetworkName(resource.getResourceDescriptor().getInformation().getName());
+		model.setCreated(false);
+		return model;
 	}
 
 	private VCPENetworkModel loadModelFromDescriptor(VCPENetworkDescriptor descriptor)
 			throws ResourceException {
-
-		if (descriptor.getvCPEModel() == null)
-			return new VCPENetworkModel();
-
 		try {
 			VCPENetworkModel model = (VCPENetworkModel) ObjectSerializer.fromXml(
 					descriptor.getvCPEModel(), VCPENetworkModel.class);
