@@ -1,28 +1,21 @@
 package org.opennaas.extensions.bod.autobahn.bod;
 
-import java.util.List;
-
 import net.geant.autobahn.useraccesspoint.UserAccessPoint;
 
-import org.opennaas.core.resources.protocol.IProtocolSessionManager;
-import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.action.ActionException;
 import org.opennaas.core.resources.action.ActionResponse;
-
+import org.opennaas.core.resources.protocol.IProtocolSessionManager;
+import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.extensions.bod.autobahn.AutobahnAction;
-import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
 import org.opennaas.extensions.bod.autobahn.commands.CancelServiceCommand;
+import org.opennaas.extensions.bod.autobahn.commands.IAutobahnCommand;
 import org.opennaas.extensions.bod.autobahn.commands.Transaction;
-import org.opennaas.extensions.bod.autobahn.model.AutobahnInterface;
 import org.opennaas.extensions.bod.autobahn.model.AutobahnLink;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDActionSet;
 
-
-import org.opennaas.extensions.network.model.topology.Interface;
-
 public class ShutdownConnectionAction extends AutobahnAction
 {
-	public final static String ACTIONID = L2BoDActionSet.SHUTDOWN_CONNECTION;
+	public final static String	ACTIONID	= L2BoDActionSet.SHUTDOWN_CONNECTION;
 
 	public ShutdownConnectionAction()
 	{
@@ -31,13 +24,13 @@ public class ShutdownConnectionAction extends AutobahnAction
 
 	@Override
 	public ActionResponse execute(IProtocolSessionManager protocolSessionManager)
-		throws ActionException
+			throws ActionException
 	{
 		try {
 			UserAccessPoint userAccessPoint =
-				getUserAccessPointService(protocolSessionManager);
+					getUserAccessPointService(protocolSessionManager);
 			IAutobahnCommand command =
-				new CancelServiceCommand(userAccessPoint, getLink());
+					new CancelServiceCommand(userAccessPoint, getLink());
 
 			Transaction.getInstance().add(command);
 
@@ -48,22 +41,8 @@ public class ShutdownConnectionAction extends AutobahnAction
 	}
 
 	protected AutobahnLink getLink()
-		throws ActionException
+			throws ActionException
 	{
-		AutobahnInterface source = getInterface(0);
-		AutobahnInterface sink = getInterface(1);
-		AutobahnLink link = (AutobahnLink) source.getLinkTo();
-
-		if (link == null || link.getSink() != sink) {
-			throw new ActionException(source.toString() + " is not linked to " + sink);
-		}
-
-		return link;
-	}
-
-	protected AutobahnInterface getInterface(int index)
-	{
-		List<Interface> interfaces = (List<Interface>) params;
-		return (AutobahnInterface) interfaces.get(index);
+		return (AutobahnLink) params;
 	}
 }

@@ -22,6 +22,7 @@ import org.opennaas.core.resources.SerializationException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.vcpe.helper.VCPENetworkDescriptorHelper;
 import org.opennaas.extensions.vcpe.capability.builder.IVCPENetworkBuilder;
+import org.opennaas.extensions.vcpe.model.VCPENetworkModel;
 import org.opennaas.extensions.vcpe.model.helper.VCPENetworkModelHelper;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -58,22 +59,55 @@ public class VCPENetworkTest {
 	}
 
 	@Test
-	public void resourceWorkflow()
-			throws InterruptedException, ResourceException, SerializationException
-	{
-		IResource resource = createResource();
-		// startResource();
-		// createVCPENetScenario(resource);
-		// destroyVCPENetScenario(resource);
-
-		rm.destroyAllResources();
+	public void resourceWorkflow() throws ResourceException {
+		try {
+			IResource resource = createResource();
+			startResource();
+			// createVCPENetScenario(resource);
+			// destroyVCPENetScenario(resource);
+		} finally {
+			rm.destroyAllResources();
+		}
 	}
 
-	public IResource createResource() throws ResourceException, SerializationException {
+	@Test
+	public void modelPersistence() throws SerializationException, ResourceException {
+
+		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
 
 		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
 				resourceName,
-				VCPENetworkModelHelper.generateSampleModel().toXml());
+				model.toXml());
+		try {
+			IResource resource = rm.createResource(descriptor);
+			rm.startResource(resource.getResourceIdentifier());
+
+			Assert.assertNotNull(resource.getModel());
+			Assert.assertEquals(model, resource.getModel());
+
+			String oldValue = ((VCPENetworkModel) resource.getModel()).getTemplateName();
+			String changed = "AAABBBCCC";
+			((VCPENetworkModel) resource.getModel()).setTemplateName(changed);
+
+			rm.stopResource(resource.getResourceIdentifier());
+			rm.startResource(resource.getResourceIdentifier());
+
+			Assert.assertEquals(changed, ((VCPENetworkModel) resource.getModel()).getTemplateName());
+
+			((VCPENetworkModel) resource.getModel()).setTemplateName(oldValue);
+			Assert.assertEquals(model, resource.getModel());
+
+		} finally {
+			rm.destroyAllResources();
+		}
+
+	}
+
+	public IResource createResource() throws ResourceException {
+
+		ResourceDescriptor descriptor = VCPENetworkDescriptorHelper.generateSampleDescriptor(
+				resourceName,
+				null);
 		IResource resource = rm.createResource(descriptor);
 
 		Assert.assertEquals(resourceName, rm.getNameFromResourceID(resource.getResourceIdentifier().getId()));

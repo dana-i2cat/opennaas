@@ -38,6 +38,10 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.router.model</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.guava-osgi</groupId>
+			<artifactId>guava-osgi</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

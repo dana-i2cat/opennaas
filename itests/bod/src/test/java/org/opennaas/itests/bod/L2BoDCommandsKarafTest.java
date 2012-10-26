@@ -36,10 +36,13 @@ import org.opennaas.core.resources.helpers.ResourceHelper;
 import org.opennaas.core.resources.protocol.IProtocolManager;
 import org.opennaas.core.resources.protocol.ProtocolException;
 import org.opennaas.core.resources.protocol.ProtocolSessionContext;
+import org.opennaas.extensions.bod.capability.l2bod.BoDLink;
 import org.opennaas.extensions.bod.capability.l2bod.IL2BoDCapability;
 import org.opennaas.extensions.bod.capability.l2bod.L2BoDCapability;
 import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
 import org.opennaas.extensions.network.model.topology.Interface;
+import org.opennaas.extensions.network.model.topology.Link;
 import org.opennaas.itests.helpers.AbstractKarafCommandTest;
 import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.Configuration;
@@ -182,7 +185,16 @@ public class L2BoDCommandsKarafTest extends AbstractKarafCommandTest
 		log.info(response);
 		Assert.assertTrue(response.get(1).isEmpty());
 
-		response = executeCommand("l2bod:shutdownConnection " + resourceFriendlyID + " int1 int2");
+		// simulate action has been executed
+		BoDLink link = new BoDLink();
+		link.setName("link1");
+		model.getNetworkElements().add(link);
+
+		List<Link> links = NetworkModelHelper.getLinks(model.getNetworkElements());
+		Assert.assertFalse(links.isEmpty());
+		String linkName = links.get(0).getName();
+
+		response = executeCommand("l2bod:shutdownConnection " + resourceFriendlyID + " " + linkName);
 		// assert command output does not contain ERROR tag
 		Assert.assertTrue(response.get(1).isEmpty());
 
