@@ -194,10 +194,14 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 				String autbahnId = ((ResourceIdentifier) session.get(getText("autobahn.bod.name"))).getId();
 
 				try {
-					List<String> list1 = new ArrayList<String>();
-					list1.add(getText("autobahn.connection1.interface1"));
-					list1.add(getText("autobahn.connection1.interface2"));
-					l2BoDCapabilityService.shutDownConnection(autbahnId, list1);
+					// Connection 1
+					String interfaceName1 = getText("autobahn.connection1.interface1");
+					String interfaceName2 = getText("autobahn.connection1.interface2");
+					String vlanid = getText("autobahn.connection1.vlanid");
+					String endtime = getText("autobahn.connection1.endtime");
+					String capacity = getText("autobahn.connection1.capacity");
+					l2BoDCapabilityService.shutDownConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
+					
 				} catch (Exception e) {
 					LOGGER.error("Can't shut down autobahn connection 1 - "
 							+ getText("autobahn.connection1.interface1") + " - "
@@ -205,10 +209,14 @@ public class DestroyAction extends ActionSupport implements SessionAware {
 				}
 
 				try {
-					List<String> list2 = new ArrayList<String>();
-					list2.add(getText("autobahn.connection2.interface1"));
-					list2.add(getText("autobahn.connection2.interface2"));
-					l2BoDCapabilityService.shutDownConnection(autbahnId, list2);
+					// Connection 2
+					String interfaceName1 = getText("autobahn.connection2.interface1");
+					String interfaceName2 = getText("autobahn.connection2.interface2");
+					String vlanid = getText("autobahn.connection2.vlanid");
+					String endtime = getText("autobahn.connection2.endtime");
+					String capacity = getText("autobahn.connection2.capacity");
+					
+					l2BoDCapabilityService.shutDownConnection(autbahnId, interfaceName1, interfaceName2, vlanid, capacity, endtime);
 				} catch (Exception e) {
 					LOGGER.error("Can't shut down autobahn connection 2 - "
 							+ getText("autobahn.connection2.interface1") + " - "

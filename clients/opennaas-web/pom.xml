@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.opennaas</groupId>
 		<artifactId>org.opennaas.clients</artifactId>
-		<version>0.13-SNAPSHOT</version>
+		<version>0.14-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -82,6 +82,33 @@
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-oxm</artifactId>
 		</dependency>
+		<!-- Contains core authentication and access-contol classes and interfaces, 
+			remoting support and basic provisioning APIs. -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-core</artifactId>
+ 		</dependency> 
+ 		<!-- Contains filters and related web-security infrastructure code. 
+ 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
+ 			web authentication services and URL-based access-control. -->
+		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-web</artifactId>
+  		</dependency>
+  		<!-- Contains the security namespace parsing code. 
+  			You need it if you are using the Spring Security XML namespace for configuration. 
+  			The main package is org.springframework.security.config. 
+  			None of the classes are intended for direct use in an application. --> 
+  		<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-config</artifactId>
+  		</dependency>
+  		<!-- Spring Security has its own taglib which provides basic support for accessing 
+  			security information and applying security constraints in JSPs. -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-taglibs</artifactId>
+		</dependency>
 		<!-- Web application development utilities applicable to both Servlet and 
 		    Portlet Environments 
 		    (depends on spring-core, spring-beans, spring-context)
@@ -123,12 +150,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>slf4j-api</artifactId>
-					<groupId>org.slf4j</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<!--  Joda Time -->
 		<dependency>
@@ -201,6 +222,10 @@
 					<groupId>org.slf4j</groupId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.vcpe</artifactId>
 		</dependency>
 		<!-- Test -->
 		<dependency>

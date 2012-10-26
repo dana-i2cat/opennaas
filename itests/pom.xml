@@ -3,7 +3,7 @@
 	<parent>
         <groupId>org.opennaas</groupId>
         <artifactId>opennaas</artifactId>
-        <version>0.13</version>
+        <version>0.14-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>org.opennaas.itests</artifactId>
@@ -19,6 +19,7 @@
 		<module>network</module>
 		<module>roadm</module>
 		<module>bod</module>
+		<module>vcpe</module>
 	</modules>
 
 	<dependencies>

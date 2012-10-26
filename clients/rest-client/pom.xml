@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>org.opennaas.extensions.bundles</artifactId>
 		<groupId>org.opennaas</groupId>
-		<version>0.13-SNAPSHOT</version>
+		<version>0.14-SNAPSHOT</version>
 	</parent>
 	<!-- POM id -->
 	<artifactId>rest.example</artifactId>
@@ -51,6 +51,10 @@
 			<groupId>org.opennaas</groupId>
 			<artifactId>org.opennaas.extensions.macbridge.model</artifactId>
 		</dependency>	
+		<dependency>
+			<groupId>org.opennaas</groupId>
+			<artifactId>org.opennaas.extensions.vcpe</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

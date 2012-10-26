@@ -4,30 +4,47 @@
        "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
 <tiles-definitions>
 
-	<definition name="base.definition"
-		template="/WEB-INF/views/tiles/baseLayout.jsp">
+	<definition name="login" template="/WEB-INF/views/login.jsp" />
+		
+	<definition name="exception" template="/WEB-INF/views/exception.jsp" />
+
+	<definition name="base.definition" template="/WEB-INF/views/tiles/baseLayout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/header.jsp" />
 		<put-attribute name="menu" value="/WEB-INF/views/tiles/menu.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp" />
 	</definition>
-	
-	<definition name="exception" template="/WEB-INF/views/exception.jsp" />
 
 	<definition name="home" extends="base.definition">
 		<put-attribute name="title" value="Home" />
 		<put-attribute name="body" value="/WEB-INF/views/home.jsp" />
 	</definition>
 
-	<definition name="createLogicalRouter" extends="base.definition">
-		<put-attribute name="title" value="Create Logical Router" />
-		<put-attribute name="body" value="/WEB-INF/views/logicalRouter/createLogicalRouter.jsp" />
+	<definition name="denied" extends="base.definition">
+		<put-attribute name="title" value="Home" />
+		<put-attribute name="body" value="/WEB-INF/views/denied.jsp" />
 	</definition>
 
-	<definition name="listQueueActions" extends="base.definition">
-		<put-attribute name="title" value="List Queue Actions" />
-		<put-attribute name="body" value="/WEB-INF/views/queue/listActions.jsp" />
+	<definition name="createVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="Create Logical Router" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/createVCPENetwork.jsp" />
 	</definition>
+
+	<definition name="listVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="List VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/listVCPENetwork.jsp" />
+	</definition>
+
+	<definition name="viewVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="View VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/viewVCPENetwork.jsp" />
+	</definition>
+
+	<definition name="updateIpsVCPENetwork" extends="base.definition">
+		<put-attribute name="title" value="Update Ip's VCPE Network" />
+		<put-attribute name="body" value="/WEB-INF/views/vcpeNetwork/updateIpsVCPENetwork.jsp" />
+	</definition>
+
 
 </tiles-definitions>

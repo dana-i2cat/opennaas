@@ -18,6 +18,7 @@
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
+		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -42,6 +43,8 @@
 		<class>org.opennaas.core.resources.descriptor.network.DeviceId</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkDomain</class>
 		<class>org.opennaas.core.resources.descriptor.network.NetworkTopology</class>
+		<class>org.opennaas.core.resources.descriptor.vcpe.VCPENetworkDescriptor</class>
+		
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="openjpa.ConnectionURL" value="jdbc:hsqldb:mem:unit-testing-jpa"/>

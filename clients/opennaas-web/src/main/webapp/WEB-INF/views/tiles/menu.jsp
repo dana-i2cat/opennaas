@@ -6,10 +6,19 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@taglib  uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <ul>
-	<li><a href="<c:url value="/logicalRouter" />"><spring:message code="index.menu.logicalrouter"/></a></li>
-</ul>
-<ul>
-	<li><a href="<c:url value="/queue" />"><spring:message code="index.menu.queue"/></a></li>
+	<sec:authorize access="hasRole('ROLE_NOC')">
+		<li>
+			<a href="<c:url value="/secure/noc/vcpeNetwork/create" />">
+				<spring:message code="index.menu.vcpenetwork.create"/>
+			</a>
+		</li>
+	</sec:authorize>
+	<li>
+		<a href="<c:url value="/secure/vcpeNetwork/list" />">
+			<spring:message code="index.menu.vcpenetwork.list"/>
+		</a>
+	</li>
 </ul>

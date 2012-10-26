@@ -3,12 +3,6 @@ package org.opennaas.extensions.network.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opennaas.extensions.network.model.NetworkModel;
-import org.opennaas.extensions.network.model.NetworkModelHelper;
-import org.opennaas.extensions.network.model.ResourcesReferences;
-import org.opennaas.extensions.network.model.topology.Link;
-import org.opennaas.extensions.network.model.topology.NetworkElement;
-
 import org.opennaas.core.resources.ResourceException;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
 import org.opennaas.core.resources.descriptor.network.Device;
@@ -17,6 +11,11 @@ import org.opennaas.core.resources.descriptor.network.Interface;
 import org.opennaas.core.resources.descriptor.network.InterfaceId;
 import org.opennaas.core.resources.descriptor.network.NetworkDomain;
 import org.opennaas.core.resources.descriptor.network.NetworkTopology;
+import org.opennaas.extensions.network.model.NetworkModel;
+import org.opennaas.extensions.network.model.NetworkModelHelper;
+import org.opennaas.extensions.network.model.ResourcesReferences;
+import org.opennaas.extensions.network.model.topology.Link;
+import org.opennaas.extensions.network.model.topology.NetworkElement;
 
 public class NetworkMapperDescriptorToModel {
 
@@ -119,6 +118,7 @@ public class NetworkMapperDescriptorToModel {
 					}
 					org.opennaas.extensions.network.model.topology.Interface sourceInterf =
 							(org.opennaas.extensions.network.model.topology.Interface) existingInterfaces.get(posInterf);
+					sourceInterf.setDevice(modelDevice);
 					interfaces.add(sourceInterf);
 				}
 				modelDevice.setInterfaces(interfaces);

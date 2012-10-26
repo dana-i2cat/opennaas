@@ -3,10 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan base-package="org.opennaas.web" />
@@ -32,12 +34,6 @@
 		<property name="cacheSeconds" value="0" />
 	</bean>
 
-	<!-- Resolves view names to protected .jsp resources within the /views directory -->
-<!-- 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> -->
-<!-- 		<property name="prefix" value="/WEB-INF/views/"/> -->
-<!-- 		<property name="suffix" value=".jsp"/> -->
-<!-- 	</bean> -->
-
 	<!-- Log4j file configuration -->	
 	<bean id="log4jInitialization" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="org.springframework.util.Log4jConfigurer" />
@@ -48,24 +44,14 @@
 			</list>
 		</property>
 	</bean>
-	
-	<!--  The tilesViewResolver bean defines using Spring's TilesView which uses the url to lookup the Tiles definition and render it. -->
-	<bean id="viewResolver"
-		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
-		<property name="viewClass">
-			<value>
-				org.springframework.web.servlet.view.tiles2.TilesView
-			</value>
-		</property>
-	</bean>
-	
-	<!--  The tilesConfigurer bean initializes tiles with all the tiles configuration file -->
-	<bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles2.TilesConfigurer" p:definitions="/WEB-INF/tiles-defs.xml" />   
+
+	<!--Template for VCPENetwork  -->
+	<util:properties id="templateProperties" location="classpath:template.properties"/>
 
 	<!-- OpenNaas Beans-->
-	<bean id="opennaasRest" class="org.opennaas.web.ws.OpennaasRest" />
-		
-	<bean id="logicalRouterBO" class="org.opennaas.web.bos.LogicalRouterBO" />
-	
-	<bean id="queueBO" class="org.opennaas.web.bos.QueueBO" />
+	<bean id="templateUtils" class="org.opennaas.web.utils.TemplateUtils" />	
+	<bean id="vcpeNetworkBO" class="org.opennaas.web.bos.VCPENetworkBO" />
+	<bean id="resourceService" class="org.opennaas.web.services.ResourceService" />	
+	<bean id="vcpeNetworkService" class="org.opennaas.web.services.VCPENetworkService" />	
+	<bean id="builderService" class="org.opennaas.web.services.BuilderCapabilityService" />
 </beans>

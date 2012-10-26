@@ -3,14 +3,11 @@ package org.opennaas.core.resources;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
@@ -23,7 +20,7 @@ import org.opennaas.core.resources.descriptor.ResourceDescriptor;
  * @author Roc Vallès <roc.valles@i2cat.net>
  * 
  */
-@Path("/resources")
+@Path("/")
 public interface IResourceManager {
 
 	public static final String	NOTIFICATIONS_TOPIC	= "com/iaasframework/resources/core/ResourceManager";
@@ -57,8 +54,8 @@ public interface IResourceManager {
 	 */
 	public IResource createResource(ResourceDescriptor resourceDescriptor) throws ResourceException;
 
-	@Path("/{resourceId}/modify")
-	@PUT
+	@Path("/modify/{resourceId}")
+	@POST
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_XML)
 	public String modifyResource(@PathParam("resourceId") String resourceId, ResourceDescriptor resourceDescriptor) throws ResourceException;
@@ -74,8 +71,8 @@ public interface IResourceManager {
 	 */
 	public IResource modifyResource(IResourceIdentifier resourceIdentifier, ResourceDescriptor resourceDescriptor) throws ResourceException;
 
-	@Path("/{resourceId}/remove")
-	@DELETE
+	@Path("/remove/{resourceId}")
+	@POST
 	public void removeResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
@@ -92,9 +89,6 @@ public interface IResourceManager {
 	 * @return The list of the resources contained on the given type repository. Is the type is not a valid type of repository it will return null
 	 *         value.
 	 */
-	@GET
-	@Path("/getResourcesByType/{type}")
-	@Produces(MediaType.APPLICATION_XML)
 	public List<IResource> listResourcesByType(@PathParam("type") String type);
 
 	/**
@@ -102,9 +96,6 @@ public interface IResourceManager {
 	 * 
 	 * @return
 	 */
-	@GET
-	@Path("/")
-	@Produces(MediaType.APPLICATION_XML)
 	public List<IResource> listResources();
 
 	/**
@@ -134,13 +125,16 @@ public interface IResourceManager {
 	 * @return the resource
 	 * @throws ResourceException
 	 */
-	@GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_XML)
-	public IResource getResourceById(@PathParam("id") String resourceId) throws ResourceException;
+	public IResource getResourceById(@PathParam("resourceId") String resourceId) throws ResourceException;
 
+	/**
+	 * Start a resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
-	@Path("{resourceId}/start")
+	@Path("/start/{resourceId}")
 	public void startResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
@@ -151,8 +145,14 @@ public interface IResourceManager {
 	 */
 	public void startResource(IResourceIdentifier resourceIdentifier) throws ResourceException;
 
+	/**
+	 * Stop an existing resource
+	 * 
+	 * @param resourceId
+	 * @throws ResourceException
+	 */
 	@POST
-	@Path("{resourceId}/stop")
+	@Path("/stop/{resourceId}")
 	public void stopResource(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
@@ -181,11 +181,7 @@ public interface IResourceManager {
 	 * @return
 	 * @throws ResourceException
 	 */
-	@GET
-	@Path("/getIdentifierFromResourceName")
-	@Produces(MediaType.APPLICATION_XML)
-	public IResourceIdentifier getIdentifierFromResourceName(@QueryParam("resourceType") String resourceType,
-			@QueryParam("resourceName") String resourceName)
+	public IResourceIdentifier getIdentifierFromResourceName(String resourceType, String resourceName)
 			throws ResourceException;
 
 	/**
@@ -195,8 +191,8 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	@GET
-	@Path("/{id}/name")
-	public String getNameFromResourceID(@PathParam("id") String ID) throws ResourceException;
+	@Path("/getName/{resourceId}/")
+	public String getNameFromResourceID(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 	/**
 	 * 
@@ -211,5 +207,15 @@ public interface IResourceManager {
 	 * @throws ResourceException
 	 */
 	public void destroyAllResources() throws ResourceException;
+
+	/**
+	 * @param resourceId
+	 * @return
+	 * @throws ResourceException
+	 */
+	@GET
+	@Path("getDescriptor/{resourceId}")
+	@Produces(MediaType.APPLICATION_XML)
+	public ResourceDescriptor getResourceDescriptor(@PathParam("resourceId") String resourceId) throws ResourceException;
 
 }

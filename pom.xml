@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.opennaas</groupId>
 	<artifactId>opennaas</artifactId>
-	<version>0.13</version>
+	<version>0.14-SNAPSHOT</version>
 	<name>OpenNaaS</name>
 	<packaging>pom</packaging>
 
@@ -302,6 +302,11 @@
 				<artifactId>org.opennaas.extensions.macbridge.ios.resource</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.opennaas</groupId>
+				<artifactId>org.opennaas.extensions.vcpe</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<!-- iTests -->
 			<dependency>
 				<groupId>org.opennaas.itests</groupId>
@@ -512,6 +517,37 @@
 			<dependency>
 			    <groupId>org.springframework</groupId>
 			    <artifactId>spring-oxm</artifactId>
+			    <version>${spring.version}</version>
+			</dependency>
+			<!-- Contains core authentication and access-contol classes and interfaces, 
+				remoting support and basic provisioning APIs. -->
+			<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-core</artifactId>
+			    <version>${spring.version}</version>
+	 		</dependency> 
+	 		<!-- Contains filters and related web-security infrastructure code. 
+	 			Anything with a servlet API dependency. You'll need it if you require Spring Security 
+	 			web authentication services and URL-based access-control. -->
+			<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-web</artifactId>
+			    <version>${spring.version}</version>
+	  		</dependency>
+	  		<!-- Contains the security namespace parsing code. 
+	  			You need it if you are using the Spring Security XML namespace for configuration. 
+	  			The main package is org.springframework.security.config. 
+	  			None of the classes are intended for direct use in an application. --> 
+	  		<dependency>
+	    		<groupId>org.springframework.security</groupId>
+	    		<artifactId>spring-security-config</artifactId>
+			    <version>${spring.version}</version>
+	  		</dependency>
+	  		<!-- Spring Security has its own taglib which provides basic support for accessing 
+	  			security information and applying security constraints in JSPs. -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-taglibs</artifactId>
 			    <version>${spring.version}</version>
 			</dependency>
 			<!-- Web application development utilities applicable to both Servlet and 
@@ -936,7 +972,8 @@
 		<module>extensions</module>
 		<module>platform</module>
 		<module>itests</module>
-<!-- 		<module>web</module> -->
+		<module>clients</module>
+		<!-- <module>utils/new-cim</module> -->
 	</modules>
 	<build>
 		<pluginManagement>
@@ -1271,7 +1308,7 @@
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
 			<id>maven.i2cat.net</id>
-			<name>&gt;maven.i2cat.net-releases</name>
+			<name>maven.i2cat.net-releases</name>
 			<url>http://maven.i2cat.net:8081/artifactory/libs-release-local</url>
 		</repository>
 		<snapshotRepository>
