@@ -73,7 +73,7 @@ public class BasicTemplate implements ITemplate {
 		// Other interfaces VCPE-router2
 		Interface inter2other = getInterface("autobahnID:000002.1", VCPETemplate.INTER2_INTERFACE_AUTOBAHN, 1, null);
 		Interface down2other = getInterface("autobahnID:000002.2", VCPETemplate.DOWN2_INTERFACE_AUTOBAHN, 2, null);
-		Interface up2other = getInterface("lt-0/1/2.4", VCPETemplate.UP2_INTERFACE_PEER, 1, "192.168.0.10/30");
+		Interface up2other = getInterface("lt-0/1/2.4", VCPETemplate.UP2_INTERFACE_PEER, 0, "192.168.0.10/30");
 
 		// Client interfaces
 		Interface client1other = getInterface("autobahnID:000003.1", VCPETemplate.CLIENT1_INTERFACE_AUTOBAHN, 2, null);
