@@ -35,69 +35,69 @@ public class TemplateUtils {
 		// Interfaces router1
 		List<Interface> interfaces = new ArrayList<Interface>();
 		logicalRouter1.setInterfaces(interfaces);
-		Interface interface1 = new Interface();
-		Interface interface2 = new Interface();
-		Interface interface3 = new Interface();
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
+		Interface ifaceInter = new Interface();
+		Interface ifaceDown = new Interface();
+		Interface ifaceUp = new Interface();
+		interfaces.add(ifaceInter);
+		interfaces.add(ifaceDown);
+		interfaces.add(ifaceUp);
 
-		interface1.setName(templateProperties.getProperty("vcpenetwork.router1.interface1.name"));
-		interface1.setPort(templateProperties.getProperty("vcpenetwork.router1.interface1.port"));
-		interface1.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router1.interface1.vlan").trim()));
-		interface1.setIpAddress(templateProperties.getProperty("vcpenetwork.router1.interface1.ipaddress"));
-		interface1.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
-		interface1.setLabelName(Interface.Types.INTER.toString());
+		ifaceInter.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.name"));
+		ifaceInter.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.port"));
+		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.vlan").trim()));
+		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.inter.ipaddress"));
+		ifaceInter.setTemplateName(VCPETemplate.INTER1_INTERFACE_LOCAL);
+		ifaceInter.setLabelName(Interface.Types.INTER.toString());
 
-		interface2.setName(templateProperties.getProperty("vcpenetwork.router1.interface2.name"));
-		interface2.setPort(templateProperties.getProperty("vcpenetwork.router1.interface2.port"));
-		interface2.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router1.interface2.vlan").trim()));
-		interface2.setIpAddress(templateProperties.getProperty("vcpenetwork.router1.interface2.ipaddress"));
-		interface2.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
-		interface2.setLabelName(Interface.Types.DOWN.toString());
+		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.name"));
+		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.port"));
+		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.vlan").trim()));
+		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.down.ipaddress"));
+		ifaceDown.setTemplateName(VCPETemplate.DOWN1_INTERFACE_LOCAL);
+		ifaceDown.setLabelName(Interface.Types.DOWN.toString());
 
-		interface3.setName(templateProperties.getProperty("vcpenetwork.router1.interface3.name"));
-		interface3.setPort(templateProperties.getProperty("vcpenetwork.router1.interface3.port"));
-		interface3.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router1.interface3.vlan").trim()));
-		interface3.setIpAddress(templateProperties.getProperty("vcpenetwork.router1.interface3.ipaddress"));
-		interface3.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
-		interface3.setLabelName(Interface.Types.UP.toString());
+		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.name"));
+		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.port"));
+		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.vlan").trim()));
+		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter1.interface.up.ipaddress"));
+		ifaceUp.setTemplateName(VCPETemplate.UP1_INTERFACE_LOCAL);
+		ifaceUp.setLabelName(Interface.Types.UP.toString());
 
 		// Logical Router2
 		LogicalRouter logicalRouter2 = new LogicalRouter();
-		logicalRouter2.setName(templateProperties.getProperty("vcpenetwork.router2.name"));
+		logicalRouter2.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.name"));
 		logicalRouter1.setTemplateName(VCPETemplate.VCPE2_ROUTER);
 
 		// Interfaces router2
 		interfaces = new ArrayList<Interface>();
-		interface1 = new Interface();
-		interface2 = new Interface();
-		interface3 = new Interface();
-		interfaces.add(interface1);
-		interfaces.add(interface2);
-		interfaces.add(interface3);
+		ifaceInter = new Interface();
+		ifaceDown = new Interface();
+		ifaceUp = new Interface();
+		interfaces.add(ifaceInter);
+		interfaces.add(ifaceDown);
+		interfaces.add(ifaceUp);
 		logicalRouter2.setInterfaces(interfaces);
 
-		interface1.setName(templateProperties.getProperty("vcpenetwork.router2.interface1.name"));
-		interface1.setPort(templateProperties.getProperty("vcpenetwork.router2.interface1.port"));
-		interface1.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router2.interface1.vlan").trim()));
-		interface1.setIpAddress(templateProperties.getProperty("vcpenetwork.router2.interface1.ipaddress"));
-		interface1.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
-		interface1.setLabelName(Interface.Types.INTER.toString());
+		ifaceInter.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.name"));
+		ifaceInter.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.port"));
+		ifaceInter.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.vlan").trim()));
+		ifaceInter.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.inter.ipaddress"));
+		ifaceInter.setTemplateName(VCPETemplate.INTER2_INTERFACE_LOCAL);
+		ifaceInter.setLabelName(Interface.Types.INTER.toString());
 
-		interface2.setName(templateProperties.getProperty("vcpenetwork.router2.interface2.name"));
-		interface2.setPort(templateProperties.getProperty("vcpenetwork.router2.interface2.port"));
-		interface2.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router2.interface2.vlan").trim()));
-		interface2.setIpAddress(templateProperties.getProperty("vcpenetwork.router2.interface2.ipaddress"));
-		interface2.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
-		interface2.setLabelName(Interface.Types.DOWN.toString());
+		ifaceDown.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.name"));
+		ifaceDown.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.port"));
+		ifaceDown.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.vlan").trim()));
+		ifaceDown.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.down.ipaddress"));
+		ifaceDown.setTemplateName(VCPETemplate.DOWN2_INTERFACE_LOCAL);
+		ifaceDown.setLabelName(Interface.Types.DOWN.toString());
 
-		interface3.setName(templateProperties.getProperty("vcpenetwork.router2.interface3.name"));
-		interface3.setPort(templateProperties.getProperty("vcpenetwork.router2.interface3.port"));
-		interface3.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.router2.interface3.vlan").trim()));
-		interface3.setIpAddress(templateProperties.getProperty("vcpenetwork.router2.interface3.ipaddress"));
-		interface3.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
-		interface3.setLabelName(Interface.Types.UP.toString());
+		ifaceUp.setName(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.name"));
+		ifaceUp.setPort(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.port"));
+		ifaceUp.setVlan(Integer.valueOf(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.vlan").trim()));
+		ifaceUp.setIpAddress(templateProperties.getProperty("vcpenetwork.logicalrouter2.interface.up.ipaddress"));
+		ifaceUp.setTemplateName(VCPETemplate.UP2_INTERFACE_LOCAL);
+		ifaceUp.setLabelName(Interface.Types.UP.toString());
 
 		vcpeNetwork.setLogicalRouter1(logicalRouter1);
 		vcpeNetwork.setLogicalRouter2(logicalRouter2);

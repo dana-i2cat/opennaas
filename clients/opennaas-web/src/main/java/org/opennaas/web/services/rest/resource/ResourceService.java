@@ -1,12 +1,14 @@
 /**
  * 
  */
-package org.opennaas.web.services;
+package org.opennaas.web.services.rest.resource;
 
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
 import org.opennaas.core.resources.descriptor.ResourceDescriptor;
+import org.opennaas.web.services.rest.GenericRestService;
+import org.opennaas.web.services.rest.RestServiceException;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;

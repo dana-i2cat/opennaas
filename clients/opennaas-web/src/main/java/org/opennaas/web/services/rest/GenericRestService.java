@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opennaas.web.services;
+package org.opennaas.web.services.rest;
 
 import javax.ws.rs.core.Response.Status.Family;
 
