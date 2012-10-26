@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opennaas.core.resources.IResource;
@@ -59,6 +60,7 @@ public class VCPENetworkTest {
 	}
 
 	@Test
+	@Ignore
 	public void resourceWorkflow() throws ResourceException {
 		try {
 			IResource resource = createResource();
@@ -71,6 +73,7 @@ public class VCPENetworkTest {
 	}
 
 	@Test
+	@Ignore
 	public void modelPersistence() throws SerializationException, ResourceException {
 
 		VCPENetworkModel model = VCPENetworkModelHelper.generateSampleModel();
