@@ -86,7 +86,8 @@ public class L2BoDTest {
 		parameters.interface1.getDevice().setName("MyDevice");
 		parameters.interface2 = new Interface();
 		parameters.startTime = new DateTime();
-		parameters.vlanid = 10;
+		parameters.vlanid1 = 10;
+		parameters.vlanid2 = 10;
 		return parameters;
 	}
 
